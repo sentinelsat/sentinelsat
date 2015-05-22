@@ -22,7 +22,8 @@ setup(name='sentinelsat',
       zip_safe=False,
       install_requires=[
           'requests',
-          'click'
+          'click',
+          'homura'
       ],
       extras_require={
           'test': ['pytest'],

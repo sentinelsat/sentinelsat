@@ -1,5 +1,9 @@
 # -*- coding: utf-8 -*-
+from homura import download
+
 from datetime import datetime, timedelta
+from os.path import join
+
 import requests
 
 
@@ -13,13 +17,14 @@ class SentinelAPI(object):
     imagery.
     """
     def __init__(self, user, password):
-        self.user = user
-        self.password = password
+        self.session = requests.Session()
+        self.session.auth = (user, password)
+        self.session.get('https://scihub.esa.int/dhus/odata/v1/$metadata')
 
     def query(self, area, initial_date=None, end_date=datetime.now(), **keywords):
         """Call the Scihub"""
         self.format_url(area, initial_date, end_date, **keywords)
-        self.content = requests.get(self.url, auth=(self.user, self.password))
+        self.content = self.session.get(self.url)
 
     def format_url(self, area, initial_date=None, end_date=datetime.now(), **keywords):
         """Create the URL to access the SciHub API."""
@@ -38,3 +43,23 @@ class SentinelAPI(object):
 
         self.url = 'https://scihub.esa.int/dhus/search?format=json&q=%s%s%s' \
             % (ingestion_date, query_area, filters)
+
+    def get_products(self):
+        """Return the ids of the products found in the Query."""
+        try:
+            self.products = self.content.json()['feed']['entry']
+            return self.products
+        except KeyError:
+            print('No products found in this query.')
+            return []
+
+    def download(self, id, title=None, path='.'):
+        url = "https://scihub.esa.int/dhus/odata/v1/Products('%s')/$value" % id
+        if title is None:
+            title = id
+        path = join(path, title + '.zip')
+        download(url, path=path, session=self.session)
+
+    def download_all(self, path='.'):
+        for product in self.get_products():
+            self.download(product['id'], product['title'], path)

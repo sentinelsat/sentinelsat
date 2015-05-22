@@ -13,7 +13,7 @@ def test_SentinelAPI():
     api = SentinelAPI(
         environ.get('SENTINEL_USER'),
         environ.get('SENTINEL_PASSWORD')
-        )
+    )
     api.query('0 0,1 1,0 1,0 0', datetime(2015, 1, 1), datetime(2015, 1, 2))
 
     assert api.url == 'https://scihub.esa.int/dhus/search?format=json' + \
