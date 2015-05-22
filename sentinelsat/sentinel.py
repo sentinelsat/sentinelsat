@@ -19,7 +19,7 @@ class SentinelAPI(object):
     def query(self, area, initial_date=None, end_date=datetime.now(), **keywords):
         """Call the Scihub"""
         self.format_url(area, initial_date, end_date, **keywords)
-        self.xml = requests.get(self.url, auth=(self.user, self.password))
+        self.content = requests.get(self.url, auth=(self.user, self.password))
 
     def format_url(self, area, initial_date=None, end_date=datetime.now(), **keywords):
         """Create the URL to access the SciHub API."""
@@ -36,5 +36,5 @@ class SentinelAPI(object):
         for kw in sorted(keywords.keys()):
             filters += ' AND (%s:%s)' % (kw, keywords[kw])
 
-        self.url = 'https://scihub.esa.int/dhus/search?format=xml&q=%s%s%s' \
+        self.url = 'https://scihub.esa.int/dhus/search?format=json&q=%s%s%s' \
             % (ingestion_date, query_area, filters)

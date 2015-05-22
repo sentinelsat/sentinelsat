@@ -9,7 +9,7 @@ with codecs_open('README.rst', encoding='utf-8') as f:
 
 setup(name='sentinelsat',
       version='0.0.1',
-      description=u"Utility to search and download Sentinel-1 Imagery",
+      description="Utility to search and download Sentinel-1 Imagery",
       long_description=long_description,
       classifiers=[],
       keywords='',
@@ -22,7 +22,6 @@ setup(name='sentinelsat',
       zip_safe=False,
       install_requires=[
           'requests',
-          'pyquery',
           'click'
       ],
       extras_require={
