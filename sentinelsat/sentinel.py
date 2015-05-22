@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 from homura import download
+import requests
 
 from datetime import datetime, timedelta
 from os.path import join
 
-import requests
 
 
 def format_date(in_date):
@@ -19,6 +19,7 @@ class SentinelAPI(object):
     def __init__(self, user, password):
         self.session = requests.Session()
         self.session.auth = (user, password)
+        # just to initialize the session
         self.session.get('https://scihub.esa.int/dhus/odata/v1/$metadata')
 
     def query(self, area, initial_date=None, end_date=datetime.now(), **keywords):
@@ -54,6 +55,9 @@ class SentinelAPI(object):
             return []
 
     def download(self, id, title=None, path='.'):
+        """Download a product using homura's download function. If you don't
+        pass the title of the product, it will use the id as filename.
+        """
         url = "https://scihub.esa.int/dhus/odata/v1/Products('%s')/$value" % id
         if title is None:
             title = id
