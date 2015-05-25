@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 from homura import download
 import requests
+import json
 
 from datetime import datetime, timedelta
 from os.path import join
-
 
 
 def format_date(in_date):
@@ -67,3 +67,10 @@ class SentinelAPI(object):
     def download_all(self, path='.'):
         for product in self.get_products():
             self.download(product['id'], product['title'], path)
+
+
+def get_coordinates(geojson_file, feature_number=0):
+    geojson = json.loads(open(geojson_file, 'r').read())
+    coordinates = geojson['features'][feature_number]['geometry']['coordinates'][0]
+    coordinates = ['%s %s' % tuple(coord) for coord in coordinates]
+    return ','.join(coordinates)

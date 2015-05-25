@@ -1,7 +1,7 @@
 from datetime import datetime, date, timedelta
 from os import environ
 
-from sentinelsat.sentinel import SentinelAPI, format_date
+from sentinelsat.sentinel import SentinelAPI, format_date, get_coordinates
 
 
 def test_format_date():
@@ -33,3 +33,10 @@ def test_SentinelAPI():
         '&q=(ingestionDate:[%s TO %s]) ' % (last_24h, format_date(now)) + \
         'AND (footprint:"Intersects(POLYGON((0 0,1 1,0 1,0 0)))") ' + \
         'AND (producttype:SLC)'
+
+
+def test_get_coordinates():
+    coords = '-66.26953125 -8.05922962720018,-66.26953125 0.7031073524364909,' + \
+        '-57.30468749999999 0.7031073524364909,-57.30468749999999 -8.05922962720018,' +\
+        '-66.26953125 -8.05922962720018'
+    assert get_coordinates('tests/map.geojson') == coords
