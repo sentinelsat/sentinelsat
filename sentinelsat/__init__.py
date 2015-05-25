@@ -1,3 +1,1 @@
-# sentinelsat
-
-has_legs = False
+# -*- coding: utf-8 -*-

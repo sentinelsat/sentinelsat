@@ -3,13 +3,16 @@ from homura import download
 import requests
 import json
 
-from datetime import datetime, timedelta
+from datetime import datetime, date, timedelta
 from os.path import join
 
 
 def format_date(in_date):
     """Format date or datetime input to YYYY-MM-DDThh:mm:ssZ"""
-    return in_date.strftime('%Y-%m-%dT%H:%M:%SZ')
+    if type(in_date) == datetime or type(in_date) == date:
+        return in_date.strftime('%Y-%m-%dT%H:%M:%SZ')
+    else:
+        return in_date
 
 
 class SentinelAPI(object):
@@ -19,8 +22,6 @@ class SentinelAPI(object):
     def __init__(self, user, password):
         self.session = requests.Session()
         self.session.auth = (user, password)
-        # just to initialize the session
-        self.session.get('https://scihub.esa.int/dhus/odata/v1/$metadata')
 
     def query(self, area, initial_date=None, end_date=datetime.now(), **keywords):
         """Call the Scihub"""
