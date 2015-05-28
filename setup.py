@@ -30,6 +30,6 @@ setup(name='sentinelsat',
       },
       entry_points="""
       [console_scripts]
-      sentinelsat=sentinelsat.scripts.cli:cli
+      sentinel=sentinelsat.scripts.cli:cli
       """
       )

@@ -9,10 +9,14 @@ from os.path import join
 
 def format_date(in_date):
     """Format date or datetime input to YYYY-MM-DDThh:mm:ssZ"""
+
     if type(in_date) == datetime or type(in_date) == date:
         return in_date.strftime('%Y-%m-%dT%H:%M:%SZ')
     else:
-        return in_date
+        try:
+            return datetime.strptime(in_date, '%Y%m%d').strftime('%Y-%m-%dT%H:%M:%SZ')
+        except ValueError:
+            return in_date
 
 
 class SentinelAPI(object):
@@ -27,6 +31,8 @@ class SentinelAPI(object):
         """Call the Scihub"""
         self.format_url(area, initial_date, end_date, **keywords)
         self.content = self.session.get(self.url)
+        if self.content.status_code != 200:
+            print(('Query returned %s error.' % self.content.status_code))
 
     def format_url(self, area, initial_date=None, end_date=datetime.now(), **keywords):
         """Create the URL to access the SciHub API."""

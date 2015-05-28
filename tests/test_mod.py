@@ -8,7 +8,9 @@ def test_format_date():
     assert format_date(datetime(2015, 1, 1)) == '2015-01-01T00:00:00Z'
     assert format_date(date(2015, 1, 1)) == '2015-01-01T00:00:00Z'
     assert format_date('2015-01-01T00:00:00Z') == '2015-01-01T00:00:00Z'
+    assert format_date('20150101') == '2015-01-01T00:00:00Z'
     assert format_date('NOW') == 'NOW'
+
 
 def test_SentinelAPI():
     api = SentinelAPI(
