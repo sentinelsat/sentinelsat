@@ -8,7 +8,7 @@ with codecs_open('README.rst', encoding='utf-8') as f:
 
 
 setup(name='sentinelsat',
-      version='0.1',
+      version='0.1.1',
       description="Utility to search and download Sentinel-1 Imagery",
       long_description=long_description,
       classifiers=[
@@ -22,7 +22,7 @@ setup(name='sentinelsat',
       author="Wille Marcel",
       author_email='wille@wille.blog.br',
       url='https://github.com/ibamacsr/sentinelsat',
-      license='GPLv3',
+      license='GPLv3+',
       packages=find_packages(exclude=['ez_setup', 'examples', 'tests']),
       include_package_data=True,
       zip_safe=False,

@@ -76,11 +76,13 @@ Search products specifying the coordinates of the area and date interval:
 
     api.query('0 0,1 1,0 1,0 0', '20150531', '20150612')
 
-You can query using date or datetime objects too.If you don't specify the start and end dates, it will query in the last 24 hours.
+You can query using date or datetime objects too.
 
 .. code-block:: python
 
     api.query('0 0,1 1,0 1,0 0', datetime(2015, 5, 31, 12, 5), date(2015, 6, 12))
+
+If you don't specify the start and end dates, it will query in the last 24 hours.
 
 Beyond area and date parameters, you can use any search keywords accepted by the SciHub API, example:
 
