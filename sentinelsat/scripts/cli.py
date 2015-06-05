@@ -19,15 +19,20 @@ def cli():
 @click.option('--download', '-d', is_flag=True,
     help='Download all the results of the query.')
 @click.option('--path', '-p', type=click.Path(exists=True), default='.',
-    help='Set the path where to save the file on.')
+    help='Set the path where the files will be saved.')
 def search(user, password, geojson, start, end, download, path):
-    """Search for Sentinel-1 products and, optionally, download all the results"""
+    """Search for Sentinel-1 products and, optionally, download all the results.
+    Beyond your scihub user and password, you must pass a geojson file
+    containing the polygon of the area where you want to search for. If you
+    don't especify the start and end dates, it will search in the last 24 hours.
+    """
     api = SentinelAPI(user, password)
     api.query(get_coordinates(geojson), start, end)
     if download is True:
         api.download_all(path)
     else:
-        print((api.get_products()))
+        for product in api.get_products():
+            print('Product %s - %s' % (product['id'], product['summary']))
 
 
 @cli.command()
@@ -35,8 +40,10 @@ def search(user, password, geojson, start, end, download, path):
 @click.argument('password', type=str, metavar='<password>')
 @click.argument('productid', type=str, metavar='<productid>')
 @click.option('--path', '-p', type=click.Path(exists=True), default='.',
-    help='Set the path where to save the file on.')
+    help='Set the path where the files will be saved.')
 def download(user, password, productid, path):
-    """Download a Sentinel-1 Product."""
+    """Download a Sentinel-1 Product. Just needs you scihub user and password
+    and the id of the product you want to download.
+    """
     api = SentinelAPI(user, password)
     api.download(productid, path)
