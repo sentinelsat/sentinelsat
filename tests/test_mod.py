@@ -43,3 +43,17 @@ def test_get_coordinates():
         '-57.30468749999999 0.7031073524364909,-57.30468749999999 -8.05922962720018,' +\
         '-66.26953125 -8.05922962720018'
     assert get_coordinates('tests/map.geojson') == coords
+
+
+def test_get_product_info():
+    api = SentinelAPI(
+        environ.get('SENTINEL_USER'),
+        environ.get('SENTINEL_PASSWORD')
+    )
+
+    expected = {'id': '079ed72f-b330-4918-afb8-b63854e375a5',
+        'title': 'S1A_IW_GRDH_1SDV_20150527T081303_20150527T081328_006104_007EB2_E65B',
+        'size': 1051461964,
+        'url': "https://scihub.esa.int/dhus/odata/v1/Products('079ed72f-b330-4918-afb8-b63854e375a5')/$value"
+        }
+    assert api.get_product_info('079ed72f-b330-4918-afb8-b63854e375a5') == expected
