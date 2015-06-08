@@ -34,8 +34,8 @@ hours.
 
 Options:
 
--s, --start TEXT  Start date of the query in the format YYYY-MM-DD.
--e, --end TEXT    End date of the query in the format YYYY-MM-DD.
+-s, --start TEXT  Start date of the query in the format YYYYMMDD.
+-e, --end TEXT    End date of the query in the format YYYYMMDD.
 -d, --download    Download all results of the query.
 -p, --path PATH   Set the path where the files will be saved.
 
