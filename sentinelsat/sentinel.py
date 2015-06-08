@@ -32,7 +32,7 @@ class SentinelAPI(object):
     def query(self, area, initial_date=None, end_date=datetime.now(), **keywords):
         """Call the Scihub"""
         self.format_url(area, initial_date, end_date, **keywords)
-        self.content = self.session.get(self.url)
+        self.content = requests.get(self.url, auth=self.session.auth)
         if self.content.status_code != 200:
             print(('Query returned %s error.' % self.content.status_code))
 
