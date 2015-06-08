@@ -1,7 +1,7 @@
 sentinelsat
 ============
 
-Utility to search and download Sentinel-1 imagery.
+Utility pack to search and download Sentinel-1 imagery.
 
 Installation
 ============
@@ -28,7 +28,7 @@ Search
 
 Search for Sentinel-1 products and, optionally, download all the results.
 Beyond your scihub user and password, you must pass a geojson file
-containing the polygon of the area where you want to search for. If you
+containing the polygon of the area that you want to search for. If you
 don't especify the start and end dates, it will search in the last 24
 hours.
 
@@ -36,7 +36,7 @@ Options:
 
 -s, --start TEXT  Start date of the query in the format YYYY-MM-DD.
 -e, --end TEXT    End date of the query in the format YYYY-MM-DD.
--d, --download    Download all the results of the query.
+-d, --download    Download all results of the query.
 -p, --path PATH   Set the path where the files will be saved.
 
 Download
@@ -46,7 +46,7 @@ Download
 
     sentinel download [OPTIONS] <user> <password> <productid>
 
-Download a Sentinel-1 Product. Just needs you scihub user and password and
+Download a Sentinel-1 Product. It just needs your scihub user and password and
 the id of the product you want to download.
 
 Options:
@@ -64,19 +64,19 @@ Connect to the API:
     from sentinelsat.sentinel import SentinelAPI
     api = SentinelAPI('user', 'password')
 
-If you know the id of the product you want to download, you can download it using:
+If you know the id of the product you want to download, you can download it by using:
 
 .. code-block:: python
 
-    api.download('079ed72f-b330-4918-afb8-b63854e375a5', path='.')
+    api.download(<product_id>)
 
-Search products specifying the coordinates of the area and date interval:
+You can search products by specifying the coordinates of the area and a date interval:
 
 .. code-block:: python
 
     api.query('0 0,1 1,0 1,0 0', '20150531', '20150612')
 
-You can query using date or datetime objects too.
+You can query by using date or datetime objects too.
 
 .. code-block:: python
 
@@ -84,7 +84,7 @@ You can query using date or datetime objects too.
 
 If you don't specify the start and end dates, it will query in the last 24 hours.
 
-Beyond area and date parameters, you can use any search keywords accepted by the SciHub API, example:
+Beyond area and date parameters, you can use any search keywords accepted by the SciHub API, for example:
 
 .. code-block:: python
 
