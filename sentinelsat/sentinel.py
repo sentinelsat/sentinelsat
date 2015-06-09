@@ -10,7 +10,9 @@ from os.path import join, exists, getsize
 
 
 def format_date(in_date):
-    """Format date or datetime input to YYYY-MM-DDThh:mm:ssZ"""
+    """Format date or datetime input or a YYYYMMDD string input to
+    YYYY-MM-DDThh:mm:ssZ string format. In case you pass an
+    """
 
     if type(in_date) == datetime or type(in_date) == date:
         return in_date.strftime('%Y-%m-%dT%H:%M:%SZ')
@@ -30,7 +32,9 @@ class SentinelAPI(object):
         self.session.auth = (user, password)
 
     def query(self, area, initial_date=None, end_date=datetime.now(), **keywords):
-        """Call the Scihub"""
+        """Query the SciHub API with the coordinates of an area, a date inverval
+        and any other search keywords accepted by the SciHub API.
+        """
         self.format_url(area, initial_date, end_date, **keywords)
         self.content = requests.get(self.url, auth=self.session.auth)
         if self.content.status_code != 200:
@@ -55,7 +59,7 @@ class SentinelAPI(object):
             % (ingestion_date, query_area, filters)
 
     def get_products(self):
-        """Return the ids of the products found in the Query."""
+        """Return the result of the Query in json format."""
         try:
             self.products = self.content.json()['feed']['entry']
             return self.products
@@ -64,8 +68,8 @@ class SentinelAPI(object):
             return []
 
     def get_product_info(self, id):
-        """Access SciHub API to get info about a Product. Returns a dict with
-        the id, title, size and download url of the Product.
+        """Access SciHub API to get info about a Product. Returns a dict
+        containing the id, title, size and download url of the Product.
         """
 
         product = self.session.get(
@@ -105,6 +109,7 @@ class SentinelAPI(object):
 
 
 def get_coordinates(geojson_file, feature_number=0):
+    """Return the coordinates of a polygon of a GeoJSON file."""
     geojson = json.loads(open(geojson_file, 'r').read())
     coordinates = geojson['features'][feature_number]['geometry']['coordinates'][0]
     coordinates = ['%s %s' % tuple(coord) for coord in coordinates]
