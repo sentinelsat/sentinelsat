@@ -1,6 +1,10 @@
 sentinelsat
 ============
 
+.. image:: https://badge.fury.io/py/sentinelsat.svg
+    :target: http://badge.fury.io/py/sentinelsat
+
+
 Utility pack to search and download Sentinel-1 imagery.
 
 Installation
