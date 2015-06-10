@@ -20,14 +20,23 @@ def cli():
     help='Download all results of the query.')
 @click.option('--path', '-p', type=click.Path(exists=True), default='.',
     help='Set the path where the files will be saved.')
-def search(user, password, geojson, start, end, download, path):
+@click.option('--query', '-q', type=str, default=None,
+    help="""Extra search keywords you want to use in the query. Separate
+        keywords with comma. Example: 'producttype=GRD,polarisationmode=HH'.
+        """)
+def search(user, password, geojson, start, end, download, path, query):
     """Search for Sentinel-1 products and, optionally, download all the results.
     Beyond your scihub user and password, you must pass a geojson file
     containing the polygon of the area you want to search for. If you
     don't especify the start and end dates, it will search in the last 24 hours.
     """
     api = SentinelAPI(user, password)
-    api.query(get_coordinates(geojson), start, end)
+    if query is not None:
+        query = dict([i.split('=') for i in query.split(',')])
+        api.query(get_coordinates(geojson), start, end, **query)
+    else:
+        api.query(get_coordinates(geojson), start, end)
+
     if download is True:
         api.download_all(path)
     else:

@@ -42,6 +42,9 @@ Options:
 -e, --end TEXT    End date of the query in the format YYYYMMDD.
 -d, --download    Download all results of the query.
 -p, --path PATH   Set the path where the files will be saved.
+-q, --query TEXT  Extra search keywords you want to use in the query.
+                  Separate keywords with comma.
+                  Example: 'producttype=GRD,polarisationmode=HH'.
 
 Download
 ^^^^^^^^

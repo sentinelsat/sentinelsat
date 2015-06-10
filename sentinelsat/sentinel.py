@@ -41,7 +41,9 @@ class SentinelAPI(object):
             print(('Query returned %s error.' % self.content.status_code))
 
     def format_url(self, area, initial_date=None, end_date=datetime.now(), **keywords):
-        """Create the URL to access the SciHub API."""
+        """Create the URL to access the SciHub API, defining the max quantity of
+        results to 50 items.
+        """
         if initial_date is None:
             initial_date = end_date - timedelta(hours=24)
 
@@ -55,14 +57,19 @@ class SentinelAPI(object):
         for kw in sorted(keywords.keys()):
             filters += ' AND (%s:%s)' % (kw, keywords[kw])
 
-        self.url = 'https://scihub.esa.int/dhus/search?format=json&q=%s%s%s' \
+        self.url = 'https://scihub.esa.int/dhus/search?format=json&rows=50&q=%s%s%s' \
             % (ingestion_date, query_area, filters)
 
     def get_products(self):
         """Return the result of the Query in json format."""
         try:
             self.products = self.content.json()['feed']['entry']
-            return self.products
+            # this verification is necessary because if the query returns only
+            # one product, self.products will be a dict not a list
+            if type(self.products) == dict:
+                return [self.products]
+            else:
+                return self.products
         except KeyError:
             print('No products found in this query.')
             return []

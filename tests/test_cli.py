@@ -14,3 +14,13 @@ def test_cli():
         'tests/map.geojson'
         ])
     assert result.exit_code == 0
+
+    result = runner.invoke(cli,
+        ['search',
+        environ.get('SENTINEL_USER'),
+        environ.get('SENTINEL_PASSWORD'),
+        'tests/map.geojson',
+        '-q',
+        'producttype=GRD,polarisationmode=HH'
+        ])
+    assert result.exit_code == 0
