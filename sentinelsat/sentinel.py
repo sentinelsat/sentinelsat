@@ -75,6 +75,36 @@ class SentinelAPI(object):
             print('No products found in this query.')
             return []
 
+    def get_footprints(self):
+        """Return the footprints of the resulting scenes in GeoJSON format"""
+        id = 0
+        feature_list = []
+
+        for scene in self.get_products():
+            id += 1
+
+            # parse the polygon
+            coord_list = scene["str"][16]["content"][10:-2].split(",")
+            coord_list_split = [coord.split(" ") for coord in coord_list]
+            poly = geojson.Polygon([[tuple((float(coord[0]), float(coord[1]))) for coord in coord_list_split]])
+
+            # parse the following properties:
+            # identifier, product_id, date, polarisation, sensor operation mode,
+            # product type, download link
+            props = {scene["str"][17]["name"] : scene["str"][17]["content"],
+            "product_id" : scene["id"],
+            scene["date"][0]["name"] : scene["date"][0]["content"],
+            scene["str"][11]["name"] : scene["str"][11]["content"],
+            scene["str"][0]["name"] : scene["str"][0]["content"],
+            scene["str"][2]["name"] : scene["str"][2]["content"],
+            scene["str"][3]["name"] : scene["str"][3]["content"],
+            "download_link" : scene["link"][0]["href"]
+            }
+
+            feature_list.append(geojson.Feature(geometry=poly, id = id,
+                                                properties = props))
+        return geojson.FeatureCollection(feature_list)
+
     def get_product_info(self, id):
         """Access SciHub API to get info about a Product. Returns a dict
         containing the id, title, size and download url of the Product.
