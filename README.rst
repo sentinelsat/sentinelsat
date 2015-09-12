@@ -97,7 +97,7 @@ Beyond area and date parameters, you can use any search keywords accepted by the
 
     api.query('0 0,1 1,0 1,0 0', producttype='SLC')
 
-See the `SciHub User Guide <https://scihub.esa.int/twiki/do/view/SciHubUserGuide/FullTextSearch#Search_Keywords>`_
+See the `SciHub User Guide <https://scihub.esa.int/twiki/do/view/SciHubUserGuide/3FullTextSearch#Search_Keywords>`_
 for all the Search Keywords.
 
 To download all the results of your query, use:
