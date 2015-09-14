@@ -43,7 +43,7 @@ class SentinelAPI(object):
 
     def format_url(self, area, initial_date=None, end_date=datetime.now(), **keywords):
         """Create the URL to access the SciHub API, defining the max quantity of
-        results to 50 items.
+        results to 1500 items.
         """
         if initial_date is None:
             initial_date = end_date - timedelta(hours=24)
@@ -58,7 +58,7 @@ class SentinelAPI(object):
         for kw in sorted(keywords.keys()):
             filters += ' AND (%s:%s)' % (kw, keywords[kw])
 
-        self.url = 'https://scihub.esa.int/dhus/search?format=json&rows=50&q=%s%s%s' \
+        self.url = 'https://scihub.esa.int/dhus/search?format=json&rows=1500&q=%s%s%s' \
             % (ingestion_date, query_area, filters)
 
     def get_products(self):
@@ -82,7 +82,6 @@ class SentinelAPI(object):
 
         for scene in self.get_products():
             id += 1
-
             # parse the polygon
             coord_list = scene["str"][16]["content"][10:-2].split(",")
             coord_list_split = [coord.split(" ") for coord in coord_list]
@@ -101,7 +100,7 @@ class SentinelAPI(object):
             "download_link" : scene["link"][0]["href"]
             }
 
-            feature_list.append(geojson.Feature(geometry=poly, id = id,
+            feature_list.append(geojson.Feature(geometry = poly, id = id,
                                                 properties = props))
         return geojson.FeatureCollection(feature_list)
 

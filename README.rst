@@ -41,6 +41,7 @@ Options:
 -s, --start TEXT  Start date of the query in the format YYYYMMDD.
 -e, --end TEXT    End date of the query in the format YYYYMMDD.
 -d, --download    Download all results of the query.
+-f, --fotprints   Create geojson file with footprints of the query result.
 -p, --path PATH   Set the path where the files will be saved.
 -q, --query TEXT  Extra search keywords you want to use in the query.
                   Separate keywords with comma.
@@ -106,6 +107,12 @@ To download all the results of your query, use:
 
     api.download_all()
 
+To get a geojson FeatureCollection containing the footprints and metadata for the search results of the query, use:
+
+.. code-block:: python
+
+    api.get_footprints()
+    
 License
 =======
 
