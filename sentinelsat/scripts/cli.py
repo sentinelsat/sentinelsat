@@ -1,5 +1,7 @@
 import click
 
+import os
+import geojson as gj
 from sentinelsat.sentinel import SentinelAPI, get_coordinates
 
 
@@ -18,17 +20,20 @@ def cli():
     help='End date of the query in the format YYYYMMDD.')
 @click.option('--download', '-d', is_flag=True,
     help='Download all results of the query.')
+@click.option('--footprints', '-f', is_flag=True,
+    help='Create geojson file with footprints of the query result.')
 @click.option('--path', '-p', type=click.Path(exists=True), default='.',
     help='Set the path where the files will be saved.')
 @click.option('--query', '-q', type=str, default=None,
     help="""Extra search keywords you want to use in the query. Separate
         keywords with comma. Example: 'producttype=GRD,polarisationmode=HH'.
         """)
-def search(user, password, geojson, start, end, download, path, query):
-    """Search for Sentinel-1 products and, optionally, download all the results.
-    Beyond your scihub user and password, you must pass a geojson file
+def search(user, password, geojson, start, end, download, footprints, path, query):
+    """Search for Sentinel-1 products and, optionally, download all the results
+    and/or create a geojson file with the search result footprints.
+    Beyond your SciHub user and password, you must pass a geojson file
     containing the polygon of the area you want to search for. If you
-    don't especify the start and end dates, it will search in the last 24 hours.
+    don't specify the start and end dates, it will search in the last 24 hours.
     """
     api = SentinelAPI(user, password)
     if query is not None:
@@ -36,6 +41,11 @@ def search(user, password, geojson, start, end, download, path, query):
         api.query(get_coordinates(geojson), start, end, **query)
     else:
         api.query(get_coordinates(geojson), start, end)
+
+    if footprints is True:
+        footprints_geojson = api.get_footprints()
+        with open(os.path.join(path, "search_footprints.geojson"), "w") as outfile:
+            outfile.write(gj.dumps(footprints_geojson))
 
     if download is True:
         api.download_all(path)
@@ -51,7 +61,7 @@ def search(user, password, geojson, start, end, download, path, query):
 @click.option('--path', '-p', type=click.Path(exists=True), default='.',
     help='Set the path where the files will be saved.')
 def download(user, password, productid, path):
-    """Download a Sentinel-1 Product. It just needs you scihub user and password
+    """Download a Sentinel-1 Product. It just needs your SciHub user and password
     and the id of the product you want to download.
     """
     api = SentinelAPI(user, password)

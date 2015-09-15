@@ -41,6 +41,7 @@ Options:
 -s, --start TEXT  Start date of the query in the format YYYYMMDD.
 -e, --end TEXT    End date of the query in the format YYYYMMDD.
 -d, --download    Download all results of the query.
+-f, --footprints   Create geojson file with footprints of the query result.
 -p, --path PATH   Set the path where the files will be saved.
 -q, --query TEXT  Extra search keywords you want to use in the query.
                   Separate keywords with comma.
@@ -77,6 +78,12 @@ If you know the id of the product you want to download, you can download it by u
 
     api.download(<product_id>)
 
+You can also use the id to get information about the product, including id, title, size, footprint and download url:
+
+.. code-block:: python
+
+    api.get_product_info(<product_id>)
+
 You can search products by specifying the coordinates of the area and a date interval:
 
 .. code-block:: python
@@ -105,6 +112,12 @@ To download all the results of your query, use:
 .. code-block:: python
 
     api.download_all()
+
+To get a geojson FeatureCollection containing the footprints and metadata for the search results of the query, use:
+
+.. code-block:: python
+
+    api.get_footprints()
 
 License
 =======
