@@ -44,7 +44,7 @@ class SentinelAPI(object):
 
     def format_url(self, area, initial_date=None, end_date=datetime.now(), **keywords):
         """Create the URL to access the SciHub API, defining the max quantity of
-        results to 1500 items.
+        results to 15000 items.
         """
         if initial_date is None:
             initial_date = end_date - timedelta(hours=24)
@@ -59,7 +59,7 @@ class SentinelAPI(object):
         for kw in sorted(keywords.keys()):
             filters += ' AND (%s:%s)' % (kw, keywords[kw])
 
-        self.url = 'https://scihub.esa.int/dhus/search?format=json&rows=1500&q=%s%s%s' \
+        self.url = 'https://scihub.esa.int/dhus/search?format=json&rows=15000&q=%s%s%s' \
             % (ingestion_date, query_area, filters)
 
     def get_products(self):
