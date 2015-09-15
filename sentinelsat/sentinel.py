@@ -4,6 +4,8 @@ from __future__ import print_function
 from homura import download
 import requests
 import json
+import geojson
+import xml.etree.ElementTree as ET
 
 from datetime import datetime, date, timedelta
 from os.path import join, exists, getsize
@@ -42,7 +44,7 @@ class SentinelAPI(object):
 
     def format_url(self, area, initial_date=None, end_date=datetime.now(), **keywords):
         """Create the URL to access the SciHub API, defining the max quantity of
-        results to 50 items.
+        results to 1500 items.
         """
         if initial_date is None:
             initial_date = end_date - timedelta(hours=24)
@@ -57,7 +59,7 @@ class SentinelAPI(object):
         for kw in sorted(keywords.keys()):
             filters += ' AND (%s:%s)' % (kw, keywords[kw])
 
-        self.url = 'https://scihub.esa.int/dhus/search?format=json&rows=50&q=%s%s%s' \
+        self.url = 'https://scihub.esa.int/dhus/search?format=json&rows=1500&q=%s%s%s' \
             % (ingestion_date, query_area, filters)
 
     def get_products(self):
@@ -74,20 +76,58 @@ class SentinelAPI(object):
             print('No products found in this query.')
             return []
 
+    def get_footprints(self):
+        """Return the footprints of the resulting scenes in GeoJSON format"""
+        id = 0
+        feature_list = []
+
+        for scene in self.get_products():
+            id += 1
+            # parse the polygon
+            coord_list = scene["str"][16]["content"][10:-2].split(",")
+            coord_list_split = [coord.split(" ") for coord in coord_list]
+            poly = geojson.Polygon([[tuple((float(coord[0]), float(coord[1]))) for coord in coord_list_split]])
+
+            # parse the following properties:
+            # identifier, product_id, date, polarisation, sensor operation mode,
+            # product type, download link
+            props = {scene["str"][17]["name"] : scene["str"][17]["content"],
+            "product_id" : scene["id"],
+            scene["date"][0]["name"] : scene["date"][0]["content"],
+            scene["str"][11]["name"] : scene["str"][11]["content"],
+            scene["str"][0]["name"] : scene["str"][0]["content"],
+            scene["str"][2]["name"] : scene["str"][2]["content"],
+            scene["str"][3]["name"] : scene["str"][3]["content"],
+            "download_link" : scene["link"][0]["href"]
+            }
+
+            feature_list.append(geojson.Feature(geometry = poly, id = id,
+                                                properties = props))
+        return geojson.FeatureCollection(feature_list)
+
     def get_product_info(self, id):
         """Access SciHub API to get info about a Product. Returns a dict
-        containing the id, title, size and download url of the Product.
+        containing the id, title, size, footprint and download url of the
+        Product.
         """
 
         product = self.session.get(
             "https://scihub.esa.int/dhus/odata/v1/Products('%s')/?$format=json" % id
             )
         product_json = product.json()
-        keys = ['id', 'title', 'size', 'url']
+
+            # parse the GML footprint to same format as returned
+            # by .get_coordinates()
+        geometry_xml = ET.fromstring(product_json["d"]["ContentGeometry"])
+        poly_coords = geometry_xml.find('{http://www.opengis.net/gml}outerBoundaryIs').find('{http://www.opengis.net/gml}LinearRing').findtext('{http://www.opengis.net/gml}coordinates')
+        coord_string = ",".join([ " ".join(double_coord) for double_coord in [coord.split(",") for coord in poly_coords.split(" ")]])
+
+        keys = ['id', 'title', 'size', 'footprint', 'url']
         values = [
             product_json['d']['Id'],
             product_json['d']['Name'],
             int(product_json['d']['ContentLength']),
+            coord_string,
             "https://scihub.esa.int/dhus/odata/v1/Products('%s')/$value" % id
             ]
         return dict(zip(keys, values))
@@ -117,7 +157,8 @@ class SentinelAPI(object):
 
 def get_coordinates(geojson_file, feature_number=0):
     """Return the coordinates of a polygon of a GeoJSON file."""
-    geojson = json.loads(open(geojson_file, 'r').read())
-    coordinates = geojson['features'][feature_number]['geometry']['coordinates'][0]
-    coordinates = ['%s %s' % tuple(coord) for coord in coordinates]
+    geojson_obj = geojson.loads(open(geojson_file, 'r').read())
+    coordinates = geojson_obj['features'][feature_number]['geometry']['coordinates'][0]
+    # precision of 7 decimals equals 1mm at the equator
+    coordinates = ['%.7f %.7f' % tuple(coord) for coord in coordinates]
     return ','.join(coordinates)
