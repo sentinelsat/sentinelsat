@@ -81,6 +81,7 @@ If you know the id of the product you want to download, you can download it by u
 You can also use the id to get information about the product, including id, title, size, footprint and download url:
 
 .. code-block:: python
+
     api.get_product_info(<product_id>)
 
 You can search products by specifying the coordinates of the area and a date interval:
