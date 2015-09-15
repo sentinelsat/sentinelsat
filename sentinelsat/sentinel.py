@@ -5,6 +5,7 @@ from homura import download
 import requests
 import json
 import geojson
+import xml.etree.ElementTree as ET
 
 from datetime import datetime, date, timedelta
 from os.path import join, exists, getsize
@@ -106,18 +107,27 @@ class SentinelAPI(object):
 
     def get_product_info(self, id):
         """Access SciHub API to get info about a Product. Returns a dict
-        containing the id, title, size and download url of the Product.
+        containing the id, title, size, footprint and download url of the
+        Product.
         """
 
         product = self.session.get(
             "https://scihub.esa.int/dhus/odata/v1/Products('%s')/?$format=json" % id
             )
         product_json = product.json()
-        keys = ['id', 'title', 'size', 'url']
+
+            # parse the GML footprint to same format as returned
+            # by .get_coordinates()
+        geometry_xml = ET.fromstring(product_json["d"]["ContentGeometry"])
+        poly_coords = geometry_xml.find('{http://www.opengis.net/gml}outerBoundaryIs').find('{http://www.opengis.net/gml}LinearRing').findtext('{http://www.opengis.net/gml}coordinates')
+        coord_string = ",".join([ " ".join(double_coord) for double_coord in [coord.split(",") for coord in poly_coords.split(" ")]])
+
+        keys = ['id', 'title', 'size', 'footprint', 'url']
         values = [
             product_json['d']['Id'],
             product_json['d']['Name'],
             int(product_json['d']['ContentLength']),
+            coord_string,
             "https://scihub.esa.int/dhus/odata/v1/Products('%s')/$value" % id
             ]
         return dict(zip(keys, values))

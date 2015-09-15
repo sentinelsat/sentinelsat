@@ -54,6 +54,7 @@ def test_get_product_info():
     expected = {'id': '079ed72f-b330-4918-afb8-b63854e375a5',
         'title': 'S1A_IW_GRDH_1SDV_20150527T081303_20150527T081328_006104_007EB2_E65B',
         'size': 1051461964,
+        'footprint': '-21.032057 -39.925808,-20.472944 -42.301277,-18.975924 -41.904408,-19.528255 -39.549416,-21.032057 -39.925808',
         'url': "https://scihub.esa.int/dhus/odata/v1/Products('079ed72f-b330-4918-afb8-b63854e375a5')/$value"
         }
     assert api.get_product_info('079ed72f-b330-4918-afb8-b63854e375a5') == expected

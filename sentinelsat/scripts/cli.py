@@ -1,7 +1,7 @@
 import click
 
 import os
-import geojson
+import geojson as gj
 from sentinelsat.sentinel import SentinelAPI, get_coordinates
 
 
@@ -45,7 +45,7 @@ def search(user, password, geojson, start, end, download, footprints, path, quer
     if footprints is True:
         footprints_geojson = api.get_footprints()
         with open(os.path.join(path, "search_footprints.geojson"), "w") as outfile:
-            outfile.write(geojson.dumps(footprints_geojson))
+            outfile.write(gj.dumps(footprints_geojson))
 
     if download is True:
         api.download_all(path)
