@@ -30,6 +30,7 @@ setup(name='sentinelsat',
           'requests',
           'click',
           'homura',
+          'certifi',
           'geojson'
       ],
       extras_require={

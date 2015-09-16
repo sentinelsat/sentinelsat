@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 from __future__ import print_function
 
-from homura import download
+import homura
+import pycurl
+import certifi
 import requests
 import json
 import geojson
@@ -147,7 +149,8 @@ class SentinelAPI(object):
                 print('%s was already downloaded.' % path)
                 return path
 
-        download(product['url'], path=path, session=self.session)
+        # download product, include certificate bundle from certifi
+        homura.download(product['url'], path=path, session=self.session, pass_through_opts={pycurl.CAINFO : certifi.where()})
         return path
 
     def download_all(self, path='.'):
