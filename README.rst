@@ -106,6 +106,24 @@ To download all the results of your query, use:
 
     api.download_all()
 
+The download from <https://scihub.esa.int> will fail if the server certificate 
+cannot be verified because no default CA bundle is defined, as on Windows, or
+when the CA bundle is outdated. In most cases the easiest solution is to
+install or update `certifi <https://pypi.python.org/pypi/certifi>`:
+
+.. code-block:: console
+
+    pip install -U certifi
+
+You can also override the the path setting to the PEM file of the CA bundle using
+the `pass_through_opts` keyword argument when calling `api.download()` or `api.download_all()`:
+
+.. code-block:: python
+
+    from pycurl import CAINFO
+    api.download_all(pass_through_opts={CAINFO: 'path/to/my/cacert.pem'})
+
+
 License
 =======
 

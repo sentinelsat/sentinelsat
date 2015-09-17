@@ -2,8 +2,14 @@
 from __future__ import print_function
 
 from homura import download
+from pycurl import CAINFO
 import requests
 import json
+
+try:
+    import certifi
+except ImportError:
+    certifi = None
 
 from datetime import datetime, date, timedelta
 from os.path import join, exists, getsize
@@ -27,6 +33,7 @@ class SentinelAPI(object):
     """Class to connect to Sentinel-1 Scientific Data Hub, search and download
     imagery.
     """
+    
     def __init__(self, user, password):
         self.session = requests.Session()
         self.session.auth = (user, password)
@@ -99,6 +106,7 @@ class SentinelAPI(object):
         """
         product = self.get_product_info(id)
         path = join(path, product['title'] + '.zip')
+        kwargs = self._fillin_cainfo(kwargs)
 
         print('Downloading %s to %s' % (id, path))
 
@@ -107,13 +115,37 @@ class SentinelAPI(object):
             if getsize(path) == product['size']:
                 print('%s was already downloaded.' % path)
                 return path
-
+        
         download(product['url'], path=path, session=self.session, **kwargs)
         return path
 
     def download_all(self, path='.', **kwargs):
         for product in self.get_products():
             self.download(product['id'], path, **kwargs)
+
+    @staticmethod
+    def _fillin_cainfo(kwargs_dict):
+        """Pick the path of the PEM file containing the CA certificate.
+        The priority is: 1. user provided path, 2. path to the cacert.pem 
+        bundle provided by certifi (if installed), 3. let pycurl use the 
+        system path where libcurl's cacert bundle is assumed to be stored, 
+        as established at libcurl build time.
+        """
+        
+        try:
+            cainfo = kwargs_dict['pass_through_opts'][CAINFO]
+        except KeyError:
+            try:
+                cainfo = certifi.where()
+            except AttributeError:
+                cainfo = None
+        
+        if cainfo != None:
+            pass_through_opts = kwargs_dict.get('pass_through_opts', {})
+            pass_through_opts[CAINFO] = cainfo
+            kwargs_dict['pass_through_opts'] = pass_through_opts
+        
+        return kwargs_dict
 
 
 def get_coordinates(geojson_file, feature_number=0):
