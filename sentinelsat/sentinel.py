@@ -92,9 +92,10 @@ class SentinelAPI(object):
             ]
         return dict(zip(keys, values))
 
-    def download(self, id, path='.'):
+    def download(self, id, path='.', **kwargs):
         """Download a product using homura's download function. If you don't
-        pass the title of the product, it will use the id as filename.
+        pass the title of the product, it will use the id as filename. Further
+        keyword arguments are passed to homura.
         """
         product = self.get_product_info(id)
         path = join(path, product['title'] + '.zip')
@@ -107,12 +108,12 @@ class SentinelAPI(object):
                 print('%s was already downloaded.' % path)
                 return path
 
-        download(product['url'], path=path, session=self.session)
+        download(product['url'], path=path, session=self.session, **kwargs)
         return path
 
-    def download_all(self, path='.'):
+    def download_all(self, path='.', **kwargs):
         for product in self.get_products():
-            self.download(product['id'], path)
+            self.download(product['id'], path, **kwargs)
 
 
 def get_coordinates(geojson_file, feature_number=0):
