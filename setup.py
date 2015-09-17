@@ -29,7 +29,7 @@ setup(name='sentinelsat',
       install_requires=[
           'requests',
           'click',
-          'homura',
+          'homura>=0.1.2',
           'certifi',
           'geojson'
       ],
