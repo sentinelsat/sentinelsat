@@ -100,9 +100,11 @@ class SentinelAPI(object):
         return dict(zip(keys, values))
 
     def download(self, id, path='.', **kwargs):
-        """Download a product using homura's download function. If you don't
-        pass the title of the product, it will use the id as filename. Further
-        keyword arguments are passed to homura.
+        """Download a product using homura's download function.
+        
+        If you don't pass the title of the product, it will use the id as 
+        filename. Further keyword arguments are passed to the 
+        homura.download() function.
         """
         product = self.get_product_info(id)
         path = join(path, product['title'] + '.zip')
@@ -120,18 +122,23 @@ class SentinelAPI(object):
         return path
 
     def download_all(self, path='.', **kwargs):
+        """Download all products using homura's download function.
+        
+        It will use the products id as filenames. Further keyword arguments 
+        are passed to the homura.download() function.
+        """
         for product in self.get_products():
             self.download(product['id'], path, **kwargs)
 
     @staticmethod
     def _fillin_cainfo(kwargs_dict):
-        """Pick the path of the PEM file containing the CA certificate.
+        """Fill in the path of the PEM file containing the CA certificate.
+        
         The priority is: 1. user provided path, 2. path to the cacert.pem 
         bundle provided by certifi (if installed), 3. let pycurl use the 
         system path where libcurl's cacert bundle is assumed to be stored, 
         as established at libcurl build time.
         """
-        
         try:
             cainfo = kwargs_dict['pass_through_opts'][CAINFO]
         except KeyError:
