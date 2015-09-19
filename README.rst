@@ -77,6 +77,13 @@ If you know the id of the product you want to download, you can download it by u
 
     api.download(<product_id>)
 
+It is possible to hide the progress report, disable resume and auto_retry, and 
+pass any other keyword argument understood by the underlying homura library, e.g.:
+
+.. code-block:: python
+
+    api.download(<product_id>, show_progress=False, max_rst_retries=2)
+
 You can search products by specifying the coordinates of the area and a date interval:
 
 .. code-block:: python
@@ -109,14 +116,15 @@ To download all the results of your query, use:
 The download from https://scihub.esa.int will fail if the server certificate 
 cannot be verified because no default CA bundle is defined, as on Windows, or
 when the CA bundle is outdated. In most cases the easiest solution is to
-install or update `certifi <https://pypi.python.org/pypi/certifi>`:
+install or update `certifi <https://pypi.python.org/pypi/certifi>`_:
 
 .. code-block:: console
 
     pip install -U certifi
 
 You can also override the the path setting to the PEM file of the CA bundle using
-the pass_through_opts keyword argument when calling api.download() or api.download_all():
+the ``pass_through_opts`` keyword argument when calling ``api.download()`` or 
+``api.download_all()``:
 
 .. code-block:: python
 
