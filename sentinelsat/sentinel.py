@@ -1,14 +1,17 @@
 # -*- coding: utf-8 -*-
 from __future__ import print_function
 
-import homura
-import pycurl
-import certifi
+from homura import download
+from pycurl import CAINFO
 import requests
-import json
 import geojson
-import xml.etree.ElementTree as ET
 
+try:
+    import certifi
+except ImportError:
+    certifi = None
+
+import xml.etree.ElementTree as ET
 from datetime import datetime, date, timedelta
 from os.path import join, exists, getsize
 
@@ -31,6 +34,7 @@ class SentinelAPI(object):
     """Class to connect to Sentinel-1 Scientific Data Hub, search and download
     imagery.
     """
+
     def __init__(self, user, password):
         self.session = requests.Session()
         self.session.auth = (user, password)
@@ -88,7 +92,9 @@ class SentinelAPI(object):
             # parse the polygon
             coord_list = scene["str"][16]["content"][10:-2].split(",")
             coord_list_split = [coord.split(" ") for coord in coord_list]
-            poly = geojson.Polygon([[tuple((float(coord[0]), float(coord[1]))) for coord in coord_list_split]])
+            poly = geojson.Polygon(
+                [[tuple((float(coord[0]), float(coord[1]))) for coord in coord_list_split]]
+            )
 
             # parse the following properties:
             # identifier, product_id, date, polarisation, sensor operation mode,
@@ -121,8 +127,13 @@ class SentinelAPI(object):
             # parse the GML footprint to same format as returned
             # by .get_coordinates()
         geometry_xml = ET.fromstring(product_json["d"]["ContentGeometry"])
-        poly_coords = geometry_xml.find('{http://www.opengis.net/gml}outerBoundaryIs').find('{http://www.opengis.net/gml}LinearRing').findtext('{http://www.opengis.net/gml}coordinates')
-        coord_string = ",".join([ " ".join(double_coord) for double_coord in [coord.split(",") for coord in poly_coords.split(" ")]])
+        poly_coords = geometry_xml \
+            .find('{http://www.opengis.net/gml}outerBoundaryIs') \
+            .find('{http://www.opengis.net/gml}LinearRing') \
+            .findtext('{http://www.opengis.net/gml}coordinates')
+        coord_string = ",".join(
+            [" ".join(double_coord) for double_coord in [coord.split(",") for coord in poly_coords.split(" ")]]
+        )
 
         keys = ['id', 'title', 'size', 'footprint', 'url']
         values = [
@@ -134,12 +145,16 @@ class SentinelAPI(object):
             ]
         return dict(zip(keys, values))
 
-    def download(self, id, path='.'):
-        """Download a product using homura's download function. If you don't
-        pass the title of the product, it will use the id as filename.
+    def download(self, id, path='.', **kwargs):
+        """Download a product using homura's download function.
+
+        If you don't pass the title of the product, it will use the id as
+        filename. Further keyword arguments are passed to the
+        homura.download() function.
         """
         product = self.get_product_info(id)
         path = join(path, product['title'] + '.zip')
+        kwargs = self._fillin_cainfo(kwargs)
 
         print('Downloading %s to %s' % (id, path))
 
@@ -149,13 +164,41 @@ class SentinelAPI(object):
                 print('%s was already downloaded.' % path)
                 return path
 
-        # download product, include certificate bundle from certifi
-        homura.download(product['url'], path=path, session=self.session, pass_through_opts={pycurl.CAINFO : certifi.where()})
+        download(product['url'], path=path, session=self.session, **kwargs)
         return path
 
-    def download_all(self, path='.'):
+    def download_all(self, path='.', **kwargs):
+        """Download all products using homura's download function.
+
+        It will use the products id as filenames. Further keyword arguments
+        are passed to the homura.download() function.
+        """
         for product in self.get_products():
-            self.download(product['id'], path)
+            self.download(product['id'], path, **kwargs)
+
+    @staticmethod
+    def _fillin_cainfo(kwargs_dict):
+        """Fill in the path of the PEM file containing the CA certificate.
+
+        The priority is: 1. user provided path, 2. path to the cacert.pem
+        bundle provided by certifi (if installed), 3. let pycurl use the
+        system path where libcurl's cacert bundle is assumed to be stored,
+        as established at libcurl build time.
+        """
+        try:
+            cainfo = kwargs_dict['pass_through_opts'][CAINFO]
+        except KeyError:
+            try:
+                cainfo = certifi.where()
+            except AttributeError:
+                cainfo = None
+
+        if cainfo != None:
+            pass_through_opts = kwargs_dict.get('pass_through_opts', {})
+            pass_through_opts[CAINFO] = cainfo
+            kwargs_dict['pass_through_opts'] = pass_through_opts
+
+        return kwargs_dict
 
 
 def get_coordinates(geojson_file, feature_number=0):
