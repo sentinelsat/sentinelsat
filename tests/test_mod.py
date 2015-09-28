@@ -19,7 +19,7 @@ def test_SentinelAPI():
     )
     api.query('0 0,1 1,0 1,0 0', datetime(2015, 1, 1), datetime(2015, 1, 2))
 
-    assert api.url == 'https://scihub.esa.int/dhus/search?format=json&rows=50' + \
+    assert api.url == 'https://scihub.esa.int/dhus/search?format=json&rows=1500' + \
         '&q=(ingestionDate:[2015-01-01T00:00:00Z TO 2015-01-02T00:00:00Z]) ' + \
         'AND (footprint:"Intersects(POLYGON((0 0,1 1,0 1,0 0)))")'
     assert api.content.status_code == 200
@@ -27,21 +27,21 @@ def test_SentinelAPI():
     now = datetime.now()
     api.format_url('0 0,1 1,0 1,0 0', end_date=now)
     last_24h = format_date(now - timedelta(hours=24))
-    assert api.url == 'https://scihub.esa.int/dhus/search?format=json&rows=50' + \
+    assert api.url == 'https://scihub.esa.int/dhus/search?format=json&rows=1500' + \
         '&q=(ingestionDate:[%s TO %s]) ' % (last_24h, format_date(now)) + \
         'AND (footprint:"Intersects(POLYGON((0 0,1 1,0 1,0 0)))")'
 
     api.format_url('0 0,1 1,0 1,0 0', end_date=now, producttype='SLC')
-    assert api.url == 'https://scihub.esa.int/dhus/search?format=json&rows=50' + \
+    assert api.url == 'https://scihub.esa.int/dhus/search?format=json&rows=1500' + \
         '&q=(ingestionDate:[%s TO %s]) ' % (last_24h, format_date(now)) + \
         'AND (footprint:"Intersects(POLYGON((0 0,1 1,0 1,0 0)))") ' + \
         'AND (producttype:SLC)'
 
 
 def test_get_coordinates():
-    coords = '-66.26953125 -8.05922962720018,-66.26953125 0.7031073524364909,' + \
-        '-57.30468749999999 0.7031073524364909,-57.30468749999999 -8.05922962720018,' +\
-        '-66.26953125 -8.05922962720018'
+    coords = '-66.2695312 -8.0592296,-66.2695312 0.7031074,' + \
+        '-57.3046875 0.7031074,-57.3046875 -8.0592296,' +\
+        '-66.2695312 -8.0592296'
     assert get_coordinates('tests/map.geojson') == coords
 
 
@@ -54,6 +54,7 @@ def test_get_product_info():
     expected = {'id': '079ed72f-b330-4918-afb8-b63854e375a5',
         'title': 'S1A_IW_GRDH_1SDV_20150527T081303_20150527T081328_006104_007EB2_E65B',
         'size': 1051461964,
+        'footprint': '-21.032057 -39.925808,-20.472944 -42.301277,-18.975924 -41.904408,-19.528255 -39.549416,-21.032057 -39.925808',
         'url': "https://scihub.esa.int/dhus/odata/v1/Products('079ed72f-b330-4918-afb8-b63854e375a5')/$value"
         }
     assert api.get_product_info('079ed72f-b330-4918-afb8-b63854e375a5') == expected
