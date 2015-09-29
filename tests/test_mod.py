@@ -1,5 +1,6 @@
 from datetime import datetime, date, timedelta
 from os import environ
+import geojson
 
 from sentinelsat.sentinel import SentinelAPI, format_date, get_coordinates
 
@@ -58,3 +59,16 @@ def test_get_product_info():
         'url': "https://scihub.esa.int/dhus/odata/v1/Products('079ed72f-b330-4918-afb8-b63854e375a5')/$value"
         }
     assert api.get_product_info('079ed72f-b330-4918-afb8-b63854e375a5') == expected
+
+
+def test_footprints():
+    api = SentinelAPI(
+    environ.get('SENTINEL_USER'),
+    environ.get('SENTINEL_PASSWORD')
+    )
+    api.query(get_coordinates('tests/map.geojson'), datetime(2014, 10, 10), datetime(2014, 12, 31), producttype="GRD")
+
+    expected_footprints = geojson.loads(open('tests/expected_search_footprints.geojson', 'r').read())
+
+    # to compare unordered lists (JSON objects) they need to be sorted or changed to sets
+    assert set(api.get_footprints()) == set(expected_footprints)
