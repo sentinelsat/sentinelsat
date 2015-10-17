@@ -8,13 +8,14 @@ with codecs_open('README.rst', encoding='utf-8') as f:
 
 
 setup(name='sentinelsat',
-      version='0.4',
+      version='0.4.1',
       description="Utility to search and download Sentinel-1 Imagery",
       long_description=long_description,
       classifiers=[
           'License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)',
           'Programming Language :: Python :: 2.7',
           'Programming Language :: Python :: 3.4',
+          'Programming Language :: Python :: 3.5',
           'Topic :: Scientific/Engineering :: GIS',
           'Topic :: Utilities',
       ],
