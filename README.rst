@@ -10,6 +10,23 @@ Utility pack to search and download Sentinel-1 imagery.
 Installation
 ============
 
+Sentinelsat depends on `homura <https://github.com/shichao-an/homura>`_, what in turn depends on `PycURL <http://pycurl.sourceforge.net/>`_, so you need to install some dependencies on your system.
+
+Ubuntu
+
+.. code-block:: console
+
+    sudo apt-get install build-essential libcurl4-openssl-dev python-dev python-pip
+
+Fedora
+
+.. code-block:: console
+
+    sudo yum groupinstall "Development Tools"
+    sudo yum install libcurl libcurl-devel python-devel python-pip
+
+Then install ``sentinelsat``:
+
 .. code-block:: console
 
     pip install sentinelsat
