@@ -1,8 +1,10 @@
-from datetime import datetime, date, timedelta
-from os import environ
 import geojson
 
-from sentinelsat.sentinel import SentinelAPI, format_date, get_coordinates
+from datetime import datetime, date, timedelta
+from os import environ
+
+from sentinelsat.sentinel import (SentinelAPI, format_date, get_coordinates,
+    convert_timestamp)
 
 
 def test_format_date():
@@ -11,6 +13,10 @@ def test_format_date():
     assert format_date('2015-01-01T00:00:00Z') == '2015-01-01T00:00:00Z'
     assert format_date('20150101') == '2015-01-01T00:00:00Z'
     assert format_date('NOW') == 'NOW'
+
+
+def test_convert_timestamp():
+    assert convert_timestamp('/Date(1445588544652)/') == '2015-10-23T08:22:24Z'
 
 
 def test_SentinelAPI():
@@ -55,6 +61,7 @@ def test_get_product_info():
     expected = {'id': '079ed72f-b330-4918-afb8-b63854e375a5',
         'title': 'S1A_IW_GRDH_1SDV_20150527T081303_20150527T081328_006104_007EB2_E65B',
         'size': 1051461964,
+        'date': '2015-05-27T08:13:03Z',
         'footprint': '-21.032057 -39.925808,-20.472944 -42.301277,-18.975924 -41.904408,-19.528255 -39.549416,-21.032057 -39.925808',
         'url': "https://scihub.esa.int/dhus/odata/v1/Products('079ed72f-b330-4918-afb8-b63854e375a5')/$value"
         }
