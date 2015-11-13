@@ -21,7 +21,7 @@ def cli():
 @click.option('--download', '-d', is_flag=True,
     help='Download all results of the query.')
 @click.option('--footprints', '-f', is_flag=True,
-    help='Create geojson file with footprints of the query result.')
+    help='Create a geojson file with footprints of the query result.')
 @click.option('--path', '-p', type=click.Path(exists=True), default='.',
     help='Set the path where the files will be saved.')
 @click.option('--query', '-q', type=str, default=None,

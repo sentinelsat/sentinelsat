@@ -70,10 +70,11 @@ def test_get_product_info():
 
 def test_footprints():
     api = SentinelAPI(
-    environ.get('SENTINEL_USER'),
-    environ.get('SENTINEL_PASSWORD')
+        environ.get('SENTINEL_USER'),
+        environ.get('SENTINEL_PASSWORD')
     )
-    api.query(get_coordinates('tests/map.geojson'), datetime(2014, 10, 10), datetime(2014, 12, 31), producttype="GRD")
+    api.query(get_coordinates('tests/map.geojson'),
+        datetime(2014, 10, 10), datetime(2014, 12, 31), producttype="GRD")
 
     expected_footprints = geojson.loads(open('tests/expected_search_footprints.geojson', 'r').read())
 
