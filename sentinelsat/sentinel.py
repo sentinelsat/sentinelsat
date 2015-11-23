@@ -43,9 +43,10 @@ class SentinelAPI(object):
     imagery.
     """
 
-    def __init__(self, user, password):
+    def __init__(self, user, password, api_url='https://scihub.esa.int/apihub/'):
         self.session = requests.Session()
         self.session.auth = (user, password)
+        self.api_url = api_url
 
     def query(self, area, initial_date=None, end_date=datetime.now(), **keywords):
         """Query the SciHub API with the coordinates of an area, a date inverval
@@ -73,8 +74,10 @@ class SentinelAPI(object):
         for kw in sorted(keywords.keys()):
             filters += ' AND (%s:%s)' % (kw, keywords[kw])
 
-        self.url = 'https://scihub.esa.int/dhus/search?format=json&rows=15000&q=%s%s%s' \
-            % (ingestion_date, query_area, filters)
+        self.url = join(
+            self.api_url,
+            'search?format=json&rows=15000&q=%s%s%s' % (ingestion_date, query_area, filters)
+        )
 
     def get_products(self):
         """Return the result of the Query in json format."""
@@ -129,7 +132,7 @@ class SentinelAPI(object):
         """
 
         product = self.session.get(
-            "https://scihub.esa.int/dhus/odata/v1/Products('%s')/?$format=json" % id
+            join(self.api_url, "odata/v1/Products('%s')/?$format=json" % id)
         )
         product_json = product.json()
 
@@ -151,7 +154,7 @@ class SentinelAPI(object):
             int(product_json['d']['ContentLength']),
             convert_timestamp(product_json['d']['ContentDate']['Start']),
             coord_string,
-            "https://scihub.esa.int/dhus/odata/v1/Products('%s')/$value" % id
+            join(self.api_url, "odata/v1/Products('%s')/$value" % id)
         ]
         return dict(zip(keys, values))
 

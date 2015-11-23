@@ -63,6 +63,8 @@ Options:
 -q, --query TEXT  Extra search keywords you want to use in the query.
                   Separate keywords with comma.
                   Example: 'producttype=GRD,polarisationmode=HH'.
+-u, --url TEXT    Define another API URL. Default URL is
+                    'https://scihub.esa.int/apihub/'.
 
 Download
 ^^^^^^^^
@@ -77,6 +79,8 @@ the id of the product you want to download.
 Options:
 
 -p, --path PATH  Set the path where the file will be saved.
+-u, --url TEXT    Define another API URL. Default URL is
+                    'https://scihub.esa.int/apihub/'.
 
 
 Python Library

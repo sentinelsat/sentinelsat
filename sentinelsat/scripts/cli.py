@@ -28,14 +28,18 @@ def cli():
     help="""Extra search keywords you want to use in the query. Separate
         keywords with comma. Example: 'producttype=GRD,polarisationmode=HH'.
         """)
-def search(user, password, geojson, start, end, download, footprints, path, query):
+@click.option('--url', '-u', type=str, default='https://scihub.esa.int/apihub/',
+    help="""Define another API URL. Default URL is
+        'https://scihub.esa.int/apihub/'.
+        """)
+def search(user, password, geojson, start, end, download, footprints, path, query, url):
     """Search for Sentinel-1 products and, optionally, download all the results
     and/or create a geojson file with the search result footprints.
     Beyond your SciHub user and password, you must pass a geojson file
     containing the polygon of the area you want to search for. If you
     don't specify the start and end dates, it will search in the last 24 hours.
     """
-    api = SentinelAPI(user, password)
+    api = SentinelAPI(user, password, url)
     if query is not None:
         query = dict([i.split('=') for i in query.split(',')])
         api.query(get_coordinates(geojson), start, end, **query)
@@ -60,9 +64,13 @@ def search(user, password, geojson, start, end, download, footprints, path, quer
 @click.argument('productid', type=str, metavar='<productid>')
 @click.option('--path', '-p', type=click.Path(exists=True), default='.',
     help='Set the path where the files will be saved.')
-def download(user, password, productid, path):
+@click.option('--url', '-u', type=str, default='https://scihub.esa.int/apihub/',
+    help="""Define another API URL. Default URL is
+        'https://scihub.esa.int/apihub/'.
+        """)
+def download(user, password, productid, path, url):
     """Download a Sentinel-1 Product. It just needs your SciHub user and password
     and the id of the product you want to download.
     """
-    api = SentinelAPI(user, password)
+    api = SentinelAPI(user, password, url)
     api.download(productid, path)
