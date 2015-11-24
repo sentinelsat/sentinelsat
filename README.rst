@@ -10,6 +10,23 @@ Utility pack to search and download Sentinel-1 imagery.
 Installation
 ============
 
+Sentinelsat depends on `homura <https://github.com/shichao-an/homura>`_, what in turn depends on `PycURL <http://pycurl.sourceforge.net/>`_, so you need to install some dependencies on your system.
+
+Ubuntu
+
+.. code-block:: console
+
+    sudo apt-get install build-essential libcurl4-openssl-dev python-dev python-pip
+
+Fedora
+
+.. code-block:: console
+
+    sudo yum groupinstall "Development Tools"
+    sudo yum install libcurl libcurl-devel python-devel python-pip
+
+Then install ``sentinelsat``:
+
 .. code-block:: console
 
     pip install sentinelsat
@@ -46,6 +63,8 @@ Options:
 -q, --query TEXT  Extra search keywords you want to use in the query.
                   Separate keywords with comma.
                   Example: 'producttype=GRD,polarisationmode=HH'.
+-u, --url TEXT    Define another API URL. Default URL is
+                    'https://scihub.esa.int/apihub/'.
 
 Download
 ^^^^^^^^
@@ -60,6 +79,8 @@ the id of the product you want to download.
 Options:
 
 -p, --path PATH  Set the path where the file will be saved.
+-u, --url TEXT    Define another API URL. Default URL is
+                    'https://scihub.esa.int/apihub/'.
 
 
 Python Library

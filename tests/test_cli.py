@@ -20,7 +20,15 @@ def test_cli():
         environ.get('SENTINEL_USER'),
         environ.get('SENTINEL_PASSWORD'),
         'tests/map.geojson',
-        '-q',
-        'producttype=GRD,polarisationmode=HH'
+        '--url', 'https://scihub.esa.int/dhus/'
+        ])
+    assert result.exit_code == 0
+
+    result = runner.invoke(cli,
+        ['search',
+        environ.get('SENTINEL_USER'),
+        environ.get('SENTINEL_PASSWORD'),
+        'tests/map.geojson',
+        '-q', 'producttype=GRD,polarisationmode=HH'
         ])
     assert result.exit_code == 0

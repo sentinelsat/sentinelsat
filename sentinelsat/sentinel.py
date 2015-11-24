@@ -12,7 +12,7 @@ except ImportError:
     certifi = None
 
 import xml.etree.ElementTree as ET
-from datetime import datetime, date, timedelta
+from datetime import datetime, date, timedelta, timezone
 from os.path import join, exists, getsize
 
 
@@ -30,14 +30,23 @@ def format_date(in_date):
             return in_date
 
 
+def convert_timestamp(in_date):
+    """Convert the timestamp received from Products API, to
+    YYYY-MM-DDThh:mm:ssZ string format.
+    """
+    in_date = int(in_date.replace('/Date(', '').replace(')/', '')) / 1000
+    return format_date(datetime.fromtimestamp(in_date, timezone.utc))
+
+
 class SentinelAPI(object):
     """Class to connect to Sentinel-1 Scientific Data Hub, search and download
     imagery.
     """
 
-    def __init__(self, user, password):
+    def __init__(self, user, password, api_url='https://scihub.esa.int/apihub/'):
         self.session = requests.Session()
         self.session.auth = (user, password)
+        self.api_url = api_url
 
     def query(self, area, initial_date=None, end_date=datetime.now(), **keywords):
         """Query the SciHub API with the coordinates of an area, a date inverval
@@ -65,8 +74,10 @@ class SentinelAPI(object):
         for kw in sorted(keywords.keys()):
             filters += ' AND (%s:%s)' % (kw, keywords[kw])
 
-        self.url = 'https://scihub.esa.int/dhus/search?format=json&rows=15000&q=%s%s%s' \
-            % (ingestion_date, query_area, filters)
+        self.url = join(
+            self.api_url,
+            'search?format=json&rows=15000&q=%s%s%s' % (ingestion_date, query_area, filters)
+        )
 
     def get_products(self):
         """Return the result of the Query in json format."""
@@ -97,34 +108,36 @@ class SentinelAPI(object):
             )
 
             # parse the following properties:
-            # platformname, identifier, product_id, date, polarisation, sensor operation mode,
-            # orbit direction, product type, download link
+            # platformname, identifier, product_id, date, polarisation,
+            # sensor operation mode, orbit direction, product type, download link
             props = {
-            "product_id" : scene["id"],
-            "date_beginposition" : next(x for x in scene["date"] if x["name"] == "beginposition")["content"],
-            "download_link" : next(x for x in scene["link"] if len(x.keys()) == 1)["href"]
+            "product_id": scene["id"],
+            "date_beginposition": next(x for x in scene["date"] if x["name"] == "beginposition")["content"],
+            "download_link": next(x for x in scene["link"] if len(x.keys()) == 1)["href"]
             }
-            str_properties = ["platformname", "identifier", "polarisationmode", "sensoroperationalmode", "orbitdirection", "producttype"]
+            str_properties = ["platformname", "identifier", "polarisationmode",
+                "sensoroperationalmode", "orbitdirection", "producttype"]
             for str_prop in str_properties:
                 props.update({str_prop : next(x for x in scene["str"] if x["name"] == str_prop)["content"]})
 
-            feature_list.append(geojson.Feature(geometry = poly, id = id,
-                                                properties = props))
+            feature_list.append(
+                geojson.Feature(geometry=poly, id=id, properties=props)
+            )
         return geojson.FeatureCollection(feature_list)
 
     def get_product_info(self, id):
         """Access SciHub API to get info about a Product. Returns a dict
-        containing the id, title, size, footprint and download url of the
-        Product.
+        containing the id, title, size, date, footprint and download url of the
+        Product. The date field receives the Start ContentDate of the API.
         """
 
         product = self.session.get(
-            "https://scihub.esa.int/dhus/odata/v1/Products('%s')/?$format=json" % id
-            )
+            join(self.api_url, "odata/v1/Products('%s')/?$format=json" % id)
+        )
         product_json = product.json()
 
-            # parse the GML footprint to same format as returned
-            # by .get_coordinates()
+        # parse the GML footprint to same format as returned
+        # by .get_coordinates()
         geometry_xml = ET.fromstring(product_json["d"]["ContentGeometry"])
         poly_coords = geometry_xml \
             .find('{http://www.opengis.net/gml}outerBoundaryIs') \
@@ -134,14 +147,15 @@ class SentinelAPI(object):
             [" ".join(double_coord) for double_coord in [coord.split(",") for coord in poly_coords.split(" ")]]
         )
 
-        keys = ['id', 'title', 'size', 'footprint', 'url']
+        keys = ['id', 'title', 'size', 'date', 'footprint', 'url']
         values = [
             product_json['d']['Id'],
             product_json['d']['Name'],
             int(product_json['d']['ContentLength']),
+            convert_timestamp(product_json['d']['ContentDate']['Start']),
             coord_string,
-            "https://scihub.esa.int/dhus/odata/v1/Products('%s')/$value" % id
-            ]
+            join(self.api_url, "odata/v1/Products('%s')/$value" % id)
+        ]
         return dict(zip(keys, values))
 
     def download(self, id, path='.', **kwargs):
