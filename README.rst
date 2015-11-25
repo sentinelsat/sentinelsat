@@ -5,12 +5,12 @@ sentinelsat
     :target: http://badge.fury.io/py/sentinelsat
 
 
-Utility pack to search and download Sentinel-1 imagery.
+Utility pack to search and download Sentinel-1 imagery from [ESA SciHub](https://scihub.esa.int/).
 
 Installation
 ============
 
-Sentinelsat depends on `homura <https://github.com/shichao-an/homura>`_, what in turn depends on `PycURL <http://pycurl.sourceforge.net/>`_, so you need to install some dependencies on your system.
+Sentinelsat depends on `homura <https://github.com/shichao-an/homura>`_, which depends on `PycURL <http://pycurl.sourceforge.net/>`_, so you need to install some dependencies on your system.
 
 Ubuntu
 
@@ -24,6 +24,20 @@ Fedora
 
     sudo yum groupinstall "Development Tools"
     sudo yum install libcurl libcurl-devel python-devel python-pip
+
+Windows
+
+The easiest way to install pycurl is to use one of the [pycurl wheels](http://www.lfd.uci.edu/~gohlke/pythonlibs/#pycurl) provided by Christoph Gohlke.
+
+.. code-block:: console
+
+    pip install pycurl.whl
+
+Alternatively if you are using [Conda](http://conda.pydata.org/docs/) you can do
+
+.. code-block:: console
+
+    conda install pycurl
 
 Then install ``sentinelsat``:
 
@@ -48,9 +62,9 @@ Search
     sentinel search [OPTIONS] <user> <password> <geojson>
 
 Search for Sentinel-1 products and, optionally, download all the results.
-Beyond your scihub user and password, you must pass a geojson file
-containing the polygon of the area that you want to search for. If you
-don't especify the start and end dates, it will search in the last 24
+Beyond your scihub username and password, you must pass a geojson file
+containing the polygon of the area that you want to search in. If you
+don't specify the start and end dates, it will search products published in the last 24
 hours.
 
 Options:
@@ -73,7 +87,7 @@ Download
 
     sentinel download [OPTIONS] <user> <password> <productid>
 
-Download a Sentinel-1 Product. It just needs your scihub user and password and
+Download a single Sentinel-1 Product. Provide your scihub username and password and
 the id of the product you want to download.
 
 Options:
@@ -126,7 +140,7 @@ You can query by using date or datetime objects too.
 
 If you don't specify the start and end dates, it will query in the last 24 hours.
 
-Beyond area and date parameters, you can use any search keywords accepted by the SciHub API, for example:
+Beyond area and date parameters, you can use any search keywords accepted by the scihub API, for example:
 
 .. code-block:: python
 
@@ -140,6 +154,12 @@ To download all the results of your query, use:
 .. code-block:: python
 
     api.download_all()
+
+To get a geojson FeatureCollection containing the footprints and metadata for the search results of the query, use:
+
+.. code-block:: python
+
+    api.get_footprints()
 
 The download from https://scihub.esa.int will fail if the server certificate
 cannot be verified because no default CA bundle is defined, as on Windows, or
@@ -158,12 +178,6 @@ the ``pass_through_opts`` keyword argument when calling ``api.download()`` or
 
     from pycurl import CAINFO
     api.download_all(pass_through_opts={CAINFO: 'path/to/my/cacert.pem'})
-
-To get a geojson FeatureCollection containing the footprints and metadata for the search results of the query, use:
-
-.. code-block:: python
-
-    api.get_footprints()
 
 
 Contributors
