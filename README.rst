@@ -5,7 +5,7 @@ sentinelsat
     :target: http://badge.fury.io/py/sentinelsat
 
 
-Utility pack to search and download Sentinel-1 imagery from `ESA SciHub <https://scihub.esa.int/>.
+Utility pack to search and download Sentinel-1 imagery from `ESA SciHub <https://scihub.esa.int/>`_.
 
 Installation
 ============
@@ -27,13 +27,13 @@ Fedora
 
 Windows
 
-The easiest way to install pycurl is to use one of the `pycurl wheels <http://www.lfd.uci.edu/~gohlke/pythonlibs/#pycurl> provided by Christoph Gohlke.
+The easiest way to install pycurl is to use one of the `pycurl wheels <http://www.lfd.uci.edu/~gohlke/pythonlibs/#pycurl>`_ provided by Christoph Gohlke.
 
 .. code-block:: console
 
     pip install pycurl.whl
 
-Alternatively if you are using `Conda <http://conda.pydata.org/docs/> you can do
+Alternatively if you are using `Conda <http://conda.pydata.org/docs/>`_ you can do
 
 .. code-block:: console
 
