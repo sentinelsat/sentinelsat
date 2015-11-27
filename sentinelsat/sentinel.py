@@ -12,7 +12,8 @@ except ImportError:
     certifi = None
 
 import xml.etree.ElementTree as ET
-from datetime import datetime, date, timedelta, timezone
+from datetime import datetime, date, timedelta
+from time import sleep
 from os.path import join, exists, getsize
 
 
@@ -35,7 +36,7 @@ def convert_timestamp(in_date):
     YYYY-MM-DDThh:mm:ssZ string format.
     """
     in_date = int(in_date.replace('/Date(', '').replace(')/', '')) / 1000
-    return format_date(datetime.fromtimestamp(in_date, timezone.utc))
+    return format_date(datetime.utcfromtimestamp(in_date))
 
 
 class SentinelAPI(object):
@@ -53,9 +54,14 @@ class SentinelAPI(object):
         and any other search keywords accepted by the SciHub API.
         """
         self.format_url(area, initial_date, end_date, **keywords)
-        self.content = requests.get(self.url, auth=self.session.auth)
-        if self.content.status_code != 200:
-            print(('Query returned %s error.' % self.content.status_code))
+        try:
+            self.content = requests.get(self.url, auth=self.session.auth)
+            # anything other than 2XX is considered an error
+            if not self.content.status_code // 100 == 2:
+                print(('Error: API returned unexpected response {} .'.format(self.content.status_code)))
+        except requests.exceptions.RequestException as exc:
+            print('Error: {}'.format(exc))
+
 
     def format_url(self, area, initial_date=None, end_date=datetime.now(), **keywords):
         """Create the URL to access the SciHub API, defining the max quantity of
@@ -92,6 +98,8 @@ class SentinelAPI(object):
         except KeyError:
             print('No products found in this query.')
             return []
+        except ValueError:  # catch simplejson.decoder.JSONDecodeError
+            raise ValueError('API response not valid. JSON decoding failed.')
 
     def get_footprints(self):
         """Return the footprints of the resulting scenes in GeoJSON format"""
@@ -134,7 +142,11 @@ class SentinelAPI(object):
         product = self.session.get(
             join(self.api_url, "odata/v1/Products('%s')/?$format=json" % id)
         )
-        product_json = product.json()
+
+        try:
+            product_json = product.json()
+        except ValueError:
+            raise ValueError('Invalid API response. JSON decoding failed.')
 
         # parse the GML footprint to same format as returned
         # by .get_coordinates()
@@ -165,7 +177,15 @@ class SentinelAPI(object):
         filename. Further keyword arguments are passed to the
         homura.download() function.
         """
-        product = self.get_product_info(id)
+        # Check if API is reachable.
+        product = None
+        while product is None:
+            try:
+                product = self.get_product_info(id)
+            except ValueError:
+                print("Invalid API responses. Trying again in 3 minutes.")
+                sleep(180)
+
         path = join(path, product['title'] + '.zip')
         kwargs = self._fillin_cainfo(kwargs)
 
