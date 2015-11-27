@@ -8,7 +8,7 @@ with codecs_open('README.rst', encoding='utf-8') as f:
 
 
 setup(name='sentinelsat',
-      version='0.4.3',
+      version='0.4.4',
       description="Utility to search and download Sentinel-1 Imagery",
       long_description=long_description,
       classifiers=[
@@ -35,7 +35,10 @@ setup(name='sentinelsat',
           'geojson'
       ],
       extras_require={
-          'test': ['pytest'],
+          'test': [
+              'pytest',
+              'requests-mock'
+          ],
       },
       entry_points="""
       [console_scripts]

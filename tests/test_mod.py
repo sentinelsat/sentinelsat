@@ -2,11 +2,11 @@ import geojson
 import pytest
 import requests_mock
 
-from datetime import (datetime, date, timedelta)
+from datetime import datetime, date, timedelta
 from os import environ
 
 from sentinelsat.sentinel import (SentinelAPI, format_date, get_coordinates,
-convert_timestamp)
+    convert_timestamp)
 
 
 def test_format_date():
@@ -92,7 +92,7 @@ def test_get_product_info_scihub_down():
     with requests_mock.mock() as rqst:
         rqst.get(
         "https://scihub.esa.int/apihub/odata/v1/Products('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')/?$format=json",
-        text="Mock SciHub is Diow", status_code=503
+        text="Mock SciHub is Down", status_code=503
         )
         with pytest.raises(ValueError):
             api.get_product_info('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')
