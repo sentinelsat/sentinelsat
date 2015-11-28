@@ -1,7 +1,8 @@
 import click
+import geojson as gj
 
 import os
-import geojson as gj
+
 from sentinelsat.sentinel import SentinelAPI, get_coordinates
 
 
