@@ -78,6 +78,8 @@ def test_get_product_info():
     )
 
     expected = {'id': '8df46c9e-a20c-43db-a19a-4240c2ed3b8b',
+        'size': int(143549851),
+        'md5': 'D5E4DF5C38C6E97BF7E7BD540AB21C05',
         'url': "https://scihub.esa.int/apihub/odata/v1/Products('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')/$value",
         'date': '2015-11-21T10:03:56Z',  'size': 143549851,
         'footprint': '-5.880887 -63.852531,-5.075419 -67.495872,-3.084356 -67.066071,-3.880541 -63.430576,-5.880887 -63.852531',

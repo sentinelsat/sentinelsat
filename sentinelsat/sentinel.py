@@ -135,7 +135,7 @@ class SentinelAPI(object):
 
     def get_product_info(self, id):
         """Access SciHub API to get info about a Product. Returns a dict
-        containing the id, title, size, date, footprint and download url of the
+        containing the id, title, size, md5sum, date, footprint and download url of the
         Product. The date field receives the Start ContentDate of the API.
         """
 
@@ -159,11 +159,12 @@ class SentinelAPI(object):
             [" ".join(double_coord) for double_coord in [coord.split(",") for coord in poly_coords.split(" ")]]
         )
 
-        keys = ['id', 'title', 'size', 'date', 'footprint', 'url']
+        keys = ['id', 'title', 'size', 'md5', 'date', 'footprint', 'url']
         values = [
             product_json['d']['Id'],
             product_json['d']['Name'],
             int(product_json['d']['ContentLength']),
+            product_json['d']['Checksum']['Value'],
             convert_timestamp(product_json['d']['ContentDate']['Start']),
             coord_string,
             join(self.api_url, "odata/v1/Products('%s')/$value" % id)
@@ -183,7 +184,7 @@ class SentinelAPI(object):
             try:
                 product = self.get_product_info(id)
             except ValueError:
-                print("Invalid API responses. Trying again in 3 minutes.")
+                print("Invalid API response. Trying again in 3 minutes.")
                 sleep(180)
 
         path = join(path, product['title'] + '.zip')
