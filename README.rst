@@ -107,6 +107,12 @@ Connect to the API:
     from sentinelsat.sentinel import SentinelAPI
     api = SentinelAPI('user', 'password')
 
+If you need to search or download data produced before November 16th, 2015, you must initialize `SentinelAPI` with the `api_url` parameter, setting it to use `https://scihub.esa.int/dhus`.
+
+.. code-block:: python
+
+    api = SentinelAPI('user', 'password', 'https://scihub.esa.int/dhus')
+
 If you know the id of the product you want to download, you can download it by using:
 
 .. code-block:: python
