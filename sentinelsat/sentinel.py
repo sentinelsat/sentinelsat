@@ -171,7 +171,7 @@ class SentinelAPI(object):
         ]
         return dict(zip(keys, values))
 
-    def download(self, id, path='.', **kwargs):
+    def download(self, id, path='.', checksum=False, **kwargs):
         """Download a product using homura's download function.
 
         If you don't pass the title of the product, it will use the id as
@@ -199,16 +199,21 @@ class SentinelAPI(object):
                 return path
 
         download(product['url'], path=path, session=self.session, **kwargs)
+
+        # Check integrity with MD5 checksum
+        if checksum is True:
+            if not md5_blocks(path) == product['md5'].lower():
+                raise ValueError('File corrupt: Checksums do not match')
         return path
 
-    def download_all(self, path='.', **kwargs):
+    def download_all(self, path='.', checksum=False, **kwargs):
         """Download all products using homura's download function.
 
         It will use the products id as filenames. Further keyword arguments
         are passed to the homura.download() function.
         """
         for product in self.get_products():
-            self.download(product['id'], path, **kwargs)
+            self.download(product['id'], path, checksum, **kwargs)
 
     @staticmethod
     def _fillin_cainfo(kwargs_dict):
@@ -242,3 +247,15 @@ def get_coordinates(geojson_file, feature_number=0):
     # precision of 7 decimals equals 1mm at the equator
     coordinates = ['%.7f %.7f' % tuple(coord) for coord in coordinates]
     return ','.join(coordinates)
+
+
+def md5_blocks(file_path, block_size=2**13):
+    """Calculate the MD5 checksum of a file with 8192 byte buffers"""
+    md5 = hashlib.md5()
+    with open(file_path, "rb") as f:
+        while True:
+            block_data = f.read(block_size)
+            if not block_data:
+                break
+            md5.update(block_data)
+    return md5.hexdigest()
