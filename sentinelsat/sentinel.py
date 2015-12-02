@@ -11,10 +11,12 @@ try:
 except ImportError:
     certifi = None
 
+import hashlib
 import xml.etree.ElementTree as ET
 from datetime import datetime, date, timedelta
 from time import sleep
 from os.path import join, exists, getsize
+from os import remove
 
 
 def format_date(in_date):
@@ -202,18 +204,24 @@ class SentinelAPI(object):
 
         # Check integrity with MD5 checksum
         if checksum is True:
-            if not md5_blocks(path) == product['md5'].lower():
+            if not md5_compare(path, product['md5'].lower()):
                 raise ValueError('File corrupt: Checksums do not match')
         return path
 
     def download_all(self, path='.', checksum=False, **kwargs):
         """Download all products using homura's download function.
 
-        It will use the products id as filenames. Further keyword arguments
-        are passed to the homura.download() function.
+        It will use the products id as filenames. If the checksum calculation
+        fails a list with product ids of the corrupt scenes will be returned.
+        Further keyword arguments are passed to the homura.download() function.
         """
+        corrupt_scenes = []
         for product in self.get_products():
-            self.download(product['id'], path, checksum, **kwargs)
+            try:
+                self.download(product['id'], path, checksum, **kwargs)
+            except ValueError:
+                corrupt_scenes.append(product['id'])
+        return corrupt_scenes
 
     @staticmethod
     def _fillin_cainfo(kwargs_dict):
@@ -249,8 +257,8 @@ def get_coordinates(geojson_file, feature_number=0):
     return ','.join(coordinates)
 
 
-def md5_blocks(file_path, block_size=2**13):
-    """Calculate the MD5 checksum of a file with 8192 byte buffers"""
+def md5_compare(file_path, checksum, block_size=2**13):
+    """Compare a given md5 checksum with one calculated from a file"""
     md5 = hashlib.md5()
     with open(file_path, "rb") as f:
         while True:
@@ -258,4 +266,4 @@ def md5_blocks(file_path, block_size=2**13):
             if not block_data:
                 break
             md5.update(block_data)
-    return md5.hexdigest()
+    return md5.hexdigest() == checksum
