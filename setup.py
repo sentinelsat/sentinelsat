@@ -27,13 +27,7 @@ setup(name='sentinelsat',
       packages=find_packages(exclude=['ez_setup', 'examples', 'tests']),
       include_package_data=True,
       zip_safe=False,
-      install_requires=[
-          'requests',
-          'click',
-          'homura>=0.1.2',
-          'certifi',
-          'geojson'
-      ],
+      install_requires=open('requirements.txt').read().splitlines(),
       extras_require={
           'test': [
               'pytest',
