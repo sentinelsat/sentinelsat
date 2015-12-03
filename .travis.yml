@@ -1,21 +1,20 @@
 language: python
-
 python:
-  - "2.7"
-  - "3.3"
-  - "3.4"
-
+- '2.7'
+- '3.3'
+- '3.4'
 branches:
   only:
-    - master
-
+  - master
 before_install:
-  - pip install -U pip
-
+- pip install -U pip
 install:
-  - pip install -r requirements.txt
-  - pip install requests_mock
-  - python setup.py install
-
+- pip install -r requirements.txt
+- pip install requests_mock
+- python setup.py install
 script:
-  - py.test
+- py.test
+env:
+  global:
+  - secure: Ed7SrxALf1gIJqCzZ2Nni1dV9T2dQb5xrLoKf97rQeM9OVhCqnxceiaoY2MBj+aoJ1ageTNM/ciwoE9sVbOBXGWBgZQrMGaZdM9ncz4VyIfofbs+qP7kzzOFPxlJkaAlXw9F19KmD+xuoNrhnXTrIaiDNGMG+Mij+oaWimebNrd++LMsDAwvvVukwFKtwW4sxtpChTzxa1/1VGuy6iX9UhAN/KYlxXBlOzfSbkLBzCWJ8ah8mg0+DYE8j8aYxZwNO9Ma0fVP4Zu/N4EXvUSofZzgErzKhpMyQo3wXRjdTOxo0mEhFNa8c5lhGXBGlvX1IMpOeLFRXSuXqfz7cfhPDK8Hb6OTB78Gzw+koA0AUGTqetB3Cw7lw4Jvr1B7+bKj+4CEK4ga/79t3S//VTqh/tPMQgWLnmQCFgIyKlcogccDQhCCMW48XssaFtoNd63R0M6ppXcJzRBf+WULIvUib3MaIPDiYEEVtyyVEgg7NHsRwzXMDQ18P6kOAWOKEu6zC12OpjoL3zWq14ytgJ7WGAPQ3aiedP+wRpSIdsVl43l3Kcw9TgvA406H8EzprNrZdTAdWAlnvAM7ajD/4+tx2Rlx6PZU2uwo21froSkRkAvZOhzjhohtMao2IrMIJPM8uDLds7Xr3tMEXDGT/0ky60ALCkmTHS7TixiAjDCu0pY=
+  - secure: hpHgW2u/GnRF4OIq5EH8xIwhVL/99v7juOVeU8RqsbO8Myokhb13WD/cq/fBbNOYkaXiKl/UgrKOE0aQDlLprfyZA3Gx9jtBwXNmZzWuzgFYYD/LZhJ55OfDptF6MneAF9S2CwYhzr7NqqlVxI39ybgDRQNF0G0Ka/ZDYRa2m6FYBlNe3Ssr1KR8afC5QRSy2zT8ac8aWZ17YaAMIGglCj/vIuu2pzJ+ccvrgPMu0Rxh161AcuBKkmJWKYBCNMIDTLU+Q6fCq8UyEZlf3RK1+2PTJEumGakaHIqf/Km0+7ubpdLSL0T+xSA6uDXeuNWLE1HiBmGoUTuJyof3zRI06ae42464htNcgPrL9tp2IxARQ8q1bX9NdSAKAWFc6lA9ar5eAVEYksTyYq9XGsAHviBzygQ+5dW65TdTAVLVNb6YjuIM3GyUhFOrspUNIXfVfC0RD027mar8sG1xWxPNv0mCp1HwoYEE79BQae47wQZvr1EuCf83dJrdsFeR5Q+4RKcXI2kl/KHVYmJUNCcJle4ZwJ23yKMMePK7rsHPVasge1M9I8zMeybEy2icKk1l3eFbbDmdY9OtnWjtJSBmO0KcLS9zT6xtwsMJqJCZ+oX1mkR7dVAkUF9uVZKXLG9WI4r9ssmKHqaaqSw/VpY67XXkMFX1RpjwqVugBtOUubQ=
