@@ -11,10 +11,12 @@ try:
 except ImportError:
     certifi = None
 
+import hashlib
 import xml.etree.ElementTree as ET
 from datetime import datetime, date, timedelta
 from time import sleep
 from os.path import join, exists, getsize
+from os import remove
 
 
 def format_date(in_date):
@@ -135,7 +137,7 @@ class SentinelAPI(object):
 
     def get_product_info(self, id):
         """Access SciHub API to get info about a Product. Returns a dict
-        containing the id, title, size, date, footprint and download url of the
+        containing the id, title, size, md5sum, date, footprint and download url of the
         Product. The date field receives the Start ContentDate of the API.
         """
 
@@ -159,18 +161,19 @@ class SentinelAPI(object):
             [" ".join(double_coord) for double_coord in [coord.split(",") for coord in poly_coords.split(" ")]]
         )
 
-        keys = ['id', 'title', 'size', 'date', 'footprint', 'url']
+        keys = ['id', 'title', 'size', 'md5', 'date', 'footprint', 'url']
         values = [
             product_json['d']['Id'],
             product_json['d']['Name'],
             int(product_json['d']['ContentLength']),
+            product_json['d']['Checksum']['Value'],
             convert_timestamp(product_json['d']['ContentDate']['Start']),
             coord_string,
             join(self.api_url, "odata/v1/Products('%s')/$value" % id)
         ]
         return dict(zip(keys, values))
 
-    def download(self, id, path='.', **kwargs):
+    def download(self, id, path='.', checksum=False, **kwargs):
         """Download a product using homura's download function.
 
         If you don't pass the title of the product, it will use the id as
@@ -183,7 +186,7 @@ class SentinelAPI(object):
             try:
                 product = self.get_product_info(id)
             except ValueError:
-                print("Invalid API responses. Trying again in 3 minutes.")
+                print("Invalid API response. Trying again in 3 minutes.")
                 sleep(180)
 
         path = join(path, product['title'] + '.zip')
@@ -198,16 +201,27 @@ class SentinelAPI(object):
                 return path
 
         download(product['url'], path=path, session=self.session, **kwargs)
+
+        # Check integrity with MD5 checksum
+        if checksum is True:
+            if not md5_compare(path, product['md5'].lower()):
+                raise ValueError('File corrupt: Checksums do not match')
         return path
 
-    def download_all(self, path='.', **kwargs):
+    def download_all(self, path='.', checksum=False, **kwargs):
         """Download all products using homura's download function.
 
-        It will use the products id as filenames. Further keyword arguments
-        are passed to the homura.download() function.
+        It will use the products id as filenames. If the checksum calculation
+        fails a list with product ids of the corrupt scenes will be returned.
+        Further keyword arguments are passed to the homura.download() function.
         """
+        corrupt_scenes = []
         for product in self.get_products():
-            self.download(product['id'], path, **kwargs)
+            try:
+                self.download(product['id'], path, checksum, **kwargs)
+            except ValueError:
+                corrupt_scenes.append(product['id'])
+        return corrupt_scenes
 
     @staticmethod
     def _fillin_cainfo(kwargs_dict):
@@ -241,3 +255,15 @@ def get_coordinates(geojson_file, feature_number=0):
     # precision of 7 decimals equals 1mm at the equator
     coordinates = ['%.7f %.7f' % tuple(coord) for coord in coordinates]
     return ','.join(coordinates)
+
+
+def md5_compare(file_path, checksum, block_size=2**13):
+    """Compare a given md5 checksum with one calculated from a file"""
+    md5 = hashlib.md5()
+    with open(file_path, "rb") as f:
+        while True:
+            block_data = f.read(block_size)
+            if not block_data:
+                break
+            md5.update(block_data)
+    return md5.hexdigest() == checksum

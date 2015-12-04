@@ -4,11 +4,12 @@ import requests_mock
 
 from datetime import datetime, date, timedelta
 from os import environ
+import hashlib
 
 from sentinelsat.sentinel import (SentinelAPI, format_date, get_coordinates,
-    convert_timestamp)
+    convert_timestamp, md5_compare)
 
-
+@pytest.mark.fast
 def test_format_date():
     assert format_date(datetime(2015, 1, 1)) == '2015-01-01T00:00:00Z'
     assert format_date(date(2015, 1, 1)) == '2015-01-01T00:00:00Z'
@@ -17,8 +18,19 @@ def test_format_date():
     assert format_date('NOW') == 'NOW'
 
 
+@pytest.mark.fast
 def test_convert_timestamp():
     assert convert_timestamp('/Date(1445588544652)/') == '2015-10-23T08:22:24Z'
+
+
+@pytest.mark.fast
+def test_md5_comparison():
+    testfile_md5 = hashlib.md5()
+    with open("tests/expected_search_footprints.geojson", "rb") as testfile:
+        testfile_md5.update(testfile.read())
+        real_md5 = testfile_md5.hexdigest()
+    assert md5_compare("tests/expected_search_footprints.geojson", real_md5) == True
+    assert md5_compare("tests/map.geojson", real_md5) == False
 
 
 @pytest.mark.scihub
@@ -63,6 +75,7 @@ def test_set_base_url():
     assert api.content.status_code == 200
 
 
+@pytest.mark.fast
 def test_get_coordinates():
     coords = '-66.2695312 -8.0592296,-66.2695312 0.7031074,' + \
         '-57.3046875 0.7031074,-57.3046875 -8.0592296,' +\
@@ -78,6 +91,8 @@ def test_get_product_info():
     )
 
     expected = {'id': '8df46c9e-a20c-43db-a19a-4240c2ed3b8b',
+        'size': int(143549851),
+        'md5': 'D5E4DF5C38C6E97BF7E7BD540AB21C05',
         'url': "https://scihub.esa.int/apihub/odata/v1/Products('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')/$value",
         'date': '2015-11-21T10:03:56Z',  'size': 143549851,
         'footprint': '-5.880887 -63.852531,-5.075419 -67.495872,-3.084356 -67.066071,-3.880541 -63.430576,-5.880887 -63.852531',
