@@ -84,7 +84,7 @@ def search(user, password, geojson, start, end, download, check, footprints, pat
     help="""Define another API URL. Default URL is
         'https://scihub.esa.int/apihub/'.
         """)
-def download(user, password, productid, path, url):
+def download(user, password, productid, path, check, url):
     """Download a Sentinel-1 Product. It just needs your SciHub user and password
     and the id of the product you want to download.
     """
