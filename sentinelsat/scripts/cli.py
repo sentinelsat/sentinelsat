@@ -69,7 +69,7 @@ def search(user, password, geojson, start, end, download, check, footprints, pat
             size_product = float(next(x for x in product["str"] if x["name"] == "size")["content"][:-3])
             size_total += size_product
         print('---')
-        print('%s scenes found with a total size of %s MB' % (len(api.get_products()), size_total))
+        print('%s scenes found with a total size of %s GB' % (len(api.get_products()), size_total))
 
 
 @cli.command()
