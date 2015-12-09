@@ -72,6 +72,8 @@ Options:
 -s, --start TEXT  Start date of the query in the format YYYYMMDD.
 -e, --end TEXT    End date of the query in the format YYYYMMDD.
 -d, --download    Download all results of the query.
+-c, --check       Verify the MD5 checksum and write corrupt product ids to a
+                    textfile.
 -f, --footprints   Create geojson file with footprints of the query result.
 -p, --path PATH   Set the path where the files will be saved.
 -q, --query TEXT  Extra search keywords you want to use in the query.
@@ -93,6 +95,8 @@ the id of the product you want to download.
 Options:
 
 -p, --path PATH  Set the path where the file will be saved.
+-c, --check      Verify the MD5 checksum and write corrupt product ids to a
+                    textfile.
 -u, --url TEXT    Define another API URL. Default URL is
                     'https://scihub.esa.int/apihub/'.
 
