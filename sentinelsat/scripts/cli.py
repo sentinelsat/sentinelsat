@@ -21,6 +21,8 @@ def cli():
     help='End date of the query in the format YYYYMMDD.')
 @click.option('--download', '-d', is_flag=True,
     help='Download all results of the query.')
+@click.option('--check', '-c', is_flag=True,
+    help='Verify the MD5 checksum and write corrupt product ids to a textfile.')
 @click.option('--footprints', '-f', is_flag=True,
     help='Create a geojson file with footprints of the query result.')
 @click.option('--path', '-p', type=click.Path(exists=True), default='.',
@@ -33,7 +35,7 @@ def cli():
     help="""Define another API URL. Default URL is
         'https://scihub.esa.int/apihub/'.
         """)
-def search(user, password, geojson, start, end, download, footprints, path, query, url):
+def search(user, password, geojson, start, end, download, check, footprints, path, query, url):
     """Search for Sentinel-1 products and, optionally, download all the results
     and/or create a geojson file with the search result footprints.
     Beyond your SciHub user and password, you must pass a geojson file
@@ -52,11 +54,22 @@ def search(user, password, geojson, start, end, download, footprints, path, quer
         with open(os.path.join(path, "search_footprints.geojson"), "w") as outfile:
             outfile.write(gj.dumps(footprints_geojson))
 
-    if download is True:
+    if download is True and check is True:
+        corrupt_scenes = api.download_all(path, check)
+        if len(corrupt_scenes) is not 0:
+            with open(os.path.join(path, "corrupt_scenes.txt"), "w") as outfile:
+                for product_id in corrupt_scenes:
+                    outfile.write("%s\n" % product_id)
+    elif download is True and check is False:
         api.download_all(path)
     else:
+        size_total = 0
         for product in api.get_products():
             print('Product %s - %s' % (product['id'], product['summary']))
+            size_product = float(next(x for x in product["str"] if x["name"] == "size")["content"][:-3])
+            size_total += size_product
+        print('---')
+        print('%s scenes found with a total size of %s GB' % (len(api.get_products()), size_total))
 
 
 @cli.command()
@@ -65,13 +78,15 @@ def search(user, password, geojson, start, end, download, footprints, path, quer
 @click.argument('productid', type=str, metavar='<productid>')
 @click.option('--path', '-p', type=click.Path(exists=True), default='.',
     help='Set the path where the files will be saved.')
+@click.option('--check', '-c', is_flag=True,
+    help='Verify the MD5 checksum and write corrupt product ids to a textfile.')
 @click.option('--url', '-u', type=str, default='https://scihub.esa.int/apihub/',
     help="""Define another API URL. Default URL is
         'https://scihub.esa.int/apihub/'.
         """)
-def download(user, password, productid, path, url):
+def download(user, password, productid, path, check, url):
     """Download a Sentinel-1 Product. It just needs your SciHub user and password
     and the id of the product you want to download.
     """
     api = SentinelAPI(user, password, url)
-    api.download(productid, path)
+    api.download(productid, path, check)
