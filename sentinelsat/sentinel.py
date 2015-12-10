@@ -46,7 +46,7 @@ class SentinelAPI(object):
     imagery.
     """
 
-    def __init__(self, user, password, api_url='https://scihub.esa.int/apihub/'):
+    def __init__(self, user, password, api_url='https://scihub.copernicus.eu/apihub/'):
         self.session = requests.Session()
         self.session.auth = (user, password)
         self.api_url = api_url

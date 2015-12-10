@@ -31,9 +31,9 @@ def cli():
     help="""Extra search keywords you want to use in the query. Separate
         keywords with comma. Example: 'producttype=GRD,polarisationmode=HH'.
         """)
-@click.option('--url', '-u', type=str, default='https://scihub.esa.int/apihub/',
+@click.option('--url', '-u', type=str, default='https://scihub.copernicus.eu/apihub/',
     help="""Define another API URL. Default URL is
-        'https://scihub.esa.int/apihub/'.
+        'https://scihub.copernicus.eu/apihub/'.
         """)
 def search(user, password, geojson, start, end, download, check, footprints, path, query, url):
     """Search for Sentinel-1 products and, optionally, download all the results
@@ -80,9 +80,9 @@ def search(user, password, geojson, start, end, download, check, footprints, pat
     help='Set the path where the files will be saved.')
 @click.option('--check', '-c', is_flag=True,
     help='Verify the MD5 checksum and write corrupt product ids to a textfile.')
-@click.option('--url', '-u', type=str, default='https://scihub.esa.int/apihub/',
+@click.option('--url', '-u', type=str, default='https://scihub.copernicus.eu/apihub/',
     help="""Define another API URL. Default URL is
-        'https://scihub.esa.int/apihub/'.
+        'https://scihub.copernicus.eu/apihub/'.
         """)
 def download(user, password, productid, path, check, url):
     """Download a Sentinel-1 Product. It just needs your SciHub user and password

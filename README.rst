@@ -5,7 +5,7 @@ sentinelsat
     :target: http://badge.fury.io/py/sentinelsat
 
 
-Utility pack to search and download Sentinel-1 imagery from `ESA SciHub <https://scihub.esa.int/>`_.
+Utility pack to search and download Sentinel-1 imagery from `ESA SciHub <https://scihub.copernicus.eu/>`_.
 
 Installation
 ============
@@ -80,7 +80,7 @@ Options:
                   Separate keywords with comma.
                   Example: 'producttype=GRD,polarisationmode=HH'.
 -u, --url TEXT    Define another API URL. Default URL is
-                    'https://scihub.esa.int/apihub/'.
+                    'https://scihub.copernicus.eu/apihub/'.
 
 Download
 ^^^^^^^^
@@ -98,7 +98,7 @@ Options:
 -c, --check      Verify the MD5 checksum and write corrupt product ids to a
                     textfile.
 -u, --url TEXT    Define another API URL. Default URL is
-                    'https://scihub.esa.int/apihub/'.
+                    'https://scihub.copernicus.eu/apihub/'.
 
 
 Python Library
@@ -111,11 +111,11 @@ Connect to the API:
     from sentinelsat.sentinel import SentinelAPI
     api = SentinelAPI('user', 'password')
 
-If you need to search or download data produced before November 16th, 2015, you must initialize `SentinelAPI` with the `api_url` parameter, setting it to use `https://scihub.esa.int/dhus`.
+If you need to search or download data produced before November 16th, 2015, you must initialize `SentinelAPI` with the `api_url` parameter, setting it to use `https://scihub.copernicus.eu/dhus`.
 
 .. code-block:: python
 
-    api = SentinelAPI('user', 'password', 'https://scihub.esa.int/dhus')
+    api = SentinelAPI('user', 'password', 'https://scihub.copernicus.eu/dhus')
 
 If you know the id of the product you want to download, you can download it by using:
 
@@ -156,7 +156,7 @@ Beyond area and date parameters, you can use any search keywords accepted by the
 
     api.query('0 0,1 1,0 1,0 0', producttype='SLC')
 
-See the `SciHub User Guide <https://scihub.esa.int/twiki/do/view/SciHubUserGuide/3FullTextSearch#Search_Keywords>`_
+See the `SciHub User Guide <https://scihub.copernicus.eu/twiki/do/view/SciHubUserGuide/3FullTextSearch#Search_Keywords>`_
 for all the Search Keywords.
 
 To download all the results of your query, use:
