@@ -41,7 +41,7 @@ def test_SentinelAPI():
     )
     api.query('0 0,1 1,0 1,0 0', datetime(2015, 1, 1), datetime(2015, 1, 2))
 
-    assert api.url == 'https://scihub.esa.int/apihub/search?format=json&rows=15000' + \
+    assert api.url == 'https://scihub.copernicus.eu/apihub/search?format=json&rows=15000' + \
         '&q=(ingestionDate:[2015-01-01T00:00:00Z TO 2015-01-02T00:00:00Z]) ' + \
         'AND (footprint:"Intersects(POLYGON((0 0,1 1,0 1,0 0)))")'
     assert api.content.status_code == 200
@@ -49,12 +49,12 @@ def test_SentinelAPI():
     now = datetime.now()
     api.format_url('0 0,1 1,0 1,0 0', end_date=now)
     last_24h = format_date(now - timedelta(hours=24))
-    assert api.url == 'https://scihub.esa.int/apihub/search?format=json&rows=15000' + \
+    assert api.url == 'https://scihub.copernicus.eu/apihub/search?format=json&rows=15000' + \
         '&q=(ingestionDate:[%s TO %s]) ' % (last_24h, format_date(now)) + \
         'AND (footprint:"Intersects(POLYGON((0 0,1 1,0 1,0 0)))")'
 
     api.format_url('0 0,1 1,0 1,0 0', end_date=now, producttype='SLC')
-    assert api.url == 'https://scihub.esa.int/apihub/search?format=json&rows=15000' + \
+    assert api.url == 'https://scihub.copernicus.eu/apihub/search?format=json&rows=15000' + \
         '&q=(ingestionDate:[%s TO %s]) ' % (last_24h, format_date(now)) + \
         'AND (footprint:"Intersects(POLYGON((0 0,1 1,0 1,0 0)))") ' + \
         'AND (producttype:SLC)'
@@ -65,11 +65,11 @@ def test_set_base_url():
     api = SentinelAPI(
         environ.get('SENTINEL_USER'),
         environ.get('SENTINEL_PASSWORD'),
-        'https://scihub.esa.int/dhus/'
+        'https://scihub.copernicus.eu/dhus/'
     )
     api.query('0 0,1 1,0 1,0 0', datetime(2015, 1, 1), datetime(2015, 1, 2))
 
-    assert api.url == 'https://scihub.esa.int/dhus/search?format=json&rows=15000' + \
+    assert api.url == 'https://scihub.copernicus.eu/dhus/search?format=json&rows=15000' + \
         '&q=(ingestionDate:[2015-01-01T00:00:00Z TO 2015-01-02T00:00:00Z]) ' + \
         'AND (footprint:"Intersects(POLYGON((0 0,1 1,0 1,0 0)))")'
     assert api.content.status_code == 200
@@ -93,7 +93,7 @@ def test_get_product_info():
     expected = {'id': '8df46c9e-a20c-43db-a19a-4240c2ed3b8b',
         'size': int(143549851),
         'md5': 'D5E4DF5C38C6E97BF7E7BD540AB21C05',
-        'url': "https://scihub.esa.int/apihub/odata/v1/Products('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')/$value",
+        'url': "https://scihub.copernicus.eu/apihub/odata/v1/Products('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')/$value",
         'date': '2015-11-21T10:03:56Z',  'size': 143549851,
         'footprint': '-5.880887 -63.852531,-5.075419 -67.495872,-3.084356 -67.066071,-3.880541 -63.430576,-5.880887 -63.852531',
         'title': 'S1A_EW_GRDM_1SDV_20151121T100356_20151121T100429_008701_00C622_A0EC'
@@ -106,7 +106,7 @@ def test_get_product_info_scihub_down():
     api = SentinelAPI("mock_user", "mock_password")
     with requests_mock.mock() as rqst:
         rqst.get(
-        "https://scihub.esa.int/apihub/odata/v1/Products('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')/?$format=json",
+        "https://scihub.copernicus.eu/apihub/odata/v1/Products('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')/?$format=json",
         text="Mock SciHub is Down", status_code=503
         )
         with pytest.raises(ValueError):

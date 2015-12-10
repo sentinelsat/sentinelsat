@@ -20,7 +20,7 @@ def test_cli():
         environ.get('SENTINEL_USER'),
         environ.get('SENTINEL_PASSWORD'),
         'tests/map.geojson',
-        '--url', 'https://scihub.esa.int/dhus/'
+        '--url', 'https://scihub.copernicus.eu/dhus/'
         ])
     assert result.exit_code == 0
 
