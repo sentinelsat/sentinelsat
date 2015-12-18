@@ -15,6 +15,8 @@ install:
 script:
 - py.test -v
 - coverage run --source=sentinelsat -m py.test
+after_success:
+  - coveralls
 sudo: false
 notifications:
   email: false
