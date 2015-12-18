@@ -5,7 +5,8 @@ sentinelsat
     :target: http://badge.fury.io/py/sentinelsat
 
 
-Utility pack to search and download Sentinel-1 imagery from `ESA SciHub <https://scihub.copernicus.eu/>`_.
+Utility pack to search and download Sentinel imagery from `ESA SciHub <https://scihub.copernicus.eu/>`_.
+
 
 Installation
 ============
@@ -49,7 +50,7 @@ Usage
 =====
 
 Sentinelsat provides a Python Library and a Command Line Interface to search and
-download Sentinel-1 products.
+download Sentinel products.
 
 Command Line Interface
 ----------------------
@@ -61,7 +62,7 @@ Search
 
     sentinel search [OPTIONS] <user> <password> <geojson>
 
-Search for Sentinel-1 products and, optionally, download all the results.
+Search for Sentinel products and, optionally, download all the results.
 Beyond your scihub username and password, you must pass a geojson file
 containing the polygon of the area that you want to search in. If you
 don't specify the start and end dates, it will search products published in the last 24
@@ -89,7 +90,7 @@ Download
 
     sentinel download [OPTIONS] <user> <password> <productid>
 
-Download a single Sentinel-1 Product. Provide your scihub username and password and
+Download a single Sentinel Product. Provide your scihub username and password and
 the id of the product you want to download.
 
 Options:
