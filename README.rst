@@ -4,6 +4,12 @@ sentinelsat
 .. image:: https://badge.fury.io/py/sentinelsat.svg
     :target: http://badge.fury.io/py/sentinelsat
 
+.. image:: https://travis-ci.org/ibamacsr/sentinelsat.svg
+    :target: https://travis-ci.org/ibamacsr/sentinelsat
+
+.. image:: https://coveralls.io/repos/ibamacsr/sentinelsat/badge.svg?branch=master&service=github
+    :target: https://coveralls.io/github/ibamacsr/sentinelsat?branch=master
+
 
 Utility pack to search and download Sentinel imagery from `ESA SciHub <https://scihub.copernicus.eu/>`_.
 
@@ -192,7 +198,7 @@ the ``pass_through_opts`` keyword argument when calling ``api.download()`` or
 
 
 Contributors
-=======
+=============
 
 * Wille Marcel
 * Kersten Clauss
