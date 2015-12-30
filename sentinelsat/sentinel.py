@@ -15,7 +15,10 @@ import hashlib
 import xml.etree.ElementTree as ET
 from datetime import datetime, date, timedelta
 from time import sleep
-from urlparse import urljoin
+try:
+    from urlparse import urljoin
+except:
+    from urllib.parse import urljoin
 from os.path import join, exists, getsize
 from os import remove
 
@@ -219,7 +222,7 @@ class SentinelAPI(object):
             return path
         else:
             remove(path)
-            
+
         download(product['url'], path=path, session=self.session, **kwargs)
 
         # Check integrity with MD5 checksum
