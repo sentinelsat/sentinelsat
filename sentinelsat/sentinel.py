@@ -15,6 +15,7 @@ import hashlib
 import xml.etree.ElementTree as ET
 from datetime import datetime, date, timedelta
 from time import sleep
+from urlparse import urljoin
 from os.path import join, exists, getsize
 from os import remove
 
@@ -49,7 +50,7 @@ class SentinelAPI(object):
     def __init__(self, user, password, api_url='https://scihub.copernicus.eu/apihub/'):
         self.session = requests.Session()
         self.session.auth = (user, password)
-        self.api_url = api_url
+        self.api_url = self._url_trail_slash(api_url)
 
     def query(self, area, initial_date=None, end_date=datetime.now(), **keywords):
         """Query the SciHub API with the coordinates of an area, a date inverval
@@ -64,6 +65,12 @@ class SentinelAPI(object):
         except requests.exceptions.RequestException as exc:
             print('Error: {}'.format(exc))
 
+    @staticmethod
+    def _url_trail_slash(api_url):
+        """Add trailing slash to the api url if it is missing"""
+        if api_url[-1] is not '/':
+            api_url += '/'
+        return api_url
 
     def format_url(self, area, initial_date=None, end_date=datetime.now(), **keywords):
         """Create the URL to access the SciHub API, defining the max quantity of
