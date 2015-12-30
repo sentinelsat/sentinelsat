@@ -110,6 +110,18 @@ class SentinelAPI(object):
         except ValueError:  # catch simplejson.decoder.JSONDecodeError
             raise ValueError('API response not valid. JSON decoding failed.')
 
+    def get_products_size(self):
+        """Return the total filesize in Gb of all products in the query"""
+        size_total = 0
+        for product in self.get_products():
+            size_product = next(x for x in product["str"] if x["name"] == "size")["content"]
+            size_value = float(size_product.split(" ")[0])
+            size_unit = str(size_product.split(" ")[1])
+            if size_unit == "MB":
+                size_value /= 1024
+            size_total += size_value
+        return round(size_total, 2)
+
     def get_footprints(self):
         """Return the footprints of the resulting scenes in GeoJSON format"""
         id = 0

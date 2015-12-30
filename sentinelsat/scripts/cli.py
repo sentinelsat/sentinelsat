@@ -63,13 +63,10 @@ def search(user, password, geojson, start, end, download, check, footprints, pat
     elif download is True and check is False:
         api.download_all(path)
     else:
-        size_total = 0
         for product in api.get_products():
             print('Product %s - %s' % (product['id'], product['summary']))
-            size_product = float(next(x for x in product["str"] if x["name"] == "size")["content"][:-3])
-            size_total += size_product
         print('---')
-        print('%s scenes found with a total size of %s GB' % (len(api.get_products()), size_total))
+        print('%s scenes found with a total size of %.2f GB' % (len(api.get_products()), api.get_products_size()))
 
 
 @cli.command()
