@@ -89,7 +89,7 @@ class SentinelAPI(object):
         for kw in sorted(keywords.keys()):
             filters += ' AND (%s:%s)' % (kw, keywords[kw])
 
-        self.url = join(
+        self.url = urljoin(
             self.api_url,
             'search?format=json&rows=15000&q=%s%s%s' % (ingestion_date, query_area, filters)
         )
@@ -149,7 +149,7 @@ class SentinelAPI(object):
         """
 
         product = self.session.get(
-            join(self.api_url, "odata/v1/Products('%s')/?$format=json" % id)
+            urljoin(self.api_url, "odata/v1/Products('%s')/?$format=json" % id)
         )
 
         try:
@@ -176,7 +176,7 @@ class SentinelAPI(object):
             product_json['d']['Checksum']['Value'],
             convert_timestamp(product_json['d']['ContentDate']['Start']),
             coord_string,
-            join(self.api_url, "odata/v1/Products('%s')/$value" % id)
+            urljoin(self.api_url, "odata/v1/Products('%s')/$value" % id)
         ]
         return dict(zip(keys, values))
 
