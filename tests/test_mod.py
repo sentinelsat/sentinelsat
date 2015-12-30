@@ -93,6 +93,7 @@ def test_trail_slash_base_url():
         )
         assert api.api_url == expected
 
+
 @pytest.mark.fast
 def test_get_coordinates():
     coords = '-66.2695312 -8.0592296,-66.2695312 0.7031074,' + \

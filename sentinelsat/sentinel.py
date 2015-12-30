@@ -213,12 +213,13 @@ class SentinelAPI(object):
 
         print('Downloading %s to %s' % (id, path))
 
-        # Check if the file exists and if it is complete
-        if exists(path):
-            if getsize(path) == product['size']:
-                print('%s was already downloaded.' % path)
-                return path
-
+        # Check if the file exists and passes md5 test
+        if exists(path) and md5_compare(path, product['md5'].lower()):
+            print('%s was already downloaded.' % path)
+            return path
+        else:
+            remove(path)
+            
         download(product['url'], path=path, session=self.session, **kwargs)
 
         # Check integrity with MD5 checksum
@@ -231,15 +232,16 @@ class SentinelAPI(object):
         """Download all products using homura's download function.
 
         It will use the products id as filenames. If the checksum calculation
-        fails a list with product ids of the corrupt scenes will be returned.
-        Further keyword arguments are passed to the homura.download() function.
+        fails a list with tuples of filename and product ids of the corrupt
+        scenes will be returned. Further keyword arguments are passed to the
+        homura.download() function.
         """
         corrupt_scenes = []
         for product in self.get_products():
             try:
                 self.download(product['id'], path, checksum, **kwargs)
             except ValueError:
-                corrupt_scenes.append(product['id'])
+                corrupt_scenes.append((product['title']+'.zip', product['id']))
         return corrupt_scenes
 
     @staticmethod

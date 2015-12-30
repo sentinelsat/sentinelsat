@@ -58,8 +58,8 @@ def search(user, password, geojson, start, end, download, check, footprints, pat
         corrupt_scenes = api.download_all(path, check)
         if len(corrupt_scenes) is not 0:
             with open(os.path.join(path, "corrupt_scenes.txt"), "w") as outfile:
-                for product_id in corrupt_scenes:
-                    outfile.write("%s\n" % product_id)
+                for corrupt_tuple in corrupt_scenes:
+                    outfile.write("%s : %s\n" % corrupt_tuple)
     elif download is True and check is False:
         api.download_all(path)
     else:
