@@ -11,7 +11,7 @@ sentinelsat
     :target: https://coveralls.io/github/ibamacsr/sentinelsat?branch=master
 
 
-Utility pack to search and download Sentinel imagery from `ESA SciHub <https://scihub.copernicus.eu/>`_.
+Utility pack to search and download Sentinel imagery from `Copernicus SciHub <https://scihub.copernicus.eu/>`_.
 
 
 Installation
