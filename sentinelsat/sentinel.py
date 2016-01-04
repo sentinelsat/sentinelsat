@@ -15,6 +15,10 @@ import hashlib
 import xml.etree.ElementTree as ET
 from datetime import datetime, date, timedelta
 from time import sleep
+try:
+    from urlparse import urljoin
+except:
+    from urllib.parse import urljoin
 from os.path import join, exists, getsize
 from os import remove
 
@@ -49,7 +53,7 @@ class SentinelAPI(object):
     def __init__(self, user, password, api_url='https://scihub.copernicus.eu/apihub/'):
         self.session = requests.Session()
         self.session.auth = (user, password)
-        self.api_url = api_url
+        self.api_url = self._url_trail_slash(api_url)
 
     def query(self, area, initial_date=None, end_date=datetime.now(), **keywords):
         """Query the SciHub API with the coordinates of an area, a date inverval
@@ -64,6 +68,12 @@ class SentinelAPI(object):
         except requests.exceptions.RequestException as exc:
             print('Error: {}'.format(exc))
 
+    @staticmethod
+    def _url_trail_slash(api_url):
+        """Add trailing slash to the api url if it is missing"""
+        if api_url[-1] is not '/':
+            api_url += '/'
+        return api_url
 
     def format_url(self, area, initial_date=None, end_date=datetime.now(), **keywords):
         """Create the URL to access the SciHub API, defining the max quantity of
@@ -82,7 +92,7 @@ class SentinelAPI(object):
         for kw in sorted(keywords.keys()):
             filters += ' AND (%s:%s)' % (kw, keywords[kw])
 
-        self.url = join(
+        self.url = urljoin(
             self.api_url,
             'search?format=json&rows=15000&q=%s%s%s' % (ingestion_date, query_area, filters)
         )
@@ -102,6 +112,18 @@ class SentinelAPI(object):
             return []
         except ValueError:  # catch simplejson.decoder.JSONDecodeError
             raise ValueError('API response not valid. JSON decoding failed.')
+
+    def get_products_size(self):
+        """Return the total filesize in Gb of all products in the query"""
+        size_total = 0
+        for product in self.get_products():
+            size_product = next(x for x in product["str"] if x["name"] == "size")["content"]
+            size_value = float(size_product.split(" ")[0])
+            size_unit = str(size_product.split(" ")[1])
+            if size_unit == "MB":
+                size_value /= 1024
+            size_total += size_value
+        return round(size_total, 2)
 
     def get_footprints(self):
         """Return the footprints of the resulting scenes in GeoJSON format"""
@@ -142,7 +164,7 @@ class SentinelAPI(object):
         """
 
         product = self.session.get(
-            join(self.api_url, "odata/v1/Products('%s')/?$format=json" % id)
+            urljoin(self.api_url, "odata/v1/Products('%s')/?$format=json" % id)
         )
 
         try:
@@ -169,7 +191,7 @@ class SentinelAPI(object):
             product_json['d']['Checksum']['Value'],
             convert_timestamp(product_json['d']['ContentDate']['Start']),
             coord_string,
-            join(self.api_url, "odata/v1/Products('%s')/$value" % id)
+            urljoin(self.api_url, "odata/v1/Products('%s')/$value" % id)
         ]
         return dict(zip(keys, values))
 
@@ -194,11 +216,12 @@ class SentinelAPI(object):
 
         print('Downloading %s to %s' % (id, path))
 
-        # Check if the file exists and if it is complete
-        if exists(path):
-            if getsize(path) == product['size']:
-                print('%s was already downloaded.' % path)
-                return path
+        # Check if the file exists and passes md5 test
+        if exists(path) and md5_compare(path, product['md5'].lower()):
+            print('%s was already downloaded.' % path)
+            return path
+        else:
+            remove(path)
 
         download(product['url'], path=path, session=self.session, **kwargs)
 
@@ -212,15 +235,16 @@ class SentinelAPI(object):
         """Download all products using homura's download function.
 
         It will use the products id as filenames. If the checksum calculation
-        fails a list with product ids of the corrupt scenes will be returned.
-        Further keyword arguments are passed to the homura.download() function.
+        fails a list with tuples of filename and product ids of the corrupt
+        scenes will be returned. Further keyword arguments are passed to the
+        homura.download() function.
         """
         corrupt_scenes = []
         for product in self.get_products():
             try:
                 self.download(product['id'], path, checksum, **kwargs)
             except ValueError:
-                corrupt_scenes.append(product['id'])
+                corrupt_scenes.append((product['title']+'.zip', product['id']))
         return corrupt_scenes
 
     @staticmethod
