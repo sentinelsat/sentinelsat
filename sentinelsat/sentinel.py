@@ -19,7 +19,7 @@ try:
     from urlparse import urljoin
 except:
     from urllib.parse import urljoin
-from os.path import join, exists, getsize
+from os.path import join, exists
 from os import remove
 
 
@@ -53,7 +53,7 @@ class SentinelAPI(object):
     def __init__(self, user, password, api_url='https://scihub.copernicus.eu/apihub/'):
         self.session = requests.Session()
         self.session.auth = (user, password)
-        self.api_url = self._url_trail_slash(api_url)
+        self.api_url = api_url
 
     def query(self, area, initial_date=None, end_date=datetime.now(), **keywords):
         """Query the SciHub API with the coordinates of an area, a date inverval
@@ -67,13 +67,6 @@ class SentinelAPI(object):
                 print(('Error: API returned unexpected response {} .'.format(self.content.status_code)))
         except requests.exceptions.RequestException as exc:
             print('Error: {}'.format(exc))
-
-    @staticmethod
-    def _url_trail_slash(api_url):
-        """Add trailing slash to the api url if it is missing"""
-        if api_url[-1] is not '/':
-            api_url += '/'
-        return api_url
 
     def format_url(self, area, initial_date=None, end_date=datetime.now(), **keywords):
         """Create the URL to access the SciHub API, defining the max quantity of
@@ -133,24 +126,37 @@ class SentinelAPI(object):
         for scene in self.get_products():
             id += 1
             # parse the polygon
-            coord_list = next(x for x in scene["str"] if x["name"] == "footprint")["content"][10:-2].split(",")
+            coord_list = next(
+                x
+                for x in scene["str"]
+                if x["name"] == "footprint"
+                )["content"][10:-2].split(",")
             coord_list_split = [coord.split(" ") for coord in coord_list]
-            poly = geojson.Polygon(
-                [[tuple((float(coord[0]), float(coord[1]))) for coord in coord_list_split]]
-            )
+            poly = geojson.Polygon([[
+                tuple((float(coord[0]), float(coord[1])))
+                for coord in coord_list_split
+                ]])
 
             # parse the following properties:
             # platformname, identifier, product_id, date, polarisation,
             # sensor operation mode, orbit direction, product type, download link
             props = {
-            "product_id": scene["id"],
-            "date_beginposition": next(x for x in scene["date"] if x["name"] == "beginposition")["content"],
-            "download_link": next(x for x in scene["link"] if len(x.keys()) == 1)["href"]
+                "product_id": scene["id"],
+                "date_beginposition": next(
+                    x
+                    for x in scene["date"]
+                    if x["name"] == "beginposition"
+                    )["content"],
+                "download_link": next(
+                    x
+                    for x in scene["link"]
+                    if len(x.keys()) == 1
+                    )["href"]
             }
             str_properties = ["platformname", "identifier", "polarisationmode",
                 "sensoroperationalmode", "orbitdirection", "producttype"]
             for str_prop in str_properties:
-                props.update({str_prop : next(x for x in scene["str"] if x["name"] == str_prop)["content"]})
+                props.update({str_prop: next(x for x in scene["str"] if x["name"] == str_prop)["content"]})
 
             feature_list.append(
                 geojson.Feature(geometry=poly, id=id, properties=props)
@@ -159,8 +165,8 @@ class SentinelAPI(object):
 
     def get_product_info(self, id):
         """Access SciHub API to get info about a Product. Returns a dict
-        containing the id, title, size, md5sum, date, footprint and download url of the
-        Product. The date field receives the Start ContentDate of the API.
+        containing the id, title, size, md5sum, date, footprint and download url
+        of the Product. The date field receives the Start ContentDate of the API.
         """
 
         product = self.session.get(
@@ -181,7 +187,7 @@ class SentinelAPI(object):
             .findtext('{http://www.opengis.net/gml}coordinates')
         coord_string = ",".join(
             [" ".join(double_coord) for double_coord in [coord.split(",") for coord in poly_coords.split(" ")]]
-        )
+            )
 
         keys = ['id', 'title', 'size', 'md5', 'date', 'footprint', 'url']
         values = [
@@ -264,7 +270,7 @@ class SentinelAPI(object):
             except AttributeError:
                 cainfo = None
 
-        if cainfo != None:
+        if cainfo is not None:
             pass_through_opts = kwargs_dict.get('pass_through_opts', {})
             pass_through_opts[CAINFO] = cainfo
             kwargs_dict['pass_through_opts'] = pass_through_opts
