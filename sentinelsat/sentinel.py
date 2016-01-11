@@ -230,11 +230,12 @@ class SentinelAPI(object):
         print('Downloading %s to %s' % (id, path))
 
         # Check if the file exists and passes md5 test
-        if exists(path) and md5_compare(path, product['md5'].lower()):
-            print('%s was already downloaded.' % path)
-            return path
-        else:
-            remove(path)
+        if exists(path):
+            if md5_compare(path, product['md5'].lower()):
+                print('%s was already downloaded.' % path)
+                return path
+            else:
+                remove(path)
 
         download(product['url'], path=path, session=self.session, **kwargs)
 
