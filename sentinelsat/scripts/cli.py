@@ -25,9 +25,6 @@ def cli():
     '--download', '-d', is_flag=True,
     help='Download all results of the query.')
 @click.option(
-    '--check', '-c', is_flag=True,
-    help='Verify the MD5 checksum and write corrupt product ids to a textfile.')
-@click.option(
     '--footprints', '-f', is_flag=True,
     help='Create a geojson file with footprints of the query result.')
 @click.option(
@@ -43,14 +40,36 @@ def cli():
     help="""Define another API URL. Default URL is
         'https://scihub.copernicus.eu/apihub/'.
         """)
-def search(user, password, geojson, start, end, download, check, footprints, path, query, url):
-    """Search for Sentinel-1 products and, optionally, download all the results
+@click.option(
+    '--md5', is_flag=True,
+    help='Verify the MD5 checksum and write corrupt product ids to a textfile.')
+@click.option(
+    '--sentinel1', is_flag=True,
+    help='Limit search to Sentinel-1 products.')
+@click.option(
+    '--sentinel2', is_flag=True,
+    help='Limit search to Sentinel-2 products.')
+@click.option(
+    '-c', '--cloud', type=int,
+    help='Maximum cloud cover in percent. (Automatically sets --sentinel2)')
+def search(
+        user, password, geojson, start, end, download, md5,
+        sentinel1, sentinel2, cloud, footprints, path, query, url):
+    """Search for Sentinel products and, optionally, download all the results
     and/or create a geojson file with the search result footprints.
     Beyond your SciHub user and password, you must pass a geojson file
     containing the polygon of the area you want to search for. If you
     don't specify the start and end dates, it will search in the last 24 hours.
     """
     api = SentinelAPI(user, password, url)
+
+    if cloud:
+        query = "platformname=Sentinel-2,cloudcoverpercentage=[0 TO %s]" % cloud
+    elif sentinel2 and cloud is None:
+        query = "platformname=Sentinel-2"
+    elif sentinel1:
+        query = "platformname=Sentinel-1"
+
     if query is not None:
         query = dict([i.split('=') for i in query.split(',')])
         api.query(get_coordinates(geojson), start, end, **query)
@@ -62,13 +81,13 @@ def search(user, password, geojson, start, end, download, check, footprints, pat
         with open(os.path.join(path, "search_footprints.geojson"), "w") as outfile:
             outfile.write(gj.dumps(footprints_geojson))
 
-    if download is True and check is True:
-        corrupt_scenes = api.download_all(path, check)
+    if download is True and md5 is True:
+        corrupt_scenes = api.download_all(path, md5)
         if len(corrupt_scenes) is not 0:
             with open(os.path.join(path, "corrupt_scenes.txt"), "w") as outfile:
                 for corrupt_tuple in corrupt_scenes:
                     outfile.write("%s : %s\n" % corrupt_tuple)
-    elif download is True and check is False:
+    elif download is True and md5 is False:
         api.download_all(path)
     else:
         for product in api.get_products():
@@ -85,16 +104,16 @@ def search(user, password, geojson, start, end, download, check, footprints, pat
     '--path', '-p', type=click.Path(exists=True), default='.',
     help='Set the path where the files will be saved.')
 @click.option(
-    '--check', '-c', is_flag=True,
+    '--md5', is_flag=True,
     help='Verify the MD5 checksum and write corrupt product ids to a textfile.')
 @click.option(
     '--url', '-u', type=str, default='https://scihub.copernicus.eu/apihub/',
     help="""Define another API URL. Default URL is
         'https://scihub.copernicus.eu/apihub/'.
         """)
-def download(user, password, productid, path, check, url):
-    """Download a Sentinel-1 Product. It just needs your SciHub user and password
+def download(user, password, productid, path, md5, url):
+    """Download a Sentinel Product. It just needs your SciHub user and password
     and the id of the product you want to download.
     """
     api = SentinelAPI(user, password, url)
-    api.download(productid, path, check)
+    api.download(productid, path, md5)
