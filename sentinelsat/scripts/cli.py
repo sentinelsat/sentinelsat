@@ -15,23 +15,31 @@ def cli():
 @click.argument('user', type=str, metavar='<user>')
 @click.argument('password', type=str, metavar='<password>')
 @click.argument('geojson', type=click.Path(exists=True), metavar='<geojson>')
-@click.option('--start', '-s', type=str, default='NOW-1DAY',
+@click.option(
+    '--start', '-s', type=str, default='NOW-1DAY',
     help='Start date of the query in the format YYYYMMDD.')
-@click.option('--end', '-e', type=str, default='NOW',
+@click.option(
+    '--end', '-e', type=str, default='NOW',
     help='End date of the query in the format YYYYMMDD.')
-@click.option('--download', '-d', is_flag=True,
+@click.option(
+    '--download', '-d', is_flag=True,
     help='Download all results of the query.')
-@click.option('--check', '-c', is_flag=True,
+@click.option(
+    '--check', '-c', is_flag=True,
     help='Verify the MD5 checksum and write corrupt product ids to a textfile.')
-@click.option('--footprints', '-f', is_flag=True,
+@click.option(
+    '--footprints', '-f', is_flag=True,
     help='Create a geojson file with footprints of the query result.')
-@click.option('--path', '-p', type=click.Path(exists=True), default='.',
+@click.option(
+    '--path', '-p', type=click.Path(exists=True), default='.',
     help='Set the path where the files will be saved.')
-@click.option('--query', '-q', type=str, default=None,
+@click.option(
+    '--query', '-q', type=str, default=None,
     help="""Extra search keywords you want to use in the query. Separate
         keywords with comma. Example: 'producttype=GRD,polarisationmode=HH'.
         """)
-@click.option('--url', '-u', type=str, default='https://scihub.copernicus.eu/apihub/',
+@click.option(
+    '--url', '-u', type=str, default='https://scihub.copernicus.eu/apihub/',
     help="""Define another API URL. Default URL is
         'https://scihub.copernicus.eu/apihub/'.
         """)
@@ -73,11 +81,14 @@ def search(user, password, geojson, start, end, download, check, footprints, pat
 @click.argument('user', type=str, metavar='<user>')
 @click.argument('password', type=str, metavar='<password>')
 @click.argument('productid', type=str, metavar='<productid>')
-@click.option('--path', '-p', type=click.Path(exists=True), default='.',
+@click.option(
+    '--path', '-p', type=click.Path(exists=True), default='.',
     help='Set the path where the files will be saved.')
-@click.option('--check', '-c', is_flag=True,
+@click.option(
+    '--check', '-c', is_flag=True,
     help='Verify the MD5 checksum and write corrupt product ids to a textfile.')
-@click.option('--url', '-u', type=str, default='https://scihub.copernicus.eu/apihub/',
+@click.option(
+    '--url', '-u', type=str, default='https://scihub.copernicus.eu/apihub/',
     help="""Define another API URL. Default URL is
         'https://scihub.copernicus.eu/apihub/'.
         """)
