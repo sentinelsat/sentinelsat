@@ -178,10 +178,10 @@ def test_get_products_invalid_json():
             text="Invalid JSON response", status_code=200
             )
         api.query(
-        area=get_coordinates("tests/map.geojson"),
-        initial_date="20151219",
-        end_date="20151228",
-        platformname="Sentinel-2"
+            area=get_coordinates("tests/map.geojson"),
+            initial_date="20151219",
+            end_date="20151228",
+            platformname="Sentinel-2"
         )
         with pytest.raises(ValueError) as val_err:
             api.get_products()

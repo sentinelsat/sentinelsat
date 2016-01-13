@@ -63,18 +63,20 @@ def search(
     """
     api = SentinelAPI(user, password, url)
 
+    search_kwargs = {}
     if cloud:
-        query = "platformname=Sentinel-2,cloudcoverpercentage=[0 TO %s]" % cloud
-    elif sentinel2 and cloud is None:
-        query = "platformname=Sentinel-2"
+        search_kwargs.update(
+            {"platformname": "Sentinel-2",
+            "cloudcoverpercentage": "[0 TO %s]" % cloud})
+    elif sentinel2:
+        search_kwargs.update({"platformname": "Sentinel-2"})
     elif sentinel1:
-        query = "platformname=Sentinel-1"
+        search_kwargs.update({"platformname": "Sentinel-1"})
 
     if query is not None:
-        query = dict([i.split('=') for i in query.split(',')])
-        api.query(get_coordinates(geojson), start, end, **query)
-    else:
-        api.query(get_coordinates(geojson), start, end)
+        search_kwargs.update(dict([i.split('=') for i in query.split(',')]))
+
+    api.query(get_coordinates(geojson), start, end, **search_kwargs)
 
     if footprints is True:
         footprints_geojson = api.get_footprints()
