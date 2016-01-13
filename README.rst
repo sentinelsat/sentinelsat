@@ -95,24 +95,24 @@ can compare the spatial coverage before downloading the scenes.
 
 Options:
 
--s, --start TEXT  Start date of the query in the format YYYYMMDD.
--e, --end TEXT    End date of the query in the format YYYYMMDD.
--d, --download    Download all results of the query.
--f, --footprints  Create geojson file search_footprints.geojson with footprints
-                  of the query result.
--p, --path PATH   Set the path where the files will be saved.
--q, --query TEXT  Extra search keywords you want to use in the query.
-                  Separate keywords with comma.
-                  Example: 'producttype=GRD,polarisationmode=HH'.
--u, --url TEXT    Define another API URL. Default URL is
+-s, --start TEXT    Start date of the query in the format YYYYMMDD.
+-e, --end TEXT      End date of the query in the format YYYYMMDD.
+-d, --download      Download all results of the query.
+-f, --footprints    Create geojson file search_footprints.geojson with footprints
+                    of the query result.
+-p, --path PATH     Set the path where the files will be saved.
+-q, --query TEXT    Extra search keywords you want to use in the query.
+                    Separate keywords with comma.
+                    Example: 'producttype=GRD,polarisationmode=HH'.
+-u, --url TEXT      Define another API URL. Default URL is
                     'https://scihub.copernicus.eu/apihub/'.
---md5             Verify the MD5 checksum and write corrupt product ids and
-                  filenames to corrupt_scenes.txt.
---sentinel1       Limit search to Sentinel-1 products.
---sentinel2       Limit search to Sentinel-2 products.
+--md5               Verify the MD5 checksum and write corrupt product ids and
+                    filenames to corrupt_scenes.txt.
+--sentinel1         Limit search to Sentinel-1 products.
+--sentinel2         Limit search to Sentinel-2 products.
 -c, --cloud INTEGER Maximum cloud cover in percent. (Automatically sets
-                  --sentinel2)
---help            Show help message and exit.
+                    --sentinel2)
+--help              Show help message and exit.
 
 Download
 ^^^^^^^^
