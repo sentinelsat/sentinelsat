@@ -243,7 +243,6 @@ Contributors
 
 * Wille Marcel
 * Kersten Clauss
-* Michele Citterio
 
 License
 =======

@@ -45,7 +45,7 @@ def cli():
 @click.option(
     '--md5', is_flag=True,
     help="""Verify the MD5 checksum and write corrupt product ids and filenames
-    to corrupt_scenes.txt.')
+    to corrupt_scenes.txt.
     """)
 @click.option(
     '--sentinel1', is_flag=True,
@@ -99,7 +99,9 @@ def search(
         for product in api.get_products():
             print('Product %s - %s' % (product['id'], product['summary']))
         print('---')
-        print('%s scenes found with a total size of %.2f GB' % (len(api.get_products()), api.get_products_size()))
+        print(
+            '%s scenes found with a total size of %.2f GB' %
+            (len(api.get_products()), api.get_products_size()))
 
 
 @cli.command()
