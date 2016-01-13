@@ -160,10 +160,21 @@ class SentinelAPI(object):
                     if len(x.keys()) == 1
                     )["href"]
             }
-            str_properties = ["platformname", "identifier", "polarisationmode",
-                "sensoroperationalmode", "orbitdirection", "producttype"]
-            for str_prop in str_properties:
-                props.update({str_prop: next(x for x in scene["str"] if x["name"] == str_prop)["content"]})
+            # Sentinel-2 has no "polarisationmode" property
+            try:
+                str_properties = ["platformname", "identifier", "polarisationmode",
+                    "sensoroperationalmode", "orbitdirection", "producttype"]
+                for str_prop in str_properties:
+                    props.update(
+                        {str_prop: next(x for x in scene["str"] if x["name"] == str_prop)["content"]}
+                    )
+            except:
+                str_properties = ["platformname", "identifier",
+                    "sensoroperationalmode", "orbitdirection", "producttype"]
+                for str_prop in str_properties:
+                    props.update(
+                        {str_prop: next(x for x in scene["str"] if x["name"] == str_prop)["content"]}
+                    )
 
             feature_list.append(
                 geojson.Feature(geometry=poly, id=id, properties=props)
@@ -258,7 +269,7 @@ class SentinelAPI(object):
             try:
                 self.download(product['id'], path, checksum, **kwargs)
             except ValueError:
-                corrupt_scenes.append((product['title']+'.zip', product['id']))
+                corrupt_scenes.append((product['title'] + '.zip', product['id']))
         return corrupt_scenes
 
     @staticmethod
@@ -295,7 +306,7 @@ def get_coordinates(geojson_file, feature_number=0):
     return ','.join(coordinates)
 
 
-def md5_compare(file_path, checksum, block_size=2**13):
+def md5_compare(file_path, checksum, block_size=2 ** 13):
     """Compare a given md5 checksum with one calculated from a file"""
     md5 = hashlib.md5()
     with open(file_path, "rb") as f:
