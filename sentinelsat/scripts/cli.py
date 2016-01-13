@@ -26,7 +26,9 @@ def cli():
     help='Download all results of the query.')
 @click.option(
     '--footprints', '-f', is_flag=True,
-    help='Create a geojson file with footprints of the query result.')
+    help="""Create a geojson file search_footprints.geojson with footprints of
+    the query result.
+    """)
 @click.option(
     '--path', '-p', type=click.Path(exists=True), default='.',
     help='Set the path where the files will be saved.')
@@ -42,7 +44,9 @@ def cli():
         """)
 @click.option(
     '--md5', is_flag=True,
-    help='Verify the MD5 checksum and write corrupt product ids to a textfile.')
+    help="""Verify the MD5 checksum and write corrupt product ids and filenames
+    to corrupt_scenes.txt.')
+    """)
 @click.option(
     '--sentinel1', is_flag=True,
     help='Limit search to Sentinel-1 products.')
@@ -106,13 +110,15 @@ def search(
     '--path', '-p', type=click.Path(exists=True), default='.',
     help='Set the path where the files will be saved.')
 @click.option(
-    '--md5', is_flag=True,
-    help='Verify the MD5 checksum and write corrupt product ids to a textfile.')
-@click.option(
     '--url', '-u', type=str, default='https://scihub.copernicus.eu/apihub/',
     help="""Define another API URL. Default URL is
         'https://scihub.copernicus.eu/apihub/'.
         """)
+@click.option(
+    '--md5', is_flag=True,
+    help="""Verify the MD5 checksum and write corrupt product ids and filenames
+    to corrupt_scenes.txt.')
+    """)
 def download(user, password, productid, path, md5, url):
     """Download a Sentinel Product. It just needs your SciHub user and password
     and the id of the product you want to download.

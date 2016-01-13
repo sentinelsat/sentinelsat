@@ -74,20 +74,45 @@ containing the polygon of the area that you want to search in. If you
 don't specify the start and end dates, it will search products published in the last 24
 hours.
 
+Examples:
+
+.. code-block:: console
+
+    sentinel search -d -s 20151219 -c 30 --md5 username password roi.geojson
+
+Search and download all Sentinel-2 products with less than 30% cloud cover
+acquired since 2015-12-19. Verify the integrity of the downloaded files with
+the MD5 checksum provided by the Scihub.
+
+.. code-block:: console
+
+    sentinel search -f -s 20151219 -e 20151228 --sentinel1 -q "producttype=GRD,orbitdirection=Ascending" username password roi.geojson
+
+Search all Sentinel-1 Ground Range Detected products acquired in Ascending orbit
+between 2015-12-19 and 2015-12-28 and create a search_footprints.geojson so you
+can compare the spatial coverage before downloading the scenes.
+
+
 Options:
 
 -s, --start TEXT  Start date of the query in the format YYYYMMDD.
 -e, --end TEXT    End date of the query in the format YYYYMMDD.
 -d, --download    Download all results of the query.
--c, --check       Verify the MD5 checksum and write corrupt product ids to a
-                    textfile.
--f, --footprints   Create geojson file with footprints of the query result.
+-f, --footprints  Create geojson file search_footprints.geojson with footprints
+                  of the query result.
 -p, --path PATH   Set the path where the files will be saved.
 -q, --query TEXT  Extra search keywords you want to use in the query.
                   Separate keywords with comma.
                   Example: 'producttype=GRD,polarisationmode=HH'.
 -u, --url TEXT    Define another API URL. Default URL is
                     'https://scihub.copernicus.eu/apihub/'.
+--md5             Verify the MD5 checksum and write corrupt product ids and
+                  filenames to corrupt_scenes.txt.
+--sentinel1       Limit search to Sentinel-1 products.
+--sentinel2       Limit search to Sentinel-2 products.
+-c, --cloud INTEGER Maximum cloud cover in percent. (Automatically sets
+                  --sentinel2)
+--help            Show help message and exit.
 
 Download
 ^^^^^^^^
@@ -99,13 +124,23 @@ Download
 Download a single Sentinel Product. Provide your scihub username and password and
 the id of the product you want to download.
 
+
+Example:
+
+.. code-block:: console
+
+    sentinel download --md5 -u "https://scihub.copernicus.eu/dhus/" username password a9048d1d-fea6-4df8-bedd-7bcb212be12e
+
+Download the Sentinel-1 GRDH scene covering Santa Claus Village in Finland on
+Christmas Eve 2015.
+
 Options:
 
--p, --path PATH  Set the path where the file will be saved.
--c, --check      Verify the MD5 checksum and write corrupt product ids to a
-                    textfile.
--u, --url TEXT    Define another API URL. Default URL is
+-p, --path PATH Set the path where the file will be saved.
+-u, --url TEXT  Define another API URL. Default URL is
                     'https://scihub.copernicus.eu/apihub/'.
+--md5           Verify the MD5 checksum and write corrupt product ids and
+                filenames to corrupt_scenes.txt.
 
 
 Python Library
@@ -157,14 +192,20 @@ You can query by using date or datetime objects too.
 
 If you don't specify the start and end dates, it will query in the last 24 hours.
 
-Beyond area and date parameters, you can use any search keywords accepted by the scihub API, for example:
+Beyond area and date parameters, you can use any search keywords accepted by the Scihub API, for example:
 
 .. code-block:: python
 
     api.query('0 0,1 1,0 1,0 0', producttype='SLC')
 
+You can also provide the search keywords as a dictionary:
+
+.. code-block:: python
+
+    api.query(get_coordinates(map.geojson), "20151219", "20151229", keywords={"platformname": "Sentinel-2", "cloudcoverpercentage": "[0 TO 30]"})
+
 See the `SciHub User Guide <https://scihub.copernicus.eu/twiki/do/view/SciHubUserGuide/3FullTextSearch#Search_Keywords>`_
-for all the Search Keywords.
+for all the valid search keywords.
 
 To download all the results of your query, use:
 
@@ -178,7 +219,7 @@ To get a geojson FeatureCollection containing the footprints and metadata for th
 
     api.get_footprints()
 
-The download from https://scihub.esa.int will fail if the server certificate
+The download from Scihub will fail if the server certificate
 cannot be verified because no default CA bundle is defined, as on Windows, or
 when the CA bundle is outdated. In most cases the easiest solution is to
 install or update `certifi <https://pypi.python.org/pypi/certifi>`_:
