@@ -8,7 +8,7 @@ with codecs_open('README.rst', encoding='utf-8') as f:
 
 
 setup(name='sentinelsat',
-      version='0.6',
+      version='0.6.1',
       description="Utility to search and download Sentinel-1 Imagery",
       long_description=long_description,
       classifiers=[
@@ -19,7 +19,7 @@ setup(name='sentinelsat',
           'Topic :: Scientific/Engineering :: GIS',
           'Topic :: Utilities',
       ],
-      keywords='',
+      keywords='sentinel, esa, satellite, download, GIS',
       author="Wille Marcel",
       author_email='wille@wille.blog.br',
       url='https://github.com/ibamacsr/sentinelsat',
