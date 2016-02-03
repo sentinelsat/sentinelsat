@@ -58,3 +58,8 @@ target/
 
 #editors
 *~
+
+#exclude sphinx built directories
+_build
+_static
+_templates
