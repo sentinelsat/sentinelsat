@@ -238,6 +238,21 @@ the ``pass_through_opts`` keyword argument when calling ``api.download()`` or
     api.download_all(pass_through_opts={CAINFO: 'path/to/my/cacert.pem'})
 
 
+Tests
+======
+
+To run the tests on `sentinelsat`:
+
+.. code-block:: console
+
+    git clone https://github.com/ibamacsr/sentinelsat.git
+    cd sentinelsat
+    pip install -e .[test]
+    export SENTINEL_USER=<your scihub username>
+    export SENTINEL_PASSWORD=<your scihub password>
+    py.test -v
+
+
 Contributors
 =============
 
