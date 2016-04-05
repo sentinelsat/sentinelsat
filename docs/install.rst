@@ -3,7 +3,8 @@
 Installation
 ============
 
-Sentinelsat depends on `homura <https://github.com/shichao-an/homura>`_, which depends on `PycURL <http://pycurl.sourceforge.net/>`_.
+Sentinelsat depends on `homura <https://github.com/shichao-an/homura>`_, which
+depends on `PycURL <http://pycurl.sourceforge.net/>`_.
 
 Unix
 ----

@@ -27,23 +27,19 @@ and a powerfull Python API.
   api.download_all()
 
 
-Guide
+Contents
 ^^^^^
 
 .. toctree::
    :maxdepth: 2
 
-   intro
    install
    cli
    api
 
-
-
 Indices and tables
 ==================
 
-* :ref:`api`
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+  * :ref:`genindex`
+  * :ref:`modindex`
+  * :ref:`search`
