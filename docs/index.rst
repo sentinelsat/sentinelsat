@@ -2,8 +2,9 @@
 Sentinelsat
 ===========
 
-Sentinelsat makes finding and downloading Copernicus Sentinel satellite
-images easy.
+Sentinelsat makes finding and downloading `Copernicus Sentinel
+<http://www.esa.int/Our_Activities/Observing_the_Earth/Copernicus/Overview4>`_
+satellite images easy.
 
 It offers an easy to use command line interface.
 
