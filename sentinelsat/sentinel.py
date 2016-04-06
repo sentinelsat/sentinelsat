@@ -46,8 +46,25 @@ def convert_timestamp(in_date):
 
 
 class SentinelAPI(object):
-    """Class to connect to Sentinel-1 Scientific Data Hub, search and download
+    """Class to connect to Sentinel Data Hub, search and download
     imagery.
+
+    Parameters
+    ----------
+    user : string
+        username for DataHub
+    password : string
+        password for DataHub
+    api_url : string, optional
+        URL of the DataHub
+        defaults to 'https://scihub.copernicus.eu/apihub'
+
+    Attributes
+    ----------
+    session : requests.Session object
+        Session to connect to DataHub
+    api_url : str
+        URL to the DataHub
     """
 
     def __init__(self, user, password, api_url='https://scihub.copernicus.eu/apihub/'):
