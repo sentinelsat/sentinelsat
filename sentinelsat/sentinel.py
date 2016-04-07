@@ -46,8 +46,7 @@ def convert_timestamp(in_date):
 
 
 class SentinelAPI(object):
-    """Class to connect to Sentinel Data Hub, search and download
-    imagery.
+    """Class to connect to Sentinel Data Hub, search and download imagery.
 
     Parameters
     ----------

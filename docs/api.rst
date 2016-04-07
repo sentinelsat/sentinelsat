@@ -9,8 +9,8 @@ Quickstart
 TODO: Example how to download Sentinel data with the API. Create footprints, etc.
 
 
-SentinelAPI
+API
 -----------
 
-.. autoclass:: sentinelsat.sentinel.SentinelAPI
+.. automodule:: sentinelsat.sentinel
     :members:

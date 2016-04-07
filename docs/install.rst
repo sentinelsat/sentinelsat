@@ -4,7 +4,8 @@ Installation
 ============
 
 Sentinelsat depends on `homura <https://github.com/shichao-an/homura>`_, which
-depends on `PycURL <http://pycurl.sourceforge.net/>`_.
+depends on `PycURL <http://pycurl.sourceforge.net/>`_. When the dependencies are
+fulfilled install with ``pip install sentinelsat``.
 
 Unix
 ----
@@ -39,16 +40,12 @@ Or you can use `Conda <http://conda.pydata.org/docs/>`_ and do
 
     conda install pycurl
 
-Then install ``sentinelsat``:
-
-.. code-block:: console
-
-    pip install sentinelsat
 
 OSX
 ---
 
 TODO: How to install on OSX.
+
 
 Troubleshooting
 ---------------
