@@ -97,7 +97,8 @@ Options:
 
 Query parameters:
 
-TODO: Include Link to ESA query parameters.
+ESA maintains a `list of valid search keywords
+<https://scihub.copernicus.eu/userguide/3FullTextSearch>`_ to query the SciHub.
 
 sentinel download
 -----------------

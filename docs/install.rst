@@ -28,7 +28,9 @@ Fedora
 Windows
 -------
 
-The easiest way to install pycurl is to use one of the `pycurl wheels <http://www.lfd.uci.edu/~gohlke/pythonlibs/#pycurl>`_ provided by Christoph Gohlke.
+The easiest way to install pycurl is to use one of the
+`pycurl wheels <http://www.lfd.uci.edu/~gohlke/pythonlibs/#pycurl>`_ provided by
+Christoph Gohlke.
 
 .. code-block:: console
 
@@ -46,8 +48,32 @@ OSX
 
 TODO: How to install on OSX.
 
+Tests
+-----
+
+.. code-block:: bash
+
+  git clone https://github.com/ibamacsr/sentinelsat.git
+  cd sentinelsat
+  pip install -e .[test]
+  export SENTINEL_USER=<your scihub username>
+  export SENTINEL_PASSWORD=<your scihub password>
+  py.test -v
+
 
 Troubleshooting
 ---------------
 
-TODO: Common installation errors and how to solve them.
+The download from Scihub will fail if the server certificate cannot be verified
+because no default CA bundle is defined, as on Windows, or when the CA bundle is
+outdated. In most cases the easiest solution is to install or update ``certifi``:
+
+``pip install -U certifi``
+You can also override the the path setting to the PEM file of the CA bundle
+using the ``pass_through_opts`` keyword argument when calling ``api.download()``
+or ``api.download_all()``:
+
+.. code-block:: python
+
+  from pycurl import CAINFO
+  api.download_all(pass_through_opts={CAINFO: 'path/to/my/cacert.pem'})
