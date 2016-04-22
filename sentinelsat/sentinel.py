@@ -46,8 +46,24 @@ def convert_timestamp(in_date):
 
 
 class SentinelAPI(object):
-    """Class to connect to Sentinel-1 Scientific Data Hub, search and download
-    imagery.
+    """Class to connect to Sentinel Data Hub, search and download imagery.
+
+    Parameters
+    ----------
+    user : string
+        username for DataHub
+    password : string
+        password for DataHub
+    api_url : string, optional
+        URL of the DataHub
+        defaults to 'https://scihub.copernicus.eu/apihub'
+
+    Attributes
+    ----------
+    session : requests.Session object
+        Session to connect to DataHub
+    api_url : str
+        URL to the DataHub
     """
 
     def __init__(self, user, password, api_url='https://scihub.copernicus.eu/apihub/'):
@@ -298,7 +314,21 @@ class SentinelAPI(object):
 
 
 def get_coordinates(geojson_file, feature_number=0):
-    """Return the coordinates of a polygon of a GeoJSON file."""
+    """Return the coordinates of a polygon of a GeoJSON file.
+
+    Parameters
+    ----------
+    geojson_file : str
+        location of GeoJSON file_path
+    feature_number : int
+        Feature to extract polygon from (in case of MultiPolygon
+        FeatureCollection), defaults to first Feature
+
+    Returns
+    -------
+    polygon coordinates
+        string of comma separated coordinate tuples to be used by SentinelAPI
+    """
     geojson_obj = geojson.loads(open(geojson_file, 'r').read())
     coordinates = geojson_obj['features'][feature_number]['geometry']['coordinates'][0]
     # precision of 7 decimals equals 1mm at the equator
