@@ -69,7 +69,7 @@ def test_returned_filesize():
         '-e', '20141231',
         '-q', 'producttype=GRD']
         )
-    expected = "13 scenes found with a total size of 7.23 GB"
+    expected = "20 scenes found with a total size of 11.06 GB"
     assert result.output.split("\n")[-2] == expected
 
 
@@ -88,7 +88,7 @@ def test_cloud_flag_url():
         '-c', "10"]
         )
 
-    expected = "Product 37ecee60-23d8-4ec2-a65f-2de24f51d30e - Date: 2015-12-19T14:58:32Z, Instrument: MSI, Mode: , Satellite: Sentinel-2, Size: 6.13 GB"
+    expected = "Product 6ed0b7de-3435-43df-98bf-ad63c8d077ef - Date: 2015-12-27T14:22:29Z, Instrument: MSI, Mode: , Satellite: Sentinel-2, Size: 5.47 GB"
     assert result.output.split("\n")[0] == expected
 
 
@@ -126,5 +126,5 @@ def test_sentinel2_flag():
         '--sentinel2']
         )
 
-    expected = "Product f0492d62-b03c-4411-b00a-59220647dfcf - Date: 2015-12-23T14:42:14Z, Instrument: MSI, Mode: , Satellite: Sentinel-2, Size: 5.83 GB"
+    expected = "Product 91c2503c-3c58-4a8c-a70b-207b128e6833 - Date: 2015-12-27T14:22:29Z, Instrument: MSI, Mode: , Satellite: Sentinel-2, Size: 5.73 GB"
     assert result.output.split("\n")[2] == expected
