@@ -98,7 +98,7 @@ class SentinelAPI(object):
         if initial_date is None:
             initial_date = end_date - timedelta(hours=24)
 
-        aquisition_date = '(beginPosition:[%s TO %s])' % (
+        acquisition_date = '(beginPosition:[%s TO %s])' % (
             format_date(initial_date),
             format_date(end_date)
         )
@@ -110,7 +110,7 @@ class SentinelAPI(object):
 
         self.url = urljoin(
             self.api_url,
-            'search?format=json&rows=15000&q=%s%s%s' % (aquisition_date, query_area, filters)
+            'search?format=json&rows=15000&q=%s%s%s' % (acquisition_date, query_area, filters)
         )
 
     def get_products(self):
