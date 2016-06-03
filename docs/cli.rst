@@ -23,6 +23,10 @@ Search areas are provided as GeoJSON polygons, which can be created with
 If you do not specify a start and end date only products published in the last
 24 hours will be queried.
 
+Start and end dates refer to the acquisition date given by the
+`beginPosition <https://scihub.copernicus.eu/userguide/3FullTextSearch>` of the
+products, i.e. the start of the acquisition time.
+
 Sentinel-1
 ~~~~~~~~~~
 

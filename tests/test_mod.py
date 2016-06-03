@@ -43,7 +43,7 @@ def test_SentinelAPI_connection():
     api.query('0 0,1 1,0 1,0 0', datetime(2015, 1, 1), datetime(2015, 1, 2))
 
     assert api.url == 'https://scihub.copernicus.eu/apihub/search?format=json&rows=15000' + \
-        '&q=(ingestionDate:[2015-01-01T00:00:00Z TO 2015-01-02T00:00:00Z]) ' + \
+        '&q=(beginPosition:[2015-01-01T00:00:00Z TO 2015-01-02T00:00:00Z]) ' + \
         'AND (footprint:"Intersects(POLYGON((0 0,1 1,0 1,0 0)))")'
     assert api.content.status_code == 200
 
@@ -73,12 +73,12 @@ def test_api_url_format():
     api.format_url('0 0,1 1,0 1,0 0', end_date=now)
     last_24h = format_date(now - timedelta(hours=24))
     assert api.url == 'https://scihub.copernicus.eu/apihub/search?format=json&rows=15000' + \
-        '&q=(ingestionDate:[%s TO %s]) ' % (last_24h, format_date(now)) + \
+        '&q=(beginPosition:[%s TO %s]) ' % (last_24h, format_date(now)) + \
         'AND (footprint:"Intersects(POLYGON((0 0,1 1,0 1,0 0)))")'
 
     api.format_url('0 0,1 1,0 1,0 0', end_date=now, producttype='SLC')
     assert api.url == 'https://scihub.copernicus.eu/apihub/search?format=json&rows=15000' + \
-        '&q=(ingestionDate:[%s TO %s]) ' % (last_24h, format_date(now)) + \
+        '&q=(beginPosition:[%s TO %s]) ' % (last_24h, format_date(now)) + \
         'AND (footprint:"Intersects(POLYGON((0 0,1 1,0 1,0 0)))") ' + \
         'AND (producttype:SLC)'
 
@@ -93,7 +93,7 @@ def test_set_base_url():
     api.query('0 0,1 1,0 1,0 0', datetime(2015, 1, 1), datetime(2015, 1, 2))
 
     assert api.url == 'https://scihub.copernicus.eu/dhus/search?format=json&rows=15000' + \
-        '&q=(ingestionDate:[2015-01-01T00:00:00Z TO 2015-01-02T00:00:00Z]) ' + \
+        '&q=(beginPosition:[2015-01-01T00:00:00Z TO 2015-01-02T00:00:00Z]) ' + \
         'AND (footprint:"Intersects(POLYGON((0 0,1 1,0 1,0 0)))")'
     assert api.content.status_code == 200
 
@@ -174,7 +174,7 @@ def test_get_products_invalid_json():
     api = SentinelAPI("mock_user", "mock_password")
     with requests_mock.mock() as rqst:
         rqst.get(
-            'https://scihub.copernicus.eu/apihub/search?format=json&rows=15000&q=(ingestionDate:[2015-12-19T00:00:00Z TO 2015-12-28T00:00:00Z]) AND (footprint:"Intersects(POLYGON((-66.2695312 -8.0592296,-66.2695312 0.7031074,-57.3046875 0.7031074,-57.3046875 -8.0592296,-66.2695312 -8.0592296)))") AND (platformname:Sentinel-2)',
+            'https://scihub.copernicus.eu/apihub/search?format=json&rows=15000&q=(beginPosition:[2015-12-19T00:00:00Z TO 2015-12-28T00:00:00Z]) AND (footprint:"Intersects(POLYGON((-66.2695312 -8.0592296,-66.2695312 0.7031074,-57.3046875 0.7031074,-57.3046875 -8.0592296,-66.2695312 -8.0592296)))") AND (platformname:Sentinel-2)',
             text="Invalid JSON response", status_code=200
             )
         api.query(
@@ -234,9 +234,10 @@ def test_s2_cloudcover():
         platformname="Sentinel-2",
         cloudcoverpercentage="[0 TO 10]"
         )
-    assert len(api.get_products()) == 2
-    assert api.get_products()[0]["id"] == "37ecee60-23d8-4ec2-a65f-2de24f51d30e"
-    assert api.get_products()[1]["id"] == "0848f6b8-5730-4759-850e-fc9945d42296"
+    assert len(api.get_products()) == 3
+    assert api.get_products()[0]["id"] == "6ed0b7de-3435-43df-98bf-ad63c8d077ef"
+    assert api.get_products()[1]["id"] == "37ecee60-23d8-4ec2-a65f-2de24f51d30e"
+    assert api.get_products()[2]["id"] == "0848f6b8-5730-4759-850e-fc9945d42296"
 
 
 @pytest.mark.scihub
@@ -249,4 +250,4 @@ def test_get_products_size():
         get_coordinates('tests/map.geojson'),
         "20151219", "20151228", platformname="Sentinel-2"
         )
-    assert api.get_products_size() == 46.88
+    assert api.get_products_size() == 63.58
