@@ -77,7 +77,8 @@ class SentinelAPI(object):
         """
         self.format_url(area, initial_date, end_date, **keywords)
         try:
-            self.content = requests.get(self.url, auth=self.session.auth)
+            self.content = requests.post(self.url, dict(q=self.query),
+                                         auth=self.session.auth)
             # anything other than 2XX is considered an error
             if not self.content.status_code // 100 == 2:
                 print(('Error: API returned unexpected response {} .'.format(self.content.status_code)))
@@ -108,10 +109,8 @@ class SentinelAPI(object):
         for kw in sorted(keywords.keys()):
             filters += ' AND (%s:%s)' % (kw, keywords[kw])
 
-        self.url = urljoin(
-            self.api_url,
-            'search?format=json&rows=15000&q=%s%s%s' % (acquisition_date, query_area, filters)
-        )
+        self.url = urljoin(self.api_url, 'search?format=json&rows=15000')
+        self.query = ''.join([acquisition_date, query_area, filters])
 
     def get_products(self):
         """Return the result of the Query in json format."""
