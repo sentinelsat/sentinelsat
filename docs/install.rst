@@ -28,15 +28,15 @@ Fedora
 Windows
 -------
 
-The easiest way to install pycurl is to use one of the
+The easiest way to install pycurl is with
 `pycurl wheels <http://www.lfd.uci.edu/~gohlke/pythonlibs/#pycurl>`_ provided by
-Christoph Gohlke.
+Christoph Gohlke
 
 .. code-block:: console
 
     pip install pycurl.whl
 
-Or you can use `Conda <http://conda.pydata.org/docs/>`_ and do
+or with`Conda <http://conda.pydata.org/docs/>`_
 
 .. code-block:: console
 
