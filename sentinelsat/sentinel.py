@@ -324,6 +324,11 @@ class SentinelAPI(object):
                 print('%s was already downloaded but is corrupt: checksums do not match. Re-downloading.' % path)
                 remove(path)
 
+        if exists(path) and getsize(path) >= 2 ** 31:
+            # Workaround for PycURL's bug when continuing > 2 GB files
+            # https://github.com/pycurl/pycurl/issues/405
+            remove(path)
+
         homura.download(product_info['url'], path=path, session=self.session, **kwargs)
 
         # Check integrity with MD5 checksum
