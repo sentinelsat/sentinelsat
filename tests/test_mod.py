@@ -38,8 +38,8 @@ def test_md5_comparison():
 @pytest.mark.scihub
 def test_SentinelAPI_connection():
     api = SentinelAPI(
-        environ.get('SENTINEL_USER'),
-        environ.get('SENTINEL_PASSWORD')
+        environ['SENTINEL_USER'],
+        environ['SENTINEL_PASSWORD']
         )
     api.query('0 0,1 1,0 1,0 0', datetime(2015, 1, 1), datetime(2015, 1, 2))
 
@@ -67,8 +67,8 @@ def test_SentinelAPI_wrong_credentials():
 @pytest.mark.fast
 def test_api_query_format():
     api = SentinelAPI(
-        environ.get('SENTINEL_USER'),
-        environ.get('SENTINEL_PASSWORD')
+        environ['SENTINEL_USER'],
+        environ['SENTINEL_PASSWORD']
         )
 
     now = datetime.now()
@@ -88,8 +88,8 @@ def test_api_query_format():
 @pytest.mark.scihub
 def test_invalid_query():
     api = SentinelAPI(
-        environ.get('SENTINEL_USER'),
-        environ.get('SENTINEL_PASSWORD')
+        environ['SENTINEL_USER'],
+        environ['SENTINEL_PASSWORD']
         )
     with pytest.raises(requests.HTTPError):
         api.query_raw("xxx:yyy")
@@ -98,8 +98,8 @@ def test_invalid_query():
 @pytest.mark.scihub
 def test_set_base_url():
     api = SentinelAPI(
-        environ.get('SENTINEL_USER'),
-        environ.get('SENTINEL_PASSWORD'),
+        environ['SENTINEL_USER'],
+        environ['SENTINEL_PASSWORD'],
         'https://scihub.copernicus.eu/dhus/'
         )
     api.query('0 0,1 1,0 1,0 0', datetime(2015, 1, 1), datetime(2015, 1, 2))
@@ -122,8 +122,8 @@ def test_trail_slash_base_url():
     for test_url in base_urls:
         assert SentinelAPI._url_trail_slash(test_url) == expected
         api = SentinelAPI(
-            environ.get('SENTINEL_USER'),
-            environ.get('SENTINEL_PASSWORD'),
+            environ['SENTINEL_USER'],
+            environ['SENTINEL_PASSWORD'],
             test_url
             )
         assert api.api_url == expected
@@ -132,15 +132,15 @@ def test_trail_slash_base_url():
 @pytest.mark.fast
 def test_get_coordinates():
     coords = ('-66.2695312 -8.0592296,-66.2695312 0.7031074,' +
-        '-57.3046875 0.7031074,-57.3046875 -8.0592296,-66.2695312 -8.0592296')
+              '-57.3046875 0.7031074,-57.3046875 -8.0592296,-66.2695312 -8.0592296')
     assert get_coordinates('tests/map.geojson') == coords
 
 
 @pytest.mark.scihub
 def test_get_product_info():
     api = SentinelAPI(
-        environ.get('SENTINEL_USER'),
-        environ.get('SENTINEL_PASSWORD')
+        environ['SENTINEL_USER'],
+        environ['SENTINEL_PASSWORD']
         )
 
     expected_s1 = {
@@ -231,8 +231,8 @@ def test_get_products_invalid_json():
 @pytest.mark.scihub
 def test_footprints_s1():
     api = SentinelAPI(
-        environ.get('SENTINEL_USER'),
-        environ.get('SENTINEL_PASSWORD')
+        environ['SENTINEL_USER'],
+        environ['SENTINEL_PASSWORD']
         )
     api.query(
         get_coordinates('tests/map.geojson'),
@@ -248,8 +248,8 @@ def test_footprints_s1():
 @pytest.mark.scihub
 def test_footprints_s2():
     api = SentinelAPI(
-        environ.get('SENTINEL_USER'),
-        environ.get('SENTINEL_PASSWORD')
+        environ['SENTINEL_USER'],
+        environ['SENTINEL_PASSWORD']
         )
     api.query(
         get_coordinates('tests/map.geojson'),
@@ -265,8 +265,8 @@ def test_footprints_s2():
 @pytest.mark.scihub
 def test_s2_cloudcover():
     api = SentinelAPI(
-        environ.get('SENTINEL_USER'),
-        environ.get('SENTINEL_PASSWORD')
+        environ['SENTINEL_USER'],
+        environ['SENTINEL_PASSWORD']
         )
     api.query(
         get_coordinates('tests/map.geojson'),
@@ -283,8 +283,8 @@ def test_s2_cloudcover():
 @pytest.mark.scihub
 def test_get_products_size():
     api = SentinelAPI(
-        environ.get('SENTINEL_USER'),
-        environ.get('SENTINEL_PASSWORD')
+        environ['SENTINEL_USER'],
+        environ['SENTINEL_PASSWORD']
         )
     api.query(
         get_coordinates('tests/map.geojson'),
