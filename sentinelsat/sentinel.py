@@ -1,27 +1,31 @@
 # -*- coding: utf-8 -*-
 from __future__ import print_function
 
-import homura
+import hashlib
+import sys
+import traceback
+import xml.etree.ElementTree as ET
+from datetime import datetime, date, timedelta
+from os import remove
+from os.path import join, exists, getsize
 from pycurl import CAINFO
-import requests
+from time import sleep
+
 import geojson
+import homura
+import requests
 from tqdm import tqdm
+
+try:
+    from urlparse import urljoin
+except ImportError:
+    from urllib.parse import urljoin
 
 try:
     import certifi
 except ImportError:
     certifi = None
 
-import hashlib
-import xml.etree.ElementTree as ET
-from datetime import datetime, date, timedelta
-from time import sleep
-try:
-    from urlparse import urljoin
-except:
-    from urllib.parse import urljoin
-from os.path import join, exists, getsize
-from os import remove
 
 class InvalidChecksumError(Exception):
     pass
@@ -337,22 +341,56 @@ class SentinelAPI(object):
                 raise InvalidChecksumError('File corrupt: Checksums do not match')
         return path, product_info
 
-    def download_all(self, path='.', checksum=False, **kwargs):
-        """Download all products using homura.
+    def download_all(self, directory_path='.', max_attempts=10, checksum=False, check_existing=False, **kwargs):
+        """Download all products returned in query() or query_raw().
 
-        Uses the filenames on the server for the downloaded files, e.g.
+        File names on the server are used for the downloaded files, e.g.
         "S1A_EW_GRDH_1SDH_20141003T003840_20141003T003920_002658_002F54_4DD1.zip".
-        If the checksum calculation fails a list with tuples of filename and product ids of the corrupt scenes will
-        be returned.
-        Further keyword arguments are passed to the homura.download() function.
+
+        In case of interruptions or other exceptions, downloading will restart from where it left off.
+        Downloading is attempted at most max_attempts times to avoid getting stuck with unrecoverable errors.
+
+        Parameters
+        ----------
+        directory_path : string
+            Directory where the downloaded files will be downloaded
+        max_attempts : int, optional
+            Number of allowed retries before giving up downloading a product. Defaults to 10.
+
+        Other Parameters
+        ----------------
+        See download().
+
+        Returns
+        -------
+        dict[string, dict|None]
+            A dictionary with an entry for each product mapping the downloaded file path to its product info
+            (returned by get_product_info()). Product info is set to None if downloading the product failed.
         """
-        corrupt_scenes = []
-        for product in self.get_products():
-            try:
-                self.download(product['id'], path, checksum, **kwargs)
-            except InvalidChecksumError:
-                corrupt_scenes.append((product['title'] + '.zip', product['id']))
-        return corrupt_scenes
+        result = {}
+        products = self.get_products()
+        print("Will download %d products" % len(products))
+        for i, product in enumerate(products):
+            path = join(directory_path, product['title'] + '.zip')
+            product_info = None
+            download_successful = False
+            remaining_attempts = max_attempts
+            while not download_successful and remaining_attempts > 0:
+                try:
+                    path, product_info = self.download(product['id'], directory_path, checksum, check_existing,
+                                                       **kwargs)
+                    download_successful = True
+                except (KeyboardInterrupt, SystemExit, SystemError, MemoryError):
+                    raise
+                except InvalidChecksumError:
+                    print("Invalid checksum. The downloaded file is corrupted.")
+                except:
+                    print("There was an error downloading %s" % product['title'], file=sys.stderr)
+                    traceback.print_exc()
+                remaining_attempts -= 1
+            result[path] = product_info
+            print("{}/{} products downloaded".format(i + 1, len(products)))
+        return result
 
     @staticmethod
     def _fillin_cainfo(kwargs_dict):
