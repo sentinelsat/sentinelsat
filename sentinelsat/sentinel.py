@@ -5,6 +5,7 @@ from homura import download
 from pycurl import CAINFO
 import requests
 import geojson
+from tqdm import tqdm
 
 try:
     import certifi
@@ -19,7 +20,7 @@ try:
     from urlparse import urljoin
 except:
     from urllib.parse import urljoin
-from os.path import join, exists
+from os.path import join, exists, getsize
 from os import remove
 
 
@@ -364,9 +365,12 @@ def md5_compare(file_path, checksum, block_size=2 ** 13):
     """Compare a given md5 checksum with one calculated from a file"""
     md5 = hashlib.md5()
     with open(file_path, "rb") as f:
+        progress = tqdm(desc="MD5 checksumming", total=getsize(file_path), unit="B", unit_scale=True)
         while True:
             block_data = f.read(block_size)
             if not block_data:
                 break
             md5.update(block_data)
-    return md5.hexdigest() == checksum
+            progress.update(len(block_data))
+        progress.close()
+    return md5.hexdigest().lower() == checksum.lower()
