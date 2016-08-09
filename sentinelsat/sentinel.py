@@ -70,15 +70,28 @@ class SentinelAPI(object):
         self.session = requests.Session()
         self.session.auth = (user, password)
         self.api_url = self._url_trail_slash(api_url)
+        self.last_query = None
+        self.content = None
+        self.products = None
+
+    @property
+    def url(self):
+        return urljoin(self.api_url, 'search?format=json&rows=15000')
 
     def query(self, area, initial_date=None, end_date=datetime.now(), **keywords):
-        """Query the SciHub API with the coordinates of an area, a date inverval
+        """Query the SciHub API with the coordinates of an area, a date interval
         and any other search keywords accepted by the SciHub API.
         """
-        self.format_url(area, initial_date, end_date, **keywords)
+        query = self.format_query(area, initial_date, end_date, **keywords)
+        self.query_raw(query)
+
+    def query_raw(self, query):
+        """Do a full-text query on the SciHub API using the format specified in
+        https://scihub.copernicus.eu/twiki/do/view/SciHubUserGuide/3FullTextSearch
+        """
+        self.last_query = query
         try:
-            self.content = requests.post(self.url, dict(q=self.query),
-                                         auth=self.session.auth)
+            self.content = requests.post(self.url, dict(q=query), auth=self.session.auth)
             # anything other than 2XX is considered an error
             if not self.content.status_code // 100 == 2:
                 print(('Error: API returned unexpected response {} .'.format(self.content.status_code)))
@@ -92,7 +105,8 @@ class SentinelAPI(object):
             api_url += '/'
         return api_url
 
-    def format_url(self, area, initial_date=None, end_date=datetime.now(), **keywords):
+    @staticmethod
+    def format_query(area, initial_date=None, end_date=datetime.now(), **keywords):
         """Create the URL to access the SciHub API, defining the max quantity of
         results to 15000 items.
         """
@@ -109,8 +123,8 @@ class SentinelAPI(object):
         for kw in sorted(keywords.keys()):
             filters += ' AND (%s:%s)' % (kw, keywords[kw])
 
-        self.url = urljoin(self.api_url, 'search?format=json&rows=15000')
-        self.query = ''.join([acquisition_date, query_area, filters])
+        query = ''.join([acquisition_date, query_area, filters])
+        return query
 
     def get_products(self):
         """Return the result of the Query in json format."""
@@ -153,7 +167,7 @@ class SentinelAPI(object):
                 for x in scene["str"]
                 if x["name"] == "footprint"
                 )["content"][10:-2].split(",")
-            coord_list_split = [coord.split(" ") for coord in coord_list]
+            coord_list_split = (coord.split(" ") for coord in coord_list)
             poly = geojson.Polygon([[
                 tuple((float(coord[0]), float(coord[1])))
                 for coord in coord_list_split
