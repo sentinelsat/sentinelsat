@@ -8,7 +8,7 @@ from os import environ
 import hashlib
 
 from sentinelsat.sentinel import (SentinelAPI, format_date, get_coordinates,
-    convert_timestamp, md5_compare)
+    convert_timestamp, md5_compare, InvalidChecksumError)
 
 
 @pytest.mark.fast
@@ -296,3 +296,63 @@ def test_get_products_size():
     assert len(api.get_products()) > 0
     # Rounded to zero
     assert api.get_products_size() == 0
+
+
+@pytest.mark.scihub
+def test_download(tmpdir):
+    api = SentinelAPI(
+        environ['SENTINEL_USER'],
+        environ['SENTINEL_PASSWORD']
+    )
+    uuid = "1f62a176-c980-41dc-b3a1-c735d660c910"
+    filename = "S1A_WV_OCN__2SSH_20150603T092625_20150603T093332_006207_008194_521E"
+    expected_path = tmpdir.join(filename + ".zip")
+
+    # Download normally
+    path, product_info = api.download(uuid, str(tmpdir), checksum=True)
+    assert expected_path.samefile(path)
+    assert product_info["id"] == uuid
+    assert product_info["title"] == filename
+    assert product_info["size"] == expected_path.size()
+
+    hash = expected_path.computehash()
+    modification_time = expected_path.mtime()
+    expected_product_info = product_info
+
+    # File exists, test with checksum
+    # Expect no modification
+    path, product_info = api.download(uuid, str(tmpdir), check_existing=True)
+    assert expected_path.mtime() == modification_time
+    assert product_info == expected_product_info
+
+    # File exists, test without checksum
+    # Expect no modification
+    path, product_info = api.download(uuid, str(tmpdir), check_existing=False)
+    assert expected_path.mtime() == modification_time
+    assert product_info == expected_product_info
+
+    # Create invalid file, expect re-download
+    with expected_path.open("wb") as f:
+        f.seek(expected_product_info["size"] - 1)
+        f.write(b'\0')
+    assert expected_path.computehash("md5") != hash
+    path, product_info = api.download(uuid, str(tmpdir), check_existing=True)
+    assert expected_path.computehash("md5") == hash
+    assert product_info == expected_product_info
+
+    # Test continue
+    with expected_path.open("rb") as f:
+        content = f.read()
+    with expected_path.open("wb") as f:
+        f.write(content[:100])
+    assert expected_path.computehash("md5") != hash
+    path, product_info = api.download(uuid, str(tmpdir), check_existing=True)
+    assert expected_path.computehash("md5") == hash
+    assert product_info == expected_product_info
+
+    # Test MD5 check
+    with expected_path.open("wb") as f:
+        f.write(b'abcd' * 100)
+    assert expected_path.computehash("md5") != hash
+    with pytest.raises(InvalidChecksumError):
+        path, product_info = api.download(uuid, str(tmpdir), check_existing=True, checksum=True)
