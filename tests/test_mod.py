@@ -291,3 +291,8 @@ def test_get_products_size():
         "20151219", "20151228", platformname="Sentinel-2"
         )
     assert api.get_products_size() == 63.58
+
+    api.query_raw("S1A_WV_OCN__2SSH_20150603T092625_20150603T093332_006207_008194_521E")
+    assert len(api.get_products()) > 0
+    # Rounded to zero
+    assert api.get_products_size() == 0

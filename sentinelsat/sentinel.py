@@ -164,7 +164,7 @@ class SentinelAPI(object):
             raise ValueError('API response not valid. JSON decoding failed.')
 
     def get_products_size(self):
-        """Return the total filesize in Gb of all products in the query"""
+        """Return the total filesize in GB of all products in the query"""
         size_total = 0
         for product in self.get_products():
             size_product = next(x for x in product["str"] if x["name"] == "size")["content"]
@@ -172,6 +172,8 @@ class SentinelAPI(object):
             size_unit = str(size_product.split(" ")[1])
             if size_unit == "MB":
                 size_value /= 1024
+            if size_unit == "KB":
+                size_value /= 1024 * 1024
             size_total += size_value
         return round(size_total, 2)
 
