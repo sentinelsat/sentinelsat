@@ -1,4 +1,5 @@
 import geojson
+import py.path
 import pytest
 import requests
 import requests_mock
@@ -355,4 +356,40 @@ def test_download(tmpdir):
         f.write(b'abcd' * 100)
     assert expected_path.computehash("md5") != hash
     with pytest.raises(InvalidChecksumError):
-        path, product_info = api.download(uuid, str(tmpdir), check_existing=True, checksum=True)
+        api.download(uuid, str(tmpdir), check_existing=True, checksum=True)
+
+
+@pytest.mark.scihub
+def test_download_all(tmpdir):
+    api = SentinelAPI(
+        environ['SENTINEL_USER'],
+        environ['SENTINEL_PASSWORD']
+    )
+    # From https://scihub.copernicus.eu/apihub/odata/v1/Products?$top=5&$orderby=ContentLength
+    filenames = ["S1A_WV_OCN__2SSH_20150603T092625_20150603T093332_006207_008194_521E",
+                 "S1A_WV_OCN__2SSV_20150526T211029_20150526T211737_006097_007E78_134A",
+                 "S1A_WV_OCN__2SSV_20150526T081641_20150526T082418_006090_007E3E_104C"]
+
+    api.query_raw(" OR ".join(filenames))
+    assert len(api.get_products()) == len(filenames)
+
+    # Download normally
+    result = api.download_all(str(tmpdir))
+    assert len(result) == len(filenames)
+    for path, product_info in result.items():
+        pypath = py.path.local(path)
+        assert pypath.purebasename in filenames
+        assert pypath.check(exists=1, file=1)
+        assert pypath.size() == product_info["size"]
+
+    # Force one download to fail
+    path, product_info = list(result.items())[0]
+    py.path.local(path).remove()
+    with requests_mock.mock(real_http=True) as rqst:
+        url = "https://scihub.copernicus.eu/apihub/odata/v1/Products('%s')/?$format=json" % product_info["id"]
+        json = api.session.get(url).json()
+        json["d"]["Checksum"]["Value"] = "00000000000000000000000000000000"
+        rqst.get(url, json=json)
+        result = api.download_all(str(tmpdir), max_attempts=1, checksum=True)
+        assert len(result) == len(filenames)
+        assert result[path] is None
