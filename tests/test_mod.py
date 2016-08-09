@@ -1,5 +1,6 @@
 import geojson
 import pytest
+import requests
 import requests_mock
 
 from datetime import datetime, date, timedelta
@@ -54,7 +55,8 @@ def test_SentinelAPI_wrong_credentials():
         "wrong_user",
         "wrong_password"
         )
-    api.query('0 0,1 1,0 1,0 0', datetime(2015, 1, 1), datetime(2015, 1, 2))
+    with pytest.raises(requests.HTTPError):
+        api.query('0 0,1 1,0 1,0 0', datetime(2015, 1, 1), datetime(2015, 1, 2))
     assert api.content.status_code == 401
 
     with pytest.raises(ValueError):
@@ -81,6 +83,16 @@ def test_api_query_format():
     assert query == '(beginPosition:[%s TO %s]) ' % (last_24h, format_date(now)) + \
         'AND (footprint:"Intersects(POLYGON((0 0,1 1,0 1,0 0)))") ' + \
         'AND (producttype:SLC)'
+
+
+@pytest.mark.scihub
+def test_invalid_query():
+    api = SentinelAPI(
+        environ.get('SENTINEL_USER'),
+        environ.get('SENTINEL_PASSWORD')
+        )
+    with pytest.raises(requests.HTTPError):
+        api.query_raw("xxx:yyy")
 
 
 @pytest.mark.scihub
@@ -175,6 +187,22 @@ def test_get_product_info_scihub_down():
         rqst.get(
             "https://scihub.copernicus.eu/apihub/odata/v1/Products('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')/?$format=json",
             text="Mock SciHub is Down", status_code=503
+            )
+        with pytest.raises(requests.HTTPError) as val_err:
+            api.get_product_info('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')
+
+        rqst.get(
+            "https://scihub.copernicus.eu/apihub/odata/v1/Products('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')/?$format=json",
+            text='{"error":{"code":null,"message":{"lang":"en","value":'
+                 '"No Products found with key \'8df46c9e-a20c-43db-a19a-4240c2ed3b8b\' "}}}', status_code=500
+            )
+        with pytest.raises(ValueError) as val_err:
+            api.get_product_info('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')
+            assert val_err.value.message == "No Products found with key \'8df46c9e-a20c-43db-a19a-4240c2ed3b8b\' "
+
+        rqst.get(
+            "https://scihub.copernicus.eu/apihub/odata/v1/Products('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')/?$format=json",
+            text="Mock SciHub is Down", status_code=200
             )
         with pytest.raises(ValueError) as val_err:
             api.get_product_info('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')

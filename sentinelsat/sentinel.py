@@ -45,6 +45,24 @@ def convert_timestamp(in_date):
     return format_date(datetime.utcfromtimestamp(in_date))
 
 
+def _check_scihub_response(response):
+    """Check that the response from server has status code 2xx.
+    If the response contains an API error message in JSON throw that as a ValueError. Throw HTTPError otherwise."""
+    try:
+        response.raise_for_status()
+    except requests.HTTPError:
+        msg = None
+        try:
+            msg = response.json()['error']['message']['value']
+        except:
+            pass
+        if msg:
+            # If an error message is available then we are probably dealing with an API error
+            raise ValueError(msg)
+        else:
+            raise
+
+
 class SentinelAPI(object):
     """Class to connect to Sentinel Data Hub, search and download imagery.
 
@@ -90,13 +108,8 @@ class SentinelAPI(object):
         https://scihub.copernicus.eu/twiki/do/view/SciHubUserGuide/3FullTextSearch
         """
         self.last_query = query
-        try:
-            self.content = requests.post(self.url, dict(q=query), auth=self.session.auth)
-            # anything other than 2XX is considered an error
-            if not self.content.status_code // 100 == 2:
-                print(('Error: API returned unexpected response {} .'.format(self.content.status_code)))
-        except requests.exceptions.RequestException as exc:
-            print('Error: {}'.format(exc))
+        self.content = requests.post(self.url, dict(q=query), auth=self.session.auth)
+        self.content.raise_for_status()
 
     @staticmethod
     def _url_trail_slash(api_url):
@@ -216,14 +229,12 @@ class SentinelAPI(object):
         of the Product. The date field receives the Start ContentDate of the API.
         """
 
-        product = self.session.get(
+        response = self.session.get(
             urljoin(self.api_url, "odata/v1/Products('%s')/?$format=json" % id)
         )
+        _check_scihub_response(response)
 
-        try:
-            product_json = product.json()
-        except ValueError:
-            raise ValueError('Invalid API response. JSON decoding failed.')
+        product_json = response.json()
 
         # parse the GML footprint to same format as returned
         # by .get_coordinates()
