@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import print_function
 
-from homura import download
+import homura
 from pycurl import CAINFO
 import requests
 import geojson
@@ -22,6 +22,9 @@ except:
     from urllib.parse import urljoin
 from os.path import join, exists, getsize
 from os import remove
+
+class InvalidChecksumError(Exception):
+    pass
 
 
 def format_date(in_date):
@@ -260,56 +263,89 @@ class SentinelAPI(object):
         ]
         return dict(zip(keys, values))
 
-    def download(self, id, path='.', checksum=False, **kwargs):
-        """Download a product using homura's download function.
+    def download(self, id, directory_path='.', checksum=False, check_existing=False, **kwargs):
+        """Download a product using homura.
 
-        If you don't pass the title of the product, it will use the id as
-        filename. Further keyword arguments are passed to the
-        homura.download() function.
+        Uses the filename on the server for the downloaded file, e.g.
+        "S1A_EW_GRDH_1SDH_20141003T003840_20141003T003920_002658_002F54_4DD1.zip".
+
+        Incomplete downloads are continued and complete files are skipped.
+
+        Further keyword arguments are passed to the homura.download() function.
+
+        Parameters
+        ----------
+        id : string
+            UUID of the product, e.g. 'a8dd0cfd-613e-45ce-868c-d79177b916ed'
+        directory_path : string, optional
+            Where the file will be downloaded
+        checksum : bool, optional
+            If True, verify the downloaded file's integrity by checking its MD5 checksum.
+            Throws InvalidChecksumError if the checksum does not match.
+            Defaults to False.
+        check_existing : bool, optional
+            If True and a fully downloaded file with the same name exists on the disk,
+            verify its integrity using its MD5 checksum. Re-download in case of non-matching checksums.
+            Defaults to False.
+
+        Returns
+        -------
+        path : string
+            Disk path of the downloaded file, 
+        product_info : dict
+            Dictionary containing the product's info from get_product_info().
+
+        Raises
+        ------
+        InvalidChecksumError
+            If the MD5 checksum does not match the checksum on the server.
         """
         # Check if API is reachable.
-        product = None
-        while product is None:
+        product_info = None
+        while product_info is None:
             try:
-                product = self.get_product_info(id)
-            except ValueError:
-                print("Invalid API response. Trying again in 3 minutes.")
-                sleep(180)
+                product_info = self.get_product_info(id)
+            except requests.HTTPError:
+                print("Invalid API response. Trying again in 1 minute.")
+                sleep(60)
 
-        path = join(path, product['title'] + '.zip')
+        path = join(directory_path, product_info['title'] + '.zip')
         kwargs = self._fillin_cainfo(kwargs)
 
         print('Downloading %s to %s' % (id, path))
 
         # Check if the file exists and passes md5 test
-        if exists(path):
-            if md5_compare(path, product['md5'].lower()):
+        # Homura will by default continue the download if the file exists but is incomplete
+        if exists(path) and getsize(path) == product_info['size']:
+            if not check_existing or md5_compare(path, product_info['md5']):
                 print('%s was already downloaded.' % path)
-                return path
+                return path, product_info
             else:
+                print('%s was already downloaded but is corrupt: checksums do not match. Re-downloading.' % path)
                 remove(path)
 
-        download(product['url'], path=path, session=self.session, **kwargs)
+        homura.download(product_info['url'], path=path, session=self.session, **kwargs)
 
         # Check integrity with MD5 checksum
         if checksum is True:
-            if not md5_compare(path, product['md5'].lower()):
-                raise ValueError('File corrupt: Checksums do not match')
-        return path
+            if not md5_compare(path, product_info['md5']):
+                raise InvalidChecksumError('File corrupt: Checksums do not match')
+        return path, product_info
 
     def download_all(self, path='.', checksum=False, **kwargs):
-        """Download all products using homura's download function.
+        """Download all products using homura.
 
-        It will use the products id as filenames. If the checksum calculation
-        fails a list with tuples of filename and product ids of the corrupt
-        scenes will be returned. Further keyword arguments are passed to the
-        homura.download() function.
+        Uses the filenames on the server for the downloaded files, e.g.
+        "S1A_EW_GRDH_1SDH_20141003T003840_20141003T003920_002658_002F54_4DD1.zip".
+        If the checksum calculation fails a list with tuples of filename and product ids of the corrupt scenes will
+        be returned.
+        Further keyword arguments are passed to the homura.download() function.
         """
         corrupt_scenes = []
         for product in self.get_products():
             try:
                 self.download(product['id'], path, checksum, **kwargs)
-            except ValueError:
+            except InvalidChecksumError:
                 corrupt_scenes.append((product['title'] + '.zip', product['id']))
         return corrupt_scenes
 
