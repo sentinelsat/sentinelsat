@@ -1,26 +1,34 @@
 # -*- coding: utf-8 -*-
 from __future__ import print_function
 
-from homura import download
+import hashlib
+import sys
+import traceback
+import xml.etree.ElementTree as ET
+from datetime import datetime, date, timedelta
+from os import remove
+from os.path import join, exists, getsize
 from pycurl import CAINFO
-import requests
+from time import sleep
+
 import geojson
+import homura
+import requests
+from tqdm import tqdm
+
+try:
+    from urlparse import urljoin
+except ImportError:
+    from urllib.parse import urljoin
 
 try:
     import certifi
 except ImportError:
     certifi = None
 
-import hashlib
-import xml.etree.ElementTree as ET
-from datetime import datetime, date, timedelta
-from time import sleep
-try:
-    from urlparse import urljoin
-except:
-    from urllib.parse import urljoin
-from os.path import join, exists
-from os import remove
+
+class InvalidChecksumError(Exception):
+    pass
 
 
 def format_date(in_date):
@@ -43,6 +51,24 @@ def convert_timestamp(in_date):
     """
     in_date = int(in_date.replace('/Date(', '').replace(')/', '')) / 1000
     return format_date(datetime.utcfromtimestamp(in_date))
+
+
+def _check_scihub_response(response):
+    """Check that the response from server has status code 2xx.
+    If the response contains an API error message in JSON throw that as a ValueError. Throw HTTPError otherwise."""
+    try:
+        response.raise_for_status()
+    except requests.HTTPError:
+        msg = None
+        try:
+            msg = response.json()['error']['message']['value']
+        except:
+            pass
+        if msg:
+            # If an error message is available then we are probably dealing with an API error
+            raise ValueError(msg)
+        else:
+            raise
 
 
 class SentinelAPI(object):
@@ -70,20 +96,28 @@ class SentinelAPI(object):
         self.session = requests.Session()
         self.session.auth = (user, password)
         self.api_url = self._url_trail_slash(api_url)
+        self.last_query = None
+        self.content = None
+        self.products = None
+
+    @property
+    def url(self):
+        return urljoin(self.api_url, 'search?format=json&rows=15000')
 
     def query(self, area, initial_date=None, end_date=datetime.now(), **keywords):
-        """Query the SciHub API with the coordinates of an area, a date inverval
+        """Query the SciHub API with the coordinates of an area, a date interval
         and any other search keywords accepted by the SciHub API.
         """
-        self.format_url(area, initial_date, end_date, **keywords)
-        try:
-            self.content = requests.post(self.url, dict(q=self.query),
-                                         auth=self.session.auth)
-            # anything other than 2XX is considered an error
-            if not self.content.status_code // 100 == 2:
-                print(('Error: API returned unexpected response {} .'.format(self.content.status_code)))
-        except requests.exceptions.RequestException as exc:
-            print('Error: {}'.format(exc))
+        query = self.format_query(area, initial_date, end_date, **keywords)
+        self.query_raw(query)
+
+    def query_raw(self, query):
+        """Do a full-text query on the SciHub API using the format specified in
+        https://scihub.copernicus.eu/twiki/do/view/SciHubUserGuide/3FullTextSearch
+        """
+        self.last_query = query
+        self.content = requests.post(self.url, dict(q=query), auth=self.session.auth)
+        self.content.raise_for_status()
 
     @staticmethod
     def _url_trail_slash(api_url):
@@ -92,7 +126,8 @@ class SentinelAPI(object):
             api_url += '/'
         return api_url
 
-    def format_url(self, area, initial_date=None, end_date=datetime.now(), **keywords):
+    @staticmethod
+    def format_query(area, initial_date=None, end_date=datetime.now(), **keywords):
         """Create the URL to access the SciHub API, defining the max quantity of
         results to 15000 items.
         """
@@ -109,8 +144,8 @@ class SentinelAPI(object):
         for kw in sorted(keywords.keys()):
             filters += ' AND (%s:%s)' % (kw, keywords[kw])
 
-        self.url = urljoin(self.api_url, 'search?format=json&rows=15000')
-        self.query = ''.join([acquisition_date, query_area, filters])
+        query = ''.join([acquisition_date, query_area, filters])
+        return query
 
     def get_products(self):
         """Return the result of the Query in json format."""
@@ -129,7 +164,7 @@ class SentinelAPI(object):
             raise ValueError('API response not valid. JSON decoding failed.')
 
     def get_products_size(self):
-        """Return the total filesize in Gb of all products in the query"""
+        """Return the total filesize in GB of all products in the query"""
         size_total = 0
         for product in self.get_products():
             size_product = next(x for x in product["str"] if x["name"] == "size")["content"]
@@ -137,6 +172,8 @@ class SentinelAPI(object):
             size_unit = str(size_product.split(" ")[1])
             if size_unit == "MB":
                 size_value /= 1024
+            if size_unit == "KB":
+                size_value /= 1024 * 1024
             size_total += size_value
         return round(size_total, 2)
 
@@ -153,7 +190,7 @@ class SentinelAPI(object):
                 for x in scene["str"]
                 if x["name"] == "footprint"
                 )["content"][10:-2].split(",")
-            coord_list_split = [coord.split(" ") for coord in coord_list]
+            coord_list_split = (coord.split(" ") for coord in coord_list)
             poly = geojson.Polygon([[
                 tuple((float(coord[0]), float(coord[1])))
                 for coord in coord_list_split
@@ -202,14 +239,12 @@ class SentinelAPI(object):
         of the Product. The date field receives the Start ContentDate of the API.
         """
 
-        product = self.session.get(
+        response = self.session.get(
             urljoin(self.api_url, "odata/v1/Products('%s')/?$format=json" % id)
         )
+        _check_scihub_response(response)
 
-        try:
-            product_json = product.json()
-        except ValueError:
-            raise ValueError('Invalid API response. JSON decoding failed.')
+        product_json = response.json()
 
         # parse the GML footprint to same format as returned
         # by .get_coordinates()
@@ -234,58 +269,130 @@ class SentinelAPI(object):
         ]
         return dict(zip(keys, values))
 
-    def download(self, id, path='.', checksum=False, **kwargs):
-        """Download a product using homura's download function.
+    def download(self, id, directory_path='.', checksum=False, check_existing=False, **kwargs):
+        """Download a product using homura.
 
-        If you don't pass the title of the product, it will use the id as
-        filename. Further keyword arguments are passed to the
-        homura.download() function.
+        Uses the filename on the server for the downloaded file, e.g.
+        "S1A_EW_GRDH_1SDH_20141003T003840_20141003T003920_002658_002F54_4DD1.zip".
+
+        Incomplete downloads are continued and complete files are skipped.
+
+        Further keyword arguments are passed to the homura.download() function.
+
+        Parameters
+        ----------
+        id : string
+            UUID of the product, e.g. 'a8dd0cfd-613e-45ce-868c-d79177b916ed'
+        directory_path : string, optional
+            Where the file will be downloaded
+        checksum : bool, optional
+            If True, verify the downloaded file's integrity by checking its MD5 checksum.
+            Throws InvalidChecksumError if the checksum does not match.
+            Defaults to False.
+        check_existing : bool, optional
+            If True and a fully downloaded file with the same name exists on the disk,
+            verify its integrity using its MD5 checksum. Re-download in case of non-matching checksums.
+            Defaults to False.
+
+        Returns
+        -------
+        path : string
+            Disk path of the downloaded file, 
+        product_info : dict
+            Dictionary containing the product's info from get_product_info().
+
+        Raises
+        ------
+        InvalidChecksumError
+            If the MD5 checksum does not match the checksum on the server.
         """
         # Check if API is reachable.
-        product = None
-        while product is None:
+        product_info = None
+        while product_info is None:
             try:
-                product = self.get_product_info(id)
-            except ValueError:
-                print("Invalid API response. Trying again in 3 minutes.")
-                sleep(180)
+                product_info = self.get_product_info(id)
+            except requests.HTTPError:
+                print("Invalid API response. Trying again in 1 minute.")
+                sleep(60)
 
-        path = join(path, product['title'] + '.zip')
+        path = join(directory_path, product_info['title'] + '.zip')
         kwargs = self._fillin_cainfo(kwargs)
 
         print('Downloading %s to %s' % (id, path))
 
         # Check if the file exists and passes md5 test
-        if exists(path):
-            if md5_compare(path, product['md5'].lower()):
+        # Homura will by default continue the download if the file exists but is incomplete
+        if exists(path) and getsize(path) == product_info['size']:
+            if not check_existing or md5_compare(path, product_info['md5']):
                 print('%s was already downloaded.' % path)
-                return path
+                return path, product_info
             else:
+                print('%s was already downloaded but is corrupt: checksums do not match. Re-downloading.' % path)
                 remove(path)
 
-        download(product['url'], path=path, session=self.session, **kwargs)
+        if exists(path) and getsize(path) >= 2 ** 31:
+            # Workaround for PycURL's bug when continuing > 2 GB files
+            # https://github.com/pycurl/pycurl/issues/405
+            remove(path)
+
+        homura.download(product_info['url'], path=path, session=self.session, **kwargs)
 
         # Check integrity with MD5 checksum
         if checksum is True:
-            if not md5_compare(path, product['md5'].lower()):
-                raise ValueError('File corrupt: Checksums do not match')
-        return path
+            if not md5_compare(path, product_info['md5']):
+                raise InvalidChecksumError('File corrupt: Checksums do not match')
+        return path, product_info
 
-    def download_all(self, path='.', checksum=False, **kwargs):
-        """Download all products using homura's download function.
+    def download_all(self, directory_path='.', max_attempts=10, checksum=False, check_existing=False, **kwargs):
+        """Download all products returned in query() or query_raw().
 
-        It will use the products id as filenames. If the checksum calculation
-        fails a list with tuples of filename and product ids of the corrupt
-        scenes will be returned. Further keyword arguments are passed to the
-        homura.download() function.
+        File names on the server are used for the downloaded files, e.g.
+        "S1A_EW_GRDH_1SDH_20141003T003840_20141003T003920_002658_002F54_4DD1.zip".
+
+        In case of interruptions or other exceptions, downloading will restart from where it left off.
+        Downloading is attempted at most max_attempts times to avoid getting stuck with unrecoverable errors.
+
+        Parameters
+        ----------
+        directory_path : string
+            Directory where the downloaded files will be downloaded
+        max_attempts : int, optional
+            Number of allowed retries before giving up downloading a product. Defaults to 10.
+
+        Other Parameters
+        ----------------
+        See download().
+
+        Returns
+        -------
+        dict[string, dict|None]
+            A dictionary with an entry for each product mapping the downloaded file path to its product info
+            (returned by get_product_info()). Product info is set to None if downloading the product failed.
         """
-        corrupt_scenes = []
-        for product in self.get_products():
-            try:
-                self.download(product['id'], path, checksum, **kwargs)
-            except ValueError:
-                corrupt_scenes.append((product['title'] + '.zip', product['id']))
-        return corrupt_scenes
+        result = {}
+        products = self.get_products()
+        print("Will download %d products" % len(products))
+        for i, product in enumerate(products):
+            path = join(directory_path, product['title'] + '.zip')
+            product_info = None
+            download_successful = False
+            remaining_attempts = max_attempts
+            while not download_successful and remaining_attempts > 0:
+                try:
+                    path, product_info = self.download(product['id'], directory_path, checksum, check_existing,
+                                                       **kwargs)
+                    download_successful = True
+                except (KeyboardInterrupt, SystemExit, SystemError, MemoryError):
+                    raise
+                except InvalidChecksumError:
+                    print("Invalid checksum. The downloaded file is corrupted.")
+                except:
+                    print("There was an error downloading %s" % product['title'], file=sys.stderr)
+                    traceback.print_exc()
+                remaining_attempts -= 1
+            result[path] = product_info
+            print("{}/{} products downloaded".format(i + 1, len(products)))
+        return result
 
     @staticmethod
     def _fillin_cainfo(kwargs_dict):
@@ -339,9 +446,12 @@ def md5_compare(file_path, checksum, block_size=2 ** 13):
     """Compare a given md5 checksum with one calculated from a file"""
     md5 = hashlib.md5()
     with open(file_path, "rb") as f:
+        progress = tqdm(desc="MD5 checksumming", total=getsize(file_path), unit="B", unit_scale=True)
         while True:
             block_data = f.read(block_size)
             if not block_data:
                 break
             md5.update(block_data)
-    return md5.hexdigest() == checksum
+            progress.update(len(block_data))
+        progress.close()
+    return md5.hexdigest().lower() == checksum.lower()
