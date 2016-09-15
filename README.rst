@@ -9,8 +9,9 @@ sentinelsat
 
 .. image:: https://coveralls.io/repos/ibamacsr/sentinelsat/badge.svg?branch=master&service=github
     :target: https://coveralls.io/github/ibamacsr/sentinelsat?branch=master
-.. image:: https://sentinelsat.readthedocs.io/en/latest/?badge=latest
-    :target: http://sentinelsat.readthedocs.io/
+.. image:: https://readthedocs.org/projects/sentinelsat/badge/?version=latest
+    :target: http://sentinelsat.readthedocs.io/en/latest/?badge=latest
+    :alt: Documentation
 
 
 Sentinelsat makes finding and downloading `Copernicus Sentinel
