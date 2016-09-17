@@ -87,14 +87,14 @@ def search(
         with open(os.path.join(path, "search_footprints.geojson"), "w") as outfile:
             outfile.write(gj.dumps(footprints_geojson))
 
-    if download is True and md5 is True:
-        corrupt_scenes = api.download_all(path, md5)
-        if len(corrupt_scenes) is not 0:
-            with open(os.path.join(path, "corrupt_scenes.txt"), "w") as outfile:
-                for corrupt_tuple in corrupt_scenes:
-                    outfile.write("%s : %s\n" % corrupt_tuple)
-    elif download is True and md5 is False:
-        api.download_all(path)
+    if download is True:
+        result = api.download_all(path, checksum=md5)
+        if md5 is True:
+            corrupt_scenes = [(path, info["id"]) for path, info in result.items() if info is not None]
+            if len(corrupt_scenes) > 0:
+                with open(os.path.join(path, "corrupt_scenes.txt"), "w") as outfile:
+                    for corrupt_tuple in corrupt_scenes:
+                        outfile.write("%s : %s\n" % corrupt_tuple)
     else:
         for product in api.get_products():
             print('Product %s - %s' % (product['id'], product['summary']))

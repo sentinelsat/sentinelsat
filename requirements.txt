@@ -2,3 +2,4 @@ requests
 click
 homura>=0.1.2
 geojson
+tqdm

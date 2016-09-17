@@ -12,8 +12,8 @@ def test_cli():
     result = runner.invoke(
         cli,
         ['search',
-        environ.get('SENTINEL_USER'),
-        environ.get('SENTINEL_PASSWORD'),
+        environ['SENTINEL_USER'],
+        environ['SENTINEL_PASSWORD'],
         'tests/map.geojson']
         )
 
@@ -22,8 +22,8 @@ def test_cli():
     result = runner.invoke(
         cli,
         ['search',
-        environ.get('SENTINEL_USER'),
-        environ.get('SENTINEL_PASSWORD'),
+        environ['SENTINEL_USER'],
+        environ['SENTINEL_PASSWORD'],
         'tests/map.geojson',
         '--url', 'https://scihub.copernicus.eu/dhus/']
         )
@@ -32,8 +32,8 @@ def test_cli():
     result = runner.invoke(
         cli,
         ['search',
-        environ.get('SENTINEL_USER'),
-        environ.get('SENTINEL_PASSWORD'),
+        environ['SENTINEL_USER'],
+        environ['SENTINEL_PASSWORD'],
         'tests/map.geojson',
         '-q', 'producttype=GRD,polarisationmode=HH']
         )
@@ -47,8 +47,8 @@ def test_returned_filesize():
     result = runner.invoke(
         cli,
         ['search',
-        environ.get('SENTINEL_USER'),
-        environ.get('SENTINEL_PASSWORD'),
+        environ['SENTINEL_USER'],
+        environ['SENTINEL_PASSWORD'],
         'tests/map.geojson',
         '--url', 'https://scihub.copernicus.eu/dhus/',
         '-s', '20141205',
@@ -61,8 +61,8 @@ def test_returned_filesize():
     result = runner.invoke(
         cli,
         ['search',
-        environ.get('SENTINEL_USER'),
-        environ.get('SENTINEL_PASSWORD'),
+        environ['SENTINEL_USER'],
+        environ['SENTINEL_PASSWORD'],
         'tests/map.geojson',
         '--url', 'https://scihub.copernicus.eu/dhus/',
         '-s', '20140101',
@@ -79,8 +79,8 @@ def test_cloud_flag_url():
     result = runner.invoke(
         cli,
         ['search',
-        environ.get('SENTINEL_USER'),
-        environ.get('SENTINEL_PASSWORD'),
+        environ['SENTINEL_USER'],
+        environ['SENTINEL_PASSWORD'],
         'tests/map.geojson',
         '--url', 'https://scihub.copernicus.eu/apihub/',
         '-s', '20151219',
@@ -98,8 +98,8 @@ def test_sentinel1_flag():
     result = runner.invoke(
         cli,
         ['search',
-        environ.get('SENTINEL_USER'),
-        environ.get('SENTINEL_PASSWORD'),
+        environ['SENTINEL_USER'],
+        environ['SENTINEL_PASSWORD'],
         'tests/map.geojson',
         '--url', 'https://scihub.copernicus.eu/apihub/',
         '-s', '20151219',
@@ -117,8 +117,8 @@ def test_sentinel2_flag():
     result = runner.invoke(
         cli,
         ['search',
-        environ.get('SENTINEL_USER'),
-        environ.get('SENTINEL_PASSWORD'),
+        environ['SENTINEL_USER'],
+        environ['SENTINEL_PASSWORD'],
         'tests/map.geojson',
         '--url', 'https://scihub.copernicus.eu/apihub/',
         '-s', '20151219',
