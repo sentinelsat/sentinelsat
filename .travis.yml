@@ -13,9 +13,8 @@ install:
 - pip install coveralls
 - pip install -e .[test]
 script:
-- 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then py.test -v; fi'
+- 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then py.test -v; coverage run --source=sentinelsat -m py.test; fi'
 - 'if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then py.test -v -m "not scihub"; fi'
-- coverage run --source=sentinelsat -m py.test
 after_success:
   - coveralls
 sudo: false
