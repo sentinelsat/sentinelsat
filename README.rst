@@ -182,6 +182,7 @@ Contributors
 
 * Wille Marcel
 * Kersten Clauss
+* Martin Valgur
 
 License
 =======
