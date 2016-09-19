@@ -67,10 +67,7 @@ def test_SentinelAPI_wrong_credentials():
 
 @pytest.mark.fast
 def test_api_query_format():
-    api = SentinelAPI(
-        environ['SENTINEL_USER'],
-        environ['SENTINEL_PASSWORD']
-    )
+    api = SentinelAPI("mock_user", "mock_password")
 
     now = datetime.now()
     query = api.format_query('0 0,1 1,0 1,0 0', end_date=now)
@@ -124,9 +121,7 @@ def test_trail_slash_base_url():
 
     for test_url in base_urls:
         assert SentinelAPI._url_trail_slash(test_url) == expected
-        api = SentinelAPI(
-            environ['SENTINEL_USER'],
-            environ['SENTINEL_PASSWORD'],
+        api = SentinelAPI("mock_user", "mock_password",
             test_url
         )
         assert api.api_url == expected
