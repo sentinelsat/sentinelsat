@@ -7,8 +7,8 @@ import traceback
 import xml.etree.ElementTree as ET
 from datetime import date, datetime, timedelta
 from os import remove
-from os.path import exists, getsize, join
-from pycurl import CAINFO
+from os.path import join, exists, getsize
+import pycurl
 from time import sleep
 
 import geojson
@@ -317,7 +317,7 @@ class SentinelAPI(object):
         Returns
         -------
         path : string
-            Disk path of the downloaded file, 
+            Disk path of the downloaded file,
         product_info : dict
             Dictionary containing the product's info from get_product_info().
 
@@ -350,7 +350,8 @@ class SentinelAPI(object):
                 print('%s was already downloaded but is corrupt: checksums do not match. Re-downloading.' % path)
                 remove(path)
 
-        if exists(path) and getsize(path) >= 2 ** 31:
+        if (exists(path) and getsize(path) >= 2 ** 31 and
+            pycurl.version.split()[0].lower() <= 'pycurl/7.43.0'):
             # Workaround for PycURL's bug when continuing > 2 GB files
             # https://github.com/pycurl/pycurl/issues/405
             remove(path)
@@ -424,7 +425,7 @@ class SentinelAPI(object):
         as established at libcurl build time.
         """
         try:
-            cainfo = kwargs_dict['pass_through_opts'][CAINFO]
+            cainfo = kwargs_dict['pass_through_opts'][pycurl.CAINFO]
         except KeyError:
             try:
                 cainfo = certifi.where()
@@ -433,7 +434,7 @@ class SentinelAPI(object):
 
         if cainfo is not None:
             pass_through_opts = kwargs_dict.get('pass_through_opts', {})
-            pass_through_opts[CAINFO] = cainfo
+            pass_through_opts[pycurl.CAINFO] = cainfo
             kwargs_dict['pass_through_opts'] = pass_through_opts
 
         return kwargs_dict
