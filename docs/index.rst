@@ -13,7 +13,7 @@ It offers an easy to use command line interface.
   sentinel search --sentinel2 --cloud 30 user password search_polygon.geojson
 
 
-and a powerfull Python API.
+and a powerful Python API.
 
 .. code-block:: python
 
