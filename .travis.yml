@@ -13,7 +13,8 @@ install:
 - pip install coveralls
 - pip install -e .[test]
 script:
-- py.test -v
+- 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then py.test -v; fi'
+- 'if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then py.test -v -m "not scihub"; fi'
 - coverage run --source=sentinelsat -m py.test
 after_success:
   - coveralls
