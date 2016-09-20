@@ -1,15 +1,15 @@
+import hashlib
+import textwrap
+from datetime import date, datetime, timedelta
+from os import environ
+
 import geojson
 import py.path
 import pytest
-import requests
 import requests_mock
 
-from datetime import datetime, date, timedelta
-from os import environ
-import hashlib
-
-from sentinelsat.sentinel import (SentinelAPI, format_date, get_coordinates,
-    convert_timestamp, md5_compare, InvalidChecksumError)
+from sentinelsat.sentinel import (InvalidChecksumError, SentinelAPI, SentinelAPIError, convert_timestamp, format_date,
+                                  get_coordinates, md5_compare)
 
 
 @pytest.mark.fast
@@ -41,12 +41,12 @@ def test_SentinelAPI_connection():
     api = SentinelAPI(
         environ['SENTINEL_USER'],
         environ['SENTINEL_PASSWORD']
-        )
+    )
     api.query('0 0,1 1,0 1,0 0', datetime(2015, 1, 1), datetime(2015, 1, 2))
 
     assert api.url == 'https://scihub.copernicus.eu/apihub/search?format=json&rows=15000'
     assert api.last_query == '(beginPosition:[2015-01-01T00:00:00Z TO 2015-01-02T00:00:00Z]) ' + \
-        'AND (footprint:"Intersects(POLYGON((0 0,1 1,0 1,0 0)))")'
+                             'AND (footprint:"Intersects(POLYGON((0 0,1 1,0 1,0 0)))")'
     assert api.content.status_code == 200
 
 
@@ -55,35 +55,32 @@ def test_SentinelAPI_wrong_credentials():
     api = SentinelAPI(
         "wrong_user",
         "wrong_password"
-        )
-    with pytest.raises(requests.HTTPError):
+    )
+    with pytest.raises(SentinelAPIError) as excinfo:
         api.query('0 0,1 1,0 1,0 0', datetime(2015, 1, 1), datetime(2015, 1, 2))
-    assert api.content.status_code == 401
+    assert excinfo.value.http_status == 401
 
-    with pytest.raises(ValueError):
+    with pytest.raises(SentinelAPIError):
         api.get_products_size()
         api.get_products()
 
 
 @pytest.mark.fast
 def test_api_query_format():
-    api = SentinelAPI(
-        environ['SENTINEL_USER'],
-        environ['SENTINEL_PASSWORD']
-        )
+    api = SentinelAPI("mock_user", "mock_password")
 
     now = datetime.now()
     query = api.format_query('0 0,1 1,0 1,0 0', end_date=now)
     last_24h = format_date(now - timedelta(hours=24))
     assert api.url == 'https://scihub.copernicus.eu/apihub/search?format=json&rows=15000'
     assert query == '(beginPosition:[%s TO %s]) ' % (last_24h, format_date(now)) + \
-        'AND (footprint:"Intersects(POLYGON((0 0,1 1,0 1,0 0)))")'
+                    'AND (footprint:"Intersects(POLYGON((0 0,1 1,0 1,0 0)))")'
 
     query = api.format_query('0 0,1 1,0 1,0 0', end_date=now, producttype='SLC')
     assert api.url == 'https://scihub.copernicus.eu/apihub/search?format=json&rows=15000'
     assert query == '(beginPosition:[%s TO %s]) ' % (last_24h, format_date(now)) + \
-        'AND (footprint:"Intersects(POLYGON((0 0,1 1,0 1,0 0)))") ' + \
-        'AND (producttype:SLC)'
+                    'AND (footprint:"Intersects(POLYGON((0 0,1 1,0 1,0 0)))") ' + \
+                    'AND (producttype:SLC)'
 
 
 @pytest.mark.scihub
@@ -91,9 +88,11 @@ def test_invalid_query():
     api = SentinelAPI(
         environ['SENTINEL_USER'],
         environ['SENTINEL_PASSWORD']
-        )
-    with pytest.raises(requests.HTTPError):
+    )
+    with pytest.raises(SentinelAPIError) as excinfo:
         api.query_raw("xxx:yyy")
+    assert excinfo.value.msg is not None
+    print(excinfo)
 
 
 @pytest.mark.scihub
@@ -102,12 +101,12 @@ def test_set_base_url():
         environ['SENTINEL_USER'],
         environ['SENTINEL_PASSWORD'],
         'https://scihub.copernicus.eu/dhus/'
-        )
+    )
     api.query('0 0,1 1,0 1,0 0', datetime(2015, 1, 1), datetime(2015, 1, 2))
 
     assert api.url == 'https://scihub.copernicus.eu/dhus/search?format=json&rows=15000'
     assert api.last_query == '(beginPosition:[2015-01-01T00:00:00Z TO 2015-01-02T00:00:00Z]) ' + \
-        'AND (footprint:"Intersects(POLYGON((0 0,1 1,0 1,0 0)))")'
+                             'AND (footprint:"Intersects(POLYGON((0 0,1 1,0 1,0 0)))")'
     assert api.content.status_code == 200
 
 
@@ -116,17 +115,15 @@ def test_trail_slash_base_url():
     base_urls = [
         'https://scihub.copernicus.eu/dhus/',
         'https://scihub.copernicus.eu/dhus'
-        ]
+    ]
 
     expected = 'https://scihub.copernicus.eu/dhus/'
 
     for test_url in base_urls:
         assert SentinelAPI._url_trail_slash(test_url) == expected
-        api = SentinelAPI(
-            environ['SENTINEL_USER'],
-            environ['SENTINEL_PASSWORD'],
+        api = SentinelAPI("mock_user", "mock_password",
             test_url
-            )
+        )
         assert api.api_url == expected
 
 
@@ -142,7 +139,7 @@ def test_get_product_info():
     api = SentinelAPI(
         environ['SENTINEL_USER'],
         environ['SENTINEL_PASSWORD']
-        )
+    )
 
     expected_s1 = {
         'id': '8df46c9e-a20c-43db-a19a-4240c2ed3b8b',
@@ -153,7 +150,7 @@ def test_get_product_info():
         'footprint': '-5.880887 -63.852531,-5.075419 -67.495872,-3.084356 -67.066071,-3.880541 -63.430576,'
                      '-5.880887 -63.852531',
         'title': 'S1A_EW_GRDM_1SDV_20151121T100356_20151121T100429_008701_00C622_A0EC'
-        }
+    }
 
     expected_s2 = {
         'date': '2015-12-27T14:22:29Z',
@@ -188,26 +185,63 @@ def test_get_product_info_scihub_down():
         rqst.get(
             "https://scihub.copernicus.eu/apihub/odata/v1/Products('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')/?$format=json",
             text="Mock SciHub is Down", status_code=503
-            )
-        with pytest.raises(requests.HTTPError) as val_err:
+        )
+        with pytest.raises(SentinelAPIError) as excinfo:
             api.get_product_info('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')
 
         rqst.get(
             "https://scihub.copernicus.eu/apihub/odata/v1/Products('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')/?$format=json",
             text='{"error":{"code":null,"message":{"lang":"en","value":'
                  '"No Products found with key \'8df46c9e-a20c-43db-a19a-4240c2ed3b8b\' "}}}', status_code=500
-            )
-        with pytest.raises(ValueError) as val_err:
+        )
+        with pytest.raises(SentinelAPIError) as excinfo:
             api.get_product_info('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')
-            assert val_err.value.message == "No Products found with key \'8df46c9e-a20c-43db-a19a-4240c2ed3b8b\' "
+        assert excinfo.value.msg == "No Products found with key \'8df46c9e-a20c-43db-a19a-4240c2ed3b8b\' "
 
         rqst.get(
             "https://scihub.copernicus.eu/apihub/odata/v1/Products('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')/?$format=json",
             text="Mock SciHub is Down", status_code=200
-            )
-        with pytest.raises(ValueError) as val_err:
+        )
+        with pytest.raises(SentinelAPIError) as excinfo:
             api.get_product_info('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')
-            assert val_err.value.message == "Invalid API response. JSON decoding failed."
+        assert excinfo.value.msg == "Mock SciHub is Down"
+
+        # Test with a real server response
+        rqst.get(
+            "https://scihub.copernicus.eu/apihub/odata/v1/Products('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')/?$format=json",
+            text=textwrap.dedent("""\
+            <!doctype html>
+            <title>The Sentinels Scientific Data Hub</title>
+            <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+            <style>
+            body { text-align: center; padding: 125px; background: #fff;}
+            h1 { font-size: 50px; }
+            body { font: 20px 'Open Sans',Helvetica, sans-serif; color: #333; }
+            article { display: block; text-align: left; width: 820px; margin: 0 auto; }
+            a { color: #0062a4; text-decoration: none; font-size: 26px }
+            a:hover { color: #1b99da; text-decoration: none; }
+            </style>
+
+            <article>
+            <img alt="" src="/datahub.png" style="float: left;margin: 20px;">
+            <h1>The Sentinels Scientific Data Hub will be back soon!</h1>
+            <div style="margin-left: 145px;">
+            <p>
+            Sorry for the inconvenience,<br/>
+            we're performing some maintenance at the moment.<br/>
+            </p>
+            <!--<p><a href="https://scihub.copernicus.eu/news/News00098">https://scihub.copernicus.eu/news/News00098</a></p>-->
+            <p>
+            We'll be back online shortly!
+            </p>
+            </div>
+            </article>
+            """),
+            status_code=502)
+        with pytest.raises(SentinelAPIError) as excinfo:
+            api.get_product_info('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')
+        print(excinfo.value)
+        assert "The Sentinels Scientific Data Hub will be back soon!" in excinfo.value.msg
 
 
 @pytest.mark.mock_api
@@ -216,17 +250,17 @@ def test_get_products_invalid_json():
     with requests_mock.mock() as rqst:
         rqst.post(
             'https://scihub.copernicus.eu/apihub/search?format=json&rows=15000',
-            text="Invalid JSON response", status_code=200
-            )
-        api.query(
-            area=get_coordinates("tests/map.geojson"),
-            initial_date="20151219",
-            end_date="20151228",
-            platformname="Sentinel-2"
+            text="{Invalid JSON response", status_code=200
         )
-        with pytest.raises(ValueError) as val_err:
+        with pytest.raises(SentinelAPIError) as excinfo:
+            api.query(
+                area=get_coordinates("tests/map.geojson"),
+                initial_date="20151219",
+                end_date="20151228",
+                platformname="Sentinel-2"
+            )
             api.get_products()
-            assert val_err.value.message == "API response not valid. JSON decoding failed."
+        assert excinfo.value.msg == "API response not valid. JSON decoding failed."
 
 
 @pytest.mark.scihub
@@ -234,11 +268,11 @@ def test_footprints_s1():
     api = SentinelAPI(
         environ['SENTINEL_USER'],
         environ['SENTINEL_PASSWORD']
-        )
+    )
     api.query(
         get_coordinates('tests/map.geojson'),
         datetime(2014, 10, 10), datetime(2014, 12, 31), producttype="GRD"
-        )
+    )
 
     with open('tests/expected_search_footprints_s1.geojson', 'r') as geojson_file:
         expected_footprints = geojson.loads(geojson_file.read())
@@ -251,11 +285,11 @@ def test_footprints_s2():
     api = SentinelAPI(
         environ['SENTINEL_USER'],
         environ['SENTINEL_PASSWORD']
-        )
+    )
     api.query(
         get_coordinates('tests/map.geojson'),
         "20151219", "20151228", platformname="Sentinel-2"
-        )
+    )
 
     with open('tests/expected_search_footprints_s2.geojson', 'r') as geojson_file:
         expected_footprints = geojson.loads(geojson_file.read())
@@ -268,13 +302,13 @@ def test_s2_cloudcover():
     api = SentinelAPI(
         environ['SENTINEL_USER'],
         environ['SENTINEL_PASSWORD']
-        )
+    )
     api.query(
         get_coordinates('tests/map.geojson'),
         "20151219", "20151228",
         platformname="Sentinel-2",
         cloudcoverpercentage="[0 TO 10]"
-        )
+    )
     assert len(api.get_products()) == 3
     assert api.get_products()[0]["id"] == "6ed0b7de-3435-43df-98bf-ad63c8d077ef"
     assert api.get_products()[1]["id"] == "37ecee60-23d8-4ec2-a65f-2de24f51d30e"
@@ -286,11 +320,11 @@ def test_get_products_size():
     api = SentinelAPI(
         environ['SENTINEL_USER'],
         environ['SENTINEL_PASSWORD']
-        )
+    )
     api.query(
         get_coordinates('tests/map.geojson'),
         "20151219", "20151228", platformname="Sentinel-2"
-        )
+    )
     assert api.get_products_size() == 63.58
 
     api.query_raw("S1A_WV_OCN__2SSH_20150603T092625_20150603T093332_006207_008194_521E")

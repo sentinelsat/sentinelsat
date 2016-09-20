@@ -9,9 +9,13 @@ sentinelsat
 
 .. image:: https://coveralls.io/repos/ibamacsr/sentinelsat/badge.svg?branch=master&service=github
     :target: https://coveralls.io/github/ibamacsr/sentinelsat?branch=master
+
 .. image:: https://readthedocs.org/projects/sentinelsat/badge/?version=latest
     :target: http://sentinelsat.readthedocs.io/en/latest/?badge=latest
     :alt: Documentation
+
+.. image:: https://zenodo.org/badge/36093931.svg
+   :target: https://zenodo.org/badge/latestdoi/36093931
 
 
 Sentinelsat makes finding and downloading `Copernicus Sentinel
@@ -182,6 +186,7 @@ Contributors
 
 * Wille Marcel
 * Kersten Clauss
+* Martin Valgur
 
 License
 =======
