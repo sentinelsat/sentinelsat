@@ -10,6 +10,7 @@ Quickstart
 
   # connect to the API
   from sentinelsat.sentinel import SentinelAPI, get_coordinates
+  from datetime import date
   api = SentinelAPI('user', 'password', 'https://scihub.copernicus.eu/dhus')
 
   # download single scene by known product id
