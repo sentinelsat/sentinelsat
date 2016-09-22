@@ -17,6 +17,7 @@ script:
 - 'if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then py.test -v -m "not scihub"; fi'
 after_success:
   - coveralls
+  - curl -X POST http://readthedocs.org/build/sentinelsat
 sudo: false
 notifications:
   email: false
