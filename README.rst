@@ -10,8 +10,8 @@ sentinelsat
 .. image:: https://coveralls.io/repos/ibamacsr/sentinelsat/badge.svg?branch=master&service=github
     :target: https://coveralls.io/github/ibamacsr/sentinelsat?branch=master
 
-.. image:: https://readthedocs.org/projects/sentinelsat/badge/?version=latest
-    :target: http://sentinelsat.readthedocs.io/en/latest/?badge=latest
+.. image:: https://readthedocs.org/projects/sentinelsat/badge/?version=master
+    :target: http://sentinelsat.readthedocs.io/en/master/?badge=master
     :alt: Documentation
 
 .. image:: https://zenodo.org/badge/36093931.svg
