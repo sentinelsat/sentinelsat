@@ -29,6 +29,8 @@ except ImportError:
 
 
 class SentinelAPIError(Exception):
+    """Invalid responses from SciHub.
+    """
     def __init__(self, http_status=None, code=None, msg=None, response_body=None):
         self.http_status = http_status
         self.code = code
@@ -41,6 +43,8 @@ class SentinelAPIError(Exception):
 
 
 class InvalidChecksumError(Exception):
+    """MD5 checksum of local file does not match the one from the server.
+    """
     pass
 
 
