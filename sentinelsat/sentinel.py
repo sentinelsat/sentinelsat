@@ -87,7 +87,11 @@ def _check_scihub_response(response):
                     msg = h.handle(response.text).strip()
                 except:
                     pass
-        raise SentinelAPIError(response.status_code, code, msg, response.content)
+        api_error = SentinelAPIError(response.status_code, code, msg, response.content)
+        # Suppress "During handling of the above exception..." message
+        # See PEP 409
+        api_error.__cause__ = None
+        raise api_error
 
 
 class SentinelAPI(object):
