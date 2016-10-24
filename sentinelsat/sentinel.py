@@ -37,7 +37,8 @@ class SentinelAPIError(Exception):
 
     def __str__(self):
         return '(HTTP status: {0}, code: {1}) {2}'.format(
-            self.http_status, self.code, self.msg)
+            self.http_status, self.code,
+            ('\n' if '\n' in self.msg else '') + self.msg)
 
 
 class InvalidChecksumError(Exception):
@@ -86,7 +87,11 @@ def _check_scihub_response(response):
                     msg = h.handle(response.text).strip()
                 except:
                     pass
-        raise SentinelAPIError(response.status_code, code, msg, response.content)
+        api_error = SentinelAPIError(response.status_code, code, msg, response.content)
+        # Suppress "During handling of the above exception..." message
+        # See PEP 409
+        api_error.__cause__ = None
+        raise api_error
 
 
 class SentinelAPI(object):
@@ -331,8 +336,8 @@ class SentinelAPI(object):
         while product_info is None:
             try:
                 product_info = self.get_product_info(id)
-            except requests.HTTPError:
-                print("Invalid API response. Trying again in 1 minute.")
+            except SentinelAPIError as e:
+                print("Invalid API response:\n{}\nTrying again in 1 minute.".format(str(e)))
                 sleep(60)
 
         path = join(directory_path, product_info['title'] + '.zip')
