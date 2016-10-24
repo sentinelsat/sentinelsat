@@ -10,8 +10,8 @@ sentinelsat
 .. image:: https://coveralls.io/repos/ibamacsr/sentinelsat/badge.svg?branch=master&service=github
     :target: https://coveralls.io/github/ibamacsr/sentinelsat?branch=master
 
-.. image:: https://readthedocs.org/projects/sentinelsat/badge/?version=latest
-    :target: http://sentinelsat.readthedocs.io/en/latest/?badge=latest
+.. image:: https://readthedocs.org/projects/sentinelsat/badge/?version=master
+    :target: http://sentinelsat.readthedocs.io/en/master/?badge=master
     :alt: Documentation
 
 .. image:: https://zenodo.org/badge/36093931.svg
@@ -20,7 +20,7 @@ sentinelsat
 
 Sentinelsat makes finding and downloading `Copernicus Sentinel
 <http://www.esa.int/Our_Activities/Observing_the_Earth/Copernicus/Overview4>`_
-satellite images easy.
+satellite images from  the `Sentinels Scientific Datahub <https://scihub.copernicus.eu/>`_ easy.
 
 It offers an easy to use command line interface.
 
@@ -29,7 +29,7 @@ It offers an easy to use command line interface.
   sentinel search --sentinel2 --cloud 30 user password search_polygon.geojson
 
 
-and a powerfull Python API.
+and a powerful Python API.
 
 .. code-block:: python
 

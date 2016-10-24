@@ -29,6 +29,8 @@ except ImportError:
 
 
 class SentinelAPIError(Exception):
+    """Invalid responses from SciHub.
+    """
     def __init__(self, http_status=None, code=None, msg=None, response_body=None):
         self.http_status = http_status
         self.code = code
@@ -42,6 +44,8 @@ class SentinelAPIError(Exception):
 
 
 class InvalidChecksumError(Exception):
+    """MD5 checksum of local file does not match the one from the server.
+    """
     pass
 
 
@@ -279,7 +283,7 @@ class SentinelAPI(object):
             .find('{http://www.opengis.net/gml}LinearRing') \
             .findtext('{http://www.opengis.net/gml}coordinates')
         coord_string = ",".join(
-            [" ".join(double_coord) for double_coord in [coord.split(",") for coord in poly_coords.split(" ")]]
+            [" ".join(double_coord[::-1]) for double_coord in [coord.split(",") for coord in poly_coords.split(" ")]]
         )
 
         keys = ['id', 'title', 'size', 'md5', 'date', 'footprint', 'url']
@@ -459,7 +463,7 @@ def get_coordinates(geojson_file, feature_number=0):
     Returns
     -------
     polygon coordinates
-        string of comma separated coordinate tuples to be used by SentinelAPI
+        string of comma separated coordinate tuples (lon, lat) to be used by SentinelAPI
     """
     geojson_obj = geojson.loads(open(geojson_file, 'r').read())
     coordinates = geojson_obj['features'][feature_number]['geometry']['coordinates'][0]
