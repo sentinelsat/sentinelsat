@@ -2,3 +2,4 @@ requests
 click
 geojson
 numpydoc
+html2text
