@@ -3,3 +3,4 @@ click
 geojson
 numpydoc
 html2text
+tqdm
