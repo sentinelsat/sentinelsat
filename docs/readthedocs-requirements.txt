@@ -1,6 +1,2 @@
-requests
-click
-geojson
 numpydoc
-html2text
-tqdm
+-r ../requirements.txt
