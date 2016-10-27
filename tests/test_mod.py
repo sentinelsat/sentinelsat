@@ -11,6 +11,23 @@ import requests_mock
 from sentinelsat.sentinel import (InvalidChecksumError, SentinelAPI, SentinelAPIError, convert_timestamp, format_date,
                                   get_coordinates, md5_compare)
 
+_small_query = dict(
+        area='0 0,1 1,0 1,0 0',
+        initial_date=datetime(2015, 1, 1),
+        end_date=datetime(2015, 1, 2))
+
+_large_query = dict(
+        area='0 0,0 10,10 10,10 0,0 0',
+        initial_date=datetime(2015, 1, 1),
+        end_date=datetime(2015, 12, 31))
+
+_api_auth = dict(
+        user=environ['SENTINEL_USER'],
+        password=environ['SENTINEL_PASSWORD'])
+
+_api_kwargs = dict(_api_auth,
+        api_url='https://scihub.copernicus.eu/apihub/')
+
 
 @pytest.mark.fast
 def test_format_date():
@@ -38,16 +55,14 @@ def test_md5_comparison():
 
 @pytest.mark.scihub
 def test_SentinelAPI_connection():
-    api = SentinelAPI(
-        environ['SENTINEL_USER'],
-        environ['SENTINEL_PASSWORD']
-    )
-    api.query('0 0,1 1,0 1,0 0', datetime(2015, 1, 1), datetime(2015, 1, 2))
+    api = SentinelAPI(**_api_auth)
+    api.query(**_small_query)
 
-    assert api.url == 'https://scihub.copernicus.eu/apihub/search?format=json&rows=15000'
-    assert api.last_query == '(beginPosition:[2015-01-01T00:00:00Z TO 2015-01-02T00:00:00Z]) ' + \
-                             'AND (footprint:"Intersects(POLYGON((0 0,1 1,0 1,0 0)))")'
-    assert api.content.status_code == 200
+    assert api.url.startswith('https://scihub.copernicus.eu/apihub/search?format=json&rows={rows}'.format(rows=api.max_rows))
+    assert api.last_query == (
+            '(beginPosition:[2015-01-01T00:00:00Z TO 2015-01-02T00:00:00Z]) '
+            'AND (footprint:"Intersects(POLYGON((0 0,1 1,0 1,0 0)))")')
+    assert api.last_status_code == 200
 
 
 @pytest.mark.scihub
@@ -57,12 +72,8 @@ def test_SentinelAPI_wrong_credentials():
         "wrong_password"
     )
     with pytest.raises(SentinelAPIError) as excinfo:
-        api.query('0 0,1 1,0 1,0 0', datetime(2015, 1, 1), datetime(2015, 1, 2))
+        api.query(**_small_query)
     assert excinfo.value.http_status == 401
-
-    with pytest.raises(SentinelAPIError):
-        api.get_products_size()
-        api.get_products()
 
 
 @pytest.mark.fast
@@ -83,29 +94,42 @@ def test_api_query_format():
 
 @pytest.mark.scihub
 def test_invalid_query():
-    api = SentinelAPI(
-        environ['SENTINEL_USER'],
-        environ['SENTINEL_PASSWORD']
-    )
+    api = SentinelAPI(**_api_auth)
     with pytest.raises(SentinelAPIError) as excinfo:
-        api.query_raw("xxx:yyy")
+        api.load_query("xxx:yyy")
     assert excinfo.value.msg is not None
     print(excinfo)
 
 
 @pytest.mark.scihub
-def test_set_base_url():
-    api = SentinelAPI(
-        environ['SENTINEL_USER'],
-        environ['SENTINEL_PASSWORD'],
-        'https://scihub.copernicus.eu/dhus/'
-    )
-    api.query('0 0,1 1,0 1,0 0', datetime(2015, 1, 1), datetime(2015, 1, 2))
+def test_format_url():
+    api = SentinelAPI(**_api_kwargs)
+    start_row = 0
+    url = api.format_url(start_row=start_row)
 
-    assert api.url == 'https://scihub.copernicus.eu/dhus/search?format=json&rows=15000'
-    assert api.last_query == '(beginPosition:[2015-01-01T00:00:00Z TO 2015-01-02T00:00:00Z]) ' + \
-                             'AND (footprint:"Intersects(POLYGON((0 0,1 1,0 1,0 0)))")'
-    assert api.content.status_code == 200
+    assert url is api.url
+    assert api.url == 'https://scihub.copernicus.eu/apihub/search?format=json&rows={rows}&start={start}'.format(rows=api.max_rows, start=start_row)
+
+
+@pytest.mark.scihub
+def test_small_query():
+    api = SentinelAPI(**_api_kwargs)
+    api.query(**_small_query)
+    assert api.last_query == (
+            '(beginPosition:[2015-01-01T00:00:00Z TO 2015-01-02T00:00:00Z]) '
+            'AND (footprint:"Intersects(POLYGON((0 0,1 1,0 1,0 0)))")')
+    assert api.last_status_code == 200
+
+
+@pytest.mark.scihub
+def test_large_query():
+    api = SentinelAPI(**_api_kwargs)
+    api.query(**_large_query)
+    assert api.last_query == (
+            '(beginPosition:[2015-01-01T00:00:00Z TO 2015-12-31T00:00:00Z]) '
+            'AND (footprint:"Intersects(POLYGON((0 0,0 10,10 10,10 0,0 0)))")')
+    assert api.last_status_code == 200
+    assert len(api.products) > api.max_rows
 
 
 @pytest.mark.fast
@@ -117,10 +141,7 @@ def test_get_coordinates():
 
 @pytest.mark.scihub
 def test_get_product_info():
-    api = SentinelAPI(
-        environ['SENTINEL_USER'],
-        environ['SENTINEL_PASSWORD']
-    )
+    api = SentinelAPI(**_api_auth)
 
     expected_s1 = {
         'id': '8df46c9e-a20c-43db-a19a-4240c2ed3b8b',
@@ -228,7 +249,7 @@ def test_get_products_invalid_json():
     api = SentinelAPI("mock_user", "mock_password")
     with requests_mock.mock() as rqst:
         rqst.post(
-            'https://scihub.copernicus.eu/apihub/search?format=json&rows=15000',
+            'https://scihub.copernicus.eu/apihub/search?format=json',
             text="{Invalid JSON response", status_code=200
         )
         with pytest.raises(SentinelAPIError) as excinfo:
@@ -244,10 +265,7 @@ def test_get_products_invalid_json():
 
 @pytest.mark.scihub
 def test_footprints_s1():
-    api = SentinelAPI(
-        environ['SENTINEL_USER'],
-        environ['SENTINEL_PASSWORD']
-    )
+    api = SentinelAPI(**_api_auth)
     api.query(
         get_coordinates('tests/map.geojson'),
         datetime(2014, 10, 10), datetime(2014, 12, 31), producttype="GRD"
@@ -261,10 +279,7 @@ def test_footprints_s1():
 
 @pytest.mark.scihub
 def test_footprints_s2():
-    api = SentinelAPI(
-        environ['SENTINEL_USER'],
-        environ['SENTINEL_PASSWORD']
-    )
+    api = SentinelAPI(**_api_auth)
     api.query(
         get_coordinates('tests/map.geojson'),
         "20151219", "20151228", platformname="Sentinel-2"
@@ -278,10 +293,7 @@ def test_footprints_s2():
 
 @pytest.mark.scihub
 def test_s2_cloudcover():
-    api = SentinelAPI(
-        environ['SENTINEL_USER'],
-        environ['SENTINEL_PASSWORD']
-    )
+    api = SentinelAPI(**_api_auth)
     api.query(
         get_coordinates('tests/map.geojson'),
         "20151219", "20151228",
@@ -296,17 +308,17 @@ def test_s2_cloudcover():
 
 @pytest.mark.scihub
 def test_get_products_size():
-    api = SentinelAPI(
-        environ['SENTINEL_USER'],
-        environ['SENTINEL_PASSWORD']
-    )
+    api = SentinelAPI(**_api_auth)
     api.query(
         get_coordinates('tests/map.geojson'),
         "20151219", "20151228", platformname="Sentinel-2"
     )
     assert api.get_products_size() == 63.58
 
-    api.query_raw("S1A_WV_OCN__2SSH_20150603T092625_20150603T093332_006207_008194_521E")
+    # reset products
+    api.products = []
+    # load new very small query
+    api.load_query("S1A_WV_OCN__2SSH_20150603T092625_20150603T093332_006207_008194_521E")
     assert len(api.get_products()) > 0
     # Rounded to zero
     assert api.get_products_size() == 0
@@ -314,10 +326,7 @@ def test_get_products_size():
 
 @pytest.mark.scihub
 def test_download(tmpdir):
-    api = SentinelAPI(
-        environ['SENTINEL_USER'],
-        environ['SENTINEL_PASSWORD']
-    )
+    api = SentinelAPI(**_api_auth)
     uuid = "1f62a176-c980-41dc-b3a1-c735d660c910"
     filename = "S1A_WV_OCN__2SSH_20150603T092625_20150603T093332_006207_008194_521E"
     expected_path = tmpdir.join(filename + ".zip")
@@ -374,16 +383,13 @@ def test_download(tmpdir):
 
 @pytest.mark.scihub
 def test_download_all(tmpdir):
-    api = SentinelAPI(
-        environ['SENTINEL_USER'],
-        environ['SENTINEL_PASSWORD']
-    )
+    api = SentinelAPI(**_api_auth)
     # From https://scihub.copernicus.eu/apihub/odata/v1/Products?$top=5&$orderby=ContentLength
     filenames = ["S1A_WV_OCN__2SSH_20150603T092625_20150603T093332_006207_008194_521E",
                  "S1A_WV_OCN__2SSV_20150526T211029_20150526T211737_006097_007E78_134A",
                  "S1A_WV_OCN__2SSV_20150526T081641_20150526T082418_006090_007E3E_104C"]
 
-    api.query_raw(" OR ".join(filenames))
+    api.load_query(" OR ".join(filenames))
     assert len(api.get_products()) == len(filenames)
 
     # Download normally
