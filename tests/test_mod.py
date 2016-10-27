@@ -72,12 +72,10 @@ def test_api_query_format():
     now = datetime.now()
     query = api.format_query('0 0,1 1,0 1,0 0', end_date=now)
     last_24h = format_date(now - timedelta(hours=24))
-    assert api.url == 'https://scihub.copernicus.eu/apihub/search?format=json&rows=15000'
     assert query == '(beginPosition:[%s TO %s]) ' % (last_24h, format_date(now)) + \
                     'AND (footprint:"Intersects(POLYGON((0 0,1 1,0 1,0 0)))")'
 
     query = api.format_query('0 0,1 1,0 1,0 0', end_date=now, producttype='SLC')
-    assert api.url == 'https://scihub.copernicus.eu/apihub/search?format=json&rows=15000'
     assert query == '(beginPosition:[%s TO %s]) ' % (last_24h, format_date(now)) + \
                     'AND (footprint:"Intersects(POLYGON((0 0,1 1,0 1,0 0)))") ' + \
                     'AND (producttype:SLC)'
