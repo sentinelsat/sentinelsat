@@ -111,23 +111,6 @@ def test_set_base_url():
 
 
 @pytest.mark.fast
-def test_trail_slash_base_url():
-    base_urls = [
-        'https://scihub.copernicus.eu/dhus/',
-        'https://scihub.copernicus.eu/dhus'
-    ]
-
-    expected = 'https://scihub.copernicus.eu/dhus/'
-
-    for test_url in base_urls:
-        assert SentinelAPI._url_trail_slash(test_url) == expected
-        api = SentinelAPI("mock_user", "mock_password",
-            test_url
-        )
-        assert api.api_url == expected
-
-
-@pytest.mark.fast
 def test_get_coordinates():
     coords = ('-66.2695312 -8.0592296,-66.2695312 0.7031074,' +
               '-57.3046875 0.7031074,-57.3046875 -8.0592296,-66.2695312 -8.0592296')
