@@ -123,6 +123,7 @@ class SentinelAPI(object):
         self.session = requests.Session()
         self.session.auth = (user, password)
         self.api_url = api_url
+        self.url = None
         self.last_query = None
         self.last_status_code = None
         self.content = None
