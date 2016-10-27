@@ -124,6 +124,7 @@ class SentinelAPI(object):
         self.session.auth = (user, password)
         self.api_url = api_url
         self.last_query = None
+        self.last_status_code = None
         self.content = None
         self.products = []
         self.max_rows = max_rows
@@ -138,7 +139,6 @@ class SentinelAPI(object):
         and any other search keywords accepted by the SciHub API.
         """
         query = self.format_query(area, initial_date, end_date, **keywords)
-        self.last_query = query
         self.load_query(query)
         return self.products
 
@@ -146,12 +146,18 @@ class SentinelAPI(object):
         """Do a full-text query on the SciHub API using the format specified in
            https://scihub.copernicus.eu/twiki/do/view/SciHubUserGuide/3FullTextSearch
         """
+        # store last query (for testing)
+        self.last_query = query
+
         # generate URL
         url = self.format_url(start_row=start_row)
 
         # load query results
         content = requests.post(url, dict(q=query), auth=self.session.auth)
         _check_scihub_response(content)
+
+        # store last status code (for testing)
+        self.last_status_code = content.status_code
 
         # parse content
         total_results = 0
