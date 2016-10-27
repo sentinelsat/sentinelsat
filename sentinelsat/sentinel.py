@@ -119,37 +119,72 @@ class SentinelAPI(object):
         URL to the DataHub
     """
 
-    def __init__(self, user, password, api_url='https://scihub.copernicus.eu/apihub/'):
+    def __init__(self, user, password, api_url='https://scihub.copernicus.eu/apihub/', max_rows=100):
         self.session = requests.Session()
         self.session.auth = (user, password)
         self.api_url = api_url
         self.last_query = None
         self.content = None
-        self.products = None
+        self.products = []
+        self.max_rows = max_rows
 
-    @property
-    def url(self):
-        return urljoin(self.api_url, 'search?format=json&rows=15000')
+    def format_url(self, start_row=0):
+        blank = 'search?format=json&rows={rows}&start={start}'.format(rows=self.max_rows, start=start_row)
+        self.url = urljoin(self.api_url, blank)
+        return self.url
 
     def query(self, area, initial_date=None, end_date=datetime.now(), **keywords):
         """Query the SciHub API with the coordinates of an area, a date interval
         and any other search keywords accepted by the SciHub API.
         """
         query = self.format_query(area, initial_date, end_date, **keywords)
-        self.query_raw(query)
-
-    def query_raw(self, query):
-        """Do a full-text query on the SciHub API using the format specified in
-        https://scihub.copernicus.eu/twiki/do/view/SciHubUserGuide/3FullTextSearch
-        """
         self.last_query = query
-        self.content = requests.post(self.url, dict(q=query), auth=self.session.auth)
-        _check_scihub_response(self.content)
+        self.load_query(query)
+        return self.products
+
+    def load_query(self, query, start_row=0):
+        """Do a full-text query on the SciHub API using the format specified in
+           https://scihub.copernicus.eu/twiki/do/view/SciHubUserGuide/3FullTextSearch
+        """
+        # generate URL
+        url = self.format_url(start_row=start_row)
+
+        # load query results
+        content = requests.post(url, dict(q=query), auth=self.session.auth)
+        _check_scihub_response(content)
+
+        # parse content
+        total_results = 0
+        try:
+            json_feed = content.json()['feed']
+            products = json_feed['entry']
+            # this verification is necessary because if the query returns only
+            # one product, self.products will be a dict not a list
+            if type(products) == dict:
+                products = [products]
+
+            # append to products
+            self.products += products
+
+            # get total number of returned results
+            total_results = int(json_feed['opensearch:totalResults'])
+            if total_results == 0:
+                raise KeyError('No results returned.')
+        except KeyError:
+            print('No products found in this query.')
+            return []
+        except ValueError:
+            raise SentinelAPIError(http_status=content.status_code,
+                                   msg='API response not valid. JSON decoding failed.',
+                                   response_body=content.content)
+
+        # repeat query until all results have been loaded
+        if total_results > self.max_rows + start_row - 1:
+            self.load_query(query, start_row=(start_row + self.max_rows))
 
     @staticmethod
     def format_query(area, initial_date=None, end_date=datetime.now(), **keywords):
-        """Create the URL to access the SciHub API, defining the max quantity of
-        results to 15000 items.
+        """Create the SciHub API query string
         """
         if initial_date is None:
             initial_date = end_date - timedelta(hours=24)
@@ -169,21 +204,7 @@ class SentinelAPI(object):
 
     def get_products(self):
         """Return the result of the Query in json format."""
-        try:
-            self.products = self.content.json()['feed']['entry']
-            # this verification is necessary because if the query returns only
-            # one product, self.products will be a dict not a list
-            if type(self.products) == dict:
-                return [self.products]
-            else:
-                return self.products
-        except KeyError:
-            print('No products found in this query.')
-            return []
-        except ValueError:
-            raise SentinelAPIError(http_status=self.content.status_code,
-                                   msg='API response not valid. JSON decoding failed.',
-                                   response_body=self.content.content)
+        return self.products
 
     def get_products_size(self):
         """Return the total filesize in GB of all products in the query"""
@@ -353,7 +374,7 @@ class SentinelAPI(object):
                 remove(path)
 
         if (exists(path) and getsize(path) >= 2 ** 31 and
-            pycurl.version.split()[0].lower() <= 'pycurl/7.43.0'):
+                pycurl.version.split()[0].lower() <= 'pycurl/7.43.0'):
             # Workaround for PycURL's bug when continuing > 2 GB files
             # https://github.com/pycurl/pycurl/issues/405
             remove(path)
@@ -367,7 +388,7 @@ class SentinelAPI(object):
         return path, product_info
 
     def download_all(self, directory_path='.', max_attempts=10, checksum=False, check_existing=False, **kwargs):
-        """Download all products returned in query() or query_raw().
+        """Download all products returned in query().
 
         File names on the server are used for the downloaded files, e.g.
         "S1A_EW_GRDH_1SDH_20141003T003840_20141003T003920_002658_002F54_4DD1.zip".
