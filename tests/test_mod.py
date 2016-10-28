@@ -22,8 +22,8 @@ _large_query = dict(
         end_date=datetime(2015, 12, 31))
 
 _api_auth = dict(
-        user=environ['SENTINEL_USER'],
-        password=environ['SENTINEL_PASSWORD'])
+        user=environ.get('SENTINEL_USER'),
+        password=environ.get('SENTINEL_PASSWORD'))
 
 _api_kwargs = dict(_api_auth,
         api_url='https://scihub.copernicus.eu/apihub/')
