@@ -122,7 +122,7 @@ class SentinelAPI(object):
     def __init__(self, user, password, api_url='https://scihub.copernicus.eu/apihub/'):
         self.session = requests.Session()
         self.session.auth = (user, password)
-        self.api_url = self._url_trail_slash(api_url)
+        self.api_url = api_url
         self.last_query = None
         self.content = None
         self.products = None
@@ -145,13 +145,6 @@ class SentinelAPI(object):
         self.last_query = query
         self.content = requests.post(self.url, dict(q=query), auth=self.session.auth)
         _check_scihub_response(self.content)
-
-    @staticmethod
-    def _url_trail_slash(api_url):
-        """Add trailing slash to the api url if it is missing"""
-        if api_url[-1] is not '/':
-            api_url += '/'
-        return api_url
 
     @staticmethod
     def format_query(area, initial_date=None, end_date=datetime.now(), **keywords):
