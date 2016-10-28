@@ -187,6 +187,7 @@ Contributors
 * Wille Marcel
 * Kersten Clauss
 * Martin Valgur
+* Jonas Sølvsteen
 
 License
 =======
