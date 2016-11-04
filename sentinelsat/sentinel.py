@@ -110,6 +110,9 @@ class SentinelAPI(object):
     api_url : string, optional
         URL of the DataHub
         defaults to 'https://scihub.copernicus.eu/apihub'
+    page_size : int
+        size of query pages on SciHub
+        default value: currently allowed maximum
 
     Attributes
     ----------
