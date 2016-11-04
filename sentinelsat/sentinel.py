@@ -119,7 +119,7 @@ class SentinelAPI(object):
         URL to the DataHub
     """
 
-    def __init__(self, user, password, api_url='https://scihub.copernicus.eu/apihub/', max_rows=100):
+    def __init__(self, user, password, api_url='https://scihub.copernicus.eu/apihub/', page_size=100):
         self.session = requests.Session()
         self.session.auth = (user, password)
         self.api_url = api_url
@@ -128,10 +128,10 @@ class SentinelAPI(object):
         self.last_status_code = None
         self.content = None
         self.products = []
-        self.max_rows = max_rows
+        self.page_size = page_size
 
     def format_url(self, start_row=0):
-        blank = 'search?format=json&rows={rows}&start={start}'.format(rows=self.max_rows, start=start_row)
+        blank = 'search?format=json&rows={rows}&start={start}'.format(rows=self.page_size, start=start_row)
         self.url = urljoin(self.api_url, blank)
         return self.url
 
@@ -186,8 +186,8 @@ class SentinelAPI(object):
                                    response_body=content.content)
 
         # repeat query until all results have been loaded
-        if total_results > self.max_rows + start_row - 1:
-            self.load_query(query, start_row=(start_row + self.max_rows))
+        if total_results > self.page_size + start_row - 1:
+            self.load_query(query, start_row=(start_row + self.page_size))
 
     @staticmethod
     def format_query(area, initial_date=None, end_date=datetime.now(), **keywords):
