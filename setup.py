@@ -33,7 +33,8 @@ setup(name='sentinelsat',
       extras_require={
           'test': [
               'pytest',
-              'requests-mock'
+              'requests-mock',
+              'vcrpy'
           ],
       },
       entry_points="""
