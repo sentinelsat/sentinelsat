@@ -122,7 +122,7 @@ class SentinelAPI(object):
     def __init__(self, user, password, api_url='https://scihub.copernicus.eu/apihub/', max_rows=100):
         self.session = requests.Session()
         self.session.auth = (user, password)
-        self.api_url = api_url if api_url[-1] == '/' else api_url + '/'
+        self.api_url = api_url if api_url.endswith('/') else api_url + '/'
         self.url = None
         self.last_query = None
         self.last_status_code = None
