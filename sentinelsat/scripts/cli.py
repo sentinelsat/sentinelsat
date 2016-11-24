@@ -56,9 +56,12 @@ def cli():
 @click.option(
     '-c', '--cloud', type=int,
     help='Maximum cloud cover in percent. (Automatically sets --sentinel2)')
+@click.option(
+    '-o', '--orderby', type=str,
+    help='Ordered the output according a value (Valid options are date, cloudcoverpercentage)')
 def search(
         user, password, geojson, start, end, download, md5,
-        sentinel1, sentinel2, cloud, footprints, path, query, url):
+        sentinel1, sentinel2, cloud, footprints, path, query, url,  orderby):
     """Search for Sentinel products and, optionally, download all the results
     and/or create a geojson file with the search result footprints.
     Beyond your SciHub user and password, you must pass a geojson file
@@ -96,7 +99,10 @@ def search(
                     for corrupt_tuple in corrupt_scenes:
                         outfile.write("%s : %s\n" % corrupt_tuple)
     else:
-        for product in api.get_products():
+        order = None
+        if orderby:
+            order = orderby
+        for product in api.get_products(ordered=order):
             print('Product %s - %s' % (product['id'], product['summary']))
         print('---')
         print(
