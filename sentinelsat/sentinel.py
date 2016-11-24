@@ -492,7 +492,6 @@ class SentinelAPI(object):
                             out[dat['content']] = []
                     prod['summary'] += ", Cloud Cover: {val} %".format(val=dat['content'])
                     out[dat['content']].append(prod)
-        import ipdb; ipdb.set_trace()
         final = []
         for i in OrderedDict(sorted(out.items(), key=lambda t: t[0])):
             for scene in out[i]:
