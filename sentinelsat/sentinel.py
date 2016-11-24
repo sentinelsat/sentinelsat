@@ -10,7 +10,7 @@ from os import remove
 from os.path import join, exists, getsize
 import pycurl
 from time import sleep
-
+from collections import OrderedDict
 import geojson
 import homura
 import html2text
@@ -209,8 +209,10 @@ class SentinelAPI(object):
         query = ''.join([acquisition_date, query_area, filters])
         return query
 
-    def get_products(self):
+    def get_products(self, ordered=None):
         """Return the result of the Query in json format."""
+        if ordered:
+            return self._order_by(ordered)
         return self.products
 
     def get_products_size(self):
@@ -469,6 +471,33 @@ class SentinelAPI(object):
 
         return kwargs_dict
 
+    def _order_by(self,  by):
+        """Order the products according the begin date"""
+        out = dict()
+        if by not in ['date',  'cloudcoverpercentage']:
+            print("The order method is not supported returning data not sorted"
+                  ", please choose 'date' or 'cloudcoverpercentage'")
+            return self.products
+        for prod in self.products:
+            if by == 'date':
+                for dat in prod['date']:
+                    if dat['name'] == 'beginposition':
+                        if dat['content'] not in out.keys():
+                            out[dat['content']] = []
+                        out[dat['content']].append(prod)
+            elif by == 'cloudcoverpercentage':
+                dat = prod['double']
+                if dat['name'] == 'cloudcoverpercentage':
+                    if dat['content'] not in out.keys():
+                            out[dat['content']] = []
+                    prod['summary'] += ", Cloud Cover: {val} %".format(val=dat['content'])
+                    out[dat['content']].append(prod)
+        import ipdb; ipdb.set_trace()
+        final = []
+        for i in OrderedDict(sorted(out.items(), key=lambda t: t[0])):
+            for scene in out[i]:
+                final.append(scene)
+        return final
 
 def get_coordinates(geojson_file, feature_number=0):
     """Return the coordinates of a polygon of a GeoJSON file.
