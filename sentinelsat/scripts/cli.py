@@ -57,8 +57,9 @@ def cli():
     '-c', '--cloud', type=int,
     help='Maximum cloud cover in percent. (Automatically sets --sentinel2)')
 @click.option(
-    '-o', '--orderby', type=str,
-    help='Ordered the output according a value (Valid options are date, cloudcoverpercentage)')
+    '-o', '--orderby', type=click.Choice(['date', 'cloudcoverpercentage']),
+    help='Ordered output according the choosen value')
+
 def search(
         user, password, geojson, start, end, download, md5,
         sentinel1, sentinel2, cloud, footprints, path, query, url,  orderby):
