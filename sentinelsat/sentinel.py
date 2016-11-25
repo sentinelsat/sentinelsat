@@ -118,7 +118,8 @@ class SentinelAPI(object):
     api_url : str
         URL to the DataHub
     page_size : int
-        size of query pages on SciHub
+        number of results per query page
+        current value: 100 (maximum allowed on ApiHub)
     """
 
     def __init__(self, user, password, api_url='https://scihub.copernicus.eu/apihub/', page_size=100):
