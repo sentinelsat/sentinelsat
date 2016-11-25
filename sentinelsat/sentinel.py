@@ -140,7 +140,7 @@ class SentinelAPI(object):
         """Query the SciHub API with the coordinates of an area, a date interval
         and any other search keywords accepted by the SciHub API.
         """
-        if keywords.has_key('platformname'):
+        if 'platformname' in keywords.keys():
             self.sentinel_version = keywords['platformname']
         query = self.format_query(area, initial_date, end_date, **keywords)
         self.load_query(query)
