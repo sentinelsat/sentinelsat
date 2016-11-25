@@ -129,6 +129,7 @@ class SentinelAPI(object):
         self.content = None
         self.products = []
         self.max_rows = max_rows
+        self.sentinel_version = None
 
     def format_url(self, start_row=0):
         blank = 'search?format=json&rows={rows}&start={start}'.format(rows=self.max_rows, start=start_row)
@@ -139,6 +140,8 @@ class SentinelAPI(object):
         """Query the SciHub API with the coordinates of an area, a date interval
         and any other search keywords accepted by the SciHub API.
         """
+        if keywords.has_key('platformname'):
+            self.sentinel_version = keywords['platformname']
         query = self.format_query(area, initial_date, end_date, **keywords)
         self.load_query(query)
         return self.products
@@ -478,6 +481,10 @@ class SentinelAPI(object):
             print("The order method is not supported returning data not sorted"
                   ", please choose 'date' or 'cloudcoverpercentage'")
             return self.products
+        if by == 'cloudcoverpercentage' and self.sentinel_version == 'Sentinel-1':
+            print("Sentinel-1 product has no cloudcoverpercentage information, "
+                  "returning data not sorted")
+            return self.products
         for prod in self.products:
             if by == 'date':
                 for dat in prod['date']:
@@ -486,12 +493,18 @@ class SentinelAPI(object):
                             out[dat['content']] = []
                         out[dat['content']].append(prod)
             elif by == 'cloudcoverpercentage':
-                dat = prod['double']
+                try:
+                    dat = prod['double']
+                except:
+                    if 200.0 not in out.keys():
+                        out[200.0] = []
+                    out[200.0].append(prod)
+                    continue
                 if dat['name'] == 'cloudcoverpercentage':
-                    if dat['content'] not in out.keys():
-                            out[dat['content']] = []
+                    if float(dat['content']) not in out.keys():
+                            out[float(dat['content'])] = []
                     prod['summary'] += ", Cloud Cover: {val} %".format(val=dat['content'])
-                    out[dat['content']].append(prod)
+                    out[float(dat['content'])].append(prod)
         final = []
         for i in OrderedDict(sorted(out.items(), key=lambda t: t[0])):
             for scene in out[i]:
