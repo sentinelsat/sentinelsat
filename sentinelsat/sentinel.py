@@ -122,7 +122,7 @@ class SentinelAPI(object):
         current value: 100 (maximum allowed on ApiHub)
     """
 
-    def __init__(self, user, password, api_url='https://scihub.copernicus.eu/apihub/', page_size=100):
+    def __init__(self, user, password, api_url='https://scihub.copernicus.eu/apihub/'):
         self.session = requests.Session()
         self.session.auth = (user, password)
         self.api_url = api_url
