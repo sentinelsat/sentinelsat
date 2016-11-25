@@ -110,9 +110,6 @@ class SentinelAPI(object):
     api_url : string, optional
         URL of the DataHub
         defaults to 'https://scihub.copernicus.eu/apihub'
-    page_size : int
-        size of query pages on SciHub
-        default value: currently allowed maximum
 
     Attributes
     ----------
@@ -120,6 +117,8 @@ class SentinelAPI(object):
         Session to connect to DataHub
     api_url : str
         URL to the DataHub
+    page_size : int
+        size of query pages on SciHub
     """
 
     def __init__(self, user, password, api_url='https://scihub.copernicus.eu/apihub/', page_size=100):
@@ -131,7 +130,7 @@ class SentinelAPI(object):
         self.last_status_code = None
         self.content = None
         self.products = []
-        self.page_size = page_size
+        self.page_size = 100
 
     def format_url(self, start_row=0):
         blank = 'search?format=json&rows={rows}&start={start}'.format(rows=self.page_size, start=start_row)
