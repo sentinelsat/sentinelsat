@@ -69,7 +69,10 @@ def test_SentinelAPI_connection():
     api.query(**_small_query)
 
     assert api.url.startswith(
-        'https://scihub.copernicus.eu/apihub/search?format=json&rows={rows}'.format(rows=api.max_rows))
+        'https://scihub.copernicus.eu/apihub/search?format=json&rows={rows}'.format(
+            rows=api.page_size
+            )
+        )
     assert api.last_query == (
         '(beginPosition:[2015-01-01T00:00:00Z TO 2015-01-02T00:00:00Z]) '
         'AND (footprint:"Intersects(POLYGON((0 0,1 1,0 1,0 0)))")')
@@ -124,7 +127,7 @@ def test_format_url():
 
     assert url is api.url
     assert api.url == 'https://scihub.copernicus.eu/apihub/search?format=json&rows={rows}&start={start}'.format(
-        rows=api.max_rows, start=start_row)
+        rows=api.page_size, start=start_row)
 
 
 @pytest.mark.fast
@@ -157,7 +160,7 @@ def test_large_query():
         '(beginPosition:[2015-01-01T00:00:00Z TO 2015-12-31T00:00:00Z]) '
         'AND (footprint:"Intersects(POLYGON((0 0,0 10,10 10,10 0,0 0)))")')
     assert api.last_status_code == 200
-    assert len(api.products) > api.max_rows
+    assert len(api.products) > api.page_size
 
 
 @pytest.mark.fast

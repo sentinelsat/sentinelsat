@@ -134,7 +134,9 @@ class SentinelAPI(object):
         self.page_size = 100
 
     def format_url(self, start_row=0):
-        blank = 'search?format=json&rows={rows}&start={start}'.format(rows=self.page_size, start=start_row)
+        blank = 'search?format=json&rows={rows}&start={start}'.format(
+            rows=self.page_size, start=start_row
+            )
         self.url = urljoin(self.api_url, blank)
         return self.url
 
