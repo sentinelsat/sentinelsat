@@ -111,6 +111,17 @@ def test_format_url():
     assert api.url == 'https://scihub.copernicus.eu/apihub/search?format=json&rows={rows}&start={start}'.format(rows=api.max_rows, start=start_row)
 
 
+@pytest.mark.fast
+def test_format_url_custom_api_url():
+    api = SentinelAPI("user", "pw", api_url='https://scihub.copernicus.eu/dhus/')
+    url = api.format_url()
+    assert url.startswith('https://scihub.copernicus.eu/dhus/search')
+
+    api = SentinelAPI("user", "pw", api_url='https://scihub.copernicus.eu/dhus')
+    url = api.format_url()
+    assert url.startswith('https://scihub.copernicus.eu/dhus/search')
+
+
 @pytest.mark.scihub
 def test_small_query():
     api = SentinelAPI(**_api_kwargs)
