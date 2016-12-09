@@ -14,7 +14,7 @@ install:
 - pip install -e .[test]
 script:
 - 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then py.test -v; coverage run --source=sentinelsat -m py.test; fi'
-- 'if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then py.test -v -m "not scihub"; fi'
+- 'if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then py.test -v -m "not homura"; fi'
 after_success:
   - coveralls
   - curl -X POST http://readthedocs.org/build/sentinelsat
