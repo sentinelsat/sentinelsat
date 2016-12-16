@@ -24,7 +24,7 @@ If you do not specify a start and end date only products published in the last
 24 hours will be queried.
 
 Start and end dates refer to the acquisition date given by the
-`beginPosition <https://scihub.copernicus.eu/userguide/3FullTextSearch>` of the
+`beginPosition <https://scihub.copernicus.eu/userguide/3FullTextSearch>`_ of the
 products, i.e. the start of the acquisition time.
 
 Sentinel-1
@@ -36,15 +36,15 @@ orbit for the year 2015.
 .. code-block:: bash
 
   sentinel search -s 20150101 -e 20151231 -d \
-  -q 'producttype=SLC, orbitdirection=Descending' \
-  -u 'https://scihub.copernicus.eu/dhus' <user> <password> <poly.geojson>
+  -q "producttype=SLC, orbitdirection=Descending" \
+  -u "https://scihub.copernicus.eu/dhus" <user> <password> <poly.geojson>
 
 Download a single Sentinel-1 GRDH scene covering Santa Claus Village in Finland
 on Christmas Eve 2015.
 
 .. code-block:: bash
 
-  sentinel download --md5 -u 'https://scihub.copernicus.eu/dhus/' <user> <password> a9048d1d-fea6-4df8-bedd-7bcb212be12e
+  sentinel download --md5 -u "https://scihub.copernicus.eu/dhus/" <user> <password> a9048d1d-fea6-4df8-bedd-7bcb212be12e
 
 
 Sentinel-2
@@ -72,32 +72,32 @@ sentinel search
 
 Options:
 
-+----+--------------+------+--------------------------------------------------------------------------------------------+
-| -s | -\-start     | TEXT | Start date of the query in the format YYYYMMDD.                                            |
-+----+--------------+------+--------------------------------------------------------------------------------------------+
-| -e | -\-end       | TEXT | End date of the query in the format YYYYMMDD.                                              |
-+----+--------------+------+--------------------------------------------------------------------------------------------+
-| -d | -\-download  |      | Download all results of the query.                                                         |
-+----+--------------+------+--------------------------------------------------------------------------------------------+
-| -f | -\-footprints|      | Create geojson file search_footprints.geojson with footprints of the query result.         |
-+----+--------------+------+--------------------------------------------------------------------------------------------+
-| -p | -\-path      | PATH | Set the path where the files will be saved.                                                |
-+----+--------------+------+--------------------------------------------------------------------------------------------+
-| -q | -\-query     | TEXT | Extra search keywords you want to use in the query. Separate keywords with comma.          |
-|    |              |      | Example: 'producttype=GRD,polarisationmode=HH'.                                            |
-+----+--------------+------+--------------------------------------------------------------------------------------------+
-| -u | -\-url       | TEXT | Define another API URL. Default URL is 'https://scihub.copernicus.eu/apihub/'.             |
-+----+--------------+------+--------------------------------------------------------------------------------------------+
-|    | -\-md5       |      | Verify the MD5 checksum and write corrupt product ids and filenames to corrupt_scenes.txt. |
-+----+--------------+------+--------------------------------------------------------------------------------------------+
-|    | -\-sentinel1 |      | Limit search to Sentinel-1 products.                                                       |
-+----+--------------+------+--------------------------------------------------------------------------------------------+
-|    | -\-sentinel2 |      | Limit search to Sentinel-2 products.                                                       |
-+----+--------------+------+--------------------------------------------------------------------------------------------+
-| -c | -\-cloud     | INT  | Maximum cloud cover in percent. (Automatically sets --sentinel2)                           |
-+----+--------------+------+--------------------------------------------------------------------------------------------+
-|    | -\-help      |      | Show help message and exit.                                                                |
-+----+--------------+------+--------------------------------------------------------------------------------------------+
++--------------+-----------------------+------+--------------------------------------------------------------------------------------------+
+| :option:`-s` | :option:`--start`     | TEXT | Start date of the query in the format YYYYMMDD.                                            |
++--------------+-----------------------+------+--------------------------------------------------------------------------------------------+
+| :option:`-e` | :option:`--end`       | TEXT | End date of the query in the format YYYYMMDD.                                              |
++--------------+-----------------------+------+--------------------------------------------------------------------------------------------+
+| :option:`-d` | :option:`--download`  |      | Download all results of the query.                                                         |
++--------------+-----------------------+------+--------------------------------------------------------------------------------------------+
+| :option:`-f` | :option:`--footprints`|      | Create geojson file search_footprints.geojson with footprints of the query result.         |
++--------------+-----------------------+------+--------------------------------------------------------------------------------------------+
+| :option:`-p` | :option:`--path`      | PATH | Set the path where the files will be saved.                                                |
++--------------+-----------------------+------+--------------------------------------------------------------------------------------------+
+| :option:`-q` | :option:`--query`     | TEXT | Extra search keywords you want to use in the query. Separate keywords with comma.          |
+|              |                       |      | Example: 'producttype=GRD,polarisationmode=HH'.                                            |
++--------------+-----------------------+------+--------------------------------------------------------------------------------------------+
+| :option:`-u` | :option:`--url`       | TEXT | Define another API URL. Default URL is 'https://scihub.copernicus.eu/apihub/'.             |
++--------------+-----------------------+------+--------------------------------------------------------------------------------------------+
+|              | :option:`--md5`       |      | Verify the MD5 checksum and write corrupt product ids and filenames to corrupt_scenes.txt. |
++--------------+-----------------------+------+--------------------------------------------------------------------------------------------+
+|              | :option:`--sentinel1` |      | Limit search to Sentinel-1 products.                                                       |
++--------------+-----------------------+------+--------------------------------------------------------------------------------------------+
+|              | :option:`--sentinel2` |      | Limit search to Sentinel-2 products.                                                       |
++--------------+-----------------------+------+--------------------------------------------------------------------------------------------+
+| :option:`-c` | :option:`--cloud`     | INT  | Maximum cloud cover in percent. (Automatically sets --sentinel2)                           |
++--------------+-----------------------+------+--------------------------------------------------------------------------------------------+
+|              | :option:`--help`      |      | Show help message and exit.                                                                |
++--------------+-----------------------+------+--------------------------------------------------------------------------------------------+
 
 Query parameters:
 
@@ -113,10 +113,10 @@ sentinel download
 
 Options:
 
-+----+--------------+------+--------------------------------------------------------------------------------------------+
-| -p | -\-path      | PATH | Set the path where the files will be saved.                                                |
-+----+--------------+------+--------------------------------------------------------------------------------------------+
-| -u | -\-url       | TEXT | Define another API URL. Default URL is 'https://scihub.copernicus.eu/apihub/'.             |
-+----+--------------+------+--------------------------------------------------------------------------------------------+
-|    | -\-md5       |      | Verify the MD5 checksum and write corrupt product ids and filenames to corrupt_scenes.txt. |
-+----+--------------+------+--------------------------------------------------------------------------------------------+
++--------------+-----------------------+------+--------------------------------------------------------------------------------------------+
+| :option:`-p` | :option:`--path`      | PATH | Set the path where the files will be saved.                                                |
++--------------+-----------------------+------+--------------------------------------------------------------------------------------------+
+| :option:`-u` | :option:`--url`       | TEXT | Define another API URL. Default URL is 'https://scihub.copernicus.eu/apihub/'.             |
++--------------+-----------------------+------+--------------------------------------------------------------------------------------------+
+|              | :option:`--md5`       |      | Verify the MD5 checksum and write corrupt product ids and filenames to corrupt_scenes.txt. |
++--------------+-----------------------+------+--------------------------------------------------------------------------------------------+

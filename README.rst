@@ -40,11 +40,9 @@ and a powerful Python API.
   from sentinelsat.sentinel import SentinelAPI, get_coordinates
 
   api = SentinelAPI('user', 'password')
-  api.query(
-    get_coordinates("search_polygon.geojson"),
-    producttype="SLC",
-    orbitdirection="ASCENDING"
-  )
+  api.query(get_coordinates('search_polygon.geojson'), \
+            producttype = 'SLC', \
+            orbitdirection='ASCENDING')
   api.download_all()
 
 Documentation is published at http://sentinelsat.readthedocs.io/.
@@ -81,10 +79,10 @@ Python Library
   api.download(<product_id>)
 
   # search by polygon, time, and SciHub query keywords
-  api.query(get_coordinates(map.geojson), \
-            "20151219", date(2015, 12, 29), \
-            keywords={"platformname": "Sentinel-2", \
-                      "cloudcoverpercentage": "[0 TO 30]"})
+  api.query(get_coordinates('map.geojson'), \
+            '20151219', date(2015, 12, 29), \
+            platformname = 'Sentinel-2', \
+            cloudcoverpercentage = '[0 TO 30]'})
 
   # download all results from the search
   api.download_all()
@@ -119,8 +117,8 @@ orbit for the year 2015.
 .. code-block:: bash
 
   sentinel search -s 20150101 -e 20151231 -d \
-  -q 'producttype=SLC, orbitdirection=Descending' \
-  -u 'https://scihub.copernicus.eu/dhus' <user> <password> <poly.geojson>
+  -q "producttype=SLC, orbitdirection=Descending" \
+  -u "https://scihub.copernicus.eu/dhus" <user> <password> <poly.geojson>
 
 Options
 ^^^^^^^
