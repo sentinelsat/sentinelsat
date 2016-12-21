@@ -494,7 +494,7 @@ def get_coordinates(geojson_file, feature_number=0):
     geojson_obj = geojson.loads(open(geojson_file, 'r').read())
     coordinates = geojson_obj['features'][feature_number]['geometry']['coordinates'][0]
     # precision of 7 decimals equals 1mm at the equator
-    coordinates = ['%.7f %.7f' % tuple(coord) for coord in coordinates]
+    coordinates = ['%.7f %.7f' % (coord[0], coord[1]) for coord in coordinates]
     return ','.join(coordinates)
 
 
