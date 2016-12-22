@@ -141,6 +141,7 @@ def test_format_url_custom_api_url():
     assert url.startswith('https://scihub.copernicus.eu/dhus/search')
 
 
+@my_vcr.use_cassette
 @pytest.mark.scihub
 def test_small_query():
     api = SentinelAPI(**_api_kwargs)
