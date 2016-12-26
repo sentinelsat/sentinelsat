@@ -4,6 +4,7 @@ python:
 - '3.3'
 - '3.4'
 - '3.5'
+- '3.6'
 branches:
   only:
   - master
@@ -16,8 +17,8 @@ script:
 - 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then py.test -v; coverage run --source=sentinelsat -m py.test; fi'
 - 'if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then py.test -v -m "not homura"; fi'
 after_success:
-  - coveralls
-  - curl -X POST http://readthedocs.org/build/sentinelsat
+- coveralls
+- curl -X POST http://readthedocs.org/build/sentinelsat
 sudo: false
 notifications:
   email: false
