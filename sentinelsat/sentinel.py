@@ -146,14 +146,11 @@ class SentinelAPI(object):
         query = self.format_query(area, initial_date, end_date, **keywords)
         return self.load_query(query)
 
-    def load_query(self, query, start_row=0, prods=None):
+    def load_query(self, query, start_row=0, prods=[]):
         """Do a full-text query on the SciHub API using the format specified in
            https://scihub.copernicus.eu/twiki/do/view/SciHubUserGuide/3FullTextSearch
         """
-        if not prods:
-            output = []
-        else:
-            output = prods
+        output = prods
         # store last query (for testing)
         self.last_query = query
 
