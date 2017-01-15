@@ -141,6 +141,7 @@ def test_format_url_custom_api_url():
     assert url.startswith('https://scihub.copernicus.eu/dhus/search')
 
 
+@my_vcr.use_cassette
 @pytest.mark.scihub
 def test_small_query():
     api = SentinelAPI(**_api_kwargs)
@@ -168,6 +169,7 @@ def test_get_coordinates():
     coords = ('-66.2695312 -8.0592296,-66.2695312 0.7031074,' +
               '-57.3046875 0.7031074,-57.3046875 -8.0592296,-66.2695312 -8.0592296')
     assert get_coordinates('tests/map.geojson') == coords
+    assert get_coordinates('tests/map_z.geojson') == coords
 
 
 @my_vcr.use_cassette
