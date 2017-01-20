@@ -146,11 +146,10 @@ class SentinelAPI(object):
         query = self.format_query(area, initial_date, end_date, **keywords)
         return self.load_query(query)
 
-    def load_query(self, query, start_row=0, products=[]):
+    def load_query(self, query, start_row=0):
         """Do a full-text query on the SciHub API using the format specified in
            https://scihub.copernicus.eu/twiki/do/view/SciHubUserGuide/3FullTextSearch
         """
-        output = products
         # store last query (for testing)
         self.last_query = query
 
@@ -174,9 +173,6 @@ class SentinelAPI(object):
             if type(products) == dict:
                 products = [products]
 
-            # append to products
-            output += products
-
             # get total number of returned results
             total_results = int(json_feed['opensearch:totalResults'])
             if total_results == 0:
@@ -191,8 +187,8 @@ class SentinelAPI(object):
 
         # repeat query until all results have been loaded
         if total_results > self.page_size + start_row - 1:
-            self.load_query(query, start_row=(start_row + self.page_size), products=output)
-        return output
+            products += self.load_query(query, start_row=(start_row + self.page_size))
+        return products
 
     @staticmethod
     def format_query(area, initial_date=None, end_date=datetime.now(), **keywords):
@@ -214,7 +210,7 @@ class SentinelAPI(object):
         query = ''.join([acquisition_date, query_area, filters])
         return query
 
-    def get_products_size(self,  products):
+    def get_products_size(self, products):
         """Return the total filesize in GB of all products in the query"""
         size_total = 0
         for product in products:
@@ -244,8 +240,7 @@ class SentinelAPI(object):
             coord_list_split = (coord.split(" ") for coord in coord_list)
             poly = geojson.Polygon([[
                 tuple((float(coord[0]), float(coord[1])))
-                for coord in coord_list_split
-                ]])
+                for coord in coord_list_split]])
 
             # parse the following properties:
             # platformname, identifier, product_id, date, polarisation,

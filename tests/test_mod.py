@@ -447,6 +447,6 @@ def test_download_all(tmpdir):
         json = api.session.get(url).json()
         json["d"]["Checksum"]["Value"] = "00000000000000000000000000000000"
         rqst.get(url, json=json)
-        result = api.download_all(str(tmpdir), max_attempts=1, checksum=True)
+        result = api.download_all(products, str(tmpdir), max_attempts=1, checksum=True)
         assert len(result) == len(filenames)
         assert result[path] is None
