@@ -130,7 +130,6 @@ class SentinelAPI(object):
         self.last_query = None
         self.last_status_code = None
         self.content = None
-        self.products = []
         self.page_size = 100
 
     def format_url(self, start_row=0):
@@ -145,8 +144,7 @@ class SentinelAPI(object):
         and any other search keywords accepted by the SciHub API.
         """
         query = self.format_query(area, initial_date, end_date, **keywords)
-        self.load_query(query)
-        return self.products
+        return self.load_query(query)
 
     def load_query(self, query, start_row=0):
         """Do a full-text query on the SciHub API using the format specified in
@@ -175,9 +173,6 @@ class SentinelAPI(object):
             if type(products) == dict:
                 products = [products]
 
-            # append to products
-            self.products += products
-
             # get total number of returned results
             total_results = int(json_feed['opensearch:totalResults'])
             if total_results == 0:
@@ -192,7 +187,8 @@ class SentinelAPI(object):
 
         # repeat query until all results have been loaded
         if total_results > self.page_size + start_row - 1:
-            self.load_query(query, start_row=(start_row + self.page_size))
+            products += self.load_query(query, start_row=(start_row + self.page_size))
+        return products
 
     @staticmethod
     def format_query(area, initial_date=None, end_date=datetime.now(), **keywords):
@@ -214,14 +210,10 @@ class SentinelAPI(object):
         query = ''.join([acquisition_date, query_area, filters])
         return query
 
-    def get_products(self):
-        """Return the result of the Query in json format."""
-        return self.products
-
-    def get_products_size(self):
+    def get_products_size(self, products):
         """Return the total filesize in GB of all products in the query"""
         size_total = 0
-        for product in self.get_products():
+        for product in products:
             size_product = next(x for x in product["str"] if x["name"] == "size")["content"]
             size_value = float(size_product.split(" ")[0])
             size_unit = str(size_product.split(" ")[1])
@@ -232,12 +224,12 @@ class SentinelAPI(object):
             size_total += size_value
         return round(size_total, 2)
 
-    def get_footprints(self):
+    def get_footprints(self, products):
         """Return the footprints of the resulting scenes in GeoJSON format"""
         id = 0
         feature_list = []
 
-        for scene in self.get_products():
+        for scene in products:
             id += 1
             # parse the polygon
             coord_list = next(
@@ -248,8 +240,7 @@ class SentinelAPI(object):
             coord_list_split = (coord.split(" ") for coord in coord_list)
             poly = geojson.Polygon([[
                 tuple((float(coord[0]), float(coord[1])))
-                for coord in coord_list_split
-                ]])
+                for coord in coord_list_split]])
 
             # parse the following properties:
             # platformname, identifier, product_id, date, polarisation,
@@ -399,7 +390,7 @@ class SentinelAPI(object):
                 raise InvalidChecksumError('File corrupt: checksums do not match')
         return path, product_info
 
-    def download_all(self, directory_path='.', max_attempts=10, checksum=False, check_existing=False, **kwargs):
+    def download_all(self, products, directory_path='.', max_attempts=10, checksum=False, check_existing=False, **kwargs):
         """Download all products returned in query().
 
         File names on the server are used for the downloaded files, e.g.
@@ -410,6 +401,8 @@ class SentinelAPI(object):
 
         Parameters
         ----------
+        products : list
+            List of products returned with self.query()
         directory_path : string
             Directory where the downloaded files will be downloaded
         max_attempts : int, optional
@@ -426,7 +419,6 @@ class SentinelAPI(object):
             (returned by get_product_info()). Product info is set to None if downloading the product failed.
         """
         result = {}
-        products = self.get_products()
         print("Will download %d products" % len(products))
         for i, product in enumerate(products):
             path = join(directory_path, product['title'] + '.zip')
