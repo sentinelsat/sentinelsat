@@ -6,7 +6,7 @@ interactions:
       Accept-Encoding: ['gzip, deflate']
       Authorization: [Basic cmVnaW86SzZzbTZz]
       Connection: [keep-alive]
-      User-Agent: [python-requests/2.12.1]
+      User-Agent: [sentinelsat/0.7.4]
     method: GET
     uri: https://scihub.copernicus.eu/apihub/odata/v1/Products('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')/?$format=json
   response:
@@ -17,12 +17,14 @@ interactions:
         name=\"S1A_EW_GRDM_1SDV_20151121T100356_20151121T100429_008701_00C622_A0EC.zip\"><hash
         type=\"MD5\">D5E4DF5C38C6E97BF7E7BD540AB21C05</hash><size>143549851</size><url>https://scihub.copernicus.eu/apihub/odata/v1/Products(''8df46c9e-a20c-43db-a19a-4240c2ed3b8b'')/$value</url></file></metalink>","Products":{"__deferred":{"uri":"https://scihub.copernicus.eu/apihub/odata/v1/(''8df46c9e-a20c-43db-a19a-4240c2ed3b8b'')/Products"}},"Nodes":{"__deferred":{"uri":"https://scihub.copernicus.eu/apihub/odata/v1/(''8df46c9e-a20c-43db-a19a-4240c2ed3b8b'')/Nodes"}},"Attributes":{"__deferred":{"uri":"https://scihub.copernicus.eu/apihub/odata/v1/(''8df46c9e-a20c-43db-a19a-4240c2ed3b8b'')/Attributes"}},"Class":{"__deferred":{"uri":"https://scihub.copernicus.eu/apihub/odata/v1/(''8df46c9e-a20c-43db-a19a-4240c2ed3b8b'')/Class"}}}}'}
     headers:
-      Content-Length: ['2386']
       Content-Type: [application/json]
       DataServiceVersion: ['2.0']
-      Date: ['Mon, 21 Nov 2016 20:15:45 GMT']
+      Date: ['Fri, 20 Jan 2017 19:41:12 GMT']
       Pragma: [no-cache]
       Server: [Apache-Coyote/1.1]
+      Transfer-Encoding: [chunked]
+      Vary: [Accept-Encoding]
+      content-length: ['2386']
     status: {code: 200, message: OK}
 - request:
     body: null
@@ -31,8 +33,8 @@ interactions:
       Accept-Encoding: ['gzip, deflate']
       Authorization: [Basic cmVnaW86SzZzbTZz]
       Connection: [keep-alive]
-      Cookie: [dhusAuth=2dbe9c83a28e4a5dea8b4d5b11460e29; dhusIntegrity=b7c73909abb16a7ade80060f0c186d9c5fe05455]
-      User-Agent: [python-requests/2.12.1]
+      Cookie: [dhusIntegrity=7dad8894577e1d73a361a35ae615529599648275; dhusAuth=2dbe9c83a28e4a5dea8b4d5b11460e29]
+      User-Agent: [sentinelsat/0.7.4]
     method: GET
     uri: https://scihub.copernicus.eu/apihub/odata/v1/Products('44517f66-9845-4792-a988-b5ae6e81fd3e')/?$format=json
   response:
@@ -56,11 +58,13 @@ interactions:
         name=\"S2A_OPER_PRD_MSIL1C_PDMC_20151228T112523_R110_V20151227T142229_20151227T142229.zip\"><hash
         type=\"MD5\">48C5648C2644CE07207B3C943DEDEB44</hash><size>5854429622</size><url>https://scihub.copernicus.eu/apihub/odata/v1/Products(''44517f66-9845-4792-a988-b5ae6e81fd3e'')/$value</url></file></metalink>","Products":{"__deferred":{"uri":"https://scihub.copernicus.eu/apihub/odata/v1/(''44517f66-9845-4792-a988-b5ae6e81fd3e'')/Products"}},"Nodes":{"__deferred":{"uri":"https://scihub.copernicus.eu/apihub/odata/v1/(''44517f66-9845-4792-a988-b5ae6e81fd3e'')/Nodes"}},"Attributes":{"__deferred":{"uri":"https://scihub.copernicus.eu/apihub/odata/v1/(''44517f66-9845-4792-a988-b5ae6e81fd3e'')/Attributes"}},"Class":{"__deferred":{"uri":"https://scihub.copernicus.eu/apihub/odata/v1/(''44517f66-9845-4792-a988-b5ae6e81fd3e'')/Class"}}}}'}
     headers:
-      Content-Length: ['3411']
       Content-Type: [application/json]
       DataServiceVersion: ['2.0']
-      Date: ['Mon, 21 Nov 2016 20:15:45 GMT']
+      Date: ['Fri, 20 Jan 2017 19:41:12 GMT']
       Pragma: [no-cache]
       Server: [Apache-Coyote/1.1]
+      Transfer-Encoding: [chunked]
+      Vary: [Accept-Encoding]
+      content-length: ['3411']
     status: {code: 200, message: OK}
 version: 1

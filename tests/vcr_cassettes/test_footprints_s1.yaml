@@ -8,7 +8,7 @@ interactions:
       Connection: [keep-alive]
       Content-Length: ['294']
       Content-Type: [application/x-www-form-urlencoded]
-      User-Agent: [python-requests/2.12.1]
+      User-Agent: [sentinelsat/0.7.4]
     method: POST
     uri: https://scihub.copernicus.eu/apihub/search?format=json&rows=100&start=0
   response:
@@ -20,7 +20,7 @@ interactions:
         \ Hub search results for: (beginPosition:[2014-10-10T00:00:00Z TO 2014-12-31T00:00:00Z])\
         \ AND (footprint:\\\"Intersects(POLYGON((-66.2695312 -8.0592296,-66.2695312\
         \ 0.7031074,-57.3046875 0.7031074,-57.3046875 -8.0592296,-66.2695312 -8.0592296)))\\\
-        \") AND (producttype:GRD)\",\n   \"updated\": \"2016-11-21T21:15:52.035Z\"\
+        \") AND (producttype:GRD)\",\n   \"updated\": \"2017-01-20T19:41:12.834Z\"\
         ,\n   \"opensearch:totalResults\": \"0\",\n   \"xmlns:opensearch\": \"http://a9.com/-/spec/opensearch/1.1/\"\
         ,\n   \"link\": [\n      {\n         \"rel\": \"self\",\n         \"type\"\
         : \"application/atom+xml\",\n         \"href\": \"https://scihub.copernicus.eu/apihub/search?q=(beginPosition:[2014-10-10T00:00:00Z\
@@ -40,7 +40,7 @@ interactions:
         \      {\n         \"rel\": \"search\",\n         \"type\": \"application/opensearchdescription+xml\"\
         ,\n         \"href\": \"opensearch_description.xml\"\n      }\n   ],\n   \"\
         opensearch:startIndex\": \"0\",\n   \"subtitle\": \"Displaying 0 results.\
-        \ Request done in 0 seconds.\",\n   \"xmlns\": \"http://www.w3.org/2005/Atom\"\
+        \ Request done in 0.028 seconds.\",\n   \"xmlns\": \"http://www.w3.org/2005/Atom\"\
         ,\n   \"opensearch:Query\": {\n      \"searchTerms\": \"(beginPosition:[2014-10-10T00:00:00Z\
         \ TO 2014-12-31T00:00:00Z]) AND (footprint:\\\"Intersects(POLYGON((-66.2695312\
         \ -8.0592296,-66.2695312 0.7031074,-57.3046875 0.7031074,-57.3046875 -8.0592296,-66.2695312\
@@ -48,10 +48,12 @@ interactions:
         ,\n      \"startPage\": \"1\"\n   },\n   \"opensearch:itemsPerPage\": \"100\"\
         \n}}"}
     headers:
-      Content-Length: ['2715']
       Content-Type: [application/json]
-      Date: ['Mon, 21 Nov 2016 21:15:51 GMT']
+      Date: ['Fri, 20 Jan 2017 19:41:12 GMT']
       Pragma: [no-cache]
       Server: [Apache-Coyote/1.1]
+      Transfer-Encoding: [chunked]
+      Vary: [Accept-Encoding]
+      content-length: ['2719']
     status: {code: 200, message: OK}
 version: 1
