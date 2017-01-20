@@ -7,25 +7,14 @@ import geojson
 import py.path
 import pytest
 import requests_mock
-import vcr
+
 from sentinelsat.sentinel import (InvalidChecksumError, SentinelAPI, SentinelAPIError, convert_timestamp, format_date,
                                   get_coordinates, md5_compare)
+from .shared import my_vcr
 
-_api_auth = dict(
-    user=environ.get('SENTINEL_USER'),
-    password=environ.get('SENTINEL_PASSWORD'))
+_api_auth = dict(user=environ.get('SENTINEL_USER'), password=environ.get('SENTINEL_PASSWORD'))
 
-_api_kwargs = dict(_api_auth,
-                   api_url='https://scihub.copernicus.eu/apihub/')
-
-my_vcr = vcr.VCR(
-    serializer='yaml',
-    cassette_library_dir='tests/vcr_cassettes/',
-    record_mode='once',
-    match_on=['url', 'method', 'query'],
-    path_transformer=vcr.VCR.ensure_suffix('.yaml'),
-    filter_headers=['Set-Cookie']
-)
+_api_kwargs = dict(_api_auth, api_url='https://scihub.copernicus.eu/apihub/')
 
 _small_query = dict(
     area='0 0,1 1,0 1,0 0',
@@ -71,8 +60,8 @@ def test_SentinelAPI_connection():
     assert api.url.startswith(
         'https://scihub.copernicus.eu/apihub/search?format=json&rows={rows}'.format(
             rows=api.page_size
-            )
         )
+    )
     assert api.last_query == (
         '(beginPosition:[2015-01-01T00:00:00Z TO 2015-01-02T00:00:00Z]) '
         'AND (footprint:"Intersects(POLYGON((0 0,1 1,0 1,0 0)))")')
@@ -121,7 +110,7 @@ def test_invalid_query():
 @my_vcr.use_cassette
 @pytest.mark.scihub
 def test_format_url():
-    api = SentinelAPI(**_api_kwargs)
+    api = SentinelAPI(**_api_auth)
     start_row = 0
     url = api.format_url(start_row=start_row)
 
@@ -152,7 +141,7 @@ def test_small_query():
     assert api.last_status_code == 200
 
 
-@my_vcr.use_cassette
+@my_vcr.use_cassette(decode_compressed_response=False)
 @pytest.mark.scihub
 def test_large_query():
     api = SentinelAPI(**_api_kwargs)
@@ -381,6 +370,9 @@ def test_download(tmpdir):
     modification_time = expected_path.mtime()
     expected_product_info = product_info
 
+    # Note: the downloads can occasionally fail because of SciHub erroneously responding with
+    # HTTP Status 401 - Full authentication is required to access this resource
+
     # File exists, test with checksum
     # Expect no modification
     path, product_info = api.download(uuid, str(tmpdir), check_existing=True)
@@ -428,6 +420,9 @@ def test_download_all(tmpdir):
     filenames = ["S1A_WV_OCN__2SSH_20150603T092625_20150603T093332_006207_008194_521E",
                  "S1A_WV_OCN__2SSV_20150526T211029_20150526T211737_006097_007E78_134A",
                  "S1A_WV_OCN__2SSV_20150526T081641_20150526T082418_006090_007E3E_104C"]
+
+    # Note: the downloads can occasionally fail because of SciHub erroneously responding with
+    # HTTP Status 401 - Full authentication is required to access this resource
 
     api.load_query(" OR ".join(filenames))
     assert len(api.get_products()) == len(filenames)
