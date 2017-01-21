@@ -15,6 +15,7 @@ import geojson
 import homura
 import html2text
 import requests
+import requests.auth
 from tqdm import tqdm
 
 from . import __version__ as sentinelsat_version
@@ -127,10 +128,8 @@ class SentinelAPI(object):
     def __init__(self, user, password, api_url='https://scihub.copernicus.eu/apihub/'):
         self.session = requests.Session()
         self.session.auth = (user, password)
-        self.session.headers['User-Agent'] = 'sentinelsat/{}'.format(sentinelsat_version)
-        # Can't use self.session with homura because it has issues with cookies from multiple domains
-        self.homura_session = requests.Session()
-        self.homura_session.auth = (user, password)
+        self.user_agent = 'sentinelsat/' + sentinelsat_version
+        self.session.headers['User-Agent'] = self.user_agent
         self.api_url = api_url if api_url.endswith('/') else api_url + '/'
         self.url = None
         self.last_query = None
@@ -397,7 +396,10 @@ class SentinelAPI(object):
             # https://github.com/pycurl/pycurl/issues/405
             remove(path)
 
-        homura.download(product_info['url'], path=path, session=self.homura_session, **kwargs)
+        # hack-ish but does not require cookies being set beforehand
+        headers = {'Authorization': requests.auth._basic_auth_str(*self.session.auth)}
+        homura.download(product_info['url'], path=path, headers=headers,
+                        user_agent=self.user_agent, **kwargs)
 
         # Check integrity with MD5 checksum
         if checksum is True:

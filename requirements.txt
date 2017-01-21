@@ -1,6 +1,6 @@
 requests
 click
-homura>=0.1.2
+homura>=0.1.4
 html2text
 geojson
 tqdm
