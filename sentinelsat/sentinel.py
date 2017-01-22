@@ -7,15 +7,14 @@ import traceback
 import xml.etree.ElementTree as ET
 from datetime import date, datetime, timedelta
 from os import remove
-from os.path import join, exists, getsize
-import pycurl
+from os.path import exists, getsize, join
 from time import sleep
 
 import geojson
 import homura
 import html2text
+import pycurl
 import requests
-import requests.auth
 from tqdm import tqdm
 
 from . import __version__ as sentinelsat_version
@@ -396,9 +395,7 @@ class SentinelAPI(object):
             # https://github.com/pycurl/pycurl/issues/405
             remove(path)
 
-        # hack-ish but does not require cookies being set beforehand
-        headers = {'Authorization': requests.auth._basic_auth_str(*self.session.auth)}
-        homura.download(product_info['url'], path=path, headers=headers,
+        homura.download(product_info['url'], path=path, auth=self.session.auth,
                         user_agent=self.user_agent, **kwargs)
 
         # Check integrity with MD5 checksum
