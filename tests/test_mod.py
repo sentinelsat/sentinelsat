@@ -370,9 +370,6 @@ def test_download(tmpdir):
     modification_time = expected_path.mtime()
     expected_product_info = product_info
 
-    # Note: the downloads can occasionally fail because of SciHub erroneously responding with
-    # HTTP Status 401 - Full authentication is required to access this resource
-
     # File exists, test with checksum
     # Expect no modification
     path, product_info = api.download(uuid, str(tmpdir), check_existing=True)
@@ -420,9 +417,6 @@ def test_download_all(tmpdir):
     filenames = ["S1A_WV_OCN__2SSH_20150603T092625_20150603T093332_006207_008194_521E",
                  "S1A_WV_OCN__2SSV_20150526T211029_20150526T211737_006097_007E78_134A",
                  "S1A_WV_OCN__2SSV_20150526T081641_20150526T082418_006090_007E3E_104C"]
-
-    # Note: the downloads can occasionally fail because of SciHub erroneously responding with
-    # HTTP Status 401 - Full authentication is required to access this resource
 
     api.load_query(" OR ".join(filenames))
     assert len(api.get_products()) == len(filenames)
