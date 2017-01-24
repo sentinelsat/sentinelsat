@@ -192,7 +192,6 @@ class SentinelAPI(object):
         # repeat query until all results have been loaded
         if total_results > self.page_size + start_row - 1:
             output += self.load_query(query, start_row=(start_row + self.page_size))
-            return output
         return output
 
 
