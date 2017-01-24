@@ -150,7 +150,8 @@ class SentinelAPI(object):
         """Do a full-text query on the SciHub API using the format specified in
            https://scihub.copernicus.eu/twiki/do/view/SciHubUserGuide/3FullTextSearch
         """
-        output = products
+        output = []
+        output += products
         # store last query (for testing)
         self.last_query = query
 
@@ -168,14 +169,14 @@ class SentinelAPI(object):
         total_results = 0
         try:
             json_feed = content.json()['feed']
-            products = json_feed['entry']
+            entries = json_feed['entry']
             # this verification is necessary because if the query returns only
             # one product, self.products will be a dict not a list
-            if type(products) == dict:
-                products = [products]
+            if type(entries) == dict:
+                entries = [entries]
 
             # append to products
-            output += products
+            output += entries
 
             # get total number of returned results
             total_results = int(json_feed['opensearch:totalResults'])
