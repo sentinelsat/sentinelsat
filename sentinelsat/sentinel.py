@@ -7,15 +7,17 @@ import traceback
 import xml.etree.ElementTree as ET
 from datetime import date, datetime, timedelta
 from os import remove
-from os.path import join, exists, getsize
-import pycurl
+from os.path import exists, getsize, join
 from time import sleep
 
 import geojson
 import homura
 import html2text
+import pycurl
 import requests
 from tqdm import tqdm
+
+from . import __version__ as sentinelsat_version
 
 try:
     from urlparse import urljoin
@@ -125,6 +127,8 @@ class SentinelAPI(object):
     def __init__(self, user, password, api_url='https://scihub.copernicus.eu/apihub/'):
         self.session = requests.Session()
         self.session.auth = (user, password)
+        self.user_agent = 'sentinelsat/' + sentinelsat_version
+        self.session.headers['User-Agent'] = self.user_agent
         self.api_url = api_url if api_url.endswith('/') else api_url + '/'
         self.url = None
         self.last_query = None
@@ -158,7 +162,7 @@ class SentinelAPI(object):
         url = self.format_url(start_row=start_row)
 
         # load query results
-        content = requests.post(url, dict(q=query), auth=self.session.auth)
+        content = self.session.post(url, dict(q=query), auth=self.session.auth)
         _check_scihub_response(content)
 
         # store last status code (for testing)
@@ -388,7 +392,8 @@ class SentinelAPI(object):
             # https://github.com/pycurl/pycurl/issues/405
             remove(path)
 
-        homura.download(product_info['url'], path=path, session=self.session, **kwargs)
+        homura.download(product_info['url'], path=path, auth=self.session.auth,
+                        user_agent=self.user_agent, **kwargs)
 
         # Check integrity with MD5 checksum
         if checksum is True:
