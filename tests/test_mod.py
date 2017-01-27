@@ -156,12 +156,12 @@ def test_small_query():
 @pytest.mark.scihub
 def test_large_query():
     api = SentinelAPI(**_api_kwargs)
-    api.query(**_large_query)
+    products = api.query(**_large_query)
     assert api.last_query == (
         '(beginPosition:[2015-01-01T00:00:00Z TO 2015-12-31T00:00:00Z]) '
         'AND (footprint:"Intersects(POLYGON((0 0,0 10,10 10,10 0,0 0)))")')
     assert api.last_status_code == 200
-    assert len(api.products) > api.page_size
+    assert len(products) > api.page_size
 
 
 @pytest.mark.fast
@@ -293,7 +293,6 @@ def test_get_products_invalid_json():
                 end_date="20151228",
                 platformname="Sentinel-2"
             )
-            api.get_products()
         assert excinfo.value.msg == "API response not valid. JSON decoding failed."
 
 
@@ -301,7 +300,7 @@ def test_get_products_invalid_json():
 @pytest.mark.scihub
 def test_footprints_s1():
     api = SentinelAPI(**_api_auth)
-    api.query(
+    products = api.query(
         get_coordinates('tests/map.geojson'),
         datetime(2014, 10, 10), datetime(2014, 12, 31), producttype="GRD"
     )
@@ -309,14 +308,14 @@ def test_footprints_s1():
     with open('tests/expected_search_footprints_s1.geojson', 'r') as geojson_file:
         expected_footprints = geojson.loads(geojson_file.read())
         # to compare unordered lists (JSON objects) they need to be sorted or changed to sets
-        assert set(api.get_footprints()) == set(expected_footprints)
+        assert set(api.get_footprints(products)) == set(expected_footprints)
 
 
 @my_vcr.use_cassette
 @pytest.mark.scihub
 def test_footprints_s2():
     api = SentinelAPI(**_api_auth)
-    api.query(
+    products = api.query(
         get_coordinates('tests/map.geojson'),
         "20151219", "20151228", platformname="Sentinel-2"
     )
@@ -324,42 +323,41 @@ def test_footprints_s2():
     with open('tests/expected_search_footprints_s2.geojson', 'r') as geojson_file:
         expected_footprints = geojson.loads(geojson_file.read())
         # to compare unordered lists (JSON objects) they need to be sorted or changed to sets
-        assert set(api.get_footprints()) == set(expected_footprints)
+        assert set(api.get_footprints(products)) == set(expected_footprints)
 
 
 @my_vcr.use_cassette
 @pytest.mark.scihub
 def test_s2_cloudcover():
     api = SentinelAPI(**_api_auth)
-    api.query(
+    products = api.query(
         get_coordinates('tests/map.geojson'),
         "20151219", "20151228",
         platformname="Sentinel-2",
         cloudcoverpercentage="[0 TO 10]"
     )
-    assert len(api.get_products()) == 3
-    assert api.get_products()[0]["id"] == "6ed0b7de-3435-43df-98bf-ad63c8d077ef"
-    assert api.get_products()[1]["id"] == "37ecee60-23d8-4ec2-a65f-2de24f51d30e"
-    assert api.get_products()[2]["id"] == "0848f6b8-5730-4759-850e-fc9945d42296"
+    assert len(products) == 3
+    assert products[0]["id"] == "6ed0b7de-3435-43df-98bf-ad63c8d077ef"
+    assert products[1]["id"] == "37ecee60-23d8-4ec2-a65f-2de24f51d30e"
+    assert products[2]["id"] == "0848f6b8-5730-4759-850e-fc9945d42296"
 
 
 @my_vcr.use_cassette
 @pytest.mark.scihub
 def test_get_products_size():
     api = SentinelAPI(**_api_auth)
-    api.query(
+    products = api.query(
         get_coordinates('tests/map.geojson'),
         "20151219", "20151228", platformname="Sentinel-2"
     )
-    assert api.get_products_size() == 63.58
+    assert api.get_products_size(products) == 63.58
 
     # reset products
-    api.products = []
     # load new very small query
-    api.load_query("S1A_WV_OCN__2SSH_20150603T092625_20150603T093332_006207_008194_521E")
-    assert len(api.get_products()) > 0
+    products = api.load_query("S1A_WV_OCN__2SSH_20150603T092625_20150603T093332_006207_008194_521E")
+    assert len(products) > 0
     # Rounded to zero
-    assert api.get_products_size() == 0
+    assert api.get_products_size(products) == 0
 
 
 @pytest.mark.homura
@@ -429,11 +427,11 @@ def test_download_all(tmpdir):
                  "S1A_WV_OCN__2SSV_20150526T211029_20150526T211737_006097_007E78_134A",
                  "S1A_WV_OCN__2SSV_20150526T081641_20150526T082418_006090_007E3E_104C"]
 
-    api.load_query(" OR ".join(filenames))
-    assert len(api.get_products()) == len(filenames)
+    products = api.load_query(" OR ".join(filenames))
+    assert len(products) == len(filenames)
 
     # Download normally
-    result = api.download_all(str(tmpdir))
+    result = api.download_all(products, str(tmpdir))
     assert len(result) == len(filenames)
     for path, product_info in result.items():
         pypath = py.path.local(path)
@@ -449,6 +447,6 @@ def test_download_all(tmpdir):
         json = api.session.get(url).json()
         json["d"]["Checksum"]["Value"] = "00000000000000000000000000000000"
         rqst.get(url, json=json)
-        result = api.download_all(str(tmpdir), max_attempts=1, checksum=True)
+        result = api.download_all(products, str(tmpdir), max_attempts=1, checksum=True)
         assert len(result) == len(filenames)
         assert result[path] is None
