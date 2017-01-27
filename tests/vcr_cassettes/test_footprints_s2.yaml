@@ -8,7 +8,7 @@ interactions:
       Connection: [keep-alive]
       Content-Length: ['302']
       Content-Type: [application/x-www-form-urlencoded]
-      User-Agent: [python-requests/2.12.1]
+      User-Agent: [sentinelsat/0.7.4]
     method: POST
     uri: https://scihub.copernicus.eu/apihub/search?format=json&rows=100&start=0
   response:
@@ -39,12 +39,14 @@ interactions:
         \ Data Hub search results for: (beginPosition:[2015-12-19T00:00:00Z TO 2015-12-28T00:00:00Z])\
         \ AND (footprint:\\\"Intersects(POLYGON((-66.2695312 -8.0592296,-66.2695312\
         \ 0.7031074,-57.3046875 0.7031074,-57.3046875 -8.0592296,-66.2695312 -8.0592296)))\\\
-        \") AND (platformname:Sentinel-2)\",\n   \"updated\": \"2016-11-21T20:58:48.797Z\"\
+        \") AND (platformname:Sentinel-2)\",\n   \"updated\": \"2017-01-20T19:41:13.143Z\"\
         ,\n   \"opensearch:totalResults\": \"11\",\n   \"entry\": [\n      {\n   \
         \      \"summary\": \"Date: 2015-12-27T14:22:29Z, Instrument: MSI, Mode: ,\
         \ Satellite: Sentinel-2, Size: 5.50 GB\",\n         \"id\": \"44517f66-9845-4792-a988-b5ae6e81fd3e\"\
         ,\n         \"title\": \"S2A_OPER_PRD_MSIL1C_PDMC_20151228T112523_R110_V20151227T142229_20151227T142229\"\
-        ,\n         \"str\": [\n            {\n               \"content\": \"S2A_OPER_PRD_MSIL1C_PDMC_20151228T112523_R110_V20151227T142229_20151227T142229.SAFE\"\
+        ,\n         \"str\": [\n            {\n               \"content\": \"T\",\n\
+        \               \"name\": \"processed\"\n            },\n            {\n \
+        \              \"content\": \"S2A_OPER_PRD_MSIL1C_PDMC_20151228T112523_R110_V20151227T142229_20151227T142229.SAFE\"\
         ,\n               \"name\": \"filename\"\n            },\n            {\n\
         \               \"content\": \"<gml:Polygon srsName=\\\"http://www.opengis.net/gml/srs/epsg.xml#4326\\\
         \" xmlns:gml=\\\"http://www.opengis.net/gml\\\">\\n   <gml:outerBoundaryIs>\\\
@@ -113,20 +115,20 @@ interactions:
         \   \"href\": \"https://scihub.copernicus.eu/apihub/odata/v1/Products('44517f66-9845-4792-a988-b5ae6e81fd3e')/\"\
         \n            },\n            {\n               \"rel\": \"icon\",\n     \
         \          \"href\": \"https://scihub.copernicus.eu/apihub/odata/v1/Products('44517f66-9845-4792-a988-b5ae6e81fd3e')/Products('Quicklook')/$value\"\
-        \n            }\n         ],\n         \"bool\": {\n            \"content\"\
-        : \"true\",\n            \"name\": \"processed\"\n         },\n         \"\
-        date\": [\n            {\n               \"content\": \"2015-12-28T10:57:13.725Z\"\
-        ,\n               \"name\": \"ingestiondate\"\n            },\n          \
-        \  {\n               \"content\": \"2015-12-27T14:22:29Z\",\n            \
-        \   \"name\": \"beginposition\"\n            },\n            {\n         \
-        \      \"content\": \"2015-12-27T14:22:29Z\",\n               \"name\": \"\
-        endposition\"\n            }\n         ],\n         \"double\": {\n      \
-        \      \"content\": \"18.153846153846153\",\n            \"name\": \"cloudcoverpercentage\"\
-        \n         }\n      },\n      {\n         \"summary\": \"Date: 2015-12-27T14:22:29Z,\
-        \ Instrument: MSI, Mode: , Satellite: Sentinel-2, Size: 5.47 GB\",\n     \
-        \    \"id\": \"6ed0b7de-3435-43df-98bf-ad63c8d077ef\",\n         \"title\"\
-        : \"S2A_OPER_PRD_MSIL1C_PDMC_20151228T112701_R110_V20151227T142229_20151227T142229\"\
-        ,\n         \"str\": [\n            {\n               \"content\": \"S2A_OPER_PRD_MSIL1C_PDMC_20151228T112701_R110_V20151227T142229_20151227T142229.SAFE\"\
+        \n            }\n         ],\n         \"date\": [\n            {\n      \
+        \         \"content\": \"2015-12-28T10:57:13.725Z\",\n               \"name\"\
+        : \"ingestiondate\"\n            },\n            {\n               \"content\"\
+        : \"2015-12-27T14:22:29Z\",\n               \"name\": \"beginposition\"\n\
+        \            },\n            {\n               \"content\": \"2015-12-27T14:22:29Z\"\
+        ,\n               \"name\": \"endposition\"\n            }\n         ],\n\
+        \         \"double\": {\n            \"content\": \"18.153846153846153\",\n\
+        \            \"name\": \"cloudcoverpercentage\"\n         }\n      },\n  \
+        \    {\n         \"summary\": \"Date: 2015-12-27T14:22:29Z, Instrument: MSI,\
+        \ Mode: , Satellite: Sentinel-2, Size: 5.47 GB\",\n         \"id\": \"6ed0b7de-3435-43df-98bf-ad63c8d077ef\"\
+        ,\n         \"title\": \"S2A_OPER_PRD_MSIL1C_PDMC_20151228T112701_R110_V20151227T142229_20151227T142229\"\
+        ,\n         \"str\": [\n            {\n               \"content\": \"T\",\n\
+        \               \"name\": \"processed\"\n            },\n            {\n \
+        \              \"content\": \"S2A_OPER_PRD_MSIL1C_PDMC_20151228T112701_R110_V20151227T142229_20151227T142229.SAFE\"\
         ,\n               \"name\": \"filename\"\n            },\n            {\n\
         \               \"content\": \"<gml:Polygon srsName=\\\"http://www.opengis.net/gml/srs/epsg.xml#4326\\\
         \" xmlns:gml=\\\"http://www.opengis.net/gml\\\">\\n   <gml:outerBoundaryIs>\\\
@@ -193,20 +195,20 @@ interactions:
         \   \"href\": \"https://scihub.copernicus.eu/apihub/odata/v1/Products('6ed0b7de-3435-43df-98bf-ad63c8d077ef')/\"\
         \n            },\n            {\n               \"rel\": \"icon\",\n     \
         \          \"href\": \"https://scihub.copernicus.eu/apihub/odata/v1/Products('6ed0b7de-3435-43df-98bf-ad63c8d077ef')/Products('Quicklook')/$value\"\
-        \n            }\n         ],\n         \"bool\": {\n            \"content\"\
-        : \"true\",\n            \"name\": \"processed\"\n         },\n         \"\
-        date\": [\n            {\n               \"content\": \"2015-12-28T10:57:09.913Z\"\
-        ,\n               \"name\": \"ingestiondate\"\n            },\n          \
-        \  {\n               \"content\": \"2015-12-27T14:22:29Z\",\n            \
-        \   \"name\": \"beginposition\"\n            },\n            {\n         \
-        \      \"content\": \"2015-12-27T14:22:29Z\",\n               \"name\": \"\
-        endposition\"\n            }\n         ],\n         \"double\": {\n      \
-        \      \"content\": \"5.166666666666667\",\n            \"name\": \"cloudcoverpercentage\"\
-        \n         }\n      },\n      {\n         \"summary\": \"Date: 2015-12-27T14:22:29Z,\
-        \ Instrument: MSI, Mode: , Satellite: Sentinel-2, Size: 5.73 GB\",\n     \
-        \    \"id\": \"91c2503c-3c58-4a8c-a70b-207b128e6833\",\n         \"title\"\
-        : \"S2A_OPER_PRD_MSIL1C_PDMC_20151228T104019_R110_V20151227T142229_20151227T142229\"\
-        ,\n         \"str\": [\n            {\n               \"content\": \"S2A_OPER_PRD_MSIL1C_PDMC_20151228T104019_R110_V20151227T142229_20151227T142229.SAFE\"\
+        \n            }\n         ],\n         \"date\": [\n            {\n      \
+        \         \"content\": \"2015-12-28T10:57:09.913Z\",\n               \"name\"\
+        : \"ingestiondate\"\n            },\n            {\n               \"content\"\
+        : \"2015-12-27T14:22:29Z\",\n               \"name\": \"beginposition\"\n\
+        \            },\n            {\n               \"content\": \"2015-12-27T14:22:29Z\"\
+        ,\n               \"name\": \"endposition\"\n            }\n         ],\n\
+        \         \"double\": {\n            \"content\": \"5.166666666666667\",\n\
+        \            \"name\": \"cloudcoverpercentage\"\n         }\n      },\n  \
+        \    {\n         \"summary\": \"Date: 2015-12-27T14:22:29Z, Instrument: MSI,\
+        \ Mode: , Satellite: Sentinel-2, Size: 5.73 GB\",\n         \"id\": \"91c2503c-3c58-4a8c-a70b-207b128e6833\"\
+        ,\n         \"title\": \"S2A_OPER_PRD_MSIL1C_PDMC_20151228T104019_R110_V20151227T142229_20151227T142229\"\
+        ,\n         \"str\": [\n            {\n               \"content\": \"T\",\n\
+        \               \"name\": \"processed\"\n            },\n            {\n \
+        \              \"content\": \"S2A_OPER_PRD_MSIL1C_PDMC_20151228T104019_R110_V20151227T142229_20151227T142229.SAFE\"\
         ,\n               \"name\": \"filename\"\n            },\n            {\n\
         \               \"content\": \"<gml:Polygon srsName=\\\"http://www.opengis.net/gml/srs/epsg.xml#4326\\\
         \" xmlns:gml=\\\"http://www.opengis.net/gml\\\">\\n   <gml:outerBoundaryIs>\\\
@@ -274,20 +276,20 @@ interactions:
         \   \"href\": \"https://scihub.copernicus.eu/apihub/odata/v1/Products('91c2503c-3c58-4a8c-a70b-207b128e6833')/\"\
         \n            },\n            {\n               \"rel\": \"icon\",\n     \
         \          \"href\": \"https://scihub.copernicus.eu/apihub/odata/v1/Products('91c2503c-3c58-4a8c-a70b-207b128e6833')/Products('Quicklook')/$value\"\
-        \n            }\n         ],\n         \"bool\": {\n            \"content\"\
-        : \"true\",\n            \"name\": \"processed\"\n         },\n         \"\
-        date\": [\n            {\n               \"content\": \"2015-12-28T10:14:29.352Z\"\
-        ,\n               \"name\": \"ingestiondate\"\n            },\n          \
-        \  {\n               \"content\": \"2015-12-27T14:22:29Z\",\n            \
-        \   \"name\": \"beginposition\"\n            },\n            {\n         \
-        \      \"content\": \"2015-12-27T14:22:29Z\",\n               \"name\": \"\
-        endposition\"\n            }\n         ],\n         \"double\": {\n      \
-        \      \"content\": \"20.46153846153846\",\n            \"name\": \"cloudcoverpercentage\"\
-        \n         }\n      },\n      {\n         \"summary\": \"Date: 2015-12-23T14:42:14Z,\
-        \ Instrument: MSI, Mode: , Satellite: Sentinel-2, Size: 6.59 GB\",\n     \
-        \    \"id\": \"b8a60099-d206-4aa6-9036-86dc39d80bf0\",\n         \"title\"\
-        : \"S2A_OPER_PRD_MSIL1C_PDMC_20151223T223923_R053_V20151223T144214_20151223T144214\"\
-        ,\n         \"str\": [\n            {\n               \"content\": \"S2A_OPER_PRD_MSIL1C_PDMC_20151223T223923_R053_V20151223T144214_20151223T144214.SAFE\"\
+        \n            }\n         ],\n         \"date\": [\n            {\n      \
+        \         \"content\": \"2015-12-28T10:14:29.352Z\",\n               \"name\"\
+        : \"ingestiondate\"\n            },\n            {\n               \"content\"\
+        : \"2015-12-27T14:22:29Z\",\n               \"name\": \"beginposition\"\n\
+        \            },\n            {\n               \"content\": \"2015-12-27T14:22:29Z\"\
+        ,\n               \"name\": \"endposition\"\n            }\n         ],\n\
+        \         \"double\": {\n            \"content\": \"20.46153846153846\",\n\
+        \            \"name\": \"cloudcoverpercentage\"\n         }\n      },\n  \
+        \    {\n         \"summary\": \"Date: 2015-12-23T14:42:14Z, Instrument: MSI,\
+        \ Mode: , Satellite: Sentinel-2, Size: 6.59 GB\",\n         \"id\": \"b8a60099-d206-4aa6-9036-86dc39d80bf0\"\
+        ,\n         \"title\": \"S2A_OPER_PRD_MSIL1C_PDMC_20151223T223923_R053_V20151223T144214_20151223T144214\"\
+        ,\n         \"str\": [\n            {\n               \"content\": \"T\",\n\
+        \               \"name\": \"processed\"\n            },\n            {\n \
+        \              \"content\": \"S2A_OPER_PRD_MSIL1C_PDMC_20151223T223923_R053_V20151223T144214_20151223T144214.SAFE\"\
         ,\n               \"name\": \"filename\"\n            },\n            {\n\
         \               \"content\": \"<gml:Polygon srsName=\\\"http://www.opengis.net/gml/srs/epsg.xml#4326\\\
         \" xmlns:gml=\\\"http://www.opengis.net/gml\\\">\\n   <gml:outerBoundaryIs>\\\
@@ -378,20 +380,20 @@ interactions:
         \   \"href\": \"https://scihub.copernicus.eu/apihub/odata/v1/Products('b8a60099-d206-4aa6-9036-86dc39d80bf0')/\"\
         \n            },\n            {\n               \"rel\": \"icon\",\n     \
         \          \"href\": \"https://scihub.copernicus.eu/apihub/odata/v1/Products('b8a60099-d206-4aa6-9036-86dc39d80bf0')/Products('Quicklook')/$value\"\
-        \n            }\n         ],\n         \"bool\": {\n            \"content\"\
-        : \"true\",\n            \"name\": \"processed\"\n         },\n         \"\
-        date\": [\n            {\n               \"content\": \"2015-12-23T22:04:18.736Z\"\
-        ,\n               \"name\": \"ingestiondate\"\n            },\n          \
-        \  {\n               \"content\": \"2015-12-23T14:42:14Z\",\n            \
-        \   \"name\": \"beginposition\"\n            },\n            {\n         \
-        \      \"content\": \"2015-12-23T14:42:14Z\",\n               \"name\": \"\
-        endposition\"\n            }\n         ],\n         \"double\": {\n      \
-        \      \"content\": \"31.307692307692307\",\n            \"name\": \"cloudcoverpercentage\"\
-        \n         }\n      },\n      {\n         \"summary\": \"Date: 2015-12-23T14:42:14Z,\
-        \ Instrument: MSI, Mode: , Satellite: Sentinel-2, Size: 6.05 GB\",\n     \
-        \    \"id\": \"7146a735-6577-4ab9-aeaa-009c1c02f300\",\n         \"title\"\
-        : \"S2A_OPER_PRD_MSIL1C_PDMC_20151223T221421_R053_V20151223T144214_20151223T144214\"\
-        ,\n         \"str\": [\n            {\n               \"content\": \"S2A_OPER_PRD_MSIL1C_PDMC_20151223T221421_R053_V20151223T144214_20151223T144214.SAFE\"\
+        \n            }\n         ],\n         \"date\": [\n            {\n      \
+        \         \"content\": \"2015-12-23T22:04:18.736Z\",\n               \"name\"\
+        : \"ingestiondate\"\n            },\n            {\n               \"content\"\
+        : \"2015-12-23T14:42:14Z\",\n               \"name\": \"beginposition\"\n\
+        \            },\n            {\n               \"content\": \"2015-12-23T14:42:14Z\"\
+        ,\n               \"name\": \"endposition\"\n            }\n         ],\n\
+        \         \"double\": {\n            \"content\": \"31.307692307692307\",\n\
+        \            \"name\": \"cloudcoverpercentage\"\n         }\n      },\n  \
+        \    {\n         \"summary\": \"Date: 2015-12-23T14:42:14Z, Instrument: MSI,\
+        \ Mode: , Satellite: Sentinel-2, Size: 6.05 GB\",\n         \"id\": \"7146a735-6577-4ab9-aeaa-009c1c02f300\"\
+        ,\n         \"title\": \"S2A_OPER_PRD_MSIL1C_PDMC_20151223T221421_R053_V20151223T144214_20151223T144214\"\
+        ,\n         \"str\": [\n            {\n               \"content\": \"T\",\n\
+        \               \"name\": \"processed\"\n            },\n            {\n \
+        \              \"content\": \"S2A_OPER_PRD_MSIL1C_PDMC_20151223T221421_R053_V20151223T144214_20151223T144214.SAFE\"\
         ,\n               \"name\": \"filename\"\n            },\n            {\n\
         \               \"content\": \"<gml:Polygon srsName=\\\"http://www.opengis.net/gml/srs/epsg.xml#4326\\\
         \" xmlns:gml=\\\"http://www.opengis.net/gml\\\">\\n   <gml:outerBoundaryIs>\\\
@@ -463,20 +465,20 @@ interactions:
         \   \"href\": \"https://scihub.copernicus.eu/apihub/odata/v1/Products('7146a735-6577-4ab9-aeaa-009c1c02f300')/\"\
         \n            },\n            {\n               \"rel\": \"icon\",\n     \
         \          \"href\": \"https://scihub.copernicus.eu/apihub/odata/v1/Products('7146a735-6577-4ab9-aeaa-009c1c02f300')/Products('Quicklook')/$value\"\
-        \n            }\n         ],\n         \"bool\": {\n            \"content\"\
-        : \"true\",\n            \"name\": \"processed\"\n         },\n         \"\
-        date\": [\n            {\n               \"content\": \"2015-12-23T21:38:17.258Z\"\
-        ,\n               \"name\": \"ingestiondate\"\n            },\n          \
-        \  {\n               \"content\": \"2015-12-23T14:42:14Z\",\n            \
-        \   \"name\": \"beginposition\"\n            },\n            {\n         \
-        \      \"content\": \"2015-12-23T14:42:14Z\",\n               \"name\": \"\
-        endposition\"\n            }\n         ],\n         \"double\": {\n      \
-        \      \"content\": \"23.785714285714285\",\n            \"name\": \"cloudcoverpercentage\"\
-        \n         }\n      },\n      {\n         \"summary\": \"Date: 2015-12-23T14:42:14Z,\
-        \ Instrument: MSI, Mode: , Satellite: Sentinel-2, Size: 5.83 GB\",\n     \
-        \    \"id\": \"f0492d62-b03c-4411-b00a-59220647dfcf\",\n         \"title\"\
-        : \"S2A_OPER_PRD_MSIL1C_PDMC_20151223T221545_R053_V20151223T144214_20151223T144214\"\
-        ,\n         \"str\": [\n            {\n               \"content\": \"S2A_OPER_PRD_MSIL1C_PDMC_20151223T221545_R053_V20151223T144214_20151223T144214.SAFE\"\
+        \n            }\n         ],\n         \"date\": [\n            {\n      \
+        \         \"content\": \"2015-12-23T21:38:17.258Z\",\n               \"name\"\
+        : \"ingestiondate\"\n            },\n            {\n               \"content\"\
+        : \"2015-12-23T14:42:14Z\",\n               \"name\": \"beginposition\"\n\
+        \            },\n            {\n               \"content\": \"2015-12-23T14:42:14Z\"\
+        ,\n               \"name\": \"endposition\"\n            }\n         ],\n\
+        \         \"double\": {\n            \"content\": \"23.785714285714285\",\n\
+        \            \"name\": \"cloudcoverpercentage\"\n         }\n      },\n  \
+        \    {\n         \"summary\": \"Date: 2015-12-23T14:42:14Z, Instrument: MSI,\
+        \ Mode: , Satellite: Sentinel-2, Size: 5.83 GB\",\n         \"id\": \"f0492d62-b03c-4411-b00a-59220647dfcf\"\
+        ,\n         \"title\": \"S2A_OPER_PRD_MSIL1C_PDMC_20151223T221545_R053_V20151223T144214_20151223T144214\"\
+        ,\n         \"str\": [\n            {\n               \"content\": \"T\",\n\
+        \               \"name\": \"processed\"\n            },\n            {\n \
+        \              \"content\": \"S2A_OPER_PRD_MSIL1C_PDMC_20151223T221545_R053_V20151223T144214_20151223T144214.SAFE\"\
         ,\n               \"name\": \"filename\"\n            },\n            {\n\
         \               \"content\": \"<gml:Polygon srsName=\\\"http://www.opengis.net/gml/srs/epsg.xml#4326\\\
         \" xmlns:gml=\\\"http://www.opengis.net/gml\\\">\\n   <gml:outerBoundaryIs>\\\
@@ -545,20 +547,20 @@ interactions:
         \   \"href\": \"https://scihub.copernicus.eu/apihub/odata/v1/Products('f0492d62-b03c-4411-b00a-59220647dfcf')/\"\
         \n            },\n            {\n               \"rel\": \"icon\",\n     \
         \          \"href\": \"https://scihub.copernicus.eu/apihub/odata/v1/Products('f0492d62-b03c-4411-b00a-59220647dfcf')/Products('Quicklook')/$value\"\
-        \n            }\n         ],\n         \"bool\": {\n            \"content\"\
-        : \"true\",\n            \"name\": \"processed\"\n         },\n         \"\
-        date\": [\n            {\n               \"content\": \"2015-12-23T21:38:09.775Z\"\
-        ,\n               \"name\": \"ingestiondate\"\n            },\n          \
-        \  {\n               \"content\": \"2015-12-23T14:42:14Z\",\n            \
-        \   \"name\": \"beginposition\"\n            },\n            {\n         \
-        \      \"content\": \"2015-12-23T14:42:14Z\",\n               \"name\": \"\
-        endposition\"\n            }\n         ],\n         \"double\": {\n      \
-        \      \"content\": \"39.84615384615385\",\n            \"name\": \"cloudcoverpercentage\"\
-        \n         }\n      },\n      {\n         \"summary\": \"Date: 2015-12-23T14:42:14Z,\
-        \ Instrument: MSI, Mode: , Satellite: Sentinel-2, Size: 5.62 GB\",\n     \
-        \    \"id\": \"0bb03a60-d705-4b93-89e4-bce8ff7bcf78\",\n         \"title\"\
-        : \"S2A_OPER_PRD_MSIL1C_PDMC_20151223T220451_R053_V20151223T144214_20151223T144214\"\
-        ,\n         \"str\": [\n            {\n               \"content\": \"S2A_OPER_PRD_MSIL1C_PDMC_20151223T220451_R053_V20151223T144214_20151223T144214.SAFE\"\
+        \n            }\n         ],\n         \"date\": [\n            {\n      \
+        \         \"content\": \"2015-12-23T21:38:09.775Z\",\n               \"name\"\
+        : \"ingestiondate\"\n            },\n            {\n               \"content\"\
+        : \"2015-12-23T14:42:14Z\",\n               \"name\": \"beginposition\"\n\
+        \            },\n            {\n               \"content\": \"2015-12-23T14:42:14Z\"\
+        ,\n               \"name\": \"endposition\"\n            }\n         ],\n\
+        \         \"double\": {\n            \"content\": \"39.84615384615385\",\n\
+        \            \"name\": \"cloudcoverpercentage\"\n         }\n      },\n  \
+        \    {\n         \"summary\": \"Date: 2015-12-23T14:42:14Z, Instrument: MSI,\
+        \ Mode: , Satellite: Sentinel-2, Size: 5.62 GB\",\n         \"id\": \"0bb03a60-d705-4b93-89e4-bce8ff7bcf78\"\
+        ,\n         \"title\": \"S2A_OPER_PRD_MSIL1C_PDMC_20151223T220451_R053_V20151223T144214_20151223T144214\"\
+        ,\n         \"str\": [\n            {\n               \"content\": \"T\",\n\
+        \               \"name\": \"processed\"\n            },\n            {\n \
+        \              \"content\": \"S2A_OPER_PRD_MSIL1C_PDMC_20151223T220451_R053_V20151223T144214_20151223T144214.SAFE\"\
         ,\n               \"name\": \"filename\"\n            },\n            {\n\
         \               \"content\": \"<gml:Polygon srsName=\\\"http://www.opengis.net/gml/srs/epsg.xml#4326\\\
         \" xmlns:gml=\\\"http://www.opengis.net/gml\\\">\\n   <gml:outerBoundaryIs>\\\
@@ -625,20 +627,20 @@ interactions:
         \   \"href\": \"https://scihub.copernicus.eu/apihub/odata/v1/Products('0bb03a60-d705-4b93-89e4-bce8ff7bcf78')/\"\
         \n            },\n            {\n               \"rel\": \"icon\",\n     \
         \          \"href\": \"https://scihub.copernicus.eu/apihub/odata/v1/Products('0bb03a60-d705-4b93-89e4-bce8ff7bcf78')/Products('Quicklook')/$value\"\
-        \n            }\n         ],\n         \"bool\": {\n            \"content\"\
-        : \"true\",\n            \"name\": \"processed\"\n         },\n         \"\
-        date\": [\n            {\n               \"content\": \"2015-12-23T21:27:18.424Z\"\
-        ,\n               \"name\": \"ingestiondate\"\n            },\n          \
-        \  {\n               \"content\": \"2015-12-23T14:42:14Z\",\n            \
-        \   \"name\": \"beginposition\"\n            },\n            {\n         \
-        \      \"content\": \"2015-12-23T14:42:14Z\",\n               \"name\": \"\
-        endposition\"\n            }\n         ],\n         \"double\": {\n      \
-        \      \"content\": \"13.833333333333334\",\n            \"name\": \"cloudcoverpercentage\"\
-        \n         }\n      },\n      {\n         \"summary\": \"Date: 2015-12-19T14:58:32Z,\
-        \ Instrument: MSI, Mode: , Satellite: Sentinel-2, Size: 6.13 GB\",\n     \
-        \    \"id\": \"37ecee60-23d8-4ec2-a65f-2de24f51d30e\",\n         \"title\"\
-        : \"S2A_OPER_PRD_MSIL1C_PDMC_20151219T221009_R139_V20151219T145832_20151219T145832\"\
-        ,\n         \"str\": [\n            {\n               \"content\": \"S2A_OPER_PRD_MSIL1C_PDMC_20151219T221009_R139_V20151219T145832_20151219T145832.SAFE\"\
+        \n            }\n         ],\n         \"date\": [\n            {\n      \
+        \         \"content\": \"2015-12-23T21:27:18.424Z\",\n               \"name\"\
+        : \"ingestiondate\"\n            },\n            {\n               \"content\"\
+        : \"2015-12-23T14:42:14Z\",\n               \"name\": \"beginposition\"\n\
+        \            },\n            {\n               \"content\": \"2015-12-23T14:42:14Z\"\
+        ,\n               \"name\": \"endposition\"\n            }\n         ],\n\
+        \         \"double\": {\n            \"content\": \"13.833333333333334\",\n\
+        \            \"name\": \"cloudcoverpercentage\"\n         }\n      },\n  \
+        \    {\n         \"summary\": \"Date: 2015-12-19T14:58:32Z, Instrument: MSI,\
+        \ Mode: , Satellite: Sentinel-2, Size: 6.13 GB\",\n         \"id\": \"37ecee60-23d8-4ec2-a65f-2de24f51d30e\"\
+        ,\n         \"title\": \"S2A_OPER_PRD_MSIL1C_PDMC_20151219T221009_R139_V20151219T145832_20151219T145832\"\
+        ,\n         \"str\": [\n            {\n               \"content\": \"T\",\n\
+        \               \"name\": \"processed\"\n            },\n            {\n \
+        \              \"content\": \"S2A_OPER_PRD_MSIL1C_PDMC_20151219T221009_R139_V20151219T145832_20151219T145832.SAFE\"\
         ,\n               \"name\": \"filename\"\n            },\n            {\n\
         \               \"content\": \"<gml:Polygon srsName=\\\"http://www.opengis.net/gml/srs/epsg.xml#4326\\\
         \" xmlns:gml=\\\"http://www.opengis.net/gml\\\">\\n   <gml:outerBoundaryIs>\\\
@@ -722,20 +724,20 @@ interactions:
         \   \"href\": \"https://scihub.copernicus.eu/apihub/odata/v1/Products('37ecee60-23d8-4ec2-a65f-2de24f51d30e')/\"\
         \n            },\n            {\n               \"rel\": \"icon\",\n     \
         \          \"href\": \"https://scihub.copernicus.eu/apihub/odata/v1/Products('37ecee60-23d8-4ec2-a65f-2de24f51d30e')/Products('Quicklook')/$value\"\
-        \n            }\n         ],\n         \"bool\": {\n            \"content\"\
-        : \"true\",\n            \"name\": \"processed\"\n         },\n         \"\
-        date\": [\n            {\n               \"content\": \"2015-12-19T21:28:48.174Z\"\
-        ,\n               \"name\": \"ingestiondate\"\n            },\n          \
-        \  {\n               \"content\": \"2015-12-19T14:58:32Z\",\n            \
-        \   \"name\": \"beginposition\"\n            },\n            {\n         \
-        \      \"content\": \"2015-12-19T14:58:32Z\",\n               \"name\": \"\
-        endposition\"\n            }\n         ],\n         \"double\": {\n      \
-        \      \"content\": \"6.666666666666667\",\n            \"name\": \"cloudcoverpercentage\"\
-        \n         }\n      },\n      {\n         \"summary\": \"Date: 2015-12-19T14:58:32Z,\
-        \ Instrument: MSI, Mode: , Satellite: Sentinel-2, Size: 5.79 GB\",\n     \
-        \    \"id\": \"0848f6b8-5730-4759-850e-fc9945d42296\",\n         \"title\"\
-        : \"S2A_OPER_PRD_MSIL1C_PDMC_20151219T221022_R139_V20151219T145832_20151219T145832\"\
-        ,\n         \"str\": [\n            {\n               \"content\": \"S2A_OPER_PRD_MSIL1C_PDMC_20151219T221022_R139_V20151219T145832_20151219T145832.SAFE\"\
+        \n            }\n         ],\n         \"date\": [\n            {\n      \
+        \         \"content\": \"2015-12-19T21:28:48.174Z\",\n               \"name\"\
+        : \"ingestiondate\"\n            },\n            {\n               \"content\"\
+        : \"2015-12-19T14:58:32Z\",\n               \"name\": \"beginposition\"\n\
+        \            },\n            {\n               \"content\": \"2015-12-19T14:58:32Z\"\
+        ,\n               \"name\": \"endposition\"\n            }\n         ],\n\
+        \         \"double\": {\n            \"content\": \"6.666666666666667\",\n\
+        \            \"name\": \"cloudcoverpercentage\"\n         }\n      },\n  \
+        \    {\n         \"summary\": \"Date: 2015-12-19T14:58:32Z, Instrument: MSI,\
+        \ Mode: , Satellite: Sentinel-2, Size: 5.79 GB\",\n         \"id\": \"0848f6b8-5730-4759-850e-fc9945d42296\"\
+        ,\n         \"title\": \"S2A_OPER_PRD_MSIL1C_PDMC_20151219T221022_R139_V20151219T145832_20151219T145832\"\
+        ,\n         \"str\": [\n            {\n               \"content\": \"T\",\n\
+        \               \"name\": \"processed\"\n            },\n            {\n \
+        \              \"content\": \"S2A_OPER_PRD_MSIL1C_PDMC_20151219T221022_R139_V20151219T145832_20151219T145832.SAFE\"\
         ,\n               \"name\": \"filename\"\n            },\n            {\n\
         \               \"content\": \"<gml:Polygon srsName=\\\"http://www.opengis.net/gml/srs/epsg.xml#4326\\\
         \" xmlns:gml=\\\"http://www.opengis.net/gml\\\">\\n   <gml:outerBoundaryIs>\\\
@@ -826,20 +828,20 @@ interactions:
         \   \"href\": \"https://scihub.copernicus.eu/apihub/odata/v1/Products('0848f6b8-5730-4759-850e-fc9945d42296')/\"\
         \n            },\n            {\n               \"rel\": \"icon\",\n     \
         \          \"href\": \"https://scihub.copernicus.eu/apihub/odata/v1/Products('0848f6b8-5730-4759-850e-fc9945d42296')/Products('Quicklook')/$value\"\
-        \n            }\n         ],\n         \"bool\": {\n            \"content\"\
-        : \"true\",\n            \"name\": \"processed\"\n         },\n         \"\
-        date\": [\n            {\n               \"content\": \"2015-12-19T21:28:42.109Z\"\
-        ,\n               \"name\": \"ingestiondate\"\n            },\n          \
-        \  {\n               \"content\": \"2015-12-19T14:58:32Z\",\n            \
-        \   \"name\": \"beginposition\"\n            },\n            {\n         \
-        \      \"content\": \"2015-12-19T14:58:32Z\",\n               \"name\": \"\
-        endposition\"\n            }\n         ],\n         \"double\": {\n      \
-        \      \"content\": \"6.230769230769231\",\n            \"name\": \"cloudcoverpercentage\"\
-        \n         }\n      },\n      {\n         \"summary\": \"Date: 2015-12-19T14:58:32Z,\
-        \ Instrument: MSI, Mode: , Satellite: Sentinel-2, Size: 5.84 GB\",\n     \
-        \    \"id\": \"8557599a-7c81-42c6-8bf6-93db1b401bf8\",\n         \"title\"\
-        : \"S2A_OPER_PRD_MSIL1C_PDMC_20151219T220732_R139_V20151219T145832_20151219T145832\"\
-        ,\n         \"str\": [\n            {\n               \"content\": \"S2A_OPER_PRD_MSIL1C_PDMC_20151219T220732_R139_V20151219T145832_20151219T145832.SAFE\"\
+        \n            }\n         ],\n         \"date\": [\n            {\n      \
+        \         \"content\": \"2015-12-19T21:28:42.109Z\",\n               \"name\"\
+        : \"ingestiondate\"\n            },\n            {\n               \"content\"\
+        : \"2015-12-19T14:58:32Z\",\n               \"name\": \"beginposition\"\n\
+        \            },\n            {\n               \"content\": \"2015-12-19T14:58:32Z\"\
+        ,\n               \"name\": \"endposition\"\n            }\n         ],\n\
+        \         \"double\": {\n            \"content\": \"6.230769230769231\",\n\
+        \            \"name\": \"cloudcoverpercentage\"\n         }\n      },\n  \
+        \    {\n         \"summary\": \"Date: 2015-12-19T14:58:32Z, Instrument: MSI,\
+        \ Mode: , Satellite: Sentinel-2, Size: 5.84 GB\",\n         \"id\": \"8557599a-7c81-42c6-8bf6-93db1b401bf8\"\
+        ,\n         \"title\": \"S2A_OPER_PRD_MSIL1C_PDMC_20151219T220732_R139_V20151219T145832_20151219T145832\"\
+        ,\n         \"str\": [\n            {\n               \"content\": \"T\",\n\
+        \               \"name\": \"processed\"\n            },\n            {\n \
+        \              \"content\": \"S2A_OPER_PRD_MSIL1C_PDMC_20151219T220732_R139_V20151219T145832_20151219T145832.SAFE\"\
         ,\n               \"name\": \"filename\"\n            },\n            {\n\
         \               \"content\": \"<gml:Polygon srsName=\\\"http://www.opengis.net/gml/srs/epsg.xml#4326\\\
         \" xmlns:gml=\\\"http://www.opengis.net/gml\\\">\\n   <gml:outerBoundaryIs>\\\
@@ -922,20 +924,20 @@ interactions:
         \   \"href\": \"https://scihub.copernicus.eu/apihub/odata/v1/Products('8557599a-7c81-42c6-8bf6-93db1b401bf8')/\"\
         \n            },\n            {\n               \"rel\": \"icon\",\n     \
         \          \"href\": \"https://scihub.copernicus.eu/apihub/odata/v1/Products('8557599a-7c81-42c6-8bf6-93db1b401bf8')/Products('Quicklook')/$value\"\
-        \n            }\n         ],\n         \"bool\": {\n            \"content\"\
-        : \"true\",\n            \"name\": \"processed\"\n         },\n         \"\
-        date\": [\n            {\n               \"content\": \"2015-12-19T21:21:18.856Z\"\
-        ,\n               \"name\": \"ingestiondate\"\n            },\n          \
-        \  {\n               \"content\": \"2015-12-19T14:58:32Z\",\n            \
-        \   \"name\": \"beginposition\"\n            },\n            {\n         \
-        \      \"content\": \"2015-12-19T14:58:32Z\",\n               \"name\": \"\
-        endposition\"\n            }\n         ],\n         \"double\": {\n      \
-        \      \"content\": \"51.38461538461539\",\n            \"name\": \"cloudcoverpercentage\"\
-        \n         }\n      },\n      {\n         \"summary\": \"Date: 2015-12-19T14:58:32Z,\
-        \ Instrument: MSI, Mode: , Satellite: Sentinel-2, Size: 5.03 GB\",\n     \
-        \    \"id\": \"36fd7626-a139-4e9e-b6eb-fe85fd566fab\",\n         \"title\"\
-        : \"S2A_OPER_PRD_MSIL1C_PDMC_20151219T220449_R139_V20151219T145832_20151219T145832\"\
-        ,\n         \"str\": [\n            {\n               \"content\": \"S2A_OPER_PRD_MSIL1C_PDMC_20151219T220449_R139_V20151219T145832_20151219T145832.SAFE\"\
+        \n            }\n         ],\n         \"date\": [\n            {\n      \
+        \         \"content\": \"2015-12-19T21:21:18.856Z\",\n               \"name\"\
+        : \"ingestiondate\"\n            },\n            {\n               \"content\"\
+        : \"2015-12-19T14:58:32Z\",\n               \"name\": \"beginposition\"\n\
+        \            },\n            {\n               \"content\": \"2015-12-19T14:58:32Z\"\
+        ,\n               \"name\": \"endposition\"\n            }\n         ],\n\
+        \         \"double\": {\n            \"content\": \"51.38461538461539\",\n\
+        \            \"name\": \"cloudcoverpercentage\"\n         }\n      },\n  \
+        \    {\n         \"summary\": \"Date: 2015-12-19T14:58:32Z, Instrument: MSI,\
+        \ Mode: , Satellite: Sentinel-2, Size: 5.03 GB\",\n         \"id\": \"36fd7626-a139-4e9e-b6eb-fe85fd566fab\"\
+        ,\n         \"title\": \"S2A_OPER_PRD_MSIL1C_PDMC_20151219T220449_R139_V20151219T145832_20151219T145832\"\
+        ,\n         \"str\": [\n            {\n               \"content\": \"T\",\n\
+        \               \"name\": \"processed\"\n            },\n            {\n \
+        \              \"content\": \"S2A_OPER_PRD_MSIL1C_PDMC_20151219T220449_R139_V20151219T145832_20151219T145832.SAFE\"\
         ,\n               \"name\": \"filename\"\n            },\n            {\n\
         \               \"content\": \"<gml:Polygon srsName=\\\"http://www.opengis.net/gml/srs/epsg.xml#4326\\\
         \" xmlns:gml=\\\"http://www.opengis.net/gml\\\">\\n   <gml:outerBoundaryIs>\\\
@@ -1005,26 +1007,28 @@ interactions:
         \   \"href\": \"https://scihub.copernicus.eu/apihub/odata/v1/Products('36fd7626-a139-4e9e-b6eb-fe85fd566fab')/\"\
         \n            },\n            {\n               \"rel\": \"icon\",\n     \
         \          \"href\": \"https://scihub.copernicus.eu/apihub/odata/v1/Products('36fd7626-a139-4e9e-b6eb-fe85fd566fab')/Products('Quicklook')/$value\"\
-        \n            }\n         ],\n         \"bool\": {\n            \"content\"\
-        : \"true\",\n            \"name\": \"processed\"\n         },\n         \"\
-        date\": [\n            {\n               \"content\": \"2015-12-19T21:18:56.088Z\"\
-        ,\n               \"name\": \"ingestiondate\"\n            },\n          \
-        \  {\n               \"content\": \"2015-12-19T14:58:32Z\",\n            \
-        \   \"name\": \"beginposition\"\n            },\n            {\n         \
-        \      \"content\": \"2015-12-19T14:58:32Z\",\n               \"name\": \"\
-        endposition\"\n            }\n         ],\n         \"double\": {\n      \
-        \      \"content\": \"68.61538461538461\",\n            \"name\": \"cloudcoverpercentage\"\
-        \n         }\n      }\n   ],\n   \"subtitle\": \"Displaying 11 results. Request\
-        \ done in 3.443 seconds.\",\n   \"opensearch:startIndex\": \"0\",\n   \"opensearch:Query\"\
-        : {\n      \"searchTerms\": \"(beginPosition:[2015-12-19T00:00:00Z TO 2015-12-28T00:00:00Z])\
+        \n            }\n         ],\n         \"date\": [\n            {\n      \
+        \         \"content\": \"2015-12-19T21:18:56.088Z\",\n               \"name\"\
+        : \"ingestiondate\"\n            },\n            {\n               \"content\"\
+        : \"2015-12-19T14:58:32Z\",\n               \"name\": \"beginposition\"\n\
+        \            },\n            {\n               \"content\": \"2015-12-19T14:58:32Z\"\
+        ,\n               \"name\": \"endposition\"\n            }\n         ],\n\
+        \         \"double\": {\n            \"content\": \"68.61538461538461\",\n\
+        \            \"name\": \"cloudcoverpercentage\"\n         }\n      }\n   ],\n\
+        \   \"subtitle\": \"Displaying 11 results. Request done in 0.001 seconds.\"\
+        ,\n   \"opensearch:startIndex\": \"0\",\n   \"opensearch:Query\": {\n    \
+        \  \"searchTerms\": \"(beginPosition:[2015-12-19T00:00:00Z TO 2015-12-28T00:00:00Z])\
         \ AND (footprint:\\\"Intersects(POLYGON((-66.2695312 -8.0592296,-66.2695312\
         \ 0.7031074,-57.3046875 0.7031074,-57.3046875 -8.0592296,-66.2695312 -8.0592296)))\\\
         \") AND (platformname:Sentinel-2)\",\n      \"role\": \"request\",\n     \
         \ \"startPage\": \"1\"\n   }\n}}"}
     headers:
       Content-Type: [application/json]
-      Date: ['Mon, 21 Nov 2016 20:58:47 GMT']
+      Date: ['Fri, 20 Jan 2017 19:41:12 GMT']
       Pragma: [no-cache]
       Server: [Apache-Coyote/1.1]
+      Transfer-Encoding: [chunked]
+      Vary: [Accept-Encoding]
+      content-length: ['76288']
     status: {code: 200, message: OK}
 version: 1

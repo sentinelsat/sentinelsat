@@ -8,7 +8,7 @@ interactions:
       Connection: [keep-alive]
       Content-Length: ['167']
       Content-Type: [application/x-www-form-urlencoded]
-      User-Agent: [python-requests/2.12.1]
+      User-Agent: [sentinelsat/0.7.4]
     method: POST
     uri: https://scihub.copernicus.eu/apihub/search?format=json&rows=100&start=0
   response:
@@ -17,7 +17,7 @@ interactions:
         \ 1,0 0)))\\\")\",\n   \"author\": {\"name\": \"Sentinels Scientific Data\
         \ Hub\"},\n   \"title\": \"Sentinels Scientific Data Hub search results for:\
         \ (beginPosition:[2015-01-01T00:00:00Z TO 2015-01-02T00:00:00Z]) AND (footprint:\\\
-        \"Intersects(POLYGON((0 0,1 1,0 1,0 0)))\\\")\",\n   \"updated\": \"2016-11-21T20:13:39.907Z\"\
+        \"Intersects(POLYGON((0 0,1 1,0 1,0 0)))\\\")\",\n   \"updated\": \"2017-01-20T19:41:08.293Z\"\
         ,\n   \"opensearch:totalResults\": \"0\",\n   \"xmlns:opensearch\": \"http://a9.com/-/spec/opensearch/1.1/\"\
         ,\n   \"link\": [\n      {\n         \"rel\": \"self\",\n         \"type\"\
         : \"application/atom+xml\",\n         \"href\": \"https://scihub.copernicus.eu/apihub/search?q=(beginPosition:[2015-01-01T00:00:00Z\
@@ -34,16 +34,18 @@ interactions:
         \ \"search\",\n         \"type\": \"application/opensearchdescription+xml\"\
         ,\n         \"href\": \"opensearch_description.xml\"\n      }\n   ],\n   \"\
         opensearch:startIndex\": \"0\",\n   \"subtitle\": \"Displaying 0 results.\
-        \ Request done in 3.032 seconds.\",\n   \"xmlns\": \"http://www.w3.org/2005/Atom\"\
+        \ Request done in 0.015 seconds.\",\n   \"xmlns\": \"http://www.w3.org/2005/Atom\"\
         ,\n   \"opensearch:Query\": {\n      \"searchTerms\": \"(beginPosition:[2015-01-01T00:00:00Z\
         \ TO 2015-01-02T00:00:00Z]) AND (footprint:\\\"Intersects(POLYGON((0 0,1 1,0\
         \ 1,0 0)))\\\")\",\n      \"role\": \"request\",\n      \"startPage\": \"\
         1\"\n   },\n   \"opensearch:itemsPerPage\": \"100\"\n}}"}
     headers:
-      Content-Length: ['2005']
       Content-Type: [application/json]
-      Date: ['Mon, 21 Nov 2016 20:13:39 GMT']
+      Date: ['Fri, 20 Jan 2017 19:41:07 GMT']
       Pragma: [no-cache]
       Server: [Apache-Coyote/1.1]
+      Transfer-Encoding: [chunked]
+      Vary: [Accept-Encoding]
+      content-length: ['2005']
     status: {code: 200, message: OK}
 version: 1
