@@ -32,6 +32,37 @@ Valid search query keywords can be found at the `ESA SciHub documentation
 <https://scihub.copernicus.eu/userguide/3FullTextSearch>`_.
 
 
+Logging
+-------
+
+Sentinelsat logs to ``sentinelsat`` and the API to ``sentinelsat.SentinelAPI``.
+
+There is no predefined `logging<https://docs.python.org/3/library/logging.html>`_ handler, 
+so in order to have your script print the log messages, either use ``logging.baseConfig``
+
+.. code-block:: python
+
+  import logging
+
+  logging.basicConfig(format='%(message)s', level='INFO')
+
+
+or add a custom handler for ``sentinelsat``
+
+.. code-block:: python
+
+  import logging
+
+  logger = logging.getLogger('sentinelsat')
+  logger.setLevel('INFO')
+
+  h = logging.StreamHandler()
+  h.setLevel('INFO')
+  fmt = logging.Formatter('%(message)s')
+  h.setFormatter(fmt)
+  logger.addHandler(h)
+
+
 API
 -----------
 
