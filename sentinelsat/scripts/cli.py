@@ -1,14 +1,26 @@
 import click
 import geojson as gj
+import logging
 
 import os
 
 from sentinelsat.sentinel import SentinelAPI, get_coordinates
 
+logger = logging.getLogger('sentinelsat')
+
+
+def _set_logger_handler(level='INFO'):
+    logger.setLevel(level)
+    h = logging.StreamHandler()
+    h.setLevel(level)
+    fmt = logging.Formatter('%(message)s')
+    h.setFormatter(fmt)
+    logger.addHandler(h)
+
 
 @click.group()
 def cli():
-    pass
+    _set_logger_handler()
 
 
 @cli.command()
@@ -97,9 +109,9 @@ def search(
                         outfile.write("%s : %s\n" % corrupt_tuple)
     else:
         for product in products:
-            print('Product %s - %s' % (product['id'], product['summary']))
-        print('---')
-        print(
+            logger.info('Product %s - %s' % (product['id'], product['summary']))
+        logger.info('---')
+        logger.info(
             '%s scenes found with a total size of %.2f GB' %
             (len(products), api.get_products_size(products)))
 
