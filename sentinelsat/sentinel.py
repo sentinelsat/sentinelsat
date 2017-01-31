@@ -479,7 +479,7 @@ class SentinelAPI(object):
 
         return kwargs_dict
 
-    def _order_by(self, products, by):
+    def order_by(self, products, by):
         """Order the products according the begin date"""
         out = dict()
         if by not in ['date',  'cloudcoverpercentage']:
