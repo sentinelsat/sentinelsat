@@ -479,18 +479,18 @@ class SentinelAPI(object):
 
         return kwargs_dict
 
-    def _order_by(self,  by):
+    def _order_by(self, products, by):
         """Order the products according the begin date"""
         out = dict()
         if by not in ['date',  'cloudcoverpercentage']:
             print("The order method is not supported returning data not sorted"
                   ", please choose 'date' or 'cloudcoverpercentage'")
-            return self.products
+            return products
         if by == 'cloudcoverpercentage' and self.sentinel_version == 'Sentinel-1':
             print("Sentinel-1 product has no cloudcoverpercentage information, "
                   "returning data not sorted")
-            return self.products
-        for prod in self.products:
+            return products
+        for prod in products:
             if by == 'date':
                 for dat in prod['date']:
                     if dat['name'] == 'beginposition':
