@@ -7,15 +7,17 @@ import traceback
 import xml.etree.ElementTree as ET
 from datetime import date, datetime, timedelta
 from os import remove
-from os.path import join, exists, getsize
-import pycurl
+from os.path import exists, getsize, join
 from time import sleep
 from collections import OrderedDict
 import geojson
 import homura
 import html2text
+import pycurl
 import requests
 from tqdm import tqdm
+
+from . import __version__ as sentinelsat_version
 
 try:
     from urlparse import urljoin
@@ -117,22 +119,27 @@ class SentinelAPI(object):
         Session to connect to DataHub
     api_url : str
         URL to the DataHub
+    page_size : int
+        number of results per query page
+        current value: 100 (maximum allowed on ApiHub)
     """
 
-    def __init__(self, user, password, api_url='https://scihub.copernicus.eu/apihub/', max_rows=100):
+    def __init__(self, user, password, api_url='https://scihub.copernicus.eu/apihub/'):
         self.session = requests.Session()
         self.session.auth = (user, password)
-        self.api_url = api_url
+        self.user_agent = 'sentinelsat/' + sentinelsat_version
+        self.session.headers['User-Agent'] = self.user_agent
+        self.api_url = api_url if api_url.endswith('/') else api_url + '/'
         self.url = None
         self.last_query = None
         self.last_status_code = None
         self.content = None
-        self.products = []
-        self.max_rows = max_rows
-        self.sentinel_version = None
+        self.page_size = 100
 
     def format_url(self, start_row=0):
-        blank = 'search?format=json&rows={rows}&start={start}'.format(rows=self.max_rows, start=start_row)
+        blank = 'search?format=json&rows={rows}&start={start}'.format(
+            rows=self.page_size, start=start_row
+            )
         self.url = urljoin(self.api_url, blank)
         return self.url
 
@@ -143,13 +150,13 @@ class SentinelAPI(object):
         if 'platformname' in keywords.keys():
             self.sentinel_version = keywords['platformname']
         query = self.format_query(area, initial_date, end_date, **keywords)
-        self.load_query(query)
-        return self.products
+        return self.load_query(query)
 
     def load_query(self, query, start_row=0):
         """Do a full-text query on the SciHub API using the format specified in
            https://scihub.copernicus.eu/twiki/do/view/SciHubUserGuide/3FullTextSearch
         """
+        output = []
         # store last query (for testing)
         self.last_query = query
 
@@ -157,7 +164,7 @@ class SentinelAPI(object):
         url = self.format_url(start_row=start_row)
 
         # load query results
-        content = requests.post(url, dict(q=query), auth=self.session.auth)
+        content = self.session.post(url, dict(q=query), auth=self.session.auth)
         _check_scihub_response(content)
 
         # store last status code (for testing)
@@ -167,14 +174,14 @@ class SentinelAPI(object):
         total_results = 0
         try:
             json_feed = content.json()['feed']
-            products = json_feed['entry']
+            entries = json_feed['entry']
             # this verification is necessary because if the query returns only
             # one product, self.products will be a dict not a list
-            if type(products) == dict:
-                products = [products]
+            if type(entries) == dict:
+                entries = [entries]
 
             # append to products
-            self.products += products
+            output += entries
 
             # get total number of returned results
             total_results = int(json_feed['opensearch:totalResults'])
@@ -189,8 +196,10 @@ class SentinelAPI(object):
                                    response_body=content.content)
 
         # repeat query until all results have been loaded
-        if total_results > self.max_rows + start_row - 1:
-            self.load_query(query, start_row=(start_row + self.max_rows))
+        if total_results > self.page_size + start_row - 1:
+            output += self.load_query(query, start_row=(start_row + self.page_size))
+        return output
+
 
     @staticmethod
     def format_query(area, initial_date=None, end_date=datetime.now(), **keywords):
@@ -212,16 +221,10 @@ class SentinelAPI(object):
         query = ''.join([acquisition_date, query_area, filters])
         return query
 
-    def get_products(self, ordered=None):
-        """Return the result of the Query in json format."""
-        if ordered:
-            return self._order_by(ordered)
-        return self.products
-
-    def get_products_size(self):
+    def get_products_size(self,  products):
         """Return the total filesize in GB of all products in the query"""
         size_total = 0
-        for product in self.get_products():
+        for product in products:
             size_product = next(x for x in product["str"] if x["name"] == "size")["content"]
             size_value = float(size_product.split(" ")[0])
             size_unit = str(size_product.split(" ")[1])
@@ -232,12 +235,12 @@ class SentinelAPI(object):
             size_total += size_value
         return round(size_total, 2)
 
-    def get_footprints(self):
+    def get_footprints(self, products):
         """Return the footprints of the resulting scenes in GeoJSON format"""
         id = 0
         feature_list = []
 
-        for scene in self.get_products():
+        for scene in products:
             id += 1
             # parse the polygon
             coord_list = next(
@@ -391,7 +394,8 @@ class SentinelAPI(object):
             # https://github.com/pycurl/pycurl/issues/405
             remove(path)
 
-        homura.download(product_info['url'], path=path, session=self.session, **kwargs)
+        homura.download(product_info['url'], path=path, auth=self.session.auth,
+                        user_agent=self.user_agent, **kwargs)
 
         # Check integrity with MD5 checksum
         if checksum is True:
@@ -399,7 +403,7 @@ class SentinelAPI(object):
                 raise InvalidChecksumError('File corrupt: checksums do not match')
         return path, product_info
 
-    def download_all(self, directory_path='.', max_attempts=10, checksum=False, check_existing=False, **kwargs):
+    def download_all(self, products, directory_path='.', max_attempts=10, checksum=False, check_existing=False, **kwargs):
         """Download all products returned in query().
 
         File names on the server are used for the downloaded files, e.g.
@@ -410,6 +414,8 @@ class SentinelAPI(object):
 
         Parameters
         ----------
+        products : list
+            List of products returned with self.query()
         directory_path : string
             Directory where the downloaded files will be downloaded
         max_attempts : int, optional
@@ -426,7 +432,6 @@ class SentinelAPI(object):
             (returned by get_product_info()). Product info is set to None if downloading the product failed.
         """
         result = {}
-        products = self.get_products()
         print("Will download %d products" % len(products))
         for i, product in enumerate(products):
             path = join(directory_path, product['title'] + '.zip')
@@ -530,7 +535,7 @@ def get_coordinates(geojson_file, feature_number=0):
     geojson_obj = geojson.loads(open(geojson_file, 'r').read())
     coordinates = geojson_obj['features'][feature_number]['geometry']['coordinates'][0]
     # precision of 7 decimals equals 1mm at the equator
-    coordinates = ['%.7f %.7f' % tuple(coord) for coord in coordinates]
+    coordinates = ['%.7f %.7f' % (coord[0], coord[1]) for coord in coordinates]
     return ','.join(coordinates)
 
 

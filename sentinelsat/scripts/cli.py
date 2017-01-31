@@ -12,9 +12,9 @@ def cli():
 
 
 @cli.command()
+@click.argument('geojson', type=click.Path(exists=True), metavar='<geojson>')
 @click.argument('user', type=str, metavar='<user>')
 @click.argument('password', type=str, metavar='<password>')
-@click.argument('geojson', type=click.Path(exists=True), metavar='<geojson>')
 @click.option(
     '--start', '-s', type=str, default='NOW-1DAY',
     help='Start date of the query in the format YYYYMMDD.')
@@ -62,7 +62,7 @@ def cli():
 
 def search(
         user, password, geojson, start, end, download, md5,
-        sentinel1, sentinel2, cloud, footprints, path, query, url,  orderby):
+        sentinel1, sentinel2, cloud, footprints, path, query, url, orderby):
     """Search for Sentinel products and, optionally, download all the results
     and/or create a geojson file with the search result footprints.
     Beyond your SciHub user and password, you must pass a geojson file
@@ -84,15 +84,15 @@ def search(
     if query is not None:
         search_kwargs.update(dict([i.split('=') for i in query.split(',')]))
 
-    api.query(get_coordinates(geojson), start, end, **search_kwargs)
+    products = api.query(get_coordinates(geojson), start, end, **search_kwargs)
 
     if footprints is True:
-        footprints_geojson = api.get_footprints()
+        footprints_geojson = api.get_footprints(products)
         with open(os.path.join(path, "search_footprints.geojson"), "w") as outfile:
             outfile.write(gj.dumps(footprints_geojson))
 
     if download is True:
-        result = api.download_all(path, checksum=md5)
+        result = api.download_all(products, path, checksum=md5)
         if md5 is True:
             corrupt_scenes = [(path, info["id"]) for path, info in result.items() if info is not None]
             if len(corrupt_scenes) > 0:
@@ -100,15 +100,12 @@ def search(
                     for corrupt_tuple in corrupt_scenes:
                         outfile.write("%s : %s\n" % corrupt_tuple)
     else:
-        order = None
-        if orderby:
-            order = orderby
-        for product in api.get_products(ordered=order):
+        for product in products:
             print('Product %s - %s' % (product['id'], product['summary']))
         print('---')
         print(
             '%s scenes found with a total size of %.2f GB' %
-            (len(api.get_products()), api.get_products_size()))
+            (len(products), api.get_products_size(products)))
 
 
 @cli.command()

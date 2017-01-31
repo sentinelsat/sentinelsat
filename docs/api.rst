@@ -18,9 +18,9 @@ Quickstart
 
   # search by polygon, time, and SciHub query keywords
   api.query(get_coordinates('map.geojson'), \
-            "20151219", date(2015, 12, 29), \
-            keywords={"platformname": "Sentinel-2", \
-                      "cloudcoverpercentage": "[0 TO 30]"})
+            '20151219', date(2015, 12, 29), \
+            platformname = 'Sentinel-2', \
+            cloudcoverpercentage = '[0 TO 30]'})
 
   # download all results from the search
   api.download_all()

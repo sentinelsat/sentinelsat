@@ -14,6 +14,10 @@ sentinelsat
     :target: http://sentinelsat.readthedocs.io/en/master/?badge=master
     :alt: Documentation
 
+.. image:: https://img.shields.io/badge/gitter-join_chat-1dce73.svg?logo=data%3Aimage%2Fsvg%2Bxml%3Bbase64%2CPD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4NCjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB4PSIwIiB5PSI1IiBmaWxsPSIjZmZmIiB3aWR0aD0iMSIgaGVpZ2h0PSI1Ii8%2BPHJlY3QgeD0iMiIgeT0iNiIgZmlsbD0iI2ZmZiIgd2lkdGg9IjEiIGhlaWdodD0iNyIvPjxyZWN0IHg9IjQiIHk9IjYiIGZpbGw9IiNmZmYiIHdpZHRoPSIxIiBoZWlnaHQ9IjciLz48cmVjdCB4PSI2IiB5PSI2IiBmaWxsPSIjZmZmIiB3aWR0aD0iMSIgaGVpZ2h0PSI0Ii8%2BPC9zdmc%2B&logoWidth=8
+    :target: https://gitter.im/sentinelsat/
+    :alt: gitter.im chat
+
 .. image:: https://zenodo.org/badge/36093931.svg
    :target: https://zenodo.org/badge/latestdoi/36093931
 
@@ -36,12 +40,10 @@ and a powerful Python API.
   from sentinelsat.sentinel import SentinelAPI, get_coordinates
 
   api = SentinelAPI('user', 'password')
-  api.query(
-    get_coordinates("search_polygon.geojson"),
-    producttype="SLC",
-    orbitdirection="ASCENDING"
-  )
-  api.download_all()
+  products = api.query(get_coordinates('search_polygon.geojson'), \
+                       producttype = 'SLC', \
+                       orbitdirection='ASCENDING')
+  api.download_all(products)
 
 Documentation is published at http://sentinelsat.readthedocs.io/.
 
@@ -77,16 +79,16 @@ Python Library
   api.download(<product_id>)
 
   # search by polygon, time, and SciHub query keywords
-  api.query(get_coordinates(map.geojson), \
-            "20151219", date(2015, 12, 29), \
-            keywords={"platformname": "Sentinel-2", \
-                      "cloudcoverpercentage": "[0 TO 30]"})
+  products = api.query(get_coordinates('map.geojson'), \
+                       '20151219', date(2015, 12, 29), \
+                       platformname = 'Sentinel-2', \
+                       cloudcoverpercentage = '[0 TO 30]'})
 
   # download all results from the search
-  api.download_all()
+  api.download_all(products)
 
   # GeoJSON FeatureCollection containing footprints and metadata of the scenes
-  api.get_footprints()
+  api.get_footprints(products)
 
 Valid search query keywords can be found at the `ESA SciHub documentation
 <https://scihub.copernicus.eu/userguide/3FullTextSearch>`_.
@@ -115,8 +117,8 @@ orbit for the year 2015.
 .. code-block:: bash
 
   sentinel search -s 20150101 -e 20151231 -d \
-  -q 'producttype=SLC, orbitdirection=Descending' \
-  -u 'https://scihub.copernicus.eu/dhus' <user> <password> <poly.geojson>
+  -q "producttype=SLC, orbitdirection=Descending" \
+  -u "https://scihub.copernicus.eu/dhus" <user> <password> <poly.geojson>
 
 Options
 ^^^^^^^
@@ -180,6 +182,10 @@ To run the tests on `sentinelsat`:
     export SENTINEL_PASSWORD=<your scihub password>
     py.test -v
 
+By default, prerecorded responses to SciHub queries are used to not be affected by Scihub's downtime. The only
+exceptions are downloading tests, which can be disabled with ``-m "not homura"``.
+To allow the tests to run actual queries on SciHub add ``--vcr disable`` to ``py.test`` arguments. If you wish to
+update the recordings use ``--vcr record_new`` or ``--vcr reset_all``.
 
 Contributors
 =============
@@ -188,6 +194,7 @@ Contributors
 * Kersten Clauss
 * Martin Valgur
 * Jonas Sølvsteen
+* Luca Delucchi
 
 License
 =======

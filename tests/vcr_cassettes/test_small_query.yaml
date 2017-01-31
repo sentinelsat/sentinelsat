@@ -1,0 +1,51 @@
+interactions:
+- request:
+    body: q=%28beginPosition%3A%5B2015-01-01T00%3A00%3A00Z+TO+2015-01-02T00%3A00%3A00Z%5D%29+AND+%28footprint%3A%22Intersects%28POLYGON%28%280+0%2C1+1%2C0+1%2C0+0%29%29%29%22%29
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Authorization: [Basic cmVnaW86SzZzbTZz]
+      Connection: [keep-alive]
+      Content-Length: ['167']
+      Content-Type: [application/x-www-form-urlencoded]
+      User-Agent: [sentinelsat/0.7.4]
+    method: POST
+    uri: https://scihub.copernicus.eu/apihub/search?format=json&rows=100&start=0
+  response:
+    body: {string: "{\"feed\": {\n   \"id\": \"https://scihub.copernicus.eu/apihub/search?q=(beginPosition:[2015-01-01T00:00:00Z\
+        \ TO 2015-01-02T00:00:00Z]) AND (footprint:\\\"Intersects(POLYGON((0 0,1 1,0\
+        \ 1,0 0)))\\\")\",\n   \"author\": {\"name\": \"Sentinels Scientific Data\
+        \ Hub\"},\n   \"title\": \"Sentinels Scientific Data Hub search results for:\
+        \ (beginPosition:[2015-01-01T00:00:00Z TO 2015-01-02T00:00:00Z]) AND (footprint:\\\
+        \"Intersects(POLYGON((0 0,1 1,0 1,0 0)))\\\")\",\n   \"updated\": \"2017-01-20T19:41:09.167Z\"\
+        ,\n   \"opensearch:totalResults\": \"0\",\n   \"xmlns:opensearch\": \"http://a9.com/-/spec/opensearch/1.1/\"\
+        ,\n   \"link\": [\n      {\n         \"rel\": \"self\",\n         \"type\"\
+        : \"application/atom+xml\",\n         \"href\": \"https://scihub.copernicus.eu/apihub/search?q=(beginPosition:[2015-01-01T00:00:00Z\
+        \ TO 2015-01-02T00:00:00Z]) AND (footprint:\\\"Intersects(POLYGON((0 0,1 1,0\
+        \ 1,0 0)))\\\")&start=0&rows=100\"\n      },\n      {\n         \"rel\": \"\
+        first\",\n         \"type\": \"application/atom+xml\",\n         \"href\"\
+        : \"https://scihub.copernicus.eu/apihub/search?q=(beginPosition:[2015-01-01T00:00:00Z\
+        \ TO 2015-01-02T00:00:00Z]) AND (footprint:\\\"Intersects(POLYGON((0 0,1 1,0\
+        \ 1,0 0)))\\\")&start=0&rows=100\"\n      },\n      {\n         \"rel\": \"\
+        last\",\n         \"type\": \"application/atom+xml\",\n         \"href\":\
+        \ \"https://scihub.copernicus.eu/apihub/search?q=(beginPosition:[2015-01-01T00:00:00Z\
+        \ TO 2015-01-02T00:00:00Z]) AND (footprint:\\\"Intersects(POLYGON((0 0,1 1,0\
+        \ 1,0 0)))\\\")&start=-1&rows=100\"\n      },\n      {\n         \"rel\":\
+        \ \"search\",\n         \"type\": \"application/opensearchdescription+xml\"\
+        ,\n         \"href\": \"opensearch_description.xml\"\n      }\n   ],\n   \"\
+        opensearch:startIndex\": \"0\",\n   \"subtitle\": \"Displaying 0 results.\
+        \ Request done in 0.001 seconds.\",\n   \"xmlns\": \"http://www.w3.org/2005/Atom\"\
+        ,\n   \"opensearch:Query\": {\n      \"searchTerms\": \"(beginPosition:[2015-01-01T00:00:00Z\
+        \ TO 2015-01-02T00:00:00Z]) AND (footprint:\\\"Intersects(POLYGON((0 0,1 1,0\
+        \ 1,0 0)))\\\")\",\n      \"role\": \"request\",\n      \"startPage\": \"\
+        1\"\n   },\n   \"opensearch:itemsPerPage\": \"100\"\n}}"}
+    headers:
+      Content-Type: [application/json]
+      Date: ['Fri, 20 Jan 2017 19:41:08 GMT']
+      Pragma: [no-cache]
+      Server: [Apache-Coyote/1.1]
+      Transfer-Encoding: [chunked]
+      Vary: [Accept-Encoding]
+      content-length: ['2005']
+    status: {code: 200, message: OK}
+version: 1
