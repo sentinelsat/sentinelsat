@@ -47,7 +47,7 @@ so in order to have your script print the log messages, either use ``logging.bas
   logging.basicConfig(format='%(message)s', level='INFO')
 
 
-or add a custom handler for ``sentinelsat``
+or add a custom handler for ``sentinelsat`` (as implemented in ``cli.py``)
 
 .. code-block:: python
 
