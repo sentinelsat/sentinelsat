@@ -14,6 +14,7 @@ import homura
 import html2text
 import pycurl
 import requests
+import types
 from tqdm import tqdm
 
 from . import __version__ as sentinelsat_version
@@ -288,6 +289,52 @@ class SentinelAPI(object):
                 geojson.Feature(geometry=poly, id=id, properties=props)
             )
         return geojson.FeatureCollection(feature_list)
+
+    def to_dict(self, products):
+        """Return the products in a dictionary object with the values in their appropriate Python types"""
+        try:
+            from osgeo import ogr
+        except ImportError:
+            raise ImportError('Python OGR library does not found')
+        output = {}
+        for prod in products:
+            prodname = prod['title']
+            output[prodname] = {}
+            for key in prod.keys():
+                if key != 'title' and type(prod[key]) in [types.UnicodeType, types.StringType]:
+                    output[prodname][key] = prod[key]
+                elif type(prod[key]) in [types.DictType]:
+                    output[prodname][prod[key]['name']] = prod[key]['content']
+                elif key == 'link':
+                    for link in prod[key]:
+                        if not link.has_key('rel'):
+                            output[prodname]['link'] = link['href']
+                        else:
+                            lkey = 'link_' + link['rel']
+                            output[prodname][lkey] = link['href']
+                elif key == 'date':
+                    for data in prod[key]:
+                        mydate = None
+                        try:
+                            mydate = datetime.strptime(data['content'],'%Y-%m-%dT%H:%M:%SZ')
+                        except:
+                            try:
+                                mydate = datetime.strptime(data['content'],'%Y-%m-%dT%H:%M:%S.%fZ')
+                            except:
+                                print("Date '{dat}' non parsable".format(dat=data['content']))
+                        if mydate:
+                            output[prodname][data['name']] = mydate
+                        else:
+                            output[prodname][data['name']] = data['content']
+                elif type(prod[key]) in [types.ListType]:
+                    for data in prod[key]:
+                        if data['name'] == 'gmlfootprint':
+                            continue
+                        elif data['name'] == 'footprint':
+                            output[prodname][data['name']] = ogr.CreateGeometryFromWkt(data['content'])
+                        else:
+                            output[prodname][data['name']] = data['content']
+        return output
 
     def get_product_info(self, id):
         """Access SciHub API to get info about a Product. Returns a dict
