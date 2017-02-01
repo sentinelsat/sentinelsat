@@ -12,9 +12,9 @@ def cli():
 
 
 @cli.command()
-@click.argument('geojson', type=click.Path(exists=True), metavar='<geojson>')
 @click.argument('user', type=str, metavar='<user>')
 @click.argument('password', type=str, metavar='<password>')
+@click.argument('geojson', type=click.Path(exists=True), metavar='<geojson>')
 @click.option(
     '--start', '-s', type=str, default='NOW-1DAY',
     help='Start date of the query in the format YYYYMMDD.')
