@@ -349,6 +349,23 @@ def test_get_products_size():
     assert api.get_products_size(products) == 0
 
 
+@pytest.mark.scihub
+def test_order_by():
+    api = SentinelAPI(**_api_auth)
+    products = api.query(
+        get_coordinates('tests/map.geojson'),
+        "20151219", "20151228",
+        platformname="Sentinel-2",
+        cloudcoverpercentage="[0 TO 10]"
+    )
+    assert products[0]["id"] == "6ed0b7de-3435-43df-98bf-ad63c8d077ef"
+    assert products[1]["id"] == "37ecee60-23d8-4ec2-a65f-2de24f51d30e"
+    ordered = api.order_by(products,'cloudcoverpercentage')
+    assert ordered[1]["id"] == "0848f6b8-5730-4759-850e-fc9945d42296"
+    ordered = api.order_by(products,'date')
+    assert ordered[0]["id"] == "37ecee60-23d8-4ec2-a65f-2de24f51d30e"
+
+
 @pytest.mark.homura
 @pytest.mark.scihub
 def test_download(tmpdir):
