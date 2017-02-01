@@ -86,6 +86,9 @@ def search(
 
     products = api.query(get_coordinates(geojson), start, end, **search_kwargs)
 
+    if orderby:
+        products = api.order_by(products, orderby)
+
     if footprints is True:
         footprints_geojson = api.get_footprints(products)
         with open(os.path.join(path, "search_footprints.geojson"), "w") as outfile:
