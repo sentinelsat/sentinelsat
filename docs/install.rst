@@ -76,4 +76,4 @@ or ``api.download_all()``:
 .. code-block:: python
 
   from pycurl import CAINFO
-  api.download_all(pass_through_opts={CAINFO: 'path/to/my/cacert.pem'})
+  api.download_all(products, pass_through_opts={CAINFO: 'path/to/my/cacert.pem'})
