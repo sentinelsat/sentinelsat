@@ -2,13 +2,12 @@
 from __future__ import print_function
 
 import hashlib
-import sys
-import traceback
 import xml.etree.ElementTree as ET
 from datetime import date, datetime, timedelta
 from os import remove
 from os.path import exists, getsize, join
 from time import sleep
+import logging
 
 import geojson
 import homura
@@ -135,6 +134,7 @@ class SentinelAPI(object):
         self.last_status_code = None
         self.content = None
         self.page_size = 100
+        self.logger = logging.getLogger('sentinelsat.SentinelAPI')
 
     def format_url(self, start_row=0):
         blank = 'search?format=json&rows={rows}&start={start}'.format(
@@ -186,7 +186,7 @@ class SentinelAPI(object):
             if total_results == 0:
                 raise KeyError('No results returned.')
         except KeyError:
-            print('No products found in this query.')
+            self.logger.info('No products found in this query.')
             return []
         except ValueError:
             raise SentinelAPIError(http_status=content.status_code,
@@ -368,22 +368,22 @@ class SentinelAPI(object):
             try:
                 product_info = self.get_product_info(id)
             except SentinelAPIError as e:
-                print("Invalid API response:\n{}\nTrying again in 1 minute.".format(str(e)))
+                self.logger.info("Invalid API response:\n{}\nTrying again in 1 minute.".format(str(e)))
                 sleep(60)
 
         path = join(directory_path, product_info['title'] + '.zip')
         kwargs = self._fillin_cainfo(kwargs)
 
-        print('Downloading %s to %s' % (id, path))
+        self.logger.info('Downloading %s to %s' % (id, path))
 
         # Check if the file exists and passes md5 test
         # Homura will by default continue the download if the file exists but is incomplete
         if exists(path) and getsize(path) == product_info['size']:
             if not check_existing or md5_compare(path, product_info['md5']):
-                print('%s was already downloaded.' % path)
+                self.logger.info('%s was already downloaded.' % path)
                 return path, product_info
             else:
-                print('%s was already downloaded but is corrupt: checksums do not match. Re-downloading.' % path)
+                self.logger.info('%s was already downloaded but is corrupt: checksums do not match. Re-downloading.' % path)
                 remove(path)
 
         if (exists(path) and getsize(path) >= 2 ** 31 and
@@ -430,7 +430,7 @@ class SentinelAPI(object):
             (returned by get_product_info()). Product info is set to None if downloading the product failed.
         """
         result = {}
-        print("Will download %d products" % len(products))
+        self.logger.info("Will download %d products" % len(products))
         for i, product in enumerate(products):
             path = join(directory_path, product['title'] + '.zip')
             product_info = None
@@ -444,13 +444,12 @@ class SentinelAPI(object):
                 except (KeyboardInterrupt, SystemExit, SystemError, MemoryError):
                     raise
                 except InvalidChecksumError:
-                    print("Invalid checksum. The downloaded file is corrupted.")
+                    self.logger.info("Invalid checksum. The downloaded file is corrupted.")
                 except:
-                    print("There was an error downloading %s" % product['title'], file=sys.stderr)
-                    traceback.print_exc()
+                    self.logger.exception("There was an error downloading %s" % product['title'])
                 remaining_attempts -= 1
             result[path] = product_info
-            print("{}/{} products downloaded".format(i + 1, len(products)))
+            self.logger.info("{}/{} products downloaded".format(i + 1, len(products)))
         return result
 
     @staticmethod
