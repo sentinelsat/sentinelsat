@@ -187,6 +187,12 @@ exceptions are downloading tests, which can be disabled with ``-m "not homura"``
 To allow the tests to run actual queries on SciHub add ``--vcr disable`` to ``py.test`` arguments. If you wish to
 update the recordings use ``--vcr record_new`` or ``--vcr reset_all``.
 
+
+Changelog
+=========
+
+Check `CHANGELOG <CHANGELOG.rst>`_.
+
 Contributors
 =============
 
