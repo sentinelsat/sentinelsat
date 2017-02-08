@@ -68,7 +68,7 @@ class SentinelAPI(object):
         self._last_status_code = None
 
     def query(self, area=None, initial_date='NOW-1DAY', end_date='NOW', **keywords):
-        """Query the Open Access Hub OpenSearch API with the coordinates of an area, a date interval
+        """Query the OpenSearch API with the coordinates of an area, a date interval
         and any other search keywords accepted by the API.
 
         Parameters
@@ -108,7 +108,7 @@ class SentinelAPI(object):
 
     @staticmethod
     def format_query(area=None, initial_date='NOW-1DAY', end_date='NOW', **keywords):
-        """Create the SciHub OpenSearch API query string
+        """Create OpenSearch API query string
         """
         query_parts = []
         if initial_date is not None and end_date is not None:
@@ -229,7 +229,7 @@ class SentinelAPI(object):
         return gpd.GeoDataFrame(df, crs=crs, geometry=geometry)
 
     def get_product_odata(self, id, full=False):
-        """Access SciHub OData API to get info about a product.
+        """Access OData API to get info about a product.
 
         Returns a dict containing the id, title, size, md5sum, date, footprint and download url
         of the product. The date field corresponds to the Start ContentDate value.
@@ -409,7 +409,7 @@ class SentinelAPI(object):
 
 
 class SentinelAPIError(Exception):
-    """Invalid responses from SciHub.
+    """Invalid responses from DataHub.
     """
 
     def __init__(self, msg=None, response=None):

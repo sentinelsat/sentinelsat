@@ -12,7 +12,7 @@ with open('sentinelsat/__init__.py', encoding='utf-8') as f:
 
 setup(name='sentinelsat',
       version=version,
-      description="Utility to search and download Sentinel-1 Imagery",
+      description="Utility to search and download Copernicus Sentinel satellite images",
       long_description=long_description,
       classifiers=[
           'License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)',
@@ -23,7 +23,7 @@ setup(name='sentinelsat',
           'Topic :: Scientific/Engineering :: GIS',
           'Topic :: Utilities',
       ],
-      keywords='sentinel, esa, satellite, download, GIS',
+      keywords='copernicus, sentinel, esa, satellite, download, GIS',
       author="Wille Marcel",
       author_email='wille@wille.blog.br',
       url='https://github.com/sentinelsat/sentinelsat',

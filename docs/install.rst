@@ -56,18 +56,18 @@ Tests
   git clone https://github.com/sentinelsat/sentinelsat.git
   cd sentinelsat
   pip install -e .[test]
-  export SENTINEL_USER=<your scihub username>
-  export SENTINEL_PASSWORD=<your scihub password>
+  export SENTINEL_USER=<username>
+  export SENTINEL_PASSWORD=<password>
   py.test -v -m "not homura"
 
 
-Running all tests, including tests for downloading functionality, requires SciHub
+Running all tests, including tests for downloading functionality, requires Copernicus Open Access Hub
 credentials to be provided via environment variables.
 
 .. code-block:: bash
 
-  export SENTINEL_USER=<your scihub username>
-  export SENTINEL_PASSWORD=<your scihub password>
+  export SENTINEL_USER=<username>
+  export SENTINEL_PASSWORD=<password>
   py.test -v
 
 
@@ -87,7 +87,7 @@ The convenience functions ``to_dataframe()`` and ``to_geodataframe()`` require `
 Troubleshooting
 ---------------
 
-The download from SciHub will fail if the server certificate cannot be verified
+Download from the Copernicus Open Access Hub will fail if the server certificate cannot be verified
 because no default CA bundle is defined, as on Windows, or when the CA bundle is
 outdated. In most cases the easiest solution is to install or update ``certifi``:
 
