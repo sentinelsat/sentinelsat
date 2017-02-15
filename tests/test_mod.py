@@ -349,7 +349,6 @@ def test_get_products_size():
     # Rounded to zero
     assert api.get_products_size(products) == 0
 
-@my_vcr.use_cassette
 @pytest.mark.scihub
 def test_to_dict():
     api = SentinelAPI(**_api_auth)
@@ -359,7 +358,7 @@ def test_to_dict():
     )
     dictionary = api.to_dict(products)
     # check the type
-    assert type(dictionary) == types.DictType
+    assert isinstance(dictionary, dict)
     # check if dictionary has id key
     assert dictionary.has_key('S2A_OPER_PRD_MSIL1C_PDMC_20151228T112701_R110_V20151227T142229_20151227T142229')
 
