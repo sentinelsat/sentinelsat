@@ -15,7 +15,6 @@ import homura
 import html2text
 import pycurl
 import requests
-import types
 from tqdm import tqdm
 
 from . import __version__ as sentinelsat_version
@@ -100,6 +99,14 @@ def _check_scihub_response(response):
         api_error.__cause__ = None
         raise api_error
 
+def _create_geojson_poly(coordlist):
+    """Return a geojson Polygon object from a list of coordinates"""
+    coord_list_split = (coord.split(" ") for coord in coordlist)
+    poly = geojson.Polygon([[
+        tuple((float(coord[0]), float(coord[1])))
+        for coord in coord_list_split
+    ]])
+    return poly
 
 class SentinelAPI(object):
     """Class to connect to Sentinel Data Hub, search and download imagery.
@@ -247,11 +254,7 @@ class SentinelAPI(object):
                 for x in scene["str"]
                 if x["name"] == "footprint"
             )["content"][10:-2].split(",")
-            coord_list_split = (coord.split(" ") for coord in coord_list)
-            poly = geojson.Polygon([[
-                tuple((float(coord[0]), float(coord[1])))
-                for coord in coord_list_split
-                ]])
+            poly = _create_geojson_poly(coord_list)
 
             # parse the following properties:
             # platformname, identifier, product_id, date, polarisation,
@@ -293,17 +296,17 @@ class SentinelAPI(object):
     def to_dict(self, products):
         """Return the products in a dictionary object with the values in their appropriate Python types"""
         try:
-            from osgeo import ogr
-        except ImportError:
-            raise ImportError('Python OGR library does not found')
+            strtype = basestring
+        except:
+            strtype = str
         output = {}
         for prod in products:
             prodname = prod['title']
             output[prodname] = {}
-            for key in prod.keys():
-                if key != 'title' and type(prod[key]) in [types.UnicodeType, types.StringType]:
+            for key in prod:
+                if key != 'title' and isinstance(prod[key], strtype):
                     output[prodname][key] = prod[key]
-                elif type(prod[key]) in [types.DictType]:
+                elif isinstance(prod[key], dict):
                     output[prodname][prod[key]['name']] = prod[key]['content']
                 elif key == 'link':
                     for link in prod[key]:
@@ -326,12 +329,13 @@ class SentinelAPI(object):
                             output[prodname][data['name']] = mydate
                         else:
                             output[prodname][data['name']] = data['content']
-                elif type(prod[key]) in [types.ListType]:
+                elif isinstance(prod[key], list):
                     for data in prod[key]:
                         if data['name'] == 'gmlfootprint':
                             continue
                         elif data['name'] == 'footprint':
-                            output[prodname][data['name']] = ogr.CreateGeometryFromWkt(data['content'])
+                            coord_list = data['content'][10:-2].split(",")
+                            output[prodname][data['name']] = _create_geojson_poly(coord_list)
                         else:
                             output[prodname][data['name']] = data['content']
         return output
