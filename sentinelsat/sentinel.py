@@ -51,6 +51,11 @@ class InvalidChecksumError(Exception):
     pass
 
 
+class DatetimeParsingError(Exception):
+    """Return error if it is not possible to parse string as datetime"""
+    pass
+
+
 def format_date(in_date):
     """Format date or datetime input or a YYYYMMDD string input to
     YYYY-MM-DDThh:mm:ssZ string format. In case you pass an
@@ -310,7 +315,7 @@ class SentinelAPI(object):
                     output[prodname][prod[key]['name']] = prod[key]['content']
                 elif key == 'link':
                     for link in prod[key]:
-                        if not link.has_key('rel'):
+                        if 'rel' not link:
                             output[prodname]['link'] = link['href']
                         else:
                             lkey = 'link_' + link['rel']
@@ -324,7 +329,8 @@ class SentinelAPI(object):
                             try:
                                 mydate = datetime.strptime(data['content'],'%Y-%m-%dT%H:%M:%S.%fZ')
                             except:
-                                print("Date '{dat}' non parsable".format(dat=data['content']))
+                                raise DatetimeParsingError("Date '{dat}' non "
+                                                           "parsable".format(dat=data['content']))
                         if mydate:
                             output[prodname][data['name']] = mydate
                         else:
