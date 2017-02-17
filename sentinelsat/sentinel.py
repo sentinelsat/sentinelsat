@@ -315,7 +315,7 @@ class SentinelAPI(object):
                     output[prodname][prod[key]['name']] = prod[key]['content']
                 elif key == 'link':
                     for link in prod[key]:
-                        if 'rel' not link:
+                        if 'rel' not in link:
                             output[prodname]['link'] = link['href']
                         else:
                             lkey = 'link_' + link['rel']
