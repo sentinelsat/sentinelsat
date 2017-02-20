@@ -2,8 +2,9 @@
 from __future__ import print_function
 
 import hashlib
-import xml.etree.ElementTree as ET
 import logging
+import re
+import xml.etree.ElementTree as ET
 from collections import OrderedDict
 from datetime import date, datetime, timedelta
 from os import remove
@@ -99,13 +100,12 @@ def _check_scihub_response(response):
         api_error.__cause__ = None
         raise api_error
 
-def _create_geojson_poly(coordlist):
-    """Return a geojson Polygon object from a list of coordinates"""
-    coord_list_split = (coord.split(" ") for coord in coordlist)
-    poly = geojson.Polygon([[
-        tuple((float(coord[0]), float(coord[1])))
-        for coord in coord_list_split
-    ]])
+
+def _create_geojson_poly(wkt):
+    """Return a geojson Polygon object from a WKT string"""
+    coordlist = re.search(r'\(\s*([^()]+)\s*\)', wkt).group(1)
+    coord_list_split = (coord.split(' ') for coord in coordlist.split(','))
+    poly = geojson.Polygon([(float(coord[0]), float(coord[1])) for coord in coord_list_split])
     return poly
 
 class SentinelAPI(object):
@@ -243,60 +243,23 @@ class SentinelAPI(object):
             size_total += size_value
         return round(size_total, 2)
 
-    def get_footprints(self, products):
+    @staticmethod
+    def to_geojson(products):
         """Return the footprints of the resulting scenes in GeoJSON format"""
-        id = 0
         feature_list = []
-
-        for scene in products:
-            id += 1
-            # parse the polygon
-            coord_list = next(
-                x
-                for x in scene["str"]
-                if x["name"] == "footprint"
-            )["content"][10:-2].split(",")
-            poly = _create_geojson_poly(coord_list)
-
-            # parse the following properties:
-            # platformname, identifier, product_id, date, polarisation,
-            # sensor operation mode, orbit direction, product type, download link
-            props = {
-                "product_id": scene["id"],
-                "date_beginposition": next(
-                    x
-                    for x in scene["date"]
-                    if x["name"] == "beginposition"
-                )["content"],
-                "download_link": next(
-                    x
-                    for x in scene["link"]
-                    if len(x.keys()) == 1
-                )["href"]
-            }
-            # Sentinel-2 has no "polarisationmode" property
-            try:
-                str_properties = ["platformname", "identifier", "polarisationmode",
-                                  "sensoroperationalmode", "orbitdirection", "producttype"]
-                for str_prop in str_properties:
-                    props.update(
-                        {str_prop: next(x for x in scene["str"] if x["name"] == str_prop)["content"]}
-                    )
-            except:
-                str_properties = ["platformname", "identifier",
-                                  "sensoroperationalmode", "orbitdirection", "producttype"]
-                for str_prop in str_properties:
-                    props.update(
-                        {str_prop: next(x for x in scene["str"] if x["name"] == str_prop)["content"]}
-                    )
-
+        products_dict = SentinelAPI.to_dict(products, parse_values=False)
+        for i, (title, props) in enumerate(products_dict.items()):
+            props['title'] = title
+            poly = _create_geojson_poly(props['footprint'])
+            del props['footprint']
+            del props['gmlfootprint']
             feature_list.append(
-                geojson.Feature(geometry=poly, id=id, properties=props)
+                geojson.Feature(geometry=poly, id=i, properties=props)
             )
         return geojson.FeatureCollection(feature_list)
 
     @staticmethod
-    def to_dict(products):
+    def to_dict(products, parse_values=True):
         """Return the products from a query response as a dictionary with the values in their appropriate Python types.
         """
 
@@ -311,12 +274,15 @@ class SentinelAPI(object):
                     print("Date '{dat}' is not parsable".format(dat=content))
             return name, value
 
-        converters = {
-            'date': convert_date,
-            'int': lambda name, content: (name, int(content)),
-            'float': lambda name, content: (name, float(content)),
-            'double': lambda name, content: (name, float(content))
-        }
+        if parse_values:
+            converters = {
+                'date': convert_date,
+                'int': lambda name, content: (name, int(content)),
+                'float': lambda name, content: (name, float(content)),
+                'double': lambda name, content: (name, float(content))
+            }
+        else:
+            converters = {}
         # Keep the string type by default
         default_converter = lambda name, content: (name, content)
 
