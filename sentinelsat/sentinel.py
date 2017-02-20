@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import print_function
+from __future__ import absolute_import
 
 import hashlib
 import logging
@@ -19,8 +20,7 @@ import requests
 from tqdm import tqdm
 
 from six import string_types
-from six.moves import urllib
-from urllib.parse import urljoin
+from six.moves.urllib.parse import urljoin
 
 from . import __version__ as sentinelsat_version
 
@@ -392,9 +392,9 @@ class SentinelAPI(object):
             size_value = float(size_product.split(" ")[0])
             size_unit = str(size_product.split(" ")[1])
             if size_unit == "MB":
-                size_value /= 1024
+                size_value /= 1024.
             if size_unit == "KB":
-                size_value /= 1024 * 1024
+                size_value /= 1024. * 1024.
             size_total += size_value
         return round(size_total, 2)
 
@@ -492,7 +492,7 @@ def _convert_timestamp(in_date):
     """Convert the timestamp received from Products API, to
     YYYY-MM-DDThh:mm:ssZ string format.
     """
-    in_date = int(in_date.replace('/Date(', '').replace(')/', '')) / 1000
+    in_date = int(in_date.replace('/Date(', '').replace(')/', '')) / 1000.
     return _format_date(datetime.utcfromtimestamp(in_date))
 
 
