@@ -4,3 +4,4 @@ homura>=0.1.5
 html2text
 geojson
 tqdm
+six

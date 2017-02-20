@@ -3,11 +3,12 @@ from __future__ import print_function
 
 import hashlib
 import xml.etree.ElementTree as ET
+import logging
+from collections import OrderedDict
 from datetime import date, datetime, timedelta
 from os import remove
 from os.path import exists, getsize, join
 from time import sleep
-import logging
 
 import geojson
 import homura
@@ -16,12 +17,11 @@ import pycurl
 import requests
 from tqdm import tqdm
 
-from . import __version__ as sentinelsat_version
+from six import string_types
+from six.moves import urllib
+from urllib.parse import urljoin
 
-try:
-    from urlparse import urljoin
-except ImportError:
-    from urllib.parse import urljoin
+from . import __version__ as sentinelsat_version
 
 try:
     import certifi
@@ -32,6 +32,7 @@ except ImportError:
 class SentinelAPIError(Exception):
     """Invalid responses from SciHub.
     """
+
     def __init__(self, http_status=None, code=None, msg=None, response_body=None):
         self.http_status = http_status
         self.code = code
@@ -131,6 +132,8 @@ class SentinelAPI(object):
         current value: 100 (maximum allowed on ApiHub)
     """
 
+    logger = logging.getLogger('sentinelsat.SentinelAPI')
+
     def __init__(self, user, password, api_url='https://scihub.copernicus.eu/apihub/'):
         self.session = requests.Session()
         self.session.auth = (user, password)
@@ -142,7 +145,6 @@ class SentinelAPI(object):
         self.last_status_code = None
         self.content = None
         self.page_size = 100
-        self.logger = logging.getLogger('sentinelsat.SentinelAPI')
 
     def format_url(self, start_row=0):
         blank = 'search?format=json&rows={rows}&start={start}'.format(
@@ -293,51 +295,57 @@ class SentinelAPI(object):
             )
         return geojson.FeatureCollection(feature_list)
 
-    def to_dict(self, products):
-        """Return the products in a dictionary object with the values in their appropriate Python types"""
-        try:
-            strtype = basestring
-        except:
-            strtype = str
-        output = {}
+    @staticmethod
+    def to_dict(products):
+        """Return the products from a query response as a dictionary with the values in their appropriate Python types.
+        """
+
+        def convert_date(name, content):
+            value = content
+            try:
+                value = datetime.strptime(content, '%Y-%m-%dT%H:%M:%SZ')
+            except ValueError:
+                try:
+                    value = datetime.strptime(content, '%Y-%m-%dT%H:%M:%S.%fZ')
+                except ValueError:
+                    print("Date '{dat}' is not parsable".format(dat=content))
+            return name, value
+
+        converters = {
+            'date': convert_date,
+            'int': lambda name, content: (name, int(content)),
+            'float': lambda name, content: (name, float(content)),
+            'double': lambda name, content: (name, float(content))
+        }
+        # Keep the string type by default
+        default_converter = lambda name, content: (name, content)
+
+        output = OrderedDict()
         for prod in products:
+            product_dict = {}
             prodname = prod['title']
-            output[prodname] = {}
+            output[prodname] = product_dict
             for key in prod:
-                if key != 'title' and isinstance(prod[key], strtype):
-                    output[prodname][key] = prod[key]
-                elif isinstance(prod[key], dict):
-                    output[prodname][prod[key]['name']] = prod[key]['content']
-                elif key == 'link':
-                    for link in prod[key]:
-                        if not link.has_key('rel'):
-                            output[prodname]['link'] = link['href']
-                        else:
-                            lkey = 'link_' + link['rel']
-                            output[prodname][lkey] = link['href']
-                elif key == 'date':
-                    for data in prod[key]:
-                        mydate = None
-                        try:
-                            mydate = datetime.strptime(data['content'],'%Y-%m-%dT%H:%M:%SZ')
-                        except:
-                            try:
-                                mydate = datetime.strptime(data['content'],'%Y-%m-%dT%H:%M:%S.%fZ')
-                            except:
-                                print("Date '{dat}' non parsable".format(dat=data['content']))
-                        if mydate:
-                            output[prodname][data['name']] = mydate
-                        else:
-                            output[prodname][data['name']] = data['content']
-                elif isinstance(prod[key], list):
-                    for data in prod[key]:
-                        if data['name'] == 'gmlfootprint':
-                            continue
-                        elif data['name'] == 'footprint':
-                            coord_list = data['content'][10:-2].split(",")
-                            output[prodname][data['name']] = _create_geojson_poly(coord_list)
-                        else:
-                            output[prodname][data['name']] = data['content']
+                if key == 'title':
+                    continue
+                if isinstance(prod[key], string_types):
+                    product_dict[key] = prod[key]
+                else:
+                    properties = prod[key]
+                    if isinstance(properties, dict):
+                        properties = [properties]
+                    if key == 'link':
+                        for p in properties:
+                            name = 'link'
+                            if 'rel' in p:
+                                name = 'link_' + p['rel']
+                            product_dict[name] = p['href']
+                    else:
+                        f = converters.get(key, default_converter)
+                        for p in properties:
+                            k, v = f(p['name'], p['content'])
+                            product_dict[k] = v
+
         return output
 
     def get_product_info(self, id):
