@@ -164,50 +164,37 @@ class SentinelAPI(object):
         """Do a full-text query on the SciHub API using the format specified in
            https://scihub.copernicus.eu/twiki/do/view/SciHubUserGuide/3FullTextSearch
         """
-        output = []
         # store last query (for testing)
         self.last_query = query
 
-        # generate URL
-        url = self.format_url(start_row=start_row)
-
         # load query results
-        content = self.session.post(url, dict(q=query), auth=self.session.auth)
-        _check_scihub_response(content)
+        url = self.format_url(start_row=start_row)
+        response = self.session.post(url, dict(q=query), auth=self.session.auth)
+        _check_scihub_response(response)
 
         # store last status code (for testing)
-        self.last_status_code = content.status_code
+        self.last_status_code = response.status_code
 
-        # parse content
-        total_results = 0
+        # parse response content
         try:
-            json_feed = content.json()['feed']
-            entries = json_feed['entry']
-            # this verification is necessary because if the query returns only
-            # one product, self.products will be a dict not a list
-            if type(entries) == dict:
-                entries = [entries]
-
-            # append to products
-            output += entries
-
-            # get total number of returned results
+            json_feed = response.json()['feed']
             total_results = int(json_feed['opensearch:totalResults'])
-            if total_results == 0:
-                raise KeyError('No results returned.')
-        except KeyError:
-            self.logger.info('No products found in this query.')
-            return []
-        except ValueError:
-            raise SentinelAPIError(http_status=content.status_code,
+        except (ValueError, KeyError):
+            raise SentinelAPIError(http_status=response.status_code,
                                    msg='API response not valid. JSON decoding failed.',
-                                   response_body=content.content)
+                                   response_body=response.content)
 
+        entries = json_feed.get('entry', [])
+        # this verification is necessary because if the query returns only
+        # one product, self.products will be a dict not a list
+        if isinstance(entries, dict):
+            entries = [entries]
+
+        output = entries
         # repeat query until all results have been loaded
-        if total_results > self.page_size + start_row - 1:
+        if total_results > start_row + self.page_size - 1:
             output += self.load_query(query, start_row=(start_row + self.page_size))
         return output
-
 
     @staticmethod
     def format_query(area, initial_date=None, end_date=datetime.now(), **keywords):
