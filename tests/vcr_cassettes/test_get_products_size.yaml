@@ -4,11 +4,10 @@ interactions:
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
-      Authorization: [Basic cmVnaW86SzZzbTZz]
       Connection: [keep-alive]
       Content-Length: ['302']
       Content-Type: [application/x-www-form-urlencoded]
-      User-Agent: [sentinelsat/0.7.4]
+      User-Agent: [sentinelsat/0.8.1]
     method: POST
     uri: https://scihub.copernicus.eu/apihub/search?format=json&rows=100&start=0
   response:
@@ -39,7 +38,7 @@ interactions:
         \ Data Hub search results for: (beginPosition:[2015-12-19T00:00:00Z TO 2015-12-28T00:00:00Z])\
         \ AND (footprint:\\\"Intersects(POLYGON((-66.2695312 -8.0592296,-66.2695312\
         \ 0.7031074,-57.3046875 0.7031074,-57.3046875 -8.0592296,-66.2695312 -8.0592296)))\\\
-        \") AND (platformname:Sentinel-2)\",\n   \"updated\": \"2017-01-20T19:41:14.050Z\"\
+        \") AND (platformname:Sentinel-2)\",\n   \"updated\": \"2017-02-20T14:40:45.321Z\"\
         ,\n   \"opensearch:totalResults\": \"11\",\n   \"entry\": [\n      {\n   \
         \      \"summary\": \"Date: 2015-12-27T14:22:29Z, Instrument: MSI, Mode: ,\
         \ Satellite: Sentinel-2, Size: 5.50 GB\",\n         \"id\": \"44517f66-9845-4792-a988-b5ae6e81fd3e\"\
@@ -1024,7 +1023,7 @@ interactions:
         \ \"startPage\": \"1\"\n   }\n}}"}
     headers:
       Content-Type: [application/json]
-      Date: ['Fri, 20 Jan 2017 19:41:13 GMT']
+      Date: ['Mon, 20 Feb 2017 14:40:45 GMT']
       Pragma: [no-cache]
       Server: [Apache-Coyote/1.1]
       Transfer-Encoding: [chunked]
@@ -1036,12 +1035,11 @@ interactions:
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
-      Authorization: [Basic cmVnaW86SzZzbTZz]
       Connection: [keep-alive]
       Content-Length: ['69']
       Content-Type: [application/x-www-form-urlencoded]
-      Cookie: [dhusIntegrity=61b6388aab4d28db93b74f31a08d2e65a9f17a8e; dhusAuth=2dbe9c83a28e4a5dea8b4d5b11460e29]
-      User-Agent: [sentinelsat/0.7.4]
+      Cookie: [dhusAuth=2dbe9c83a28e4a5dea8b4d5b11460e29; dhusIntegrity=24ea3b2279ffc6dd54629b9730b2c7ee9a7a03e6]
+      User-Agent: [sentinelsat/0.8.1]
     method: POST
     uri: https://scihub.copernicus.eu/apihub/search?format=json&rows=100&start=0
   response:
@@ -1058,7 +1056,7 @@ interactions:
         : \"100\",\n   \"id\": \"https://scihub.copernicus.eu/apihub/search?q=S1A_WV_OCN__2SSH_20150603T092625_20150603T093332_006207_008194_521E\"\
         ,\n   \"author\": {\"name\": \"Sentinels Scientific Data Hub\"},\n   \"title\"\
         : \"Sentinels Scientific Data Hub search results for: S1A_WV_OCN__2SSH_20150603T092625_20150603T093332_006207_008194_521E\"\
-        ,\n   \"updated\": \"2017-01-20T19:41:14.144Z\",\n   \"opensearch:totalResults\"\
+        ,\n   \"updated\": \"2017-02-20T14:40:45.582Z\",\n   \"opensearch:totalResults\"\
         : \"1\",\n   \"entry\": {\n      \"summary\": \"Date: 2015-06-03T09:26:24.921Z,\
         \ Instrument: SAR-C SAR, Mode: HH, Satellite: Sentinel-1, Size: 10.54 KB\"\
         ,\n      \"id\": \"1f62a176-c980-41dc-b3a1-c735d660c910\",\n      \"title\"\
@@ -1115,12 +1113,12 @@ interactions:
         ,\n            \"name\": \"beginposition\"\n         },\n         {\n    \
         \        \"content\": \"2015-06-03T09:33:33.345Z\",\n            \"name\"\
         : \"endposition\"\n         }\n      ]\n   },\n   \"subtitle\": \"Displaying\
-        \ 1 results. Request done in 0.001 seconds.\",\n   \"opensearch:startIndex\"\
+        \ 1 results. Request done in 0.085 seconds.\",\n   \"opensearch:startIndex\"\
         : \"0\",\n   \"opensearch:Query\": {\n      \"searchTerms\": \"S1A_WV_OCN__2SSH_20150603T092625_20150603T093332_006207_008194_521E\"\
         ,\n      \"role\": \"request\",\n      \"startPage\": \"1\"\n   }\n}}"}
     headers:
       Content-Type: [application/json]
-      Date: ['Fri, 20 Jan 2017 19:41:13 GMT']
+      Date: ['Mon, 20 Feb 2017 14:40:45 GMT']
       Pragma: [no-cache]
       Server: [Apache-Coyote/1.1]
       Transfer-Encoding: [chunked]

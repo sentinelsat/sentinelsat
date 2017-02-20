@@ -4,11 +4,10 @@ interactions:
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
-      Authorization: [Basic cmVnaW86SzZzbTZz]
       Connection: [keep-alive]
       Content-Length: ['349']
       Content-Type: [application/x-www-form-urlencoded]
-      User-Agent: [sentinelsat/0.7.4]
+      User-Agent: [sentinelsat/0.8.1]
     method: POST
     uri: https://scihub.copernicus.eu/apihub/search?format=json&rows=100&start=0
   response:
@@ -40,7 +39,7 @@ interactions:
         \ TO 2015-12-28T00:00:00Z]) AND (footprint:\\\"Intersects(POLYGON((-66.2695312\
         \ -8.0592296,-66.2695312 0.7031074,-57.3046875 0.7031074,-57.3046875 -8.0592296,-66.2695312\
         \ -8.0592296)))\\\") AND (cloudcoverpercentage:[0 TO 10]) AND (platformname:Sentinel-2)\"\
-        ,\n   \"updated\": \"2017-01-20T19:41:07.044Z\",\n   \"opensearch:totalResults\"\
+        ,\n   \"updated\": \"2017-02-20T14:39:34.232Z\",\n   \"opensearch:totalResults\"\
         : \"3\",\n   \"entry\": [\n      {\n         \"summary\": \"Date: 2015-12-27T14:22:29Z,\
         \ Instrument: MSI, Mode: , Satellite: Sentinel-2, Size: 5.47 GB\",\n     \
         \    \"id\": \"6ed0b7de-3435-43df-98bf-ad63c8d077ef\",\n         \"title\"\
@@ -323,7 +322,7 @@ interactions:
         ,\n               \"name\": \"endposition\"\n            }\n         ],\n\
         \         \"double\": {\n            \"content\": \"6.230769230769231\",\n\
         \            \"name\": \"cloudcoverpercentage\"\n         }\n      }\n   ],\n\
-        \   \"subtitle\": \"Displaying 3 results. Request done in 0.024 seconds.\"\
+        \   \"subtitle\": \"Displaying 3 results. Request done in 1.188 seconds.\"\
         ,\n   \"opensearch:startIndex\": \"0\",\n   \"opensearch:Query\": {\n    \
         \  \"searchTerms\": \"(beginPosition:[2015-12-19T00:00:00Z TO 2015-12-28T00:00:00Z])\
         \ AND (footprint:\\\"Intersects(POLYGON((-66.2695312 -8.0592296,-66.2695312\
@@ -332,7 +331,7 @@ interactions:
         \      \"role\": \"request\",\n      \"startPage\": \"1\"\n   }\n}}"}
     headers:
       Content-Type: [application/json]
-      Date: ['Fri, 20 Jan 2017 19:41:06 GMT']
+      Date: ['Mon, 20 Feb 2017 14:39:33 GMT']
       Pragma: [no-cache]
       Server: [Apache-Coyote/1.1]
       Transfer-Encoding: [chunked]
