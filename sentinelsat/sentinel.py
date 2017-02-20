@@ -348,6 +348,25 @@ class SentinelAPI(object):
 
         return output
 
+    @staticmethod
+    def to_dataframe(products):
+        import pandas as pd
+
+        products_dict = SentinelAPI.to_dict(products)
+        return pd.DataFrame.from_dict(products_dict, orient='index')
+
+    @staticmethod
+    def to_geodataframe(products):
+        import geopandas as gpd
+        import shapely.wkt
+
+        df = SentinelAPI.to_dataframe(products)
+        crs = {'init': 'epsg:4326'}  # WGS84
+        geometry = [shapely.wkt.loads(fp) for fp in df['footprint']]
+        # remove useless columns
+        df.drop(['footprint', 'gmlfootprint'], axis=1, inplace=True)
+        return gpd.GeoDataFrame(df, crs=crs, geometry=geometry)
+
     def get_product_info(self, id):
         """Access SciHub API to get info about a Product. Returns a dict
         containing the id, title, size, md5sum, date, footprint and download url

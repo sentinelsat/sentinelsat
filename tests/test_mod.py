@@ -365,6 +365,32 @@ def test_to_dict():
     assert 'S2A_OPER_PRD_MSIL1C_PDMC_20151228T112701_R110_V20151227T142229_20151227T142229' in dictionary
 
 
+@my_vcr.use_cassette('test_to_dict')
+@pytest.mark.pandas
+@pytest.mark.scihub
+def test_to_pandas():
+    api = SentinelAPI(**_api_auth)
+    products = api.query(
+        get_coordinates('tests/map.geojson'),
+        "20151219", "20151228", platformname="Sentinel-2"
+    )
+    df = api.to_dataframe(products)
+    assert 'S2A_OPER_PRD_MSIL1C_PDMC_20151228T112701_R110_V20151227T142229_20151227T142229' in df.index
+
+
+@my_vcr.use_cassette('test_to_dict')
+@pytest.mark.pandas
+@pytest.mark.geopandas
+@pytest.mark.scihub
+def test_to_pandas():
+    api = SentinelAPI(**_api_auth)
+    products = api.query(
+        get_coordinates('tests/map.geojson'),
+        "20151219", "20151228", platformname="Sentinel-2"
+    )
+    gdf = api.to_geodataframe(products)
+
+
 @pytest.mark.homura
 @pytest.mark.scihub
 def test_download(tmpdir):
