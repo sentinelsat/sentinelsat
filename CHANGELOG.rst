@@ -3,6 +3,25 @@ Change Log
 
 All notable changes to ``sentinelsat`` will be listed here.
 
+[0.9]
+-----
+
+Added
+~~~~~
+
+-  Added ``to_dict``, ``to_dataframe`` and ``to_geodataframe`` which convert the response content to respective types.
+The pandas, geopandas and shapely dependencies are not installed by default.
+
+Changed
+~~~~~~~
+
+-  ``--footprints`` now includes all returned product properties in the output.
+-  ``KeyError('No results returned.')`` is no longer returned for zero returned products in a response.
+-  Renamed ``get_footprint`` to ``to_geojson`` and ``get_product_info`` to ``get_product_odata``.
+-  Added underscore to methods and functions that are not expected to be used outside the package.
+-  Instance variables ``url`` and ``content`` have been removed,
+``last_query`` and ``last_status_code`` have been made private.
+
 [0.8.1] - 2017-02-05
 --------------------
 
