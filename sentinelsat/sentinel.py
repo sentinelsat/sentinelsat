@@ -161,7 +161,7 @@ class SentinelAPI(object):
         return self.load_query(query)
 
     def load_query(self, query, start_row=0):
-        """Do a full-text query on the SciHub API using the format specified in
+        """Do a full-text query on the SciHub API using the OpenSearch format specified in
            https://scihub.copernicus.eu/twiki/do/view/SciHubUserGuide/3FullTextSearch
         """
         # store last query (for testing)
@@ -320,8 +320,8 @@ class SentinelAPI(object):
         df.drop(['footprint', 'gmlfootprint'], axis=1, inplace=True)
         return gpd.GeoDataFrame(df, crs=crs, geometry=geometry)
 
-    def get_product_info(self, id):
-        """Access SciHub API to get info about a Product. Returns a dict
+    def get_product_odata(self, id):
+        """Access SciHub OData API to get info about a Product. Returns a dict
         containing the id, title, size, md5sum, date, footprint and download url
         of the Product. The date field receives the Start ContentDate of the API.
         """
@@ -331,30 +331,28 @@ class SentinelAPI(object):
         )
         _check_scihub_response(response)
 
-        product_json = response.json()
+        d = response.json()['d']
 
         # parse the GML footprint to same format as returned
         # by .get_coordinates()
-        geometry_xml = ET.fromstring(product_json["d"]["ContentGeometry"])
-        poly_coords = geometry_xml \
+        geometry_xml = ET.fromstring(d["ContentGeometry"])
+        poly_coords_str = geometry_xml \
             .find('{http://www.opengis.net/gml}outerBoundaryIs') \
             .find('{http://www.opengis.net/gml}LinearRing') \
             .findtext('{http://www.opengis.net/gml}coordinates')
-        coord_string = ",".join(
-            [" ".join(double_coord[::-1]) for double_coord in [coord.split(",") for coord in poly_coords.split(" ")]]
-        )
+        poly_coords = (coord.split(",")[::-1] for coord in poly_coords_str.split(" "))
+        coord_string = ",".join(" ".join(coord) for coord in poly_coords)
 
-        keys = ['id', 'title', 'size', 'md5', 'date', 'footprint', 'url']
-        values = [
-            product_json['d']['Id'],
-            product_json['d']['Name'],
-            int(product_json['d']['ContentLength']),
-            product_json['d']['Checksum']['Value'],
-            convert_timestamp(product_json['d']['ContentDate']['Start']),
-            coord_string,
-            urljoin(self.api_url, "odata/v1/Products('%s')/$value" % id)
-        ]
-        return dict(zip(keys, values))
+        values = {
+            'id': d['Id'],
+            'title': d['Name'],
+            'size': int(d['ContentLength']),
+            'md5': d['Checksum']['Value'],
+            'date': _convert_timestamp(d['ContentDate']['Start']),
+            'footprint': coord_string,
+            'url': urljoin(self.api_url, "odata/v1/Products('%s')/$value" % id)
+        }
+        return values
 
     def download(self, id, directory_path='.', checksum=False, check_existing=False, **kwargs):
         """Download a product using homura.
