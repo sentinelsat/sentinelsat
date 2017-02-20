@@ -30,84 +30,6 @@ except ImportError:
     certifi = None
 
 
-class SentinelAPIError(Exception):
-    """Invalid responses from SciHub.
-    """
-
-    def __init__(self, http_status=None, code=None, msg=None, response_body=None):
-        self.http_status = http_status
-        self.code = code
-        self.msg = msg
-        self.response_body = response_body
-
-    def __str__(self):
-        return '(HTTP status: {0}, code: {1}) {2}'.format(
-            self.http_status, self.code,
-            ('\n' if '\n' in self.msg else '') + self.msg)
-
-
-class InvalidChecksumError(Exception):
-    """MD5 checksum of local file does not match the one from the server.
-    """
-    pass
-
-
-def format_date(in_date):
-    """Format date or datetime input or a YYYYMMDD string input to
-    YYYY-MM-DDThh:mm:ssZ string format. In case you pass an
-    """
-
-    if type(in_date) == datetime or type(in_date) == date:
-        return in_date.strftime('%Y-%m-%dT%H:%M:%SZ')
-    else:
-        try:
-            return datetime.strptime(in_date, '%Y%m%d').strftime('%Y-%m-%dT%H:%M:%SZ')
-        except ValueError:
-            return in_date
-
-
-def convert_timestamp(in_date):
-    """Convert the timestamp received from Products API, to
-    YYYY-MM-DDThh:mm:ssZ string format.
-    """
-    in_date = int(in_date.replace('/Date(', '').replace(')/', '')) / 1000
-    return format_date(datetime.utcfromtimestamp(in_date))
-
-
-def _check_scihub_response(response):
-    """Check that the response from server has status code 2xx and that the response is valid JSON."""
-    try:
-        response.raise_for_status()
-        response.json()
-    except (requests.HTTPError, ValueError) as e:
-        msg = "API response not valid. JSON decoding failed."
-        code = None
-        try:
-            msg = response.json()['error']['message']['value']
-            code = response.json()['error']['code']
-        except:
-            if not response.text.rstrip().startswith('{'):
-                try:
-                    h = html2text.HTML2Text()
-                    h.ignore_images = True
-                    h.ignore_anchors = True
-                    msg = h.handle(response.text).strip()
-                except:
-                    pass
-        api_error = SentinelAPIError(response.status_code, code, msg, response.content)
-        # Suppress "During handling of the above exception..." message
-        # See PEP 409
-        api_error.__cause__ = None
-        raise api_error
-
-
-def _create_geojson_poly(wkt):
-    """Return a geojson Polygon object from a WKT string"""
-    coordlist = re.search(r'\(\s*([^()]+)\s*\)', wkt).group(1)
-    coord_list_split = (coord.split(' ') for coord in coordlist.split(','))
-    poly = geojson.Polygon([(float(coord[0]), float(coord[1])) for coord in coord_list_split])
-    return poly
-
 class SentinelAPI(object):
     """Class to connect to Sentinel Data Hub, search and download imagery.
 
@@ -137,21 +59,13 @@ class SentinelAPI(object):
     def __init__(self, user, password, api_url='https://scihub.copernicus.eu/apihub/'):
         self.session = requests.Session()
         self.session.auth = (user, password)
+        self.api_url = api_url if api_url.endswith('/') else api_url + '/'
+        self.page_size = 100
         self.user_agent = 'sentinelsat/' + sentinelsat_version
         self.session.headers['User-Agent'] = self.user_agent
-        self.api_url = api_url if api_url.endswith('/') else api_url + '/'
-        self.url = None
-        self.last_query = None
-        self.last_status_code = None
-        self.content = None
-        self.page_size = 100
-
-    def format_url(self, start_row=0):
-        blank = 'search?format=json&rows={rows}&start={start}'.format(
-            rows=self.page_size, start=start_row
-            )
-        self.url = urljoin(self.api_url, blank)
-        return self.url
+        # For unit tests
+        self._last_query = None
+        self._last_status_code = None
 
     def query(self, area, initial_date=None, end_date=datetime.now(), **keywords):
         """Query the SciHub API with the coordinates of an area, a date interval
@@ -160,20 +74,40 @@ class SentinelAPI(object):
         query = self.format_query(area, initial_date, end_date, **keywords)
         return self.load_query(query)
 
+    @staticmethod
+    def format_query(area, initial_date=None, end_date=datetime.now(), **keywords):
+        """Create the SciHub API query string
+        """
+        if initial_date is None:
+            initial_date = end_date - timedelta(hours=24)
+
+        acquisition_date = '(beginPosition:[%s TO %s])' % (
+            _format_date(initial_date),
+            _format_date(end_date)
+        )
+        query_area = ' AND (footprint:"Intersects(POLYGON((%s)))")' % area
+
+        filters = ''
+        for kw in sorted(keywords.keys()):
+            filters += ' AND (%s:%s)' % (kw, keywords[kw])
+
+        query = ''.join([acquisition_date, query_area, filters])
+        return query
+
     def load_query(self, query, start_row=0):
         """Do a full-text query on the SciHub API using the OpenSearch format specified in
            https://scihub.copernicus.eu/twiki/do/view/SciHubUserGuide/3FullTextSearch
         """
         # store last query (for testing)
-        self.last_query = query
+        self._last_query = query
 
         # load query results
-        url = self.format_url(start_row=start_row)
+        url = self._format_url(start_row=start_row)
         response = self.session.post(url, dict(q=query), auth=self.session.auth)
         _check_scihub_response(response)
 
         # store last status code (for testing)
-        self.last_status_code = response.status_code
+        self._last_status_code = response.status_code
 
         # parse response content
         try:
@@ -197,47 +131,13 @@ class SentinelAPI(object):
         return output
 
     @staticmethod
-    def format_query(area, initial_date=None, end_date=datetime.now(), **keywords):
-        """Create the SciHub API query string
-        """
-        if initial_date is None:
-            initial_date = end_date - timedelta(hours=24)
-
-        acquisition_date = '(beginPosition:[%s TO %s])' % (
-            format_date(initial_date),
-            format_date(end_date)
-        )
-        query_area = ' AND (footprint:"Intersects(POLYGON((%s)))")' % area
-
-        filters = ''
-        for kw in sorted(keywords.keys()):
-            filters += ' AND (%s:%s)' % (kw, keywords[kw])
-
-        query = ''.join([acquisition_date, query_area, filters])
-        return query
-
-    def get_products_size(self,  products):
-        """Return the total filesize in GB of all products in the query"""
-        size_total = 0
-        for product in products:
-            size_product = next(x for x in product["str"] if x["name"] == "size")["content"]
-            size_value = float(size_product.split(" ")[0])
-            size_unit = str(size_product.split(" ")[1])
-            if size_unit == "MB":
-                size_value /= 1024
-            if size_unit == "KB":
-                size_value /= 1024 * 1024
-            size_total += size_value
-        return round(size_total, 2)
-
-    @staticmethod
     def to_geojson(products):
         """Return the footprints of the resulting scenes in GeoJSON format"""
         feature_list = []
         products_dict = SentinelAPI.to_dict(products, parse_values=False)
         for i, (title, props) in enumerate(products_dict.items()):
             props['title'] = title
-            poly = _create_geojson_poly(props['footprint'])
+            poly = _geojson_poly_from_wkt(props['footprint'])
             del props['footprint']
             del props['gmlfootprint']
             feature_list.append(
@@ -395,28 +295,29 @@ class SentinelAPI(object):
         product_info = None
         while product_info is None:
             try:
-                product_info = self.get_product_info(id)
+                product_info = self.get_product_odata(id)
             except SentinelAPIError as e:
                 self.logger.info("Invalid API response:\n{}\nTrying again in 1 minute.".format(str(e)))
                 sleep(60)
 
         path = join(directory_path, product_info['title'] + '.zip')
-        kwargs = self._fillin_cainfo(kwargs)
+        kwargs = _fillin_cainfo(kwargs)
 
         self.logger.info('Downloading %s to %s' % (id, path))
 
         # Check if the file exists and passes md5 test
         # Homura will by default continue the download if the file exists but is incomplete
         if exists(path) and getsize(path) == product_info['size']:
-            if not check_existing or md5_compare(path, product_info['md5']):
+            if not check_existing or _md5_compare(path, product_info['md5']):
                 self.logger.info('%s was already downloaded.' % path)
                 return path, product_info
             else:
-                self.logger.info('%s was already downloaded but is corrupt: checksums do not match. Re-downloading.' % path)
+                self.logger.info(
+                    '%s was already downloaded but is corrupt: checksums do not match. Re-downloading.' % path)
                 remove(path)
 
         if (exists(path) and getsize(path) >= 2 ** 31 and
-                pycurl.version.split()[0].lower() <= 'pycurl/7.43.0'):
+                    pycurl.version.split()[0].lower() <= 'pycurl/7.43.0'):
             # Workaround for PycURL's bug when continuing > 2 GB files
             # https://github.com/pycurl/pycurl/issues/405
             remove(path)
@@ -426,11 +327,12 @@ class SentinelAPI(object):
 
         # Check integrity with MD5 checksum
         if checksum is True:
-            if not md5_compare(path, product_info['md5']):
+            if not _md5_compare(path, product_info['md5']):
                 raise InvalidChecksumError('File corrupt: checksums do not match')
         return path, product_info
 
-    def download_all(self, products, directory_path='.', max_attempts=10, checksum=False, check_existing=False, **kwargs):
+    def download_all(self, products, directory_path='.', max_attempts=10, checksum=False, check_existing=False,
+                     **kwargs):
         """Download all products returned in query().
 
         File names on the server are used for the downloaded files, e.g.
@@ -482,28 +384,47 @@ class SentinelAPI(object):
         return result
 
     @staticmethod
-    def _fillin_cainfo(kwargs_dict):
-        """Fill in the path of the PEM file containing the CA certificate.
+    def get_products_size(products):
+        """Return the total filesize in GB of all products in the query"""
+        size_total = 0
+        for product in products:
+            size_product = next(x for x in product["str"] if x["name"] == "size")["content"]
+            size_value = float(size_product.split(" ")[0])
+            size_unit = str(size_product.split(" ")[1])
+            if size_unit == "MB":
+                size_value /= 1024
+            if size_unit == "KB":
+                size_value /= 1024 * 1024
+            size_total += size_value
+        return round(size_total, 2)
 
-        The priority is: 1. user provided path, 2. path to the cacert.pem
-        bundle provided by certifi (if installed), 3. let pycurl use the
-        system path where libcurl's cacert bundle is assumed to be stored,
-        as established at libcurl build time.
-        """
-        try:
-            cainfo = kwargs_dict['pass_through_opts'][pycurl.CAINFO]
-        except KeyError:
-            try:
-                cainfo = certifi.where()
-            except AttributeError:
-                cainfo = None
+    def _format_url(self, start_row=0):
+        blank = 'search?format=json&rows={rows}&start={start}'.format(
+            rows=self.page_size, start=start_row
+        )
+        return urljoin(self.api_url, blank)
 
-        if cainfo is not None:
-            pass_through_opts = kwargs_dict.get('pass_through_opts', {})
-            pass_through_opts[pycurl.CAINFO] = cainfo
-            kwargs_dict['pass_through_opts'] = pass_through_opts
 
-        return kwargs_dict
+class SentinelAPIError(Exception):
+    """Invalid responses from SciHub.
+    """
+
+    def __init__(self, http_status=None, code=None, msg=None, response_body=None):
+        self.http_status = http_status
+        self.code = code
+        self.msg = msg
+        self.response_body = response_body
+
+    def __str__(self):
+        return '(HTTP status: {0}, code: {1}) {2}'.format(
+            self.http_status, self.code,
+            ('\n' if '\n' in self.msg else '') + self.msg)
+
+
+class InvalidChecksumError(Exception):
+    """MD5 checksum of local file does not match the one from the server.
+    """
+    pass
 
 
 def get_coordinates(geojson_file, feature_number=0):
@@ -529,7 +450,88 @@ def get_coordinates(geojson_file, feature_number=0):
     return ','.join(coordinates)
 
 
-def md5_compare(file_path, checksum, block_size=2 ** 13):
+def _fillin_cainfo(kwargs_dict):
+    """Fill in the path of the PEM file containing the CA certificate.
+
+    The priority is: 1. user provided path, 2. path to the cacert.pem
+    bundle provided by certifi (if installed), 3. let pycurl use the
+    system path where libcurl's cacert bundle is assumed to be stored,
+    as established at libcurl build time.
+    """
+    try:
+        cainfo = kwargs_dict['pass_through_opts'][pycurl.CAINFO]
+    except KeyError:
+        try:
+            cainfo = certifi.where()
+        except AttributeError:
+            cainfo = None
+
+    if cainfo is not None:
+        pass_through_opts = kwargs_dict.get('pass_through_opts', {})
+        pass_through_opts[pycurl.CAINFO] = cainfo
+        kwargs_dict['pass_through_opts'] = pass_through_opts
+
+    return kwargs_dict
+
+
+def _format_date(in_date):
+    """Format date or datetime input or a YYYYMMDD string input to
+    YYYY-MM-DDThh:mm:ssZ string format. In case you pass an
+    """
+
+    if type(in_date) == datetime or type(in_date) == date:
+        return in_date.strftime('%Y-%m-%dT%H:%M:%SZ')
+    else:
+        try:
+            return datetime.strptime(in_date, '%Y%m%d').strftime('%Y-%m-%dT%H:%M:%SZ')
+        except ValueError:
+            return in_date
+
+
+def _convert_timestamp(in_date):
+    """Convert the timestamp received from Products API, to
+    YYYY-MM-DDThh:mm:ssZ string format.
+    """
+    in_date = int(in_date.replace('/Date(', '').replace(')/', '')) / 1000
+    return _format_date(datetime.utcfromtimestamp(in_date))
+
+
+def _check_scihub_response(response):
+    """Check that the response from server has status code 2xx and that the response is valid JSON."""
+    try:
+        response.raise_for_status()
+        response.json()
+    except (requests.HTTPError, ValueError) as e:
+        msg = "API response not valid. JSON decoding failed."
+        code = None
+        try:
+            msg = response.json()['error']['message']['value']
+            code = response.json()['error']['code']
+        except:
+            if not response.text.rstrip().startswith('{'):
+                try:
+                    h = html2text.HTML2Text()
+                    h.ignore_images = True
+                    h.ignore_anchors = True
+                    msg = h.handle(response.text).strip()
+                except:
+                    pass
+        api_error = SentinelAPIError(response.status_code, code, msg, response.content)
+        # Suppress "During handling of the above exception..." message
+        # See PEP 409
+        api_error.__cause__ = None
+        raise api_error
+
+
+def _geojson_poly_from_wkt(wkt):
+    """Return a geojson Polygon object from a WKT string"""
+    coordlist = re.search(r'\(\s*([^()]+)\s*\)', wkt).group(1)
+    coord_list_split = (coord.split(' ') for coord in coordlist.split(','))
+    poly = geojson.Polygon([(float(coord[0]), float(coord[1])) for coord in coord_list_split])
+    return poly
+
+
+def _md5_compare(file_path, checksum, block_size=2 ** 13):
     """Compare a given md5 checksum with one calculated from a file"""
     md5 = hashlib.md5()
     with open(file_path, "rb") as f:

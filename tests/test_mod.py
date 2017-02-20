@@ -7,10 +7,9 @@ import geojson
 import py.path
 import pytest
 import requests_mock
-import types
 
-from sentinelsat.sentinel import (InvalidChecksumError, SentinelAPI, SentinelAPIError, convert_timestamp, format_date,
-                                  get_coordinates, md5_compare)
+from sentinelsat.sentinel import (InvalidChecksumError, SentinelAPI, SentinelAPIError, _convert_timestamp, _format_date,
+                                  get_coordinates, _md5_compare)
 from .shared import my_vcr
 
 _api_auth = dict(user=environ.get('SENTINEL_USER'), password=environ.get('SENTINEL_PASSWORD'))
@@ -30,16 +29,16 @@ _large_query = dict(
 
 @pytest.mark.fast
 def test_format_date():
-    assert format_date(datetime(2015, 1, 1)) == '2015-01-01T00:00:00Z'
-    assert format_date(date(2015, 1, 1)) == '2015-01-01T00:00:00Z'
-    assert format_date('2015-01-01T00:00:00Z') == '2015-01-01T00:00:00Z'
-    assert format_date('20150101') == '2015-01-01T00:00:00Z'
-    assert format_date('NOW') == 'NOW'
+    assert _format_date(datetime(2015, 1, 1)) == '2015-01-01T00:00:00Z'
+    assert _format_date(date(2015, 1, 1)) == '2015-01-01T00:00:00Z'
+    assert _format_date('2015-01-01T00:00:00Z') == '2015-01-01T00:00:00Z'
+    assert _format_date('20150101') == '2015-01-01T00:00:00Z'
+    assert _format_date('NOW') == 'NOW'
 
 
 @pytest.mark.fast
 def test_convert_timestamp():
-    assert convert_timestamp('/Date(1445588544652)/') == '2015-10-23T08:22:24Z'
+    assert _convert_timestamp('/Date(1445588544652)/') == '2015-10-23T08:22:24Z'
 
 
 @pytest.mark.fast
@@ -48,8 +47,8 @@ def test_md5_comparison():
     with open("tests/expected_search_footprints_s1.geojson", "rb") as testfile:
         testfile_md5.update(testfile.read())
         real_md5 = testfile_md5.hexdigest()
-    assert md5_compare("tests/expected_search_footprints_s1.geojson", real_md5) is True
-    assert md5_compare("tests/map.geojson", real_md5) is False
+    assert _md5_compare("tests/expected_search_footprints_s1.geojson", real_md5) is True
+    assert _md5_compare("tests/map.geojson", real_md5) is False
 
 
 @my_vcr.use_cassette
@@ -58,15 +57,10 @@ def test_SentinelAPI_connection():
     api = SentinelAPI(**_api_auth)
     api.query(**_small_query)
 
-    assert api.url.startswith(
-        'https://scihub.copernicus.eu/apihub/search?format=json&rows={rows}'.format(
-            rows=api.page_size
-        )
-    )
-    assert api.last_query == (
+    assert api._last_query == (
         '(beginPosition:[2015-01-01T00:00:00Z TO 2015-01-02T00:00:00Z]) '
         'AND (footprint:"Intersects(POLYGON((0 0,1 1,0 1,0 0)))")')
-    assert api.last_status_code == 200
+    assert api._last_status_code == 200
 
 
 @my_vcr.use_cassette
@@ -88,12 +82,12 @@ def test_api_query_format():
 
     now = datetime.now()
     query = api.format_query('0 0,1 1,0 1,0 0', end_date=now)
-    last_24h = format_date(now - timedelta(hours=24))
-    assert query == '(beginPosition:[%s TO %s]) ' % (last_24h, format_date(now)) + \
+    last_24h = _format_date(now - timedelta(hours=24))
+    assert query == '(beginPosition:[%s TO %s]) ' % (last_24h, _format_date(now)) + \
                     'AND (footprint:"Intersects(POLYGON((0 0,1 1,0 1,0 0)))")'
 
     query = api.format_query('0 0,1 1,0 1,0 0', end_date=now, producttype='SLC')
-    assert query == '(beginPosition:[%s TO %s]) ' % (last_24h, format_date(now)) + \
+    assert query == '(beginPosition:[%s TO %s]) ' % (last_24h, _format_date(now)) + \
                     'AND (footprint:"Intersects(POLYGON((0 0,1 1,0 1,0 0)))") ' + \
                     'AND (producttype:SLC)'
 
@@ -113,21 +107,19 @@ def test_invalid_query():
 def test_format_url():
     api = SentinelAPI(**_api_auth)
     start_row = 0
-    url = api.format_url(start_row=start_row)
-
-    assert url is api.url
-    assert api.url == 'https://scihub.copernicus.eu/apihub/search?format=json&rows={rows}&start={start}'.format(
+    url = api._format_url(start_row=start_row)
+    assert url == 'https://scihub.copernicus.eu/apihub/search?format=json&rows={rows}&start={start}'.format(
         rows=api.page_size, start=start_row)
 
 
 @pytest.mark.fast
 def test_format_url_custom_api_url():
     api = SentinelAPI("user", "pw", api_url='https://scihub.copernicus.eu/dhus/')
-    url = api.format_url()
+    url = api._format_url()
     assert url.startswith('https://scihub.copernicus.eu/dhus/search')
 
     api = SentinelAPI("user", "pw", api_url='https://scihub.copernicus.eu/dhus')
-    url = api.format_url()
+    url = api._format_url()
     assert url.startswith('https://scihub.copernicus.eu/dhus/search')
 
 
@@ -136,10 +128,10 @@ def test_format_url_custom_api_url():
 def test_small_query():
     api = SentinelAPI(**_api_kwargs)
     api.query(**_small_query)
-    assert api.last_query == (
+    assert api._last_query == (
         '(beginPosition:[2015-01-01T00:00:00Z TO 2015-01-02T00:00:00Z]) '
         'AND (footprint:"Intersects(POLYGON((0 0,1 1,0 1,0 0)))")')
-    assert api.last_status_code == 200
+    assert api._last_status_code == 200
 
 
 @my_vcr.use_cassette(decode_compressed_response=False)
@@ -147,10 +139,10 @@ def test_small_query():
 def test_large_query():
     api = SentinelAPI(**_api_kwargs)
     products = api.query(**_large_query)
-    assert api.last_query == (
+    assert api._last_query == (
         '(beginPosition:[2015-01-01T00:00:00Z TO 2015-12-31T00:00:00Z]) '
         'AND (footprint:"Intersects(POLYGON((0 0,0 10,10 10,10 0,0 0)))")')
-    assert api.last_status_code == 200
+    assert api._last_status_code == 200
     assert len(products) > api.page_size
 
 
@@ -197,8 +189,8 @@ def test_get_product_info():
         'url': "https://scihub.copernicus.eu/apihub/odata/v1/Products('44517f66-9845-4792-a988-b5ae6e81fd3e')/$value"
     }
 
-    assert api.get_product_info('8df46c9e-a20c-43db-a19a-4240c2ed3b8b') == expected_s1
-    assert api.get_product_info('44517f66-9845-4792-a988-b5ae6e81fd3e') == expected_s2
+    assert api.get_product_odata('8df46c9e-a20c-43db-a19a-4240c2ed3b8b') == expected_s1
+    assert api.get_product_odata('44517f66-9845-4792-a988-b5ae6e81fd3e') == expected_s2
 
 
 @pytest.mark.mock_api
@@ -211,7 +203,7 @@ def test_get_product_info_scihub_down():
             text="Mock SciHub is Down", status_code=503
         )
         with pytest.raises(SentinelAPIError) as excinfo:
-            api.get_product_info('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')
+            api.get_product_odata('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')
 
         rqst.get(
             "https://scihub.copernicus.eu/apihub/odata/v1/Products('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')/?$format=json",
@@ -219,7 +211,7 @@ def test_get_product_info_scihub_down():
                  '"No Products found with key \'8df46c9e-a20c-43db-a19a-4240c2ed3b8b\' "}}}', status_code=500
         )
         with pytest.raises(SentinelAPIError) as excinfo:
-            api.get_product_info('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')
+            api.get_product_odata('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')
         assert excinfo.value.msg == "No Products found with key \'8df46c9e-a20c-43db-a19a-4240c2ed3b8b\' "
 
         rqst.get(
@@ -227,7 +219,7 @@ def test_get_product_info_scihub_down():
             text="Mock SciHub is Down", status_code=200
         )
         with pytest.raises(SentinelAPIError) as excinfo:
-            api.get_product_info('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')
+            api.get_product_odata('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')
         assert excinfo.value.msg == "Mock SciHub is Down"
 
         # Test with a real server response
@@ -263,7 +255,7 @@ def test_get_product_info_scihub_down():
             """),
             status_code=502)
         with pytest.raises(SentinelAPIError) as excinfo:
-            api.get_product_info('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')
+            api.get_product_odata('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')
         print(excinfo.value)
         assert "The Sentinels Scientific Data Hub will be back soon!" in excinfo.value.msg
 
@@ -298,7 +290,7 @@ def test_footprints_s1():
     with open('tests/expected_search_footprints_s1.geojson', 'r') as geojson_file:
         expected_footprints = geojson.loads(geojson_file.read())
         # to compare unordered lists (JSON objects) they need to be sorted or changed to sets
-        assert set(api.get_footprints(products)) == set(expected_footprints)
+        assert set(api.to_geojson(products)) == set(expected_footprints)
 
 
 @my_vcr.use_cassette
@@ -313,7 +305,7 @@ def test_footprints_s2():
     with open('tests/expected_search_footprints_s2.geojson', 'r') as geojson_file:
         expected_footprints = geojson.loads(geojson_file.read())
         # to compare unordered lists (JSON objects) they need to be sorted or changed to sets
-        assert set(api.get_footprints(products)) == set(expected_footprints)
+        assert set(api.to_geojson(products)) == set(expected_footprints)
 
 
 @my_vcr.use_cassette
@@ -382,7 +374,7 @@ def test_to_pandas():
 @pytest.mark.pandas
 @pytest.mark.geopandas
 @pytest.mark.scihub
-def test_to_pandas():
+def test_to_geopandas():
     api = SentinelAPI(**_api_auth)
     products = api.query(
         get_coordinates('tests/map.geojson'),
