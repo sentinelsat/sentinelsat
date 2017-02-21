@@ -151,14 +151,10 @@ class SentinelAPI(object):
         """
 
         def convert_date(content):
-            value = content
             try:
                 value = datetime.strptime(content, '%Y-%m-%dT%H:%M:%SZ')
             except ValueError:
-                try:
-                    value = datetime.strptime(content, '%Y-%m-%dT%H:%M:%S.%fZ')
-                except ValueError:
-                    print("Date '{dat}' is not parsable".format(dat=content))
+                value = datetime.strptime(content, '%Y-%m-%dT%H:%M:%S.%fZ')
             return value
 
         if parse_values:
@@ -366,10 +362,10 @@ class SentinelAPI(object):
                     path, product_info = self.download(product['id'], directory_path, checksum, check_existing,
                                                        **kwargs)
                     download_successful = True
-                except (KeyboardInterrupt, SystemExit, SystemError, MemoryError):
+                except (KeyboardInterrupt, SystemExit):
                     raise
                 except InvalidChecksumError:
-                    self.logger.info("Invalid checksum. The downloaded file is corrupted.")
+                    self.logger.warning("Invalid checksum. The downloaded file '{}' is corrupted.".format(path))
                 except:
                     self.logger.exception("There was an error downloading %s" % product['title'])
                 remaining_attempts -= 1
