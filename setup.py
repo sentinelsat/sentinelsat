@@ -18,6 +18,7 @@ setup(name='sentinelsat',
           'Programming Language :: Python :: 2.7',
           'Programming Language :: Python :: 3.4',
           'Programming Language :: Python :: 3.5',
+          'Programming Language :: Python :: 3.6',
           'Topic :: Scientific/Engineering :: GIS',
           'Topic :: Utilities',
       ],
@@ -32,6 +33,9 @@ setup(name='sentinelsat',
       install_requires=open('requirements.txt').read().splitlines(),
       extras_require={
           'test': [
+              'pandas',
+              'geopandas',
+              'shapely',
               'pytest',
               'requests-mock',
               'vcrpy'

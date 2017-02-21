@@ -1,13 +1,16 @@
 # -*- coding: utf-8 -*-
 from __future__ import print_function
+from __future__ import absolute_import
 
 import hashlib
+import logging
+import re
 import xml.etree.ElementTree as ET
+from collections import OrderedDict
 from datetime import date, datetime, timedelta
 from os import remove
 from os.path import exists, getsize, join
 from time import sleep
-import logging
 
 import geojson
 import homura
@@ -16,87 +19,15 @@ import pycurl
 import requests
 from tqdm import tqdm
 
-from . import __version__ as sentinelsat_version
+from six import string_types
+from six.moves.urllib.parse import urljoin
 
-try:
-    from urlparse import urljoin
-except ImportError:
-    from urllib.parse import urljoin
+from . import __version__ as sentinelsat_version
 
 try:
     import certifi
 except ImportError:
     certifi = None
-
-
-class SentinelAPIError(Exception):
-    """Invalid responses from SciHub.
-    """
-    def __init__(self, http_status=None, code=None, msg=None, response_body=None):
-        self.http_status = http_status
-        self.code = code
-        self.msg = msg
-        self.response_body = response_body
-
-    def __str__(self):
-        return '(HTTP status: {0}, code: {1}) {2}'.format(
-            self.http_status, self.code,
-            ('\n' if '\n' in self.msg else '') + self.msg)
-
-
-class InvalidChecksumError(Exception):
-    """MD5 checksum of local file does not match the one from the server.
-    """
-    pass
-
-
-def format_date(in_date):
-    """Format date or datetime input or a YYYYMMDD string input to
-    YYYY-MM-DDThh:mm:ssZ string format. In case you pass an
-    """
-
-    if type(in_date) == datetime or type(in_date) == date:
-        return in_date.strftime('%Y-%m-%dT%H:%M:%SZ')
-    else:
-        try:
-            return datetime.strptime(in_date, '%Y%m%d').strftime('%Y-%m-%dT%H:%M:%SZ')
-        except ValueError:
-            return in_date
-
-
-def convert_timestamp(in_date):
-    """Convert the timestamp received from Products API, to
-    YYYY-MM-DDThh:mm:ssZ string format.
-    """
-    in_date = int(in_date.replace('/Date(', '').replace(')/', '')) / 1000
-    return format_date(datetime.utcfromtimestamp(in_date))
-
-
-def _check_scihub_response(response):
-    """Check that the response from server has status code 2xx and that the response is valid JSON."""
-    try:
-        response.raise_for_status()
-        response.json()
-    except (requests.HTTPError, ValueError) as e:
-        msg = "API response not valid. JSON decoding failed."
-        code = None
-        try:
-            msg = response.json()['error']['message']['value']
-            code = response.json()['error']['code']
-        except:
-            if not response.text.rstrip().startswith('{'):
-                try:
-                    h = html2text.HTML2Text()
-                    h.ignore_images = True
-                    h.ignore_anchors = True
-                    msg = h.handle(response.text).strip()
-                except:
-                    pass
-        api_error = SentinelAPIError(response.status_code, code, msg, response.content)
-        # Suppress "During handling of the above exception..." message
-        # See PEP 409
-        api_error.__cause__ = None
-        raise api_error
 
 
 class SentinelAPI(object):
@@ -123,25 +54,18 @@ class SentinelAPI(object):
         current value: 100 (maximum allowed on ApiHub)
     """
 
+    logger = logging.getLogger('sentinelsat.SentinelAPI')
+
     def __init__(self, user, password, api_url='https://scihub.copernicus.eu/apihub/'):
         self.session = requests.Session()
         self.session.auth = (user, password)
+        self.api_url = api_url if api_url.endswith('/') else api_url + '/'
+        self.page_size = 100
         self.user_agent = 'sentinelsat/' + sentinelsat_version
         self.session.headers['User-Agent'] = self.user_agent
-        self.api_url = api_url if api_url.endswith('/') else api_url + '/'
-        self.url = None
-        self.last_query = None
-        self.last_status_code = None
-        self.content = None
-        self.page_size = 100
-        self.logger = logging.getLogger('sentinelsat.SentinelAPI')
-
-    def format_url(self, start_row=0):
-        blank = 'search?format=json&rows={rows}&start={start}'.format(
-            rows=self.page_size, start=start_row
-            )
-        self.url = urljoin(self.api_url, blank)
-        return self.url
+        # For unit tests
+        self._last_query = None
+        self._last_status_code = None
 
     def query(self, area, initial_date=None, end_date=datetime.now(), **keywords):
         """Query the SciHub API with the coordinates of an area, a date interval
@@ -149,55 +73,6 @@ class SentinelAPI(object):
         """
         query = self.format_query(area, initial_date, end_date, **keywords)
         return self.load_query(query)
-
-    def load_query(self, query, start_row=0):
-        """Do a full-text query on the SciHub API using the format specified in
-           https://scihub.copernicus.eu/twiki/do/view/SciHubUserGuide/3FullTextSearch
-        """
-        output = []
-        # store last query (for testing)
-        self.last_query = query
-
-        # generate URL
-        url = self.format_url(start_row=start_row)
-
-        # load query results
-        content = self.session.post(url, dict(q=query), auth=self.session.auth)
-        _check_scihub_response(content)
-
-        # store last status code (for testing)
-        self.last_status_code = content.status_code
-
-        # parse content
-        total_results = 0
-        try:
-            json_feed = content.json()['feed']
-            entries = json_feed['entry']
-            # this verification is necessary because if the query returns only
-            # one product, self.products will be a dict not a list
-            if type(entries) == dict:
-                entries = [entries]
-
-            # append to products
-            output += entries
-
-            # get total number of returned results
-            total_results = int(json_feed['opensearch:totalResults'])
-            if total_results == 0:
-                raise KeyError('No results returned.')
-        except KeyError:
-            self.logger.info('No products found in this query.')
-            return []
-        except ValueError:
-            raise SentinelAPIError(http_status=content.status_code,
-                                   msg='API response not valid. JSON decoding failed.',
-                                   response_body=content.content)
-
-        # repeat query until all results have been loaded
-        if total_results > self.page_size + start_row - 1:
-            output += self.load_query(query, start_row=(start_row + self.page_size))
-        return output
-
 
     @staticmethod
     def format_query(area, initial_date=None, end_date=datetime.now(), **keywords):
@@ -207,8 +82,8 @@ class SentinelAPI(object):
             initial_date = end_date - timedelta(hours=24)
 
         acquisition_date = '(beginPosition:[%s TO %s])' % (
-            format_date(initial_date),
-            format_date(end_date)
+            _format_date(initial_date),
+            _format_date(end_date)
         )
         query_area = ' AND (footprint:"Intersects(POLYGON((%s)))")' % area
 
@@ -219,78 +94,134 @@ class SentinelAPI(object):
         query = ''.join([acquisition_date, query_area, filters])
         return query
 
-    def get_products_size(self,  products):
-        """Return the total filesize in GB of all products in the query"""
-        size_total = 0
-        for product in products:
-            size_product = next(x for x in product["str"] if x["name"] == "size")["content"]
-            size_value = float(size_product.split(" ")[0])
-            size_unit = str(size_product.split(" ")[1])
-            if size_unit == "MB":
-                size_value /= 1024
-            if size_unit == "KB":
-                size_value /= 1024 * 1024
-            size_total += size_value
-        return round(size_total, 2)
+    def load_query(self, query, start_row=0):
+        """Do a full-text query on the SciHub API using the OpenSearch format specified in
+           https://scihub.copernicus.eu/twiki/do/view/SciHubUserGuide/3FullTextSearch
+        """
+        # store last query (for testing)
+        self._last_query = query
 
-    def get_footprints(self, products):
+        # load query results
+        url = self._format_url(start_row=start_row)
+        response = self.session.post(url, dict(q=query), auth=self.session.auth)
+        _check_scihub_response(response)
+
+        # store last status code (for testing)
+        self._last_status_code = response.status_code
+
+        # parse response content
+        try:
+            json_feed = response.json()['feed']
+            total_results = int(json_feed['opensearch:totalResults'])
+        except (ValueError, KeyError):
+            raise SentinelAPIError(http_status=response.status_code,
+                                   msg='API response not valid. JSON decoding failed.',
+                                   response_body=response.content)
+
+        entries = json_feed.get('entry', [])
+        # this verification is necessary because if the query returns only
+        # one product, self.products will be a dict not a list
+        if isinstance(entries, dict):
+            entries = [entries]
+
+        output = entries
+        # repeat query until all results have been loaded
+        if total_results > start_row + self.page_size - 1:
+            output += self.load_query(query, start_row=(start_row + self.page_size))
+        return output
+
+    @staticmethod
+    def to_geojson(products):
         """Return the footprints of the resulting scenes in GeoJSON format"""
-        id = 0
         feature_list = []
-
-        for scene in products:
-            id += 1
-            # parse the polygon
-            coord_list = next(
-                x
-                for x in scene["str"]
-                if x["name"] == "footprint"
-            )["content"][10:-2].split(",")
-            coord_list_split = (coord.split(" ") for coord in coord_list)
-            poly = geojson.Polygon([[
-                tuple((float(coord[0]), float(coord[1])))
-                for coord in coord_list_split
-                ]])
-
-            # parse the following properties:
-            # platformname, identifier, product_id, date, polarisation,
-            # sensor operation mode, orbit direction, product type, download link
-            props = {
-                "product_id": scene["id"],
-                "date_beginposition": next(
-                    x
-                    for x in scene["date"]
-                    if x["name"] == "beginposition"
-                )["content"],
-                "download_link": next(
-                    x
-                    for x in scene["link"]
-                    if len(x.keys()) == 1
-                )["href"]
-            }
-            # Sentinel-2 has no "polarisationmode" property
-            try:
-                str_properties = ["platformname", "identifier", "polarisationmode",
-                                  "sensoroperationalmode", "orbitdirection", "producttype"]
-                for str_prop in str_properties:
-                    props.update(
-                        {str_prop: next(x for x in scene["str"] if x["name"] == str_prop)["content"]}
-                    )
-            except:
-                str_properties = ["platformname", "identifier",
-                                  "sensoroperationalmode", "orbitdirection", "producttype"]
-                for str_prop in str_properties:
-                    props.update(
-                        {str_prop: next(x for x in scene["str"] if x["name"] == str_prop)["content"]}
-                    )
-
+        products_dict = SentinelAPI.to_dict(products, parse_values=False)
+        for i, (title, props) in enumerate(products_dict.items()):
+            props['title'] = title
+            poly = _geojson_poly_from_wkt(props['footprint'])
+            del props['footprint']
+            del props['gmlfootprint']
             feature_list.append(
-                geojson.Feature(geometry=poly, id=id, properties=props)
+                geojson.Feature(geometry=poly, id=i, properties=props)
             )
         return geojson.FeatureCollection(feature_list)
 
-    def get_product_info(self, id):
-        """Access SciHub API to get info about a Product. Returns a dict
+    @staticmethod
+    def to_dict(products, parse_values=True):
+        """Return the products from a query response as a dictionary with the values in their appropriate Python types.
+        """
+
+        def convert_date(name, content):
+            value = content
+            try:
+                value = datetime.strptime(content, '%Y-%m-%dT%H:%M:%SZ')
+            except ValueError:
+                try:
+                    value = datetime.strptime(content, '%Y-%m-%dT%H:%M:%S.%fZ')
+                except ValueError:
+                    print("Date '{dat}' is not parsable".format(dat=content))
+            return name, value
+
+        if parse_values:
+            converters = {
+                'date': convert_date,
+                'int': lambda name, content: (name, int(content)),
+                'float': lambda name, content: (name, float(content)),
+                'double': lambda name, content: (name, float(content))
+            }
+        else:
+            converters = {}
+        # Keep the string type by default
+        default_converter = lambda name, content: (name, content)
+
+        output = OrderedDict()
+        for prod in products:
+            product_dict = {}
+            prodname = prod['title']
+            output[prodname] = product_dict
+            for key in prod:
+                if key == 'title':
+                    continue
+                if isinstance(prod[key], string_types):
+                    product_dict[key] = prod[key]
+                else:
+                    properties = prod[key]
+                    if isinstance(properties, dict):
+                        properties = [properties]
+                    if key == 'link':
+                        for p in properties:
+                            name = 'link'
+                            if 'rel' in p:
+                                name = 'link_' + p['rel']
+                            product_dict[name] = p['href']
+                    else:
+                        f = converters.get(key, default_converter)
+                        for p in properties:
+                            k, v = f(p['name'], p['content'])
+                            product_dict[k] = v
+
+        return output
+
+    @staticmethod
+    def to_dataframe(products):
+        import pandas as pd
+
+        products_dict = SentinelAPI.to_dict(products)
+        return pd.DataFrame.from_dict(products_dict, orient='index')
+
+    @staticmethod
+    def to_geodataframe(products):
+        import geopandas as gpd
+        import shapely.wkt
+
+        df = SentinelAPI.to_dataframe(products)
+        crs = {'init': 'epsg:4326'}  # WGS84
+        geometry = [shapely.wkt.loads(fp) for fp in df['footprint']]
+        # remove useless columns
+        df.drop(['footprint', 'gmlfootprint'], axis=1, inplace=True)
+        return gpd.GeoDataFrame(df, crs=crs, geometry=geometry)
+
+    def get_product_odata(self, id):
+        """Access SciHub OData API to get info about a Product. Returns a dict
         containing the id, title, size, md5sum, date, footprint and download url
         of the Product. The date field receives the Start ContentDate of the API.
         """
@@ -300,30 +231,28 @@ class SentinelAPI(object):
         )
         _check_scihub_response(response)
 
-        product_json = response.json()
+        d = response.json()['d']
 
         # parse the GML footprint to same format as returned
         # by .get_coordinates()
-        geometry_xml = ET.fromstring(product_json["d"]["ContentGeometry"])
-        poly_coords = geometry_xml \
+        geometry_xml = ET.fromstring(d["ContentGeometry"])
+        poly_coords_str = geometry_xml \
             .find('{http://www.opengis.net/gml}outerBoundaryIs') \
             .find('{http://www.opengis.net/gml}LinearRing') \
             .findtext('{http://www.opengis.net/gml}coordinates')
-        coord_string = ",".join(
-            [" ".join(double_coord[::-1]) for double_coord in [coord.split(",") for coord in poly_coords.split(" ")]]
-        )
+        poly_coords = (coord.split(",")[::-1] for coord in poly_coords_str.split(" "))
+        coord_string = ",".join(" ".join(coord) for coord in poly_coords)
 
-        keys = ['id', 'title', 'size', 'md5', 'date', 'footprint', 'url']
-        values = [
-            product_json['d']['Id'],
-            product_json['d']['Name'],
-            int(product_json['d']['ContentLength']),
-            product_json['d']['Checksum']['Value'],
-            convert_timestamp(product_json['d']['ContentDate']['Start']),
-            coord_string,
-            urljoin(self.api_url, "odata/v1/Products('%s')/$value" % id)
-        ]
-        return dict(zip(keys, values))
+        values = {
+            'id': d['Id'],
+            'title': d['Name'],
+            'size': int(d['ContentLength']),
+            'md5': d['Checksum']['Value'],
+            'date': _convert_timestamp(d['ContentDate']['Start']),
+            'footprint': coord_string,
+            'url': urljoin(self.api_url, "odata/v1/Products('%s')/$value" % id)
+        }
+        return values
 
     def download(self, id, directory_path='.', checksum=False, check_existing=False, **kwargs):
         """Download a product using homura.
@@ -366,28 +295,29 @@ class SentinelAPI(object):
         product_info = None
         while product_info is None:
             try:
-                product_info = self.get_product_info(id)
+                product_info = self.get_product_odata(id)
             except SentinelAPIError as e:
                 self.logger.info("Invalid API response:\n{}\nTrying again in 1 minute.".format(str(e)))
                 sleep(60)
 
         path = join(directory_path, product_info['title'] + '.zip')
-        kwargs = self._fillin_cainfo(kwargs)
+        kwargs = _fillin_cainfo(kwargs)
 
         self.logger.info('Downloading %s to %s' % (id, path))
 
         # Check if the file exists and passes md5 test
         # Homura will by default continue the download if the file exists but is incomplete
         if exists(path) and getsize(path) == product_info['size']:
-            if not check_existing or md5_compare(path, product_info['md5']):
+            if not check_existing or _md5_compare(path, product_info['md5']):
                 self.logger.info('%s was already downloaded.' % path)
                 return path, product_info
             else:
-                self.logger.info('%s was already downloaded but is corrupt: checksums do not match. Re-downloading.' % path)
+                self.logger.info(
+                    '%s was already downloaded but is corrupt: checksums do not match. Re-downloading.' % path)
                 remove(path)
 
         if (exists(path) and getsize(path) >= 2 ** 31 and
-                pycurl.version.split()[0].lower() <= 'pycurl/7.43.0'):
+                    pycurl.version.split()[0].lower() <= 'pycurl/7.43.0'):
             # Workaround for PycURL's bug when continuing > 2 GB files
             # https://github.com/pycurl/pycurl/issues/405
             remove(path)
@@ -397,11 +327,12 @@ class SentinelAPI(object):
 
         # Check integrity with MD5 checksum
         if checksum is True:
-            if not md5_compare(path, product_info['md5']):
+            if not _md5_compare(path, product_info['md5']):
                 raise InvalidChecksumError('File corrupt: checksums do not match')
         return path, product_info
 
-    def download_all(self, products, directory_path='.', max_attempts=10, checksum=False, check_existing=False, **kwargs):
+    def download_all(self, products, directory_path='.', max_attempts=10, checksum=False, check_existing=False,
+                     **kwargs):
         """Download all products returned in query().
 
         File names on the server are used for the downloaded files, e.g.
@@ -453,28 +384,47 @@ class SentinelAPI(object):
         return result
 
     @staticmethod
-    def _fillin_cainfo(kwargs_dict):
-        """Fill in the path of the PEM file containing the CA certificate.
+    def get_products_size(products):
+        """Return the total filesize in GB of all products in the query"""
+        size_total = 0
+        for product in products:
+            size_product = next(x for x in product["str"] if x["name"] == "size")["content"]
+            size_value = float(size_product.split(" ")[0])
+            size_unit = str(size_product.split(" ")[1])
+            if size_unit == "MB":
+                size_value /= 1024.
+            if size_unit == "KB":
+                size_value /= 1024. * 1024.
+            size_total += size_value
+        return round(size_total, 2)
 
-        The priority is: 1. user provided path, 2. path to the cacert.pem
-        bundle provided by certifi (if installed), 3. let pycurl use the
-        system path where libcurl's cacert bundle is assumed to be stored,
-        as established at libcurl build time.
-        """
-        try:
-            cainfo = kwargs_dict['pass_through_opts'][pycurl.CAINFO]
-        except KeyError:
-            try:
-                cainfo = certifi.where()
-            except AttributeError:
-                cainfo = None
+    def _format_url(self, start_row=0):
+        blank = 'search?format=json&rows={rows}&start={start}'.format(
+            rows=self.page_size, start=start_row
+        )
+        return urljoin(self.api_url, blank)
 
-        if cainfo is not None:
-            pass_through_opts = kwargs_dict.get('pass_through_opts', {})
-            pass_through_opts[pycurl.CAINFO] = cainfo
-            kwargs_dict['pass_through_opts'] = pass_through_opts
 
-        return kwargs_dict
+class SentinelAPIError(Exception):
+    """Invalid responses from SciHub.
+    """
+
+    def __init__(self, http_status=None, code=None, msg=None, response_body=None):
+        self.http_status = http_status
+        self.code = code
+        self.msg = msg
+        self.response_body = response_body
+
+    def __str__(self):
+        return '(HTTP status: {0}, code: {1}) {2}'.format(
+            self.http_status, self.code,
+            ('\n' if '\n' in self.msg else '') + self.msg)
+
+
+class InvalidChecksumError(Exception):
+    """MD5 checksum of local file does not match the one from the server.
+    """
+    pass
 
 
 def get_coordinates(geojson_file, feature_number=0):
@@ -500,7 +450,88 @@ def get_coordinates(geojson_file, feature_number=0):
     return ','.join(coordinates)
 
 
-def md5_compare(file_path, checksum, block_size=2 ** 13):
+def _fillin_cainfo(kwargs_dict):
+    """Fill in the path of the PEM file containing the CA certificate.
+
+    The priority is: 1. user provided path, 2. path to the cacert.pem
+    bundle provided by certifi (if installed), 3. let pycurl use the
+    system path where libcurl's cacert bundle is assumed to be stored,
+    as established at libcurl build time.
+    """
+    try:
+        cainfo = kwargs_dict['pass_through_opts'][pycurl.CAINFO]
+    except KeyError:
+        try:
+            cainfo = certifi.where()
+        except AttributeError:
+            cainfo = None
+
+    if cainfo is not None:
+        pass_through_opts = kwargs_dict.get('pass_through_opts', {})
+        pass_through_opts[pycurl.CAINFO] = cainfo
+        kwargs_dict['pass_through_opts'] = pass_through_opts
+
+    return kwargs_dict
+
+
+def _format_date(in_date):
+    """Format date or datetime input or a YYYYMMDD string input to
+    YYYY-MM-DDThh:mm:ssZ string format. In case you pass an
+    """
+
+    if type(in_date) == datetime or type(in_date) == date:
+        return in_date.strftime('%Y-%m-%dT%H:%M:%SZ')
+    else:
+        try:
+            return datetime.strptime(in_date, '%Y%m%d').strftime('%Y-%m-%dT%H:%M:%SZ')
+        except ValueError:
+            return in_date
+
+
+def _convert_timestamp(in_date):
+    """Convert the timestamp received from Products API, to
+    YYYY-MM-DDThh:mm:ssZ string format.
+    """
+    in_date = int(in_date.replace('/Date(', '').replace(')/', '')) / 1000.
+    return _format_date(datetime.utcfromtimestamp(in_date))
+
+
+def _check_scihub_response(response):
+    """Check that the response from server has status code 2xx and that the response is valid JSON."""
+    try:
+        response.raise_for_status()
+        response.json()
+    except (requests.HTTPError, ValueError) as e:
+        msg = "API response not valid. JSON decoding failed."
+        code = None
+        try:
+            msg = response.json()['error']['message']['value']
+            code = response.json()['error']['code']
+        except:
+            if not response.text.rstrip().startswith('{'):
+                try:
+                    h = html2text.HTML2Text()
+                    h.ignore_images = True
+                    h.ignore_anchors = True
+                    msg = h.handle(response.text).strip()
+                except:
+                    pass
+        api_error = SentinelAPIError(response.status_code, code, msg, response.content)
+        # Suppress "During handling of the above exception..." message
+        # See PEP 409
+        api_error.__cause__ = None
+        raise api_error
+
+
+def _geojson_poly_from_wkt(wkt):
+    """Return a geojson Polygon object from a WKT string"""
+    coordlist = re.search(r'\(\s*([^()]+)\s*\)', wkt).group(1)
+    coord_list_split = (coord.split(' ') for coord in coordlist.split(','))
+    poly = geojson.Polygon([(float(coord[0]), float(coord[1])) for coord in coord_list_split])
+    return poly
+
+
+def _md5_compare(file_path, checksum, block_size=2 ** 13):
     """Compare a given md5 checksum with one calculated from a file"""
     md5 = hashlib.md5()
     with open(file_path, "rb") as f:

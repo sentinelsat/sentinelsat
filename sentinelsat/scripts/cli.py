@@ -38,8 +38,8 @@ def cli():
     help='Download all results of the query.')
 @click.option(
     '--footprints', '-f', is_flag=True,
-    help="""Create a geojson file search_footprints.geojson with footprints of
-    the query result.
+    help="""Create a geojson file search_footprints.geojson with footprints
+    and metadata of the returned products.
     """)
 @click.option(
     '--path', '-p', type=click.Path(exists=True), default='.',
@@ -95,7 +95,7 @@ def search(
     products = api.query(get_coordinates(geojson), start, end, **search_kwargs)
 
     if footprints is True:
-        footprints_geojson = api.get_footprints(products)
+        footprints_geojson = api.to_geojson(products)
         with open(os.path.join(path, "search_footprints.geojson"), "w") as outfile:
             outfile.write(gj.dumps(footprints_geojson))
 
