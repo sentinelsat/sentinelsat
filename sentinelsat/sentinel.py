@@ -150,7 +150,7 @@ class SentinelAPI(object):
         """Return the products from a query response as a dictionary with the values in their appropriate Python types.
         """
 
-        def convert_date(name, content):
+        def convert_date(content):
             value = content
             try:
                 value = datetime.strptime(content, '%Y-%m-%dT%H:%M:%SZ')
@@ -159,19 +159,14 @@ class SentinelAPI(object):
                     value = datetime.strptime(content, '%Y-%m-%dT%H:%M:%S.%fZ')
                 except ValueError:
                     print("Date '{dat}' is not parsable".format(dat=content))
-            return name, value
+            return value
 
         if parse_values:
-            converters = {
-                'date': convert_date,
-                'int': lambda name, content: (name, int(content)),
-                'float': lambda name, content: (name, float(content)),
-                'double': lambda name, content: (name, float(content))
-            }
+            converters = {'date': convert_date, 'int': int, 'float': float, 'double': float}
         else:
             converters = {}
         # Keep the string type by default
-        default_converter = lambda name, content: (name, content)
+        default_converter = lambda x: x
 
         output = OrderedDict()
         for prod in products:
@@ -196,8 +191,7 @@ class SentinelAPI(object):
                     else:
                         f = converters.get(key, default_converter)
                         for p in properties:
-                            k, v = f(p['name'], p['content'])
-                            product_dict[k] = v
+                            product_dict[p['name']] = f(p['content'])
 
         return output
 
@@ -489,7 +483,7 @@ def _format_date(in_date):
 
 
 def _convert_timestamp(in_date):
-    """Convert the timestamp received from Products API, to
+    """Convert the timestamp received from OData JSON API, to
     YYYY-MM-DDThh:mm:ssZ string format.
     """
     in_date = int(in_date.replace('/Date(', '').replace(')/', '')) / 1000.
