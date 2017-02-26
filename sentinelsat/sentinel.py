@@ -50,6 +50,11 @@ class InvalidChecksumError(Exception):
     pass
 
 
+class DatetimeParsingError(Exception):
+    """Return error if it is not possible to parse string as datetime"""
+    pass
+
+
 def format_date(in_date):
     """Format date or datetime input or a YYYYMMDD string input to
     YYYY-MM-DDThh:mm:ssZ string format. In case you pass an
@@ -98,6 +103,14 @@ def _check_scihub_response(response):
         api_error.__cause__ = None
         raise api_error
 
+def _create_geojson_poly(coordlist):
+    """Return a geojson Polygon object from a list of coordinates"""
+    coord_list_split = (coord.split(" ") for coord in coordlist)
+    poly = geojson.Polygon([[
+        tuple((float(coord[0]), float(coord[1])))
+        for coord in coord_list_split
+    ]])
+    return poly
 
 class SentinelAPI(object):
     """Class to connect to Sentinel Data Hub, search and download imagery.
@@ -246,11 +259,7 @@ class SentinelAPI(object):
                 for x in scene["str"]
                 if x["name"] == "footprint"
             )["content"][10:-2].split(",")
-            coord_list_split = (coord.split(" ") for coord in coord_list)
-            poly = geojson.Polygon([[
-                tuple((float(coord[0]), float(coord[1])))
-                for coord in coord_list_split
-                ]])
+            poly = _create_geojson_poly(coord_list)
 
             # parse the following properties:
             # platformname, identifier, product_id, date, polarisation,
@@ -288,6 +297,54 @@ class SentinelAPI(object):
                 geojson.Feature(geometry=poly, id=id, properties=props)
             )
         return geojson.FeatureCollection(feature_list)
+
+    def to_dict(self, products):
+        """Return the products in a dictionary object with the values in their appropriate Python types"""
+        try:
+            strtype = basestring
+        except:
+            strtype = str
+        output = {}
+        for prod in products:
+            prodname = prod['title']
+            output[prodname] = {}
+            for key in prod:
+                if key != 'title' and isinstance(prod[key], strtype):
+                    output[prodname][key] = prod[key]
+                elif isinstance(prod[key], dict):
+                    output[prodname][prod[key]['name']] = prod[key]['content']
+                elif key == 'link':
+                    for link in prod[key]:
+                        if 'rel' not in link:
+                            output[prodname]['link'] = link['href']
+                        else:
+                            lkey = 'link_' + link['rel']
+                            output[prodname][lkey] = link['href']
+                elif key == 'date':
+                    for data in prod[key]:
+                        mydate = None
+                        try:
+                            mydate = datetime.strptime(data['content'],'%Y-%m-%dT%H:%M:%SZ')
+                        except:
+                            try:
+                                mydate = datetime.strptime(data['content'],'%Y-%m-%dT%H:%M:%S.%fZ')
+                            except:
+                                raise DatetimeParsingError("Date '{dat}' non "
+                                                           "parsable".format(dat=data['content']))
+                        if mydate:
+                            output[prodname][data['name']] = mydate
+                        else:
+                            output[prodname][data['name']] = data['content']
+                elif isinstance(prod[key], list):
+                    for data in prod[key]:
+                        if data['name'] == 'gmlfootprint':
+                            continue
+                        elif data['name'] == 'footprint':
+                            coord_list = data['content'][10:-2].split(",")
+                            output[prodname][data['name']] = _create_geojson_poly(coord_list)
+                        else:
+                            output[prodname][data['name']] = data['content']
+        return output
 
     def get_product_info(self, id):
         """Access SciHub API to get info about a Product. Returns a dict
