@@ -4,11 +4,10 @@ interactions:
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
-      Authorization: [Basic cmVnaW86SzZzbTZz]
       Connection: [keep-alive]
       Content-Length: ['302']
       Content-Type: [application/x-www-form-urlencoded]
-      User-Agent: [sentinelsat/0.7.4]
+      User-Agent: [sentinelsat/0.8.1]
     method: POST
     uri: https://scihub.copernicus.eu/apihub/search?format=json&rows=100&start=0
   response:
@@ -39,7 +38,7 @@ interactions:
         \ Data Hub search results for: (beginPosition:[2015-12-19T00:00:00Z TO 2015-12-28T00:00:00Z])\
         \ AND (footprint:\\\"Intersects(POLYGON((-66.2695312 -8.0592296,-66.2695312\
         \ 0.7031074,-57.3046875 0.7031074,-57.3046875 -8.0592296,-66.2695312 -8.0592296)))\\\
-        \") AND (platformname:Sentinel-1)\",\n   \"updated\": \"2017-01-20T19:41:07.382Z\"\
+        \") AND (platformname:Sentinel-1)\",\n   \"updated\": \"2017-02-20T14:39:34.923Z\"\
         ,\n   \"opensearch:totalResults\": \"11\",\n   \"entry\": [\n      {\n   \
         \      \"summary\": \"Date: 2015-12-27T10:03:55.389Z, Instrument: SAR-C SAR,\
         \ Mode: HH HV, Satellite: Sentinel-1, Size: 513.57 MB\",\n         \"id\"\
@@ -709,7 +708,7 @@ interactions:
         \n            },\n            {\n               \"content\": \"2015-12-19T09:32:37.329Z\"\
         ,\n               \"name\": \"endposition\"\n            }\n         ]\n \
         \     }\n   ],\n   \"subtitle\": \"Displaying 11 results. Request done in\
-        \ 0.015 seconds.\",\n   \"opensearch:startIndex\": \"0\",\n   \"opensearch:Query\"\
+        \ 0.089 seconds.\",\n   \"opensearch:startIndex\": \"0\",\n   \"opensearch:Query\"\
         : {\n      \"searchTerms\": \"(beginPosition:[2015-12-19T00:00:00Z TO 2015-12-28T00:00:00Z])\
         \ AND (footprint:\\\"Intersects(POLYGON((-66.2695312 -8.0592296,-66.2695312\
         \ 0.7031074,-57.3046875 0.7031074,-57.3046875 -8.0592296,-66.2695312 -8.0592296)))\\\
@@ -717,7 +716,7 @@ interactions:
         \ \"startPage\": \"1\"\n   }\n}}"}
     headers:
       Content-Type: [application/json]
-      Date: ['Fri, 20 Jan 2017 19:41:07 GMT']
+      Date: ['Mon, 20 Feb 2017 14:39:35 GMT']
       Pragma: [no-cache]
       Server: [Apache-Coyote/1.1]
       Transfer-Encoding: [chunked]
