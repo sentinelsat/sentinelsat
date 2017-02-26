@@ -9,8 +9,9 @@ All notable changes to ``sentinelsat`` will be listed here.
 Added
 ~~~~~
 
--  Added ``to_dict``, ``to_dataframe`` and ``to_geodataframe`` which convert the response content to respective types.
-The pandas, geopandas and shapely dependencies are not installed by default.
+-  Added ``to_dict``, ``to_dataframe`` and ``to_geodataframe`` which convert the
+response content to respective types. The pandas, geopandas and shapely dependencies
+are not installed by default.
 
 Changed
 ~~~~~~~
