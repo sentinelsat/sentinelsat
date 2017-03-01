@@ -3,7 +3,14 @@ Change Log
 
 All notable changes to ``sentinelsat`` will be listed here.
 
-[0.9]
+[0.9.1] - YYYYMMDD
+-------
+
+Added
+~~~~~
+- ``--version`` option to command line utilities
+
+[0.9] - 2017-02-26
 -----
 
 Added

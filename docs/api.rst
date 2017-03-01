@@ -36,7 +36,7 @@ Logging
 
 Sentinelsat logs to ``sentinelsat`` and the API to ``sentinelsat.SentinelAPI``.
 
-There is no predefined `logging<https://docs.python.org/3/library/logging.html>`_ handler, 
+There is no predefined `logging <https://docs.python.org/3/library/logging.html>`_ handler,
 so in order to have your script print the log messages, either use ``logging.baseConfig``
 
 .. code-block:: python
