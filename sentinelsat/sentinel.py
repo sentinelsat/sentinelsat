@@ -132,7 +132,8 @@ class SentinelAPI(object):
 
     @staticmethod
     def to_geojson(products):
-        """Return the footprints of the resulting scenes in GeoJSON format"""
+        """Return the products from a query response as a GeoJSON with the values in their appropriate Python types.
+        """
         feature_list = []
         products_dict = SentinelAPI.to_dict(products, parse_values=False)
         for i, (title, props) in enumerate(products_dict.items()):
@@ -193,6 +194,8 @@ class SentinelAPI(object):
 
     @staticmethod
     def to_dataframe(products):
+        """Return the products from a query response as a Pandas DataFrame with the values in their appropriate Python types.
+        """
         import pandas as pd
 
         products_dict = SentinelAPI.to_dict(products)
@@ -200,6 +203,8 @@ class SentinelAPI(object):
 
     @staticmethod
     def to_geodataframe(products):
+        """Return the products from a query response as a GeoPandas GeoDataFrame with the values in their appropriate Python types.
+        """
         import geopandas as gpd
         import shapely.wkt
 

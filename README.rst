@@ -189,6 +189,21 @@ exceptions are downloading tests, which can be disabled with ``-m "not homura"``
 To allow the tests to run actual queries on SciHub add ``--vcr disable`` to ``py.test`` arguments. If you wish to
 update the recordings use ``--vcr record_new`` or ``--vcr reset_all``.
 
+Documentation
+=============
+
+To build the documentation offline:
+
+.. code-block:: console
+
+    git clone https://github.com/ibamacsr/sentinelsat.git
+    cd sentinelsat
+    pip install -e .[docs]
+    cd docs
+    make html
+
+The full documentation is also published at http://sentinelsat.readthedocs.io/.
+
 
 Changelog
 =========

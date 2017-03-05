@@ -9,6 +9,8 @@ All notable changes to ``sentinelsat`` will be listed here.
 Added
 ~~~~~
 - ``--version`` option to command line utilities
+- install requirements for building the documentation
+- documentation of sorting with ``to_*`` convenience functions
 
 [0.9] - 2017-02-26
 -----
