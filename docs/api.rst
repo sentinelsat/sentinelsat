@@ -68,7 +68,8 @@ Sorting & Filtering
 In addition to the `search query keywords <https://scihub.copernicus.eu/userguide/3FullTextSearch>`_ sentinelsat allows
 filtering and sorting of search results before download. To simplify these operations sentinelsat offers the convenience
 functions ``to_dict()``, ``to_geojson()``, ``to_dataframe()`` and ``to_geodataframe()`` which return the search results as a Python dictionary,
-a Pandas DataFrame or a GeoPandas GeoDataFrame, respectively.
+a Pandas DataFrame or a GeoPandas GeoDataFrame, respectively. ``to_dataframe()`` and ``to_geodataframe()`` require ``Pandas``
+and ``GeoPandas`` to be installed, respectively.
 
 In this example we query Sentinel-2 scenes over a location and convert the query results to a Pandas DataFrame. The DataFrame is then sorted by cloud cover
 and ingestiondate. We limit the query to first 5 results within our timespan and download them, starting with the least cloudy scene. Filtering can be done with
@@ -89,7 +90,7 @@ all data types, as long as you pass the ``id`` to the download function.
   products_df = api.to_dataframe(products)
 
   # sort and limit to first 5 sorted products
-  products_df_sorted = products_df.sort_values(["cloudcoverpercentage", "ingestiondate"], ascending=[True, True])
+  products_df_sorted = products_df.sort_values(['cloudcoverpercentage', 'ingestiondate'], ascending=[True, True])
   products_df_sorted = products_df_sorted.head(5)
 
   # download sorted and reduced products in order
