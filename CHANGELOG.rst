@@ -3,7 +3,7 @@ Change Log
 
 All notable changes to ``sentinelsat`` will be listed here.
 
-[0.9.1] - YYYYMMDD
+[0.9.1] - 2017-03-06
 -------
 
 Added
