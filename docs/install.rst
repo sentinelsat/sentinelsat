@@ -60,6 +60,13 @@ Tests
   export SENTINEL_PASSWORD=<your scihub password>
   py.test -v
 
+Python Versions and Dependencies
+--------------------------------
+
+Sentinelsat works with all Python versions >2.7. The convenience functions ``to_dataframe()`` and
+``to_geodataframe()`` require ``Pandas`` and/or ``GeoPandas`` to be present. Due to a ``matplotlib``
+``GeoPandas`` can not be installed in Python 3.3 - every other aspect of sentinelsat will work in Python 3.3.
+
 
 Troubleshooting
 ---------------
@@ -76,4 +83,4 @@ or ``api.download_all()``:
 .. code-block:: python
 
   from pycurl import CAINFO
-  api.download_all(pass_through_opts={CAINFO: 'path/to/my/cacert.pem'})
+  api.download_all(products, pass_through_opts={CAINFO: 'path/to/my/cacert.pem'})

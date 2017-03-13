@@ -139,6 +139,25 @@ def test_sentinel2_flag():
     assert result.output.split("\n")[2] == expected
 
 
+@my_vcr.use_cassette
+@pytest.mark.scihub
+def test_footprints_cli(tmpdir):
+    runner = CliRunner()
+    result = runner.invoke(
+        cli,
+        ['search'] +
+        _api_auth +
+        ['tests/map.geojson',
+         '--url', 'https://scihub.copernicus.eu/apihub/',
+         '-s', '20151219',
+         '-e', '20151228',
+         '--path', str(tmpdir),
+         '--sentinel2',
+         '--footprints'],
+        catch_exceptions=False
+    )
+
+
 @pytest.mark.scihub
 def test_sentinel2_orderby_cloud():
     runner = CliRunner()
@@ -167,13 +186,11 @@ def test_sentinel2_orderby_date():
         ['search'] +
         _api_auth +
         ['tests/map.geojson',
-         '--url', 'https://scihub.copernicus.eu/apihub/',
          '-s', '20151219',
          '-e', '20151228',
-         '-o', 'date',
-         '--sentinel2'],
+         '--sentinel2',
+         '-o', 'date'],
         catch_exceptions=False
     )
-
     expected = "Product 37ecee60-23d8-4ec2-a65f-2de24f51d30e - Date: 2015-12-19T14:58:32Z, Instrument: MSI, Mode: , Satellite: Sentinel-2, Size: 6.13 GB"
     assert result.output.split("\n")[0] == expected

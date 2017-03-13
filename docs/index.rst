@@ -20,12 +20,10 @@ and a powerful Python API.
   from sentinelsat.sentinel import SentinelAPI, get_coordinates
 
   api = SentinelAPI('user', 'password')
-  api.query(
-    get_coordinates("search_polygon.geojson"),
-    producttype="SLC",
-    orbitdirection="ASCENDING"
-  )
-  api.download_all()
+  products = api.query(get_coordinates('search_polygon.geojson'), \
+                     producttype = 'SLC', \
+                     orbitdirection='ASCENDING')
+  api.download_all(products)
 
 
 Contents

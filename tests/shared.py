@@ -18,9 +18,18 @@ elif vcr_option == "reset_all":
     for cassette_file in glob('tests/vcr_cassettes/*.yaml'):
         unlink(cassette_file)
 
+def scrub_request(request):
+    if "Authorization" in request.headers:
+        del request.headers["Authorization"]
+    if "Set-Cookie" in request.headers:
+        del request.headers["Set-Cookie"]
+    return request
+
 def scrub_response(response):
     if "Set-Cookie" in response["headers"]:
         del response["headers"]["Set-Cookie"]
+    if "Authorization" in response["headers"]:
+        del response["headers"]["Authorization"]
     return response
 
 if vcr_option != "disable":
@@ -31,6 +40,7 @@ if vcr_option != "disable":
         path_transformer=vcr.VCR.ensure_suffix('.yaml'),
         match_on=['url', 'method', 'query'],
         filter_headers=['Set-Cookie'],
+        before_record_request=scrub_request,
         before_record_response=scrub_response,
         decode_compressed_response=True
     )
