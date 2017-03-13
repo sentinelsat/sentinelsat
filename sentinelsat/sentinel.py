@@ -11,7 +11,6 @@ from datetime import date, datetime, timedelta
 from os import remove
 from os.path import exists, getsize, join
 from time import sleep
-
 import geojson
 import homura
 import html2text
@@ -71,6 +70,8 @@ class SentinelAPI(object):
         """Query the SciHub API with the coordinates of an area, a date interval
         and any other search keywords accepted by the SciHub API.
         """
+        if 'platformname' in keywords.keys():
+            self.sentinel_version = keywords['platformname']
         query = self.format_query(area, initial_date, end_date, **keywords)
         return self.load_query(query)
 
@@ -399,6 +400,43 @@ class SentinelAPI(object):
         )
         return urljoin(self.api_url, blank)
 
+    def order_by(self, products, by):
+        """Order the products according the begin date"""
+        out = dict()
+        if by not in ['date',  'cloudcoverpercentage']:
+            print("The order method is not supported returning data not sorted"
+                  ", please choose 'date' or 'cloudcoverpercentage'")
+            return products
+        if by == 'cloudcoverpercentage' and self.sentinel_version == 'Sentinel-1':
+            print("Sentinel-1 product has no cloudcoverpercentage information, "
+                  "returning data not sorted")
+            return products
+        for prod in products:
+            if by == 'date':
+                for dat in prod['date']:
+                    if dat['name'] == 'beginposition':
+                        if dat['content'] not in out.keys():
+                            out[dat['content']] = []
+                        out[dat['content']].append(prod)
+            elif by == 'cloudcoverpercentage':
+                try:
+                    dat = prod['double']
+                except:
+                    if 200.0 not in out.keys():
+                        out[200.0] = []
+                    out[200.0].append(prod)
+                    continue
+                if dat['name'] == 'cloudcoverpercentage':
+                    if float(dat['content']) not in out.keys():
+                            out[float(dat['content'])] = []
+                    prod['summary'] += ", Cloud Cover: {val} %".format(val=dat['content'])
+                    out[float(dat['content'])].append(prod)
+        final = []
+        for i in OrderedDict(sorted(out.items(), key=lambda t: t[0])):
+            for scene in out[i]:
+                final.append(scene)
+        return final
+
 
 class SentinelAPIError(Exception):
     """Invalid responses from SciHub.
@@ -420,7 +458,6 @@ class InvalidChecksumError(Exception):
     """MD5 checksum of local file does not match the one from the server.
     """
     pass
-
 
 def get_coordinates(geojson_file, feature_number=0):
     """Return the coordinates of a polygon of a GeoJSON file.

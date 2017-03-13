@@ -69,11 +69,14 @@ def cli():
 @click.option(
     '-c', '--cloud', type=int,
     help='Maximum cloud cover in percent. (Automatically sets --sentinel2)')
+@click.option(
+    '-o', '--orderby', type=click.Choice(['date', 'cloudcoverpercentage']),
+    help='Ordered output according the choosen value')
 @click.version_option(version=sentinelsat_version, prog_name="sentinelsat")
 
 def search(
         user, password, geojson, start, end, download, md5,
-        sentinel1, sentinel2, cloud, footprints, path, query, url):
+        sentinel1, sentinel2, cloud, footprints, path, query, url, orderby):
     """Search for Sentinel products and, optionally, download all the results
     and/or create a geojson file with the search result footprints.
     Beyond your SciHub user and password, you must pass a geojson file
@@ -97,6 +100,9 @@ def search(
         search_kwargs.update(dict([i.split('=') for i in query.split(',')]))
 
     products = api.query(get_coordinates(geojson), start, end, **search_kwargs)
+
+    if orderby:
+        products = api.order_by(products, orderby)
 
     if footprints is True:
         footprints_geojson = api.to_geojson(products)
