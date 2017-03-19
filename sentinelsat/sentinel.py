@@ -159,7 +159,7 @@ class SentinelAPI(object):
             return value
 
         if parse_values:
-            converters = {'date': convert_date, 'int': int, 'float': float, 'double': float}
+            converters = {'date': convert_date, 'int': int, 'long': int, 'float': float, 'double': float}
         else:
             converters = {}
         # Keep the string type by default
@@ -188,7 +188,10 @@ class SentinelAPI(object):
                     else:
                         f = converters.get(key, default_converter)
                         for p in properties:
-                            product_dict[p['name']] = f(p['content'])
+                            try:
+                                product_dict[p['name']] = f(p['content'])
+                            except(KeyError):  # Sentinel-3 has one element 'arr' which violates the name:content convention
+                                product_dict[p['name']] = f(p['str'])
 
         return output
 
