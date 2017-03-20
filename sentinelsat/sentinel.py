@@ -215,6 +215,14 @@ class SentinelAPI(object):
         df.drop(['footprint', 'gmlfootprint'], axis=1, inplace=True)
         return gpd.GeoDataFrame(df, crs=crs, geometry=geometry)
 
+    @staticmethod
+    def dataframe_to_products_list(products_df):
+        """Convert dataframe created with to_dataframe back to list of products for download_all"""
+        products = []
+        for title, row in products_df.iterrows():
+            products.append(dict(title=title, id=row['id']))
+        return products
+
     def get_product_odata(self, id):
         """Access SciHub OData API to get info about a Product. Returns a dict
         containing the id, title, size, md5sum, date, footprint and download url
@@ -328,7 +336,7 @@ class SentinelAPI(object):
 
     def download_all(self, products, directory_path='.', max_attempts=10, checksum=False, check_existing=False,
                      **kwargs):
-        """Download all products returned in query().
+        """Download a list of products
 
         File names on the server are used for the downloaded files, e.g.
         "S1A_EW_GRDH_1SDH_20141003T003840_20141003T003920_002658_002F54_4DD1.zip".
@@ -338,8 +346,8 @@ class SentinelAPI(object):
 
         Parameters
         ----------
-        products : list
-            List of products returned with self.query()
+        products : list of dict
+            List of products dicts with keys 'title' and 'id'
         directory_path : string
             Directory where the downloaded files will be downloaded
         max_attempts : int, optional
