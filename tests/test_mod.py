@@ -396,6 +396,23 @@ def test_to_geopandas():
     gdf = api.to_geodataframe(products)
 
 
+@my_vcr.use_cassette('test_to_dict')
+@pytest.mark.pandas
+@pytest.mark.geopandas
+@pytest.mark.scihub
+def test_pandas_to_products_list():
+    api = SentinelAPI(**_api_auth)
+    products = api.query(
+        get_coordinates('tests/map.geojson'),
+        "20151219", "20151228", platformname="Sentinel-2"
+    )
+    df = api.to_dataframe(products)
+    products_conv = api.dataframe_to_products_list(df)
+    title_id_conv = set([(d['title'], d['id']) for d in products_conv])
+    title_id_orig = set([(d['title'], d['id']) for d in products])
+    assert title_id_conv == title_id_orig
+
+
 @pytest.mark.homura
 @pytest.mark.scihub
 def test_download(tmpdir):
