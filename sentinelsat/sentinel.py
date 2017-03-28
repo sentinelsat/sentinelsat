@@ -522,7 +522,7 @@ def _geojson_poly_from_wkt(wkt):
     """Return a geojson Polygon object from a WKT string"""
     coordlist = re.search(r'\(\s*([^()]+)\s*\)', wkt).group(1)
     coord_list_split = (coord.split(' ') for coord in coordlist.split(','))
-    poly = geojson.Polygon([(float(coord[0]), float(coord[1])) for coord in coord_list_split])
+    poly = geojson.Polygon([[(float(coord[0]), float(coord[1])) for coord in coord_list_split]])
     return poly
 
 
