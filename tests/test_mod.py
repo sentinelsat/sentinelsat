@@ -8,8 +8,8 @@ import py.path
 import pytest
 import requests_mock
 
-from sentinelsat.sentinel import (InvalidChecksumError, SentinelAPI, SentinelAPIError, _convert_timestamp, _format_date,
-                                  get_coordinates, _md5_compare)
+from sentinelsat.sentinel import InvalidChecksumError, SentinelAPI, SentinelAPIError, _convert_timestamp, _format_date, \
+    _md5_compare, get_coordinates
 from .shared import my_vcr
 
 _api_auth = dict(user=environ.get('SENTINEL_USER'), password=environ.get('SENTINEL_PASSWORD'))
@@ -290,7 +290,12 @@ def test_footprints_s1():
     with open('tests/expected_search_footprints_s1.geojson', 'r') as geojson_file:
         expected_footprints = geojson.loads(geojson_file.read())
         # to compare unordered lists (JSON objects) they need to be sorted or changed to sets
-        assert set(api.to_geojson(products)) == set(expected_footprints)
+        footprints = api.to_geojson(products)
+        for footprint in footprints['features']:
+            print(footprint)
+            validation = geojson.is_valid(footprint['geometry'])
+            assert validation['valid'] == 'yes', validation['message']
+        assert set(footprints) == set(expected_footprints)
 
 
 @my_vcr.use_cassette
@@ -305,7 +310,12 @@ def test_footprints_s2():
     with open('tests/expected_search_footprints_s2.geojson', 'r') as geojson_file:
         expected_footprints = geojson.loads(geojson_file.read())
         # to compare unordered lists (JSON objects) they need to be sorted or changed to sets
-        assert set(api.to_geojson(products)) == set(expected_footprints)
+        footprints = api.to_geojson(products)
+        for footprint in footprints['features']:
+            print(footprint)
+            validation = geojson.is_valid(footprint['geometry'])
+            assert validation['valid'] == 'yes', validation['message']
+        assert set(footprints) == set(expected_footprints)
 
 
 @my_vcr.use_cassette
@@ -341,6 +351,7 @@ def test_get_products_size():
     # Rounded to zero
     assert api.get_products_size(products) == 0
 
+
 @my_vcr.use_cassette
 @pytest.mark.scihub
 def test_to_dict():
@@ -354,6 +365,7 @@ def test_to_dict():
     assert isinstance(dictionary, dict)
     # check if dictionary has id key
     assert 'S2A_OPER_PRD_MSIL1C_PDMC_20151228T112701_R110_V20151227T142229_20151227T142229' in dictionary
+
 
 @my_vcr.use_cassette('test_to_dict')
 @pytest.mark.scihub
