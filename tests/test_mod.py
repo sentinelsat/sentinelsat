@@ -27,6 +27,18 @@ _large_query = dict(
     end_date=datetime(2015, 12, 31))
 
 
+@pytest.fixture(scope='session')
+@my_vcr.use_cassette('products_fixture')
+def products():
+    """A fixture for tests that need some non-specific set of products as input."""
+    api = SentinelAPI(**_api_auth)
+    products = api.query(
+        get_coordinates('tests/map.geojson'),
+        "20151219", "20151228"
+    )
+    return products
+
+
 @pytest.mark.fast
 def test_format_date():
     assert _format_date(datetime(2015, 1, 1)) == '2015-01-01T00:00:00Z'
@@ -287,35 +299,30 @@ def test_footprints_s1():
         datetime(2014, 10, 10), datetime(2014, 12, 31), producttype="GRD"
     )
 
+    footprints = api.to_geojson(products)
+    for footprint in footprints['features']:
+        print(footprint)
+        validation = geojson.is_valid(footprint['geometry'])
+        assert validation['valid'] == 'yes', validation['message']
+
     with open('tests/expected_search_footprints_s1.geojson', 'r') as geojson_file:
         expected_footprints = geojson.loads(geojson_file.read())
-        # to compare unordered lists (JSON objects) they need to be sorted or changed to sets
-        footprints = api.to_geojson(products)
-        for footprint in footprints['features']:
-            print(footprint)
-            validation = geojson.is_valid(footprint['geometry'])
-            assert validation['valid'] == 'yes', validation['message']
-        assert set(footprints) == set(expected_footprints)
+    # to compare unordered lists (JSON objects) they need to be sorted or changed to sets
+    assert set(footprints) == set(expected_footprints)
 
 
-@my_vcr.use_cassette
 @pytest.mark.scihub
-def test_footprints_s2():
-    api = SentinelAPI(**_api_auth)
-    products = api.query(
-        get_coordinates('tests/map.geojson'),
-        "20151219", "20151228", platformname="Sentinel-2"
-    )
+def test_footprints_s2(products):
+    footprints = SentinelAPI.to_geojson(products)
+    for footprint in footprints['features']:
+        print(footprint)
+        validation = geojson.is_valid(footprint['geometry'])
+        assert validation['valid'] == 'yes', validation['message']
 
     with open('tests/expected_search_footprints_s2.geojson', 'r') as geojson_file:
         expected_footprints = geojson.loads(geojson_file.read())
-        # to compare unordered lists (JSON objects) they need to be sorted or changed to sets
-        footprints = api.to_geojson(products)
-        for footprint in footprints['features']:
-            print(footprint)
-            validation = geojson.is_valid(footprint['geometry'])
-            assert validation['valid'] == 'yes', validation['message']
-        assert set(footprints) == set(expected_footprints)
+    # to compare unordered lists (JSON objects) they need to be sorted or changed to sets
+    assert set(footprints) == set(expected_footprints)
 
 
 @my_vcr.use_cassette
@@ -334,78 +341,49 @@ def test_s2_cloudcover():
     assert products[2]["id"] == "0848f6b8-5730-4759-850e-fc9945d42296"
 
 
-@my_vcr.use_cassette
 @pytest.mark.scihub
-def test_get_products_size():
-    api = SentinelAPI(**_api_auth)
-    products = api.query(
-        get_coordinates('tests/map.geojson'),
-        "20151219", "20151228", platformname="Sentinel-2"
-    )
-    assert api.get_products_size(products) == 63.58
+def test_get_products_size(products):
+    assert SentinelAPI.get_products_size(products) == 90.94
 
-    # reset products
-    # load new very small query
-    products = api.load_query("S1A_WV_OCN__2SSH_20150603T092625_20150603T093332_006207_008194_521E")
+    # load a new very small query
+    api = SentinelAPI(**_api_auth)
+    with my_vcr.use_cassette('test_get_products_size'):
+        products = api.load_query("S1A_WV_OCN__2SSH_20150603T092625_20150603T093332_006207_008194_521E")
     assert len(products) > 0
     # Rounded to zero
-    assert api.get_products_size(products) == 0
+    assert SentinelAPI.get_products_size(products) == 0
 
 
-@my_vcr.use_cassette
 @pytest.mark.scihub
-def test_to_dict():
-    api = SentinelAPI(**_api_auth)
-    products = api.query(
-        get_coordinates('tests/map.geojson'),
-        "20151219", "20151228", platformname="Sentinel-2"
-    )
-    dictionary = api.to_dict(products)
+def test_to_dict(products):
+    dictionary = SentinelAPI.to_dict(products)
     # check the type
     assert isinstance(dictionary, dict)
     # check if dictionary has id key
     assert 'S2A_OPER_PRD_MSIL1C_PDMC_20151228T112701_R110_V20151227T142229_20151227T142229' in dictionary
 
 
-@my_vcr.use_cassette('test_to_dict')
 @pytest.mark.scihub
-def test_to_dict():
-    api = SentinelAPI(**_api_auth)
-    products = api.query(
-        get_coordinates('tests/map.geojson'),
-        "20151219", "20151228", platformname="Sentinel-2"
-    )
-    dictionary = api.to_dict(products)
+def test_to_dict(products):
+    dictionary = SentinelAPI.to_dict(products)
     # check the type
     assert isinstance(dictionary, dict)
     # check if dictionary has id key
     assert 'S2A_OPER_PRD_MSIL1C_PDMC_20151228T112701_R110_V20151227T142229_20151227T142229' in dictionary
 
 
-@my_vcr.use_cassette('test_to_dict')
 @pytest.mark.pandas
 @pytest.mark.scihub
-def test_to_pandas():
-    api = SentinelAPI(**_api_auth)
-    products = api.query(
-        get_coordinates('tests/map.geojson'),
-        "20151219", "20151228", platformname="Sentinel-2"
-    )
-    df = api.to_dataframe(products)
+def test_to_pandas(products):
+    df = SentinelAPI.to_dataframe(products)
     assert 'S2A_OPER_PRD_MSIL1C_PDMC_20151228T112701_R110_V20151227T142229_20151227T142229' in df.index
 
 
-@my_vcr.use_cassette('test_to_dict')
 @pytest.mark.pandas
 @pytest.mark.geopandas
 @pytest.mark.scihub
-def test_to_geopandas():
-    api = SentinelAPI(**_api_auth)
-    products = api.query(
-        get_coordinates('tests/map.geojson'),
-        "20151219", "20151228", platformname="Sentinel-2"
-    )
-    gdf = api.to_geodataframe(products)
+def test_to_geopandas(products):
+    gdf = SentinelAPI.to_geodataframe(products)
 
 
 @pytest.mark.homura

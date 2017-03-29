@@ -5,7 +5,7 @@ interactions:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
       Connection: [keep-alive]
-      User-Agent: [sentinelsat/0.8.1]
+      User-Agent: [sentinelsat/0.9.1]
     method: GET
     uri: https://scihub.copernicus.eu/apihub/odata/v1/Products('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')/?$format=json
   response:
@@ -18,7 +18,7 @@ interactions:
     headers:
       Content-Type: [application/json]
       DataServiceVersion: ['2.0']
-      Date: ['Mon, 20 Feb 2017 14:40:39 GMT']
+      Date: ['Wed, 29 Mar 2017 12:38:48 GMT']
       Pragma: [no-cache]
       Server: [Apache-Coyote/1.1]
       Transfer-Encoding: [chunked]
@@ -31,8 +31,7 @@ interactions:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
       Connection: [keep-alive]
-      Cookie: [dhusAuth=2dbe9c83a28e4a5dea8b4d5b11460e29; dhusIntegrity=6e7456b410313f061b3e0e8a991b8741200ad267]
-      User-Agent: [sentinelsat/0.8.1]
+      User-Agent: [sentinelsat/0.9.1]
     method: GET
     uri: https://scihub.copernicus.eu/apihub/odata/v1/Products('44517f66-9845-4792-a988-b5ae6e81fd3e')/?$format=json
   response:
@@ -58,7 +57,7 @@ interactions:
     headers:
       Content-Type: [application/json]
       DataServiceVersion: ['2.0']
-      Date: ['Mon, 20 Feb 2017 14:40:39 GMT']
+      Date: ['Wed, 29 Mar 2017 12:38:48 GMT']
       Pragma: [no-cache]
       Server: [Apache-Coyote/1.1]
       Transfer-Encoding: [chunked]
