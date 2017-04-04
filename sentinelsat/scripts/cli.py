@@ -62,10 +62,10 @@ def cli():
     """)
 @click.option(
     '--sentinel1', is_flag=True,
-    help='Limit search to Sentinel-1 products.')
+    help='DEPRECATED: Please use --sentinel instead. Limit search to Sentinel-1 products.')
 @click.option(
     '--sentinel2', is_flag=True,
-    help='Limit search to Sentinel-2 products.')
+    help='DEPRECATED: Please use --sentinel instead. Limit search to Sentinel-2 products.')
 @click.option(
     '-c', '--cloud', type=int,
     help='Maximum cloud cover in percent. (Automatically sets --sentinel2)')
@@ -90,8 +90,10 @@ def search(
             "cloudcoverpercentage": "[0 TO %s]" % cloud})
     elif sentinel2:
         search_kwargs.update({"platformname": "Sentinel-2"})
+        logger.info('DEPRECATED: Please use --sentinel instead')
     elif sentinel1:
         search_kwargs.update({"platformname": "Sentinel-1"})
+        logger.info('DEPRECATED: Please use --sentinel instead')
 
     if query is not None:
         search_kwargs.update(dict([i.split('=') for i in query.split(',')]))

@@ -3,6 +3,13 @@ Change Log
 
 All notable changes to ``sentinelsat`` will be listed here.
 
+[0.9.X] - 2017-MM-DD
+-------
+
+Deprecated
+~~~~~
+- ``--sentinel1`` and ``--sentinel2`` will be removed with the next major release
+
 [0.9.1] - 2017-03-06
 -------
 
