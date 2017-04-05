@@ -5,6 +5,7 @@ import logging
 import os
 
 from sentinelsat.sentinel import SentinelAPI, get_coordinates
+from sentinelsat import __version__ as sentinelsat_version
 
 logger = logging.getLogger('sentinelsat')
 
@@ -68,6 +69,8 @@ def cli():
 @click.option(
     '-c', '--cloud', type=int,
     help='Maximum cloud cover in percent. (Automatically sets --sentinel2)')
+@click.version_option(version=sentinelsat_version, prog_name="sentinelsat")
+
 def search(
         user, password, geojson, start, end, download, md5,
         sentinel1, sentinel2, cloud, footprints, path, query, url):
@@ -77,6 +80,7 @@ def search(
     containing the polygon of the area you want to search for. If you
     don't specify the start and end dates, it will search in the last 24 hours.
     """
+
     api = SentinelAPI(user, password, url)
 
     search_kwargs = {}
@@ -133,6 +137,8 @@ def search(
     help="""Verify the MD5 checksum and write corrupt product ids and filenames
     to corrupt_scenes.txt.')
     """)
+@click.version_option(version=sentinelsat_version, prog_name="sentinelsat")
+
 def download(user, password, productid, path, md5, url):
     """Download a Sentinel Product. It just needs your SciHub user and password
     and the id of the product you want to download.

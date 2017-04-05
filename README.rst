@@ -82,7 +82,7 @@ Python Library
   products = api.query(get_coordinates('map.geojson'), \
                        '20151219', date(2015, 12, 29), \
                        platformname = 'Sentinel-2', \
-                       cloudcoverpercentage = '[0 TO 30]'})
+                       cloudcoverpercentage = '[0 TO 30]')
 
   # download all results from the search
   api.download_all(products)
@@ -112,7 +112,7 @@ Example
 ^^^^^^^
 
 Search and download all Sentinel-1 scenes of type SLC, in descending
-orbit for the year 2015.
+orbit, for the year 2015.
 
 .. code-block:: bash
 
@@ -149,6 +149,8 @@ Options
 +----+--------------+------+--------------------------------------------------------------------------------------------+
 |    | -\-help      |      | Show help message and exit.                                                                |
 +----+--------------+------+--------------------------------------------------------------------------------------------+
+|    | -\-version   |      | Show version number and exit.                                                              |
++----+--------------+------+--------------------------------------------------------------------------------------------+
 
 Troubleshooting
 ===============
@@ -157,7 +159,10 @@ The download from Scihub will fail if the server certificate cannot be verified
 because no default CA bundle is defined, as on Windows, or when the CA bundle is
 outdated. In most cases the easiest solution is to install or update ``certifi``:
 
-``pip install -U certifi``
+.. code-block:: bash
+
+  pip install -U certifi
+
 You can also override the the path setting to the PEM file of the CA bundle
 using the ``pass_through_opts`` keyword argument when calling ``api.download()``
 or ``api.download_all()``:
@@ -187,11 +192,26 @@ exceptions are downloading tests, which can be disabled with ``-m "not homura"``
 To allow the tests to run actual queries on SciHub add ``--vcr disable`` to ``py.test`` arguments. If you wish to
 update the recordings use ``--vcr record_new`` or ``--vcr reset_all``.
 
+Documentation
+=============
+
+To build the documentation:
+
+.. code-block:: console
+
+    git clone https://github.com/ibamacsr/sentinelsat.git
+    cd sentinelsat
+    pip install -e .[docs]
+    cd docs
+    make html
+
+The full documentation is also published at http://sentinelsat.readthedocs.io/.
+
 
 Changelog
 =========
 
-Check `CHANGELOG <CHANGELOG.rst>`_.
+See `CHANGELOG <CHANGELOG.rst>`_.
 
 Contributors
 =============

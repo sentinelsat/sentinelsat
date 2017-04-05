@@ -132,7 +132,8 @@ class SentinelAPI(object):
 
     @staticmethod
     def to_geojson(products):
-        """Return the footprints of the resulting scenes in GeoJSON format"""
+        """Return the products from a query response as a GeoJSON with the values in their appropriate Python types.
+        """
         feature_list = []
         products_dict = SentinelAPI.to_dict(products, parse_values=False)
         for i, (title, props) in enumerate(products_dict.items()):
@@ -150,28 +151,19 @@ class SentinelAPI(object):
         """Return the products from a query response as a dictionary with the values in their appropriate Python types.
         """
 
-        def convert_date(name, content):
-            value = content
+        def convert_date(content):
             try:
                 value = datetime.strptime(content, '%Y-%m-%dT%H:%M:%SZ')
             except ValueError:
-                try:
-                    value = datetime.strptime(content, '%Y-%m-%dT%H:%M:%S.%fZ')
-                except ValueError:
-                    print("Date '{dat}' is not parsable".format(dat=content))
-            return name, value
+                value = datetime.strptime(content, '%Y-%m-%dT%H:%M:%S.%fZ')
+            return value
 
         if parse_values:
-            converters = {
-                'date': convert_date,
-                'int': lambda name, content: (name, int(content)),
-                'float': lambda name, content: (name, float(content)),
-                'double': lambda name, content: (name, float(content))
-            }
+            converters = {'date': convert_date, 'int': int, 'float': float, 'double': float}
         else:
             converters = {}
         # Keep the string type by default
-        default_converter = lambda name, content: (name, content)
+        default_converter = lambda x: x
 
         output = OrderedDict()
         for prod in products:
@@ -196,13 +188,14 @@ class SentinelAPI(object):
                     else:
                         f = converters.get(key, default_converter)
                         for p in properties:
-                            k, v = f(p['name'], p['content'])
-                            product_dict[k] = v
+                            product_dict[p['name']] = f(p['content'])
 
         return output
 
     @staticmethod
     def to_dataframe(products):
+        """Return the products from a query response as a Pandas DataFrame with the values in their appropriate Python types.
+        """
         import pandas as pd
 
         products_dict = SentinelAPI.to_dict(products)
@@ -210,6 +203,8 @@ class SentinelAPI(object):
 
     @staticmethod
     def to_geodataframe(products):
+        """Return the products from a query response as a GeoPandas GeoDataFrame with the values in their appropriate Python types.
+        """
         import geopandas as gpd
         import shapely.wkt
 
@@ -372,10 +367,10 @@ class SentinelAPI(object):
                     path, product_info = self.download(product['id'], directory_path, checksum, check_existing,
                                                        **kwargs)
                     download_successful = True
-                except (KeyboardInterrupt, SystemExit, SystemError, MemoryError):
+                except (KeyboardInterrupt, SystemExit):
                     raise
                 except InvalidChecksumError:
-                    self.logger.info("Invalid checksum. The downloaded file is corrupted.")
+                    self.logger.warning("Invalid checksum. The downloaded file '{}' is corrupted.".format(path))
                 except:
                     self.logger.exception("There was an error downloading %s" % product['title'])
                 remaining_attempts -= 1
@@ -489,7 +484,7 @@ def _format_date(in_date):
 
 
 def _convert_timestamp(in_date):
-    """Convert the timestamp received from Products API, to
+    """Convert the timestamp received from OData JSON API, to
     YYYY-MM-DDThh:mm:ssZ string format.
     """
     in_date = int(in_date.replace('/Date(', '').replace(')/', '')) / 1000.

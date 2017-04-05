@@ -40,6 +40,11 @@ setup(name='sentinelsat',
               'requests-mock',
               'vcrpy'
           ],
+          'docs': [
+              'sphinx',
+              'numpydoc',
+              'sphinx_rtd_theme'
+          ],
       },
       entry_points="""
       [console_scripts]

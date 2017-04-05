@@ -3,14 +3,24 @@ Change Log
 
 All notable changes to ``sentinelsat`` will be listed here.
 
-[0.9]
+[0.9.1] - 2017-03-06
+-------
+
+Added
+~~~~~
+- ``--version`` option to command line utilities
+- install requirements for building the documentation
+- documentation of sorting with ``to_*`` convenience functions
+
+[0.9] - 2017-02-26
 -----
 
 Added
 ~~~~~
 
--  Added ``to_dict``, ``to_dataframe`` and ``to_geodataframe`` which convert the response content to respective types.
-The pandas, geopandas and shapely dependencies are not installed by default.
+-  Added ``to_dict``, ``to_dataframe`` and ``to_geodataframe`` which convert the
+response content to respective types. The pandas, geopandas and shapely dependencies
+are not installed by default.
 
 Changed
 ~~~~~~~
