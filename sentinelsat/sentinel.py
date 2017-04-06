@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
-from __future__ import print_function
-from __future__ import absolute_import
+from __future__ import absolute_import, print_function
 
 import hashlib
 import logging
@@ -139,12 +138,16 @@ class SentinelAPI(object):
         """Return the products from a query response as a GeoJSON with the values in their appropriate Python types.
         """
         feature_list = []
-        products_dict = SentinelAPI.to_dict(products, parse_values=False)
-        for i, (title, props) in enumerate(products_dict.items()):
-            props['title'] = title
+        for i, (product_id, props) in enumerate(products.items()):
+            props = props.copy()
+            props['id'] = product_id
             poly = _geojson_poly_from_wkt(props['footprint'])
             del props['footprint']
             del props['gmlfootprint']
+            # Fix "'datetime' is not JSON serializable"
+            for k, v in props.items():
+                if isinstance(v, (date, datetime)):
+                    props[k] = v.strftime('%Y-%m-%dT%H:%M:%S.%fZ')
             feature_list.append(
                 geojson.Feature(geometry=poly, id=i, properties=props)
             )
@@ -337,10 +340,10 @@ class SentinelAPI(object):
 
     @staticmethod
     def get_products_size(products):
-        """Return the total filesize in GB of all products in the query"""
+        """Return the total file size in GB of all products in the query"""
         size_total = 0
-        for product in products:
-            size_product = next(x for x in product["str"] if x["name"] == "size")["content"]
+        for title, props in products.items():
+            size_product = props["size"]
             size_value = float(size_product.split(" ")[0])
             size_unit = str(size_product.split(" ")[1])
             if size_unit == "MB":
