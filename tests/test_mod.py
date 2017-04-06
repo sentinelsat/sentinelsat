@@ -405,7 +405,7 @@ def test_to_pandas(products):
 @pytest.mark.scihub
 def test_to_geopandas(products):
     gdf = SentinelAPI.to_geodataframe(products)
-    assert gdf.unary_union.area == pytest.approx(132.16, 0.01)
+    assert abs(gdf.unary_union.area - 132.16) < 0.01
 
 
 @pytest.mark.homura

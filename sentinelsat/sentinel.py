@@ -439,9 +439,9 @@ def _format_date(in_date):
         return in_date.strftime('%Y-%m-%dT%H:%M:%SZ')
 
     in_date = in_date.strip()
-    if re.fullmatch(r"NOW(?:-\d+(?:MONTH|DAY|HOUR|MINUTE)S?)?", in_date):
+    if re.match(r'^NOW(?:-\d+(?:MONTH|DAY|HOUR|MINUTE)S?)?$', in_date):
         return in_date
-    if re.fullmatch(r"\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(?:\.\d+)?Z", in_date):
+    if re.match(r'^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(?:\.\d+)?Z$', in_date):
         return in_date
 
     try:
