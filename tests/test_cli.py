@@ -220,7 +220,6 @@ def test_download_many(tmpdir):
             command + ['--md5'],
             catch_exceptions=False
         )
-        print(result)
 
     assert tmpdir.join('corrupt_scenes.txt').check()
     with tmpdir.join('corrupt_scenes.txt').open() as f:

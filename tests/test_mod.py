@@ -17,12 +17,12 @@ _api_auth = dict(user=environ.get('SENTINEL_USER'), password=environ.get('SENTIN
 _api_kwargs = dict(_api_auth, api_url='https://scihub.copernicus.eu/apihub/')
 
 _small_query = dict(
-    area='0 0,1 1,0 1,0 0',
+    area='POLYGON((0 0,1 1,0 1,0 0))',
     initial_date=datetime(2015, 1, 1),
     end_date=datetime(2015, 1, 2))
 
 _large_query = dict(
-    area='0 0,0 10,10 10,10 0,0 0',
+    area='POLYGON((0 0,0 10,10 10,10 0,0 0))',
     initial_date=datetime(2015, 1, 1),
     end_date=datetime(2015, 12, 31))
 
@@ -110,17 +110,24 @@ def test_SentinelAPI_wrong_credentials():
 @pytest.mark.fast
 def test_api_query_format():
     api = SentinelAPI("mock_user", "mock_password")
+    wkt = 'POLYGON((0 0,1 1,0 1,0 0))'
 
     now = datetime.now()
-    query = api.format_query('0 0,1 1,0 1,0 0', end_date=now)
     last_24h = _format_date(now - timedelta(hours=24))
+    query = api.format_query(wkt, initial_date=last_24h, end_date=now)
     assert query == '(beginPosition:[%s TO %s]) ' % (last_24h, _format_date(now)) + \
                     'AND (footprint:"Intersects(POLYGON((0 0,1 1,0 1,0 0)))")'
 
-    query = api.format_query('0 0,1 1,0 1,0 0', end_date=now, producttype='SLC')
-    assert query == '(beginPosition:[%s TO %s]) ' % (last_24h, _format_date(now)) + \
+    query = api.format_query(wkt, end_date=now, producttype='SLC')
+    assert query == '(beginPosition:[NOW-1DAY TO %s]) ' % (_format_date(now)) + \
                     'AND (footprint:"Intersects(POLYGON((0 0,1 1,0 1,0 0)))") ' + \
                     'AND (producttype:SLC)'
+
+    query = api.format_query()
+    assert query == '(beginPosition:[NOW-1DAY TO NOW])'
+
+    query = api.format_query(area=None, initial_date=None, end_date=None)
+    assert query == ''
 
 
 @my_vcr.use_cassette
@@ -179,10 +186,10 @@ def test_large_query():
 
 @pytest.mark.fast
 def test_get_coordinates():
-    coords = ('-66.2695312 -8.0592296,-66.2695312 0.7031074,' +
-              '-57.3046875 0.7031074,-57.3046875 -8.0592296,-66.2695312 -8.0592296')
-    assert get_coordinates('tests/map.geojson') == coords
-    assert get_coordinates('tests/map_z.geojson') == coords
+    wkt = ('POLYGON((-66.2695312 -8.0592296,-66.2695312 0.7031074,' +
+           '-57.3046875 0.7031074,-57.3046875 -8.0592296,-66.2695312 -8.0592296))')
+    assert get_coordinates('tests/map.geojson') == wkt
+    assert get_coordinates('tests/map_z.geojson') == wkt
 
 
 @my_vcr.use_cassette

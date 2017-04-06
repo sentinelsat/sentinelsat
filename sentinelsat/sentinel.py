@@ -66,7 +66,7 @@ class SentinelAPI(object):
         self._last_query = None
         self._last_status_code = None
 
-    def query(self, area, initial_date=None, end_date=datetime.now(), **keywords):
+    def query(self, area=None, initial_date='NOW-1DAY', end_date='NOW', **keywords):
         """Query the SciHub API with the coordinates of an area, a date interval
         and any other search keywords accepted by the SciHub API.
         """
@@ -74,23 +74,23 @@ class SentinelAPI(object):
         return self.query_plain(query)
 
     @staticmethod
-    def format_query(area, initial_date=None, end_date=datetime.now(), **keywords):
+    def format_query(area=None, initial_date='NOW-1DAY', end_date='NOW', **keywords):
         """Create the SciHub API query string
         """
-        if initial_date is None:
-            initial_date = end_date - timedelta(hours=24)
+        query_parts = []
+        if initial_date is not None and end_date is not None:
+            query_parts += ['(beginPosition:[%s TO %s])' % (
+                _format_date(initial_date),
+                _format_date(end_date)
+            )]
 
-        acquisition_date = '(beginPosition:[%s TO %s])' % (
-            _format_date(initial_date),
-            _format_date(end_date)
-        )
-        query_area = ' AND (footprint:"Intersects(POLYGON((%s)))")' % area
+        if area is not None:
+            query_parts += ['(footprint:"Intersects(%s)")' % area]
 
-        filters = ''
-        for kw in sorted(keywords.keys()):
-            filters += ' AND (%s:%s)' % (kw, keywords[kw])
+        for kw in sorted(keywords):
+            query_parts += ['(%s:%s)' % (kw, keywords[kw])]
 
-        query = ''.join([acquisition_date, query_area, filters])
+        query = ' AND '.join(query_parts)
         return query
 
     def query_plain(self, query):
@@ -404,7 +404,7 @@ def get_coordinates(geojson_file, feature_number=0):
     coordinates = geometry['coordinates'][0]
     # precision of 7 decimals equals 1mm at the equator
     coordinates = ['%.7f %.7f' % (coord[0], coord[1]) for coord in coordinates]
-    return ','.join(coordinates)
+    return 'POLYGON((%s))' % (','.join(coordinates))
 
 
 def _fillin_cainfo(kwargs_dict):
