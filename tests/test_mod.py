@@ -8,8 +8,8 @@ import py.path
 import pytest
 import requests_mock
 
-from sentinelsat.sentinel import InvalidChecksumError, SentinelAPI, SentinelAPIError, _convert_timestamp, _format_date, \
-    _md5_compare, get_coordinates
+from sentinelsat import InvalidChecksumError, SentinelAPI, SentinelAPIError, get_coordinates
+from sentinelsat.sentinel import _convert_timestamp, _format_date, _md5_compare
 from .shared import my_vcr
 
 _api_auth = dict(user=environ.get('SENTINEL_USER'), password=environ.get('SENTINEL_PASSWORD'))
