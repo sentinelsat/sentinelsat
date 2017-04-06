@@ -9,7 +9,7 @@ import pytest
 import requests_mock
 
 from sentinelsat import InvalidChecksumError, SentinelAPI, SentinelAPIError, get_coordinates
-from sentinelsat.sentinel import _convert_timestamp, _format_date, _md5_compare
+from sentinelsat.sentinel import _convert_timestamp, _format_date, _md5_compare, _response_to_dict
 from .shared import my_vcr
 
 _api_auth = dict(user=environ.get('SENTINEL_USER'), password=environ.get('SENTINEL_PASSWORD'))
@@ -37,6 +37,18 @@ def products():
         "20151219", "20151228"
     )
     return products
+
+
+@pytest.fixture(scope='session')
+@my_vcr.use_cassette('products_fixture')
+def raw_products():
+    """A fixture for tests that need some non-specific set of products in the form of a raw response as input."""
+    api = SentinelAPI(**_api_auth)
+    raw_products = api._load_query(api.format_query(
+        get_coordinates('tests/map.geojson'),
+        "20151219", "20151228")
+    )
+    return raw_products
 
 
 @pytest.mark.fast
@@ -109,7 +121,7 @@ def test_api_query_format():
 def test_invalid_query():
     api = SentinelAPI(**_api_auth)
     with pytest.raises(SentinelAPIError) as excinfo:
-        api.load_query("xxx:yyy")
+        api.query_plain("xxx:yyy")
     assert excinfo.value.msg is not None
     print(excinfo)
 
@@ -336,9 +348,11 @@ def test_s2_cloudcover():
         cloudcoverpercentage="[0 TO 10]"
     )
     assert len(products) == 3
-    assert products[0]["id"] == "6ed0b7de-3435-43df-98bf-ad63c8d077ef"
-    assert products[1]["id"] == "37ecee60-23d8-4ec2-a65f-2de24f51d30e"
-    assert products[2]["id"] == "0848f6b8-5730-4759-850e-fc9945d42296"
+
+    product_ids = list(products)
+    assert product_ids[0] == "6ed0b7de-3435-43df-98bf-ad63c8d077ef"
+    assert product_ids[1] == "37ecee60-23d8-4ec2-a65f-2de24f51d30e"
+    assert product_ids[2] == "0848f6b8-5730-4759-850e-fc9945d42296"
 
 
 @pytest.mark.scihub
@@ -348,35 +362,28 @@ def test_get_products_size(products):
     # load a new very small query
     api = SentinelAPI(**_api_auth)
     with my_vcr.use_cassette('test_get_products_size'):
-        products = api.load_query("S1A_WV_OCN__2SSH_20150603T092625_20150603T093332_006207_008194_521E")
+        products = api.query_plain("S1A_WV_OCN__2SSH_20150603T092625_20150603T093332_006207_008194_521E")
     assert len(products) > 0
     # Rounded to zero
     assert SentinelAPI.get_products_size(products) == 0
 
 
 @pytest.mark.scihub
-def test_to_dict(products):
-    dictionary = SentinelAPI.to_dict(products)
+def test_response_to_dict(raw_products):
+    dictionary = _response_to_dict(raw_products)
     # check the type
     assert isinstance(dictionary, dict)
     # check if dictionary has id key
-    assert 'S2A_OPER_PRD_MSIL1C_PDMC_20151228T112701_R110_V20151227T142229_20151227T142229' in dictionary
-
-
-@pytest.mark.scihub
-def test_to_dict(products):
-    dictionary = SentinelAPI.to_dict(products)
-    # check the type
-    assert isinstance(dictionary, dict)
-    # check if dictionary has id key
-    assert 'S2A_OPER_PRD_MSIL1C_PDMC_20151228T112701_R110_V20151227T142229_20151227T142229' in dictionary
+    assert '44517f66-9845-4792-a988-b5ae6e81fd3e' in dictionary
+    props = dictionary['44517f66-9845-4792-a988-b5ae6e81fd3e']
+    assert props['title'] == 'S2A_OPER_PRD_MSIL1C_PDMC_20151228T112523_R110_V20151227T142229_20151227T142229'
 
 
 @pytest.mark.pandas
 @pytest.mark.scihub
 def test_to_pandas(products):
     df = SentinelAPI.to_dataframe(products)
-    assert 'S2A_OPER_PRD_MSIL1C_PDMC_20151228T112701_R110_V20151227T142229_20151227T142229' in df.index
+    assert '44517f66-9845-4792-a988-b5ae6e81fd3e' in df.index
 
 
 @pytest.mark.pandas
@@ -384,6 +391,7 @@ def test_to_pandas(products):
 @pytest.mark.scihub
 def test_to_geopandas(products):
     gdf = SentinelAPI.to_geodataframe(products)
+    assert gdf.unary_union.area == pytest.approx(132.16, 0.01)
 
 
 @pytest.mark.homura
@@ -453,7 +461,7 @@ def test_download_all(tmpdir):
                  "S1A_WV_OCN__2SSV_20150526T211029_20150526T211737_006097_007E78_134A",
                  "S1A_WV_OCN__2SSV_20150526T081641_20150526T082418_006090_007E3E_104C"]
 
-    products = api.load_query(" OR ".join(filenames))
+    products = api.query_plain(" OR ".join(filenames))
     assert len(products) == len(filenames)
 
     # Download normally

@@ -72,7 +72,7 @@ class SentinelAPI(object):
         and any other search keywords accepted by the SciHub API.
         """
         query = self.format_query(area, initial_date, end_date, **keywords)
-        return self.load_query(query)
+        return self.query_plain(query)
 
     @staticmethod
     def format_query(area, initial_date=None, end_date=datetime.now(), **keywords):
@@ -94,10 +94,14 @@ class SentinelAPI(object):
         query = ''.join([acquisition_date, query_area, filters])
         return query
 
-    def load_query(self, query, start_row=0):
+    def query_plain(self, query):
         """Do a full-text query on the SciHub API using the OpenSearch format specified in
            https://scihub.copernicus.eu/twiki/do/view/SciHubUserGuide/3FullTextSearch
         """
+        response = self._load_query(query)
+        return _response_to_dict(response)
+
+    def _load_query(self, query, start_row=0):
         # store last query (for testing)
         self._last_query = query
 
@@ -127,7 +131,7 @@ class SentinelAPI(object):
         output = entries
         # repeat query until all results have been loaded
         if total_results > start_row + self.page_size - 1:
-            output += self.load_query(query, start_row=(start_row + self.page_size))
+            output += self._load_query(query, start_row=(start_row + self.page_size))
         return output
 
     @staticmethod
@@ -147,63 +151,18 @@ class SentinelAPI(object):
         return geojson.FeatureCollection(feature_list)
 
     @staticmethod
-    def to_dict(products, parse_values=True):
-        """Return the products from a query response as a dictionary with the values in their appropriate Python types.
-        """
-
-        def convert_date(content):
-            try:
-                value = datetime.strptime(content, '%Y-%m-%dT%H:%M:%SZ')
-            except ValueError:
-                value = datetime.strptime(content, '%Y-%m-%dT%H:%M:%S.%fZ')
-            return value
-
-        if parse_values:
-            converters = {'date': convert_date, 'int': int, 'float': float, 'double': float}
-        else:
-            converters = {}
-        # Keep the string type by default
-        default_converter = lambda x: x
-
-        output = OrderedDict()
-        for prod in products:
-            product_dict = {}
-            prodname = prod['title']
-            output[prodname] = product_dict
-            for key in prod:
-                if key == 'title':
-                    continue
-                if isinstance(prod[key], string_types):
-                    product_dict[key] = prod[key]
-                else:
-                    properties = prod[key]
-                    if isinstance(properties, dict):
-                        properties = [properties]
-                    if key == 'link':
-                        for p in properties:
-                            name = 'link'
-                            if 'rel' in p:
-                                name = 'link_' + p['rel']
-                            product_dict[name] = p['href']
-                    else:
-                        f = converters.get(key, default_converter)
-                        for p in properties:
-                            product_dict[p['name']] = f(p['content'])
-
-        return output
-
-    @staticmethod
     def to_dataframe(products):
-        """Return the products from a query response as a Pandas DataFrame with the values in their appropriate Python types.
+        """Return the products from a query response as a Pandas DataFrame
+        with the values in their appropriate Python types.
         """
         import pandas as pd
 
-        products_dict = SentinelAPI.to_dict(products)
-        return pd.DataFrame.from_dict(products_dict, orient='index')
+        return pd.DataFrame.from_dict(products, orient='index')
 
     @staticmethod
     def to_geodataframe(products):
-        """Return the products from a query response as a GeoPandas GeoDataFrame with the values in their appropriate Python types.
+        """Return the products from a query response as a GeoPandas GeoDataFrame
+        with the values in their appropriate Python types.
         """
         import geopandas as gpd
         import shapely.wkt
@@ -276,10 +235,8 @@ class SentinelAPI(object):
 
         Returns
         -------
-        path : string
-            Disk path of the downloaded file,
         product_info : dict
-            Dictionary containing the product's info from get_product_info().
+            Dictionary containing the product's info from get_product_info() as well as the path on disk.
 
         Raises
         ------
@@ -524,6 +481,53 @@ def _geojson_poly_from_wkt(wkt):
     coord_list_split = (coord.split(' ') for coord in coordlist.split(','))
     poly = geojson.Polygon([[(float(coord[0]), float(coord[1])) for coord in coord_list_split]])
     return poly
+
+
+def _response_to_dict(products):
+    """Convert a query response to a dictionary.
+     
+    The resulting dictionary structure is {<product id>: {<property>: <value>}}.
+    The property values are converted to their respective Python types unless `parse_values` is set to `False`.
+    """
+
+    def convert_date(content):
+        if '.' in content:
+            return datetime.strptime(content, '%Y-%m-%dT%H:%M:%S.%fZ')
+        else:
+            return datetime.strptime(content, '%Y-%m-%dT%H:%M:%SZ')
+
+    converters = {'date': convert_date, 'int': int, 'long': int, 'float': float, 'double': float}
+    # Keep the string type by default
+    default_converter = lambda x: x
+
+    output = OrderedDict()
+    for prod in products:
+        product_dict = {}
+        prod_id = prod['id']
+        output[prod_id] = product_dict
+        for key in prod:
+            if key == 'id':
+                continue
+            if isinstance(prod[key], string_types):
+                product_dict[key] = prod[key]
+            else:
+                properties = prod[key]
+                if isinstance(properties, dict):
+                    properties = [properties]
+                if key == 'link':
+                    for p in properties:
+                        name = 'link'
+                        if 'rel' in p:
+                            name = 'link_' + p['rel']
+                        product_dict[name] = p['href']
+                else:
+                    f = converters.get(key, default_converter)
+                    for p in properties:
+                        try:
+                            product_dict[p['name']] = f(p['content'])
+                        except KeyError:  # Sentinel-3 has one element 'arr' which violates the name:content convention
+                            product_dict[p['name']] = f(p['str'])
+    return output
 
 
 def _md5_compare(file_path, checksum, block_size=2 ** 13):
