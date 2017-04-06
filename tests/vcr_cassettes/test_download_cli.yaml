@@ -1,0 +1,1240 @@
+interactions:
+- request:
+    body: q=%28beginPosition%3A%5B2015-05-01T00%3A00%3A00Z+TO+2015-07-05T00%3A00%3A00Z%5D%29+AND+%28footprint%3A%22Intersects%28POLYGON%28%28-32.0554580+-53.9319760%2C-31.7483900+-53.8674350%2C-31.6460170+-54.0396610%2C-31.9544050+-54.1044620%2C-32.0554580+-53.9319760%29%29%29%22%29+AND+%28producttype%3AOCN%29
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['301']
+      Content-Type: [application/x-www-form-urlencoded]
+      User-Agent: [sentinelsat/0.9.1]
+    method: POST
+    uri: https://scihub.copernicus.eu/apihub/search?format=json&rows=100&start=0
+  response:
+    body: {string: "{\"feed\": {\n   \"xmlns:opensearch\": \"http://a9.com/-/spec/opensearch/1.1/\"\
+        ,\n   \"link\": [\n      {\n         \"rel\": \"self\",\n         \"type\"\
+        : \"application/atom+xml\",\n         \"href\": \"https://scihub.copernicus.eu/apihub/search?q=(beginPosition:[2015-05-01T00:00:00Z\
+        \ TO 2015-07-05T00:00:00Z]) AND (footprint:\\\"Intersects(POLYGON((-32.0554580\
+        \ -53.9319760,-31.7483900 -53.8674350,-31.6460170 -54.0396610,-31.9544050\
+        \ -54.1044620,-32.0554580 -53.9319760)))\\\") AND (producttype:OCN)&start=0&rows=100\"\
+        \n      },\n      {\n         \"rel\": \"first\",\n         \"type\": \"application/atom+xml\"\
+        ,\n         \"href\": \"https://scihub.copernicus.eu/apihub/search?q=(beginPosition:[2015-05-01T00:00:00Z\
+        \ TO 2015-07-05T00:00:00Z]) AND (footprint:\\\"Intersects(POLYGON((-32.0554580\
+        \ -53.9319760,-31.7483900 -53.8674350,-31.6460170 -54.0396610,-31.9544050\
+        \ -54.1044620,-32.0554580 -53.9319760)))\\\") AND (producttype:OCN)&start=0&rows=100\"\
+        \n      },\n      {\n         \"rel\": \"last\",\n         \"type\": \"application/atom+xml\"\
+        ,\n         \"href\": \"https://scihub.copernicus.eu/apihub/search?q=(beginPosition:[2015-05-01T00:00:00Z\
+        \ TO 2015-07-05T00:00:00Z]) AND (footprint:\\\"Intersects(POLYGON((-32.0554580\
+        \ -53.9319760,-31.7483900 -53.8674350,-31.6460170 -54.0396610,-31.9544050\
+        \ -54.1044620,-32.0554580 -53.9319760)))\\\") AND (producttype:OCN)&start=2&rows=100\"\
+        \n      },\n      {\n         \"rel\": \"search\",\n         \"type\": \"\
+        application/opensearchdescription+xml\",\n         \"href\": \"opensearch_description.xml\"\
+        \n      }\n   ],\n   \"xmlns\": \"http://www.w3.org/2005/Atom\",\n   \"opensearch:itemsPerPage\"\
+        : \"100\",\n   \"id\": \"https://scihub.copernicus.eu/apihub/search?q=(beginPosition:[2015-05-01T00:00:00Z\
+        \ TO 2015-07-05T00:00:00Z]) AND (footprint:\\\"Intersects(POLYGON((-32.0554580\
+        \ -53.9319760,-31.7483900 -53.8674350,-31.6460170 -54.0396610,-31.9544050\
+        \ -54.1044620,-32.0554580 -53.9319760)))\\\") AND (producttype:OCN)\",\n \
+        \  \"author\": {\"name\": \"Sentinels Scientific Data Hub\"},\n   \"title\"\
+        : \"Sentinels Scientific Data Hub search results for: (beginPosition:[2015-05-01T00:00:00Z\
+        \ TO 2015-07-05T00:00:00Z]) AND (footprint:\\\"Intersects(POLYGON((-32.0554580\
+        \ -53.9319760,-31.7483900 -53.8674350,-31.6460170 -54.0396610,-31.9544050\
+        \ -54.1044620,-32.0554580 -53.9319760)))\\\") AND (producttype:OCN)\",\n \
+        \  \"updated\": \"2017-04-06T00:11:41.275Z\",\n   \"opensearch:totalResults\"\
+        : \"3\",\n   \"entry\": [\n      {\n         \"summary\": \"Date: 2015-06-19T21:10:30.362Z,\
+        \ Instrument: SAR-C SAR, Mode: VV, Satellite: Sentinel-1, Size: 878.49 KB\"\
+        ,\n         \"id\": \"f30b2a6a-b0c1-49f1-b19e-e10c3cf06101\",\n         \"\
+        title\": \"S1A_WV_OCN__2SSV_20150619T211030_20150619T211738_006447_008883_C1F4\"\
+        ,\n         \"str\": [\n            {\n               \"content\": \"T\",\n\
+        \               \"name\": \"processed\"\n            },\n            {\n \
+        \              \"content\": \"NOMINAL\",\n               \"name\": \"acquisitiontype\"\
+        \n            },\n            {\n               \"content\": \"S1A_WV_OCN__2SSV_20150619T211030_20150619T211738_006447_008883_C1F4.SAFE\"\
+        ,\n               \"name\": \"filename\"\n            },\n            {\n\
+        \               \"content\": \"<gml:Polygon srsName=\\\"http://www.opengis.net/gml/srs/epsg.xml#4326\\\
+        \" xmlns:gml=\\\"http://www.opengis.net/gml\\\">\\n   <gml:outerBoundaryIs>\\\
+        n      <gml:LinearRing>\\n         <gml:coordinates>-53.931267,-32.057858\
+        \ -53.866734,-31.750776 -54.038925,-31.648441 -54.103718,-31.956841 -53.931267,-32.057858<\\\
+        /gml:coordinates>\\n      <\\/gml:LinearRing>\\n   <\\/gml:outerBoundaryIs>\\\
+        n<\\/gml:Polygon>\",\n               \"name\": \"gmlfootprint\"\n        \
+        \    },\n            {\n               \"content\": \"SAFE\",\n          \
+        \     \"name\": \"format\"\n            },\n            {\n              \
+        \ \"content\": \"S1A_WV_OCN__2SSV_20150619T211030_20150619T211738_006447_008883_C1F4\"\
+        ,\n               \"name\": \"identifier\"\n            },\n            {\n\
+        \               \"content\": \"SAR-C SAR\",\n               \"name\": \"instrumentshortname\"\
+        \n            },\n            {\n               \"content\": \"WV\",\n   \
+        \            \"name\": \"sensoroperationalmode\"\n            },\n       \
+        \     {\n               \"content\": \"Synthetic Aperture Radar (C-band)\"\
+        ,\n               \"name\": \"instrumentname\"\n            },\n         \
+        \   {\n               \"content\": \"WV1 WV2\",\n               \"name\":\
+        \ \"swathidentifier\"\n            },\n            {\n               \"content\"\
+        : \"POLYGON ((-32.057858 -53.931267,-31.750776 -53.866734,-31.648441 -54.038925,-31.956841\
+        \ -54.103718,-32.057858 -53.931267))\",\n               \"name\": \"footprint\"\
+        \n            },\n            {\n               \"content\": \"0000-000A\"\
+        ,\n               \"name\": \"platformidentifier\"\n            },\n     \
+        \       {\n               \"content\": \"ASCENDING\",\n               \"name\"\
+        : \"orbitdirection\"\n            },\n            {\n               \"content\"\
+        : \"VV\",\n               \"name\": \"polarisationmode\"\n            },\n\
+        \            {\n               \"content\": \"S\",\n               \"name\"\
+        : \"productclass\"\n            },\n            {\n               \"content\"\
+        : \"OCN\",\n               \"name\": \"producttype\"\n            },\n   \
+        \         {\n               \"content\": \"Sentinel-1\",\n               \"\
+        name\": \"platformname\"\n            },\n            {\n               \"\
+        content\": \"878.49 KB\",\n               \"name\": \"size\"\n           \
+        \ },\n            {\n               \"content\": \"ARCHIVED\",\n         \
+        \      \"name\": \"status\"\n            }\n         ],\n         \"int\"\
+        : [\n            {\n               \"content\": \"34947\",\n             \
+        \  \"name\": \"missiondatatakeid\"\n            },\n            {\n      \
+        \         \"content\": \"6447\",\n               \"name\": \"orbitnumber\"\
+        \n            },\n            {\n               \"content\": \"6447\",\n \
+        \              \"name\": \"lastorbitnumber\"\n            },\n           \
+        \ {\n               \"content\": \"75\",\n               \"name\": \"relativeorbitnumber\"\
+        \n            },\n            {\n               \"content\": \"75\",\n   \
+        \            \"name\": \"lastrelativeorbitnumber\"\n            }\n      \
+        \   ],\n         \"link\": [\n            {\"href\": \"https://scihub.copernicus.eu/apihub/odata/v1/Products('f30b2a6a-b0c1-49f1-b19e-e10c3cf06101')/$value\"\
+        },\n            {\n               \"rel\": \"alternative\",\n            \
+        \   \"href\": \"https://scihub.copernicus.eu/apihub/odata/v1/Products('f30b2a6a-b0c1-49f1-b19e-e10c3cf06101')/\"\
+        \n            },\n            {\n               \"rel\": \"icon\",\n     \
+        \          \"href\": \"https://scihub.copernicus.eu/apihub/odata/v1/Products('f30b2a6a-b0c1-49f1-b19e-e10c3cf06101')/Products('Quicklook')/$value\"\
+        \n            }\n         ],\n         \"date\": [\n            {\n      \
+        \         \"content\": \"2015-11-18T00:06:01.063Z\",\n               \"name\"\
+        : \"ingestiondate\"\n            },\n            {\n               \"content\"\
+        : \"2015-06-19T21:10:30.362Z\",\n               \"name\": \"beginposition\"\
+        \n            },\n            {\n               \"content\": \"2015-06-19T21:17:38.785Z\"\
+        ,\n               \"name\": \"endposition\"\n            }\n         ]\n \
+        \     },\n      {\n         \"summary\": \"Date: 2015-05-26T21:10:28.984Z,\
+        \ Instrument: SAR-C SAR, Mode: VV, Satellite: Sentinel-1, Size: 10.65 KB\"\
+        ,\n         \"id\": \"d8340134-878f-4891-ba4f-4df54f1e3ab4\",\n         \"\
+        title\": \"S1A_WV_OCN__2SSV_20150526T211029_20150526T211737_006097_007E78_134A\"\
+        ,\n         \"str\": [\n            {\n               \"content\": \"T\",\n\
+        \               \"name\": \"processed\"\n            },\n            {\n \
+        \              \"content\": \"NOMINAL\",\n               \"name\": \"acquisitiontype\"\
+        \n            },\n            {\n               \"content\": \"S1A_WV_OCN__2SSV_20150526T211029_20150526T211737_006097_007E78_134A.SAFE\"\
+        ,\n               \"name\": \"filename\"\n            },\n            {\n\
+        \               \"content\": \"<gml:Polygon srsName=\\\"http://www.opengis.net/gml/srs/epsg.xml#4326\\\
+        \" xmlns:gml=\\\"http://www.opengis.net/gml\\\">\\n   <gml:outerBoundaryIs>\\\
+        n      <gml:LinearRing>\\n         <gml:coordinates>-53.931976,-32.055458\
+        \ -53.867435,-31.748390 -54.039661,-31.646017 -54.104462,-31.954405 -53.931976,-32.055458<\\\
+        /gml:coordinates>\\n      <\\/gml:LinearRing>\\n   <\\/gml:outerBoundaryIs>\\\
+        n<\\/gml:Polygon>\",\n               \"name\": \"gmlfootprint\"\n        \
+        \    },\n            {\n               \"content\": \"SAFE\",\n          \
+        \     \"name\": \"format\"\n            },\n            {\n              \
+        \ \"content\": \"S1A_WV_OCN__2SSV_20150526T211029_20150526T211737_006097_007E78_134A\"\
+        ,\n               \"name\": \"identifier\"\n            },\n            {\n\
+        \               \"content\": \"SAR-C SAR\",\n               \"name\": \"instrumentshortname\"\
+        \n            },\n            {\n               \"content\": \"WV\",\n   \
+        \            \"name\": \"sensoroperationalmode\"\n            },\n       \
+        \     {\n               \"content\": \"Synthetic Aperture Radar (C-band)\"\
+        ,\n               \"name\": \"instrumentname\"\n            },\n         \
+        \   {\n               \"content\": \"WV1 WV2\",\n               \"name\":\
+        \ \"swathidentifier\"\n            },\n            {\n               \"content\"\
+        : \"POLYGON ((-32.055458 -53.931976,-31.748390 -53.867435,-31.646017 -54.039661,-31.954405\
+        \ -54.104462,-32.055458 -53.931976))\",\n               \"name\": \"footprint\"\
+        \n            },\n            {\n               \"content\": \"0000-000A\"\
+        ,\n               \"name\": \"platformidentifier\"\n            },\n     \
+        \       {\n               \"content\": \"ASCENDING\",\n               \"name\"\
+        : \"orbitdirection\"\n            },\n            {\n               \"content\"\
+        : \"VV\",\n               \"name\": \"polarisationmode\"\n            },\n\
+        \            {\n               \"content\": \"S\",\n               \"name\"\
+        : \"productclass\"\n            },\n            {\n               \"content\"\
+        : \"OCN\",\n               \"name\": \"producttype\"\n            },\n   \
+        \         {\n               \"content\": \"Sentinel-1\",\n               \"\
+        name\": \"platformname\"\n            },\n            {\n               \"\
+        content\": \"10.65 KB\",\n               \"name\": \"size\"\n            },\n\
+        \            {\n               \"content\": \"ARCHIVED\",\n              \
+        \ \"name\": \"status\"\n            }\n         ],\n         \"int\": [\n\
+        \            {\n               \"content\": \"32376\",\n               \"\
+        name\": \"missiondatatakeid\"\n            },\n            {\n           \
+        \    \"content\": \"6097\",\n               \"name\": \"orbitnumber\"\n  \
+        \          },\n            {\n               \"content\": \"6097\",\n    \
+        \           \"name\": \"lastorbitnumber\"\n            },\n            {\n\
+        \               \"content\": \"75\",\n               \"name\": \"relativeorbitnumber\"\
+        \n            },\n            {\n               \"content\": \"75\",\n   \
+        \            \"name\": \"lastrelativeorbitnumber\"\n            }\n      \
+        \   ],\n         \"link\": [\n            {\"href\": \"https://scihub.copernicus.eu/apihub/odata/v1/Products('d8340134-878f-4891-ba4f-4df54f1e3ab4')/$value\"\
+        },\n            {\n               \"rel\": \"alternative\",\n            \
+        \   \"href\": \"https://scihub.copernicus.eu/apihub/odata/v1/Products('d8340134-878f-4891-ba4f-4df54f1e3ab4')/\"\
+        \n            },\n            {\n               \"rel\": \"icon\",\n     \
+        \          \"href\": \"https://scihub.copernicus.eu/apihub/odata/v1/Products('d8340134-878f-4891-ba4f-4df54f1e3ab4')/Products('Quicklook')/$value\"\
+        \n            }\n         ],\n         \"date\": [\n            {\n      \
+        \         \"content\": \"2015-11-17T23:28:01.852Z\",\n               \"name\"\
+        : \"ingestiondate\"\n            },\n            {\n               \"content\"\
+        : \"2015-05-26T21:10:28.984Z\",\n               \"name\": \"beginposition\"\
+        \n            },\n            {\n               \"content\": \"2015-05-26T21:17:37.408Z\"\
+        ,\n               \"name\": \"endposition\"\n            }\n         ]\n \
+        \     },\n      {\n         \"summary\": \"Date: 2015-07-01T21:10:30.27Z,\
+        \ Instrument: SAR-C SAR, Mode: VV, Satellite: Sentinel-1, Size: 878 KB\",\n\
+        \         \"id\": \"36b16cff-5f87-4cfa-b29d-1196831662e7\",\n         \"title\"\
+        : \"S1A_WV_OCN__2SSV_20150701T211030_20150701T211738_006622_008D52_D720\"\
+        ,\n         \"str\": [\n            {\n               \"content\": \"WV\"\
+        ,\n               \"name\": \"sensoroperationalmode\"\n            },\n  \
+        \          {\n               \"content\": \"WV1 WV2\",\n               \"\
+        name\": \"swathidentifier\"\n            },\n            {\n             \
+        \  \"content\": \"ASCENDING\",\n               \"name\": \"orbitdirection\"\
+        \n            },\n            {\n               \"content\": \"OCN\",\n  \
+        \             \"name\": \"producttype\"\n            },\n            {\n \
+        \              \"content\": \"Sentinel-1\",\n               \"name\": \"platformname\"\
+        \n            },\n            {\n               \"content\": \"0000-000A\"\
+        ,\n               \"name\": \"platformidentifier\"\n            },\n     \
+        \       {\n               \"content\": \"Synthetic Aperture Radar (C-band)\"\
+        ,\n               \"name\": \"instrumentname\"\n            },\n         \
+        \   {\n               \"content\": \"SAR-C SAR\",\n               \"name\"\
+        : \"instrumentshortname\"\n            },\n            {\n               \"\
+        content\": \"S1A_WV_OCN__2SSV_20150701T211030_20150701T211738_006622_008D52_D720.SAFE\"\
+        ,\n               \"name\": \"filename\"\n            },\n            {\n\
+        \               \"content\": \"SAFE\",\n               \"name\": \"format\"\
+        \n            },\n            {\n               \"content\": \"S\",\n    \
+        \           \"name\": \"productclass\"\n            },\n            {\n  \
+        \             \"content\": \"VV\",\n               \"name\": \"polarisationmode\"\
+        \n            },\n            {\n               \"content\": \"NOMINAL\",\n\
+        \               \"name\": \"acquisitiontype\"\n            },\n          \
+        \  {\n               \"content\": \"ARCHIVED\",\n               \"name\":\
+        \ \"status\"\n            },\n            {\n               \"content\": \"\
+        878 KB\",\n               \"name\": \"size\"\n            },\n           \
+        \ {\n               \"content\": \"<gml:Polygon srsName=\\\"http://www.opengis.net/gml/srs/epsg.xml#4326\\\
+        \" xmlns:gml=\\\"http://www.opengis.net/gml\\\">\\n   <gml:outerBoundaryIs>\\\
+        n      <gml:LinearRing>\\n         <gml:coordinates>-53.932625,-32.058731\
+        \ -53.868076,-31.751593 -54.040306,-31.649235 -54.105110,-31.957693 -53.932625,-32.058731<\\\
+        /gml:coordinates>\\n      <\\/gml:LinearRing>\\n   <\\/gml:outerBoundaryIs>\\\
+        n<\\/gml:Polygon>\",\n               \"name\": \"gmlfootprint\"\n        \
+        \    },\n            {\n               \"content\": \"POLYGON ((-32.058731\
+        \ -53.932625,-31.751593 -53.868076,-31.649235 -54.040306,-31.957693 -54.105110,-32.058731\
+        \ -53.932625))\",\n               \"name\": \"footprint\"\n            },\n\
+        \            {\n               \"content\": \"S1A_WV_OCN__2SSV_20150701T211030_20150701T211738_006622_008D52_D720\"\
+        ,\n               \"name\": \"identifier\"\n            },\n            {\n\
+        \               \"content\": \"T\",\n               \"name\": \"processed\"\
+        \n            }\n         ],\n         \"int\": [\n            {\n       \
+        \        \"content\": \"36178\",\n               \"name\": \"missiondatatakeid\"\
+        \n            },\n            {\n               \"content\": \"6622\",\n \
+        \              \"name\": \"orbitnumber\"\n            },\n            {\n\
+        \               \"content\": \"6622\",\n               \"name\": \"lastorbitnumber\"\
+        \n            },\n            {\n               \"content\": \"75\",\n   \
+        \            \"name\": \"relativeorbitnumber\"\n            },\n         \
+        \   {\n               \"content\": \"75\",\n               \"name\": \"lastrelativeorbitnumber\"\
+        \n            }\n         ],\n         \"link\": [\n            {\"href\"\
+        : \"https://scihub.copernicus.eu/apihub/odata/v1/Products('36b16cff-5f87-4cfa-b29d-1196831662e7')/$value\"\
+        },\n            {\n               \"rel\": \"alternative\",\n            \
+        \   \"href\": \"https://scihub.copernicus.eu/apihub/odata/v1/Products('36b16cff-5f87-4cfa-b29d-1196831662e7')/\"\
+        \n            },\n            {\n               \"rel\": \"icon\",\n     \
+        \          \"href\": \"https://scihub.copernicus.eu/apihub/odata/v1/Products('36b16cff-5f87-4cfa-b29d-1196831662e7')/Products('Quicklook')/$value\"\
+        \n            }\n         ],\n         \"date\": [\n            {\n      \
+        \         \"content\": \"2015-07-01T21:10:30.27Z\",\n               \"name\"\
+        : \"beginposition\"\n            },\n            {\n               \"content\"\
+        : \"2015-07-01T21:17:38.694Z\",\n               \"name\": \"endposition\"\n\
+        \            },\n            {\n               \"content\": \"2015-07-01T23:42:11.635Z\"\
+        ,\n               \"name\": \"ingestiondate\"\n            }\n         ]\n\
+        \      }\n   ],\n   \"subtitle\": \"Displaying 3 results. Request done in\
+        \ 0.183 seconds.\",\n   \"opensearch:startIndex\": \"0\",\n   \"opensearch:Query\"\
+        : {\n      \"searchTerms\": \"(beginPosition:[2015-05-01T00:00:00Z TO 2015-07-05T00:00:00Z])\
+        \ AND (footprint:\\\"Intersects(POLYGON((-32.0554580 -53.9319760,-31.7483900\
+        \ -53.8674350,-31.6460170 -54.0396610,-31.9544050 -54.1044620,-32.0554580\
+        \ -53.9319760)))\\\") AND (producttype:OCN)\",\n      \"role\": \"request\"\
+        ,\n      \"startPage\": \"1\"\n   }\n}}"}
+    headers:
+      Content-Type: [application/json]
+      Date: ['Thu, 06 Apr 2017 00:11:40 GMT']
+      Pragma: [no-cache]
+      Server: [Apache-Coyote/1.1]
+      Transfer-Encoding: [chunked]
+      Vary: [Accept-Encoding]
+      content-length: ['16038']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [sentinelsat/0.9.1]
+    method: GET
+    uri: https://scihub.copernicus.eu/apihub/odata/v1/Products('f30b2a6a-b0c1-49f1-b19e-e10c3cf06101')/?$format=json
+  response:
+    body: {string: '{"d":{"__metadata":{"id":"https://scihub.copernicus.eu/apihub/odata/v1/(''f30b2a6a-b0c1-49f1-b19e-e10c3cf06101'')","uri":"https://scihub.copernicus.eu/apihub/odata/v1/(''f30b2a6a-b0c1-49f1-b19e-e10c3cf06101'')","type":"DHuS.Product","content_type":"application/octet-stream","media_src":"https://scihub.copernicus.eu/apihub/odata/v1/(''f30b2a6a-b0c1-49f1-b19e-e10c3cf06101'')/$value","edit_media":"https://scihub.copernicus.eu/apihub/odata/v1/(''f30b2a6a-b0c1-49f1-b19e-e10c3cf06101'')/$value"},"Id":"f30b2a6a-b0c1-49f1-b19e-e10c3cf06101","Name":"S1A_WV_OCN__2SSV_20150619T211030_20150619T211738_006447_008883_C1F4","ContentType":"application/octet-stream","ContentLength":"539922","ChildrenNumber":"0","Value":null,"CreationDate":"\/Date(1447805161063)\/","IngestionDate":"\/Date(1447805161063)\/","EvictionDate":null,"ContentDate":{"__metadata":{"type":"DHuS.TimeRange"},"Start":"\/Date(1434748230362)\/","End":"\/Date(1434748658785)\/"},"Checksum":{"__metadata":{"type":"DHuS.Checksum"},"Algorithm":"MD5","Value":"E8C626CD343621C572F30BA1E0BF5AA7"},"ContentGeometry":"<gml:Polygon
+        srsName=\"http://www.opengis.net/gml/srs/epsg.xml#4326\" xmlns:gml=\"http://www.opengis.net/gml\">\n   <gml:outerBoundaryIs>\n      <gml:LinearRing>\n         <gml:coordinates>-53.931267,-32.057858
+        -53.866734,-31.750776 -54.038925,-31.648441 -54.103718,-31.956841 -53.931267,-32.057858</gml:coordinates>\n      </gml:LinearRing>\n   </gml:outerBoundaryIs>\n</gml:Polygon>","Metalink":"<?xml
+        version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><metalink xmlns=\"urn:ietf:params:xml:ns:metalink\"><file
+        name=\"S1A_WV_OCN__2SSV_20150619T211030_20150619T211738_006447_008883_C1F4.zip\"><hash
+        type=\"MD5\">E8C626CD343621C572F30BA1E0BF5AA7</hash><size>539922</size><url>https://scihub.copernicus.eu/apihub/odata/v1/Products(''f30b2a6a-b0c1-49f1-b19e-e10c3cf06101'')/$value</url></file></metalink>","Products":{"__deferred":{"uri":"https://scihub.copernicus.eu/apihub/odata/v1/(''f30b2a6a-b0c1-49f1-b19e-e10c3cf06101'')/Products"}},"Nodes":{"__deferred":{"uri":"https://scihub.copernicus.eu/apihub/odata/v1/(''f30b2a6a-b0c1-49f1-b19e-e10c3cf06101'')/Nodes"}},"Attributes":{"__deferred":{"uri":"https://scihub.copernicus.eu/apihub/odata/v1/(''f30b2a6a-b0c1-49f1-b19e-e10c3cf06101'')/Attributes"}},"Class":{"__deferred":{"uri":"https://scihub.copernicus.eu/apihub/odata/v1/(''f30b2a6a-b0c1-49f1-b19e-e10c3cf06101'')/Class"}}}}'}
+    headers:
+      Content-Type: [application/json]
+      DataServiceVersion: ['2.0']
+      Date: ['Thu, 06 Apr 2017 00:11:41 GMT']
+      Pragma: [no-cache]
+      Server: [Apache-Coyote/1.1]
+      Transfer-Encoding: [chunked]
+      Vary: [Accept-Encoding]
+      content-length: ['2385']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [sentinelsat/0.9.1]
+    method: GET
+    uri: https://scihub.copernicus.eu/apihub/odata/v1/Products('d8340134-878f-4891-ba4f-4df54f1e3ab4')/?$format=json
+  response:
+    body: {string: '{"d":{"__metadata":{"id":"https://scihub.copernicus.eu/apihub/odata/v1/(''d8340134-878f-4891-ba4f-4df54f1e3ab4'')","uri":"https://scihub.copernicus.eu/apihub/odata/v1/(''d8340134-878f-4891-ba4f-4df54f1e3ab4'')","type":"DHuS.Product","content_type":"application/octet-stream","media_src":"https://scihub.copernicus.eu/apihub/odata/v1/(''d8340134-878f-4891-ba4f-4df54f1e3ab4'')/$value","edit_media":"https://scihub.copernicus.eu/apihub/odata/v1/(''d8340134-878f-4891-ba4f-4df54f1e3ab4'')/$value"},"Id":"d8340134-878f-4891-ba4f-4df54f1e3ab4","Name":"S1A_WV_OCN__2SSV_20150526T211029_20150526T211737_006097_007E78_134A","ContentType":"application/octet-stream","ContentLength":"130102","ChildrenNumber":"0","Value":null,"CreationDate":"\/Date(1447802881852)\/","IngestionDate":"\/Date(1447802881852)\/","EvictionDate":null,"ContentDate":{"__metadata":{"type":"DHuS.TimeRange"},"Start":"\/Date(1432674628984)\/","End":"\/Date(1432675057408)\/"},"Checksum":{"__metadata":{"type":"DHuS.Checksum"},"Algorithm":"MD5","Value":"170834E488F889E538F50EEADB763B29"},"ContentGeometry":"<gml:Polygon
+        srsName=\"http://www.opengis.net/gml/srs/epsg.xml#4326\" xmlns:gml=\"http://www.opengis.net/gml\">\n   <gml:outerBoundaryIs>\n      <gml:LinearRing>\n         <gml:coordinates>-53.931976,-32.055458
+        -53.867435,-31.748390 -54.039661,-31.646017 -54.104462,-31.954405 -53.931976,-32.055458</gml:coordinates>\n      </gml:LinearRing>\n   </gml:outerBoundaryIs>\n</gml:Polygon>","Metalink":"<?xml
+        version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><metalink xmlns=\"urn:ietf:params:xml:ns:metalink\"><file
+        name=\"S1A_WV_OCN__2SSV_20150526T211029_20150526T211737_006097_007E78_134A.zip\"><hash
+        type=\"MD5\">170834E488F889E538F50EEADB763B29</hash><size>130102</size><url>https://scihub.copernicus.eu/apihub/odata/v1/Products(''d8340134-878f-4891-ba4f-4df54f1e3ab4'')/$value</url></file></metalink>","Products":{"__deferred":{"uri":"https://scihub.copernicus.eu/apihub/odata/v1/(''d8340134-878f-4891-ba4f-4df54f1e3ab4'')/Products"}},"Nodes":{"__deferred":{"uri":"https://scihub.copernicus.eu/apihub/odata/v1/(''d8340134-878f-4891-ba4f-4df54f1e3ab4'')/Nodes"}},"Attributes":{"__deferred":{"uri":"https://scihub.copernicus.eu/apihub/odata/v1/(''d8340134-878f-4891-ba4f-4df54f1e3ab4'')/Attributes"}},"Class":{"__deferred":{"uri":"https://scihub.copernicus.eu/apihub/odata/v1/(''d8340134-878f-4891-ba4f-4df54f1e3ab4'')/Class"}}}}'}
+    headers:
+      Content-Type: [application/json]
+      DataServiceVersion: ['2.0']
+      Date: ['Thu, 06 Apr 2017 00:11:42 GMT']
+      Pragma: [no-cache]
+      Server: [Apache-Coyote/1.1]
+      Transfer-Encoding: [chunked]
+      Vary: [Accept-Encoding]
+      content-length: ['2385']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [sentinelsat/0.9.1]
+    method: GET
+    uri: https://scihub.copernicus.eu/apihub/odata/v1/Products('36b16cff-5f87-4cfa-b29d-1196831662e7')/?$format=json
+  response:
+    body: {string: '{"d":{"__metadata":{"id":"https://scihub.copernicus.eu/apihub/odata/v1/(''36b16cff-5f87-4cfa-b29d-1196831662e7'')","uri":"https://scihub.copernicus.eu/apihub/odata/v1/(''36b16cff-5f87-4cfa-b29d-1196831662e7'')","type":"DHuS.Product","content_type":"application/octet-stream","media_src":"https://scihub.copernicus.eu/apihub/odata/v1/(''36b16cff-5f87-4cfa-b29d-1196831662e7'')/$value","edit_media":"https://scihub.copernicus.eu/apihub/odata/v1/(''36b16cff-5f87-4cfa-b29d-1196831662e7'')/$value"},"Id":"36b16cff-5f87-4cfa-b29d-1196831662e7","Name":"S1A_WV_OCN__2SSV_20150701T211030_20150701T211738_006622_008D52_D720","ContentType":"application/octet-stream","ContentLength":"549587","ChildrenNumber":"0","Value":null,"CreationDate":"\/Date(1435794131635)\/","IngestionDate":"\/Date(1435794131635)\/","EvictionDate":null,"ContentDate":{"__metadata":{"type":"DHuS.TimeRange"},"Start":"\/Date(1435785030270)\/","End":"\/Date(1435785458694)\/"},"Checksum":{"__metadata":{"type":"DHuS.Checksum"},"Algorithm":"MD5","Value":"10CB2309CE9BA0B26C18EBE2932721E2"},"ContentGeometry":"<gml:Polygon
+        srsName=\"http://www.opengis.net/gml/srs/epsg.xml#4326\" xmlns:gml=\"http://www.opengis.net/gml\">\n   <gml:outerBoundaryIs>\n      <gml:LinearRing>\n         <gml:coordinates>-53.932625,-32.058731
+        -53.868076,-31.751593 -54.040306,-31.649235 -54.105110,-31.957693 -53.932625,-32.058731</gml:coordinates>\n      </gml:LinearRing>\n   </gml:outerBoundaryIs>\n</gml:Polygon>","Metalink":"<?xml
+        version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><metalink xmlns=\"urn:ietf:params:xml:ns:metalink\"><file
+        name=\"S1A_WV_OCN__2SSV_20150701T211030_20150701T211738_006622_008D52_D720.zip\"><hash
+        type=\"MD5\">10CB2309CE9BA0B26C18EBE2932721E2</hash><size>549587</size><url>https://scihub.copernicus.eu/apihub/odata/v1/Products(''36b16cff-5f87-4cfa-b29d-1196831662e7'')/$value</url></file></metalink>","Products":{"__deferred":{"uri":"https://scihub.copernicus.eu/apihub/odata/v1/(''36b16cff-5f87-4cfa-b29d-1196831662e7'')/Products"}},"Nodes":{"__deferred":{"uri":"https://scihub.copernicus.eu/apihub/odata/v1/(''36b16cff-5f87-4cfa-b29d-1196831662e7'')/Nodes"}},"Attributes":{"__deferred":{"uri":"https://scihub.copernicus.eu/apihub/odata/v1/(''36b16cff-5f87-4cfa-b29d-1196831662e7'')/Attributes"}},"Class":{"__deferred":{"uri":"https://scihub.copernicus.eu/apihub/odata/v1/(''36b16cff-5f87-4cfa-b29d-1196831662e7'')/Class"}}}}'}
+    headers:
+      Content-Type: [application/json]
+      DataServiceVersion: ['2.0']
+      Date: ['Thu, 06 Apr 2017 00:11:43 GMT']
+      Pragma: [no-cache]
+      Server: [Apache-Coyote/1.1]
+      Transfer-Encoding: [chunked]
+      Vary: [Accept-Encoding]
+      content-length: ['2385']
+    status: {code: 200, message: OK}
+- request:
+    body: q=%28beginPosition%3A%5B2015-05-01T00%3A00%3A00Z+TO+2015-07-05T00%3A00%3A00Z%5D%29+AND+%28footprint%3A%22Intersects%28POLYGON%28%28-32.0554580+-53.9319760%2C-31.7483900+-53.8674350%2C-31.6460170+-54.0396610%2C-31.9544050+-54.1044620%2C-32.0554580+-53.9319760%29%29%29%22%29+AND+%28producttype%3AOCN%29
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['301']
+      Content-Type: [application/x-www-form-urlencoded]
+      User-Agent: [sentinelsat/0.9.1]
+    method: POST
+    uri: https://scihub.copernicus.eu/apihub/search?format=json&rows=100&start=0
+  response:
+    body: {string: "{\"feed\": {\n   \"xmlns:opensearch\": \"http://a9.com/-/spec/opensearch/1.1/\"\
+        ,\n   \"link\": [\n      {\n         \"rel\": \"self\",\n         \"type\"\
+        : \"application/atom+xml\",\n         \"href\": \"https://scihub.copernicus.eu/apihub/search?q=(beginPosition:[2015-05-01T00:00:00Z\
+        \ TO 2015-07-05T00:00:00Z]) AND (footprint:\\\"Intersects(POLYGON((-32.0554580\
+        \ -53.9319760,-31.7483900 -53.8674350,-31.6460170 -54.0396610,-31.9544050\
+        \ -54.1044620,-32.0554580 -53.9319760)))\\\") AND (producttype:OCN)&start=0&rows=100\"\
+        \n      },\n      {\n         \"rel\": \"first\",\n         \"type\": \"application/atom+xml\"\
+        ,\n         \"href\": \"https://scihub.copernicus.eu/apihub/search?q=(beginPosition:[2015-05-01T00:00:00Z\
+        \ TO 2015-07-05T00:00:00Z]) AND (footprint:\\\"Intersects(POLYGON((-32.0554580\
+        \ -53.9319760,-31.7483900 -53.8674350,-31.6460170 -54.0396610,-31.9544050\
+        \ -54.1044620,-32.0554580 -53.9319760)))\\\") AND (producttype:OCN)&start=0&rows=100\"\
+        \n      },\n      {\n         \"rel\": \"last\",\n         \"type\": \"application/atom+xml\"\
+        ,\n         \"href\": \"https://scihub.copernicus.eu/apihub/search?q=(beginPosition:[2015-05-01T00:00:00Z\
+        \ TO 2015-07-05T00:00:00Z]) AND (footprint:\\\"Intersects(POLYGON((-32.0554580\
+        \ -53.9319760,-31.7483900 -53.8674350,-31.6460170 -54.0396610,-31.9544050\
+        \ -54.1044620,-32.0554580 -53.9319760)))\\\") AND (producttype:OCN)&start=2&rows=100\"\
+        \n      },\n      {\n         \"rel\": \"search\",\n         \"type\": \"\
+        application/opensearchdescription+xml\",\n         \"href\": \"opensearch_description.xml\"\
+        \n      }\n   ],\n   \"xmlns\": \"http://www.w3.org/2005/Atom\",\n   \"opensearch:itemsPerPage\"\
+        : \"100\",\n   \"id\": \"https://scihub.copernicus.eu/apihub/search?q=(beginPosition:[2015-05-01T00:00:00Z\
+        \ TO 2015-07-05T00:00:00Z]) AND (footprint:\\\"Intersects(POLYGON((-32.0554580\
+        \ -53.9319760,-31.7483900 -53.8674350,-31.6460170 -54.0396610,-31.9544050\
+        \ -54.1044620,-32.0554580 -53.9319760)))\\\") AND (producttype:OCN)\",\n \
+        \  \"author\": {\"name\": \"Sentinels Scientific Data Hub\"},\n   \"title\"\
+        : \"Sentinels Scientific Data Hub search results for: (beginPosition:[2015-05-01T00:00:00Z\
+        \ TO 2015-07-05T00:00:00Z]) AND (footprint:\\\"Intersects(POLYGON((-32.0554580\
+        \ -53.9319760,-31.7483900 -53.8674350,-31.6460170 -54.0396610,-31.9544050\
+        \ -54.1044620,-32.0554580 -53.9319760)))\\\") AND (producttype:OCN)\",\n \
+        \  \"updated\": \"2017-04-06T00:11:44.622Z\",\n   \"opensearch:totalResults\"\
+        : \"3\",\n   \"entry\": [\n      {\n         \"summary\": \"Date: 2015-06-19T21:10:30.362Z,\
+        \ Instrument: SAR-C SAR, Mode: VV, Satellite: Sentinel-1, Size: 878.49 KB\"\
+        ,\n         \"id\": \"f30b2a6a-b0c1-49f1-b19e-e10c3cf06101\",\n         \"\
+        title\": \"S1A_WV_OCN__2SSV_20150619T211030_20150619T211738_006447_008883_C1F4\"\
+        ,\n         \"str\": [\n            {\n               \"content\": \"T\",\n\
+        \               \"name\": \"processed\"\n            },\n            {\n \
+        \              \"content\": \"NOMINAL\",\n               \"name\": \"acquisitiontype\"\
+        \n            },\n            {\n               \"content\": \"S1A_WV_OCN__2SSV_20150619T211030_20150619T211738_006447_008883_C1F4.SAFE\"\
+        ,\n               \"name\": \"filename\"\n            },\n            {\n\
+        \               \"content\": \"<gml:Polygon srsName=\\\"http://www.opengis.net/gml/srs/epsg.xml#4326\\\
+        \" xmlns:gml=\\\"http://www.opengis.net/gml\\\">\\n   <gml:outerBoundaryIs>\\\
+        n      <gml:LinearRing>\\n         <gml:coordinates>-53.931267,-32.057858\
+        \ -53.866734,-31.750776 -54.038925,-31.648441 -54.103718,-31.956841 -53.931267,-32.057858<\\\
+        /gml:coordinates>\\n      <\\/gml:LinearRing>\\n   <\\/gml:outerBoundaryIs>\\\
+        n<\\/gml:Polygon>\",\n               \"name\": \"gmlfootprint\"\n        \
+        \    },\n            {\n               \"content\": \"SAFE\",\n          \
+        \     \"name\": \"format\"\n            },\n            {\n              \
+        \ \"content\": \"S1A_WV_OCN__2SSV_20150619T211030_20150619T211738_006447_008883_C1F4\"\
+        ,\n               \"name\": \"identifier\"\n            },\n            {\n\
+        \               \"content\": \"SAR-C SAR\",\n               \"name\": \"instrumentshortname\"\
+        \n            },\n            {\n               \"content\": \"WV\",\n   \
+        \            \"name\": \"sensoroperationalmode\"\n            },\n       \
+        \     {\n               \"content\": \"Synthetic Aperture Radar (C-band)\"\
+        ,\n               \"name\": \"instrumentname\"\n            },\n         \
+        \   {\n               \"content\": \"WV1 WV2\",\n               \"name\":\
+        \ \"swathidentifier\"\n            },\n            {\n               \"content\"\
+        : \"POLYGON ((-32.057858 -53.931267,-31.750776 -53.866734,-31.648441 -54.038925,-31.956841\
+        \ -54.103718,-32.057858 -53.931267))\",\n               \"name\": \"footprint\"\
+        \n            },\n            {\n               \"content\": \"0000-000A\"\
+        ,\n               \"name\": \"platformidentifier\"\n            },\n     \
+        \       {\n               \"content\": \"ASCENDING\",\n               \"name\"\
+        : \"orbitdirection\"\n            },\n            {\n               \"content\"\
+        : \"VV\",\n               \"name\": \"polarisationmode\"\n            },\n\
+        \            {\n               \"content\": \"S\",\n               \"name\"\
+        : \"productclass\"\n            },\n            {\n               \"content\"\
+        : \"OCN\",\n               \"name\": \"producttype\"\n            },\n   \
+        \         {\n               \"content\": \"Sentinel-1\",\n               \"\
+        name\": \"platformname\"\n            },\n            {\n               \"\
+        content\": \"878.49 KB\",\n               \"name\": \"size\"\n           \
+        \ },\n            {\n               \"content\": \"ARCHIVED\",\n         \
+        \      \"name\": \"status\"\n            }\n         ],\n         \"int\"\
+        : [\n            {\n               \"content\": \"34947\",\n             \
+        \  \"name\": \"missiondatatakeid\"\n            },\n            {\n      \
+        \         \"content\": \"6447\",\n               \"name\": \"orbitnumber\"\
+        \n            },\n            {\n               \"content\": \"6447\",\n \
+        \              \"name\": \"lastorbitnumber\"\n            },\n           \
+        \ {\n               \"content\": \"75\",\n               \"name\": \"relativeorbitnumber\"\
+        \n            },\n            {\n               \"content\": \"75\",\n   \
+        \            \"name\": \"lastrelativeorbitnumber\"\n            }\n      \
+        \   ],\n         \"link\": [\n            {\"href\": \"https://scihub.copernicus.eu/apihub/odata/v1/Products('f30b2a6a-b0c1-49f1-b19e-e10c3cf06101')/$value\"\
+        },\n            {\n               \"rel\": \"alternative\",\n            \
+        \   \"href\": \"https://scihub.copernicus.eu/apihub/odata/v1/Products('f30b2a6a-b0c1-49f1-b19e-e10c3cf06101')/\"\
+        \n            },\n            {\n               \"rel\": \"icon\",\n     \
+        \          \"href\": \"https://scihub.copernicus.eu/apihub/odata/v1/Products('f30b2a6a-b0c1-49f1-b19e-e10c3cf06101')/Products('Quicklook')/$value\"\
+        \n            }\n         ],\n         \"date\": [\n            {\n      \
+        \         \"content\": \"2015-11-18T00:06:01.063Z\",\n               \"name\"\
+        : \"ingestiondate\"\n            },\n            {\n               \"content\"\
+        : \"2015-06-19T21:10:30.362Z\",\n               \"name\": \"beginposition\"\
+        \n            },\n            {\n               \"content\": \"2015-06-19T21:17:38.785Z\"\
+        ,\n               \"name\": \"endposition\"\n            }\n         ]\n \
+        \     },\n      {\n         \"summary\": \"Date: 2015-05-26T21:10:28.984Z,\
+        \ Instrument: SAR-C SAR, Mode: VV, Satellite: Sentinel-1, Size: 10.65 KB\"\
+        ,\n         \"id\": \"d8340134-878f-4891-ba4f-4df54f1e3ab4\",\n         \"\
+        title\": \"S1A_WV_OCN__2SSV_20150526T211029_20150526T211737_006097_007E78_134A\"\
+        ,\n         \"str\": [\n            {\n               \"content\": \"T\",\n\
+        \               \"name\": \"processed\"\n            },\n            {\n \
+        \              \"content\": \"NOMINAL\",\n               \"name\": \"acquisitiontype\"\
+        \n            },\n            {\n               \"content\": \"S1A_WV_OCN__2SSV_20150526T211029_20150526T211737_006097_007E78_134A.SAFE\"\
+        ,\n               \"name\": \"filename\"\n            },\n            {\n\
+        \               \"content\": \"<gml:Polygon srsName=\\\"http://www.opengis.net/gml/srs/epsg.xml#4326\\\
+        \" xmlns:gml=\\\"http://www.opengis.net/gml\\\">\\n   <gml:outerBoundaryIs>\\\
+        n      <gml:LinearRing>\\n         <gml:coordinates>-53.931976,-32.055458\
+        \ -53.867435,-31.748390 -54.039661,-31.646017 -54.104462,-31.954405 -53.931976,-32.055458<\\\
+        /gml:coordinates>\\n      <\\/gml:LinearRing>\\n   <\\/gml:outerBoundaryIs>\\\
+        n<\\/gml:Polygon>\",\n               \"name\": \"gmlfootprint\"\n        \
+        \    },\n            {\n               \"content\": \"SAFE\",\n          \
+        \     \"name\": \"format\"\n            },\n            {\n              \
+        \ \"content\": \"S1A_WV_OCN__2SSV_20150526T211029_20150526T211737_006097_007E78_134A\"\
+        ,\n               \"name\": \"identifier\"\n            },\n            {\n\
+        \               \"content\": \"SAR-C SAR\",\n               \"name\": \"instrumentshortname\"\
+        \n            },\n            {\n               \"content\": \"WV\",\n   \
+        \            \"name\": \"sensoroperationalmode\"\n            },\n       \
+        \     {\n               \"content\": \"Synthetic Aperture Radar (C-band)\"\
+        ,\n               \"name\": \"instrumentname\"\n            },\n         \
+        \   {\n               \"content\": \"WV1 WV2\",\n               \"name\":\
+        \ \"swathidentifier\"\n            },\n            {\n               \"content\"\
+        : \"POLYGON ((-32.055458 -53.931976,-31.748390 -53.867435,-31.646017 -54.039661,-31.954405\
+        \ -54.104462,-32.055458 -53.931976))\",\n               \"name\": \"footprint\"\
+        \n            },\n            {\n               \"content\": \"0000-000A\"\
+        ,\n               \"name\": \"platformidentifier\"\n            },\n     \
+        \       {\n               \"content\": \"ASCENDING\",\n               \"name\"\
+        : \"orbitdirection\"\n            },\n            {\n               \"content\"\
+        : \"VV\",\n               \"name\": \"polarisationmode\"\n            },\n\
+        \            {\n               \"content\": \"S\",\n               \"name\"\
+        : \"productclass\"\n            },\n            {\n               \"content\"\
+        : \"OCN\",\n               \"name\": \"producttype\"\n            },\n   \
+        \         {\n               \"content\": \"Sentinel-1\",\n               \"\
+        name\": \"platformname\"\n            },\n            {\n               \"\
+        content\": \"10.65 KB\",\n               \"name\": \"size\"\n            },\n\
+        \            {\n               \"content\": \"ARCHIVED\",\n              \
+        \ \"name\": \"status\"\n            }\n         ],\n         \"int\": [\n\
+        \            {\n               \"content\": \"32376\",\n               \"\
+        name\": \"missiondatatakeid\"\n            },\n            {\n           \
+        \    \"content\": \"6097\",\n               \"name\": \"orbitnumber\"\n  \
+        \          },\n            {\n               \"content\": \"6097\",\n    \
+        \           \"name\": \"lastorbitnumber\"\n            },\n            {\n\
+        \               \"content\": \"75\",\n               \"name\": \"relativeorbitnumber\"\
+        \n            },\n            {\n               \"content\": \"75\",\n   \
+        \            \"name\": \"lastrelativeorbitnumber\"\n            }\n      \
+        \   ],\n         \"link\": [\n            {\"href\": \"https://scihub.copernicus.eu/apihub/odata/v1/Products('d8340134-878f-4891-ba4f-4df54f1e3ab4')/$value\"\
+        },\n            {\n               \"rel\": \"alternative\",\n            \
+        \   \"href\": \"https://scihub.copernicus.eu/apihub/odata/v1/Products('d8340134-878f-4891-ba4f-4df54f1e3ab4')/\"\
+        \n            },\n            {\n               \"rel\": \"icon\",\n     \
+        \          \"href\": \"https://scihub.copernicus.eu/apihub/odata/v1/Products('d8340134-878f-4891-ba4f-4df54f1e3ab4')/Products('Quicklook')/$value\"\
+        \n            }\n         ],\n         \"date\": [\n            {\n      \
+        \         \"content\": \"2015-11-17T23:28:01.852Z\",\n               \"name\"\
+        : \"ingestiondate\"\n            },\n            {\n               \"content\"\
+        : \"2015-05-26T21:10:28.984Z\",\n               \"name\": \"beginposition\"\
+        \n            },\n            {\n               \"content\": \"2015-05-26T21:17:37.408Z\"\
+        ,\n               \"name\": \"endposition\"\n            }\n         ]\n \
+        \     },\n      {\n         \"summary\": \"Date: 2015-07-01T21:10:30.27Z,\
+        \ Instrument: SAR-C SAR, Mode: VV, Satellite: Sentinel-1, Size: 878 KB\",\n\
+        \         \"id\": \"36b16cff-5f87-4cfa-b29d-1196831662e7\",\n         \"title\"\
+        : \"S1A_WV_OCN__2SSV_20150701T211030_20150701T211738_006622_008D52_D720\"\
+        ,\n         \"str\": [\n            {\n               \"content\": \"WV\"\
+        ,\n               \"name\": \"sensoroperationalmode\"\n            },\n  \
+        \          {\n               \"content\": \"WV1 WV2\",\n               \"\
+        name\": \"swathidentifier\"\n            },\n            {\n             \
+        \  \"content\": \"ASCENDING\",\n               \"name\": \"orbitdirection\"\
+        \n            },\n            {\n               \"content\": \"OCN\",\n  \
+        \             \"name\": \"producttype\"\n            },\n            {\n \
+        \              \"content\": \"Sentinel-1\",\n               \"name\": \"platformname\"\
+        \n            },\n            {\n               \"content\": \"0000-000A\"\
+        ,\n               \"name\": \"platformidentifier\"\n            },\n     \
+        \       {\n               \"content\": \"Synthetic Aperture Radar (C-band)\"\
+        ,\n               \"name\": \"instrumentname\"\n            },\n         \
+        \   {\n               \"content\": \"SAR-C SAR\",\n               \"name\"\
+        : \"instrumentshortname\"\n            },\n            {\n               \"\
+        content\": \"S1A_WV_OCN__2SSV_20150701T211030_20150701T211738_006622_008D52_D720.SAFE\"\
+        ,\n               \"name\": \"filename\"\n            },\n            {\n\
+        \               \"content\": \"SAFE\",\n               \"name\": \"format\"\
+        \n            },\n            {\n               \"content\": \"S\",\n    \
+        \           \"name\": \"productclass\"\n            },\n            {\n  \
+        \             \"content\": \"VV\",\n               \"name\": \"polarisationmode\"\
+        \n            },\n            {\n               \"content\": \"NOMINAL\",\n\
+        \               \"name\": \"acquisitiontype\"\n            },\n          \
+        \  {\n               \"content\": \"ARCHIVED\",\n               \"name\":\
+        \ \"status\"\n            },\n            {\n               \"content\": \"\
+        878 KB\",\n               \"name\": \"size\"\n            },\n           \
+        \ {\n               \"content\": \"<gml:Polygon srsName=\\\"http://www.opengis.net/gml/srs/epsg.xml#4326\\\
+        \" xmlns:gml=\\\"http://www.opengis.net/gml\\\">\\n   <gml:outerBoundaryIs>\\\
+        n      <gml:LinearRing>\\n         <gml:coordinates>-53.932625,-32.058731\
+        \ -53.868076,-31.751593 -54.040306,-31.649235 -54.105110,-31.957693 -53.932625,-32.058731<\\\
+        /gml:coordinates>\\n      <\\/gml:LinearRing>\\n   <\\/gml:outerBoundaryIs>\\\
+        n<\\/gml:Polygon>\",\n               \"name\": \"gmlfootprint\"\n        \
+        \    },\n            {\n               \"content\": \"POLYGON ((-32.058731\
+        \ -53.932625,-31.751593 -53.868076,-31.649235 -54.040306,-31.957693 -54.105110,-32.058731\
+        \ -53.932625))\",\n               \"name\": \"footprint\"\n            },\n\
+        \            {\n               \"content\": \"S1A_WV_OCN__2SSV_20150701T211030_20150701T211738_006622_008D52_D720\"\
+        ,\n               \"name\": \"identifier\"\n            },\n            {\n\
+        \               \"content\": \"T\",\n               \"name\": \"processed\"\
+        \n            }\n         ],\n         \"int\": [\n            {\n       \
+        \        \"content\": \"36178\",\n               \"name\": \"missiondatatakeid\"\
+        \n            },\n            {\n               \"content\": \"6622\",\n \
+        \              \"name\": \"orbitnumber\"\n            },\n            {\n\
+        \               \"content\": \"6622\",\n               \"name\": \"lastorbitnumber\"\
+        \n            },\n            {\n               \"content\": \"75\",\n   \
+        \            \"name\": \"relativeorbitnumber\"\n            },\n         \
+        \   {\n               \"content\": \"75\",\n               \"name\": \"lastrelativeorbitnumber\"\
+        \n            }\n         ],\n         \"link\": [\n            {\"href\"\
+        : \"https://scihub.copernicus.eu/apihub/odata/v1/Products('36b16cff-5f87-4cfa-b29d-1196831662e7')/$value\"\
+        },\n            {\n               \"rel\": \"alternative\",\n            \
+        \   \"href\": \"https://scihub.copernicus.eu/apihub/odata/v1/Products('36b16cff-5f87-4cfa-b29d-1196831662e7')/\"\
+        \n            },\n            {\n               \"rel\": \"icon\",\n     \
+        \          \"href\": \"https://scihub.copernicus.eu/apihub/odata/v1/Products('36b16cff-5f87-4cfa-b29d-1196831662e7')/Products('Quicklook')/$value\"\
+        \n            }\n         ],\n         \"date\": [\n            {\n      \
+        \         \"content\": \"2015-07-01T21:10:30.27Z\",\n               \"name\"\
+        : \"beginposition\"\n            },\n            {\n               \"content\"\
+        : \"2015-07-01T21:17:38.694Z\",\n               \"name\": \"endposition\"\n\
+        \            },\n            {\n               \"content\": \"2015-07-01T23:42:11.635Z\"\
+        ,\n               \"name\": \"ingestiondate\"\n            }\n         ]\n\
+        \      }\n   ],\n   \"subtitle\": \"Displaying 3 results. Request done in\
+        \ 0.001 seconds.\",\n   \"opensearch:startIndex\": \"0\",\n   \"opensearch:Query\"\
+        : {\n      \"searchTerms\": \"(beginPosition:[2015-05-01T00:00:00Z TO 2015-07-05T00:00:00Z])\
+        \ AND (footprint:\\\"Intersects(POLYGON((-32.0554580 -53.9319760,-31.7483900\
+        \ -53.8674350,-31.6460170 -54.0396610,-31.9544050 -54.1044620,-32.0554580\
+        \ -53.9319760)))\\\") AND (producttype:OCN)\",\n      \"role\": \"request\"\
+        ,\n      \"startPage\": \"1\"\n   }\n}}"}
+    headers:
+      Content-Type: [application/json]
+      Date: ['Thu, 06 Apr 2017 00:11:44 GMT']
+      Pragma: [no-cache]
+      Server: [Apache-Coyote/1.1]
+      Transfer-Encoding: [chunked]
+      Vary: [Accept-Encoding]
+      content-length: ['16038']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [sentinelsat/0.9.1]
+    method: GET
+    uri: https://scihub.copernicus.eu/apihub/odata/v1/Products('f30b2a6a-b0c1-49f1-b19e-e10c3cf06101')/?$format=json
+  response:
+    body: {string: '{"d":{"__metadata":{"id":"https://scihub.copernicus.eu/apihub/odata/v1/(''f30b2a6a-b0c1-49f1-b19e-e10c3cf06101'')","uri":"https://scihub.copernicus.eu/apihub/odata/v1/(''f30b2a6a-b0c1-49f1-b19e-e10c3cf06101'')","type":"DHuS.Product","content_type":"application/octet-stream","media_src":"https://scihub.copernicus.eu/apihub/odata/v1/(''f30b2a6a-b0c1-49f1-b19e-e10c3cf06101'')/$value","edit_media":"https://scihub.copernicus.eu/apihub/odata/v1/(''f30b2a6a-b0c1-49f1-b19e-e10c3cf06101'')/$value"},"Id":"f30b2a6a-b0c1-49f1-b19e-e10c3cf06101","Name":"S1A_WV_OCN__2SSV_20150619T211030_20150619T211738_006447_008883_C1F4","ContentType":"application/octet-stream","ContentLength":"539922","ChildrenNumber":"0","Value":null,"CreationDate":"\/Date(1447805161063)\/","IngestionDate":"\/Date(1447805161063)\/","EvictionDate":null,"ContentDate":{"__metadata":{"type":"DHuS.TimeRange"},"Start":"\/Date(1434748230362)\/","End":"\/Date(1434748658785)\/"},"Checksum":{"__metadata":{"type":"DHuS.Checksum"},"Algorithm":"MD5","Value":"E8C626CD343621C572F30BA1E0BF5AA7"},"ContentGeometry":"<gml:Polygon
+        srsName=\"http://www.opengis.net/gml/srs/epsg.xml#4326\" xmlns:gml=\"http://www.opengis.net/gml\">\n   <gml:outerBoundaryIs>\n      <gml:LinearRing>\n         <gml:coordinates>-53.931267,-32.057858
+        -53.866734,-31.750776 -54.038925,-31.648441 -54.103718,-31.956841 -53.931267,-32.057858</gml:coordinates>\n      </gml:LinearRing>\n   </gml:outerBoundaryIs>\n</gml:Polygon>","Metalink":"<?xml
+        version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><metalink xmlns=\"urn:ietf:params:xml:ns:metalink\"><file
+        name=\"S1A_WV_OCN__2SSV_20150619T211030_20150619T211738_006447_008883_C1F4.zip\"><hash
+        type=\"MD5\">E8C626CD343621C572F30BA1E0BF5AA7</hash><size>539922</size><url>https://scihub.copernicus.eu/apihub/odata/v1/Products(''f30b2a6a-b0c1-49f1-b19e-e10c3cf06101'')/$value</url></file></metalink>","Products":{"__deferred":{"uri":"https://scihub.copernicus.eu/apihub/odata/v1/(''f30b2a6a-b0c1-49f1-b19e-e10c3cf06101'')/Products"}},"Nodes":{"__deferred":{"uri":"https://scihub.copernicus.eu/apihub/odata/v1/(''f30b2a6a-b0c1-49f1-b19e-e10c3cf06101'')/Nodes"}},"Attributes":{"__deferred":{"uri":"https://scihub.copernicus.eu/apihub/odata/v1/(''f30b2a6a-b0c1-49f1-b19e-e10c3cf06101'')/Attributes"}},"Class":{"__deferred":{"uri":"https://scihub.copernicus.eu/apihub/odata/v1/(''f30b2a6a-b0c1-49f1-b19e-e10c3cf06101'')/Class"}}}}'}
+    headers:
+      Content-Type: [application/json]
+      DataServiceVersion: ['2.0']
+      Date: ['Thu, 06 Apr 2017 00:11:44 GMT']
+      Pragma: [no-cache]
+      Server: [Apache-Coyote/1.1]
+      Transfer-Encoding: [chunked]
+      Vary: [Accept-Encoding]
+      content-length: ['2385']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [sentinelsat/0.9.1]
+    method: GET
+    uri: https://scihub.copernicus.eu/apihub/odata/v1/Products('d8340134-878f-4891-ba4f-4df54f1e3ab4')/?$format=json
+  response:
+    body: {string: '{"d":{"__metadata":{"id":"https://scihub.copernicus.eu/apihub/odata/v1/(''d8340134-878f-4891-ba4f-4df54f1e3ab4'')","uri":"https://scihub.copernicus.eu/apihub/odata/v1/(''d8340134-878f-4891-ba4f-4df54f1e3ab4'')","type":"DHuS.Product","content_type":"application/octet-stream","media_src":"https://scihub.copernicus.eu/apihub/odata/v1/(''d8340134-878f-4891-ba4f-4df54f1e3ab4'')/$value","edit_media":"https://scihub.copernicus.eu/apihub/odata/v1/(''d8340134-878f-4891-ba4f-4df54f1e3ab4'')/$value"},"Id":"d8340134-878f-4891-ba4f-4df54f1e3ab4","Name":"S1A_WV_OCN__2SSV_20150526T211029_20150526T211737_006097_007E78_134A","ContentType":"application/octet-stream","ContentLength":"130102","ChildrenNumber":"0","Value":null,"CreationDate":"\/Date(1447802881852)\/","IngestionDate":"\/Date(1447802881852)\/","EvictionDate":null,"ContentDate":{"__metadata":{"type":"DHuS.TimeRange"},"Start":"\/Date(1432674628984)\/","End":"\/Date(1432675057408)\/"},"Checksum":{"__metadata":{"type":"DHuS.Checksum"},"Algorithm":"MD5","Value":"170834E488F889E538F50EEADB763B29"},"ContentGeometry":"<gml:Polygon
+        srsName=\"http://www.opengis.net/gml/srs/epsg.xml#4326\" xmlns:gml=\"http://www.opengis.net/gml\">\n   <gml:outerBoundaryIs>\n      <gml:LinearRing>\n         <gml:coordinates>-53.931976,-32.055458
+        -53.867435,-31.748390 -54.039661,-31.646017 -54.104462,-31.954405 -53.931976,-32.055458</gml:coordinates>\n      </gml:LinearRing>\n   </gml:outerBoundaryIs>\n</gml:Polygon>","Metalink":"<?xml
+        version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><metalink xmlns=\"urn:ietf:params:xml:ns:metalink\"><file
+        name=\"S1A_WV_OCN__2SSV_20150526T211029_20150526T211737_006097_007E78_134A.zip\"><hash
+        type=\"MD5\">170834E488F889E538F50EEADB763B29</hash><size>130102</size><url>https://scihub.copernicus.eu/apihub/odata/v1/Products(''d8340134-878f-4891-ba4f-4df54f1e3ab4'')/$value</url></file></metalink>","Products":{"__deferred":{"uri":"https://scihub.copernicus.eu/apihub/odata/v1/(''d8340134-878f-4891-ba4f-4df54f1e3ab4'')/Products"}},"Nodes":{"__deferred":{"uri":"https://scihub.copernicus.eu/apihub/odata/v1/(''d8340134-878f-4891-ba4f-4df54f1e3ab4'')/Nodes"}},"Attributes":{"__deferred":{"uri":"https://scihub.copernicus.eu/apihub/odata/v1/(''d8340134-878f-4891-ba4f-4df54f1e3ab4'')/Attributes"}},"Class":{"__deferred":{"uri":"https://scihub.copernicus.eu/apihub/odata/v1/(''d8340134-878f-4891-ba4f-4df54f1e3ab4'')/Class"}}}}'}
+    headers:
+      Content-Type: [application/json]
+      DataServiceVersion: ['2.0']
+      Date: ['Thu, 06 Apr 2017 00:11:44 GMT']
+      Pragma: [no-cache]
+      Server: [Apache-Coyote/1.1]
+      Transfer-Encoding: [chunked]
+      Vary: [Accept-Encoding]
+      content-length: ['2385']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [sentinelsat/0.9.1]
+    method: GET
+    uri: https://scihub.copernicus.eu/apihub/odata/v1/Products('36b16cff-5f87-4cfa-b29d-1196831662e7')/?$format=json
+  response:
+    body: {string: '{"d":{"__metadata":{"id":"https://scihub.copernicus.eu/apihub/odata/v1/(''36b16cff-5f87-4cfa-b29d-1196831662e7'')","uri":"https://scihub.copernicus.eu/apihub/odata/v1/(''36b16cff-5f87-4cfa-b29d-1196831662e7'')","type":"DHuS.Product","content_type":"application/octet-stream","media_src":"https://scihub.copernicus.eu/apihub/odata/v1/(''36b16cff-5f87-4cfa-b29d-1196831662e7'')/$value","edit_media":"https://scihub.copernicus.eu/apihub/odata/v1/(''36b16cff-5f87-4cfa-b29d-1196831662e7'')/$value"},"Id":"36b16cff-5f87-4cfa-b29d-1196831662e7","Name":"S1A_WV_OCN__2SSV_20150701T211030_20150701T211738_006622_008D52_D720","ContentType":"application/octet-stream","ContentLength":"549587","ChildrenNumber":"0","Value":null,"CreationDate":"\/Date(1435794131635)\/","IngestionDate":"\/Date(1435794131635)\/","EvictionDate":null,"ContentDate":{"__metadata":{"type":"DHuS.TimeRange"},"Start":"\/Date(1435785030270)\/","End":"\/Date(1435785458694)\/"},"Checksum":{"__metadata":{"type":"DHuS.Checksum"},"Algorithm":"MD5","Value":"10CB2309CE9BA0B26C18EBE2932721E2"},"ContentGeometry":"<gml:Polygon
+        srsName=\"http://www.opengis.net/gml/srs/epsg.xml#4326\" xmlns:gml=\"http://www.opengis.net/gml\">\n   <gml:outerBoundaryIs>\n      <gml:LinearRing>\n         <gml:coordinates>-53.932625,-32.058731
+        -53.868076,-31.751593 -54.040306,-31.649235 -54.105110,-31.957693 -53.932625,-32.058731</gml:coordinates>\n      </gml:LinearRing>\n   </gml:outerBoundaryIs>\n</gml:Polygon>","Metalink":"<?xml
+        version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><metalink xmlns=\"urn:ietf:params:xml:ns:metalink\"><file
+        name=\"S1A_WV_OCN__2SSV_20150701T211030_20150701T211738_006622_008D52_D720.zip\"><hash
+        type=\"MD5\">10CB2309CE9BA0B26C18EBE2932721E2</hash><size>549587</size><url>https://scihub.copernicus.eu/apihub/odata/v1/Products(''36b16cff-5f87-4cfa-b29d-1196831662e7'')/$value</url></file></metalink>","Products":{"__deferred":{"uri":"https://scihub.copernicus.eu/apihub/odata/v1/(''36b16cff-5f87-4cfa-b29d-1196831662e7'')/Products"}},"Nodes":{"__deferred":{"uri":"https://scihub.copernicus.eu/apihub/odata/v1/(''36b16cff-5f87-4cfa-b29d-1196831662e7'')/Nodes"}},"Attributes":{"__deferred":{"uri":"https://scihub.copernicus.eu/apihub/odata/v1/(''36b16cff-5f87-4cfa-b29d-1196831662e7'')/Attributes"}},"Class":{"__deferred":{"uri":"https://scihub.copernicus.eu/apihub/odata/v1/(''36b16cff-5f87-4cfa-b29d-1196831662e7'')/Class"}}}}'}
+    headers:
+      Content-Type: [application/json]
+      DataServiceVersion: ['2.0']
+      Date: ['Thu, 06 Apr 2017 00:11:44 GMT']
+      Pragma: [no-cache]
+      Server: [Apache-Coyote/1.1]
+      Transfer-Encoding: [chunked]
+      Vary: [Accept-Encoding]
+      content-length: ['2385']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [sentinelsat/0.9.1]
+    method: GET
+    uri: https://scihub.copernicus.eu/apihub/odata/v1/Products('f30b2a6a-b0c1-49f1-b19e-e10c3cf06101')/?$format=json
+  response:
+    body: {string: '{"d":{"__metadata":{"id":"https://scihub.copernicus.eu/apihub/odata/v1/(''f30b2a6a-b0c1-49f1-b19e-e10c3cf06101'')","uri":"https://scihub.copernicus.eu/apihub/odata/v1/(''f30b2a6a-b0c1-49f1-b19e-e10c3cf06101'')","type":"DHuS.Product","content_type":"application/octet-stream","media_src":"https://scihub.copernicus.eu/apihub/odata/v1/(''f30b2a6a-b0c1-49f1-b19e-e10c3cf06101'')/$value","edit_media":"https://scihub.copernicus.eu/apihub/odata/v1/(''f30b2a6a-b0c1-49f1-b19e-e10c3cf06101'')/$value"},"Id":"f30b2a6a-b0c1-49f1-b19e-e10c3cf06101","Name":"S1A_WV_OCN__2SSV_20150619T211030_20150619T211738_006447_008883_C1F4","ContentType":"application/octet-stream","ContentLength":"539922","ChildrenNumber":"0","Value":null,"CreationDate":"\/Date(1447805161063)\/","IngestionDate":"\/Date(1447805161063)\/","EvictionDate":null,"ContentDate":{"__metadata":{"type":"DHuS.TimeRange"},"Start":"\/Date(1434748230362)\/","End":"\/Date(1434748658785)\/"},"Checksum":{"__metadata":{"type":"DHuS.Checksum"},"Algorithm":"MD5","Value":"E8C626CD343621C572F30BA1E0BF5AA7"},"ContentGeometry":"<gml:Polygon
+        srsName=\"http://www.opengis.net/gml/srs/epsg.xml#4326\" xmlns:gml=\"http://www.opengis.net/gml\">\n   <gml:outerBoundaryIs>\n      <gml:LinearRing>\n         <gml:coordinates>-53.931267,-32.057858
+        -53.866734,-31.750776 -54.038925,-31.648441 -54.103718,-31.956841 -53.931267,-32.057858</gml:coordinates>\n      </gml:LinearRing>\n   </gml:outerBoundaryIs>\n</gml:Polygon>","Metalink":"<?xml
+        version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><metalink xmlns=\"urn:ietf:params:xml:ns:metalink\"><file
+        name=\"S1A_WV_OCN__2SSV_20150619T211030_20150619T211738_006447_008883_C1F4.zip\"><hash
+        type=\"MD5\">E8C626CD343621C572F30BA1E0BF5AA7</hash><size>539922</size><url>https://scihub.copernicus.eu/apihub/odata/v1/Products(''f30b2a6a-b0c1-49f1-b19e-e10c3cf06101'')/$value</url></file></metalink>","Products":{"__deferred":{"uri":"https://scihub.copernicus.eu/apihub/odata/v1/(''f30b2a6a-b0c1-49f1-b19e-e10c3cf06101'')/Products"}},"Nodes":{"__deferred":{"uri":"https://scihub.copernicus.eu/apihub/odata/v1/(''f30b2a6a-b0c1-49f1-b19e-e10c3cf06101'')/Nodes"}},"Attributes":{"__deferred":{"uri":"https://scihub.copernicus.eu/apihub/odata/v1/(''f30b2a6a-b0c1-49f1-b19e-e10c3cf06101'')/Attributes"}},"Class":{"__deferred":{"uri":"https://scihub.copernicus.eu/apihub/odata/v1/(''f30b2a6a-b0c1-49f1-b19e-e10c3cf06101'')/Class"}}}}'}
+    headers:
+      Content-Type: [application/json]
+      DataServiceVersion: ['2.0']
+      Date: ['Thu, 06 Apr 2017 00:11:45 GMT']
+      Pragma: [no-cache]
+      Server: [Apache-Coyote/1.1]
+      Transfer-Encoding: [chunked]
+      Vary: [Accept-Encoding]
+      content-length: ['2385']
+    status: {code: 200, message: OK}
+- request:
+    body: q=%28beginPosition%3A%5B2015-05-01T00%3A00%3A00Z+TO+2015-07-05T00%3A00%3A00Z%5D%29+AND+%28footprint%3A%22Intersects%28POLYGON%28%28-32.0554580+-53.9319760%2C-31.7483900+-53.8674350%2C-31.6460170+-54.0396610%2C-31.9544050+-54.1044620%2C-32.0554580+-53.9319760%29%29%29%22%29+AND+%28producttype%3AOCN%29
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['301']
+      Content-Type: [application/x-www-form-urlencoded]
+      User-Agent: [sentinelsat/0.9.1]
+    method: POST
+    uri: https://scihub.copernicus.eu/apihub/search?format=json&rows=100&start=0
+  response:
+    body: {string: "{\"feed\": {\n   \"xmlns:opensearch\": \"http://a9.com/-/spec/opensearch/1.1/\"\
+        ,\n   \"link\": [\n      {\n         \"rel\": \"self\",\n         \"type\"\
+        : \"application/atom+xml\",\n         \"href\": \"https://scihub.copernicus.eu/apihub/search?q=(beginPosition:[2015-05-01T00:00:00Z\
+        \ TO 2015-07-05T00:00:00Z]) AND (footprint:\\\"Intersects(POLYGON((-32.0554580\
+        \ -53.9319760,-31.7483900 -53.8674350,-31.6460170 -54.0396610,-31.9544050\
+        \ -54.1044620,-32.0554580 -53.9319760)))\\\") AND (producttype:OCN)&start=0&rows=100\"\
+        \n      },\n      {\n         \"rel\": \"first\",\n         \"type\": \"application/atom+xml\"\
+        ,\n         \"href\": \"https://scihub.copernicus.eu/apihub/search?q=(beginPosition:[2015-05-01T00:00:00Z\
+        \ TO 2015-07-05T00:00:00Z]) AND (footprint:\\\"Intersects(POLYGON((-32.0554580\
+        \ -53.9319760,-31.7483900 -53.8674350,-31.6460170 -54.0396610,-31.9544050\
+        \ -54.1044620,-32.0554580 -53.9319760)))\\\") AND (producttype:OCN)&start=0&rows=100\"\
+        \n      },\n      {\n         \"rel\": \"last\",\n         \"type\": \"application/atom+xml\"\
+        ,\n         \"href\": \"https://scihub.copernicus.eu/apihub/search?q=(beginPosition:[2015-05-01T00:00:00Z\
+        \ TO 2015-07-05T00:00:00Z]) AND (footprint:\\\"Intersects(POLYGON((-32.0554580\
+        \ -53.9319760,-31.7483900 -53.8674350,-31.6460170 -54.0396610,-31.9544050\
+        \ -54.1044620,-32.0554580 -53.9319760)))\\\") AND (producttype:OCN)&start=2&rows=100\"\
+        \n      },\n      {\n         \"rel\": \"search\",\n         \"type\": \"\
+        application/opensearchdescription+xml\",\n         \"href\": \"opensearch_description.xml\"\
+        \n      }\n   ],\n   \"xmlns\": \"http://www.w3.org/2005/Atom\",\n   \"opensearch:itemsPerPage\"\
+        : \"100\",\n   \"id\": \"https://scihub.copernicus.eu/apihub/search?q=(beginPosition:[2015-05-01T00:00:00Z\
+        \ TO 2015-07-05T00:00:00Z]) AND (footprint:\\\"Intersects(POLYGON((-32.0554580\
+        \ -53.9319760,-31.7483900 -53.8674350,-31.6460170 -54.0396610,-31.9544050\
+        \ -54.1044620,-32.0554580 -53.9319760)))\\\") AND (producttype:OCN)\",\n \
+        \  \"author\": {\"name\": \"Sentinels Scientific Data Hub\"},\n   \"title\"\
+        : \"Sentinels Scientific Data Hub search results for: (beginPosition:[2015-05-01T00:00:00Z\
+        \ TO 2015-07-05T00:00:00Z]) AND (footprint:\\\"Intersects(POLYGON((-32.0554580\
+        \ -53.9319760,-31.7483900 -53.8674350,-31.6460170 -54.0396610,-31.9544050\
+        \ -54.1044620,-32.0554580 -53.9319760)))\\\") AND (producttype:OCN)\",\n \
+        \  \"updated\": \"2017-04-06T00:11:45.603Z\",\n   \"opensearch:totalResults\"\
+        : \"3\",\n   \"entry\": [\n      {\n         \"summary\": \"Date: 2015-06-19T21:10:30.362Z,\
+        \ Instrument: SAR-C SAR, Mode: VV, Satellite: Sentinel-1, Size: 878.49 KB\"\
+        ,\n         \"id\": \"f30b2a6a-b0c1-49f1-b19e-e10c3cf06101\",\n         \"\
+        title\": \"S1A_WV_OCN__2SSV_20150619T211030_20150619T211738_006447_008883_C1F4\"\
+        ,\n         \"str\": [\n            {\n               \"content\": \"T\",\n\
+        \               \"name\": \"processed\"\n            },\n            {\n \
+        \              \"content\": \"NOMINAL\",\n               \"name\": \"acquisitiontype\"\
+        \n            },\n            {\n               \"content\": \"S1A_WV_OCN__2SSV_20150619T211030_20150619T211738_006447_008883_C1F4.SAFE\"\
+        ,\n               \"name\": \"filename\"\n            },\n            {\n\
+        \               \"content\": \"<gml:Polygon srsName=\\\"http://www.opengis.net/gml/srs/epsg.xml#4326\\\
+        \" xmlns:gml=\\\"http://www.opengis.net/gml\\\">\\n   <gml:outerBoundaryIs>\\\
+        n      <gml:LinearRing>\\n         <gml:coordinates>-53.931267,-32.057858\
+        \ -53.866734,-31.750776 -54.038925,-31.648441 -54.103718,-31.956841 -53.931267,-32.057858<\\\
+        /gml:coordinates>\\n      <\\/gml:LinearRing>\\n   <\\/gml:outerBoundaryIs>\\\
+        n<\\/gml:Polygon>\",\n               \"name\": \"gmlfootprint\"\n        \
+        \    },\n            {\n               \"content\": \"SAFE\",\n          \
+        \     \"name\": \"format\"\n            },\n            {\n              \
+        \ \"content\": \"S1A_WV_OCN__2SSV_20150619T211030_20150619T211738_006447_008883_C1F4\"\
+        ,\n               \"name\": \"identifier\"\n            },\n            {\n\
+        \               \"content\": \"SAR-C SAR\",\n               \"name\": \"instrumentshortname\"\
+        \n            },\n            {\n               \"content\": \"WV\",\n   \
+        \            \"name\": \"sensoroperationalmode\"\n            },\n       \
+        \     {\n               \"content\": \"Synthetic Aperture Radar (C-band)\"\
+        ,\n               \"name\": \"instrumentname\"\n            },\n         \
+        \   {\n               \"content\": \"WV1 WV2\",\n               \"name\":\
+        \ \"swathidentifier\"\n            },\n            {\n               \"content\"\
+        : \"POLYGON ((-32.057858 -53.931267,-31.750776 -53.866734,-31.648441 -54.038925,-31.956841\
+        \ -54.103718,-32.057858 -53.931267))\",\n               \"name\": \"footprint\"\
+        \n            },\n            {\n               \"content\": \"0000-000A\"\
+        ,\n               \"name\": \"platformidentifier\"\n            },\n     \
+        \       {\n               \"content\": \"ASCENDING\",\n               \"name\"\
+        : \"orbitdirection\"\n            },\n            {\n               \"content\"\
+        : \"VV\",\n               \"name\": \"polarisationmode\"\n            },\n\
+        \            {\n               \"content\": \"S\",\n               \"name\"\
+        : \"productclass\"\n            },\n            {\n               \"content\"\
+        : \"OCN\",\n               \"name\": \"producttype\"\n            },\n   \
+        \         {\n               \"content\": \"Sentinel-1\",\n               \"\
+        name\": \"platformname\"\n            },\n            {\n               \"\
+        content\": \"878.49 KB\",\n               \"name\": \"size\"\n           \
+        \ },\n            {\n               \"content\": \"ARCHIVED\",\n         \
+        \      \"name\": \"status\"\n            }\n         ],\n         \"int\"\
+        : [\n            {\n               \"content\": \"34947\",\n             \
+        \  \"name\": \"missiondatatakeid\"\n            },\n            {\n      \
+        \         \"content\": \"6447\",\n               \"name\": \"orbitnumber\"\
+        \n            },\n            {\n               \"content\": \"6447\",\n \
+        \              \"name\": \"lastorbitnumber\"\n            },\n           \
+        \ {\n               \"content\": \"75\",\n               \"name\": \"relativeorbitnumber\"\
+        \n            },\n            {\n               \"content\": \"75\",\n   \
+        \            \"name\": \"lastrelativeorbitnumber\"\n            }\n      \
+        \   ],\n         \"link\": [\n            {\"href\": \"https://scihub.copernicus.eu/apihub/odata/v1/Products('f30b2a6a-b0c1-49f1-b19e-e10c3cf06101')/$value\"\
+        },\n            {\n               \"rel\": \"alternative\",\n            \
+        \   \"href\": \"https://scihub.copernicus.eu/apihub/odata/v1/Products('f30b2a6a-b0c1-49f1-b19e-e10c3cf06101')/\"\
+        \n            },\n            {\n               \"rel\": \"icon\",\n     \
+        \          \"href\": \"https://scihub.copernicus.eu/apihub/odata/v1/Products('f30b2a6a-b0c1-49f1-b19e-e10c3cf06101')/Products('Quicklook')/$value\"\
+        \n            }\n         ],\n         \"date\": [\n            {\n      \
+        \         \"content\": \"2015-11-18T00:06:01.063Z\",\n               \"name\"\
+        : \"ingestiondate\"\n            },\n            {\n               \"content\"\
+        : \"2015-06-19T21:10:30.362Z\",\n               \"name\": \"beginposition\"\
+        \n            },\n            {\n               \"content\": \"2015-06-19T21:17:38.785Z\"\
+        ,\n               \"name\": \"endposition\"\n            }\n         ]\n \
+        \     },\n      {\n         \"summary\": \"Date: 2015-05-26T21:10:28.984Z,\
+        \ Instrument: SAR-C SAR, Mode: VV, Satellite: Sentinel-1, Size: 10.65 KB\"\
+        ,\n         \"id\": \"d8340134-878f-4891-ba4f-4df54f1e3ab4\",\n         \"\
+        title\": \"S1A_WV_OCN__2SSV_20150526T211029_20150526T211737_006097_007E78_134A\"\
+        ,\n         \"str\": [\n            {\n               \"content\": \"T\",\n\
+        \               \"name\": \"processed\"\n            },\n            {\n \
+        \              \"content\": \"NOMINAL\",\n               \"name\": \"acquisitiontype\"\
+        \n            },\n            {\n               \"content\": \"S1A_WV_OCN__2SSV_20150526T211029_20150526T211737_006097_007E78_134A.SAFE\"\
+        ,\n               \"name\": \"filename\"\n            },\n            {\n\
+        \               \"content\": \"<gml:Polygon srsName=\\\"http://www.opengis.net/gml/srs/epsg.xml#4326\\\
+        \" xmlns:gml=\\\"http://www.opengis.net/gml\\\">\\n   <gml:outerBoundaryIs>\\\
+        n      <gml:LinearRing>\\n         <gml:coordinates>-53.931976,-32.055458\
+        \ -53.867435,-31.748390 -54.039661,-31.646017 -54.104462,-31.954405 -53.931976,-32.055458<\\\
+        /gml:coordinates>\\n      <\\/gml:LinearRing>\\n   <\\/gml:outerBoundaryIs>\\\
+        n<\\/gml:Polygon>\",\n               \"name\": \"gmlfootprint\"\n        \
+        \    },\n            {\n               \"content\": \"SAFE\",\n          \
+        \     \"name\": \"format\"\n            },\n            {\n              \
+        \ \"content\": \"S1A_WV_OCN__2SSV_20150526T211029_20150526T211737_006097_007E78_134A\"\
+        ,\n               \"name\": \"identifier\"\n            },\n            {\n\
+        \               \"content\": \"SAR-C SAR\",\n               \"name\": \"instrumentshortname\"\
+        \n            },\n            {\n               \"content\": \"WV\",\n   \
+        \            \"name\": \"sensoroperationalmode\"\n            },\n       \
+        \     {\n               \"content\": \"Synthetic Aperture Radar (C-band)\"\
+        ,\n               \"name\": \"instrumentname\"\n            },\n         \
+        \   {\n               \"content\": \"WV1 WV2\",\n               \"name\":\
+        \ \"swathidentifier\"\n            },\n            {\n               \"content\"\
+        : \"POLYGON ((-32.055458 -53.931976,-31.748390 -53.867435,-31.646017 -54.039661,-31.954405\
+        \ -54.104462,-32.055458 -53.931976))\",\n               \"name\": \"footprint\"\
+        \n            },\n            {\n               \"content\": \"0000-000A\"\
+        ,\n               \"name\": \"platformidentifier\"\n            },\n     \
+        \       {\n               \"content\": \"ASCENDING\",\n               \"name\"\
+        : \"orbitdirection\"\n            },\n            {\n               \"content\"\
+        : \"VV\",\n               \"name\": \"polarisationmode\"\n            },\n\
+        \            {\n               \"content\": \"S\",\n               \"name\"\
+        : \"productclass\"\n            },\n            {\n               \"content\"\
+        : \"OCN\",\n               \"name\": \"producttype\"\n            },\n   \
+        \         {\n               \"content\": \"Sentinel-1\",\n               \"\
+        name\": \"platformname\"\n            },\n            {\n               \"\
+        content\": \"10.65 KB\",\n               \"name\": \"size\"\n            },\n\
+        \            {\n               \"content\": \"ARCHIVED\",\n              \
+        \ \"name\": \"status\"\n            }\n         ],\n         \"int\": [\n\
+        \            {\n               \"content\": \"32376\",\n               \"\
+        name\": \"missiondatatakeid\"\n            },\n            {\n           \
+        \    \"content\": \"6097\",\n               \"name\": \"orbitnumber\"\n  \
+        \          },\n            {\n               \"content\": \"6097\",\n    \
+        \           \"name\": \"lastorbitnumber\"\n            },\n            {\n\
+        \               \"content\": \"75\",\n               \"name\": \"relativeorbitnumber\"\
+        \n            },\n            {\n               \"content\": \"75\",\n   \
+        \            \"name\": \"lastrelativeorbitnumber\"\n            }\n      \
+        \   ],\n         \"link\": [\n            {\"href\": \"https://scihub.copernicus.eu/apihub/odata/v1/Products('d8340134-878f-4891-ba4f-4df54f1e3ab4')/$value\"\
+        },\n            {\n               \"rel\": \"alternative\",\n            \
+        \   \"href\": \"https://scihub.copernicus.eu/apihub/odata/v1/Products('d8340134-878f-4891-ba4f-4df54f1e3ab4')/\"\
+        \n            },\n            {\n               \"rel\": \"icon\",\n     \
+        \          \"href\": \"https://scihub.copernicus.eu/apihub/odata/v1/Products('d8340134-878f-4891-ba4f-4df54f1e3ab4')/Products('Quicklook')/$value\"\
+        \n            }\n         ],\n         \"date\": [\n            {\n      \
+        \         \"content\": \"2015-11-17T23:28:01.852Z\",\n               \"name\"\
+        : \"ingestiondate\"\n            },\n            {\n               \"content\"\
+        : \"2015-05-26T21:10:28.984Z\",\n               \"name\": \"beginposition\"\
+        \n            },\n            {\n               \"content\": \"2015-05-26T21:17:37.408Z\"\
+        ,\n               \"name\": \"endposition\"\n            }\n         ]\n \
+        \     },\n      {\n         \"summary\": \"Date: 2015-07-01T21:10:30.27Z,\
+        \ Instrument: SAR-C SAR, Mode: VV, Satellite: Sentinel-1, Size: 878 KB\",\n\
+        \         \"id\": \"36b16cff-5f87-4cfa-b29d-1196831662e7\",\n         \"title\"\
+        : \"S1A_WV_OCN__2SSV_20150701T211030_20150701T211738_006622_008D52_D720\"\
+        ,\n         \"str\": [\n            {\n               \"content\": \"WV\"\
+        ,\n               \"name\": \"sensoroperationalmode\"\n            },\n  \
+        \          {\n               \"content\": \"WV1 WV2\",\n               \"\
+        name\": \"swathidentifier\"\n            },\n            {\n             \
+        \  \"content\": \"ASCENDING\",\n               \"name\": \"orbitdirection\"\
+        \n            },\n            {\n               \"content\": \"OCN\",\n  \
+        \             \"name\": \"producttype\"\n            },\n            {\n \
+        \              \"content\": \"Sentinel-1\",\n               \"name\": \"platformname\"\
+        \n            },\n            {\n               \"content\": \"0000-000A\"\
+        ,\n               \"name\": \"platformidentifier\"\n            },\n     \
+        \       {\n               \"content\": \"Synthetic Aperture Radar (C-band)\"\
+        ,\n               \"name\": \"instrumentname\"\n            },\n         \
+        \   {\n               \"content\": \"SAR-C SAR\",\n               \"name\"\
+        : \"instrumentshortname\"\n            },\n            {\n               \"\
+        content\": \"S1A_WV_OCN__2SSV_20150701T211030_20150701T211738_006622_008D52_D720.SAFE\"\
+        ,\n               \"name\": \"filename\"\n            },\n            {\n\
+        \               \"content\": \"SAFE\",\n               \"name\": \"format\"\
+        \n            },\n            {\n               \"content\": \"S\",\n    \
+        \           \"name\": \"productclass\"\n            },\n            {\n  \
+        \             \"content\": \"VV\",\n               \"name\": \"polarisationmode\"\
+        \n            },\n            {\n               \"content\": \"NOMINAL\",\n\
+        \               \"name\": \"acquisitiontype\"\n            },\n          \
+        \  {\n               \"content\": \"ARCHIVED\",\n               \"name\":\
+        \ \"status\"\n            },\n            {\n               \"content\": \"\
+        878 KB\",\n               \"name\": \"size\"\n            },\n           \
+        \ {\n               \"content\": \"<gml:Polygon srsName=\\\"http://www.opengis.net/gml/srs/epsg.xml#4326\\\
+        \" xmlns:gml=\\\"http://www.opengis.net/gml\\\">\\n   <gml:outerBoundaryIs>\\\
+        n      <gml:LinearRing>\\n         <gml:coordinates>-53.932625,-32.058731\
+        \ -53.868076,-31.751593 -54.040306,-31.649235 -54.105110,-31.957693 -53.932625,-32.058731<\\\
+        /gml:coordinates>\\n      <\\/gml:LinearRing>\\n   <\\/gml:outerBoundaryIs>\\\
+        n<\\/gml:Polygon>\",\n               \"name\": \"gmlfootprint\"\n        \
+        \    },\n            {\n               \"content\": \"POLYGON ((-32.058731\
+        \ -53.932625,-31.751593 -53.868076,-31.649235 -54.040306,-31.957693 -54.105110,-32.058731\
+        \ -53.932625))\",\n               \"name\": \"footprint\"\n            },\n\
+        \            {\n               \"content\": \"S1A_WV_OCN__2SSV_20150701T211030_20150701T211738_006622_008D52_D720\"\
+        ,\n               \"name\": \"identifier\"\n            },\n            {\n\
+        \               \"content\": \"T\",\n               \"name\": \"processed\"\
+        \n            }\n         ],\n         \"int\": [\n            {\n       \
+        \        \"content\": \"36178\",\n               \"name\": \"missiondatatakeid\"\
+        \n            },\n            {\n               \"content\": \"6622\",\n \
+        \              \"name\": \"orbitnumber\"\n            },\n            {\n\
+        \               \"content\": \"6622\",\n               \"name\": \"lastorbitnumber\"\
+        \n            },\n            {\n               \"content\": \"75\",\n   \
+        \            \"name\": \"relativeorbitnumber\"\n            },\n         \
+        \   {\n               \"content\": \"75\",\n               \"name\": \"lastrelativeorbitnumber\"\
+        \n            }\n         ],\n         \"link\": [\n            {\"href\"\
+        : \"https://scihub.copernicus.eu/apihub/odata/v1/Products('36b16cff-5f87-4cfa-b29d-1196831662e7')/$value\"\
+        },\n            {\n               \"rel\": \"alternative\",\n            \
+        \   \"href\": \"https://scihub.copernicus.eu/apihub/odata/v1/Products('36b16cff-5f87-4cfa-b29d-1196831662e7')/\"\
+        \n            },\n            {\n               \"rel\": \"icon\",\n     \
+        \          \"href\": \"https://scihub.copernicus.eu/apihub/odata/v1/Products('36b16cff-5f87-4cfa-b29d-1196831662e7')/Products('Quicklook')/$value\"\
+        \n            }\n         ],\n         \"date\": [\n            {\n      \
+        \         \"content\": \"2015-07-01T21:10:30.27Z\",\n               \"name\"\
+        : \"beginposition\"\n            },\n            {\n               \"content\"\
+        : \"2015-07-01T21:17:38.694Z\",\n               \"name\": \"endposition\"\n\
+        \            },\n            {\n               \"content\": \"2015-07-01T23:42:11.635Z\"\
+        ,\n               \"name\": \"ingestiondate\"\n            }\n         ]\n\
+        \      }\n   ],\n   \"subtitle\": \"Displaying 3 results. Request done in\
+        \ 0.001 seconds.\",\n   \"opensearch:startIndex\": \"0\",\n   \"opensearch:Query\"\
+        : {\n      \"searchTerms\": \"(beginPosition:[2015-05-01T00:00:00Z TO 2015-07-05T00:00:00Z])\
+        \ AND (footprint:\\\"Intersects(POLYGON((-32.0554580 -53.9319760,-31.7483900\
+        \ -53.8674350,-31.6460170 -54.0396610,-31.9544050 -54.1044620,-32.0554580\
+        \ -53.9319760)))\\\") AND (producttype:OCN)\",\n      \"role\": \"request\"\
+        ,\n      \"startPage\": \"1\"\n   }\n}}"}
+    headers:
+      Content-Type: [application/json]
+      Date: ['Thu, 06 Apr 2017 00:11:44 GMT']
+      Pragma: [no-cache]
+      Server: [Apache-Coyote/1.1]
+      Transfer-Encoding: [chunked]
+      Vary: [Accept-Encoding]
+      content-length: ['16038']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [sentinelsat/0.9.1]
+    method: GET
+    uri: https://scihub.copernicus.eu/apihub/odata/v1/Products('d8340134-878f-4891-ba4f-4df54f1e3ab4')/?$format=json
+  response:
+    body: {string: '{"d":{"__metadata":{"id":"https://scihub.copernicus.eu/apihub/odata/v1/(''d8340134-878f-4891-ba4f-4df54f1e3ab4'')","uri":"https://scihub.copernicus.eu/apihub/odata/v1/(''d8340134-878f-4891-ba4f-4df54f1e3ab4'')","type":"DHuS.Product","content_type":"application/octet-stream","media_src":"https://scihub.copernicus.eu/apihub/odata/v1/(''d8340134-878f-4891-ba4f-4df54f1e3ab4'')/$value","edit_media":"https://scihub.copernicus.eu/apihub/odata/v1/(''d8340134-878f-4891-ba4f-4df54f1e3ab4'')/$value"},"Id":"d8340134-878f-4891-ba4f-4df54f1e3ab4","Name":"S1A_WV_OCN__2SSV_20150526T211029_20150526T211737_006097_007E78_134A","ContentType":"application/octet-stream","ContentLength":"130102","ChildrenNumber":"0","Value":null,"CreationDate":"\/Date(1447802881852)\/","IngestionDate":"\/Date(1447802881852)\/","EvictionDate":null,"ContentDate":{"__metadata":{"type":"DHuS.TimeRange"},"Start":"\/Date(1432674628984)\/","End":"\/Date(1432675057408)\/"},"Checksum":{"__metadata":{"type":"DHuS.Checksum"},"Algorithm":"MD5","Value":"170834E488F889E538F50EEADB763B29"},"ContentGeometry":"<gml:Polygon
+        srsName=\"http://www.opengis.net/gml/srs/epsg.xml#4326\" xmlns:gml=\"http://www.opengis.net/gml\">\n   <gml:outerBoundaryIs>\n      <gml:LinearRing>\n         <gml:coordinates>-53.931976,-32.055458
+        -53.867435,-31.748390 -54.039661,-31.646017 -54.104462,-31.954405 -53.931976,-32.055458</gml:coordinates>\n      </gml:LinearRing>\n   </gml:outerBoundaryIs>\n</gml:Polygon>","Metalink":"<?xml
+        version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><metalink xmlns=\"urn:ietf:params:xml:ns:metalink\"><file
+        name=\"S1A_WV_OCN__2SSV_20150526T211029_20150526T211737_006097_007E78_134A.zip\"><hash
+        type=\"MD5\">170834E488F889E538F50EEADB763B29</hash><size>130102</size><url>https://scihub.copernicus.eu/apihub/odata/v1/Products(''d8340134-878f-4891-ba4f-4df54f1e3ab4'')/$value</url></file></metalink>","Products":{"__deferred":{"uri":"https://scihub.copernicus.eu/apihub/odata/v1/(''d8340134-878f-4891-ba4f-4df54f1e3ab4'')/Products"}},"Nodes":{"__deferred":{"uri":"https://scihub.copernicus.eu/apihub/odata/v1/(''d8340134-878f-4891-ba4f-4df54f1e3ab4'')/Nodes"}},"Attributes":{"__deferred":{"uri":"https://scihub.copernicus.eu/apihub/odata/v1/(''d8340134-878f-4891-ba4f-4df54f1e3ab4'')/Attributes"}},"Class":{"__deferred":{"uri":"https://scihub.copernicus.eu/apihub/odata/v1/(''d8340134-878f-4891-ba4f-4df54f1e3ab4'')/Class"}}}}'}
+    headers:
+      Content-Type: [application/json]
+      DataServiceVersion: ['2.0']
+      Date: ['Thu, 06 Apr 2017 00:11:46 GMT']
+      Pragma: [no-cache]
+      Server: [Apache-Coyote/1.1]
+      Transfer-Encoding: [chunked]
+      Vary: [Accept-Encoding]
+      content-length: ['2385']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [sentinelsat/0.9.1]
+    method: GET
+    uri: https://scihub.copernicus.eu/apihub/odata/v1/Products('36b16cff-5f87-4cfa-b29d-1196831662e7')/?$format=json
+  response:
+    body: {string: '{"d":{"__metadata":{"id":"https://scihub.copernicus.eu/apihub/odata/v1/(''36b16cff-5f87-4cfa-b29d-1196831662e7'')","uri":"https://scihub.copernicus.eu/apihub/odata/v1/(''36b16cff-5f87-4cfa-b29d-1196831662e7'')","type":"DHuS.Product","content_type":"application/octet-stream","media_src":"https://scihub.copernicus.eu/apihub/odata/v1/(''36b16cff-5f87-4cfa-b29d-1196831662e7'')/$value","edit_media":"https://scihub.copernicus.eu/apihub/odata/v1/(''36b16cff-5f87-4cfa-b29d-1196831662e7'')/$value"},"Id":"36b16cff-5f87-4cfa-b29d-1196831662e7","Name":"S1A_WV_OCN__2SSV_20150701T211030_20150701T211738_006622_008D52_D720","ContentType":"application/octet-stream","ContentLength":"549587","ChildrenNumber":"0","Value":null,"CreationDate":"\/Date(1435794131635)\/","IngestionDate":"\/Date(1435794131635)\/","EvictionDate":null,"ContentDate":{"__metadata":{"type":"DHuS.TimeRange"},"Start":"\/Date(1435785030270)\/","End":"\/Date(1435785458694)\/"},"Checksum":{"__metadata":{"type":"DHuS.Checksum"},"Algorithm":"MD5","Value":"10CB2309CE9BA0B26C18EBE2932721E2"},"ContentGeometry":"<gml:Polygon
+        srsName=\"http://www.opengis.net/gml/srs/epsg.xml#4326\" xmlns:gml=\"http://www.opengis.net/gml\">\n   <gml:outerBoundaryIs>\n      <gml:LinearRing>\n         <gml:coordinates>-53.932625,-32.058731
+        -53.868076,-31.751593 -54.040306,-31.649235 -54.105110,-31.957693 -53.932625,-32.058731</gml:coordinates>\n      </gml:LinearRing>\n   </gml:outerBoundaryIs>\n</gml:Polygon>","Metalink":"<?xml
+        version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><metalink xmlns=\"urn:ietf:params:xml:ns:metalink\"><file
+        name=\"S1A_WV_OCN__2SSV_20150701T211030_20150701T211738_006622_008D52_D720.zip\"><hash
+        type=\"MD5\">10CB2309CE9BA0B26C18EBE2932721E2</hash><size>549587</size><url>https://scihub.copernicus.eu/apihub/odata/v1/Products(''36b16cff-5f87-4cfa-b29d-1196831662e7'')/$value</url></file></metalink>","Products":{"__deferred":{"uri":"https://scihub.copernicus.eu/apihub/odata/v1/(''36b16cff-5f87-4cfa-b29d-1196831662e7'')/Products"}},"Nodes":{"__deferred":{"uri":"https://scihub.copernicus.eu/apihub/odata/v1/(''36b16cff-5f87-4cfa-b29d-1196831662e7'')/Nodes"}},"Attributes":{"__deferred":{"uri":"https://scihub.copernicus.eu/apihub/odata/v1/(''36b16cff-5f87-4cfa-b29d-1196831662e7'')/Attributes"}},"Class":{"__deferred":{"uri":"https://scihub.copernicus.eu/apihub/odata/v1/(''36b16cff-5f87-4cfa-b29d-1196831662e7'')/Class"}}}}'}
+    headers:
+      Content-Type: [application/json]
+      DataServiceVersion: ['2.0']
+      Date: ['Thu, 06 Apr 2017 00:11:47 GMT']
+      Pragma: [no-cache]
+      Server: [Apache-Coyote/1.1]
+      Transfer-Encoding: [chunked]
+      Vary: [Accept-Encoding]
+      content-length: ['2385']
+    status: {code: 200, message: OK}
+- request:
+    body: q=%28beginPosition%3A%5B2015-05-01T00%3A00%3A00Z+TO+2015-07-05T00%3A00%3A00Z%5D%29+AND+%28footprint%3A%22Intersects%28POLYGON%28%28-32.0554580+-53.9319760%2C-31.7483900+-53.8674350%2C-31.6460170+-54.0396610%2C-31.9544050+-54.1044620%2C-32.0554580+-53.9319760%29%29%29%22%29+AND+%28producttype%3AOCN%29
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['301']
+      Content-Type: [application/x-www-form-urlencoded]
+      User-Agent: [sentinelsat/0.9.1]
+    method: POST
+    uri: https://scihub.copernicus.eu/apihub/search?format=json&rows=100&start=0
+  response:
+    body: {string: "{\"feed\": {\n   \"xmlns:opensearch\": \"http://a9.com/-/spec/opensearch/1.1/\"\
+        ,\n   \"link\": [\n      {\n         \"rel\": \"self\",\n         \"type\"\
+        : \"application/atom+xml\",\n         \"href\": \"https://scihub.copernicus.eu/apihub/search?q=(beginPosition:[2015-05-01T00:00:00Z\
+        \ TO 2015-07-05T00:00:00Z]) AND (footprint:\\\"Intersects(POLYGON((-32.0554580\
+        \ -53.9319760,-31.7483900 -53.8674350,-31.6460170 -54.0396610,-31.9544050\
+        \ -54.1044620,-32.0554580 -53.9319760)))\\\") AND (producttype:OCN)&start=0&rows=100\"\
+        \n      },\n      {\n         \"rel\": \"first\",\n         \"type\": \"application/atom+xml\"\
+        ,\n         \"href\": \"https://scihub.copernicus.eu/apihub/search?q=(beginPosition:[2015-05-01T00:00:00Z\
+        \ TO 2015-07-05T00:00:00Z]) AND (footprint:\\\"Intersects(POLYGON((-32.0554580\
+        \ -53.9319760,-31.7483900 -53.8674350,-31.6460170 -54.0396610,-31.9544050\
+        \ -54.1044620,-32.0554580 -53.9319760)))\\\") AND (producttype:OCN)&start=0&rows=100\"\
+        \n      },\n      {\n         \"rel\": \"last\",\n         \"type\": \"application/atom+xml\"\
+        ,\n         \"href\": \"https://scihub.copernicus.eu/apihub/search?q=(beginPosition:[2015-05-01T00:00:00Z\
+        \ TO 2015-07-05T00:00:00Z]) AND (footprint:\\\"Intersects(POLYGON((-32.0554580\
+        \ -53.9319760,-31.7483900 -53.8674350,-31.6460170 -54.0396610,-31.9544050\
+        \ -54.1044620,-32.0554580 -53.9319760)))\\\") AND (producttype:OCN)&start=2&rows=100\"\
+        \n      },\n      {\n         \"rel\": \"search\",\n         \"type\": \"\
+        application/opensearchdescription+xml\",\n         \"href\": \"opensearch_description.xml\"\
+        \n      }\n   ],\n   \"xmlns\": \"http://www.w3.org/2005/Atom\",\n   \"opensearch:itemsPerPage\"\
+        : \"100\",\n   \"id\": \"https://scihub.copernicus.eu/apihub/search?q=(beginPosition:[2015-05-01T00:00:00Z\
+        \ TO 2015-07-05T00:00:00Z]) AND (footprint:\\\"Intersects(POLYGON((-32.0554580\
+        \ -53.9319760,-31.7483900 -53.8674350,-31.6460170 -54.0396610,-31.9544050\
+        \ -54.1044620,-32.0554580 -53.9319760)))\\\") AND (producttype:OCN)\",\n \
+        \  \"author\": {\"name\": \"Sentinels Scientific Data Hub\"},\n   \"title\"\
+        : \"Sentinels Scientific Data Hub search results for: (beginPosition:[2015-05-01T00:00:00Z\
+        \ TO 2015-07-05T00:00:00Z]) AND (footprint:\\\"Intersects(POLYGON((-32.0554580\
+        \ -53.9319760,-31.7483900 -53.8674350,-31.6460170 -54.0396610,-31.9544050\
+        \ -54.1044620,-32.0554580 -53.9319760)))\\\") AND (producttype:OCN)\",\n \
+        \  \"updated\": \"2017-04-06T00:11:48.727Z\",\n   \"opensearch:totalResults\"\
+        : \"3\",\n   \"entry\": [\n      {\n         \"summary\": \"Date: 2015-06-19T21:10:30.362Z,\
+        \ Instrument: SAR-C SAR, Mode: VV, Satellite: Sentinel-1, Size: 878.49 KB\"\
+        ,\n         \"id\": \"f30b2a6a-b0c1-49f1-b19e-e10c3cf06101\",\n         \"\
+        title\": \"S1A_WV_OCN__2SSV_20150619T211030_20150619T211738_006447_008883_C1F4\"\
+        ,\n         \"str\": [\n            {\n               \"content\": \"T\",\n\
+        \               \"name\": \"processed\"\n            },\n            {\n \
+        \              \"content\": \"NOMINAL\",\n               \"name\": \"acquisitiontype\"\
+        \n            },\n            {\n               \"content\": \"S1A_WV_OCN__2SSV_20150619T211030_20150619T211738_006447_008883_C1F4.SAFE\"\
+        ,\n               \"name\": \"filename\"\n            },\n            {\n\
+        \               \"content\": \"<gml:Polygon srsName=\\\"http://www.opengis.net/gml/srs/epsg.xml#4326\\\
+        \" xmlns:gml=\\\"http://www.opengis.net/gml\\\">\\n   <gml:outerBoundaryIs>\\\
+        n      <gml:LinearRing>\\n         <gml:coordinates>-53.931267,-32.057858\
+        \ -53.866734,-31.750776 -54.038925,-31.648441 -54.103718,-31.956841 -53.931267,-32.057858<\\\
+        /gml:coordinates>\\n      <\\/gml:LinearRing>\\n   <\\/gml:outerBoundaryIs>\\\
+        n<\\/gml:Polygon>\",\n               \"name\": \"gmlfootprint\"\n        \
+        \    },\n            {\n               \"content\": \"SAFE\",\n          \
+        \     \"name\": \"format\"\n            },\n            {\n              \
+        \ \"content\": \"S1A_WV_OCN__2SSV_20150619T211030_20150619T211738_006447_008883_C1F4\"\
+        ,\n               \"name\": \"identifier\"\n            },\n            {\n\
+        \               \"content\": \"SAR-C SAR\",\n               \"name\": \"instrumentshortname\"\
+        \n            },\n            {\n               \"content\": \"WV\",\n   \
+        \            \"name\": \"sensoroperationalmode\"\n            },\n       \
+        \     {\n               \"content\": \"Synthetic Aperture Radar (C-band)\"\
+        ,\n               \"name\": \"instrumentname\"\n            },\n         \
+        \   {\n               \"content\": \"WV1 WV2\",\n               \"name\":\
+        \ \"swathidentifier\"\n            },\n            {\n               \"content\"\
+        : \"POLYGON ((-32.057858 -53.931267,-31.750776 -53.866734,-31.648441 -54.038925,-31.956841\
+        \ -54.103718,-32.057858 -53.931267))\",\n               \"name\": \"footprint\"\
+        \n            },\n            {\n               \"content\": \"0000-000A\"\
+        ,\n               \"name\": \"platformidentifier\"\n            },\n     \
+        \       {\n               \"content\": \"ASCENDING\",\n               \"name\"\
+        : \"orbitdirection\"\n            },\n            {\n               \"content\"\
+        : \"VV\",\n               \"name\": \"polarisationmode\"\n            },\n\
+        \            {\n               \"content\": \"S\",\n               \"name\"\
+        : \"productclass\"\n            },\n            {\n               \"content\"\
+        : \"OCN\",\n               \"name\": \"producttype\"\n            },\n   \
+        \         {\n               \"content\": \"Sentinel-1\",\n               \"\
+        name\": \"platformname\"\n            },\n            {\n               \"\
+        content\": \"878.49 KB\",\n               \"name\": \"size\"\n           \
+        \ },\n            {\n               \"content\": \"ARCHIVED\",\n         \
+        \      \"name\": \"status\"\n            }\n         ],\n         \"int\"\
+        : [\n            {\n               \"content\": \"34947\",\n             \
+        \  \"name\": \"missiondatatakeid\"\n            },\n            {\n      \
+        \         \"content\": \"6447\",\n               \"name\": \"orbitnumber\"\
+        \n            },\n            {\n               \"content\": \"6447\",\n \
+        \              \"name\": \"lastorbitnumber\"\n            },\n           \
+        \ {\n               \"content\": \"75\",\n               \"name\": \"relativeorbitnumber\"\
+        \n            },\n            {\n               \"content\": \"75\",\n   \
+        \            \"name\": \"lastrelativeorbitnumber\"\n            }\n      \
+        \   ],\n         \"link\": [\n            {\"href\": \"https://scihub.copernicus.eu/apihub/odata/v1/Products('f30b2a6a-b0c1-49f1-b19e-e10c3cf06101')/$value\"\
+        },\n            {\n               \"rel\": \"alternative\",\n            \
+        \   \"href\": \"https://scihub.copernicus.eu/apihub/odata/v1/Products('f30b2a6a-b0c1-49f1-b19e-e10c3cf06101')/\"\
+        \n            },\n            {\n               \"rel\": \"icon\",\n     \
+        \          \"href\": \"https://scihub.copernicus.eu/apihub/odata/v1/Products('f30b2a6a-b0c1-49f1-b19e-e10c3cf06101')/Products('Quicklook')/$value\"\
+        \n            }\n         ],\n         \"date\": [\n            {\n      \
+        \         \"content\": \"2015-11-18T00:06:01.063Z\",\n               \"name\"\
+        : \"ingestiondate\"\n            },\n            {\n               \"content\"\
+        : \"2015-06-19T21:10:30.362Z\",\n               \"name\": \"beginposition\"\
+        \n            },\n            {\n               \"content\": \"2015-06-19T21:17:38.785Z\"\
+        ,\n               \"name\": \"endposition\"\n            }\n         ]\n \
+        \     },\n      {\n         \"summary\": \"Date: 2015-05-26T21:10:28.984Z,\
+        \ Instrument: SAR-C SAR, Mode: VV, Satellite: Sentinel-1, Size: 10.65 KB\"\
+        ,\n         \"id\": \"d8340134-878f-4891-ba4f-4df54f1e3ab4\",\n         \"\
+        title\": \"S1A_WV_OCN__2SSV_20150526T211029_20150526T211737_006097_007E78_134A\"\
+        ,\n         \"str\": [\n            {\n               \"content\": \"T\",\n\
+        \               \"name\": \"processed\"\n            },\n            {\n \
+        \              \"content\": \"NOMINAL\",\n               \"name\": \"acquisitiontype\"\
+        \n            },\n            {\n               \"content\": \"S1A_WV_OCN__2SSV_20150526T211029_20150526T211737_006097_007E78_134A.SAFE\"\
+        ,\n               \"name\": \"filename\"\n            },\n            {\n\
+        \               \"content\": \"<gml:Polygon srsName=\\\"http://www.opengis.net/gml/srs/epsg.xml#4326\\\
+        \" xmlns:gml=\\\"http://www.opengis.net/gml\\\">\\n   <gml:outerBoundaryIs>\\\
+        n      <gml:LinearRing>\\n         <gml:coordinates>-53.931976,-32.055458\
+        \ -53.867435,-31.748390 -54.039661,-31.646017 -54.104462,-31.954405 -53.931976,-32.055458<\\\
+        /gml:coordinates>\\n      <\\/gml:LinearRing>\\n   <\\/gml:outerBoundaryIs>\\\
+        n<\\/gml:Polygon>\",\n               \"name\": \"gmlfootprint\"\n        \
+        \    },\n            {\n               \"content\": \"SAFE\",\n          \
+        \     \"name\": \"format\"\n            },\n            {\n              \
+        \ \"content\": \"S1A_WV_OCN__2SSV_20150526T211029_20150526T211737_006097_007E78_134A\"\
+        ,\n               \"name\": \"identifier\"\n            },\n            {\n\
+        \               \"content\": \"SAR-C SAR\",\n               \"name\": \"instrumentshortname\"\
+        \n            },\n            {\n               \"content\": \"WV\",\n   \
+        \            \"name\": \"sensoroperationalmode\"\n            },\n       \
+        \     {\n               \"content\": \"Synthetic Aperture Radar (C-band)\"\
+        ,\n               \"name\": \"instrumentname\"\n            },\n         \
+        \   {\n               \"content\": \"WV1 WV2\",\n               \"name\":\
+        \ \"swathidentifier\"\n            },\n            {\n               \"content\"\
+        : \"POLYGON ((-32.055458 -53.931976,-31.748390 -53.867435,-31.646017 -54.039661,-31.954405\
+        \ -54.104462,-32.055458 -53.931976))\",\n               \"name\": \"footprint\"\
+        \n            },\n            {\n               \"content\": \"0000-000A\"\
+        ,\n               \"name\": \"platformidentifier\"\n            },\n     \
+        \       {\n               \"content\": \"ASCENDING\",\n               \"name\"\
+        : \"orbitdirection\"\n            },\n            {\n               \"content\"\
+        : \"VV\",\n               \"name\": \"polarisationmode\"\n            },\n\
+        \            {\n               \"content\": \"S\",\n               \"name\"\
+        : \"productclass\"\n            },\n            {\n               \"content\"\
+        : \"OCN\",\n               \"name\": \"producttype\"\n            },\n   \
+        \         {\n               \"content\": \"Sentinel-1\",\n               \"\
+        name\": \"platformname\"\n            },\n            {\n               \"\
+        content\": \"10.65 KB\",\n               \"name\": \"size\"\n            },\n\
+        \            {\n               \"content\": \"ARCHIVED\",\n              \
+        \ \"name\": \"status\"\n            }\n         ],\n         \"int\": [\n\
+        \            {\n               \"content\": \"32376\",\n               \"\
+        name\": \"missiondatatakeid\"\n            },\n            {\n           \
+        \    \"content\": \"6097\",\n               \"name\": \"orbitnumber\"\n  \
+        \          },\n            {\n               \"content\": \"6097\",\n    \
+        \           \"name\": \"lastorbitnumber\"\n            },\n            {\n\
+        \               \"content\": \"75\",\n               \"name\": \"relativeorbitnumber\"\
+        \n            },\n            {\n               \"content\": \"75\",\n   \
+        \            \"name\": \"lastrelativeorbitnumber\"\n            }\n      \
+        \   ],\n         \"link\": [\n            {\"href\": \"https://scihub.copernicus.eu/apihub/odata/v1/Products('d8340134-878f-4891-ba4f-4df54f1e3ab4')/$value\"\
+        },\n            {\n               \"rel\": \"alternative\",\n            \
+        \   \"href\": \"https://scihub.copernicus.eu/apihub/odata/v1/Products('d8340134-878f-4891-ba4f-4df54f1e3ab4')/\"\
+        \n            },\n            {\n               \"rel\": \"icon\",\n     \
+        \          \"href\": \"https://scihub.copernicus.eu/apihub/odata/v1/Products('d8340134-878f-4891-ba4f-4df54f1e3ab4')/Products('Quicklook')/$value\"\
+        \n            }\n         ],\n         \"date\": [\n            {\n      \
+        \         \"content\": \"2015-11-17T23:28:01.852Z\",\n               \"name\"\
+        : \"ingestiondate\"\n            },\n            {\n               \"content\"\
+        : \"2015-05-26T21:10:28.984Z\",\n               \"name\": \"beginposition\"\
+        \n            },\n            {\n               \"content\": \"2015-05-26T21:17:37.408Z\"\
+        ,\n               \"name\": \"endposition\"\n            }\n         ]\n \
+        \     },\n      {\n         \"summary\": \"Date: 2015-07-01T21:10:30.27Z,\
+        \ Instrument: SAR-C SAR, Mode: VV, Satellite: Sentinel-1, Size: 878 KB\",\n\
+        \         \"id\": \"36b16cff-5f87-4cfa-b29d-1196831662e7\",\n         \"title\"\
+        : \"S1A_WV_OCN__2SSV_20150701T211030_20150701T211738_006622_008D52_D720\"\
+        ,\n         \"str\": [\n            {\n               \"content\": \"WV\"\
+        ,\n               \"name\": \"sensoroperationalmode\"\n            },\n  \
+        \          {\n               \"content\": \"WV1 WV2\",\n               \"\
+        name\": \"swathidentifier\"\n            },\n            {\n             \
+        \  \"content\": \"ASCENDING\",\n               \"name\": \"orbitdirection\"\
+        \n            },\n            {\n               \"content\": \"OCN\",\n  \
+        \             \"name\": \"producttype\"\n            },\n            {\n \
+        \              \"content\": \"Sentinel-1\",\n               \"name\": \"platformname\"\
+        \n            },\n            {\n               \"content\": \"0000-000A\"\
+        ,\n               \"name\": \"platformidentifier\"\n            },\n     \
+        \       {\n               \"content\": \"Synthetic Aperture Radar (C-band)\"\
+        ,\n               \"name\": \"instrumentname\"\n            },\n         \
+        \   {\n               \"content\": \"SAR-C SAR\",\n               \"name\"\
+        : \"instrumentshortname\"\n            },\n            {\n               \"\
+        content\": \"S1A_WV_OCN__2SSV_20150701T211030_20150701T211738_006622_008D52_D720.SAFE\"\
+        ,\n               \"name\": \"filename\"\n            },\n            {\n\
+        \               \"content\": \"SAFE\",\n               \"name\": \"format\"\
+        \n            },\n            {\n               \"content\": \"S\",\n    \
+        \           \"name\": \"productclass\"\n            },\n            {\n  \
+        \             \"content\": \"VV\",\n               \"name\": \"polarisationmode\"\
+        \n            },\n            {\n               \"content\": \"NOMINAL\",\n\
+        \               \"name\": \"acquisitiontype\"\n            },\n          \
+        \  {\n               \"content\": \"ARCHIVED\",\n               \"name\":\
+        \ \"status\"\n            },\n            {\n               \"content\": \"\
+        878 KB\",\n               \"name\": \"size\"\n            },\n           \
+        \ {\n               \"content\": \"<gml:Polygon srsName=\\\"http://www.opengis.net/gml/srs/epsg.xml#4326\\\
+        \" xmlns:gml=\\\"http://www.opengis.net/gml\\\">\\n   <gml:outerBoundaryIs>\\\
+        n      <gml:LinearRing>\\n         <gml:coordinates>-53.932625,-32.058731\
+        \ -53.868076,-31.751593 -54.040306,-31.649235 -54.105110,-31.957693 -53.932625,-32.058731<\\\
+        /gml:coordinates>\\n      <\\/gml:LinearRing>\\n   <\\/gml:outerBoundaryIs>\\\
+        n<\\/gml:Polygon>\",\n               \"name\": \"gmlfootprint\"\n        \
+        \    },\n            {\n               \"content\": \"POLYGON ((-32.058731\
+        \ -53.932625,-31.751593 -53.868076,-31.649235 -54.040306,-31.957693 -54.105110,-32.058731\
+        \ -53.932625))\",\n               \"name\": \"footprint\"\n            },\n\
+        \            {\n               \"content\": \"S1A_WV_OCN__2SSV_20150701T211030_20150701T211738_006622_008D52_D720\"\
+        ,\n               \"name\": \"identifier\"\n            },\n            {\n\
+        \               \"content\": \"T\",\n               \"name\": \"processed\"\
+        \n            }\n         ],\n         \"int\": [\n            {\n       \
+        \        \"content\": \"36178\",\n               \"name\": \"missiondatatakeid\"\
+        \n            },\n            {\n               \"content\": \"6622\",\n \
+        \              \"name\": \"orbitnumber\"\n            },\n            {\n\
+        \               \"content\": \"6622\",\n               \"name\": \"lastorbitnumber\"\
+        \n            },\n            {\n               \"content\": \"75\",\n   \
+        \            \"name\": \"relativeorbitnumber\"\n            },\n         \
+        \   {\n               \"content\": \"75\",\n               \"name\": \"lastrelativeorbitnumber\"\
+        \n            }\n         ],\n         \"link\": [\n            {\"href\"\
+        : \"https://scihub.copernicus.eu/apihub/odata/v1/Products('36b16cff-5f87-4cfa-b29d-1196831662e7')/$value\"\
+        },\n            {\n               \"rel\": \"alternative\",\n            \
+        \   \"href\": \"https://scihub.copernicus.eu/apihub/odata/v1/Products('36b16cff-5f87-4cfa-b29d-1196831662e7')/\"\
+        \n            },\n            {\n               \"rel\": \"icon\",\n     \
+        \          \"href\": \"https://scihub.copernicus.eu/apihub/odata/v1/Products('36b16cff-5f87-4cfa-b29d-1196831662e7')/Products('Quicklook')/$value\"\
+        \n            }\n         ],\n         \"date\": [\n            {\n      \
+        \         \"content\": \"2015-07-01T21:10:30.27Z\",\n               \"name\"\
+        : \"beginposition\"\n            },\n            {\n               \"content\"\
+        : \"2015-07-01T21:17:38.694Z\",\n               \"name\": \"endposition\"\n\
+        \            },\n            {\n               \"content\": \"2015-07-01T23:42:11.635Z\"\
+        ,\n               \"name\": \"ingestiondate\"\n            }\n         ]\n\
+        \      }\n   ],\n   \"subtitle\": \"Displaying 3 results. Request done in\
+        \ 0.001 seconds.\",\n   \"opensearch:startIndex\": \"0\",\n   \"opensearch:Query\"\
+        : {\n      \"searchTerms\": \"(beginPosition:[2015-05-01T00:00:00Z TO 2015-07-05T00:00:00Z])\
+        \ AND (footprint:\\\"Intersects(POLYGON((-32.0554580 -53.9319760,-31.7483900\
+        \ -53.8674350,-31.6460170 -54.0396610,-31.9544050 -54.1044620,-32.0554580\
+        \ -53.9319760)))\\\") AND (producttype:OCN)\",\n      \"role\": \"request\"\
+        ,\n      \"startPage\": \"1\"\n   }\n}}"}
+    headers:
+      Content-Type: [application/json]
+      Date: ['Thu, 06 Apr 2017 00:11:47 GMT']
+      Pragma: [no-cache]
+      Server: [Apache-Coyote/1.1]
+      Transfer-Encoding: [chunked]
+      Vary: [Accept-Encoding]
+      content-length: ['16038']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [sentinelsat/0.9.1]
+    method: GET
+    uri: https://scihub.copernicus.eu/apihub/odata/v1/Products('d8340134-878f-4891-ba4f-4df54f1e3ab4')/?$format=json
+  response:
+    body: {string: '{"d":{"__metadata":{"id":"https://scihub.copernicus.eu/apihub/odata/v1/(''d8340134-878f-4891-ba4f-4df54f1e3ab4'')","uri":"https://scihub.copernicus.eu/apihub/odata/v1/(''d8340134-878f-4891-ba4f-4df54f1e3ab4'')","type":"DHuS.Product","content_type":"application/octet-stream","media_src":"https://scihub.copernicus.eu/apihub/odata/v1/(''d8340134-878f-4891-ba4f-4df54f1e3ab4'')/$value","edit_media":"https://scihub.copernicus.eu/apihub/odata/v1/(''d8340134-878f-4891-ba4f-4df54f1e3ab4'')/$value"},"Id":"d8340134-878f-4891-ba4f-4df54f1e3ab4","Name":"S1A_WV_OCN__2SSV_20150526T211029_20150526T211737_006097_007E78_134A","ContentType":"application/octet-stream","ContentLength":"130102","ChildrenNumber":"0","Value":null,"CreationDate":"\/Date(1447802881852)\/","IngestionDate":"\/Date(1447802881852)\/","EvictionDate":null,"ContentDate":{"__metadata":{"type":"DHuS.TimeRange"},"Start":"\/Date(1432674628984)\/","End":"\/Date(1432675057408)\/"},"Checksum":{"__metadata":{"type":"DHuS.Checksum"},"Algorithm":"MD5","Value":"170834E488F889E538F50EEADB763B29"},"ContentGeometry":"<gml:Polygon
+        srsName=\"http://www.opengis.net/gml/srs/epsg.xml#4326\" xmlns:gml=\"http://www.opengis.net/gml\">\n   <gml:outerBoundaryIs>\n      <gml:LinearRing>\n         <gml:coordinates>-53.931976,-32.055458
+        -53.867435,-31.748390 -54.039661,-31.646017 -54.104462,-31.954405 -53.931976,-32.055458</gml:coordinates>\n      </gml:LinearRing>\n   </gml:outerBoundaryIs>\n</gml:Polygon>","Metalink":"<?xml
+        version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><metalink xmlns=\"urn:ietf:params:xml:ns:metalink\"><file
+        name=\"S1A_WV_OCN__2SSV_20150526T211029_20150526T211737_006097_007E78_134A.zip\"><hash
+        type=\"MD5\">170834E488F889E538F50EEADB763B29</hash><size>130102</size><url>https://scihub.copernicus.eu/apihub/odata/v1/Products(''d8340134-878f-4891-ba4f-4df54f1e3ab4'')/$value</url></file></metalink>","Products":{"__deferred":{"uri":"https://scihub.copernicus.eu/apihub/odata/v1/(''d8340134-878f-4891-ba4f-4df54f1e3ab4'')/Products"}},"Nodes":{"__deferred":{"uri":"https://scihub.copernicus.eu/apihub/odata/v1/(''d8340134-878f-4891-ba4f-4df54f1e3ab4'')/Nodes"}},"Attributes":{"__deferred":{"uri":"https://scihub.copernicus.eu/apihub/odata/v1/(''d8340134-878f-4891-ba4f-4df54f1e3ab4'')/Attributes"}},"Class":{"__deferred":{"uri":"https://scihub.copernicus.eu/apihub/odata/v1/(''d8340134-878f-4891-ba4f-4df54f1e3ab4'')/Class"}}}}'}
+    headers:
+      Content-Type: [application/json]
+      DataServiceVersion: ['2.0']
+      Date: ['Thu, 06 Apr 2017 00:11:59 GMT']
+      Pragma: [no-cache]
+      Server: [Apache-Coyote/1.1]
+      Transfer-Encoding: [chunked]
+      Vary: [Accept-Encoding]
+      content-length: ['2385']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [sentinelsat/0.9.1]
+    method: GET
+    uri: https://scihub.copernicus.eu/apihub/odata/v1/Products('36b16cff-5f87-4cfa-b29d-1196831662e7')/?$format=json
+  response:
+    body: {string: '{"d":{"__metadata":{"id":"https://scihub.copernicus.eu/apihub/odata/v1/(''36b16cff-5f87-4cfa-b29d-1196831662e7'')","uri":"https://scihub.copernicus.eu/apihub/odata/v1/(''36b16cff-5f87-4cfa-b29d-1196831662e7'')","type":"DHuS.Product","content_type":"application/octet-stream","media_src":"https://scihub.copernicus.eu/apihub/odata/v1/(''36b16cff-5f87-4cfa-b29d-1196831662e7'')/$value","edit_media":"https://scihub.copernicus.eu/apihub/odata/v1/(''36b16cff-5f87-4cfa-b29d-1196831662e7'')/$value"},"Id":"36b16cff-5f87-4cfa-b29d-1196831662e7","Name":"S1A_WV_OCN__2SSV_20150701T211030_20150701T211738_006622_008D52_D720","ContentType":"application/octet-stream","ContentLength":"549587","ChildrenNumber":"0","Value":null,"CreationDate":"\/Date(1435794131635)\/","IngestionDate":"\/Date(1435794131635)\/","EvictionDate":null,"ContentDate":{"__metadata":{"type":"DHuS.TimeRange"},"Start":"\/Date(1435785030270)\/","End":"\/Date(1435785458694)\/"},"Checksum":{"__metadata":{"type":"DHuS.Checksum"},"Algorithm":"MD5","Value":"10CB2309CE9BA0B26C18EBE2932721E2"},"ContentGeometry":"<gml:Polygon
+        srsName=\"http://www.opengis.net/gml/srs/epsg.xml#4326\" xmlns:gml=\"http://www.opengis.net/gml\">\n   <gml:outerBoundaryIs>\n      <gml:LinearRing>\n         <gml:coordinates>-53.932625,-32.058731
+        -53.868076,-31.751593 -54.040306,-31.649235 -54.105110,-31.957693 -53.932625,-32.058731</gml:coordinates>\n      </gml:LinearRing>\n   </gml:outerBoundaryIs>\n</gml:Polygon>","Metalink":"<?xml
+        version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><metalink xmlns=\"urn:ietf:params:xml:ns:metalink\"><file
+        name=\"S1A_WV_OCN__2SSV_20150701T211030_20150701T211738_006622_008D52_D720.zip\"><hash
+        type=\"MD5\">10CB2309CE9BA0B26C18EBE2932721E2</hash><size>549587</size><url>https://scihub.copernicus.eu/apihub/odata/v1/Products(''36b16cff-5f87-4cfa-b29d-1196831662e7'')/$value</url></file></metalink>","Products":{"__deferred":{"uri":"https://scihub.copernicus.eu/apihub/odata/v1/(''36b16cff-5f87-4cfa-b29d-1196831662e7'')/Products"}},"Nodes":{"__deferred":{"uri":"https://scihub.copernicus.eu/apihub/odata/v1/(''36b16cff-5f87-4cfa-b29d-1196831662e7'')/Nodes"}},"Attributes":{"__deferred":{"uri":"https://scihub.copernicus.eu/apihub/odata/v1/(''36b16cff-5f87-4cfa-b29d-1196831662e7'')/Attributes"}},"Class":{"__deferred":{"uri":"https://scihub.copernicus.eu/apihub/odata/v1/(''36b16cff-5f87-4cfa-b29d-1196831662e7'')/Class"}}}}'}
+    headers:
+      Content-Type: [application/json]
+      DataServiceVersion: ['2.0']
+      Date: ['Thu, 06 Apr 2017 00:12:00 GMT']
+      Pragma: [no-cache]
+      Server: [Apache-Coyote/1.1]
+      Transfer-Encoding: [chunked]
+      Vary: [Accept-Encoding]
+      content-length: ['2385']
+    status: {code: 200, message: OK}
+version: 1

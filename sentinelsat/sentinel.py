@@ -256,6 +256,7 @@ class SentinelAPI(object):
                 sleep(60)
 
         path = join(directory_path, product_info['title'] + '.zip')
+        product_info['path'] = path
         kwargs = _fillin_cainfo(kwargs)
 
         self.logger.info('Downloading %s to %s' % (id, path))
@@ -265,7 +266,7 @@ class SentinelAPI(object):
         if exists(path) and getsize(path) == product_info['size']:
             if not check_existing or _md5_compare(path, product_info['md5']):
                 self.logger.info('%s was already downloaded.' % path)
-                return path, product_info
+                return product_info
             else:
                 self.logger.info(
                     '%s was already downloaded but is corrupt: checksums do not match. Re-downloading.' % path)
@@ -283,8 +284,9 @@ class SentinelAPI(object):
         # Check integrity with MD5 checksum
         if checksum is True:
             if not _md5_compare(path, product_info['md5']):
+                remove(path)
                 raise InvalidChecksumError('File corrupt: checksums do not match')
-        return path, product_info
+        return product_info
 
     def download_all(self, products, directory_path='.', max_attempts=10, checksum=False, check_existing=False,
                      **kwargs):
@@ -311,32 +313,28 @@ class SentinelAPI(object):
 
         Returns
         -------
-        dict[string, dict|None]
-            A dictionary with an entry for each product mapping the downloaded file path to its product info
-            (returned by get_product_info()). Product info is set to None if downloading the product failed.
+        dict[string, dict]
+            A dictionary containing the return value from download() for each successfully downloaded product.
+        set[string]
+            The list of products that failed to download.
         """
-        result = {}
         self.logger.info("Will download %d products" % len(products))
-        for i, product in enumerate(products):
-            path = join(directory_path, product['title'] + '.zip')
-            product_info = None
-            download_successful = False
-            remaining_attempts = max_attempts
-            while not download_successful and remaining_attempts > 0:
+        return_values = OrderedDict()
+        for i, product_id in enumerate(products):
+            for attempt_num in range(max_attempts):
                 try:
-                    path, product_info = self.download(product['id'], directory_path, checksum, check_existing,
-                                                       **kwargs)
-                    download_successful = True
+                    product_info = self.download(product_id, directory_path, checksum, check_existing, **kwargs)
+                    return_values[product_id] = product_info
+                    break
                 except (KeyboardInterrupt, SystemExit):
                     raise
                 except InvalidChecksumError:
-                    self.logger.warning("Invalid checksum. The downloaded file '{}' is corrupted.".format(path))
+                    self.logger.warning("Invalid checksum. The downloaded file for '{}' is corrupted.".format(product_id))
                 except:
-                    self.logger.exception("There was an error downloading %s" % product['title'])
-                remaining_attempts -= 1
-            result[path] = product_info
+                    self.logger.exception("There was an error downloading %s" % product_id)
             self.logger.info("{}/{} products downloaded".format(i + 1, len(products)))
-        return result
+        failed = set(products) - set(return_values)
+        return return_values, failed
 
     @staticmethod
     def get_products_size(products):

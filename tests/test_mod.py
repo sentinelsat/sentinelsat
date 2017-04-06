@@ -403,8 +403,8 @@ def test_download(tmpdir):
     expected_path = tmpdir.join(filename + ".zip")
 
     # Download normally
-    path, product_info = api.download(uuid, str(tmpdir), checksum=True)
-    assert expected_path.samefile(path)
+    product_info = api.download(uuid, str(tmpdir), checksum=True)
+    assert expected_path.samefile(product_info["path"])
     assert product_info["id"] == uuid
     assert product_info["title"] == filename
     assert product_info["size"] == expected_path.size()
@@ -412,17 +412,20 @@ def test_download(tmpdir):
     hash = expected_path.computehash()
     modification_time = expected_path.mtime()
     expected_product_info = product_info
+    del expected_product_info['path']
 
     # File exists, test with checksum
     # Expect no modification
-    path, product_info = api.download(uuid, str(tmpdir), check_existing=True)
+    product_info = api.download(uuid, str(tmpdir), check_existing=True)
     assert expected_path.mtime() == modification_time
+    del product_info['path']
     assert product_info == expected_product_info
 
     # File exists, test without checksum
     # Expect no modification
-    path, product_info = api.download(uuid, str(tmpdir), check_existing=False)
+    product_info = api.download(uuid, str(tmpdir), check_existing=False)
     assert expected_path.mtime() == modification_time
+    del product_info['path']
     assert product_info == expected_product_info
 
     # Create invalid file, expect re-download
@@ -430,8 +433,9 @@ def test_download(tmpdir):
         f.seek(expected_product_info["size"] - 1)
         f.write(b'\0')
     assert expected_path.computehash("md5") != hash
-    path, product_info = api.download(uuid, str(tmpdir), check_existing=True)
+    product_info = api.download(uuid, str(tmpdir), check_existing=True)
     assert expected_path.computehash("md5") == hash
+    del product_info['path']
     assert product_info == expected_product_info
 
     # Test continue
@@ -440,8 +444,9 @@ def test_download(tmpdir):
     with expected_path.open("wb") as f:
         f.write(content[:100])
     assert expected_path.computehash("md5") != hash
-    path, product_info = api.download(uuid, str(tmpdir), check_existing=True)
+    product_info = api.download(uuid, str(tmpdir), check_existing=True)
     assert expected_path.computehash("md5") == hash
+    del product_info['path']
     assert product_info == expected_product_info
 
     # Test MD5 check
@@ -465,22 +470,25 @@ def test_download_all(tmpdir):
     assert len(products) == len(filenames)
 
     # Download normally
-    result = api.download_all(products, str(tmpdir))
-    assert len(result) == len(filenames)
-    for path, product_info in result.items():
-        pypath = py.path.local(path)
+    product_infos, failed_downloads = api.download_all(products, str(tmpdir))
+    assert len(failed_downloads) == 0
+    assert len(product_infos) == len(filenames)
+    for product_id, product_info in product_infos.items():
+        pypath = py.path.local(product_info['path'])
         assert pypath.purebasename in filenames
         assert pypath.check(exists=1, file=1)
         assert pypath.size() == product_info["size"]
 
     # Force one download to fail
-    path, product_info = list(result.items())[0]
+    product_info = list(product_infos.values())[0]
+    path = product_info['path']
     py.path.local(path).remove()
     with requests_mock.mock(real_http=True) as rqst:
         url = "https://scihub.copernicus.eu/apihub/odata/v1/Products('%s')/?$format=json" % product_info["id"]
         json = api.session.get(url).json()
         json["d"]["Checksum"]["Value"] = "00000000000000000000000000000000"
         rqst.get(url, json=json)
-        result = api.download_all(products, str(tmpdir), max_attempts=1, checksum=True)
-        assert len(result) == len(filenames)
-        assert result[path] is None
+        product_infos, failed_downloads = api.download_all(products, str(tmpdir), max_attempts=1, checksum=True)
+        assert len(failed_downloads) == 1
+        assert len(product_infos) + len(failed_downloads) == len(filenames)
+        assert product_info['id'] in failed_downloads
