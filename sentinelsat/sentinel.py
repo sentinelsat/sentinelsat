@@ -432,17 +432,22 @@ def _fillin_cainfo(kwargs_dict):
 
 
 def _format_date(in_date):
-    """Format date or datetime input or a YYYYMMDD string input to
-    YYYY-MM-DDThh:mm:ssZ string format. In case you pass an
+    """Format a date, datetime or a YYYYMMDD string input as YYYY-MM-DDThh:mm:ssZ
+    or validate a string input as suitable for the full text search interface and return it.
     """
-
-    if type(in_date) == datetime or type(in_date) == date:
+    if isinstance(in_date, (datetime, date)):
         return in_date.strftime('%Y-%m-%dT%H:%M:%SZ')
-    else:
-        try:
-            return datetime.strptime(in_date, '%Y%m%d').strftime('%Y-%m-%dT%H:%M:%SZ')
-        except ValueError:
-            return in_date
+
+    in_date = in_date.strip()
+    if re.fullmatch(r"NOW(?:-\d+(?:MONTH|DAY|HOUR|MINUTE)S?)?", in_date):
+        return in_date
+    if re.fullmatch(r"\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(?:\.\d+)?Z", in_date):
+        return in_date
+
+    try:
+        return datetime.strptime(in_date, '%Y%m%d').strftime('%Y-%m-%dT%H:%M:%SZ')
+    except ValueError:
+        raise ValueError('Unsupported date value {}'.format(in_date))
 
 
 def _convert_timestamp(in_date):

@@ -57,7 +57,14 @@ def test_format_date():
     assert _format_date(date(2015, 1, 1)) == '2015-01-01T00:00:00Z'
     assert _format_date('2015-01-01T00:00:00Z') == '2015-01-01T00:00:00Z'
     assert _format_date('20150101') == '2015-01-01T00:00:00Z'
-    assert _format_date('NOW') == 'NOW'
+
+    for date_str in ("NOW", "NOW-1DAY", "NOW-1DAYS", "NOW-500DAY", "NOW-500DAYS",
+                     "NOW-2MONTH", "NOW-2MONTHS", "NOW-20MINUTE", "NOW-20MINUTES"):
+        assert _format_date(date_str) == date_str
+
+    for date_str in ("NOW - 1HOUR", "NOW -   1HOURS", "NOW-1 HOURS", "NOW+10HOUR", "NOW-1", "NOW-"):
+        with pytest.raises(ValueError) as excinfo:
+            _format_date(date_str)
 
 
 @pytest.mark.fast
