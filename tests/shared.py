@@ -19,17 +19,15 @@ elif vcr_option == "reset_all":
         unlink(cassette_file)
 
 def scrub_request(request):
-    if "Authorization" in request.headers:
-        del request.headers["Authorization"]
-    if "Set-Cookie" in request.headers:
-        del request.headers["Set-Cookie"]
+    for header in ("Authorization", "Set-Cookie", "Cookie"):
+        if header in request.headers:
+            del request.headers[header]
     return request
 
 def scrub_response(response):
-    if "Set-Cookie" in response["headers"]:
-        del response["headers"]["Set-Cookie"]
-    if "Authorization" in response["headers"]:
-        del response["headers"]["Authorization"]
+    for header in ("Authorization", "Set-Cookie", "Cookie"):
+        if header in response["headers"]:
+            del response["headers"][header]
     return response
 
 if vcr_option != "disable":

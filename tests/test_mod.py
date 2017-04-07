@@ -8,8 +8,8 @@ import py.path
 import pytest
 import requests_mock
 
-from sentinelsat.sentinel import (InvalidChecksumError, SentinelAPI, SentinelAPIError, _convert_timestamp, _format_date,
-                                  get_coordinates, _md5_compare)
+from sentinelsat import InvalidChecksumError, SentinelAPI, SentinelAPIError, get_coordinates
+from sentinelsat.sentinel import _convert_timestamp, _format_date, _md5_compare, _response_to_dict
 from .shared import my_vcr
 
 _api_auth = dict(user=environ.get('SENTINEL_USER'), password=environ.get('SENTINEL_PASSWORD'))
@@ -17,14 +17,38 @@ _api_auth = dict(user=environ.get('SENTINEL_USER'), password=environ.get('SENTIN
 _api_kwargs = dict(_api_auth, api_url='https://scihub.copernicus.eu/apihub/')
 
 _small_query = dict(
-    area='0 0,1 1,0 1,0 0',
+    area='POLYGON((0 0,1 1,0 1,0 0))',
     initial_date=datetime(2015, 1, 1),
     end_date=datetime(2015, 1, 2))
 
 _large_query = dict(
-    area='0 0,0 10,10 10,10 0,0 0',
+    area='POLYGON((0 0,0 10,10 10,10 0,0 0))',
     initial_date=datetime(2015, 1, 1),
     end_date=datetime(2015, 12, 31))
+
+
+@pytest.fixture(scope='session')
+@my_vcr.use_cassette('products_fixture')
+def products():
+    """A fixture for tests that need some non-specific set of products as input."""
+    api = SentinelAPI(**_api_auth)
+    products = api.query(
+        get_coordinates('tests/map.geojson'),
+        "20151219", "20151228"
+    )
+    return products
+
+
+@pytest.fixture(scope='session')
+@my_vcr.use_cassette('products_fixture')
+def raw_products():
+    """A fixture for tests that need some non-specific set of products in the form of a raw response as input."""
+    api = SentinelAPI(**_api_auth)
+    raw_products = api._load_query(api.format_query(
+        get_coordinates('tests/map.geojson'),
+        "20151219", "20151228")
+    )
+    return raw_products
 
 
 @pytest.mark.fast
@@ -33,7 +57,14 @@ def test_format_date():
     assert _format_date(date(2015, 1, 1)) == '2015-01-01T00:00:00Z'
     assert _format_date('2015-01-01T00:00:00Z') == '2015-01-01T00:00:00Z'
     assert _format_date('20150101') == '2015-01-01T00:00:00Z'
-    assert _format_date('NOW') == 'NOW'
+
+    for date_str in ("NOW", "NOW-1DAY", "NOW-1DAYS", "NOW-500DAY", "NOW-500DAYS",
+                     "NOW-2MONTH", "NOW-2MONTHS", "NOW-20MINUTE", "NOW-20MINUTES"):
+        assert _format_date(date_str) == date_str
+
+    for date_str in ("NOW - 1HOUR", "NOW -   1HOURS", "NOW-1 HOURS", "NOW+10HOUR", "NOW-1", "NOW-"):
+        with pytest.raises(ValueError) as excinfo:
+            _format_date(date_str)
 
 
 @pytest.mark.fast
@@ -79,17 +110,24 @@ def test_SentinelAPI_wrong_credentials():
 @pytest.mark.fast
 def test_api_query_format():
     api = SentinelAPI("mock_user", "mock_password")
+    wkt = 'POLYGON((0 0,1 1,0 1,0 0))'
 
     now = datetime.now()
-    query = api.format_query('0 0,1 1,0 1,0 0', end_date=now)
     last_24h = _format_date(now - timedelta(hours=24))
+    query = api.format_query(wkt, initial_date=last_24h, end_date=now)
     assert query == '(beginPosition:[%s TO %s]) ' % (last_24h, _format_date(now)) + \
                     'AND (footprint:"Intersects(POLYGON((0 0,1 1,0 1,0 0)))")'
 
-    query = api.format_query('0 0,1 1,0 1,0 0', end_date=now, producttype='SLC')
-    assert query == '(beginPosition:[%s TO %s]) ' % (last_24h, _format_date(now)) + \
+    query = api.format_query(wkt, end_date=now, producttype='SLC')
+    assert query == '(beginPosition:[NOW-1DAY TO %s]) ' % (_format_date(now)) + \
                     'AND (footprint:"Intersects(POLYGON((0 0,1 1,0 1,0 0)))") ' + \
                     'AND (producttype:SLC)'
+
+    query = api.format_query()
+    assert query == '(beginPosition:[NOW-1DAY TO NOW])'
+
+    query = api.format_query(area=None, initial_date=None, end_date=None)
+    assert query == ''
 
 
 @my_vcr.use_cassette
@@ -97,7 +135,7 @@ def test_api_query_format():
 def test_invalid_query():
     api = SentinelAPI(**_api_auth)
     with pytest.raises(SentinelAPIError) as excinfo:
-        api.load_query("xxx:yyy")
+        api.query_plain("xxx:yyy")
     assert excinfo.value.msg is not None
     print(excinfo)
 
@@ -148,10 +186,10 @@ def test_large_query():
 
 @pytest.mark.fast
 def test_get_coordinates():
-    coords = ('-66.2695312 -8.0592296,-66.2695312 0.7031074,' +
-              '-57.3046875 0.7031074,-57.3046875 -8.0592296,-66.2695312 -8.0592296')
-    assert get_coordinates('tests/map.geojson') == coords
-    assert get_coordinates('tests/map_z.geojson') == coords
+    wkt = ('POLYGON((-66.2695312 -8.0592296,-66.2695312 0.7031074,' +
+           '-57.3046875 0.7031074,-57.3046875 -8.0592296,-66.2695312 -8.0592296))')
+    assert get_coordinates('tests/map.geojson') == wkt
+    assert get_coordinates('tests/map_z.geojson') == wkt
 
 
 @my_vcr.use_cassette
@@ -287,25 +325,30 @@ def test_footprints_s1():
         datetime(2014, 10, 10), datetime(2014, 12, 31), producttype="GRD"
     )
 
+    footprints = api.to_geojson(products)
+    for footprint in footprints['features']:
+        print(footprint)
+        validation = geojson.is_valid(footprint['geometry'])
+        assert validation['valid'] == 'yes', validation['message']
+
     with open('tests/expected_search_footprints_s1.geojson', 'r') as geojson_file:
         expected_footprints = geojson.loads(geojson_file.read())
-        # to compare unordered lists (JSON objects) they need to be sorted or changed to sets
-        assert set(api.to_geojson(products)) == set(expected_footprints)
+    # to compare unordered lists (JSON objects) they need to be sorted or changed to sets
+    assert set(footprints) == set(expected_footprints)
 
 
-@my_vcr.use_cassette
 @pytest.mark.scihub
-def test_footprints_s2():
-    api = SentinelAPI(**_api_auth)
-    products = api.query(
-        get_coordinates('tests/map.geojson'),
-        "20151219", "20151228", platformname="Sentinel-2"
-    )
+def test_footprints_s2(products):
+    footprints = SentinelAPI.to_geojson(products)
+    for footprint in footprints['features']:
+        print(footprint)
+        validation = geojson.is_valid(footprint['geometry'])
+        assert validation['valid'] == 'yes', validation['message']
 
     with open('tests/expected_search_footprints_s2.geojson', 'r') as geojson_file:
         expected_footprints = geojson.loads(geojson_file.read())
-        # to compare unordered lists (JSON objects) they need to be sorted or changed to sets
-        assert set(api.to_geojson(products)) == set(expected_footprints)
+    # to compare unordered lists (JSON objects) they need to be sorted or changed to sets
+    assert set(footprints) == set(expected_footprints)
 
 
 @my_vcr.use_cassette
@@ -319,81 +362,50 @@ def test_s2_cloudcover():
         cloudcoverpercentage="[0 TO 10]"
     )
     assert len(products) == 3
-    assert products[0]["id"] == "6ed0b7de-3435-43df-98bf-ad63c8d077ef"
-    assert products[1]["id"] == "37ecee60-23d8-4ec2-a65f-2de24f51d30e"
-    assert products[2]["id"] == "0848f6b8-5730-4759-850e-fc9945d42296"
+
+    product_ids = list(products)
+    assert product_ids[0] == "6ed0b7de-3435-43df-98bf-ad63c8d077ef"
+    assert product_ids[1] == "37ecee60-23d8-4ec2-a65f-2de24f51d30e"
+    assert product_ids[2] == "0848f6b8-5730-4759-850e-fc9945d42296"
 
 
-@my_vcr.use_cassette
 @pytest.mark.scihub
-def test_get_products_size():
-    api = SentinelAPI(**_api_auth)
-    products = api.query(
-        get_coordinates('tests/map.geojson'),
-        "20151219", "20151228", platformname="Sentinel-2"
-    )
-    assert api.get_products_size(products) == 63.58
+def test_get_products_size(products):
+    assert SentinelAPI.get_products_size(products) == 90.94
 
-    # reset products
-    # load new very small query
-    products = api.load_query("S1A_WV_OCN__2SSH_20150603T092625_20150603T093332_006207_008194_521E")
+    # load a new very small query
+    api = SentinelAPI(**_api_auth)
+    with my_vcr.use_cassette('test_get_products_size'):
+        products = api.query_plain("S1A_WV_OCN__2SSH_20150603T092625_20150603T093332_006207_008194_521E")
     assert len(products) > 0
     # Rounded to zero
-    assert api.get_products_size(products) == 0
+    assert SentinelAPI.get_products_size(products) == 0
 
-@my_vcr.use_cassette
+
 @pytest.mark.scihub
-def test_to_dict():
-    api = SentinelAPI(**_api_auth)
-    products = api.query(
-        get_coordinates('tests/map.geojson'),
-        "20151219", "20151228", platformname="Sentinel-2"
-    )
-    dictionary = api.to_dict(products)
+def test_response_to_dict(raw_products):
+    dictionary = _response_to_dict(raw_products)
     # check the type
     assert isinstance(dictionary, dict)
     # check if dictionary has id key
-    assert 'S2A_OPER_PRD_MSIL1C_PDMC_20151228T112701_R110_V20151227T142229_20151227T142229' in dictionary
-
-@my_vcr.use_cassette('test_to_dict')
-@pytest.mark.scihub
-def test_to_dict():
-    api = SentinelAPI(**_api_auth)
-    products = api.query(
-        get_coordinates('tests/map.geojson'),
-        "20151219", "20151228", platformname="Sentinel-2"
-    )
-    dictionary = api.to_dict(products)
-    # check the type
-    assert isinstance(dictionary, dict)
-    # check if dictionary has id key
-    assert 'S2A_OPER_PRD_MSIL1C_PDMC_20151228T112701_R110_V20151227T142229_20151227T142229' in dictionary
+    assert '44517f66-9845-4792-a988-b5ae6e81fd3e' in dictionary
+    props = dictionary['44517f66-9845-4792-a988-b5ae6e81fd3e']
+    assert props['title'] == 'S2A_OPER_PRD_MSIL1C_PDMC_20151228T112523_R110_V20151227T142229_20151227T142229'
 
 
-@my_vcr.use_cassette('test_to_dict')
 @pytest.mark.pandas
 @pytest.mark.scihub
-def test_to_pandas():
-    api = SentinelAPI(**_api_auth)
-    products = api.query(
-        get_coordinates('tests/map.geojson'),
-        "20151219", "20151228", platformname="Sentinel-2"
-    )
-    df = api.to_dataframe(products)
-    assert 'S2A_OPER_PRD_MSIL1C_PDMC_20151228T112701_R110_V20151227T142229_20151227T142229' in df.index
+def test_to_pandas(products):
+    df = SentinelAPI.to_dataframe(products)
+    assert '44517f66-9845-4792-a988-b5ae6e81fd3e' in df.index
 
 
-@my_vcr.use_cassette('test_to_dict')
 @pytest.mark.pandas
 @pytest.mark.geopandas
 @pytest.mark.scihub
-def test_to_geopandas():
-    api = SentinelAPI(**_api_auth)
-    products = api.query(
-        get_coordinates('tests/map.geojson'),
-        "20151219", "20151228", platformname="Sentinel-2"
-    )
-    gdf = api.to_geodataframe(products)
+def test_to_geopandas(products):
+    gdf = SentinelAPI.to_geodataframe(products)
+    assert abs(gdf.unary_union.area - 132.16) < 0.01
 
 
 @pytest.mark.homura
@@ -405,8 +417,8 @@ def test_download(tmpdir):
     expected_path = tmpdir.join(filename + ".zip")
 
     # Download normally
-    path, product_info = api.download(uuid, str(tmpdir), checksum=True)
-    assert expected_path.samefile(path)
+    product_info = api.download(uuid, str(tmpdir), checksum=True)
+    assert expected_path.samefile(product_info["path"])
     assert product_info["id"] == uuid
     assert product_info["title"] == filename
     assert product_info["size"] == expected_path.size()
@@ -414,17 +426,20 @@ def test_download(tmpdir):
     hash = expected_path.computehash()
     modification_time = expected_path.mtime()
     expected_product_info = product_info
+    del expected_product_info['path']
 
     # File exists, test with checksum
     # Expect no modification
-    path, product_info = api.download(uuid, str(tmpdir), check_existing=True)
+    product_info = api.download(uuid, str(tmpdir), check_existing=True)
     assert expected_path.mtime() == modification_time
+    del product_info['path']
     assert product_info == expected_product_info
 
     # File exists, test without checksum
     # Expect no modification
-    path, product_info = api.download(uuid, str(tmpdir), check_existing=False)
+    product_info = api.download(uuid, str(tmpdir), check_existing=False)
     assert expected_path.mtime() == modification_time
+    del product_info['path']
     assert product_info == expected_product_info
 
     # Create invalid file, expect re-download
@@ -432,8 +447,9 @@ def test_download(tmpdir):
         f.seek(expected_product_info["size"] - 1)
         f.write(b'\0')
     assert expected_path.computehash("md5") != hash
-    path, product_info = api.download(uuid, str(tmpdir), check_existing=True)
+    product_info = api.download(uuid, str(tmpdir), check_existing=True)
     assert expected_path.computehash("md5") == hash
+    del product_info['path']
     assert product_info == expected_product_info
 
     # Test continue
@@ -442,8 +458,9 @@ def test_download(tmpdir):
     with expected_path.open("wb") as f:
         f.write(content[:100])
     assert expected_path.computehash("md5") != hash
-    path, product_info = api.download(uuid, str(tmpdir), check_existing=True)
+    product_info = api.download(uuid, str(tmpdir), check_existing=True)
     assert expected_path.computehash("md5") == hash
+    del product_info['path']
     assert product_info == expected_product_info
 
     # Test MD5 check
@@ -463,26 +480,29 @@ def test_download_all(tmpdir):
                  "S1A_WV_OCN__2SSV_20150526T211029_20150526T211737_006097_007E78_134A",
                  "S1A_WV_OCN__2SSV_20150526T081641_20150526T082418_006090_007E3E_104C"]
 
-    products = api.load_query(" OR ".join(filenames))
+    products = api.query_plain(" OR ".join(filenames))
     assert len(products) == len(filenames)
 
     # Download normally
-    result = api.download_all(products, str(tmpdir))
-    assert len(result) == len(filenames)
-    for path, product_info in result.items():
-        pypath = py.path.local(path)
+    product_infos, failed_downloads = api.download_all(products, str(tmpdir))
+    assert len(failed_downloads) == 0
+    assert len(product_infos) == len(filenames)
+    for product_id, product_info in product_infos.items():
+        pypath = py.path.local(product_info['path'])
         assert pypath.purebasename in filenames
         assert pypath.check(exists=1, file=1)
         assert pypath.size() == product_info["size"]
 
     # Force one download to fail
-    path, product_info = list(result.items())[0]
+    product_info = list(product_infos.values())[0]
+    path = product_info['path']
     py.path.local(path).remove()
     with requests_mock.mock(real_http=True) as rqst:
         url = "https://scihub.copernicus.eu/apihub/odata/v1/Products('%s')/?$format=json" % product_info["id"]
         json = api.session.get(url).json()
         json["d"]["Checksum"]["Value"] = "00000000000000000000000000000000"
         rqst.get(url, json=json)
-        result = api.download_all(products, str(tmpdir), max_attempts=1, checksum=True)
-        assert len(result) == len(filenames)
-        assert result[path] is None
+        product_infos, failed_downloads = api.download_all(products, str(tmpdir), max_attempts=1, checksum=True)
+        assert len(failed_downloads) == 1
+        assert len(product_infos) + len(failed_downloads) == len(filenames)
+        assert product_info['id'] in failed_downloads

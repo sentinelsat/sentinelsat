@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
-from __future__ import print_function
-from __future__ import absolute_import
+from __future__ import absolute_import, print_function
 
 import hashlib
 import logging
@@ -67,37 +66,41 @@ class SentinelAPI(object):
         self._last_query = None
         self._last_status_code = None
 
-    def query(self, area, initial_date=None, end_date=datetime.now(), **keywords):
+    def query(self, area=None, initial_date='NOW-1DAY', end_date='NOW', **keywords):
         """Query the SciHub API with the coordinates of an area, a date interval
         and any other search keywords accepted by the SciHub API.
         """
         query = self.format_query(area, initial_date, end_date, **keywords)
-        return self.load_query(query)
+        return self.query_plain(query)
 
     @staticmethod
-    def format_query(area, initial_date=None, end_date=datetime.now(), **keywords):
+    def format_query(area=None, initial_date='NOW-1DAY', end_date='NOW', **keywords):
         """Create the SciHub API query string
         """
-        if initial_date is None:
-            initial_date = end_date - timedelta(hours=24)
+        query_parts = []
+        if initial_date is not None and end_date is not None:
+            query_parts += ['(beginPosition:[%s TO %s])' % (
+                _format_date(initial_date),
+                _format_date(end_date)
+            )]
 
-        acquisition_date = '(beginPosition:[%s TO %s])' % (
-            _format_date(initial_date),
-            _format_date(end_date)
-        )
-        query_area = ' AND (footprint:"Intersects(POLYGON((%s)))")' % area
+        if area is not None:
+            query_parts += ['(footprint:"Intersects(%s)")' % area]
 
-        filters = ''
-        for kw in sorted(keywords.keys()):
-            filters += ' AND (%s:%s)' % (kw, keywords[kw])
+        for kw in sorted(keywords):
+            query_parts += ['(%s:%s)' % (kw, keywords[kw])]
 
-        query = ''.join([acquisition_date, query_area, filters])
+        query = ' AND '.join(query_parts)
         return query
 
-    def load_query(self, query, start_row=0):
+    def query_plain(self, query):
         """Do a full-text query on the SciHub API using the OpenSearch format specified in
            https://scihub.copernicus.eu/twiki/do/view/SciHubUserGuide/3FullTextSearch
         """
+        response = self._load_query(query)
+        return _response_to_dict(response)
+
+    def _load_query(self, query, start_row=0):
         # store last query (for testing)
         self._last_query = query
 
@@ -127,7 +130,7 @@ class SentinelAPI(object):
         output = entries
         # repeat query until all results have been loaded
         if total_results > start_row + self.page_size - 1:
-            output += self.load_query(query, start_row=(start_row + self.page_size))
+            output += self._load_query(query, start_row=(start_row + self.page_size))
         return output
 
     @staticmethod
@@ -135,78 +138,34 @@ class SentinelAPI(object):
         """Return the products from a query response as a GeoJSON with the values in their appropriate Python types.
         """
         feature_list = []
-        products_dict = SentinelAPI.to_dict(products, parse_values=False)
-        for i, (title, props) in enumerate(products_dict.items()):
-            props['title'] = title
+        for i, (product_id, props) in enumerate(products.items()):
+            props = props.copy()
+            props['id'] = product_id
             poly = _geojson_poly_from_wkt(props['footprint'])
             del props['footprint']
             del props['gmlfootprint']
+            # Fix "'datetime' is not JSON serializable"
+            for k, v in props.items():
+                if isinstance(v, (date, datetime)):
+                    props[k] = v.strftime('%Y-%m-%dT%H:%M:%S.%fZ')
             feature_list.append(
                 geojson.Feature(geometry=poly, id=i, properties=props)
             )
         return geojson.FeatureCollection(feature_list)
 
     @staticmethod
-    def to_dict(products, parse_values=True):
-        """Return the products from a query response as a dictionary with the values in their appropriate Python types.
-        """
-
-        def convert_date(content):
-            try:
-                value = datetime.strptime(content, '%Y-%m-%dT%H:%M:%SZ')
-            except ValueError:
-                value = datetime.strptime(content, '%Y-%m-%dT%H:%M:%S.%fZ')
-            return value
-
-        if parse_values:
-            converters = {'date': convert_date, 'int': int, 'long': int, 'float': float, 'double': float}
-        else:
-            converters = {}
-        # Keep the string type by default
-        default_converter = lambda x: x
-
-        output = OrderedDict()
-        for prod in products:
-            product_dict = {}
-            prodname = prod['title']
-            output[prodname] = product_dict
-            for key in prod:
-                if key == 'title':
-                    continue
-                if isinstance(prod[key], string_types):
-                    product_dict[key] = prod[key]
-                else:
-                    properties = prod[key]
-                    if isinstance(properties, dict):
-                        properties = [properties]
-                    if key == 'link':
-                        for p in properties:
-                            name = 'link'
-                            if 'rel' in p:
-                                name = 'link_' + p['rel']
-                            product_dict[name] = p['href']
-                    else:
-                        f = converters.get(key, default_converter)
-                        for p in properties:
-                            try:
-                                product_dict[p['name']] = f(p['content'])
-                            except(KeyError):  # Sentinel-3 has one element 'arr' which violates the name:content convention
-                                product_dict[p['name']] = f(p['str'])
-
-        return output
-
-    @staticmethod
     def to_dataframe(products):
-        """Return the products from a query response as a Pandas DataFrame with the values in their appropriate Python types.
+        """Return the products from a query response as a Pandas DataFrame
+        with the values in their appropriate Python types.
         """
         import pandas as pd
 
-        products_dict = SentinelAPI.to_dict(products)
-        return pd.DataFrame.from_dict(products_dict, orient='index')
+        return pd.DataFrame.from_dict(products, orient='index')
 
     @staticmethod
     def to_geodataframe(products):
-        """Return the products from a query response as a GeoPandas GeoDataFrame with the values in their appropriate Python types.
+        """Return the products from a query response as a GeoPandas GeoDataFrame
+        with the values in their appropriate Python types.
         """
         import geopandas as gpd
         import shapely.wkt
@@ -279,10 +238,8 @@ class SentinelAPI(object):
 
         Returns
         -------
-        path : string
-            Disk path of the downloaded file,
         product_info : dict
-            Dictionary containing the product's info from get_product_info().
+            Dictionary containing the product's info from get_product_info() as well as the path on disk.
 
         Raises
         ------
@@ -299,6 +256,7 @@ class SentinelAPI(object):
                 sleep(60)
 
         path = join(directory_path, product_info['title'] + '.zip')
+        product_info['path'] = path
         kwargs = _fillin_cainfo(kwargs)
 
         self.logger.info('Downloading %s to %s' % (id, path))
@@ -308,7 +266,7 @@ class SentinelAPI(object):
         if exists(path) and getsize(path) == product_info['size']:
             if not check_existing or _md5_compare(path, product_info['md5']):
                 self.logger.info('%s was already downloaded.' % path)
-                return path, product_info
+                return product_info
             else:
                 self.logger.info(
                     '%s was already downloaded but is corrupt: checksums do not match. Re-downloading.' % path)
@@ -326,8 +284,9 @@ class SentinelAPI(object):
         # Check integrity with MD5 checksum
         if checksum is True:
             if not _md5_compare(path, product_info['md5']):
+                remove(path)
                 raise InvalidChecksumError('File corrupt: checksums do not match')
-        return path, product_info
+        return product_info
 
     def download_all(self, products, directory_path='.', max_attempts=10, checksum=False, check_existing=False,
                      **kwargs):
@@ -354,39 +313,35 @@ class SentinelAPI(object):
 
         Returns
         -------
-        dict[string, dict|None]
-            A dictionary with an entry for each product mapping the downloaded file path to its product info
-            (returned by get_product_info()). Product info is set to None if downloading the product failed.
+        dict[string, dict]
+            A dictionary containing the return value from download() for each successfully downloaded product.
+        set[string]
+            The list of products that failed to download.
         """
-        result = {}
         self.logger.info("Will download %d products" % len(products))
-        for i, product in enumerate(products):
-            path = join(directory_path, product['title'] + '.zip')
-            product_info = None
-            download_successful = False
-            remaining_attempts = max_attempts
-            while not download_successful and remaining_attempts > 0:
+        return_values = OrderedDict()
+        for i, product_id in enumerate(products):
+            for attempt_num in range(max_attempts):
                 try:
-                    path, product_info = self.download(product['id'], directory_path, checksum, check_existing,
-                                                       **kwargs)
-                    download_successful = True
+                    product_info = self.download(product_id, directory_path, checksum, check_existing, **kwargs)
+                    return_values[product_id] = product_info
+                    break
                 except (KeyboardInterrupt, SystemExit):
                     raise
                 except InvalidChecksumError:
-                    self.logger.warning("Invalid checksum. The downloaded file '{}' is corrupted.".format(path))
+                    self.logger.warning("Invalid checksum. The downloaded file for '{}' is corrupted.".format(product_id))
                 except:
-                    self.logger.exception("There was an error downloading %s" % product['title'])
-                remaining_attempts -= 1
-            result[path] = product_info
+                    self.logger.exception("There was an error downloading %s" % product_id)
             self.logger.info("{}/{} products downloaded".format(i + 1, len(products)))
-        return result
+        failed = set(products) - set(return_values)
+        return return_values, failed
 
     @staticmethod
     def get_products_size(products):
-        """Return the total filesize in GB of all products in the query"""
+        """Return the total file size in GB of all products in the query"""
         size_total = 0
-        for product in products:
-            size_product = next(x for x in product["str"] if x["name"] == "size")["content"]
+        for title, props in products.items():
+            size_product = props["size"]
             size_value = float(size_product.split(" ")[0])
             size_unit = str(size_product.split(" ")[1])
             if size_unit == "MB":
@@ -441,11 +396,15 @@ def get_coordinates(geojson_file, feature_number=0):
     polygon coordinates
         string of comma separated coordinate tuples (lon, lat) to be used by SentinelAPI
     """
-    geojson_obj = geojson.loads(open(geojson_file, 'r').read())
-    coordinates = geojson_obj['features'][feature_number]['geometry']['coordinates'][0]
+    geojson_obj = geojson.loads(open(geojson_file).read())
+    if 'coordinates' in geojson_obj:
+        geometry = geojson_obj
+    else:
+        geometry = geojson_obj['features'][feature_number]['geometry']
+    coordinates = geometry['coordinates'][0]
     # precision of 7 decimals equals 1mm at the equator
     coordinates = ['%.7f %.7f' % (coord[0], coord[1]) for coord in coordinates]
-    return ','.join(coordinates)
+    return 'POLYGON((%s))' % (','.join(coordinates))
 
 
 def _fillin_cainfo(kwargs_dict):
@@ -473,17 +432,22 @@ def _fillin_cainfo(kwargs_dict):
 
 
 def _format_date(in_date):
-    """Format date or datetime input or a YYYYMMDD string input to
-    YYYY-MM-DDThh:mm:ssZ string format. In case you pass an
+    """Format a date, datetime or a YYYYMMDD string input as YYYY-MM-DDThh:mm:ssZ
+    or validate a string input as suitable for the full text search interface and return it.
     """
-
-    if type(in_date) == datetime or type(in_date) == date:
+    if isinstance(in_date, (datetime, date)):
         return in_date.strftime('%Y-%m-%dT%H:%M:%SZ')
-    else:
-        try:
-            return datetime.strptime(in_date, '%Y%m%d').strftime('%Y-%m-%dT%H:%M:%SZ')
-        except ValueError:
-            return in_date
+
+    in_date = in_date.strip()
+    if re.match(r'^NOW(?:-\d+(?:MONTH|DAY|HOUR|MINUTE)S?)?$', in_date):
+        return in_date
+    if re.match(r'^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(?:\.\d+)?Z$', in_date):
+        return in_date
+
+    try:
+        return datetime.strptime(in_date, '%Y%m%d').strftime('%Y-%m-%dT%H:%M:%SZ')
+    except ValueError:
+        raise ValueError('Unsupported date value {}'.format(in_date))
 
 
 def _convert_timestamp(in_date):
@@ -525,8 +489,55 @@ def _geojson_poly_from_wkt(wkt):
     """Return a geojson Polygon object from a WKT string"""
     coordlist = re.search(r'\(\s*([^()]+)\s*\)', wkt).group(1)
     coord_list_split = (coord.split(' ') for coord in coordlist.split(','))
-    poly = geojson.Polygon([(float(coord[0]), float(coord[1])) for coord in coord_list_split])
+    poly = geojson.Polygon([[(float(coord[0]), float(coord[1])) for coord in coord_list_split]])
     return poly
+
+
+def _response_to_dict(products):
+    """Convert a query response to a dictionary.
+     
+    The resulting dictionary structure is {<product id>: {<property>: <value>}}.
+    The property values are converted to their respective Python types unless `parse_values` is set to `False`.
+    """
+
+    def convert_date(content):
+        if '.' in content:
+            return datetime.strptime(content, '%Y-%m-%dT%H:%M:%S.%fZ')
+        else:
+            return datetime.strptime(content, '%Y-%m-%dT%H:%M:%SZ')
+
+    converters = {'date': convert_date, 'int': int, 'long': int, 'float': float, 'double': float}
+    # Keep the string type by default
+    default_converter = lambda x: x
+
+    output = OrderedDict()
+    for prod in products:
+        product_dict = {}
+        prod_id = prod['id']
+        output[prod_id] = product_dict
+        for key in prod:
+            if key == 'id':
+                continue
+            if isinstance(prod[key], string_types):
+                product_dict[key] = prod[key]
+            else:
+                properties = prod[key]
+                if isinstance(properties, dict):
+                    properties = [properties]
+                if key == 'link':
+                    for p in properties:
+                        name = 'link'
+                        if 'rel' in p:
+                            name = 'link_' + p['rel']
+                        product_dict[name] = p['href']
+                else:
+                    f = converters.get(key, default_converter)
+                    for p in properties:
+                        try:
+                            product_dict[p['name']] = f(p['content'])
+                        except KeyError:  # Sentinel-3 has one element 'arr' which violates the name:content convention
+                            product_dict[p['name']] = f(p['str'])
+    return output
 
 
 def _md5_compare(file_path, checksum, block_size=2 ** 13):

@@ -70,7 +70,6 @@ def cli():
     '-c', '--cloud', type=int,
     help='Maximum cloud cover in percent. (Automatically sets --sentinel2)')
 @click.version_option(version=sentinelsat_version, prog_name="sentinelsat")
-
 def search(
         user, password, geojson, start, end, download, md5,
         sentinel1, sentinel2, cloud, footprints, path, query, url):
@@ -87,7 +86,7 @@ def search(
     if cloud:
         search_kwargs.update(
             {"platformname": "Sentinel-2",
-            "cloudcoverpercentage": "[0 TO %s]" % cloud})
+             "cloudcoverpercentage": "[0 TO %s]" % cloud})
     elif sentinel2:
         search_kwargs.update({"platformname": "Sentinel-2"})
         logger.info('DEPRECATED: Please use --sentinel instead')
@@ -106,16 +105,15 @@ def search(
             outfile.write(gj.dumps(footprints_geojson))
 
     if download is True:
-        result = api.download_all(products, path, checksum=md5)
+        product_infos, failed_downloads = api.download_all(products, path, checksum=md5)
         if md5 is True:
-            corrupt_scenes = [(path, info["id"]) for path, info in result.items() if info is not None]
-            if len(corrupt_scenes) > 0:
+            if len(failed_downloads) > 0:
                 with open(os.path.join(path, "corrupt_scenes.txt"), "w") as outfile:
-                    for corrupt_tuple in corrupt_scenes:
-                        outfile.write("%s : %s\n" % corrupt_tuple)
+                    for failed_id in failed_downloads:
+                        outfile.write("%s : %s\n" % (failed_id, products[failed_id]['title']))
     else:
-        for product in products:
-            logger.info('Product %s - %s' % (product['id'], product['summary']))
+        for product_id, props in products.items():
+            logger.info('Product %s - %s' % (product_id, props['summary']))
         logger.info('---')
         logger.info(
             '%s scenes found with a total size of %.2f GB' %
@@ -140,7 +138,6 @@ def search(
     to corrupt_scenes.txt.')
     """)
 @click.version_option(version=sentinelsat_version, prog_name="sentinelsat")
-
 def download(user, password, productid, path, md5, url):
     """Download a Sentinel Product. It just needs your SciHub user and password
     and the id of the product you want to download.

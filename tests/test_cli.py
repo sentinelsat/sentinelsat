@@ -1,8 +1,10 @@
 from os import environ
 
 import pytest
+import requests_mock
 from click.testing import CliRunner
 
+from sentinelsat import InvalidChecksumError, SentinelAPI
 from sentinelsat.scripts.cli import cli
 from .shared import my_vcr
 
@@ -138,6 +140,7 @@ def test_sentinel2_flag():
     expected = "Product 91c2503c-3c58-4a8c-a70b-207b128e6833 - Date: 2015-12-27T14:22:29Z, Instrument: MSI, Mode: , Satellite: Sentinel-2, Size: 5.73 GB"
     assert result.output.split("\n")[2] == expected
 
+
 @my_vcr.use_cassette
 @pytest.mark.scihub
 def test_footprints_cli(tmpdir):
@@ -154,3 +157,131 @@ def test_footprints_cli(tmpdir):
          '--footprints'],
         catch_exceptions=False
     )
+
+
+@my_vcr.use_cassette('test_download_cli')
+@pytest.mark.scihub
+@pytest.mark.homura
+def test_download_many(tmpdir):
+    runner = CliRunner()
+
+    command = ['search'] + _api_auth + [
+        'tests/map_download.geojson',
+        '-s', '20150501',
+        '-e', '20150705',
+        '-q', 'producttype=OCN',
+        '--download',
+        '--path', str(tmpdir)]
+
+    # Download 3 tiny products
+    result = runner.invoke(
+        cli,
+        command,
+        catch_exceptions=False
+    )
+
+    # Should not re-download
+    result = runner.invoke(
+        cli,
+        command + ['--md5'],
+        catch_exceptions=False
+    )
+
+    # clean up
+    for f in tmpdir.listdir():
+        f.remove()
+
+    # Prepare a response with an invalid checksum
+    product_id = 'f30b2a6a-b0c1-49f1-b19e-e10c3cf06101'
+    url = "https://scihub.copernicus.eu/apihub/odata/v1/Products('%s')/?$format=json" % product_id
+    api = SentinelAPI(*_api_auth)
+    json = api.session.get(url).json()
+    json["d"]["Checksum"]["Value"] = "00000000000000000000000000000000"
+
+    # Force one download to fail
+    with requests_mock.mock(real_http=True) as rqst:
+        rqst.get(url, json=json)
+
+        # md5 flag not set, expect nothing to happen
+        result = runner.invoke(
+            cli,
+            command,
+            catch_exceptions=False
+        )
+
+        # clean up
+        for f in tmpdir.listdir():
+            f.remove()
+
+        rqst.get(url, json=json)
+        # md5 flag set, should now show an error
+        result = runner.invoke(
+            cli,
+            command + ['--md5'],
+            catch_exceptions=False
+        )
+
+    assert tmpdir.join('corrupt_scenes.txt').check()
+    with tmpdir.join('corrupt_scenes.txt').open() as f:
+        assert product_id in f.read()
+
+    # clean up
+    tmpdir.remove()
+
+
+@my_vcr.use_cassette('test_download_cli')
+@pytest.mark.scihub
+@pytest.mark.homura
+def test_download_single(tmpdir):
+    runner = CliRunner()
+
+    product_id = 'f30b2a6a-b0c1-49f1-b19e-e10c3cf06101'
+    command = ['download'] + _api_auth + [product_id, '--path', str(tmpdir)]
+    result = runner.invoke(
+        cli,
+        command,
+        catch_exceptions=False
+    )
+
+    # The file already exists, should not be re-downloaded
+    result = runner.invoke(
+        cli,
+        command + ['--md5'],
+        catch_exceptions=False
+    )
+
+    # clean up
+    for f in tmpdir.listdir():
+        f.remove()
+
+    # Prepare a response with an invalid checksum
+    url = "https://scihub.copernicus.eu/apihub/odata/v1/Products('%s')/?$format=json" % product_id
+    api = SentinelAPI(*_api_auth)
+    json = api.session.get(url).json()
+    json["d"]["Checksum"]["Value"] = "00000000000000000000000000000000"
+
+    # Force the download to fail by providing an incorrect checksum
+    with requests_mock.mock(real_http=True) as rqst:
+        rqst.get(url, json=json)
+
+        # md5 flag not set, expect nothing to happen
+        result = runner.invoke(
+            cli,
+            command,
+            catch_exceptions=False
+        )
+
+        # clean up
+        for f in tmpdir.listdir():
+            f.remove()
+
+        # md5 flag set, should raise an exception
+        with pytest.raises(InvalidChecksumError) as excinfo:
+            result = runner.invoke(
+                cli,
+                command + ['--md5'],
+                catch_exceptions=False
+            )
+
+    # clean up
+    tmpdir.remove()
