@@ -6,9 +6,13 @@ All notable changes to ``sentinelsat`` will be listed here.
 [0.9.X] - 2017-MM-DD
 -------
 
+Added
+~~~~~
+- CLI: ``--sentinel=<int>`` option to select satellite (constellation)
+
 Deprecated
 ~~~~~
-- ``--sentinel1`` and ``--sentinel2`` will be removed with the next major release
+- CLI: ``--sentinel1`` and ``--sentinel2`` will be removed with the next major release
 
 [0.9.1] - 2017-03-06
 -------

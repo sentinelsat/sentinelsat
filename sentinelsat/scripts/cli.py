@@ -60,18 +60,23 @@ def cli():
     help="""Verify the MD5 checksum and write corrupt product ids and filenames
     to corrupt_scenes.txt.
     """)
+# DEPRECATED: to be removed with next major release
 @click.option(
     '--sentinel1', is_flag=True,
     help='DEPRECATED: Please use --sentinel instead. Limit search to Sentinel-1 products.')
+# DEPRECATED: to be removed with next major release
 @click.option(
     '--sentinel2', is_flag=True,
     help='DEPRECATED: Please use --sentinel instead. Limit search to Sentinel-2 products.')
 @click.option(
+    '--sentinel', type=click.Choice(['1', '2', '3']),
+    help='Limit search to a Sentinel satellite (constellation)')
+@click.option(
     '-c', '--cloud', type=int,
-    help='Maximum cloud cover in percent. (Automatically sets --sentinel2)')
+    help='Maximum cloud cover in percent. (requires --sentinel to be 2 or 3)')
 @click.version_option(version=sentinelsat_version, prog_name="sentinelsat")
 def search(
-        user, password, geojson, start, end, download, md5,
+        user, password, geojson, start, end, download, md5, sentinel,
         sentinel1, sentinel2, cloud, footprints, path, query, url):
     """Search for Sentinel products and, optionally, download all the results
     and/or create a geojson file with the search result footprints.
@@ -83,13 +88,21 @@ def search(
     api = SentinelAPI(user, password, url)
 
     search_kwargs = {}
+    if sentinel:
+        search_kwargs.update({"platformname": "Sentinel-" + sentinel})
+
     if cloud:
-        search_kwargs.update(
-            {"platformname": "Sentinel-2",
-             "cloudcoverpercentage": "[0 TO %s]" % cloud})
+        if sentinel not in ['2', '3']:
+            logger.error('Cloud cover is only supported for Sentinel 2 and 3.')
+            raise ValueError('Cloud cover is only supported for Sentinel 2 and 3.')
+        search_kwargs.update({"cloudcoverpercentage": "[0 TO %s]" % cloud})
+
+    # DEPRECATED: to be removed with next major release
     elif sentinel2:
         search_kwargs.update({"platformname": "Sentinel-2"})
         logger.info('DEPRECATED: Please use --sentinel instead')
+
+    # DEPRECATED: to be removed with next major release
     elif sentinel1:
         search_kwargs.update({"platformname": "Sentinel-1"})
         logger.info('DEPRECATED: Please use --sentinel instead')
