@@ -9,7 +9,7 @@ import pytest
 import requests_mock
 
 from sentinelsat import InvalidChecksumError, SentinelAPI, SentinelAPIError, get_coordinates
-from sentinelsat.sentinel import _convert_timestamp, _format_date, _md5_compare, _response_to_dict
+from sentinelsat.sentinel import _format_query_date, _md5_compare, _parse_odata_timestamp, _parse_opensearch_response
 from .shared import my_vcr
 
 _api_auth = dict(user=environ.get('SENTINEL_USER'), password=environ.get('SENTINEL_PASSWORD'))
@@ -53,23 +53,23 @@ def raw_products():
 
 @pytest.mark.fast
 def test_format_date():
-    assert _format_date(datetime(2015, 1, 1)) == '2015-01-01T00:00:00Z'
-    assert _format_date(date(2015, 1, 1)) == '2015-01-01T00:00:00Z'
-    assert _format_date('2015-01-01T00:00:00Z') == '2015-01-01T00:00:00Z'
-    assert _format_date('20150101') == '2015-01-01T00:00:00Z'
+    assert _format_query_date(datetime(2015, 1, 1)) == '2015-01-01T00:00:00Z'
+    assert _format_query_date(date(2015, 1, 1)) == '2015-01-01T00:00:00Z'
+    assert _format_query_date('2015-01-01T00:00:00Z') == '2015-01-01T00:00:00Z'
+    assert _format_query_date('20150101') == '2015-01-01T00:00:00Z'
 
     for date_str in ("NOW", "NOW-1DAY", "NOW-1DAYS", "NOW-500DAY", "NOW-500DAYS",
                      "NOW-2MONTH", "NOW-2MONTHS", "NOW-20MINUTE", "NOW-20MINUTES"):
-        assert _format_date(date_str) == date_str
+        assert _format_query_date(date_str) == date_str
 
     for date_str in ("NOW - 1HOUR", "NOW -   1HOURS", "NOW-1 HOURS", "NOW+10HOUR", "NOW-1", "NOW-"):
         with pytest.raises(ValueError) as excinfo:
-            _format_date(date_str)
+            _format_query_date(date_str)
 
 
 @pytest.mark.fast
 def test_convert_timestamp():
-    assert _convert_timestamp('/Date(1445588544652)/') == '2015-10-23T08:22:24Z'
+    assert _parse_odata_timestamp('/Date(1445588544652)/') == datetime(2015, 10, 23, 8, 22, 24, 652000)
 
 
 @pytest.mark.fast
@@ -113,13 +113,13 @@ def test_api_query_format():
     wkt = 'POLYGON((0 0,1 1,0 1,0 0))'
 
     now = datetime.now()
-    last_24h = _format_date(now - timedelta(hours=24))
+    last_24h = _format_query_date(now - timedelta(hours=24))
     query = api.format_query(wkt, initial_date=last_24h, end_date=now)
-    assert query == '(beginPosition:[%s TO %s]) ' % (last_24h, _format_date(now)) + \
+    assert query == '(beginPosition:[%s TO %s]) ' % (last_24h, _format_query_date(now)) + \
                     'AND (footprint:"Intersects(POLYGON((0 0,1 1,0 1,0 0)))")'
 
     query = api.format_query(wkt, end_date=now, producttype='SLC')
-    assert query == '(beginPosition:[NOW-1DAY TO %s]) ' % (_format_date(now)) + \
+    assert query == '(beginPosition:[NOW-1DAY TO %s]) ' % (_format_query_date(now)) + \
                     'AND (footprint:"Intersects(POLYGON((0 0,1 1,0 1,0 0)))") ' + \
                     'AND (producttype:SLC)'
 
@@ -193,57 +193,177 @@ def test_get_coordinates():
 
 @my_vcr.use_cassette
 @pytest.mark.scihub
-def test_get_product_info():
+def test_get_product_odata_short():
     api = SentinelAPI(**_api_auth)
 
-    expected_s1 = {
-        'id': '8df46c9e-a20c-43db-a19a-4240c2ed3b8b',
-        'size': 143549851,
-        'md5': 'D5E4DF5C38C6E97BF7E7BD540AB21C05',
-        'url': "https://scihub.copernicus.eu/apihub/odata/v1/Products('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')/$value",
-        'date': '2015-11-21T10:03:56Z',
-        'footprint': '-63.852531 -5.880887,-67.495872 -5.075419,-67.066071 -3.084356,-63.430576 -3.880541,'
-                     '-63.852531 -5.880887',
-        'title': 'S1A_EW_GRDM_1SDV_20151121T100356_20151121T100429_008701_00C622_A0EC'
+    expected_short = {
+        '8df46c9e-a20c-43db-a19a-4240c2ed3b8b': {
+            'size': 143549851,
+            'md5': 'D5E4DF5C38C6E97BF7E7BD540AB21C05',
+            'url': "https://scihub.copernicus.eu/apihub/odata/v1/Products('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')/$value",
+            'date': datetime(2015, 11, 21, 10, 3, 56, 675000),
+            'footprint': 'POLYGON((-63.852531 -5.880887,-67.495872 -5.075419,-67.066071 -3.084356,-63.430576 -3.880541,'
+                         '-63.852531 -5.880887))',
+            'title': 'S1A_EW_GRDM_1SDV_20151121T100356_20151121T100429_008701_00C622_A0EC'
+        },
+        '44517f66-9845-4792-a988-b5ae6e81fd3e': {
+            'date': datetime(2015, 12, 27, 14, 22, 29),
+            'footprint': 'POLYGON((-58.80274769505742 -4.565257232533263,-58.80535376268811 -5.513960396525286,'
+                         '-57.90315169909761 -5.515947033626909,-57.903151791669515 -5.516014389089381,-57.85874693129081 -5.516044812342758,'
+                         '-57.814323596961835 -5.516142631941845,-57.81432351345917 -5.516075248310466,-57.00018056571297 -5.516633044843839,'
+                         '-57.000180565731384 -5.516700066819259,-56.95603179187787 -5.51666329264377,-56.91188395837315 -5.516693539799448,'
+                         '-56.91188396736038 -5.51662651925904,-56.097209386295305 -5.515947927683427,-56.09720929423562 -5.516014937246069,'
+                         '-56.053056977999596 -5.5159111504805916,-56.00892491028779 -5.515874390220655,-56.00892501130261 -5.515807411549814,'
+                         '-55.10621586418906 -5.513685455771881,-55.108821882251775 -4.6092845892233,-54.20840287327946 -4.606372862374043,'
+                         '-54.21169990975238 -3.658594390979672,-54.214267703869346 -2.710949551849636,-55.15704255065496 -2.7127451087194463,'
+                         '-56.0563616875051 -2.71378646425769,-56.9561852630143 -2.7141556791285275,-57.8999998009875 -2.713837142510183,'
+                         '-57.90079161941062 -3.6180222056692726,-58.800616247288836 -3.616721351843382,-58.80274769505742 -4.565257232533263))',
+            'md5': '48C5648C2644CE07207B3C943DEDEB44',
+            'size': 5854429622,
+            'title': 'S2A_OPER_PRD_MSIL1C_PDMC_20151228T112523_R110_V20151227T142229_20151227T142229',
+            'url': "https://scihub.copernicus.eu/apihub/odata/v1/Products('44517f66-9845-4792-a988-b5ae6e81fd3e')/$value"
+        }
     }
+    ids = ['8df46c9e-a20c-43db-a19a-4240c2ed3b8b',
+           '44517f66-9845-4792-a988-b5ae6e81fd3e']
+    ret = api.get_product_odata(ids)
+    assert list(ret) == ids
+    for id in ids:
+        assert set(ret[id]) == set(expected_short[id])
+        for k in ret[id]:
+            assert ret[id][k] == expected_short[id][k]
 
-    expected_s2 = {
-        'date': '2015-12-27T14:22:29Z',
-        'footprint': '-58.80274769505742 -4.565257232533263,-58.80535376268811 -5.513960396525286,'
-                     '-57.90315169909761 -5.515947033626909,-57.903151791669515 -5.516014389089381,-57.85874693129081 -5.516044812342758,'
-                     '-57.814323596961835 -5.516142631941845,-57.81432351345917 -5.516075248310466,-57.00018056571297 -5.516633044843839,'
-                     '-57.000180565731384 -5.516700066819259,-56.95603179187787 -5.51666329264377,-56.91188395837315 -5.516693539799448,'
-                     '-56.91188396736038 -5.51662651925904,-56.097209386295305 -5.515947927683427,-56.09720929423562 -5.516014937246069,'
-                     '-56.053056977999596 -5.5159111504805916,-56.00892491028779 -5.515874390220655,-56.00892501130261 -5.515807411549814,'
-                     '-55.10621586418906 -5.513685455771881,-55.108821882251775 -4.6092845892233,-54.20840287327946 -4.606372862374043,'
-                     '-54.21169990975238 -3.658594390979672,-54.214267703869346 -2.710949551849636,-55.15704255065496 -2.7127451087194463,'
-                     '-56.0563616875051 -2.71378646425769,-56.9561852630143 -2.7141556791285275,-57.8999998009875 -2.713837142510183,'
-                     '-57.90079161941062 -3.6180222056692726,-58.800616247288836 -3.616721351843382,-58.80274769505742 -4.565257232533263',
-        'id': '44517f66-9845-4792-a988-b5ae6e81fd3e',
-        'md5': '48C5648C2644CE07207B3C943DEDEB44',
-        'size': 5854429622,
-        'title': 'S2A_OPER_PRD_MSIL1C_PDMC_20151228T112523_R110_V20151227T142229_20151227T142229',
-        'url': "https://scihub.copernicus.eu/apihub/odata/v1/Products('44517f66-9845-4792-a988-b5ae6e81fd3e')/$value"
+    # Test single id as input
+    id = list(expected_short)[0]
+    assert api.get_product_odata(id) == {id: expected_short[id]}
+
+
+@my_vcr.use_cassette
+@pytest.mark.scihub
+def test_get_product_odata_full():
+    api = SentinelAPI(**_api_auth)
+
+    expected_full = {
+        '8df46c9e-a20c-43db-a19a-4240c2ed3b8b': {
+            'title': 'S1A_EW_GRDM_1SDV_20151121T100356_20151121T100429_008701_00C622_A0EC',
+            'size': 143549851,
+            'md5': 'D5E4DF5C38C6E97BF7E7BD540AB21C05',
+            'date': datetime(2015, 11, 21, 10, 3, 56, 675000),
+            'footprint': 'POLYGON((-63.852531 -5.880887,-67.495872 -5.075419,-67.066071 -3.084356,-63.430576 -3.880541,-63.852531 -5.880887))',
+            'url': "https://scihub.copernicus.eu/apihub/odata/v1/Products('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')/$value",
+            'Acquisition Type': 'NOMINAL',
+            'Carrier rocket': 'Soyuz',
+            'Cycle number': 64,
+            'Date': datetime(2015, 11, 21, 10, 3, 56, 675000),
+            'Filename': 'S1A_EW_GRDM_1SDV_20151121T100356_20151121T100429_008701_00C622_A0EC.SAFE',
+            'Footprint': '<gml:Polygon srsName="http://www.opengis.net/gml/srs/epsg.xml#4326" xmlns:gml="http://www.opengis.net/gml">\n   <gml:outerBoundaryIs>\n      <gml:LinearRing>\n         <gml:coordinates>-5.880887,-63.852531 -5.075419,-67.495872 -3.084356,-67.066071 -3.880541,-63.430576 -5.880887,-63.852531</gml:coordinates>\n      </gml:LinearRing>\n   </gml:outerBoundaryIs>\n</gml:Polygon>',
+            'Format': 'SAFE',
+            'Identifier': 'S1A_EW_GRDM_1SDV_20151121T100356_20151121T100429_008701_00C622_A0EC',
+            'Ingestion Date': datetime(2015, 11, 21, 13, 22, 4, 992000),
+            'Instrument': 'SAR-C',
+            'Instrument abbreviation': 'SAR-C SAR',
+            'Instrument description': '<a target="_blank" href="https://sentinel.esa.int/web/sentinel/missions/sentinel-1">https://sentinel.esa.int/web/sentinel/missions/sentinel-1</a>',
+            'Instrument description text': 'The SAR Antenna Subsystem (SAS) is developed and build by AstriumGmbH. It is a large foldable planar phased array antenna, which isformed by a centre panel and two antenna side wings. In deployedconfiguration the antenna has an overall aperture of 12.3 x 0.84 m.The antenna provides a fast electronic scanning capability inazimuth and elevation and is based on low loss and highly stablewaveguide radiators build in carbon fibre technology, which arealready successfully used by the TerraSAR-X radar imaging mission.The SAR Electronic Subsystem (SES) is developed and build byAstrium Ltd. It provides all radar control, IF/ RF signalgeneration and receive data handling functions for the SARInstrument. The fully redundant SES is based on a channelisedarchitecture with one transmit and two receive chains, providing amodular approach to the generation and reception of wide-bandsignals and the handling of multi-polarisation modes. One keyfeature is the implementation of the Flexible Dynamic BlockAdaptive Quantisation (FD-BAQ) data compression concept, whichallows an efficient use of on-board storage resources and minimisesdownlink times.',
+            'Instrument mode': 'EW',
+            'Instrument name': 'Synthetic Aperture Radar (C-band)',
+            'Instrument swath': 'EW',
+            'JTS footprint': 'POLYGON ((-63.852531 -5.880887,-67.495872 -5.075419,-67.066071 -3.084356,-63.430576 -3.880541,-63.852531 -5.880887))',
+            'Launch date': 'April 3rd, 2014',
+            'Mission datatake id': 50722,
+            'Mission type': 'Earth observation',
+            'Mode': 'EW',
+            'NSSDC identifier': '0000-000A',
+            'Operator': 'European Space Agency',
+            'Orbit number (start)': 8701,
+            'Orbit number (stop)': 8701,
+            'Pass direction': 'DESCENDING',
+            'Phase identifier': 1,
+            'Polarisation': 'VV VH',
+            'Product class': 'S',
+            'Product class description': 'SAR Standard L1 Product',
+            'Product composition': 'Slice',
+            'Product level': 'L1',
+            'Product type': 'GRD',
+            'Relative orbit (start)': 54, 'Relative orbit (stop)': 54, 'Resolution': 'Medium',
+            'Satellite': 'Sentinel-1',
+            'Satellite description': '<a target="_blank" href="https://sentinel.esa.int/web/sentinel/missions/sentinel-1">https://sentinel.esa.int/web/sentinel/missions/sentinel-1</a>',
+            'Satellite name': 'Sentinel-1',
+            'Satellite number': 'A',
+            'Sensing start': datetime(2015, 11, 21, 10, 3, 56, 675000),
+            'Sensing stop': datetime(2015, 11, 21, 10, 4, 29, 714000),
+            'Size': '223.88 MB',
+            'Slice number': 1,
+            'Start relative orbit number': 54,
+            'Status': 'ARCHIVED',
+            'Stop relative orbit number': 54,
+            'Timeliness Category': 'Fast-24h'
+        },
+        '44517f66-9845-4792-a988-b5ae6e81fd3e': {
+            'title': 'S2A_OPER_PRD_MSIL1C_PDMC_20151228T112523_R110_V20151227T142229_20151227T142229',
+            'size': 5854429622,
+            'md5': '48C5648C2644CE07207B3C943DEDEB44',
+            'date': datetime(2015, 12, 27, 14, 22, 29),
+            'footprint': 'POLYGON((-58.80274769505742 -4.565257232533263,-58.80535376268811 -5.513960396525286,-57.90315169909761 -5.515947033626909,-57.903151791669515 -5.516014389089381,-57.85874693129081 -5.516044812342758,-57.814323596961835 -5.516142631941845,-57.81432351345917 -5.516075248310466,-57.00018056571297 -5.516633044843839,-57.000180565731384 -5.516700066819259,-56.95603179187787 -5.51666329264377,-56.91188395837315 -5.516693539799448,-56.91188396736038 -5.51662651925904,-56.097209386295305 -5.515947927683427,-56.09720929423562 -5.516014937246069,-56.053056977999596 -5.5159111504805916,-56.00892491028779 -5.515874390220655,-56.00892501130261 -5.515807411549814,-55.10621586418906 -5.513685455771881,-55.108821882251775 -4.6092845892233,-54.20840287327946 -4.606372862374043,-54.21169990975238 -3.658594390979672,-54.214267703869346 -2.710949551849636,-55.15704255065496 -2.7127451087194463,-56.0563616875051 -2.71378646425769,-56.9561852630143 -2.7141556791285275,-57.8999998009875 -2.713837142510183,-57.90079161941062 -3.6180222056692726,-58.800616247288836 -3.616721351843382,-58.80274769505742 -4.565257232533263))',
+            'url': "https://scihub.copernicus.eu/apihub/odata/v1/Products('44517f66-9845-4792-a988-b5ae6e81fd3e')/$value",
+            'Cloud cover percentage': 18.153846153846153,
+            'Date': datetime(2015, 12, 27, 14, 22, 29),
+            'Degraded MSI data percentage': 0, 'Degraded ancillary data percentage': 0,
+            'Filename': 'S2A_OPER_PRD_MSIL1C_PDMC_20151228T112523_R110_V20151227T142229_20151227T142229.SAFE',
+            'Footprint': '<gml:Polygon srsName="http://www.opengis.net/gml/srs/epsg.xml#4326" xmlns:gml="http://www.opengis.net/gml">\n   <gml:outerBoundaryIs>\n      <gml:LinearRing>\n         <gml:coordinates>-4.565257232533263,-58.80274769505742 -5.513960396525286,-58.80535376268811 -5.515947033626909,-57.90315169909761 -5.516014389089381,-57.903151791669515 -5.516044812342758,-57.85874693129081 -5.516142631941845,-57.814323596961835 -5.516075248310466,-57.81432351345917 -5.516633044843839,-57.00018056571297 -5.516700066819259,-57.000180565731384 -5.51666329264377,-56.95603179187787 -5.516693539799448,-56.91188395837315 -5.51662651925904,-56.91188396736038 -5.515947927683427,-56.097209386295305 -5.516014937246069,-56.09720929423562 -5.5159111504805916,-56.053056977999596 -5.515874390220655,-56.00892491028779 -5.515807411549814,-56.00892501130261 -5.513685455771881,-55.10621586418906 -4.6092845892233,-55.108821882251775 -4.606372862374043,-54.20840287327946 -3.658594390979672,-54.21169990975238 -2.710949551849636,-54.214267703869346 -2.7127451087194463,-55.15704255065496 -2.71378646425769,-56.0563616875051 -2.7141556791285275,-56.9561852630143 -2.713837142510183,-57.8999998009875 -3.6180222056692726,-57.90079161941062 -3.616721351843382,-58.800616247288836 -4.565257232533263,-58.80274769505742</gml:coordinates>\n      </gml:LinearRing>\n   </gml:outerBoundaryIs>\n</gml:Polygon>',
+            'Format': 'SAFE',
+            'Format correctness': 'PASSED',
+            'General quality': 'PASSED',
+            'Generation time': datetime(2015, 12, 28, 11, 25, 23, 357),
+            'Geometric quality': 'PASSED',
+            'Identifier': 'S2A_OPER_PRD_MSIL1C_PDMC_20151228T112523_R110_V20151227T142229_20151227T142229',
+            'Ingestion Date': datetime(2015, 12, 28, 10, 57, 13, 725000),
+            'Instrument': 'MSI',
+            'Instrument abbreviation': 'MSI',
+            'Instrument mode': 'INS-NOBS',
+            'Instrument name': 'Multi-Spectral Instrument',
+            'JTS footprint': 'POLYGON ((-58.80274769505742 -4.565257232533263,-58.80535376268811 -5.513960396525286,-57.90315169909761 -5.515947033626909,-57.903151791669515 -5.516014389089381,-57.85874693129081 -5.516044812342758,-57.814323596961835 -5.516142631941845,-57.81432351345917 -5.516075248310466,-57.00018056571297 -5.516633044843839,-57.000180565731384 -5.516700066819259,-56.95603179187787 -5.51666329264377,-56.91188395837315 -5.516693539799448,-56.91188396736038 -5.51662651925904,-56.097209386295305 -5.515947927683427,-56.09720929423562 -5.516014937246069,-56.053056977999596 -5.5159111504805916,-56.00892491028779 -5.515874390220655,-56.00892501130261 -5.515807411549814,-55.10621586418906 -5.513685455771881,-55.108821882251775 -4.6092845892233,-54.20840287327946 -4.606372862374043,-54.21169990975238 -3.658594390979672,-54.214267703869346 -2.710949551849636,-55.15704255065496 -2.7127451087194463,-56.0563616875051 -2.71378646425769,-56.9561852630143 -2.7141556791285275,-57.8999998009875 -2.713837142510183,-57.90079161941062 -3.6180222056692726,-58.800616247288836 -3.616721351843382,-58.80274769505742 -4.565257232533263))',
+            'Mission datatake id': 'GS2A_20151227T140932_002681_N02.01',
+            'NSSDC identifier': '2015-000A',
+            'Orbit number (start)': 2681,
+            'Pass direction': 'DESCENDING',
+            'Platform serial identifier': 'Sentinel-2A',
+            'Processing baseline': 2.01,
+            'Processing level': 'Level-1C',
+            'Product type': 'S2MSI1C',
+            'Radiometric quality': 'PASSED',
+            'Relative orbit (start)': 110,
+            'Satellite': 'Sentinel-2',
+            'Satellite name': 'Sentinel-2',
+            'Satellite number': 'A',
+            'Sensing start': datetime(2015, 12, 27, 14, 22, 29),
+            'Sensing stop': datetime(2015, 12, 27, 14, 22, 29),
+            'Sensor quality': 'PASSED',
+            'Size': '5.50 GB'
+        }
     }
-
-    assert api.get_product_odata('8df46c9e-a20c-43db-a19a-4240c2ed3b8b') == expected_s1
-    assert api.get_product_odata('44517f66-9845-4792-a988-b5ae6e81fd3e') == expected_s2
+    ids = ['8df46c9e-a20c-43db-a19a-4240c2ed3b8b', '44517f66-9845-4792-a988-b5ae6e81fd3e']
+    ret = api.get_product_odata(ids, full=True)
+    assert list(ret) == ids
+    for id in ids:
+        assert set(ret[id]) == set(expected_full[id])
+        for k in ret[id]:
+            assert ret[id][k] == expected_full[id][k]
 
 
 @pytest.mark.mock_api
-def test_get_product_info_scihub_down():
+def test_get_product_odata_scihub_down():
     api = SentinelAPI("mock_user", "mock_password")
 
     with requests_mock.mock() as rqst:
         rqst.get(
-            "https://scihub.copernicus.eu/apihub/odata/v1/Products('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')/?$format=json",
+            "https://scihub.copernicus.eu/apihub/odata/v1/Products('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')?$format=json",
             text="Mock SciHub is Down", status_code=503
         )
         with pytest.raises(SentinelAPIError) as excinfo:
             api.get_product_odata('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')
 
         rqst.get(
-            "https://scihub.copernicus.eu/apihub/odata/v1/Products('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')/?$format=json",
+            "https://scihub.copernicus.eu/apihub/odata/v1/Products('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')?$format=json",
             text='{"error":{"code":null,"message":{"lang":"en","value":'
                  '"No Products found with key \'8df46c9e-a20c-43db-a19a-4240c2ed3b8b\' "}}}', status_code=500
         )
@@ -252,7 +372,7 @@ def test_get_product_info_scihub_down():
         assert excinfo.value.msg == "No Products found with key \'8df46c9e-a20c-43db-a19a-4240c2ed3b8b\' "
 
         rqst.get(
-            "https://scihub.copernicus.eu/apihub/odata/v1/Products('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')/?$format=json",
+            "https://scihub.copernicus.eu/apihub/odata/v1/Products('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')?$format=json",
             text="Mock SciHub is Down", status_code=200
         )
         with pytest.raises(SentinelAPIError) as excinfo:
@@ -261,7 +381,7 @@ def test_get_product_info_scihub_down():
 
         # Test with a real server response
         rqst.get(
-            "https://scihub.copernicus.eu/apihub/odata/v1/Products('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')/?$format=json",
+            "https://scihub.copernicus.eu/apihub/odata/v1/Products('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')?$format=json",
             text=textwrap.dedent("""\
             <!doctype html>
             <title>The Sentinels Scientific Data Hub</title>
@@ -380,7 +500,7 @@ def test_get_products_size(products):
 
 @pytest.mark.scihub
 def test_response_to_dict(raw_products):
-    dictionary = _response_to_dict(raw_products)
+    dictionary = _parse_opensearch_response(raw_products)
     # check the type
     assert isinstance(dictionary, dict)
     # check if dictionary has id key
@@ -415,7 +535,6 @@ def test_download(tmpdir):
     # Download normally
     product_info = api.download(uuid, str(tmpdir), checksum=True)
     assert expected_path.samefile(product_info["path"])
-    assert product_info["id"] == uuid
     assert product_info["title"] == filename
     assert product_info["size"] == expected_path.size()
 
@@ -490,15 +609,15 @@ def test_download_all(tmpdir):
         assert pypath.size() == product_info["size"]
 
     # Force one download to fail
-    product_info = list(product_infos.values())[0]
+    id, product_info = list(product_infos.items())[0]
     path = product_info['path']
     py.path.local(path).remove()
     with requests_mock.mock(real_http=True) as rqst:
-        url = "https://scihub.copernicus.eu/apihub/odata/v1/Products('%s')/?$format=json" % product_info["id"]
+        url = "https://scihub.copernicus.eu/apihub/odata/v1/Products('%s')?$format=json" % id
         json = api.session.get(url).json()
         json["d"]["Checksum"]["Value"] = "00000000000000000000000000000000"
         rqst.get(url, json=json)
         product_infos, failed_downloads = api.download_all(products, str(tmpdir), max_attempts=1, checksum=True)
         assert len(failed_downloads) == 1
         assert len(product_infos) + len(failed_downloads) == len(filenames)
-        assert product_info['id'] in failed_downloads
+        assert id in failed_downloads

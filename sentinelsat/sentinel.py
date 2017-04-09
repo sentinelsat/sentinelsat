@@ -80,8 +80,8 @@ class SentinelAPI(object):
         query_parts = []
         if initial_date is not None and end_date is not None:
             query_parts += ['(beginPosition:[%s TO %s])' % (
-                _format_date(initial_date),
-                _format_date(end_date)
+                _format_query_date(initial_date),
+                _format_query_date(end_date)
             )]
 
         if area is not None:
@@ -98,7 +98,7 @@ class SentinelAPI(object):
            https://scihub.copernicus.eu/twiki/do/view/SciHubUserGuide/3FullTextSearch
         """
         response = self._load_query(query)
-        return _response_to_dict(response)
+        return _parse_opensearch_response(response)
 
     def _load_query(self, query, start_row=0):
         # store last query (for testing)
@@ -177,38 +177,24 @@ class SentinelAPI(object):
         df.drop(['footprint', 'gmlfootprint'], axis=1, inplace=True)
         return gpd.GeoDataFrame(df, crs=crs, geometry=geometry)
 
-    def get_product_odata(self, id):
+    def get_product_odata(self, ids, full=False):
         """Access SciHub OData API to get info about a Product. Returns a dict
         containing the id, title, size, md5sum, date, footprint and download url
         of the Product. The date field receives the Start ContentDate of the API.
         """
+        if isinstance(ids, string_types):
+            ids = [ids]
 
-        response = self.session.get(
-            urljoin(self.api_url, "odata/v1/Products('%s')/?$format=json" % id)
-        )
-        _check_scihub_response(response)
+        results = []
+        for id in ids:
+            url = urljoin(self.api_url, "odata/v1/Products('{}')?$format=json".format(id))
+            if full:
+                url += '&$expand=Attributes'
+            response = self.session.get(url)
+            _check_scihub_response(response)
+            results.append(response.json()['d'])
 
-        d = response.json()['d']
-
-        # parse the GML footprint to same format as returned
-        # by .get_coordinates()
-        geometry_xml = ET.fromstring(d["ContentGeometry"])
-        poly_coords_str = geometry_xml \
-            .find('{http://www.opengis.net/gml}outerBoundaryIs') \
-            .find('{http://www.opengis.net/gml}LinearRing') \
-            .findtext('{http://www.opengis.net/gml}coordinates')
-        poly_coords = (coord.split(",")[::-1] for coord in poly_coords_str.split(" "))
-        coord_string = ",".join(" ".join(coord) for coord in poly_coords)
-
-        values = {
-            'id': d['Id'],
-            'title': d['Name'],
-            'size': int(d['ContentLength']),
-            'md5': d['Checksum']['Value'],
-            'date': _convert_timestamp(d['ContentDate']['Start']),
-            'footprint': coord_string,
-            'url': urljoin(self.api_url, "odata/v1/Products('%s')/$value" % id)
-        }
+        values = _parse_odata_response(results)
         return values
 
     def download(self, id, directory_path='.', checksum=False, check_existing=False, **kwargs):
@@ -250,7 +236,7 @@ class SentinelAPI(object):
         product_info = None
         while product_info is None:
             try:
-                product_info = self.get_product_odata(id)
+                product_info = self.get_product_odata(id)[id]
             except SentinelAPIError as e:
                 self.logger.info("Invalid API response:\n{}\nTrying again in 1 minute.".format(str(e)))
                 sleep(60)
@@ -407,57 +393,6 @@ def get_coordinates(geojson_file, feature_number=0):
     return 'POLYGON((%s))' % (','.join(coordinates))
 
 
-def _fillin_cainfo(kwargs_dict):
-    """Fill in the path of the PEM file containing the CA certificate.
-
-    The priority is: 1. user provided path, 2. path to the cacert.pem
-    bundle provided by certifi (if installed), 3. let pycurl use the
-    system path where libcurl's cacert bundle is assumed to be stored,
-    as established at libcurl build time.
-    """
-    try:
-        cainfo = kwargs_dict['pass_through_opts'][pycurl.CAINFO]
-    except KeyError:
-        try:
-            cainfo = certifi.where()
-        except AttributeError:
-            cainfo = None
-
-    if cainfo is not None:
-        pass_through_opts = kwargs_dict.get('pass_through_opts', {})
-        pass_through_opts[pycurl.CAINFO] = cainfo
-        kwargs_dict['pass_through_opts'] = pass_through_opts
-
-    return kwargs_dict
-
-
-def _format_date(in_date):
-    """Format a date, datetime or a YYYYMMDD string input as YYYY-MM-DDThh:mm:ssZ
-    or validate a string input as suitable for the full text search interface and return it.
-    """
-    if isinstance(in_date, (datetime, date)):
-        return in_date.strftime('%Y-%m-%dT%H:%M:%SZ')
-
-    in_date = in_date.strip()
-    if re.match(r'^NOW(?:-\d+(?:MONTH|DAY|HOUR|MINUTE)S?)?$', in_date):
-        return in_date
-    if re.match(r'^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(?:\.\d+)?Z$', in_date):
-        return in_date
-
-    try:
-        return datetime.strptime(in_date, '%Y%m%d').strftime('%Y-%m-%dT%H:%M:%SZ')
-    except ValueError:
-        raise ValueError('Unsupported date value {}'.format(in_date))
-
-
-def _convert_timestamp(in_date):
-    """Convert the timestamp received from OData JSON API, to
-    YYYY-MM-DDThh:mm:ssZ string format.
-    """
-    in_date = int(in_date.replace('/Date(', '').replace(')/', '')) / 1000.
-    return _format_date(datetime.utcfromtimestamp(in_date))
-
-
 def _check_scihub_response(response):
     """Check that the response from server has status code 2xx and that the response is valid JSON."""
     try:
@@ -485,6 +420,63 @@ def _check_scihub_response(response):
         raise api_error
 
 
+def _fillin_cainfo(kwargs_dict):
+    """Fill in the path of the PEM file containing the CA certificate.
+
+    The priority is: 1. user provided path, 2. path to the cacert.pem
+    bundle provided by certifi (if installed), 3. let pycurl use the
+    system path where libcurl's cacert bundle is assumed to be stored,
+    as established at libcurl build time.
+    """
+    try:
+        cainfo = kwargs_dict['pass_through_opts'][pycurl.CAINFO]
+    except KeyError:
+        try:
+            cainfo = certifi.where()
+        except AttributeError:
+            cainfo = None
+
+    if cainfo is not None:
+        pass_through_opts = kwargs_dict.get('pass_through_opts', {})
+        pass_through_opts[pycurl.CAINFO] = cainfo
+        kwargs_dict['pass_through_opts'] = pass_through_opts
+
+    return kwargs_dict
+
+
+def _parse_iso_date(content):
+    if '.' in content:
+        return datetime.strptime(content, '%Y-%m-%dT%H:%M:%S.%fZ')
+    else:
+        return datetime.strptime(content, '%Y-%m-%dT%H:%M:%SZ')
+
+
+def _parse_odata_timestamp(in_date):
+    """Convert the timestamp received from OData JSON API to a datetime object.
+    """
+    in_date = int(in_date.replace('/Date(', '').replace(')/', '')) / 1000.
+    return datetime.utcfromtimestamp(in_date)
+
+
+def _format_query_date(in_date):
+    """Format a date, datetime or a YYYYMMDD string input as YYYY-MM-DDThh:mm:ssZ
+    or validate a string input as suitable for the full text search interface and return it.
+    """
+    if isinstance(in_date, (datetime, date)):
+        return in_date.strftime('%Y-%m-%dT%H:%M:%SZ')
+
+    in_date = in_date.strip()
+    if re.match(r'^NOW(?:-\d+(?:MONTH|DAY|HOUR|MINUTE)S?)?$', in_date):
+        return in_date
+    if re.match(r'^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(?:\.\d+)?Z$', in_date):
+        return in_date
+
+    try:
+        return datetime.strptime(in_date, '%Y%m%d').strftime('%Y-%m-%dT%H:%M:%SZ')
+    except ValueError:
+        raise ValueError('Unsupported date value {}'.format(in_date))
+
+
 def _geojson_poly_from_wkt(wkt):
     """Return a geojson Polygon object from a WKT string"""
     coordlist = re.search(r'\(\s*([^()]+)\s*\)', wkt).group(1)
@@ -493,20 +485,25 @@ def _geojson_poly_from_wkt(wkt):
     return poly
 
 
-def _response_to_dict(products):
+def _parse_gml_footprint(geometry_str):
+    geometry_xml = ET.fromstring(geometry_str)
+    poly_coords_str = geometry_xml \
+        .find('{http://www.opengis.net/gml}outerBoundaryIs') \
+        .find('{http://www.opengis.net/gml}LinearRing') \
+        .findtext('{http://www.opengis.net/gml}coordinates')
+    poly_coords = (coord.split(",")[::-1] for coord in poly_coords_str.split(" "))
+    coord_string = ",".join(" ".join(coord) for coord in poly_coords)
+    return "POLYGON(({}))".format(coord_string)
+
+
+def _parse_opensearch_response(products):
     """Convert a query response to a dictionary.
      
     The resulting dictionary structure is {<product id>: {<property>: <value>}}.
     The property values are converted to their respective Python types unless `parse_values` is set to `False`.
     """
 
-    def convert_date(content):
-        if '.' in content:
-            return datetime.strptime(content, '%Y-%m-%dT%H:%M:%S.%fZ')
-        else:
-            return datetime.strptime(content, '%Y-%m-%dT%H:%M:%SZ')
-
-    converters = {'date': convert_date, 'int': int, 'long': int, 'float': float, 'double': float}
+    converters = {'date': _parse_iso_date, 'int': int, 'long': int, 'float': float, 'double': float}
     # Keep the string type by default
     default_converter = lambda x: x
 
@@ -537,6 +534,31 @@ def _response_to_dict(products):
                             product_dict[p['name']] = f(p['content'])
                         except KeyError:  # Sentinel-3 has one element 'arr' which violates the name:content convention
                             product_dict[p['name']] = f(p['str'])
+    return output
+
+
+def _parse_odata_response(results):
+    converters = [int, float, _parse_iso_date]
+    output = OrderedDict()
+    for product in results:
+        d = {
+            'title': product['Name'],
+            'size': int(product['ContentLength']),
+            product['Checksum']['Algorithm'].lower(): product['Checksum']['Value'],
+            'date': _parse_odata_timestamp(product['ContentDate']['Start']),
+            'footprint': _parse_gml_footprint(product["ContentGeometry"]),
+            'url': product['__metadata']['media_src']
+        }
+        for attr in product['Attributes'].get('results', []):
+            value = attr['Value']
+            for f in converters:
+                try:
+                    value = f(attr['Value'])
+                    break
+                except ValueError:
+                    pass
+            d[attr['Name']] = value
+        output[product['Id']] = d
     return output
 
 
