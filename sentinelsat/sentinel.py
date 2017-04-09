@@ -404,15 +404,13 @@ class SentinelAPIError(Exception):
     """Invalid responses from SciHub.
     """
 
-    def __init__(self, http_status=None, code=None, msg=None, response_body=None):
-        self.http_status = http_status
-        self.code = code
+    def __init__(self, msg=None, response=None):
         self.msg = msg
-        self.response_body = response_body
+        self.response = response
 
     def __str__(self):
-        return '(HTTP status: {0}, code: {1}) {2}'.format(
-            self.http_status, self.code,
+        return 'HTTP status {0} {1}: {2}'.format(
+            self.response.status_code, self.response.reason,
             ('\n' if '\n' in self.msg else '') + self.msg)
 
 
@@ -498,12 +496,10 @@ def _check_scihub_response(response):
         response.json()
     except (requests.HTTPError, ValueError) as e:
         msg = "API response not valid. JSON decoding failed."
-        code = None
         try:
-            msg = response.json()['error']['message']['value']
-            code = response.json()['error']['code']
+            msg = response.headers['cause-message']
         except:
-            if not response.text.rstrip().startswith('{'):
+            if not response.text.strip().startswith('{'):
                 try:
                     h = html2text.HTML2Text()
                     h.ignore_images = True
@@ -511,7 +507,7 @@ def _check_scihub_response(response):
                     msg = h.handle(response.text).strip()
                 except:
                     pass
-        api_error = SentinelAPIError(response.status_code, code, msg, response.content)
+        api_error = SentinelAPIError(msg, response)
         # Suppress "During handling of the above exception..." message
         # See PEP 409
         api_error.__cause__ = None
