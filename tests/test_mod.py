@@ -137,7 +137,6 @@ def test_invalid_query():
     with pytest.raises(SentinelAPIError) as excinfo:
         api.query_plain("xxx:yyy")
     assert excinfo.value.msg is not None
-    print(excinfo)
 
 
 @my_vcr.use_cassette
@@ -294,7 +293,6 @@ def test_get_product_info_scihub_down():
             status_code=502)
         with pytest.raises(SentinelAPIError) as excinfo:
             api.get_product_odata('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')
-        print(excinfo.value)
         assert "The Sentinels Scientific Data Hub will be back soon!" in excinfo.value.msg
 
 
@@ -327,7 +325,6 @@ def test_footprints_s1():
 
     footprints = api.to_geojson(products)
     for footprint in footprints['features']:
-        print(footprint)
         validation = geojson.is_valid(footprint['geometry'])
         assert validation['valid'] == 'yes', validation['message']
 
@@ -341,7 +338,6 @@ def test_footprints_s1():
 def test_footprints_s2(products):
     footprints = SentinelAPI.to_geojson(products)
     for footprint in footprints['features']:
-        print(footprint)
         validation = geojson.is_valid(footprint['geometry'])
         assert validation['valid'] == 'yes', validation['message']
 
