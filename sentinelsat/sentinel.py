@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from __future__ import absolute_import, print_function
+from __future__ import absolute_import, division, print_function
 
 import hashlib
 import logging
@@ -542,8 +542,10 @@ def _parse_iso_date(content):
 def _parse_odata_timestamp(in_date):
     """Convert the timestamp received from OData JSON API to a datetime object.
     """
-    in_date = int(in_date.replace('/Date(', '').replace(')/', '')) / 1000.
-    return datetime.utcfromtimestamp(in_date)
+    timestamp = int(in_date.replace('/Date(', '').replace(')/', ''))
+    seconds = timestamp // 1000
+    ms = timestamp % 1000
+    return datetime.utcfromtimestamp(seconds) + timedelta(milliseconds=ms)
 
 
 def _parse_opensearch_response(products):
