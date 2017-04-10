@@ -12,6 +12,7 @@ from os.path import exists, getsize, join
 from time import sleep
 
 import geojson
+import geomet.wkt
 import homura
 import html2text
 import pycurl
@@ -73,7 +74,7 @@ class SentinelAPI(object):
         Parameters
         ----------
         area : str
-            WKT geometry string containing the area of interest.
+            The area of interest formatted as a Well-Known Text string. 
         initial_date : str or datetime
             Beginning of the time interval for sensing time. Defaults to 'NOW-1DAY'.
             Either a Python datetime or a string in one of the following formats:
@@ -190,7 +191,7 @@ class SentinelAPI(object):
         for i, (product_id, props) in enumerate(products.items()):
             props = props.copy()
             props['id'] = product_id
-            poly = _geojson_poly_from_wkt(props['footprint'])
+            poly = geomet.wkt.loads(props['footprint'])
             del props['footprint']
             del props['gmlfootprint']
             # Fix "'datetime' is not JSON serializable"
@@ -409,13 +410,21 @@ class InvalidChecksumError(Exception):
     pass
 
 
-def get_coordinates(geojson_file, feature_number=0):
-    """Return the coordinates of a polygon of a GeoJSON file.
+def read_geojson(geojson_file):
+    with open(geojson_file) as f:
+        return geojson.load(f)
+
+
+def geojson_to_wkt(geojson_obj, feature_number=0):
+    """Convert a GeoJSON object to Well-Known Text. Intended for use with OpenSearch queries. 
+    
+    In case of FeatureCollection, only one of the features is used (the first by default).
+    3D points are converted to 2D.
 
     Parameters
     ----------
-    geojson_file : str
-        location of GeoJSON file_path
+    geojson_obj : dict
+        a GeoJSON object
     feature_number : int
         Feature to extract polygon from (in case of MultiPolygon
         FeatureCollection), defaults to first Feature
@@ -425,15 +434,21 @@ def get_coordinates(geojson_file, feature_number=0):
     polygon coordinates
         string of comma separated coordinate tuples (lon, lat) to be used by SentinelAPI
     """
-    geojson_obj = geojson.loads(open(geojson_file).read())
     if 'coordinates' in geojson_obj:
         geometry = geojson_obj
     else:
         geometry = geojson_obj['features'][feature_number]['geometry']
-    coordinates = geometry['coordinates'][0]
-    # precision of 7 decimals equals 1mm at the equator
-    coordinates = ['%.7f %.7f' % (coord[0], coord[1]) for coord in coordinates]
-    return 'POLYGON((%s))' % (','.join(coordinates))
+
+    def ensure_2d(geometry):
+        if isinstance(geometry[0], (list, tuple)):
+            return list(map(ensure_2d, geometry))
+        else:
+            return geometry[:2]
+
+    # Discard z-coordinate, if it exists
+    geometry['coordinates'] = ensure_2d(geometry['coordinates'])
+
+    return geomet.wkt.dumps(geometry, decimals=7)
 
 
 def _check_scihub_response(response):
@@ -487,20 +502,6 @@ def _fillin_cainfo(kwargs_dict):
     return kwargs_dict
 
 
-def _parse_iso_date(content):
-    if '.' in content:
-        return datetime.strptime(content, '%Y-%m-%dT%H:%M:%S.%fZ')
-    else:
-        return datetime.strptime(content, '%Y-%m-%dT%H:%M:%SZ')
-
-
-def _parse_odata_timestamp(in_date):
-    """Convert the timestamp received from OData JSON API to a datetime object.
-    """
-    in_date = int(in_date.replace('/Date(', '').replace(')/', '')) / 1000.
-    return datetime.utcfromtimestamp(in_date)
-
-
 def _format_query_date(in_date):
     """Format a date, datetime or a YYYYMMDD string input as YYYY-MM-DDThh:mm:ssZ
     or validate a string input as suitable for the full text search interface and return it.
@@ -520,14 +521,6 @@ def _format_query_date(in_date):
         raise ValueError('Unsupported date value {}'.format(in_date))
 
 
-def _geojson_poly_from_wkt(wkt):
-    """Return a geojson Polygon object from a WKT string"""
-    coordlist = re.search(r'\(\s*([^()]+)\s*\)', wkt).group(1)
-    coord_list_split = (coord.split(' ') for coord in coordlist.split(','))
-    poly = geojson.Polygon([[(float(coord[0]), float(coord[1])) for coord in coord_list_split]])
-    return poly
-
-
 def _parse_gml_footprint(geometry_str):
     geometry_xml = ET.fromstring(geometry_str)
     poly_coords_str = geometry_xml \
@@ -537,6 +530,20 @@ def _parse_gml_footprint(geometry_str):
     poly_coords = (coord.split(",")[::-1] for coord in poly_coords_str.split(" "))
     coord_string = ",".join(" ".join(coord) for coord in poly_coords)
     return "POLYGON(({}))".format(coord_string)
+
+
+def _parse_iso_date(content):
+    if '.' in content:
+        return datetime.strptime(content, '%Y-%m-%dT%H:%M:%S.%fZ')
+    else:
+        return datetime.strptime(content, '%Y-%m-%dT%H:%M:%SZ')
+
+
+def _parse_odata_timestamp(in_date):
+    """Convert the timestamp received from OData JSON API to a datetime object.
+    """
+    in_date = int(in_date.replace('/Date(', '').replace(')/', '')) / 1000.
+    return datetime.utcfromtimestamp(in_date)
 
 
 def _parse_opensearch_response(products):

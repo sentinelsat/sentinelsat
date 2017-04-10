@@ -8,7 +8,7 @@ import py.path
 import pytest
 import requests_mock
 
-from sentinelsat import InvalidChecksumError, SentinelAPI, SentinelAPIError, get_coordinates
+from sentinelsat import InvalidChecksumError, SentinelAPI, SentinelAPIError, read_geojson, geojson_to_wkt
 from sentinelsat.sentinel import _format_query_date, _md5_compare, _parse_odata_timestamp, _parse_opensearch_response
 from .shared import my_vcr
 
@@ -33,7 +33,7 @@ def products():
     """A fixture for tests that need some non-specific set of products as input."""
     api = SentinelAPI(**_api_auth)
     products = api.query(
-        get_coordinates('tests/map.geojson'),
+        geojson_to_wkt(read_geojson('tests/map.geojson')),
         "20151219", "20151228"
     )
     return products
@@ -45,7 +45,7 @@ def raw_products():
     """A fixture for tests that need some non-specific set of products in the form of a raw response as input."""
     api = SentinelAPI(**_api_auth)
     raw_products = api._load_query(api.format_query(
-        get_coordinates('tests/map.geojson'),
+        geojson_to_wkt(read_geojson('tests/map.geojson')),
         "20151219", "20151228")
     )
     return raw_products
@@ -185,10 +185,10 @@ def test_large_query():
 
 @pytest.mark.fast
 def test_get_coordinates():
-    wkt = ('POLYGON((-66.2695312 -8.0592296,-66.2695312 0.7031074,' +
-           '-57.3046875 0.7031074,-57.3046875 -8.0592296,-66.2695312 -8.0592296))')
-    assert get_coordinates('tests/map.geojson') == wkt
-    assert get_coordinates('tests/map_z.geojson') == wkt
+    wkt = ('POLYGON ((-66.2695312 -8.0592296, -66.2695312 0.7031074, ' +
+           '-57.3046875 0.7031074, -57.3046875 -8.0592296, -66.2695312 -8.0592296))')
+    assert geojson_to_wkt(read_geojson('tests/map.geojson')) == wkt
+    assert geojson_to_wkt(read_geojson('tests/map_z.geojson')) == wkt
 
 
 @my_vcr.use_cassette
@@ -426,7 +426,7 @@ def test_get_products_invalid_json():
         )
         with pytest.raises(SentinelAPIError) as excinfo:
             api.query(
-                area=get_coordinates("tests/map.geojson"),
+                area=geojson_to_wkt(read_geojson("tests/map.geojson")),
                 initial_date="20151219",
                 end_date="20151228",
                 platformname="Sentinel-2"
@@ -439,7 +439,7 @@ def test_get_products_invalid_json():
 def test_footprints_s1():
     api = SentinelAPI(**_api_auth)
     products = api.query(
-        get_coordinates('tests/map.geojson'),
+        geojson_to_wkt(read_geojson('tests/map.geojson')),
         datetime(2014, 10, 10), datetime(2014, 12, 31), producttype="GRD"
     )
 
@@ -448,7 +448,7 @@ def test_footprints_s1():
         validation = geojson.is_valid(footprint['geometry'])
         assert validation['valid'] == 'yes', validation['message']
 
-    with open('tests/expected_search_footprints_s1.geojson', 'r') as geojson_file:
+    with open('tests/expected_search_footprints_s1.geojson') as geojson_file:
         expected_footprints = geojson.loads(geojson_file.read())
     # to compare unordered lists (JSON objects) they need to be sorted or changed to sets
     assert set(footprints) == set(expected_footprints)
@@ -461,7 +461,7 @@ def test_footprints_s2(products):
         validation = geojson.is_valid(footprint['geometry'])
         assert validation['valid'] == 'yes', validation['message']
 
-    with open('tests/expected_search_footprints_s2.geojson', 'r') as geojson_file:
+    with open('tests/expected_search_footprints_s2.geojson') as geojson_file:
         expected_footprints = geojson.loads(geojson_file.read())
     # to compare unordered lists (JSON objects) they need to be sorted or changed to sets
     assert set(footprints) == set(expected_footprints)
@@ -472,7 +472,7 @@ def test_footprints_s2(products):
 def test_s2_cloudcover():
     api = SentinelAPI(**_api_auth)
     products = api.query(
-        get_coordinates('tests/map.geojson'),
+        geojson_to_wkt(read_geojson('tests/map.geojson')),
         "20151219", "20151228",
         platformname="Sentinel-2",
         cloudcoverpercentage="[0 TO 10]"
