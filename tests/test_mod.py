@@ -135,7 +135,7 @@ def test_api_query_format():
 def test_invalid_query():
     api = SentinelAPI(**_api_auth)
     with pytest.raises(SentinelAPIError) as excinfo:
-        api.query_plain("xxx:yyy")
+        api.query_raw("xxx:yyy")
     assert excinfo.value.msg is not None
 
 
@@ -492,7 +492,7 @@ def test_get_products_size(products):
     # load a new very small query
     api = SentinelAPI(**_api_auth)
     with my_vcr.use_cassette('test_get_products_size'):
-        products = api.query_plain("S1A_WV_OCN__2SSH_20150603T092625_20150603T093332_006207_008194_521E")
+        products = api.query_raw("S1A_WV_OCN__2SSH_20150603T092625_20150603T093332_006207_008194_521E")
     assert len(products) > 0
     # Rounded to zero
     assert SentinelAPI.get_products_size(products) == 0
@@ -595,8 +595,8 @@ def test_download_all(tmpdir):
                  "S1A_WV_OCN__2SSV_20150526T211029_20150526T211737_006097_007E78_134A",
                  "S1A_WV_OCN__2SSV_20150526T081641_20150526T082418_006090_007E3E_104C"]
 
-    products = api.query_plain(" OR ".join(filenames))
-    assert len(products) == len(filenames)
+    ids = list(api.query_raw(" OR ".join(filenames)))
+    assert len(ids) == len(filenames)
 
     # Download normally
     product_infos, failed_downloads = api.download_all(products, str(tmpdir))

@@ -30,7 +30,7 @@ except ImportError:
 
 
 class SentinelAPI(object):
-    """Class to connect to Sentinel Data Hub, search and download imagery.
+    """Class to connect to Copernicus Open Access Hub, search and download imagery.
 
     Parameters
     ----------
@@ -67,15 +67,47 @@ class SentinelAPI(object):
         self._last_status_code = None
 
     def query(self, area=None, initial_date='NOW-1DAY', end_date='NOW', **keywords):
-        """Query the SciHub API with the coordinates of an area, a date interval
-        and any other search keywords accepted by the SciHub API.
+        """Query the Open Access Hub OpenSearch API with the coordinates of an area, a date interval
+        and any other search keywords accepted by the API.
+
+        Parameters
+        ----------
+        area : str
+            WKT geometry string containing the area of interest.
+        initial_date : str or datetime
+            Beginning of the time interval for sensing time. Defaults to 'NOW-1DAY'.
+            Either a Python datetime or a string in one of the following formats:
+                - yyyy-MM-ddThh:mm:ss.SSSZ (ISO-8601)
+                - yyyy-MM-ddThh:mm:ssZ
+                - YYYMMdd
+                - NOW
+                - NOW-<n>MINUTE(S)
+                - NOW-<n>HOUR(S)
+                - NOW-<n>DAY(S)
+                - NOW-<n>MONTH(S)
+        end_date : str or datetime
+            Beginning of the time interval for sensing time.  Defaults to 'NOW'.
+            See initial_date for allowed format.
+        
+        Other Parameters
+        ----------------
+        Additional keywords can be used to specify other query parameters, e.g. orbitnumber=70.
+        
+        See https://scihub.copernicus.eu/twiki/do/view/SciHubUserGuide/3FullTextSearch
+        for a full list of accepted parameters.
+
+        Returns
+        -------
+        dict[string, dict]
+            Products returned by the query as a dictionary with the product ID as the key and 
+            the product's attributes (a dictionary) as the value.
         """
         query = self.format_query(area, initial_date, end_date, **keywords)
-        return self.query_plain(query)
+        return self.query_raw(query)
 
     @staticmethod
     def format_query(area=None, initial_date='NOW-1DAY', end_date='NOW', **keywords):
-        """Create the SciHub API query string
+        """Create the SciHub OpenSearch API query string
         """
         query_parts = []
         if initial_date is not None and end_date is not None:
@@ -93,9 +125,20 @@ class SentinelAPI(object):
         query = ' AND '.join(query_parts)
         return query
 
-    def query_plain(self, query):
-        """Do a full-text query on the SciHub API using the OpenSearch format specified in
+    def query_raw(self, query):
+        """Do a full-text query on the OpenSearch API using the format specified in
            https://scihub.copernicus.eu/twiki/do/view/SciHubUserGuide/3FullTextSearch
+
+        Parameters
+        ----------
+        query : str
+            The query string
+
+        Returns
+        -------
+        dict[string, dict]
+            Products returned by the query as a dictionary with the product ID as the key and 
+            the product's attributes (a dictionary) as the value.
         """
         response = self._load_query(query)
         return _parse_opensearch_response(response)
@@ -132,6 +175,12 @@ class SentinelAPI(object):
         if total_results > start_row + self.page_size - 1:
             output += self._load_query(query, start_row=(start_row + self.page_size))
         return output
+
+    def _format_url(self, start_row=0):
+        blank = 'search?format=json&rows={rows}&start={start}'.format(
+            rows=self.page_size, start=start_row
+        )
+        return urljoin(self.api_url, blank)
 
     @staticmethod
     def to_geojson(products):
@@ -324,7 +373,7 @@ class SentinelAPI(object):
 
     @staticmethod
     def get_products_size(products):
-        """Return the total file size in GB of all products in the query"""
+        """Return the total file size in GB of all products in the OpenSearch response"""
         size_total = 0
         for title, props in products.items():
             size_product = props["size"]
@@ -336,12 +385,6 @@ class SentinelAPI(object):
                 size_value /= 1024. * 1024.
             size_total += size_value
         return round(size_total, 2)
-
-    def _format_url(self, start_row=0):
-        blank = 'search?format=json&rows={rows}&start={start}'.format(
-            rows=self.page_size, start=start_row
-        )
-        return urljoin(self.api_url, blank)
 
 
 class SentinelAPIError(Exception):
@@ -361,7 +404,7 @@ class SentinelAPIError(Exception):
 
 
 class InvalidChecksumError(Exception):
-    """MD5 checksum of local file does not match the one from the server.
+    """MD5 checksum of a local file does not match the one from the server.
     """
     pass
 
