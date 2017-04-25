@@ -142,4 +142,10 @@ def download(user, password, productid, path, md5, url):
     and the id of the product you want to download.
     """
     api = SentinelAPI(user, password, url)
-    api.download(productid, path, md5)
+    try:
+        api.download(productid, path, md5)
+    except SentinelAPIError as e:
+        if 'Invalid key' in e.msg:
+            logger.error('No product with ID \'%s\' exists on server', productid)
+        else:
+            raise

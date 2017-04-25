@@ -288,6 +288,8 @@ class SentinelAPI(object):
             try:
                 product_info = self.get_product_odata(id)[id]
             except SentinelAPIError as e:
+                if 'Invalid key' in e.msg:
+                    raise
                 self.logger.info("Invalid API response:\n{}\nTrying again in 1 minute.".format(str(e)))
                 sleep(60)
 

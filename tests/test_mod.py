@@ -8,7 +8,7 @@ import py.path
 import pytest
 import requests_mock
 
-from sentinelsat import InvalidChecksumError, SentinelAPI, SentinelAPIError, read_geojson, geojson_to_wkt
+from sentinelsat import InvalidChecksumError, SentinelAPI, SentinelAPIError, geojson_to_wkt, read_geojson
 from sentinelsat.sentinel import _format_query_date, _md5_compare, _parse_odata_timestamp, _parse_opensearch_response
 from .shared import my_vcr
 
@@ -524,6 +524,7 @@ def test_to_geopandas(products):
     assert abs(gdf.unary_union.area - 132.16) < 0.01
 
 
+@my_vcr.use_cassette('test_download_mod')
 @pytest.mark.homura
 @pytest.mark.scihub
 def test_download(tmpdir):
@@ -586,6 +587,17 @@ def test_download(tmpdir):
         api.download(uuid, str(tmpdir), check_existing=True, checksum=True)
 
 
+@my_vcr.use_cassette('test_download_mod')
+@pytest.mark.scihub
+def test_download_invalid_id():
+    api = SentinelAPI(**_api_auth)
+    uuid = "1f62a176-c980-41dc-xxxx-c735d660c910"
+    with pytest.raises(SentinelAPIError) as excinfo:
+        api.download(uuid)
+        assert 'Invalid key' in excinfo.value.msg
+
+
+@my_vcr.use_cassette('test_download_mod')
 @pytest.mark.homura
 @pytest.mark.scihub
 def test_download_all(tmpdir):
