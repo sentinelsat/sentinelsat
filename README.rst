@@ -1,5 +1,5 @@
 sentinelsat
-============
+===========
 
 .. image:: https://badge.fury.io/py/sentinelsat.svg
     :target: http://badge.fury.io/py/sentinelsat
@@ -26,31 +26,34 @@ Sentinelsat makes finding and downloading `Copernicus Sentinel
 <http://www.esa.int/Our_Activities/Observing_the_Earth/Copernicus/Overview4>`_
 satellite images from  the `Sentinels Scientific Datahub <https://scihub.copernicus.eu/>`_ easy.
 
-It offers an easy to use command line interface.
+It provides an easy-to-use command line interface.
 
 .. code-block:: bash
 
   sentinel search --sentinel2 --cloud 30 user password search_polygon.geojson
 
-
 and a powerful Python API.
 
 .. code-block:: python
 
-  from sentinelsat.sentinel import SentinelAPI, get_coordinates
+  from sentinelsat import SentinelAPI, read_geojson, geojson_to_wkt
 
   api = SentinelAPI('user', 'password')
-  products = api.query(get_coordinates('search_polygon.geojson'), \
-                       producttype = 'SLC', \
+  footprint = geojson_to_wkt(read_geojson('search_polygon.geojson'))
+  products = api.query(footprint,
+                       producttype='SLC',
                        orbitdirection='ASCENDING')
   api.download_all(products)
+
+
 
 Documentation is published at http://sentinelsat.readthedocs.io/.
 
 Installation
 ============
 
-Sentinelsat depends on `homura <https://github.com/shichao-an/homura>`_, which depends on `PycURL <http://pycurl.sourceforge.net/>`_, so you might need to install some dependencies on your system.
+Sentinelsat depends on `homura <https://github.com/shichao-an/homura>`_, which depends on
+`PycURL <http://pycurl.sourceforge.net/>`_, so you might need to install some dependencies on your system.
 
 Install ``sentinelsat`` through pip:
 
@@ -58,12 +61,15 @@ Install ``sentinelsat`` through pip:
 
     pip install sentinelsat
 
-The documentation contains examples on how to install the dependencies for `Ubuntu <https://sentinelsat.readthedocs.io/en/latest/install.html#ubuntu>`_, `Fedora <https://sentinelsat.readthedocs.io/en/latest/install.html#fedora>`_ and `Windows <https://sentinelsat.readthedocs.io/en/latest/install.html#windows>`_.
+The documentation contains examples on how to install the dependencies for
+`Ubuntu <https://sentinelsat.readthedocs.io/en/latest/install.html#ubuntu>`_,
+`Fedora <https://sentinelsat.readthedocs.io/en/latest/install.html#fedora>`_ and
+`Windows <https://sentinelsat.readthedocs.io/en/latest/install.html#windows>`_.
 
 Usage
 =====
 
-Sentinelsat provides a Python Library and a Command Line Interface to search and
+Sentinelsat provides a Python API and a command line interface to search and
 download Sentinel products.
 
 Python Library
@@ -72,23 +78,34 @@ Python Library
 .. code-block:: python
 
   # connect to the API
-  from sentinelsat.sentinel import SentinelAPI, get_coordinates
+  from sentinelsat.sentinel import SentinelAPI, read_geojson, geojson_to_wkt
   api = SentinelAPI('user', 'password', 'https://scihub.copernicus.eu/dhus')
 
   # download single scene by known product id
   api.download(<product_id>)
 
   # search by polygon, time, and SciHub query keywords
-  products = api.query(get_coordinates('map.geojson'), \
-                       '20151219', date(2015, 12, 29), \
-                       platformname = 'Sentinel-2', \
+  footprint = geojson_to_wkt(read_geojson('map.geojson'))
+  products = api.query(footprint,
+                       '20151219', date(2015, 12, 29),
+                       platformname = 'Sentinel-2',
                        cloudcoverpercentage = '[0 TO 30]')
 
   # download all results from the search
   api.download_all(products)
 
   # GeoJSON FeatureCollection containing footprints and metadata of the scenes
-  api.get_footprints(products)
+  api.to_geojson(products)
+
+  # GeoPandas GeoDataFrame with the metadata of the scenes and the footprints as geometries
+  api.to_geopandas(products)
+
+  # Get basic information about the product: its title, file size, MD5 sum, date, footprint and
+  # its download url
+  api.get_product_odata(<product_id>)
+
+  # Get the product's full metadata available on the server
+  api.get_product_odata(<product_id>, full=True)
 
 Valid search query keywords can be found at the `ESA SciHub documentation
 <https://scihub.copernicus.eu/userguide/3FullTextSearch>`_.
@@ -118,7 +135,7 @@ orbit, for the year 2015.
 
   sentinel search -s 20150101 -e 20151231 -d \
   -q "producttype=SLC, orbitdirection=Descending" \
-  -u "https://scihub.copernicus.eu/dhus" <user> <password> <poly.geojson>
+  -u "https://scihub.copernicus.eu/dhus" <user> <password> poly.geojson
 
 Options
 ^^^^^^^
@@ -152,29 +169,8 @@ Options
 |    | -\-version   |      | Show version number and exit.                                                              |
 +----+--------------+------+--------------------------------------------------------------------------------------------+
 
-Troubleshooting
-===============
-
-The download from Scihub will fail if the server certificate cannot be verified
-because no default CA bundle is defined, as on Windows, or when the CA bundle is
-outdated. In most cases the easiest solution is to install or update ``certifi``:
-
-.. code-block:: bash
-
-  pip install -U certifi
-
-You can also override the the path setting to the PEM file of the CA bundle
-using the ``pass_through_opts`` keyword argument when calling ``api.download()``
-or ``api.download_all()``:
-
-.. code-block:: python
-
-  from pycurl import CAINFO
-  api.download_all(pass_through_opts={CAINFO: 'path/to/my/cacert.pem'})
-
-
 Tests
-======
+=====
 
 To run the tests on `sentinelsat`:
 
@@ -183,14 +179,18 @@ To run the tests on `sentinelsat`:
     git clone https://github.com/ibamacsr/sentinelsat.git
     cd sentinelsat
     pip install -e .[test]
+    py.test -v -m "not homura"
+
+By default, prerecorded responses to SciHub queries are used to not be affected by Scihub's downtime.
+The only exceptions are downloading tests, which can be disabled with ``-m "not homura"``.
+To allow the tests to run actual queries against SciHub set the environment variables
+
+.. code-block:: bash
     export SENTINEL_USER=<your scihub username>
     export SENTINEL_PASSWORD=<your scihub password>
-    py.test -v
 
-By default, prerecorded responses to SciHub queries are used to not be affected by Scihub's downtime. The only
-exceptions are downloading tests, which can be disabled with ``-m "not homura"``.
-To allow the tests to run actual queries on SciHub add ``--vcr disable`` to ``py.test`` arguments. If you wish to
-update the recordings use ``--vcr record_new`` or ``--vcr reset_all``.
+and add ``--vcr disable`` to ``py.test`` arguments.
+To update the recordings use ``--vcr record_new`` or ``--vcr reset_all``.
 
 Documentation
 =============
@@ -214,7 +214,7 @@ Changelog
 See `CHANGELOG <CHANGELOG.rst>`_.
 
 Contributors
-=============
+============
 
 * Wille Marcel
 * Kersten Clauss

@@ -36,7 +36,7 @@ Christoph Gohlke
 
     pip install pycurl.whl
 
-or with`Conda <http://conda.pydata.org/docs/>`_
+or with `Conda <http://conda.pydata.org/docs/>`_.
 
 .. code-block:: console
 
@@ -58,20 +58,36 @@ Tests
   pip install -e .[test]
   export SENTINEL_USER=<your scihub username>
   export SENTINEL_PASSWORD=<your scihub password>
+  py.test -v -m "not homura"
+
+
+Running all tests, including tests for downloading functionality, requires SciHub
+credentials to be provided via environment variables.
+
+.. code-block:: bash
+
+  export SENTINEL_USER=<your scihub username>
+  export SENTINEL_PASSWORD=<your scihub password>
   py.test -v
 
-Python Versions and Dependencies
---------------------------------
 
-Sentinelsat works with all Python versions >2.7. The convenience functions ``to_dataframe()`` and
-``to_geodataframe()`` require ``Pandas`` and/or ``GeoPandas`` to be present. Due to a ``matplotlib``
-``GeoPandas`` can not be installed in Python 3.3 - every other aspect of sentinelsat will work in Python 3.3.
+Supported Python versions
+-------------------------
+
+Sentinelsat has been tested with Python versions 2.7 and 3.4+. Earlier Python 3 versions are
+expected to work as well as long as the dependencies are fulfilled.
+
+Optional dependencies
+---------------------
+
+The convenience functions ``to_dataframe()`` and ``to_geodataframe()`` require ``pandas`` and/or
+``geopandas`` to be present.
 
 
 Troubleshooting
 ---------------
 
-The download from Scihub will fail if the server certificate cannot be verified
+The download from SciHub will fail if the server certificate cannot be verified
 because no default CA bundle is defined, as on Windows, or when the CA bundle is
 outdated. In most cases the easiest solution is to install or update ``certifi``:
 
