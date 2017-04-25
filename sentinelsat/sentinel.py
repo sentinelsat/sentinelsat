@@ -185,7 +185,8 @@ class SentinelAPI(object):
 
     @staticmethod
     def to_geojson(products):
-        """Return the products from a query response as a GeoJSON with the values in their appropriate Python types.
+        """Return the products from a query response as a GeoJSON with the values in their
+        appropriate Python types.
         """
         feature_list = []
         for i, (product_id, props) in enumerate(products.items()):
@@ -339,8 +340,8 @@ class SentinelAPI(object):
                 raise InvalidChecksumError('File corrupt: checksums do not match')
         return product_info
 
-    def download_all(self, products, directory_path='.', max_attempts=10, checksum=False, check_existing=False,
-                     **kwargs):
+    def download_all(self, products, directory_path='.', max_attempts=10, checksum=False,
+                     check_existing=False, **kwargs):
         """Download all products returned in query().
 
         File names on the server are used for the downloaded files, e.g.
