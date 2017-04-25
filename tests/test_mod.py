@@ -198,6 +198,7 @@ def test_get_product_odata_short():
 
     expected_short = {
         '8df46c9e-a20c-43db-a19a-4240c2ed3b8b': {
+            'id': '8df46c9e-a20c-43db-a19a-4240c2ed3b8b',
             'size': 143549851,
             'md5': 'D5E4DF5C38C6E97BF7E7BD540AB21C05',
             'url': "https://scihub.copernicus.eu/apihub/odata/v1/Products('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')/$value",
@@ -207,6 +208,7 @@ def test_get_product_odata_short():
             'title': 'S1A_EW_GRDM_1SDV_20151121T100356_20151121T100429_008701_00C622_A0EC'
         },
         '44517f66-9845-4792-a988-b5ae6e81fd3e': {
+            'id': '44517f66-9845-4792-a988-b5ae6e81fd3e',
             'date': datetime(2015, 12, 27, 14, 22, 29),
             'footprint': 'POLYGON((-58.80274769505742 -4.565257232533263,-58.80535376268811 -5.513960396525286,'
                          '-57.90315169909761 -5.515947033626909,-57.903151791669515 -5.516014389089381,-57.85874693129081 -5.516044812342758,'
@@ -224,18 +226,11 @@ def test_get_product_odata_short():
             'url': "https://scihub.copernicus.eu/apihub/odata/v1/Products('44517f66-9845-4792-a988-b5ae6e81fd3e')/$value"
         }
     }
-    ids = ['8df46c9e-a20c-43db-a19a-4240c2ed3b8b',
-           '44517f66-9845-4792-a988-b5ae6e81fd3e']
-    ret = api.get_product_odata(ids)
-    assert list(ret) == ids
-    for id in ids:
-        assert set(ret[id]) == set(expected_short[id])
-        for k in ret[id]:
-            assert ret[id][k] == expected_short[id][k]
-
-    # Test single id as input
-    id = list(expected_short)[0]
-    assert api.get_product_odata(id) == {id: expected_short[id]}
+    for id, expected in expected_short.items():
+        ret = api.get_product_odata(id)
+        assert set(ret) == set(expected)
+        for k in ret:
+            assert ret[k] == expected[k]
 
 
 @my_vcr.use_cassette
@@ -245,6 +240,7 @@ def test_get_product_odata_full():
 
     expected_full = {
         '8df46c9e-a20c-43db-a19a-4240c2ed3b8b': {
+            'id': '8df46c9e-a20c-43db-a19a-4240c2ed3b8b',
             'title': 'S1A_EW_GRDM_1SDV_20151121T100356_20151121T100429_008701_00C622_A0EC',
             'size': 143549851,
             'md5': 'D5E4DF5C38C6E97BF7E7BD540AB21C05',
@@ -299,6 +295,7 @@ def test_get_product_odata_full():
             'Timeliness Category': 'Fast-24h'
         },
         '44517f66-9845-4792-a988-b5ae6e81fd3e': {
+            'id': '44517f66-9845-4792-a988-b5ae6e81fd3e',
             'title': 'S2A_OPER_PRD_MSIL1C_PDMC_20151228T112523_R110_V20151227T142229_20151227T142229',
             'size': 5854429622,
             'md5': '48C5648C2644CE07207B3C943DEDEB44',
@@ -341,13 +338,11 @@ def test_get_product_odata_full():
             'Size': '5.50 GB'
         }
     }
-    ids = ['8df46c9e-a20c-43db-a19a-4240c2ed3b8b', '44517f66-9845-4792-a988-b5ae6e81fd3e']
-    ret = api.get_product_odata(ids, full=True)
-    assert list(ret) == ids
-    for id in ids:
-        assert set(ret[id]) == set(expected_full[id])
-        for k in ret[id]:
-            assert ret[id][k] == expected_full[id][k]
+    for id, expected in expected_full.items():
+        ret = api.get_product_odata(id, full=True)
+        assert set(ret) == set(expected)
+        for k in ret:
+            assert ret[k] == expected[k]
 
 
 @pytest.mark.mock_api

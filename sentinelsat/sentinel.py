@@ -227,24 +227,37 @@ class SentinelAPI(object):
         df.drop(['footprint', 'gmlfootprint'], axis=1, inplace=True)
         return gpd.GeoDataFrame(df, crs=crs, geometry=geometry)
 
-    def get_product_odata(self, ids, full=False):
-        """Access SciHub OData API to get info about a Product. Returns a dict
-        containing the id, title, size, md5sum, date, footprint and download url
-        of the Product. The date field receives the Start ContentDate of the API.
+    def get_product_odata(self, id, full=False):
+        """Access SciHub OData API to get info about a product.
+        
+        Returns a dict containing the id, title, size, md5sum, date, footprint and download url
+        of the product. The date field corresponds to the Start ContentDate value.
+        
+        If ``full`` is set to True, then the full, detailed metadata of the product is returned
+        in addition to the above. For a mapping between the OpenSearch (Solr) and OData
+        attribute names see the following definition files:
+        https://github.com/SentinelDataHub/DataHubSystem/blob/master/addon/sentinel-1/src/main/resources/META-INF/sentinel-1.owl
+        https://github.com/SentinelDataHub/DataHubSystem/blob/master/addon/sentinel-2/src/main/resources/META-INF/sentinel-2.owl
+        https://github.com/SentinelDataHub/DataHubSystem/blob/master/addon/sentinel-3/src/main/resources/META-INF/sentinel-3.owl
+
+        Parameters
+        ----------
+        id : string
+            The ID of the product to query
+        full : bool
+            Whether to get the full metadata for the Product
+
+        Returns
+        -------
+        dict[str, Any]
+            A dictionary with an item for each metadata attribute
         """
-        if isinstance(ids, string_types):
-            ids = [ids]
-
-        results = []
-        for id in ids:
-            url = urljoin(self.api_url, "odata/v1/Products('{}')?$format=json".format(id))
-            if full:
-                url += '&$expand=Attributes'
-            response = self.session.get(url)
-            _check_scihub_response(response)
-            results.append(response.json()['d'])
-
-        values = _parse_odata_response(results)
+        url = urljoin(self.api_url, "odata/v1/Products('{}')?$format=json".format(id))
+        if full:
+            url += '&$expand=Attributes'
+        response = self.session.get(url)
+        _check_scihub_response(response)
+        values = _parse_odata_response(response.json()['d'])
         return values
 
     def download(self, id, directory_path='.', checksum=False, check_existing=False, **kwargs):
@@ -591,28 +604,27 @@ def _parse_opensearch_response(products):
     return output
 
 
-def _parse_odata_response(results):
+def _parse_odata_response(product):
+    output = {
+        'id': product['Id'],
+        'title': product['Name'],
+        'size': int(product['ContentLength']),
+        product['Checksum']['Algorithm'].lower(): product['Checksum']['Value'],
+        'date': _parse_odata_timestamp(product['ContentDate']['Start']),
+        'footprint': _parse_gml_footprint(product["ContentGeometry"]),
+        'url': product['__metadata']['media_src']
+    }
+    # Parse the extended metadata, if provided
     converters = [int, float, _parse_iso_date]
-    output = OrderedDict()
-    for product in results:
-        d = {
-            'title': product['Name'],
-            'size': int(product['ContentLength']),
-            product['Checksum']['Algorithm'].lower(): product['Checksum']['Value'],
-            'date': _parse_odata_timestamp(product['ContentDate']['Start']),
-            'footprint': _parse_gml_footprint(product["ContentGeometry"]),
-            'url': product['__metadata']['media_src']
-        }
-        for attr in product['Attributes'].get('results', []):
-            value = attr['Value']
-            for f in converters:
-                try:
-                    value = f(attr['Value'])
-                    break
-                except ValueError:
-                    pass
-            d[attr['Name']] = value
-        output[product['Id']] = d
+    for attr in product['Attributes'].get('results', []):
+        value = attr['Value']
+        for f in converters:
+            try:
+                value = f(attr['Value'])
+                break
+            except ValueError:
+                pass
+        output[attr['Name']] = value
     return output
 
 
