@@ -2,11 +2,12 @@
 Sentinelsat
 ===========
 
-Sentinelsat makes finding and downloading `Copernicus Sentinel
+Sentinelsat makes searching, downloading and retrieving the metadata of `Sentinel
 <http://www.esa.int/Our_Activities/Observing_the_Earth/Copernicus/Overview4>`_
-satellite images from  the `Sentinels Scientific Datahub <https://scihub.copernicus.eu/>`_ easy.
+satellite images from the
+`Copernicus Open Access Hub <https://scihub.copernicus.eu/>`_ easy.
 
-It provides an easy-to-use command line interface.
+It offers an easy-to-use command line interface
 
 .. code-block:: bash
 

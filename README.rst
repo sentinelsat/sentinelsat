@@ -22,11 +22,12 @@ sentinelsat
    :target: https://zenodo.org/badge/latestdoi/36093931
 
 
-Sentinelsat makes finding and downloading `Copernicus Sentinel
+Sentinelsat makes searching, downloading and retrieving the metadata of `Sentinel
 <http://www.esa.int/Our_Activities/Observing_the_Earth/Copernicus/Overview4>`_
-satellite images from  the `Sentinels Scientific Datahub <https://scihub.copernicus.eu/>`_ easy.
+satellite images from the
+`Copernicus Open Access Hub <https://scihub.copernicus.eu/>`_ easy.
 
-It provides an easy-to-use command line interface.
+It offers an easy-to-use command line interface
 
 .. code-block:: bash
 
@@ -69,8 +70,8 @@ The documentation contains examples on how to install the dependencies for
 Usage
 =====
 
-Sentinelsat provides a Python API and a command line interface to search and
-download Sentinel products.
+Sentinelsat provides a Python API and a command line interface to search,
+download and retrieve the metadata for Sentinel products.
 
 Python Library
 --------------
@@ -114,7 +115,7 @@ Command Line Interface
 ----------------------
 
 A basic search query consists of a search polygon as well as the username and
-password to access the Scihub.
+password to access the SciHub.
 
 .. code-block:: bash
 
