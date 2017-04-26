@@ -81,8 +81,8 @@ all data types, as long as you pass the ``id`` to the download function.
 Getting Product Metadata
 ------------------------
 
-Sentinelsat provides two methods for retrieving metadata for products from the server, one for each
-API provided by SciHub:
+Sentinelsat provides two methods for retrieving product metadata from the server, one for each
+API offered by SciHub:
 
 - ``query()`` for `OpenSearch (Solr) <https://scihub.copernicus.eu/userguide/5APIsAndBatchScripting#Open_Search>`_,
   which supports filtering products by their attributes and returns metadata for all matched
