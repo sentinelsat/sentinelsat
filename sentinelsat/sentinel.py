@@ -300,7 +300,7 @@ class SentinelAPI(object):
         product_info = None
         while product_info is None:
             try:
-                product_info = self.get_product_odata(id)[id]
+                product_info = self.get_product_odata(id)
             except SentinelAPIError as e:
                 if 'Invalid key' in e.msg:
                     raise
@@ -342,7 +342,10 @@ class SentinelAPI(object):
 
     def download_all(self, products, directory_path='.', max_attempts=10, checksum=False,
                      check_existing=False, **kwargs):
-        """Download all products returned in query().
+        """Download a list of products.
+        
+        Takes a list of product IDs as input. This means that the return value of query() can be 
+        passed directly to this method.
 
         File names on the server are used for the downloaded files, e.g.
         "S1A_EW_GRDH_1SDH_20141003T003840_20141003T003920_002658_002F54_4DD1.zip".
@@ -353,7 +356,7 @@ class SentinelAPI(object):
         Parameters
         ----------
         products : list
-            List of products returned with self.query()
+            List of product IDs
         directory_path : string
             Directory where the downloaded files will be downloaded
         max_attempts : int, optional
@@ -370,7 +373,8 @@ class SentinelAPI(object):
         set[string]
             The list of products that failed to download.
         """
-        self.logger.info("Will download %d products" % len(products))
+        product_ids = list(products)
+        self.logger.info("Will download %d products" % len(product_ids))
         return_values = OrderedDict()
         for i, product_id in enumerate(products):
             for attempt_num in range(max_attempts):
@@ -384,7 +388,7 @@ class SentinelAPI(object):
                     self.logger.warning("Invalid checksum. The downloaded file for '{}' is corrupted.".format(product_id))
                 except:
                     self.logger.exception("There was an error downloading %s" % product_id)
-            self.logger.info("{}/{} products downloaded".format(i + 1, len(products)))
+            self.logger.info("{}/{} products downloaded".format(i + 1, len(product_ids)))
         failed = set(products) - set(return_values)
         return return_values, failed
 

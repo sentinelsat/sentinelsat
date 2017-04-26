@@ -23,12 +23,12 @@ _small_query = dict(
 
 _large_query = dict(
     area='POLYGON((0 0,0 10,10 10,10 0,0 0))',
-    initial_date=datetime(2015, 1, 1),
+    initial_date=datetime(2015, 12, 1),
     end_date=datetime(2015, 12, 31))
 
 
 @pytest.fixture(scope='session')
-@my_vcr.use_cassette('products_fixture')
+@my_vcr.use_cassette('products_fixture', decode_compressed_response=False)
 def products():
     """A fixture for tests that need some non-specific set of products as input."""
     api = SentinelAPI(**_api_auth)
@@ -177,7 +177,7 @@ def test_large_query():
     api = SentinelAPI(**_api_kwargs)
     products = api.query(**_large_query)
     assert api._last_query == (
-        '(beginPosition:[2015-01-01T00:00:00Z TO 2015-12-31T00:00:00Z]) '
+        '(beginPosition:[2015-12-01T00:00:00Z TO 2015-12-31T00:00:00Z]) '
         'AND (footprint:"Intersects(POLYGON((0 0,0 10,10 10,10 0,0 0)))")')
     assert api._last_status_code == 200
     assert len(products) > api.page_size
@@ -519,7 +519,7 @@ def test_to_geopandas(products):
     assert abs(gdf.unary_union.area - 132.16) < 0.01
 
 
-@my_vcr.use_cassette('test_download_mod')
+@my_vcr.use_cassette('test_download_mod', decode_compressed_response=False)
 @pytest.mark.homura
 @pytest.mark.scihub
 def test_download(tmpdir):
@@ -592,7 +592,7 @@ def test_download_invalid_id():
         assert 'Invalid key' in excinfo.value.msg
 
 
-@my_vcr.use_cassette('test_download_mod')
+@my_vcr.use_cassette('test_download_mod', decode_compressed_response=False)
 @pytest.mark.homura
 @pytest.mark.scihub
 def test_download_all(tmpdir):
@@ -606,7 +606,7 @@ def test_download_all(tmpdir):
     assert len(ids) == len(filenames)
 
     # Download normally
-    product_infos, failed_downloads = api.download_all(products, str(tmpdir))
+    product_infos, failed_downloads = api.download_all(ids, str(tmpdir))
     assert len(failed_downloads) == 0
     assert len(product_infos) == len(filenames)
     for product_id, product_info in product_infos.items():
@@ -624,7 +624,8 @@ def test_download_all(tmpdir):
         json = api.session.get(url).json()
         json["d"]["Checksum"]["Value"] = "00000000000000000000000000000000"
         rqst.get(url, json=json)
-        product_infos, failed_downloads = api.download_all(products, str(tmpdir), max_attempts=1, checksum=True)
+        product_infos, failed_downloads = api.download_all(
+            ids, str(tmpdir), max_attempts=1, checksum=True)
         assert len(failed_downloads) == 1
         assert len(product_infos) + len(failed_downloads) == len(filenames)
         assert id in failed_downloads

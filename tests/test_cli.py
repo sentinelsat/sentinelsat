@@ -159,7 +159,7 @@ def test_footprints_cli(tmpdir):
     )
 
 
-@my_vcr.use_cassette('test_download_cli')
+@my_vcr.use_cassette('test_download_cli', decode_compressed_response=False)
 @pytest.mark.scihub
 @pytest.mark.homura
 def test_download_many(tmpdir):
@@ -229,7 +229,7 @@ def test_download_many(tmpdir):
     tmpdir.remove()
 
 
-@my_vcr.use_cassette('test_download_cli')
+@my_vcr.use_cassette('test_download_cli', decode_compressed_response=False)
 @pytest.mark.scihub
 @pytest.mark.homura
 def test_download_single(tmpdir):
