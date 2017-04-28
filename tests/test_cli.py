@@ -93,7 +93,8 @@ def test_cloud_flag_url():
          '--url', 'https://scihub.copernicus.eu/apihub/',
          '-s', '20151219',
          '-e', '20151228',
-         '-c', "10"],
+         '-c', '10',
+         '--sentinel', '2'],
         catch_exceptions=False
     )
 
@@ -113,7 +114,7 @@ def test_sentinel1_flag():
          '--url', 'https://scihub.copernicus.eu/apihub/',
          '-s', '20151219',
          '-e', '20151228',
-         '--sentinel1'],
+         '--sentinel', '1'],
         catch_exceptions=False
     )
 
@@ -133,12 +134,93 @@ def test_sentinel2_flag():
          '--url', 'https://scihub.copernicus.eu/apihub/',
          '-s', '20151219',
          '-e', '20151228',
-         '--sentinel2'],
+         '--sentinel', '2'],
         catch_exceptions=False
     )
 
     expected = "Product 91c2503c-3c58-4a8c-a70b-207b128e6833 - Date: 2015-12-27T14:22:29Z, Instrument: MSI, Mode: , Satellite: Sentinel-2, Size: 5.73 GB"
     assert result.output.split("\n")[2] == expected
+
+@my_vcr.use_cassette
+@pytest.mark.scihub
+def test_sentinel3_flag():
+    # preliminary Sentinel-3 test using S3 Pre-Ops Hub until data is included in OpenAccessHub
+    runner = CliRunner()
+    result = runner.invoke(
+        cli,
+        ['search'] +
+        ['s3guest', 's3guest']+
+        ['tests/map.geojson',
+         '--url', 'https://scihub.copernicus.eu/s3/',
+         '-s', '20161201',
+         '-e', '20161202',
+         '--sentinel', '3'],
+        catch_exceptions=False
+    )
+
+    expected = "Product c4a36e6b-4a18-46b4-b2ff-abe7a231a46f - Date: 2016-12-01T13:21:33.755Z, Instrument: OLCI, Mode: , Satellite: Sentinel-3, Size: 721.66 MB"
+    assert result.output.split("\n")[3] == expected
+
+@my_vcr.use_cassette
+@pytest.mark.scihub
+def test_product_flag():
+    runner = CliRunner()
+    result = runner.invoke(
+        cli,
+        ['search'] +
+        _api_auth +
+        ['tests/map.geojson',
+         '--url', 'https://scihub.copernicus.eu/apihub/',
+         '-s', '20161201',
+         '-e', '20161202',
+         '--producttype', 'SLC'],
+        catch_exceptions=False
+    )
+
+    expected = "Product 2223103a-3754-473d-9a29-24ef8efa2880 - Date: 2016-12-01T09:30:22.149Z, Instrument: SAR-C SAR, Mode: VV VH, Satellite: Sentinel-1, Size: 7.98 GB"
+    assert result.output.split("\n")[3] == expected
+
+@my_vcr.use_cassette
+@pytest.mark.scihub
+def test_instrument_flag():
+    # preliminary Sentinel-3 test using S3 Pre-Ops Hub until data is included in OpenAccessHub
+    runner = CliRunner()
+    result = runner.invoke(
+        cli,
+        ['search'] +
+        ['s3guest', 's3guest']+
+        ['tests/map.geojson',
+         '--url', 'https://scihub.copernicus.eu/s3/',
+         '-s', '20161201',
+         '-e', '20161202',
+         '--instrument', 'SRAL'],
+        catch_exceptions=False
+    )
+
+    expected = "Product 50d27cb5-70da-41c9-b0f3-023cfb25d781 - Date: 2016-12-01T13:13:17.65Z, Instrument: SRAL, Mode: , Satellite: Sentinel-3, Size: 76.62 MB"
+    assert result.output.split("\n")[0] == expected
+
+@my_vcr.use_cassette
+@pytest.mark.scihub
+def test_option_hierarchy():
+    # expected hierarchy is producttype > instrument > plattform from most to least specific
+    runner = CliRunner()
+    result = runner.invoke(
+        cli,
+        ['search'] +
+        _api_auth +
+        ['tests/map.geojson',
+         '--url', 'https://scihub.copernicus.eu/apihub/',
+         '-s', '20161201',
+         '-e', '20161202',
+         '--sentinel', '1',
+         '--instrument', 'SAR-C SAR',
+         '--producttype', 'S2MSI1C'],
+        catch_exceptions=False
+    )
+
+    expected = "Product 0e66b563-78d9-4480-9c3d-b64a60cf1a9f - Date: 2016-12-01T14:10:42Z, Instrument: MSI, Mode: , Satellite: Sentinel-2, Size: 526.15 MB"
+    assert result.output.split("\n")[1] == expected
 
 
 @my_vcr.use_cassette

@@ -72,12 +72,18 @@ def cli():
     '--sentinel', type=click.Choice(['1', '2', '3']),
     help='Limit search to a Sentinel satellite (constellation)')
 @click.option(
+    '--instrument', type=click.Choice(['MSI', 'SAR-C SAR', 'SLSTR', 'OLCI', 'SRAL']),
+    help='Limit search to a specific instrument on a Sentinel satellite.')
+@click.option(
+    '--producttype', type=click.Choice(['SLC', 'GRD', 'OCN','RAW', 'S2MSI1C']),
+    help='Limit search to a Sentinel product type.')
+@click.option(
     '-c', '--cloud', type=int,
     help='Maximum cloud cover in percent. (requires --sentinel to be 2 or 3)')
 @click.version_option(version=sentinelsat_version, prog_name="sentinelsat")
 def search(
-        user, password, geojson, start, end, download, md5, sentinel,
-        sentinel1, sentinel2, cloud, footprints, path, query, url):
+        user, password, geojson, start, end, download, md5, sentinel, producttype,
+        instrument, sentinel1, sentinel2, cloud, footprints, path, query, url):
     """Search for Sentinel products and, optionally, download all the results
     and/or create a geojson file with the search result footprints.
     Beyond your SciHub user and password, you must pass a geojson file
@@ -88,8 +94,14 @@ def search(
     api = SentinelAPI(user, password, url)
 
     search_kwargs = {}
-    if sentinel:
+    if sentinel and not (producttype or instrument):
         search_kwargs.update({"platformname": "Sentinel-" + sentinel})
+
+    if instrument and not producttype:
+        search_kwargs.update({"instrumentshortname": instrument})
+
+    if producttype:
+        search_kwargs.update({"producttype": producttype})
 
     if cloud:
         if sentinel not in ['2', '3']:

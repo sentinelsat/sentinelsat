@@ -90,7 +90,7 @@ interactions:
     headers:
       Content-Type: [application/json]
       DataServiceVersion: ['2.0']
-      Date: ['Wed, 26 Apr 2017 20:24:51 GMT']
+      Date: ['Fri, 28 Apr 2017 14:18:57 GMT']
       Pragma: [no-cache]
       Server: [Apache-Coyote/1.1]
       Transfer-Encoding: [chunked]
@@ -180,7 +180,7 @@ interactions:
     headers:
       Content-Type: [application/json]
       DataServiceVersion: ['2.0']
-      Date: ['Wed, 26 Apr 2017 20:24:51 GMT']
+      Date: ['Fri, 28 Apr 2017 14:18:57 GMT']
       Pragma: [no-cache]
       Server: [Apache-Coyote/1.1]
       Transfer-Encoding: [chunked]
