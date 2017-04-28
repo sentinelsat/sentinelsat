@@ -31,7 +31,7 @@ It offers an easy-to-use command line interface
 
 .. code-block:: bash
 
-  sentinel search --sentinel2 --cloud 30 user password search_polygon.geojson
+  sentinel search --sentinel 2 --cloud 30 user password search_polygon.geojson
 
 and a powerful Python API.
 
@@ -135,40 +135,42 @@ orbit, for the year 2015.
 .. code-block:: bash
 
   sentinel search -s 20150101 -e 20151231 -d \
-  -q "producttype=SLC, orbitdirection=Descending" \
+  --producttype SLC -q "orbitdirection=Descending" \
   -u "https://scihub.copernicus.eu/dhus" <user> <password> poly.geojson
 
 Options
 ^^^^^^^
 
-+----+--------------+------+--------------------------------------------------------------------------------------------+
-| -s | -\-start     | TEXT | Start date of the query in the format YYYYMMDD.                                            |
-+----+--------------+------+--------------------------------------------------------------------------------------------+
-| -e | -\-end       | TEXT | End date of the query in the format YYYYMMDD.                                              |
-+----+--------------+------+--------------------------------------------------------------------------------------------+
-| -d | -\-download  |      | Download all results of the query.                                                         |
-+----+--------------+------+--------------------------------------------------------------------------------------------+
-| -f | -\-footprints|      | Create geojson file search_footprints.geojson with footprints of the query result.         |
-+----+--------------+------+--------------------------------------------------------------------------------------------+
-| -p | -\-path      | PATH | Set the path where the files will be saved.                                                |
-+----+--------------+------+--------------------------------------------------------------------------------------------+
-| -q | -\-query     | TEXT | Extra search keywords you want to use in the query. Separate keywords with comma.          |
-|    |              |      | Example: 'producttype=GRD,polarisationmode=HH'.                                            |
-+----+--------------+------+--------------------------------------------------------------------------------------------+
-| -u | -\-url       | TEXT | Define another API URL. Default URL is 'https://scihub.copernicus.eu/apihub/'.             |
-+----+--------------+------+--------------------------------------------------------------------------------------------+
-|    | -\-md5       |      | Verify the MD5 checksum and write corrupt product ids and filenames to corrupt_scenes.txt. |
-+----+--------------+------+--------------------------------------------------------------------------------------------+
-|    | -\-sentinel1 |      | Limit search to Sentinel-1 products.                                                       |
-+----+--------------+------+--------------------------------------------------------------------------------------------+
-|    | -\-sentinel2 |      | Limit search to Sentinel-2 products.                                                       |
-+----+--------------+------+--------------------------------------------------------------------------------------------+
-| -c | -\-cloud     | INT  | Maximum cloud cover in percent. (Automatically sets --sentinel2)                           |
-+----+--------------+------+--------------------------------------------------------------------------------------------+
-|    | -\-help      |      | Show help message and exit.                                                                |
-+----+--------------+------+--------------------------------------------------------------------------------------------+
-|    | -\-version   |      | Show version number and exit.                                                              |
-+----+--------------+------+--------------------------------------------------------------------------------------------+
++----+---------------+------+--------------------------------------------------------------------------------------------+
+| -s | -\-start      | TEXT | Start date of the query in the format YYYYMMDD.                                            |
++----+---------------+------+--------------------------------------------------------------------------------------------+
+| -e | -\-end        | TEXT | End date of the query in the format YYYYMMDD.                                              |
++----+---------------+------+--------------------------------------------------------------------------------------------+
+| -d | -\-download   |      | Download all results of the query.                                                         |
++----+---------------+------+--------------------------------------------------------------------------------------------+
+| -f | -\-footprints |      | Create geojson file search_footprints.geojson with footprints of the query result.         |
++----+---------------+------+--------------------------------------------------------------------------------------------+
+| -p | -\-path       | PATH | Set the path where the files will be saved.                                                |
++----+---------------+------+--------------------------------------------------------------------------------------------+
+| -q | -\-query      | TEXT | Extra search keywords you want to use in the query. Separate keywords with comma.          |
+|    |               |      | Example: 'producttype=GRD,polarisationmode=HH'.                                            |
++----+---------------+------+--------------------------------------------------------------------------------------------+
+| -u | -\-url        | TEXT | Define another API URL. Default URL is 'https://scihub.copernicus.eu/apihub/'.             |
++----+---------------+------+--------------------------------------------------------------------------------------------+
+|    | -\-md5        |      | Verify the MD5 checksum and write corrupt product ids and filenames to corrupt_scenes.txt. |
++----+---------------+------+--------------------------------------------------------------------------------------------+
+|    | -\-sentinel   |      | Limit search to a Sentinel satellite (constellation).                                      |
++----+---------------+------+--------------------------------------------------------------------------------------------+
+|    | -\-instrument |      | Limit search to a specific instrument on a Sentinel satellite.                             |
++----+---------------+------+--------------------------------------------------------------------------------------------+
+|    | -\-producttype|      | Limit search to a Sentinel product type.                                                   |
++----+---------------+------+--------------------------------------------------------------------------------------------+
+| -c | -\-cloud      | INT  | Maximum cloud cover in percent. (Automatically sets --sentinel2)                           |
++----+---------------+------+--------------------------------------------------------------------------------------------+
+|    | -\-help       |      | Show help message and exit.                                                                |
++----+---------------+------+--------------------------------------------------------------------------------------------+
+|    | -\-version    |      | Show version number and exit.                                                              |
++----+---------------+------+--------------------------------------------------------------------------------------------+
 
 Tests
 =====
