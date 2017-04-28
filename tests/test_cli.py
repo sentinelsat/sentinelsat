@@ -159,7 +159,7 @@ def test_footprints_cli(tmpdir):
     )
 
 
-@my_vcr.use_cassette('test_download_cli')
+@my_vcr.use_cassette('test_download_cli', decode_compressed_response=False)
 @pytest.mark.scihub
 @pytest.mark.homura
 def test_download_many(tmpdir):
@@ -193,7 +193,7 @@ def test_download_many(tmpdir):
 
     # Prepare a response with an invalid checksum
     product_id = 'f30b2a6a-b0c1-49f1-b19e-e10c3cf06101'
-    url = "https://scihub.copernicus.eu/apihub/odata/v1/Products('%s')/?$format=json" % product_id
+    url = "https://scihub.copernicus.eu/apihub/odata/v1/Products('%s')?$format=json" % product_id
     api = SentinelAPI(*_api_auth)
     json = api.session.get(url).json()
     json["d"]["Checksum"]["Value"] = "00000000000000000000000000000000"
@@ -229,7 +229,7 @@ def test_download_many(tmpdir):
     tmpdir.remove()
 
 
-@my_vcr.use_cassette('test_download_cli')
+@my_vcr.use_cassette('test_download_cli', decode_compressed_response=False)
 @pytest.mark.scihub
 @pytest.mark.homura
 def test_download_single(tmpdir):
@@ -255,7 +255,7 @@ def test_download_single(tmpdir):
         f.remove()
 
     # Prepare a response with an invalid checksum
-    url = "https://scihub.copernicus.eu/apihub/odata/v1/Products('%s')/?$format=json" % product_id
+    url = "https://scihub.copernicus.eu/apihub/odata/v1/Products('%s')?$format=json" % product_id
     api = SentinelAPI(*_api_auth)
     json = api.session.get(url).json()
     json["d"]["Checksum"]["Value"] = "00000000000000000000000000000000"

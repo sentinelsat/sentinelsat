@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from __future__ import absolute_import, print_function
+from __future__ import absolute_import, division, print_function
 
 import hashlib
 import logging
@@ -12,6 +12,7 @@ from os.path import exists, getsize, join
 from time import sleep
 
 import geojson
+import geomet.wkt
 import homura
 import html2text
 import pycurl
@@ -30,7 +31,7 @@ except ImportError:
 
 
 class SentinelAPI(object):
-    """Class to connect to Sentinel Data Hub, search and download imagery.
+    """Class to connect to Copernicus Open Access Hub, search and download imagery.
 
     Parameters
     ----------
@@ -67,21 +68,53 @@ class SentinelAPI(object):
         self._last_status_code = None
 
     def query(self, area=None, initial_date='NOW-1DAY', end_date='NOW', **keywords):
-        """Query the SciHub API with the coordinates of an area, a date interval
-        and any other search keywords accepted by the SciHub API.
+        """Query the Open Access Hub OpenSearch API with the coordinates of an area, a date interval
+        and any other search keywords accepted by the API.
+
+        Parameters
+        ----------
+        area : str
+            The area of interest formatted as a Well-Known Text string. 
+        initial_date : str or datetime
+            Beginning of the time interval for sensing time. Defaults to 'NOW-1DAY'.
+            Either a Python datetime or a string in one of the following formats:
+                - yyyy-MM-ddThh:mm:ss.SSSZ (ISO-8601)
+                - yyyy-MM-ddThh:mm:ssZ
+                - YYYMMdd
+                - NOW
+                - NOW-<n>MINUTE(S)
+                - NOW-<n>HOUR(S)
+                - NOW-<n>DAY(S)
+                - NOW-<n>MONTH(S)
+        end_date : str or datetime
+            Beginning of the time interval for sensing time.  Defaults to 'NOW'.
+            See initial_date for allowed format.
+        
+        Other Parameters
+        ----------------
+        Additional keywords can be used to specify other query parameters, e.g. orbitnumber=70.
+        
+        See https://scihub.copernicus.eu/twiki/do/view/SciHubUserGuide/3FullTextSearch
+        for a full list of accepted parameters.
+
+        Returns
+        -------
+        dict[string, dict]
+            Products returned by the query as a dictionary with the product ID as the key and 
+            the product's attributes (a dictionary) as the value.
         """
         query = self.format_query(area, initial_date, end_date, **keywords)
-        return self.query_plain(query)
+        return self.query_raw(query)
 
     @staticmethod
     def format_query(area=None, initial_date='NOW-1DAY', end_date='NOW', **keywords):
-        """Create the SciHub API query string
+        """Create the SciHub OpenSearch API query string
         """
         query_parts = []
         if initial_date is not None and end_date is not None:
             query_parts += ['(beginPosition:[%s TO %s])' % (
-                _format_date(initial_date),
-                _format_date(end_date)
+                _format_query_date(initial_date),
+                _format_query_date(end_date)
             )]
 
         if area is not None:
@@ -93,12 +126,23 @@ class SentinelAPI(object):
         query = ' AND '.join(query_parts)
         return query
 
-    def query_plain(self, query):
-        """Do a full-text query on the SciHub API using the OpenSearch format specified in
+    def query_raw(self, query):
+        """Do a full-text query on the OpenSearch API using the format specified in
            https://scihub.copernicus.eu/twiki/do/view/SciHubUserGuide/3FullTextSearch
+
+        Parameters
+        ----------
+        query : str
+            The query string
+
+        Returns
+        -------
+        dict[string, dict]
+            Products returned by the query as a dictionary with the product ID as the key and 
+            the product's attributes (a dictionary) as the value.
         """
         response = self._load_query(query)
-        return _response_to_dict(response)
+        return _parse_opensearch_response(response)
 
     def _load_query(self, query, start_row=0):
         # store last query (for testing)
@@ -133,15 +177,22 @@ class SentinelAPI(object):
             output += self._load_query(query, start_row=(start_row + self.page_size))
         return output
 
+    def _format_url(self, start_row=0):
+        blank = 'search?format=json&rows={rows}&start={start}'.format(
+            rows=self.page_size, start=start_row
+        )
+        return urljoin(self.api_url, blank)
+
     @staticmethod
     def to_geojson(products):
-        """Return the products from a query response as a GeoJSON with the values in their appropriate Python types.
+        """Return the products from a query response as a GeoJSON with the values in their
+        appropriate Python types.
         """
         feature_list = []
         for i, (product_id, props) in enumerate(products.items()):
             props = props.copy()
             props['id'] = product_id
-            poly = _geojson_poly_from_wkt(props['footprint'])
+            poly = geomet.wkt.loads(props['footprint'])
             del props['footprint']
             del props['gmlfootprint']
             # Fix "'datetime' is not JSON serializable"
@@ -177,38 +228,37 @@ class SentinelAPI(object):
         df.drop(['footprint', 'gmlfootprint'], axis=1, inplace=True)
         return gpd.GeoDataFrame(df, crs=crs, geometry=geometry)
 
-    def get_product_odata(self, id):
-        """Access SciHub OData API to get info about a Product. Returns a dict
-        containing the id, title, size, md5sum, date, footprint and download url
-        of the Product. The date field receives the Start ContentDate of the API.
+    def get_product_odata(self, id, full=False):
+        """Access SciHub OData API to get info about a product.
+        
+        Returns a dict containing the id, title, size, md5sum, date, footprint and download url
+        of the product. The date field corresponds to the Start ContentDate value.
+        
+        If ``full`` is set to True, then the full, detailed metadata of the product is returned
+        in addition to the above. For a mapping between the OpenSearch (Solr) and OData
+        attribute names see the following definition files:
+        https://github.com/SentinelDataHub/DataHubSystem/blob/master/addon/sentinel-1/src/main/resources/META-INF/sentinel-1.owl
+        https://github.com/SentinelDataHub/DataHubSystem/blob/master/addon/sentinel-2/src/main/resources/META-INF/sentinel-2.owl
+        https://github.com/SentinelDataHub/DataHubSystem/blob/master/addon/sentinel-3/src/main/resources/META-INF/sentinel-3.owl
+
+        Parameters
+        ----------
+        id : string
+            The ID of the product to query
+        full : bool
+            Whether to get the full metadata for the Product
+
+        Returns
+        -------
+        dict[str, Any]
+            A dictionary with an item for each metadata attribute
         """
-
-        response = self.session.get(
-            urljoin(self.api_url, "odata/v1/Products('%s')/?$format=json" % id)
-        )
+        url = urljoin(self.api_url, "odata/v1/Products('{}')?$format=json".format(id))
+        if full:
+            url += '&$expand=Attributes'
+        response = self.session.get(url)
         _check_scihub_response(response)
-
-        d = response.json()['d']
-
-        # parse the GML footprint to same format as returned
-        # by .get_coordinates()
-        geometry_xml = ET.fromstring(d["ContentGeometry"])
-        poly_coords_str = geometry_xml \
-            .find('{http://www.opengis.net/gml}outerBoundaryIs') \
-            .find('{http://www.opengis.net/gml}LinearRing') \
-            .findtext('{http://www.opengis.net/gml}coordinates')
-        poly_coords = (coord.split(",")[::-1] for coord in poly_coords_str.split(" "))
-        coord_string = ",".join(" ".join(coord) for coord in poly_coords)
-
-        values = {
-            'id': d['Id'],
-            'title': d['Name'],
-            'size': int(d['ContentLength']),
-            'md5': d['Checksum']['Value'],
-            'date': _convert_timestamp(d['ContentDate']['Start']),
-            'footprint': coord_string,
-            'url': urljoin(self.api_url, "odata/v1/Products('%s')/$value" % id)
-        }
+        values = _parse_odata_response(response.json()['d'])
         return values
 
     def download(self, id, directory_path='.', checksum=False, check_existing=False, **kwargs):
@@ -252,6 +302,8 @@ class SentinelAPI(object):
             try:
                 product_info = self.get_product_odata(id)
             except SentinelAPIError as e:
+                if 'Invalid key' in e.msg:
+                    raise
                 self.logger.info("Invalid API response:\n{}\nTrying again in 1 minute.".format(str(e)))
                 sleep(60)
 
@@ -288,9 +340,12 @@ class SentinelAPI(object):
                 raise InvalidChecksumError('File corrupt: checksums do not match')
         return product_info
 
-    def download_all(self, products, directory_path='.', max_attempts=10, checksum=False, check_existing=False,
-                     **kwargs):
-        """Download all products returned in query().
+    def download_all(self, products, directory_path='.', max_attempts=10, checksum=False,
+                     check_existing=False, **kwargs):
+        """Download a list of products.
+        
+        Takes a list of product IDs as input. This means that the return value of query() can be 
+        passed directly to this method.
 
         File names on the server are used for the downloaded files, e.g.
         "S1A_EW_GRDH_1SDH_20141003T003840_20141003T003920_002658_002F54_4DD1.zip".
@@ -301,7 +356,7 @@ class SentinelAPI(object):
         Parameters
         ----------
         products : list
-            List of products returned with self.query()
+            List of product IDs
         directory_path : string
             Directory where the downloaded files will be downloaded
         max_attempts : int, optional
@@ -318,7 +373,8 @@ class SentinelAPI(object):
         set[string]
             The list of products that failed to download.
         """
-        self.logger.info("Will download %d products" % len(products))
+        product_ids = list(products)
+        self.logger.info("Will download %d products" % len(product_ids))
         return_values = OrderedDict()
         for i, product_id in enumerate(products):
             for attempt_num in range(max_attempts):
@@ -332,13 +388,13 @@ class SentinelAPI(object):
                     self.logger.warning("Invalid checksum. The downloaded file for '{}' is corrupted.".format(product_id))
                 except:
                     self.logger.exception("There was an error downloading %s" % product_id)
-            self.logger.info("{}/{} products downloaded".format(i + 1, len(products)))
+            self.logger.info("{}/{} products downloaded".format(i + 1, len(product_ids)))
         failed = set(products) - set(return_values)
         return return_values, failed
 
     @staticmethod
     def get_products_size(products):
-        """Return the total file size in GB of all products in the query"""
+        """Return the total file size in GB of all products in the OpenSearch response"""
         size_total = 0
         for title, props in products.items():
             size_product = props["size"]
@@ -350,12 +406,6 @@ class SentinelAPI(object):
                 size_value /= 1024. * 1024.
             size_total += size_value
         return round(size_total, 2)
-
-    def _format_url(self, start_row=0):
-        blank = 'search?format=json&rows={rows}&start={start}'.format(
-            rows=self.page_size, start=start_row
-        )
-        return urljoin(self.api_url, blank)
 
 
 class SentinelAPIError(Exception):
@@ -375,18 +425,26 @@ class SentinelAPIError(Exception):
 
 
 class InvalidChecksumError(Exception):
-    """MD5 checksum of local file does not match the one from the server.
+    """MD5 checksum of a local file does not match the one from the server.
     """
     pass
 
 
-def get_coordinates(geojson_file, feature_number=0):
-    """Return the coordinates of a polygon of a GeoJSON file.
+def read_geojson(geojson_file):
+    with open(geojson_file) as f:
+        return geojson.load(f)
+
+
+def geojson_to_wkt(geojson_obj, feature_number=0):
+    """Convert a GeoJSON object to Well-Known Text. Intended for use with OpenSearch queries. 
+    
+    In case of FeatureCollection, only one of the features is used (the first by default).
+    3D points are converted to 2D.
 
     Parameters
     ----------
-    geojson_file : str
-        location of GeoJSON file_path
+    geojson_obj : dict
+        a GeoJSON object
     feature_number : int
         Feature to extract polygon from (in case of MultiPolygon
         FeatureCollection), defaults to first Feature
@@ -396,66 +454,21 @@ def get_coordinates(geojson_file, feature_number=0):
     polygon coordinates
         string of comma separated coordinate tuples (lon, lat) to be used by SentinelAPI
     """
-    geojson_obj = geojson.loads(open(geojson_file).read())
     if 'coordinates' in geojson_obj:
         geometry = geojson_obj
     else:
         geometry = geojson_obj['features'][feature_number]['geometry']
-    coordinates = geometry['coordinates'][0]
-    # precision of 7 decimals equals 1mm at the equator
-    coordinates = ['%.7f %.7f' % (coord[0], coord[1]) for coord in coordinates]
-    return 'POLYGON((%s))' % (','.join(coordinates))
 
+    def ensure_2d(geometry):
+        if isinstance(geometry[0], (list, tuple)):
+            return list(map(ensure_2d, geometry))
+        else:
+            return geometry[:2]
 
-def _fillin_cainfo(kwargs_dict):
-    """Fill in the path of the PEM file containing the CA certificate.
+    # Discard z-coordinate, if it exists
+    geometry['coordinates'] = ensure_2d(geometry['coordinates'])
 
-    The priority is: 1. user provided path, 2. path to the cacert.pem
-    bundle provided by certifi (if installed), 3. let pycurl use the
-    system path where libcurl's cacert bundle is assumed to be stored,
-    as established at libcurl build time.
-    """
-    try:
-        cainfo = kwargs_dict['pass_through_opts'][pycurl.CAINFO]
-    except KeyError:
-        try:
-            cainfo = certifi.where()
-        except AttributeError:
-            cainfo = None
-
-    if cainfo is not None:
-        pass_through_opts = kwargs_dict.get('pass_through_opts', {})
-        pass_through_opts[pycurl.CAINFO] = cainfo
-        kwargs_dict['pass_through_opts'] = pass_through_opts
-
-    return kwargs_dict
-
-
-def _format_date(in_date):
-    """Format a date, datetime or a YYYYMMDD string input as YYYY-MM-DDThh:mm:ssZ
-    or validate a string input as suitable for the full text search interface and return it.
-    """
-    if isinstance(in_date, (datetime, date)):
-        return in_date.strftime('%Y-%m-%dT%H:%M:%SZ')
-
-    in_date = in_date.strip()
-    if re.match(r'^NOW(?:-\d+(?:MONTH|DAY|HOUR|MINUTE)S?)?$', in_date):
-        return in_date
-    if re.match(r'^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(?:\.\d+)?Z$', in_date):
-        return in_date
-
-    try:
-        return datetime.strptime(in_date, '%Y%m%d').strftime('%Y-%m-%dT%H:%M:%SZ')
-    except ValueError:
-        raise ValueError('Unsupported date value {}'.format(in_date))
-
-
-def _convert_timestamp(in_date):
-    """Convert the timestamp received from OData JSON API, to
-    YYYY-MM-DDThh:mm:ssZ string format.
-    """
-    in_date = int(in_date.replace('/Date(', '').replace(')/', '')) / 1000.
-    return _format_date(datetime.utcfromtimestamp(in_date))
+    return geomet.wkt.dumps(geometry, decimals=7)
 
 
 def _check_scihub_response(response):
@@ -485,28 +498,84 @@ def _check_scihub_response(response):
         raise api_error
 
 
-def _geojson_poly_from_wkt(wkt):
-    """Return a geojson Polygon object from a WKT string"""
-    coordlist = re.search(r'\(\s*([^()]+)\s*\)', wkt).group(1)
-    coord_list_split = (coord.split(' ') for coord in coordlist.split(','))
-    poly = geojson.Polygon([[(float(coord[0]), float(coord[1])) for coord in coord_list_split]])
-    return poly
+def _fillin_cainfo(kwargs_dict):
+    """Fill in the path of the PEM file containing the CA certificate.
+
+    The priority is: 1. user provided path, 2. path to the cacert.pem
+    bundle provided by certifi (if installed), 3. let pycurl use the
+    system path where libcurl's cacert bundle is assumed to be stored,
+    as established at libcurl build time.
+    """
+    try:
+        cainfo = kwargs_dict['pass_through_opts'][pycurl.CAINFO]
+    except KeyError:
+        try:
+            cainfo = certifi.where()
+        except AttributeError:
+            cainfo = None
+
+    if cainfo is not None:
+        pass_through_opts = kwargs_dict.get('pass_through_opts', {})
+        pass_through_opts[pycurl.CAINFO] = cainfo
+        kwargs_dict['pass_through_opts'] = pass_through_opts
+
+    return kwargs_dict
 
 
-def _response_to_dict(products):
+def _format_query_date(in_date):
+    """Format a date, datetime or a YYYYMMDD string input as YYYY-MM-DDThh:mm:ssZ
+    or validate a string input as suitable for the full text search interface and return it.
+    """
+    if isinstance(in_date, (datetime, date)):
+        return in_date.strftime('%Y-%m-%dT%H:%M:%SZ')
+
+    in_date = in_date.strip()
+    if re.match(r'^NOW(?:-\d+(?:MONTH|DAY|HOUR|MINUTE)S?)?$', in_date):
+        return in_date
+    if re.match(r'^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(?:\.\d+)?Z$', in_date):
+        return in_date
+
+    try:
+        return datetime.strptime(in_date, '%Y%m%d').strftime('%Y-%m-%dT%H:%M:%SZ')
+    except ValueError:
+        raise ValueError('Unsupported date value {}'.format(in_date))
+
+
+def _parse_gml_footprint(geometry_str):
+    geometry_xml = ET.fromstring(geometry_str)
+    poly_coords_str = geometry_xml \
+        .find('{http://www.opengis.net/gml}outerBoundaryIs') \
+        .find('{http://www.opengis.net/gml}LinearRing') \
+        .findtext('{http://www.opengis.net/gml}coordinates')
+    poly_coords = (coord.split(",")[::-1] for coord in poly_coords_str.split(" "))
+    coord_string = ",".join(" ".join(coord) for coord in poly_coords)
+    return "POLYGON(({}))".format(coord_string)
+
+
+def _parse_iso_date(content):
+    if '.' in content:
+        return datetime.strptime(content, '%Y-%m-%dT%H:%M:%S.%fZ')
+    else:
+        return datetime.strptime(content, '%Y-%m-%dT%H:%M:%SZ')
+
+
+def _parse_odata_timestamp(in_date):
+    """Convert the timestamp received from OData JSON API to a datetime object.
+    """
+    timestamp = int(in_date.replace('/Date(', '').replace(')/', ''))
+    seconds = timestamp // 1000
+    ms = timestamp % 1000
+    return datetime.utcfromtimestamp(seconds) + timedelta(milliseconds=ms)
+
+
+def _parse_opensearch_response(products):
     """Convert a query response to a dictionary.
      
     The resulting dictionary structure is {<product id>: {<property>: <value>}}.
     The property values are converted to their respective Python types unless `parse_values` is set to `False`.
     """
 
-    def convert_date(content):
-        if '.' in content:
-            return datetime.strptime(content, '%Y-%m-%dT%H:%M:%S.%fZ')
-        else:
-            return datetime.strptime(content, '%Y-%m-%dT%H:%M:%SZ')
-
-    converters = {'date': convert_date, 'int': int, 'long': int, 'float': float, 'double': float}
+    converters = {'date': _parse_iso_date, 'int': int, 'long': int, 'float': float, 'double': float}
     # Keep the string type by default
     default_converter = lambda x: x
 
@@ -537,6 +606,30 @@ def _response_to_dict(products):
                             product_dict[p['name']] = f(p['content'])
                         except KeyError:  # Sentinel-3 has one element 'arr' which violates the name:content convention
                             product_dict[p['name']] = f(p['str'])
+    return output
+
+
+def _parse_odata_response(product):
+    output = {
+        'id': product['Id'],
+        'title': product['Name'],
+        'size': int(product['ContentLength']),
+        product['Checksum']['Algorithm'].lower(): product['Checksum']['Value'],
+        'date': _parse_odata_timestamp(product['ContentDate']['Start']),
+        'footprint': _parse_gml_footprint(product["ContentGeometry"]),
+        'url': product['__metadata']['media_src']
+    }
+    # Parse the extended metadata, if provided
+    converters = [int, float, _parse_iso_date]
+    for attr in product['Attributes'].get('results', []):
+        value = attr['Value']
+        for f in converters:
+            try:
+                value = f(attr['Value'])
+                break
+            except ValueError:
+                pass
+        output[attr['Name']] = value
     return output
 
 

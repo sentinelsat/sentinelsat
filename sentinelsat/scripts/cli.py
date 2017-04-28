@@ -4,8 +4,8 @@ import logging
 
 import os
 
-from sentinelsat.sentinel import SentinelAPI, get_coordinates
 from sentinelsat import __version__ as sentinelsat_version
+from sentinelsat.sentinel import SentinelAPI, SentinelAPIError, read_geojson, geojson_to_wkt
 
 logger = logging.getLogger('sentinelsat')
 
@@ -110,7 +110,8 @@ def search(
     if query is not None:
         search_kwargs.update(dict([i.split('=') for i in query.split(',')]))
 
-    products = api.query(get_coordinates(geojson), start, end, **search_kwargs)
+    wkt = geojson_to_wkt(read_geojson(geojson))
+    products = api.query(wkt, start, end, **search_kwargs)
 
     if footprints is True:
         footprints_geojson = api.to_geojson(products)
@@ -156,4 +157,10 @@ def download(user, password, productid, path, md5, url):
     and the id of the product you want to download.
     """
     api = SentinelAPI(user, password, url)
-    api.download(productid, path, md5)
+    try:
+        api.download(productid, path, md5)
+    except SentinelAPIError as e:
+        if 'Invalid key' in e.msg:
+            logger.error('No product with ID \'%s\' exists on server', productid)
+        else:
+            raise

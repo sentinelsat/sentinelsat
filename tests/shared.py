@@ -13,10 +13,8 @@ elif vcr_option == "record_new":
     print("Tests will use prerecorded query responses and record any new ones.")
     record_mode = "new_episodes"
 elif vcr_option == "reset_all":
-    print("Tests will re-record all query responses. All existing cassettes will be erased.")
+    print("Tests will re-record all query responses.")
     record_mode = "all"
-    for cassette_file in glob('tests/vcr_cassettes/*.yaml'):
-        unlink(cassette_file)
 
 def scrub_request(request):
     for header in ("Authorization", "Set-Cookie", "Cookie"):

@@ -14,7 +14,7 @@
 
 import sys
 import os
-
+import re
 
 #Mock modules depending on C libraries for ReadTheDocs.org
 class Mock(object):
@@ -75,8 +75,7 @@ copyright = u'2016, Marcel Wille, Kersten Clauss'
 # The short X.Y version.
 g = {}
 with open(os.path.join('..', 'sentinelsat', '__init__.py'), 'rt') as fp:
-    exec(fp.read(), g)
-    version = g['__version__']
+    version = re.search(r"__version__\s*=\s*'(\S+)'", fp.read()).group(1)
 
 # The full version, including alpha/beta/rc tags.
 release = version
