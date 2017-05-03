@@ -75,7 +75,7 @@ def cli():
     '--instrument', type=click.Choice(['MSI', 'SAR-C SAR', 'SLSTR', 'OLCI', 'SRAL']),
     help='Limit search to a specific instrument on a Sentinel satellite.')
 @click.option(
-    '--producttype', type=click.Choice(['SLC', 'GRD', 'OCN','RAW', 'S2MSI1C']),
+    '--producttype', type=click.Choice(['SLC', 'GRD', 'OCN','RAW', 'S2MSI1C', 'S2MSI2Ap']),
     help='Limit search to a Sentinel product type.')
 @click.option(
     '-c', '--cloud', type=int,
