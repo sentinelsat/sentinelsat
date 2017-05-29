@@ -1,16 +1,17 @@
-from codecs import open as codecs_open
-from setuptools import setup, find_packages
+import re
+from io import open
 
-import sentinelsat
-
+from setuptools import find_packages, setup
 
 # Get the long description from the relevant file
-with codecs_open('README.rst', encoding='utf-8') as f:
+with open('README.rst', encoding='utf-8') as f:
     long_description = f.read()
 
+with open('sentinelsat/__init__.py', encoding='utf-8') as f:
+    version = re.search(r"__version__\s*=\s*'(\S+)'", f.read()).group(1)
 
 setup(name='sentinelsat',
-      version=sentinelsat.__version__,
+      version=version,
       description="Utility to search and download Sentinel-1 Imagery",
       long_description=long_description,
       classifiers=[

@@ -3,198 +3,245 @@ Change Log
 
 All notable changes to ``sentinelsat`` will be listed here.
 
-[0.9.1] - 2017-03-06
--------
+[0.10] – 2017-xx-xx
+-------------------
 
 Added
 ~~~~~
-- ``--version`` option to command line utilities
-- install requirements for building the documentation
-- documentation of sorting with ``to_*`` convenience functions
-
-[0.9] - 2017-02-26
------
-
-Added
-~~~~~
-
--  Added ``to_dict``, ``to_dataframe`` and ``to_geodataframe`` which convert the
-response content to respective types. The pandas, geopandas and shapely dependencies
-are not installed by default.
+* GeoJSON footprints are now allowed to contain just a single geometry instead of a feature
+  collection. Any geometry type that has a WKT equivalent is now supported (rather than only
+  Polygons).
+* ``get_product_odata()`` can now be used to get the full metadata information available for a
+  product if ``full=True`` is set.
+* Added ``query_raw()`` that takes full text search string as input and returns a parsed
+  dictionary just like the updated ``query()`` method.
 
 Changed
 ~~~~~~~
+* ``SentinelAPI``, etc. can now be directly imported from ``sentinelsat`` rather than
+  ``sentinelsat.sentinel``.
+* ``query()`` changes:
 
--  ``--footprints`` now includes all returned product properties in the output.
--  ``KeyError('No results returned.')`` is no longer returned for zero returned products in a response.
--  Renamed ``get_footprint`` to ``to_geojson`` and ``get_product_info`` to ``get_product_odata``.
--  Added underscore to methods and functions that are not expected to be used outside the package.
--  Instance variables ``url`` and ``content`` have been removed,
-``last_query`` and ``last_status_code`` have been made private.
+  - The ``area`` argument now expects a WKT string as input instead of a coordinate string.
+    (Issue #101)
+  - Date arguments can now be disabled by setting them to ``None`` and their values are now
+    validated on the client side. (Issue #101)
+  - The return value has been changed to a dict of dicts of parsed metadata values. One entry per
+    product with the product ID as the key.
 
-[0.8.1] - 2017-02-05
+* ``download_all()`` expects a list of product IDs as input. This is compatible with the output of
+  ``query()``.
+* ``get_coordinates()`` has been replaced with functions ``read_geojson()`` and
+  ``geojson_to_wkt()``. (Issue #101)
+
+Removed
+~~~~~~~
+* ``to_dict()`` has been removed since it is no longer required.
+* ``load_query()`` has been made private (renamed to ``_load_query()``).
+
+
+Fixed
+~~~~~
+* Fixed invalid GeoJSON output in both the CLI and API. (Issue #104)
+* Fixed broken reporting of failed downloads in the CLI. (Issue #88)
+* Attempting to download a product with an invalid ID no longer creates an infinite loop and a
+  more informative error message is displayed in the CLI.
+
+
+[0.9.1] – 2017-03-06
 --------------------
 
 Added
 ~~~~~
+* ``--version`` option to command line utilities
+* install requirements for building the documentation
+* documentation of sorting with ``to_*`` convenience functions
 
--  added a changelog
-
-Changed
-~~~~~~~
-
--  use logging instead of print
-
-Fixed
-~~~~~
-
--  docs represent new ``query`` and ``download_all`` behaviour
-
-[0.8] - 2017-01-27
+[0.9] – 2017-02-26
 ------------------
 
 Added
 ~~~~~
 
--  options to create new, reset or ignore vcr cassettes for testing
+* Added ``to_dict``, ``to_dataframe`` and ``to_geodataframe`` which convert the
+  response content to respective types. The pandas, geopandas and shapely dependencies
+  are not installed by default.
 
 Changed
 ~~~~~~~
 
--  ``query`` now returns a list of search results
--  ``download_all`` requires the list of search results as an argument
+* ``--footprints`` now includes all returned product properties in the output.
+* ``KeyError('No results returned.')`` is no longer returned for zero returned products in a response.
+* Renamed ``get_footprint`` to ``to_geojson`` and ``get_product_info`` to ``get_product_odata``.
+* Added underscore to methods and functions that are not expected to be used outside the package.
+* Instance variables ``url`` and ``content`` have been removed,
+  ``last_query`` and ``last_status_code`` have been made private.
 
-Removed
-~~~~~~~
-
--  ``SentinelAPI`` does not save query results as class attributes
-
-[0.7.4] - 2017-01-14
+[0.8.1] – 2017-02-05
 --------------------
 
 Added
 ~~~~~
 
--  Travis tests for Python 3.6
-
-[0.7.3] - 2016-12-09
---------------------
+* added a changelog
 
 Changed
 ~~~~~~~
 
--  changed ``SentinelAPI`` ``max_rows`` attribute to ``page_size`` to
-   better reflect pagination
--  tests use ``vcrpy`` cassettes
+* use logging instead of print
 
 Fixed
 ~~~~~
 
--  support GeoJSON polygons with optional (third) z-coordinate
+* docs represent new ``query`` and ``download_all`` behaviour
 
-[0.7.1] - 2016-10-28
+[0.8] – 2017-01-27
+------------------
+
+Added
+~~~~~
+
+* options to create new, reset or ignore vcr cassettes for testing
+
+Changed
+~~~~~~~
+
+* ``query`` now returns a list of search results
+* ``download_all`` requires the list of search results as an argument
+
+Removed
+~~~~~~~
+
+* ``SentinelAPI`` does not save query results as class attributes
+
+[0.7.4] – 2017-01-14
 --------------------
 
 Added
 ~~~~~
 
--  pagination support for query results
+* Travis tests for Python 3.6
+
+[0.7.3] – 2016-12-09
+--------------------
 
 Changed
 ~~~~~~~
 
--  number of query results per page set to 100
+* changed ``SentinelAPI`` ``max_rows`` attribute to ``page_size`` to
+  better reflect pagination
+* tests use ``vcrpy`` cassettes
 
-[0.6.5] - 2016-06-22
+Fixed
+~~~~~
+
+* support GeoJSON polygons with optional (third) z-coordinate
+
+[0.7.1] – 2016-10-28
+--------------------
+
+Added
+~~~~~
+
+* pagination support for query results
+
+Changed
+~~~~~~~
+
+* number of query results per page set to 100
+
+[0.6.5] – 2016-06-22
 --------------------
 
 Added
 -----
 
--  support for large queries
+* support for large queries
 
 Changed
 ~~~~~~~
 
--  removed redundant information from Readme that is also present on
-   Readthedocs
+* Removed redundant information from Readme that is also present on
+  Readthedocs
 
-[0.6.4] - 2016-04-06-03
+[0.6.4] – 2016-04-06-03
 -----------------------
 
 Changed
 ~~~~~~~
 
--  ``initial_date`` / ``--start`` changed from ingestion to acquisition
-   date
+* ``initial_date`` / ``--start`` changed from ingestion to acquisition
+  date
 
-[0.6.1] - 2016-04-22
+[0.6.1] – 2016-04-22
 --------------------
 
 Added
 ~~~~~
 
--  Sphinx documentation setup with autodoc and numpydoc
--  Redthedocs.org integration
+* Sphinx documentation setup with autodoc and numpydoc
+* Redthedocs.org integration
 
-[0.5.5] - 2016-01-13
+[0.5.5] – 2016-01-13
 --------------------
 
 Added
 ~~~~~
 
--  Sentinel-2 support
+* Sentinel-2 support
 
-[0.5.1] - 2015-12-18
+[0.5.1] – 2015-12-18
 --------------------
 
 Added
 ~~~~~
 
--  Travis added as continuous integration service for automated testing
+* Travis added as continuous integration service for automated testing
 
-[0.5] - 2015-12-09
+[0.5] – 2015-12-09
 ------------------
 
 Added
 ~~~~~
 
--  validate downloaded products with their MD5 checksums
+* validate downloaded products with their MD5 checksums
 
-[0.4.3] - 2015-11-23
+[0.4.3] – 2015-11-23
 --------------------
 
 Added
 ~~~~~
 
--  option to select a different dhus api ``--url``
+* option to select a different dhus api ``--url``
 
 Changed
 ~~~~~~~
 
--  ``https://scihub.esa.int/apihub/`` as standard url
+* ``https://scihub.esa.int/apihub/`` as standard url
 
-[0.4] - 2015-09-28
+[0.4] – 2015-09-28
 ------------------
 
 Added
 ~~~~~
 
--  method to manually select the CA certificate bundle
--  function to return footprints of the queried Sentinel scenes
+* method to manually select the CA certificate bundle
+* function to return footprints of the queried Sentinel scenes
 
 Fixed
 ~~~~~
 
--  CA-certificate SSL errors
+* CA-certificate SSL errors
 
-[0.3] - 2015-06-10
+[0.3] – 2015-06-10
 ------------------
 
 Added
 ~~~~~
 
--  ``--query`` parameter to use extra search keywords in the cli
+* ``--query`` parameter to use extra search keywords in the cli
 
-[0.1] - 2015-06-05
+[0.1] – 2015-06-05
 ------------------
+
+* first release
