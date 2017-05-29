@@ -74,7 +74,7 @@ class SentinelAPI(object):
         Parameters
         ----------
         area : str
-            The area of interest formatted as a Well-Known Text string. 
+            The area of interest formatted as a Well-Known Text string.
         initial_date : str or datetime
             Beginning of the time interval for sensing time. Defaults to 'NOW-1DAY'.
             Either a Python datetime or a string in one of the following formats:
@@ -89,18 +89,18 @@ class SentinelAPI(object):
         end_date : str or datetime
             Beginning of the time interval for sensing time.  Defaults to 'NOW'.
             See initial_date for allowed format.
-        
+
         Other Parameters
         ----------------
         Additional keywords can be used to specify other query parameters, e.g. orbitnumber=70.
-        
+
         See https://scihub.copernicus.eu/twiki/do/view/SciHubUserGuide/3FullTextSearch
         for a full list of accepted parameters.
 
         Returns
         -------
         dict[string, dict]
-            Products returned by the query as a dictionary with the product ID as the key and 
+            Products returned by the query as a dictionary with the product ID as the key and
             the product's attributes (a dictionary) as the value.
         """
         query = self.format_query(area, initial_date, end_date, **keywords)
@@ -138,7 +138,7 @@ class SentinelAPI(object):
         Returns
         -------
         dict[string, dict]
-            Products returned by the query as a dictionary with the product ID as the key and 
+            Products returned by the query as a dictionary with the product ID as the key and
             the product's attributes (a dictionary) as the value.
         """
         response = self._load_query(query)
@@ -230,10 +230,10 @@ class SentinelAPI(object):
 
     def get_product_odata(self, id, full=False):
         """Access SciHub OData API to get info about a product.
-        
+
         Returns a dict containing the id, title, size, md5sum, date, footprint and download url
         of the product. The date field corresponds to the Start ContentDate value.
-        
+
         If ``full`` is set to True, then the full, detailed metadata of the product is returned
         in addition to the above. For a mapping between the OpenSearch (Solr) and OData
         attribute names see the following definition files:
@@ -343,8 +343,8 @@ class SentinelAPI(object):
     def download_all(self, products, directory_path='.', max_attempts=10, checksum=False,
                      check_existing=False, **kwargs):
         """Download a list of products.
-        
-        Takes a list of product IDs as input. This means that the return value of query() can be 
+
+        Takes a list of product IDs as input. This means that the return value of query() can be
         passed directly to this method.
 
         File names on the server are used for the downloaded files, e.g.
@@ -412,15 +412,13 @@ class SentinelAPIError(Exception):
     """Invalid responses from SciHub.
     """
 
-    def __init__(self, http_status=None, code=None, msg=None, response_body=None):
-        self.http_status = http_status
-        self.code = code
+    def __init__(self, msg=None, response=None):
         self.msg = msg
-        self.response_body = response_body
+        self.response = response
 
     def __str__(self):
-        return '(HTTP status: {0}, code: {1}) {2}'.format(
-            self.http_status, self.code,
+        return 'HTTP status {0} {1}: {2}'.format(
+            self.response.status_code, self.response.reason,
             ('\n' if '\n' in self.msg else '') + self.msg)
 
 
@@ -436,8 +434,8 @@ def read_geojson(geojson_file):
 
 
 def geojson_to_wkt(geojson_obj, feature_number=0):
-    """Convert a GeoJSON object to Well-Known Text. Intended for use with OpenSearch queries. 
-    
+    """Convert a GeoJSON object to Well-Known Text. Intended for use with OpenSearch queries.
+
     In case of FeatureCollection, only one of the features is used (the first by default).
     3D points are converted to 2D.
 
@@ -567,10 +565,33 @@ def _parse_odata_timestamp(in_date):
     ms = timestamp % 1000
     return datetime.utcfromtimestamp(seconds) + timedelta(milliseconds=ms)
 
+def _check_scihub_response(response):
+    """Check that the response from server has status code 2xx and that the response is valid JSON."""
+    try:
+        response.raise_for_status()
+        response.json()
+    except (requests.HTTPError, ValueError) as e:
+        msg = "API response not valid. JSON decoding failed."
+        try:
+            msg = response.headers['cause-message']
+        except:
+            if not response.text.strip().startswith('{'):
+                try:
+                    h = html2text.HTML2Text()
+                    h.ignore_images = True
+                    h.ignore_anchors = True
+                    msg = h.handle(response.text).strip()
+                except:
+                    pass
+        api_error = SentinelAPIError(msg, response)
+        # Suppress "During handling of the above exception..." message
+        # See PEP 409
+        api_error.__cause__ = None
+        raise api_error
 
 def _parse_opensearch_response(products):
     """Convert a query response to a dictionary.
-     
+
     The resulting dictionary structure is {<product id>: {<property>: <value>}}.
     The property values are converted to their respective Python types unless `parse_values` is set to `False`.
     """

@@ -103,7 +103,7 @@ def test_SentinelAPI_wrong_credentials():
     )
     with pytest.raises(SentinelAPIError) as excinfo:
         api.query(**_small_query)
-    assert excinfo.value.http_status == 401
+    assert excinfo.value.response.status_code == 401
 
 
 @my_vcr.use_cassette
@@ -345,6 +345,15 @@ def test_get_product_odata_full():
             assert ret[k] == expected[k]
 
 
+@my_vcr.use_cassette
+@pytest.mark.scihub
+def test_get_product_info_bad_key():
+    api = SentinelAPI(**_api_auth)
+
+    with pytest.raises(SentinelAPIError) as excinfo:
+        api.get_product_odata('invalid-xyz')
+    assert excinfo.value.msg == "InvalidKeyException : Invalid key (invalid-xyz) to access Products"
+
 @pytest.mark.mock_api
 def test_get_product_odata_scihub_down():
     api = SentinelAPI("mock_user", "mock_password")
@@ -358,16 +367,7 @@ def test_get_product_odata_scihub_down():
             api.get_product_odata('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')
 
         rqst.get(
-            "https://scihub.copernicus.eu/apihub/odata/v1/Products('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')?$format=json",
-            text='{"error":{"code":null,"message":{"lang":"en","value":'
-                 '"No Products found with key \'8df46c9e-a20c-43db-a19a-4240c2ed3b8b\' "}}}', status_code=500
-        )
-        with pytest.raises(SentinelAPIError) as excinfo:
-            api.get_product_odata('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')
-        assert excinfo.value.msg == "No Products found with key \'8df46c9e-a20c-43db-a19a-4240c2ed3b8b\' "
-
-        rqst.get(
-            "https://scihub.copernicus.eu/apihub/odata/v1/Products('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')?$format=json",
+            "https://scihub.copernicus.eu/apihub/odata/v1/Products('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')/?$format=json",
             text="Mock SciHub is Down", status_code=200
         )
         with pytest.raises(SentinelAPIError) as excinfo:
