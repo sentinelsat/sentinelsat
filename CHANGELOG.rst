@@ -3,6 +3,7 @@ Change Log
 
 All notable changes to ``sentinelsat`` will be listed here.
 
+
 [0.10] – 2017-xx-xx
 -------------------
 
@@ -15,6 +16,7 @@ Added
   product if ``full=True`` is set.
 * Added ``query_raw()`` that takes full text search string as input and returns a parsed
   dictionary just like the updated ``query()`` method.
+* CLI: ``--sentinel=<int>`` option to select satellite (constellation)
 
 Changed
 ~~~~~~~
@@ -33,6 +35,10 @@ Changed
   ``query()``.
 * ``get_coordinates()`` has been replaced with functions ``read_geojson()`` and
   ``geojson_to_wkt()``. (Issue #101)
+
+Deprecated
+~~~~~~~~~~
+* CLI: ``--sentinel1`` and ``--sentinel2`` will be removed with the next major release
 
 Removed
 ~~~~~~~

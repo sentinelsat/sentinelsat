@@ -11,7 +11,7 @@ It offers an easy-to-use command line interface
 
 .. code-block:: bash
 
-  sentinel search --sentinel2 --cloud 30 user password search_polygon.geojson
+  sentinel search --sentinel 2 --cloud 30 user password search_polygon.geojson
 
 and a powerful Python API.
 
