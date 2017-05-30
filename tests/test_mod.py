@@ -519,7 +519,7 @@ def test_to_geopandas(products):
     assert abs(gdf.unary_union.area - 132.16) < 0.01
 
 
-@my_vcr.use_cassette('test_download_mod', decode_compressed_response=False)
+@my_vcr.use_cassette(decode_compressed_response=False)
 @pytest.mark.homura
 @pytest.mark.scihub
 def test_download(tmpdir):
@@ -582,7 +582,7 @@ def test_download(tmpdir):
         api.download(uuid, str(tmpdir), check_existing=True, checksum=True)
 
 
-@my_vcr.use_cassette('test_download_mod')
+@my_vcr.use_cassette()
 @pytest.mark.scihub
 def test_download_invalid_id():
     api = SentinelAPI(**_api_auth)
@@ -592,7 +592,7 @@ def test_download_invalid_id():
         assert 'Invalid key' in excinfo.value.msg
 
 
-@my_vcr.use_cassette('test_download_mod', decode_compressed_response=False)
+@my_vcr.use_cassette(decode_compressed_response=False)
 @pytest.mark.homura
 @pytest.mark.scihub
 def test_download_all(tmpdir):
