@@ -53,7 +53,7 @@ Tests
 
 .. code-block:: bash
 
-  git clone https://github.com/ibamacsr/sentinelsat.git
+  git clone https://github.com/sentinelsat/sentinelsat.git
   cd sentinelsat
   pip install -e .[test]
   export SENTINEL_USER=<your scihub username>
