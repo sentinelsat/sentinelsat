@@ -7,7 +7,7 @@ sentinelsat
 .. image:: https://travis-ci.org/sentinelsat/sentinelsat.svg
     :target: https://travis-ci.org/sentinelsat/sentinelsat
 
-.. image:: https://codecov.io/gh/sentinelsat/sentinelsat/coverage.svg?branch=master
+.. image:: https://codecov.io/gh/sentinelsat/sentinelsat/branch/master/graph/badge.svg
     :target: https://codecov.io/gh/sentinelsat/sentinelsat
 
 .. image:: https://readthedocs.org/projects/sentinelsat/badge/?version=master
