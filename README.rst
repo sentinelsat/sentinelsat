@@ -4,11 +4,11 @@ sentinelsat
 .. image:: https://badge.fury.io/py/sentinelsat.svg
     :target: http://badge.fury.io/py/sentinelsat
 
-.. image:: https://travis-ci.org/ibamacsr/sentinelsat.svg
-    :target: https://travis-ci.org/ibamacsr/sentinelsat
+.. image:: https://travis-ci.org/sentinelsat/sentinelsat.svg
+    :target: https://travis-ci.org/sentinelsat/sentinelsat
 
-.. image:: https://coveralls.io/repos/ibamacsr/sentinelsat/badge.svg?branch=master&service=github
-    :target: https://coveralls.io/github/ibamacsr/sentinelsat?branch=master
+.. image:: https://coveralls.io/repos/sentinelsat/sentinelsat/badge.svg?branch=master&service=github
+    :target: https://coveralls.io/github/sentinelsat/sentinelsat?branch=master
 
 .. image:: https://readthedocs.org/projects/sentinelsat/badge/?version=master
     :target: http://sentinelsat.readthedocs.io/en/master/?badge=master
@@ -179,7 +179,7 @@ To run the tests on `sentinelsat`:
 
 .. code-block:: console
 
-    git clone https://github.com/ibamacsr/sentinelsat.git
+    git clone https://github.com/sentinelsat/sentinelsat.git
     cd sentinelsat
     pip install -e .[test]
     py.test -v -m "not homura"
@@ -202,7 +202,7 @@ To build the documentation:
 
 .. code-block:: console
 
-    git clone https://github.com/ibamacsr/sentinelsat.git
+    git clone https://github.com/sentinelsat/sentinelsat.git
     cd sentinelsat
     pip install -e .[docs]
     cd docs
