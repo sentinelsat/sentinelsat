@@ -86,7 +86,7 @@ def search(
         instrument, sentinel1, sentinel2, cloud, footprints, path, query, url):
     """Search for Sentinel products and, optionally, download all the results
     and/or create a geojson file with the search result footprints.
-    Beyond your SciHub user and password, you must pass a geojson file
+    Beyond your Copernicus Open Access Hub user and password, you must pass a geojson file
     containing the polygon of the area you want to search for. If you
     don't specify the start and end dates, it will search in the last 24 hours.
     """
@@ -165,7 +165,7 @@ def search(
     """)
 @click.version_option(version=sentinelsat_version, prog_name="sentinelsat")
 def download(user, password, productid, path, md5, url):
-    """Download a Sentinel Product. It just needs your SciHub user and password
+    """Download a Sentinel Product with your Copernicus Open Access Hub user and password
     and the id of the product you want to download.
     """
     api = SentinelAPI(user, password, url)

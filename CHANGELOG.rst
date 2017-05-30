@@ -4,6 +4,14 @@ Change Log
 All notable changes to ``sentinelsat`` will be listed here.
 
 
+[0.10.1] – 2017-XX-XX
+-------------------
+
+Changed
+~~~~~~~
+* change 'Sentinels Scientific Datahub' to 'Copernicus Open Access Hub' (#100)
+
+
 [0.10] – 2017-05-30
 -------------------
 

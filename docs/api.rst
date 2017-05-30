@@ -38,7 +38,7 @@ Quickstart
   # Get the product's full metadata available on the server
   api.get_product_odata(<product_id>, full=True)
 
-Valid search query keywords can be found at the `ESA SciHub documentation
+Valid search query keywords can be found at the `Copernicus Open Access Hub documentation
 <https://scihub.copernicus.eu/userguide/3FullTextSearch>`_.
 
 Sorting & Filtering
@@ -82,7 +82,7 @@ Getting Product Metadata
 ------------------------
 
 Sentinelsat provides two methods for retrieving product metadata from the server, one for each
-API offered by SciHub:
+API offered by the Copernicus Open Access Hub:
 
 - ``query()`` for `OpenSearch (Solr) <https://scihub.copernicus.eu/userguide/5APIsAndBatchScripting#Open_Search>`_,
   which supports filtering products by their attributes and returns metadata for all matched

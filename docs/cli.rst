@@ -12,7 +12,7 @@ Quickstart
 ----------
 
 A basic search query consists of a search polygon as well as the username and
-password to access the SciHub.
+password to access the Copernicus Open Access Hub.
 
 .. code-block:: bash
 
