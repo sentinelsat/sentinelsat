@@ -4,15 +4,15 @@ Change Log
 All notable changes to ``sentinelsat`` will be listed here.
 
 
-[0.10] – 2017-xx-xx
+[0.10] – 2017-05-30
 -------------------
 
 Added
 ~~~~~
-* GeoJSON footprints are now allowed to contain just a single geometry instead of a feature
-  collection. Any geometry type that has a WKT equivalent is now supported (rather than only
+* GeoJSON footprints are allowed to contain just a single geometry instead of a feature
+  collection. Any geometry type that has a WKT equivalent is supported (rather than only
   Polygons).
-* ``get_product_odata()`` can now be used to get the full metadata information available for a
+* ``get_product_odata()`` can be used to get the full metadata information available for a
   product if ``full=True`` is set.
 * Added ``query_raw()`` that takes full text search string as input and returns a parsed
   dictionary just like the updated ``query()`` method.
@@ -20,13 +20,13 @@ Added
 
 Changed
 ~~~~~~~
-* ``SentinelAPI``, etc. can now be directly imported from ``sentinelsat`` rather than
+* ``SentinelAPI``, etc. can be directly imported from ``sentinelsat`` rather than
   ``sentinelsat.sentinel``.
 * ``query()`` changes:
 
-  - The ``area`` argument now expects a WKT string as input instead of a coordinate string.
+  - The ``area`` argument expects a WKT string as input instead of a coordinate string.
     (Issue #101)
-  - Date arguments can now be disabled by setting them to ``None`` and their values are now
+  - Date arguments can be disabled by setting them to ``None`` and their values are
     validated on the client side. (Issue #101)
   - The return value has been changed to a dict of dicts of parsed metadata values. One entry per
     product with the product ID as the key.
@@ -35,6 +35,7 @@ Changed
   ``query()``.
 * ``get_coordinates()`` has been replaced with functions ``read_geojson()`` and
   ``geojson_to_wkt()``. (Issue #101)
+* Use more compact and descriptive error messages from the response headers, if available.
 
 Deprecated
 ~~~~~~~~~~
