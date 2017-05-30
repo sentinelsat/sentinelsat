@@ -1,48 +1,49 @@
 interactions:
 - request:
-    body: q=%28beginPosition%3A%5B2015-12-19T00%3A00%3A00Z+TO+2015-12-28T00%3A00%3A00Z%5D%29+AND+%28footprint%3A%22Intersects%28POLYGON%28%28-66.2695312+-8.0592296%2C-66.2695312+0.7031074%2C-57.3046875+0.7031074%2C-57.3046875+-8.0592296%2C-66.2695312+-8.0592296%29%29%29%22%29+AND+%28platformname%3ASentinel-1%29
+    body: q=%28beginPosition%3A%5B2015-12-19T00%3A00%3A00Z+TO+2015-12-28T00%3A00%3A00Z%5D%29+AND+%28footprint%3A%22Intersects%28POLYGON+%28%28-66.2695312+-8.0592296%2C+-66.2695312+0.7031074%2C+-57.3046875+0.7031074%2C+-57.3046875+-8.0592296%2C+-66.2695312+-8.0592296%29%29%29%22%29+AND+%28platformname%3ASentinel-1%29
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
       Connection: [keep-alive]
-      Content-Length: ['302']
+      Content-Length: ['307']
       Content-Type: [application/x-www-form-urlencoded]
-      User-Agent: [sentinelsat/0.8.1]
+      User-Agent: [sentinelsat/0.9.1]
     method: POST
     uri: https://scihub.copernicus.eu/apihub/search?format=json&rows=100&start=0
   response:
     body: {string: "{\"feed\": {\n   \"xmlns:opensearch\": \"http://a9.com/-/spec/opensearch/1.1/\"\
         ,\n   \"link\": [\n      {\n         \"rel\": \"self\",\n         \"type\"\
         : \"application/atom+xml\",\n         \"href\": \"https://scihub.copernicus.eu/apihub/search?q=(beginPosition:[2015-12-19T00:00:00Z\
-        \ TO 2015-12-28T00:00:00Z]) AND (footprint:\\\"Intersects(POLYGON((-66.2695312\
-        \ -8.0592296,-66.2695312 0.7031074,-57.3046875 0.7031074,-57.3046875 -8.0592296,-66.2695312\
-        \ -8.0592296)))\\\") AND (platformname:Sentinel-1)&start=0&rows=100\"\n  \
-        \    },\n      {\n         \"rel\": \"first\",\n         \"type\": \"application/atom+xml\"\
+        \ TO 2015-12-28T00:00:00Z]) AND (footprint:\\\"Intersects(POLYGON ((-66.2695312\
+        \ -8.0592296, -66.2695312 0.7031074, -57.3046875 0.7031074, -57.3046875 -8.0592296,\
+        \ -66.2695312 -8.0592296)))\\\") AND (platformname:Sentinel-1)&start=0&rows=100\"\
+        \n      },\n      {\n         \"rel\": \"first\",\n         \"type\": \"application/atom+xml\"\
         ,\n         \"href\": \"https://scihub.copernicus.eu/apihub/search?q=(beginPosition:[2015-12-19T00:00:00Z\
-        \ TO 2015-12-28T00:00:00Z]) AND (footprint:\\\"Intersects(POLYGON((-66.2695312\
-        \ -8.0592296,-66.2695312 0.7031074,-57.3046875 0.7031074,-57.3046875 -8.0592296,-66.2695312\
-        \ -8.0592296)))\\\") AND (platformname:Sentinel-1)&start=0&rows=100\"\n  \
-        \    },\n      {\n         \"rel\": \"last\",\n         \"type\": \"application/atom+xml\"\
+        \ TO 2015-12-28T00:00:00Z]) AND (footprint:\\\"Intersects(POLYGON ((-66.2695312\
+        \ -8.0592296, -66.2695312 0.7031074, -57.3046875 0.7031074, -57.3046875 -8.0592296,\
+        \ -66.2695312 -8.0592296)))\\\") AND (platformname:Sentinel-1)&start=0&rows=100\"\
+        \n      },\n      {\n         \"rel\": \"last\",\n         \"type\": \"application/atom+xml\"\
         ,\n         \"href\": \"https://scihub.copernicus.eu/apihub/search?q=(beginPosition:[2015-12-19T00:00:00Z\
-        \ TO 2015-12-28T00:00:00Z]) AND (footprint:\\\"Intersects(POLYGON((-66.2695312\
-        \ -8.0592296,-66.2695312 0.7031074,-57.3046875 0.7031074,-57.3046875 -8.0592296,-66.2695312\
-        \ -8.0592296)))\\\") AND (platformname:Sentinel-1)&start=10&rows=100\"\n \
-        \     },\n      {\n         \"rel\": \"search\",\n         \"type\": \"application/opensearchdescription+xml\"\
-        ,\n         \"href\": \"opensearch_description.xml\"\n      }\n   ],\n   \"\
-        xmlns\": \"http://www.w3.org/2005/Atom\",\n   \"opensearch:itemsPerPage\"\
+        \ TO 2015-12-28T00:00:00Z]) AND (footprint:\\\"Intersects(POLYGON ((-66.2695312\
+        \ -8.0592296, -66.2695312 0.7031074, -57.3046875 0.7031074, -57.3046875 -8.0592296,\
+        \ -66.2695312 -8.0592296)))\\\") AND (platformname:Sentinel-1)&start=10&rows=100\"\
+        \n      },\n      {\n         \"rel\": \"search\",\n         \"type\": \"\
+        application/opensearchdescription+xml\",\n         \"href\": \"opensearch_description.xml\"\
+        \n      }\n   ],\n   \"xmlns\": \"http://www.w3.org/2005/Atom\",\n   \"opensearch:itemsPerPage\"\
         : \"100\",\n   \"id\": \"https://scihub.copernicus.eu/apihub/search?q=(beginPosition:[2015-12-19T00:00:00Z\
-        \ TO 2015-12-28T00:00:00Z]) AND (footprint:\\\"Intersects(POLYGON((-66.2695312\
-        \ -8.0592296,-66.2695312 0.7031074,-57.3046875 0.7031074,-57.3046875 -8.0592296,-66.2695312\
-        \ -8.0592296)))\\\") AND (platformname:Sentinel-1)\",\n   \"author\": {\"\
-        name\": \"Sentinels Scientific Data Hub\"},\n   \"title\": \"Sentinels Scientific\
-        \ Data Hub search results for: (beginPosition:[2015-12-19T00:00:00Z TO 2015-12-28T00:00:00Z])\
-        \ AND (footprint:\\\"Intersects(POLYGON((-66.2695312 -8.0592296,-66.2695312\
-        \ 0.7031074,-57.3046875 0.7031074,-57.3046875 -8.0592296,-66.2695312 -8.0592296)))\\\
-        \") AND (platformname:Sentinel-1)\",\n   \"updated\": \"2017-02-20T14:39:34.923Z\"\
-        ,\n   \"opensearch:totalResults\": \"11\",\n   \"entry\": [\n      {\n   \
-        \      \"summary\": \"Date: 2015-12-27T10:03:55.389Z, Instrument: SAR-C SAR,\
-        \ Mode: HH HV, Satellite: Sentinel-1, Size: 513.57 MB\",\n         \"id\"\
-        : \"c719604a-d37c-4acd-8508-1c1cf995ab0f\",\n         \"title\": \"S1A_EW_GRDM_1SDH_20151227T100355_20151227T100510_009226_00D4D8_18A0\"\
+        \ TO 2015-12-28T00:00:00Z]) AND (footprint:\\\"Intersects(POLYGON ((-66.2695312\
+        \ -8.0592296, -66.2695312 0.7031074, -57.3046875 0.7031074, -57.3046875 -8.0592296,\
+        \ -66.2695312 -8.0592296)))\\\") AND (platformname:Sentinel-1)\",\n   \"author\"\
+        : {\"name\": \"Sentinels Scientific Data Hub\"},\n   \"title\": \"Sentinels\
+        \ Scientific Data Hub search results for: (beginPosition:[2015-12-19T00:00:00Z\
+        \ TO 2015-12-28T00:00:00Z]) AND (footprint:\\\"Intersects(POLYGON ((-66.2695312\
+        \ -8.0592296, -66.2695312 0.7031074, -57.3046875 0.7031074, -57.3046875 -8.0592296,\
+        \ -66.2695312 -8.0592296)))\\\") AND (platformname:Sentinel-1)\",\n   \"updated\"\
+        : \"2017-04-28T14:18:29.641Z\",\n   \"opensearch:totalResults\": \"11\",\n\
+        \   \"entry\": [\n      {\n         \"summary\": \"Date: 2015-12-27T10:03:55.389Z,\
+        \ Instrument: SAR-C SAR, Mode: HH HV, Satellite: Sentinel-1, Size: 513.57\
+        \ MB\",\n         \"id\": \"c719604a-d37c-4acd-8508-1c1cf995ab0f\",\n    \
+        \     \"title\": \"S1A_EW_GRDM_1SDH_20151227T100355_20151227T100510_009226_00D4D8_18A0\"\
         ,\n         \"str\": [\n            {\n               \"content\": \"T\",\n\
         \               \"name\": \"processed\"\n            },\n            {\n \
         \              \"content\": \"NOMINAL\",\n               \"name\": \"acquisitiontype\"\
@@ -708,19 +709,19 @@ interactions:
         \n            },\n            {\n               \"content\": \"2015-12-19T09:32:37.329Z\"\
         ,\n               \"name\": \"endposition\"\n            }\n         ]\n \
         \     }\n   ],\n   \"subtitle\": \"Displaying 11 results. Request done in\
-        \ 0.089 seconds.\",\n   \"opensearch:startIndex\": \"0\",\n   \"opensearch:Query\"\
+        \ 0.024 seconds.\",\n   \"opensearch:startIndex\": \"0\",\n   \"opensearch:Query\"\
         : {\n      \"searchTerms\": \"(beginPosition:[2015-12-19T00:00:00Z TO 2015-12-28T00:00:00Z])\
-        \ AND (footprint:\\\"Intersects(POLYGON((-66.2695312 -8.0592296,-66.2695312\
-        \ 0.7031074,-57.3046875 0.7031074,-57.3046875 -8.0592296,-66.2695312 -8.0592296)))\\\
+        \ AND (footprint:\\\"Intersects(POLYGON ((-66.2695312 -8.0592296, -66.2695312\
+        \ 0.7031074, -57.3046875 0.7031074, -57.3046875 -8.0592296, -66.2695312 -8.0592296)))\\\
         \") AND (platformname:Sentinel-1)\",\n      \"role\": \"request\",\n     \
         \ \"startPage\": \"1\"\n   }\n}}"}
     headers:
       Content-Type: [application/json]
-      Date: ['Mon, 20 Feb 2017 14:39:35 GMT']
+      Date: ['Fri, 28 Apr 2017 14:18:28 GMT']
       Pragma: [no-cache]
       Server: [Apache-Coyote/1.1]
       Transfer-Encoding: [chunked]
       Vary: [Accept-Encoding]
-      content-length: ['52421']
+      content-length: ['52451']
     status: {code: 200, message: OK}
 version: 1

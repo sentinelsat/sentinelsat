@@ -4,8 +4,8 @@ import logging
 
 import os
 
-from sentinelsat.sentinel import SentinelAPI, get_coordinates
 from sentinelsat import __version__ as sentinelsat_version
+from sentinelsat.sentinel import SentinelAPI, SentinelAPIError, read_geojson, geojson_to_wkt
 
 logger = logging.getLogger('sentinelsat')
 
@@ -60,20 +60,30 @@ def cli():
     help="""Verify the MD5 checksum and write corrupt product ids and filenames
     to corrupt_scenes.txt.
     """)
+# DEPRECATED: to be removed with next major release
 @click.option(
     '--sentinel1', is_flag=True,
-    help='Limit search to Sentinel-1 products.')
+    help='DEPRECATED: Please use --sentinel instead. Limit search to Sentinel-1 products.')
+# DEPRECATED: to be removed with next major release
 @click.option(
     '--sentinel2', is_flag=True,
-    help='Limit search to Sentinel-2 products.')
+    help='DEPRECATED: Please use --sentinel instead. Limit search to Sentinel-2 products.')
+@click.option(
+    '--sentinel', type=click.Choice(['1', '2', '3']),
+    help='Limit search to a Sentinel satellite (constellation)')
+@click.option(
+    '--instrument', type=click.Choice(['MSI', 'SAR-C SAR', 'SLSTR', 'OLCI', 'SRAL']),
+    help='Limit search to a specific instrument on a Sentinel satellite.')
+@click.option(
+    '--producttype', type=click.Choice(['SLC', 'GRD', 'OCN','RAW', 'S2MSI1C', 'S2MSI2Ap']),
+    help='Limit search to a Sentinel product type.')
 @click.option(
     '-c', '--cloud', type=int,
-    help='Maximum cloud cover in percent. (Automatically sets --sentinel2)')
+    help='Maximum cloud cover in percent. (requires --sentinel to be 2 or 3)')
 @click.version_option(version=sentinelsat_version, prog_name="sentinelsat")
-
 def search(
-        user, password, geojson, start, end, download, md5,
-        sentinel1, sentinel2, cloud, footprints, path, query, url):
+        user, password, geojson, start, end, download, md5, sentinel, producttype,
+        instrument, sentinel1, sentinel2, cloud, footprints, path, query, url):
     """Search for Sentinel products and, optionally, download all the results
     and/or create a geojson file with the search result footprints.
     Beyond your SciHub user and password, you must pass a geojson file
@@ -84,19 +94,36 @@ def search(
     api = SentinelAPI(user, password, url)
 
     search_kwargs = {}
+    if sentinel and not (producttype or instrument):
+        search_kwargs.update({"platformname": "Sentinel-" + sentinel})
+
+    if instrument and not producttype:
+        search_kwargs.update({"instrumentshortname": instrument})
+
+    if producttype:
+        search_kwargs.update({"producttype": producttype})
+
     if cloud:
-        search_kwargs.update(
-            {"platformname": "Sentinel-2",
-            "cloudcoverpercentage": "[0 TO %s]" % cloud})
+        if sentinel not in ['2', '3']:
+            logger.error('Cloud cover is only supported for Sentinel 2 and 3.')
+            raise ValueError('Cloud cover is only supported for Sentinel 2 and 3.')
+        search_kwargs.update({"cloudcoverpercentage": "[0 TO %s]" % cloud})
+
+    # DEPRECATED: to be removed with next major release
     elif sentinel2:
         search_kwargs.update({"platformname": "Sentinel-2"})
+        logger.info('DEPRECATED: Please use --sentinel instead')
+
+    # DEPRECATED: to be removed with next major release
     elif sentinel1:
         search_kwargs.update({"platformname": "Sentinel-1"})
+        logger.info('DEPRECATED: Please use --sentinel instead')
 
     if query is not None:
         search_kwargs.update(dict([i.split('=') for i in query.split(',')]))
 
-    products = api.query(get_coordinates(geojson), start, end, **search_kwargs)
+    wkt = geojson_to_wkt(read_geojson(geojson))
+    products = api.query(wkt, start, end, **search_kwargs)
 
     if footprints is True:
         footprints_geojson = api.to_geojson(products)
@@ -104,16 +131,15 @@ def search(
             outfile.write(gj.dumps(footprints_geojson))
 
     if download is True:
-        result = api.download_all(products, path, checksum=md5)
+        product_infos, failed_downloads = api.download_all(products, path, checksum=md5)
         if md5 is True:
-            corrupt_scenes = [(path, info["id"]) for path, info in result.items() if info is not None]
-            if len(corrupt_scenes) > 0:
+            if len(failed_downloads) > 0:
                 with open(os.path.join(path, "corrupt_scenes.txt"), "w") as outfile:
-                    for corrupt_tuple in corrupt_scenes:
-                        outfile.write("%s : %s\n" % corrupt_tuple)
+                    for failed_id in failed_downloads:
+                        outfile.write("%s : %s\n" % (failed_id, products[failed_id]['title']))
     else:
-        for product in products:
-            logger.info('Product %s - %s' % (product['id'], product['summary']))
+        for product_id, props in products.items():
+            logger.info('Product %s - %s' % (product_id, props['summary']))
         logger.info('---')
         logger.info(
             '%s scenes found with a total size of %.2f GB' %
@@ -138,10 +164,15 @@ def search(
     to corrupt_scenes.txt.')
     """)
 @click.version_option(version=sentinelsat_version, prog_name="sentinelsat")
-
 def download(user, password, productid, path, md5, url):
     """Download a Sentinel Product. It just needs your SciHub user and password
     and the id of the product you want to download.
     """
     api = SentinelAPI(user, password, url)
-    api.download(productid, path, md5)
+    try:
+        api.download(productid, path, md5)
+    except SentinelAPIError as e:
+        if 'Invalid key' in e.msg:
+            logger.error('No product with ID \'%s\' exists on server', productid)
+        else:
+            raise

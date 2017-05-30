@@ -7,7 +7,7 @@ interactions:
       Connection: [keep-alive]
       Content-Length: ['11']
       Content-Type: [application/x-www-form-urlencoded]
-      User-Agent: [sentinelsat/0.8.1]
+      User-Agent: [sentinelsat/0.9.1]
     method: POST
     uri: https://scihub.copernicus.eu/apihub/search?format=json&rows=100&start=0
   response:
@@ -35,8 +35,8 @@ interactions:
         \torg.springframework.security.access.intercept.aopalliance.MethodSecurityInterceptor.invoke(MethodSecurityInterceptor.java:64)\n\
         \torg.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)\n\
         \torg.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:653)\n\
-        \tfr.gael.dhus.server.http.webapp.search.controller.SearchController$$EnhancerBySpringCGLIB$$a09814ee.search(&lt;generated&gt;)\n\
-        \tsun.reflect.GeneratedMethodAccessor346.invoke(Unknown Source)\n\tsun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)\n\
+        \tfr.gael.dhus.server.http.webapp.search.controller.SearchController$$EnhancerBySpringCGLIB$$c16661f1.search(&lt;generated&gt;)\n\
+        \tsun.reflect.GeneratedMethodAccessor347.invoke(Unknown Source)\n\tsun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)\n\
         \tjava.lang.reflect.Method.invoke(Method.java:606)\n\torg.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:221)\n\
         \torg.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:137)\n\
         \torg.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:110)\n\
@@ -81,7 +81,7 @@ interactions:
     headers:
       Content-Language: [en]
       Content-Type: [text/html;charset=utf-8]
-      Date: ['Mon, 20 Feb 2017 14:39:55 GMT']
+      Date: ['Fri, 28 Apr 2017 14:18:54 GMT']
       Pragma: [no-cache]
       Server: [Apache-Coyote/1.1]
       Transfer-Encoding: [chunked]

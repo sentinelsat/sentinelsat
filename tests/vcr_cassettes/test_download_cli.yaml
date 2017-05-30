@@ -1,0 +1,634 @@
+interactions:
+- request:
+    body: q=%28beginPosition%3A%5B2015-05-01T00%3A00%3A00Z+TO+2015-07-05T00%3A00%3A00Z%5D%29+AND+%28footprint%3A%22Intersects%28POLYGON+%28%28-32.0554580+-53.9319760%2C+-31.7483900+-53.8674350%2C+-31.6460170+-54.0396610%2C+-31.9544050+-54.1044620%2C+-32.0554580+-53.9319760%29%29%29%22%29+AND+%28producttype%3AOCN%29
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['306']
+      Content-Type: [application/x-www-form-urlencoded]
+      User-Agent: [sentinelsat/0.9.1]
+    method: POST
+    uri: https://scihub.copernicus.eu/apihub/search?format=json&rows=100&start=0
+  response:
+    body:
+      string: !!binary |
+        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
+        4eH/Idf2KsQ+AAA=
+    headers:
+      Content-Encoding: [gzip]
+      Content-Type: [application/json]
+      Date: ['Fri, 28 Apr 2017 14:18:32 GMT']
+      Pragma: [no-cache]
+      Server: [Apache-Coyote/1.1]
+      Vary: [Accept-Encoding]
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [sentinelsat/0.9.1]
+    method: GET
+    uri: https://scihub.copernicus.eu/apihub/odata/v1/Products('f30b2a6a-b0c1-49f1-b19e-e10c3cf06101')?$format=json
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAMVV227bOBD9FUFboC0Qi6SomwWtC8dJugHabFFnsy8GBFqiZaISaZBUsmmRf9+h
+        ZKfpBW0fdhO9SDxzOcM5Q+qTX/v5J78sO25ZzSxzKwGYv7V2Z3KETCW2/Tqo1I5rKareBLxHbOdA
+        pFwEuibonVZ1X1nz4vmG4nXIEjZZ44pMoumGTNZkyiec4IpWG5wQTJ6/9I/8XotHYLG3Ow40J3/0
+        y2AfDmilpOXSlnsr2+1aUTErlESqstxOjNWcdeDZ8Vqw0ujq/64VPbtmbc+BEhhtOfA+FufdkX/u
+        JP+VKCjwgnWua0syL/++Kv9cXJRluFxelSEmMfhML0NCMMVfrFOalRgnUZTCK8syWi7IWQTJFqMU
+        lz9VYu/4hsvGbsE1ptNpGDrDVrS15vKi79ZcgwUDeDVsLJd924IHpHApT5h1JCvkPl4QKCbDMYFd
+        JfTlCkHUuWy4+SXP02tRfXbc04wVjtDXZ+rhIF6Kjr9nwOU6v7RM24dcNEqjLKSYJuGeS9bf2JM4
+        S7PY2e9cB3j1wfTdj1nvvSBi3jZKC7uFEP/tSfy5Yf5ptkjCZHFCI+AnizgNzyg+npNTfHwWz+fp
+        wDdu9DVXwKVvIapoujZ/p9rbRknPaONG5PfVML0wvDc3NwEMrmyECSS3CJwROCG+M03wT9f+FtEw
+        WfkefEqTg/WHoSt/tpKe5w2cqrdcH6te1kzfnpvRcjC+EZIz/V7I5h4/mCqldC0kdNTMJjENppSE
+        SXo0oWGAY+hs5jk0S5KURoCSII1xmiaARgGm2TSMBzSJsigiAwojn5JsQKdxkg3od/IW6Gv6+5LR
+        92oe0W+3OeL7ls9AwLcgeyvkB6fGK+ikd821gQmFXpIAQ3e5rBRwNgD8dXk2yQAylkHGVkknllQr
+        /9Ws6PZ5RjUA77XMBbebfMc060wOeA4yHfxAjmIjWu7JUfP/4FoIPoqdS7tlZuu5EYa0MKUA/Ww6
+        C+RiZoURH/lsvCEKNCyKXrezx7hNC+SYCuR6Aq9Dm5xEh4zjOa35hmvNh//vI/wM7wP8OzjCF6rm
+        T1THSO2KmFurxRpG+4kqecDvylm0zDxRJSP1HTz/AncN+zGRCQAA
+    headers:
+      Content-Encoding: [gzip]
+      Content-Type: [application/json]
+      DataServiceVersion: ['2.0']
+      Date: ['Fri, 28 Apr 2017 14:18:33 GMT']
+      Pragma: [no-cache]
+      Server: [Apache-Coyote/1.1]
+      Vary: [Accept-Encoding]
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [sentinelsat/0.9.1]
+    method: GET
+    uri: https://scihub.copernicus.eu/apihub/odata/v1/Products('d8340134-878f-4891-ba4f-4df54f1e3ab4')?$format=json
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAMVVXW+cOBT9K4it1FbKYAMGDGKnmiST3UhtWnWy2ZeRkAc8jFUwyDbJplX++17D
+        TJrNVm0fdhNewOd+nOt7rs0Xt3KzL25RtNywihlmVwIwd2dMrzOEdCl2w8Yru54rKcpBe3xArLcg
+        6mwEuvbRB9VVQ2n0q5cVDQn2QzKjCd3OCE392YYR+Kq2Edn6PGQb8vK1e+QOSjwBi7ntOdCc/j6s
+        vH04oGUnDZem2FtZ3zeiZEZ0EnWl4WamjeKsBc+WV4IVWpX/d63oxTVrBg6UwGiKkfepOO+O3HMr
+        +c9EQYEXrLVdW/mL4s+r4v3JRVEEq9VVEWA/wlEQXwa+j4P0H+skTAqMY5zaV7JMaAE8C0h2Mklx
+        +UMl9o5vuazNDlz9EAOLNexEUykuL4Z2wxVYMIBX48YyOTQNeEAKm/KUGUuyRvbjlU9IQnFAqU+j
+        4PUaQdS5rLn+Kc/ltSi/Ou5ppgon6PGZejiIl6LlHxlw2c6vDFPmIVcYxAmJA5pSsueS1WM79DUh
+        mFr7ne0ALz/pof0+670XRCyaulPC7CDEfXcafW2Y6ycYpmBJKD2jNF1GIT2L8HK5OD1O4vA4SEe+
+        aaO/8Q641C1E5XXbZB+65rbupKOVtiPy63qcXhjem5sbDwZX1kJ7khsEzgicEO917f3VNr/YPa1d
+        Bz6lzsD63dC1O19Lx3FGzm4wXB13g6yYuj3Xk+VgfCskZ+qjkPU9fjCVXacqIaGjej6LQi8N/TSJ
+        j2Zh4OEoIhF1LEpBiTAC1PcSQsMUA0o8HKZx7I9oTGLsJyPqYwKqjWgaEYIj55t5c/SY/r5k9K2a
+        J/Tf25zwfcvnIOA7kL0R8pNV4w100rnmSsOEQi99D0N3uSw74KwB+OPybEYB0oZBxqaTVizZrd03
+        87zd55nUAHxQMhPcbLOeKdbqDPAMZDr4gRz5VjTckZPm/8G14H0WvU27Y3rn2BGGtDClAP1oOnNk
+        Y+a5Fp/5fLohcjQu8kE186e4TXNkmXJkewKvQ5usRIeM0zmt+JYrxcf/7xP8DO8D3Ds4whddxZ+p
+        jonaFrEwRokNjPYzVfKA35Zz0jD9TJVM1Hfw/A3jZ4kckQkAAA==
+    headers:
+      Content-Encoding: [gzip]
+      Content-Type: [application/json]
+      DataServiceVersion: ['2.0']
+      Date: ['Fri, 28 Apr 2017 14:18:33 GMT']
+      Pragma: [no-cache]
+      Server: [Apache-Coyote/1.1]
+      Vary: [Accept-Encoding]
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [sentinelsat/0.9.1]
+    method: GET
+    uri: https://scihub.copernicus.eu/apihub/odata/v1/Products('36b16cff-5f87-4cfa-b29d-1196831662e7')?$format=json
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAMVVW2/UOBT+K1F2JUDqxLFzj7KDOpfdrQQFMaW8jBR5Ek/GIrFHttNuQf3vHCcz
+        hS0IeIA2L4m/c/mOz3fsfHRrN//olmXHDK2poXbFAXN3xux1jpCu+K7feJXcMyV41WuP9YjuLYik
+        jUBXGL1Wsu4ro58+CeINjqvtdhJt02QSVls62ZCsnmCcxWmA45iw5Mkz98TtFX8AFnOzZ0Cz+Ldf
+        eYdwQCspDBOmPFjpft/yihouBZKVYWaijWK0A8+O1ZyWWlW/u1b05xVtewaUwGjKgfehOG9P3DMr
+        +c9EQYHntLNdW+HT8t1l+Wp+XpZktbosiY8jP/HxBcHYD/z/rZMgLX0fMhB4pYuIlIuE+JBsPkpx
+        8UMlDo4vmGjMDlyjMItSW858x9taMXHedxumwGLTXg4by0XftuABKWzKBTWWZI3sx1McBlGShRg2
+        FkTP1giizkTD9E95Lq949dnxQDNWOEL3z9SXg3jBO/aGApft/MpQZe5xpRH0jyT+gUvUX9nDKI2z
+        0NpvbQdY9V733fdZ77wg4rRtpOJmByHuy0X0uWEu9uczEvjZfJnNTv0Ziec4Xc6WJAtIQvCSDHzj
+        Rv9hErjUDUQVTdfmr2V700jhaKXtiPy1HqYXhvf6+tqDwRUN155gBoEzAifE9rrx/uvaP8KAxGvX
+        gU+hc7B+N3TtTtfCcZyBU/aGqZnsRU3VzZkeLUfjCy4YVW+4aO7wo6mSUtVcQEf1dBIFHmwvJtHJ
+        JCCeD2MVYMeiaZz6SQwo9pIIR1kAaOj5IagzonGYkSAaUOxHMPYDmkVJPPh+I2+B7tPflYy+VfOI
+        fr3NET+0fAoCvgTZWy7eWzWeQyedK6Y0TCj0Ens+dJeJSgJnA8Dbi78nKUDaUMjYSmHFEnLtPp8W
+        3SHPqAbgvRI5Z2ab76minc4Bz0Gmox/IUWx5yxwxav4LrgXvA9/btDuqd44dYUgLUwrQj6azQDZm
+        Wmj+gU3HG6JAw6LoVTt9iNu0QJapQLYn8Dq2yUp0zDie05ptmVJs+P8+wM/wLsC9hSN8Lmv2SHWM
+        1LaIU2MU38BoP1IlX/DbcuYt1Y9UyUh9C88n4AhKeJEJAAA=
+    headers:
+      Content-Encoding: [gzip]
+      Content-Type: [application/json]
+      DataServiceVersion: ['2.0']
+      Date: ['Fri, 28 Apr 2017 14:18:34 GMT']
+      Pragma: [no-cache]
+      Server: [Apache-Coyote/1.1]
+      Vary: [Accept-Encoding]
+    status: {code: 200, message: OK}
+- request:
+    body: q=%28beginPosition%3A%5B2015-05-01T00%3A00%3A00Z+TO+2015-07-05T00%3A00%3A00Z%5D%29+AND+%28footprint%3A%22Intersects%28POLYGON+%28%28-32.0554580+-53.9319760%2C+-31.7483900+-53.8674350%2C+-31.6460170+-54.0396610%2C+-31.9544050+-54.1044620%2C+-32.0554580+-53.9319760%29%29%29%22%29+AND+%28producttype%3AOCN%29
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['306']
+      Content-Type: [application/x-www-form-urlencoded]
+      User-Agent: [sentinelsat/0.9.1]
+    method: POST
+    uri: https://scihub.copernicus.eu/apihub/search?format=json&rows=100&start=0
+  response:
+    body:
+      string: !!binary |
+        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
+        Dw//B8YsF6vEPgAA
+    headers:
+      Content-Encoding: [gzip]
+      Content-Type: [application/json]
+      Date: ['Fri, 28 Apr 2017 14:18:34 GMT']
+      Pragma: [no-cache]
+      Server: [Apache-Coyote/1.1]
+      Vary: [Accept-Encoding]
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [sentinelsat/0.9.1]
+    method: GET
+    uri: https://scihub.copernicus.eu/apihub/odata/v1/Products('f30b2a6a-b0c1-49f1-b19e-e10c3cf06101')?$format=json
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAMVV227bOBD9FUFboC0Qi6SomwWtC8dJugHabFFnsy8GBFqiZaISaZBUsmmRf9+h
+        ZKfpBW0fdhO9SDxzOcM5Q+qTX/v5J78sO25ZzSxzKwGYv7V2Z3KETCW2/Tqo1I5rKareBLxHbOdA
+        pFwEuibonVZ1X1nz4vmG4nXIEjZZ44pMoumGTNZkyiec4IpWG5wQTJ6/9I/8XotHYLG3Ow40J3/0
+        y2AfDmilpOXSlnsr2+1aUTErlESqstxOjNWcdeDZ8Vqw0ujq/64VPbtmbc+BEhhtOfA+FufdkX/u
+        JP+VKCjwgnWua0syL/++Kv9cXJRluFxelSEmMfhML0NCMMVfrFOalRgnUZTCK8syWi7IWQTJFqMU
+        lz9VYu/4hsvGbsE1ptNpGDrDVrS15vKi79ZcgwUDeDVsLJd924IHpHApT5h1JCvkPl4QKCbDMYFd
+        JfTlCkHUuWy4+SXP02tRfXbc04wVjtDXZ+rhIF6Kjr9nwOU6v7RM24dcNEqjLKSYJuGeS9bf2JM4
+        S7PY2e9cB3j1wfTdj1nvvSBi3jZKC7uFEP/tSfy5Yf5ptkjCZHFCI+AnizgNzyg+npNTfHwWz+fp
+        wDdu9DVXwKVvIapoujZ/p9rbRknPaONG5PfVML0wvDc3NwEMrmyECSS3CJwROCG+M03wT9f+FtEw
+        WfkefEqTg/WHoSt/tpKe5w2cqrdcH6te1kzfnpvRcjC+EZIz/V7I5h4/mCqldC0kdNTMJjENppSE
+        SXo0oWGAY+hs5jk0S5KURoCSII1xmiaARgGm2TSMBzSJsigiAwojn5JsQKdxkg3od/IW6Gv6+5LR
+        92oe0W+3OeL7ls9AwLcgeyvkB6fGK+ikd821gQmFXpIAQ3e5rBRwNgD8dXk2yQAylkHGVkknllQr
+        /9Ws6PZ5RjUA77XMBbebfMc060wOeA4yHfxAjmIjWu7JUfP/4FoIPoqdS7tlZuu5EYa0MKUA/Ww6
+        C+RiZoURH/lsvCEKNCyKXrezx7hNC+SYCuR6Aq9Dm5xEh4zjOa35hmvNh//vI/wM7wP8OzjCF6rm
+        T1THSO2KmFurxRpG+4kqecDvylm0zDxRJSP1HTz/AncN+zGRCQAA
+    headers:
+      Content-Encoding: [gzip]
+      Content-Type: [application/json]
+      DataServiceVersion: ['2.0']
+      Date: ['Fri, 28 Apr 2017 14:18:34 GMT']
+      Pragma: [no-cache]
+      Server: [Apache-Coyote/1.1]
+      Vary: [Accept-Encoding]
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [sentinelsat/0.9.1]
+    method: GET
+    uri: https://scihub.copernicus.eu/apihub/odata/v1/Products('d8340134-878f-4891-ba4f-4df54f1e3ab4')?$format=json
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAMVVXW+cOBT9K4it1FbKYAMGDGKnmiST3UhtWnWy2ZeRkAc8jFUwyDbJplX++17D
+        TJrNVm0fdhNewOd+nOt7rs0Xt3KzL25RtNywihlmVwIwd2dMrzOEdCl2w8Yru54rKcpBe3xArLcg
+        6mwEuvbRB9VVQ2n0q5cVDQn2QzKjCd3OCE392YYR+Kq2Edn6PGQb8vK1e+QOSjwBi7ntOdCc/j6s
+        vH04oGUnDZem2FtZ3zeiZEZ0EnWl4WamjeKsBc+WV4IVWpX/d63oxTVrBg6UwGiKkfepOO+O3HMr
+        +c9EQYEXrLVdW/mL4s+r4v3JRVEEq9VVEWA/wlEQXwa+j4P0H+skTAqMY5zaV7JMaAE8C0h2Mklx
+        +UMl9o5vuazNDlz9EAOLNexEUykuL4Z2wxVYMIBX48YyOTQNeEAKm/KUGUuyRvbjlU9IQnFAqU+j
+        4PUaQdS5rLn+Kc/ltSi/Ou5ppgon6PGZejiIl6LlHxlw2c6vDFPmIVcYxAmJA5pSsueS1WM79DUh
+        mFr7ne0ALz/pof0+670XRCyaulPC7CDEfXcafW2Y6ycYpmBJKD2jNF1GIT2L8HK5OD1O4vA4SEe+
+        aaO/8Q641C1E5XXbZB+65rbupKOVtiPy63qcXhjem5sbDwZX1kJ7khsEzgicEO917f3VNr/YPa1d
+        Bz6lzsD63dC1O19Lx3FGzm4wXB13g6yYuj3Xk+VgfCskZ+qjkPU9fjCVXacqIaGjej6LQi8N/TSJ
+        j2Zh4OEoIhF1LEpBiTAC1PcSQsMUA0o8HKZx7I9oTGLsJyPqYwKqjWgaEYIj55t5c/SY/r5k9K2a
+        J/Tf25zwfcvnIOA7kL0R8pNV4w100rnmSsOEQi99D0N3uSw74KwB+OPybEYB0oZBxqaTVizZrd03
+        87zd55nUAHxQMhPcbLOeKdbqDPAMZDr4gRz5VjTckZPm/8G14H0WvU27Y3rn2BGGtDClAP1oOnNk
+        Y+a5Fp/5fLohcjQu8kE186e4TXNkmXJkewKvQ5usRIeM0zmt+JYrxcf/7xP8DO8D3Ds4whddxZ+p
+        jonaFrEwRokNjPYzVfKA35Zz0jD9TJVM1Hfw/A3jZ4kckQkAAA==
+    headers:
+      Content-Encoding: [gzip]
+      Content-Type: [application/json]
+      DataServiceVersion: ['2.0']
+      Date: ['Fri, 28 Apr 2017 14:18:34 GMT']
+      Pragma: [no-cache]
+      Server: [Apache-Coyote/1.1]
+      Vary: [Accept-Encoding]
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [sentinelsat/0.9.1]
+    method: GET
+    uri: https://scihub.copernicus.eu/apihub/odata/v1/Products('36b16cff-5f87-4cfa-b29d-1196831662e7')?$format=json
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAMVVW2/UOBT+K1F2JUDqxLFzj7KDOpfdrQQFMaW8jBR5Ek/GIrFHttNuQf3vHCcz
+        hS0IeIA2L4m/c/mOz3fsfHRrN//olmXHDK2poXbFAXN3xux1jpCu+K7feJXcMyV41WuP9YjuLYik
+        jUBXGL1Wsu4ro58+CeINjqvtdhJt02QSVls62ZCsnmCcxWmA45iw5Mkz98TtFX8AFnOzZ0Cz+Ldf
+        eYdwQCspDBOmPFjpft/yihouBZKVYWaijWK0A8+O1ZyWWlW/u1b05xVtewaUwGjKgfehOG9P3DMr
+        +c9EQYHntLNdW+HT8t1l+Wp+XpZktbosiY8jP/HxBcHYD/z/rZMgLX0fMhB4pYuIlIuE+JBsPkpx
+        8UMlDo4vmGjMDlyjMItSW858x9taMXHedxumwGLTXg4by0XftuABKWzKBTWWZI3sx1McBlGShRg2
+        FkTP1giizkTD9E95Lq949dnxQDNWOEL3z9SXg3jBO/aGApft/MpQZe5xpRH0jyT+gUvUX9nDKI2z
+        0NpvbQdY9V733fdZ77wg4rRtpOJmByHuy0X0uWEu9uczEvjZfJnNTv0Ziec4Xc6WJAtIQvCSDHzj
+        Rv9hErjUDUQVTdfmr2V700jhaKXtiPy1HqYXhvf6+tqDwRUN155gBoEzAifE9rrx/uvaP8KAxGvX
+        gU+hc7B+N3TtTtfCcZyBU/aGqZnsRU3VzZkeLUfjCy4YVW+4aO7wo6mSUtVcQEf1dBIFHmwvJtHJ
+        JCCeD2MVYMeiaZz6SQwo9pIIR1kAaOj5IagzonGYkSAaUOxHMPYDmkVJPPh+I2+B7tPflYy+VfOI
+        fr3NET+0fAoCvgTZWy7eWzWeQyedK6Y0TCj0Ens+dJeJSgJnA8Dbi78nKUDaUMjYSmHFEnLtPp8W
+        3SHPqAbgvRI5Z2ab76minc4Bz0Gmox/IUWx5yxwxav4LrgXvA9/btDuqd44dYUgLUwrQj6azQDZm
+        Wmj+gU3HG6JAw6LoVTt9iNu0QJapQLYn8Dq2yUp0zDie05ptmVJs+P8+wM/wLsC9hSN8Lmv2SHWM
+        1LaIU2MU38BoP1IlX/DbcuYt1Y9UyUh9C88n4AhKeJEJAAA=
+    headers:
+      Content-Encoding: [gzip]
+      Content-Type: [application/json]
+      DataServiceVersion: ['2.0']
+      Date: ['Fri, 28 Apr 2017 14:18:35 GMT']
+      Pragma: [no-cache]
+      Server: [Apache-Coyote/1.1]
+      Vary: [Accept-Encoding]
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [sentinelsat/0.9.1]
+    method: GET
+    uri: https://scihub.copernicus.eu/apihub/odata/v1/Products('f30b2a6a-b0c1-49f1-b19e-e10c3cf06101')?$format=json
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAMVV227bOBD9FUFboC0Qi6SomwWtC8dJugHabFFnsy8GBFqiZaISaZBUsmmRf9+h
+        ZKfpBW0fdhO9SDxzOcM5Q+qTX/v5J78sO25ZzSxzKwGYv7V2Z3KETCW2/Tqo1I5rKareBLxHbOdA
+        pFwEuibonVZ1X1nz4vmG4nXIEjZZ44pMoumGTNZkyiec4IpWG5wQTJ6/9I/8XotHYLG3Ow40J3/0
+        y2AfDmilpOXSlnsr2+1aUTErlESqstxOjNWcdeDZ8Vqw0ujq/64VPbtmbc+BEhhtOfA+FufdkX/u
+        JP+VKCjwgnWua0syL/++Kv9cXJRluFxelSEmMfhML0NCMMVfrFOalRgnUZTCK8syWi7IWQTJFqMU
+        lz9VYu/4hsvGbsE1ptNpGDrDVrS15vKi79ZcgwUDeDVsLJd924IHpHApT5h1JCvkPl4QKCbDMYFd
+        JfTlCkHUuWy4+SXP02tRfXbc04wVjtDXZ+rhIF6Kjr9nwOU6v7RM24dcNEqjLKSYJuGeS9bf2JM4
+        S7PY2e9cB3j1wfTdj1nvvSBi3jZKC7uFEP/tSfy5Yf5ptkjCZHFCI+AnizgNzyg+npNTfHwWz+fp
+        wDdu9DVXwKVvIapoujZ/p9rbRknPaONG5PfVML0wvDc3NwEMrmyECSS3CJwROCG+M03wT9f+FtEw
+        WfkefEqTg/WHoSt/tpKe5w2cqrdcH6te1kzfnpvRcjC+EZIz/V7I5h4/mCqldC0kdNTMJjENppSE
+        SXo0oWGAY+hs5jk0S5KURoCSII1xmiaARgGm2TSMBzSJsigiAwojn5JsQKdxkg3od/IW6Gv6+5LR
+        92oe0W+3OeL7ls9AwLcgeyvkB6fGK+ikd821gQmFXpIAQ3e5rBRwNgD8dXk2yQAylkHGVkknllQr
+        /9Ws6PZ5RjUA77XMBbebfMc060wOeA4yHfxAjmIjWu7JUfP/4FoIPoqdS7tlZuu5EYa0MKUA/Ww6
+        C+RiZoURH/lsvCEKNCyKXrezx7hNC+SYCuR6Aq9Dm5xEh4zjOa35hmvNh//vI/wM7wP8OzjCF6rm
+        T1THSO2KmFurxRpG+4kqecDvylm0zDxRJSP1HTz/AncN+zGRCQAA
+    headers:
+      Content-Encoding: [gzip]
+      Content-Type: [application/json]
+      DataServiceVersion: ['2.0']
+      Date: ['Fri, 28 Apr 2017 14:18:35 GMT']
+      Pragma: [no-cache]
+      Server: [Apache-Coyote/1.1]
+      Vary: [Accept-Encoding]
+    status: {code: 200, message: OK}
+- request:
+    body: q=%28beginPosition%3A%5B2015-05-01T00%3A00%3A00Z+TO+2015-07-05T00%3A00%3A00Z%5D%29+AND+%28footprint%3A%22Intersects%28POLYGON+%28%28-32.0554580+-53.9319760%2C+-31.7483900+-53.8674350%2C+-31.6460170+-54.0396610%2C+-31.9544050+-54.1044620%2C+-32.0554580+-53.9319760%29%29%29%22%29+AND+%28producttype%3AOCN%29
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['306']
+      Content-Type: [application/x-www-form-urlencoded]
+      User-Agent: [sentinelsat/0.9.1]
+    method: POST
+    uri: https://scihub.copernicus.eu/apihub/search?format=json&rows=100&start=0
+  response:
+    body:
+      string: !!binary |
+        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
+        4eH/FXOm0sQ+AAA=
+    headers:
+      Content-Encoding: [gzip]
+      Content-Type: [application/json]
+      Date: ['Fri, 28 Apr 2017 14:18:34 GMT']
+      Pragma: [no-cache]
+      Server: [Apache-Coyote/1.1]
+      Vary: [Accept-Encoding]
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [sentinelsat/0.9.1]
+    method: GET
+    uri: https://scihub.copernicus.eu/apihub/odata/v1/Products('d8340134-878f-4891-ba4f-4df54f1e3ab4')?$format=json
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAMVVXW+cOBT9K4it1FbKYAMGDGKnmiST3UhtWnWy2ZeRkAc8jFUwyDbJplX++17D
+        TJrNVm0fdhNewOd+nOt7rs0Xt3KzL25RtNywihlmVwIwd2dMrzOEdCl2w8Yru54rKcpBe3xArLcg
+        6mwEuvbRB9VVQ2n0q5cVDQn2QzKjCd3OCE392YYR+Kq2Edn6PGQb8vK1e+QOSjwBi7ntOdCc/j6s
+        vH04oGUnDZem2FtZ3zeiZEZ0EnWl4WamjeKsBc+WV4IVWpX/d63oxTVrBg6UwGiKkfepOO+O3HMr
+        +c9EQYEXrLVdW/mL4s+r4v3JRVEEq9VVEWA/wlEQXwa+j4P0H+skTAqMY5zaV7JMaAE8C0h2Mklx
+        +UMl9o5vuazNDlz9EAOLNexEUykuL4Z2wxVYMIBX48YyOTQNeEAKm/KUGUuyRvbjlU9IQnFAqU+j
+        4PUaQdS5rLn+Kc/ltSi/Ou5ppgon6PGZejiIl6LlHxlw2c6vDFPmIVcYxAmJA5pSsueS1WM79DUh
+        mFr7ne0ALz/pof0+670XRCyaulPC7CDEfXcafW2Y6ycYpmBJKD2jNF1GIT2L8HK5OD1O4vA4SEe+
+        aaO/8Q641C1E5XXbZB+65rbupKOVtiPy63qcXhjem5sbDwZX1kJ7khsEzgicEO917f3VNr/YPa1d
+        Bz6lzsD63dC1O19Lx3FGzm4wXB13g6yYuj3Xk+VgfCskZ+qjkPU9fjCVXacqIaGjej6LQi8N/TSJ
+        j2Zh4OEoIhF1LEpBiTAC1PcSQsMUA0o8HKZx7I9oTGLsJyPqYwKqjWgaEYIj55t5c/SY/r5k9K2a
+        J/Tf25zwfcvnIOA7kL0R8pNV4w100rnmSsOEQi99D0N3uSw74KwB+OPybEYB0oZBxqaTVizZrd03
+        87zd55nUAHxQMhPcbLOeKdbqDPAMZDr4gRz5VjTckZPm/8G14H0WvU27Y3rn2BGGtDClAP1oOnNk
+        Y+a5Fp/5fLohcjQu8kE186e4TXNkmXJkewKvQ5usRIeM0zmt+JYrxcf/7xP8DO8D3Ds4whddxZ+p
+        jonaFrEwRokNjPYzVfKA35Zz0jD9TJVM1Hfw/A3jZ4kckQkAAA==
+    headers:
+      Content-Encoding: [gzip]
+      Content-Type: [application/json]
+      DataServiceVersion: ['2.0']
+      Date: ['Fri, 28 Apr 2017 14:18:36 GMT']
+      Pragma: [no-cache]
+      Server: [Apache-Coyote/1.1]
+      Vary: [Accept-Encoding]
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [sentinelsat/0.9.1]
+    method: GET
+    uri: https://scihub.copernicus.eu/apihub/odata/v1/Products('36b16cff-5f87-4cfa-b29d-1196831662e7')?$format=json
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAMVVW2/UOBT+K1F2JUDqxLFzj7KDOpfdrQQFMaW8jBR5Ek/GIrFHttNuQf3vHCcz
+        hS0IeIA2L4m/c/mOz3fsfHRrN//olmXHDK2poXbFAXN3xux1jpCu+K7feJXcMyV41WuP9YjuLYik
+        jUBXGL1Wsu4ro58+CeINjqvtdhJt02QSVls62ZCsnmCcxWmA45iw5Mkz98TtFX8AFnOzZ0Cz+Ldf
+        eYdwQCspDBOmPFjpft/yihouBZKVYWaijWK0A8+O1ZyWWlW/u1b05xVtewaUwGjKgfehOG9P3DMr
+        +c9EQYHntLNdW+HT8t1l+Wp+XpZktbosiY8jP/HxBcHYD/z/rZMgLX0fMhB4pYuIlIuE+JBsPkpx
+        8UMlDo4vmGjMDlyjMItSW858x9taMXHedxumwGLTXg4by0XftuABKWzKBTWWZI3sx1McBlGShRg2
+        FkTP1giizkTD9E95Lq949dnxQDNWOEL3z9SXg3jBO/aGApft/MpQZe5xpRH0jyT+gUvUX9nDKI2z
+        0NpvbQdY9V733fdZ77wg4rRtpOJmByHuy0X0uWEu9uczEvjZfJnNTv0Ziec4Xc6WJAtIQvCSDHzj
+        Rv9hErjUDUQVTdfmr2V700jhaKXtiPy1HqYXhvf6+tqDwRUN155gBoEzAifE9rrx/uvaP8KAxGvX
+        gU+hc7B+N3TtTtfCcZyBU/aGqZnsRU3VzZkeLUfjCy4YVW+4aO7wo6mSUtVcQEf1dBIFHmwvJtHJ
+        JCCeD2MVYMeiaZz6SQwo9pIIR1kAaOj5IagzonGYkSAaUOxHMPYDmkVJPPh+I2+B7tPflYy+VfOI
+        fr3NET+0fAoCvgTZWy7eWzWeQyedK6Y0TCj0Ens+dJeJSgJnA8Dbi78nKUDaUMjYSmHFEnLtPp8W
+        3SHPqAbgvRI5Z2ab76minc4Bz0Gmox/IUWx5yxwxav4LrgXvA9/btDuqd44dYUgLUwrQj6azQDZm
+        Wmj+gU3HG6JAw6LoVTt9iNu0QJapQLYn8Dq2yUp0zDie05ptmVJs+P8+wM/wLsC9hSN8Lmv2SHWM
+        1LaIU2MU38BoP1IlX/DbcuYt1Y9UyUh9C88n4AhKeJEJAAA=
+    headers:
+      Content-Encoding: [gzip]
+      Content-Type: [application/json]
+      DataServiceVersion: ['2.0']
+      Date: ['Fri, 28 Apr 2017 14:18:36 GMT']
+      Pragma: [no-cache]
+      Server: [Apache-Coyote/1.1]
+      Vary: [Accept-Encoding]
+    status: {code: 200, message: OK}
+- request:
+    body: q=%28beginPosition%3A%5B2015-05-01T00%3A00%3A00Z+TO+2015-07-05T00%3A00%3A00Z%5D%29+AND+%28footprint%3A%22Intersects%28POLYGON+%28%28-32.0554580+-53.9319760%2C+-31.7483900+-53.8674350%2C+-31.6460170+-54.0396610%2C+-31.9544050+-54.1044620%2C+-32.0554580+-53.9319760%29%29%29%22%29+AND+%28producttype%3AOCN%29
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['306']
+      Content-Type: [application/x-www-form-urlencoded]
+      User-Agent: [sentinelsat/0.9.1]
+    method: POST
+    uri: https://scihub.copernicus.eu/apihub/search?format=json&rows=100&start=0
+  response:
+    body:
+      string: !!binary |
+        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
+        Dw//BxWpvjrEPgAA
+    headers:
+      Content-Encoding: [gzip]
+      Content-Type: [application/json]
+      Date: ['Fri, 28 Apr 2017 14:18:37 GMT']
+      Pragma: [no-cache]
+      Server: [Apache-Coyote/1.1]
+      Vary: [Accept-Encoding]
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [sentinelsat/0.9.1]
+    method: GET
+    uri: https://scihub.copernicus.eu/apihub/odata/v1/Products('d8340134-878f-4891-ba4f-4df54f1e3ab4')?$format=json
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAMVVXW+cOBT9K4it1FbKYAMGDGKnmiST3UhtWnWy2ZeRkAc8jFUwyDbJplX++17D
+        TJrNVm0fdhNewOd+nOt7rs0Xt3KzL25RtNywihlmVwIwd2dMrzOEdCl2w8Yru54rKcpBe3xArLcg
+        6mwEuvbRB9VVQ2n0q5cVDQn2QzKjCd3OCE392YYR+Kq2Edn6PGQb8vK1e+QOSjwBi7ntOdCc/j6s
+        vH04oGUnDZem2FtZ3zeiZEZ0EnWl4WamjeKsBc+WV4IVWpX/d63oxTVrBg6UwGiKkfepOO+O3HMr
+        +c9EQYEXrLVdW/mL4s+r4v3JRVEEq9VVEWA/wlEQXwa+j4P0H+skTAqMY5zaV7JMaAE8C0h2Mklx
+        +UMl9o5vuazNDlz9EAOLNexEUykuL4Z2wxVYMIBX48YyOTQNeEAKm/KUGUuyRvbjlU9IQnFAqU+j
+        4PUaQdS5rLn+Kc/ltSi/Ou5ppgon6PGZejiIl6LlHxlw2c6vDFPmIVcYxAmJA5pSsueS1WM79DUh
+        mFr7ne0ALz/pof0+670XRCyaulPC7CDEfXcafW2Y6ycYpmBJKD2jNF1GIT2L8HK5OD1O4vA4SEe+
+        aaO/8Q641C1E5XXbZB+65rbupKOVtiPy63qcXhjem5sbDwZX1kJ7khsEzgicEO917f3VNr/YPa1d
+        Bz6lzsD63dC1O19Lx3FGzm4wXB13g6yYuj3Xk+VgfCskZ+qjkPU9fjCVXacqIaGjej6LQi8N/TSJ
+        j2Zh4OEoIhF1LEpBiTAC1PcSQsMUA0o8HKZx7I9oTGLsJyPqYwKqjWgaEYIj55t5c/SY/r5k9K2a
+        J/Tf25zwfcvnIOA7kL0R8pNV4w100rnmSsOEQi99D0N3uSw74KwB+OPybEYB0oZBxqaTVizZrd03
+        87zd55nUAHxQMhPcbLOeKdbqDPAMZDr4gRz5VjTckZPm/8G14H0WvU27Y3rn2BGGtDClAP1oOnNk
+        Y+a5Fp/5fLohcjQu8kE186e4TXNkmXJkewKvQ5usRIeM0zmt+JYrxcf/7xP8DO8D3Ds4whddxZ+p
+        jonaFrEwRokNjPYzVfKA35Zz0jD9TJVM1Hfw/A3jZ4kckQkAAA==
+    headers:
+      Content-Encoding: [gzip]
+      Content-Type: [application/json]
+      DataServiceVersion: ['2.0']
+      Date: ['Fri, 28 Apr 2017 14:18:51 GMT']
+      Pragma: [no-cache]
+      Server: [Apache-Coyote/1.1]
+      Vary: [Accept-Encoding]
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [sentinelsat/0.9.1]
+    method: GET
+    uri: https://scihub.copernicus.eu/apihub/odata/v1/Products('36b16cff-5f87-4cfa-b29d-1196831662e7')?$format=json
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAMVVW2/UOBT+K1F2JUDqxLFzj7KDOpfdrQQFMaW8jBR5Ek/GIrFHttNuQf3vHCcz
+        hS0IeIA2L4m/c/mOz3fsfHRrN//olmXHDK2poXbFAXN3xux1jpCu+K7feJXcMyV41WuP9YjuLYik
+        jUBXGL1Wsu4ro58+CeINjqvtdhJt02QSVls62ZCsnmCcxWmA45iw5Mkz98TtFX8AFnOzZ0Cz+Ldf
+        eYdwQCspDBOmPFjpft/yihouBZKVYWaijWK0A8+O1ZyWWlW/u1b05xVtewaUwGjKgfehOG9P3DMr
+        +c9EQYHntLNdW+HT8t1l+Wp+XpZktbosiY8jP/HxBcHYD/z/rZMgLX0fMhB4pYuIlIuE+JBsPkpx
+        8UMlDo4vmGjMDlyjMItSW858x9taMXHedxumwGLTXg4by0XftuABKWzKBTWWZI3sx1McBlGShRg2
+        FkTP1giizkTD9E95Lq949dnxQDNWOEL3z9SXg3jBO/aGApft/MpQZe5xpRH0jyT+gUvUX9nDKI2z
+        0NpvbQdY9V733fdZ77wg4rRtpOJmByHuy0X0uWEu9uczEvjZfJnNTv0Ziec4Xc6WJAtIQvCSDHzj
+        Rv9hErjUDUQVTdfmr2V700jhaKXtiPy1HqYXhvf6+tqDwRUN155gBoEzAifE9rrx/uvaP8KAxGvX
+        gU+hc7B+N3TtTtfCcZyBU/aGqZnsRU3VzZkeLUfjCy4YVW+4aO7wo6mSUtVcQEf1dBIFHmwvJtHJ
+        JCCeD2MVYMeiaZz6SQwo9pIIR1kAaOj5IagzonGYkSAaUOxHMPYDmkVJPPh+I2+B7tPflYy+VfOI
+        fr3NET+0fAoCvgTZWy7eWzWeQyedK6Y0TCj0Ens+dJeJSgJnA8Dbi78nKUDaUMjYSmHFEnLtPp8W
+        3SHPqAbgvRI5Z2ab76minc4Bz0Gmox/IUWx5yxwxav4LrgXvA9/btDuqd44dYUgLUwrQj6azQDZm
+        Wmj+gU3HG6JAw6LoVTt9iNu0QJapQLYn8Dq2yUp0zDie05ptmVJs+P8+wM/wLsC9hSN8Lmv2SHWM
+        1LaIU2MU38BoP1IlX/DbcuYt1Y9UyUh9C88n4AhKeJEJAAA=
+    headers:
+      Content-Encoding: [gzip]
+      Content-Type: [application/json]
+      DataServiceVersion: ['2.0']
+      Date: ['Fri, 28 Apr 2017 14:18:51 GMT']
+      Pragma: [no-cache]
+      Server: [Apache-Coyote/1.1]
+      Vary: [Accept-Encoding]
+    status: {code: 200, message: OK}
+version: 1
