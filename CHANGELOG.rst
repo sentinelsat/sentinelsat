@@ -4,7 +4,7 @@ Change Log
 All notable changes to ``sentinelsat`` will be listed here.
 
 
-[0.10] – 2017-xx-xx
+[0.10] – 2017-05-30
 -------------------
 
 Added
