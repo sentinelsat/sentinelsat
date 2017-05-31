@@ -24,7 +24,7 @@ def scrub_request(request):
 
 
 def scrub_response(response):
-    for header in ("Authorization", "Set-Cookie", "Cookie"):
+    for header in ("Authorization", "Set-Cookie", "Cookie", "Date", "Expires", "Transfer-Encoding"):
         if header in response["headers"]:
             del response["headers"][header]
     return response
@@ -36,7 +36,7 @@ if vcr_option != "disable":
         serializer='yaml',
         cassette_library_dir='tests/vcr_cassettes/',
         path_transformer=vcr.VCR.ensure_suffix('.yaml'),
-        match_on=['url', 'method', 'query'],
+        match_on=['uri', 'method', 'body', 'headers'],
         filter_headers=['Set-Cookie'],
         before_record_request=scrub_request,
         before_record_response=scrub_response,

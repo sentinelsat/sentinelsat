@@ -7,7 +7,7 @@ interactions:
       Connection: [keep-alive]
       Content-Length: ['11']
       Content-Type: [application/x-www-form-urlencoded]
-      User-Agent: [sentinelsat/0.9.1]
+      User-Agent: [sentinelsat/0.10]
     method: POST
     uri: https://scihub.copernicus.eu/apihub/search?format=json&rows=100&start=0
   response:
@@ -26,8 +26,9 @@ interactions:
         \ <u>The server encountered an internal error that prevented it from fulfilling\
         \ this request.</u></p><p><b>exception</b></p><pre>java.io.IOException: Server\
         \ returned HTTP response code: 400 for URL: http://localhost:30333//solr/dhus/select?q=xxx:yyy&amp;wt=xslt&amp;tr=opensearch_atom.xsl&amp;dhusLongName=Sentinels+Scientific+Data+Hub&amp;dhusServer=https%3A%2F%2Fscihub.copernicus.eu%2Fapihub%2F&amp;originalQuery=xxx%3Ayyy&amp;rows=100&amp;start=0&amp;sort=ingestiondate+desc\n\
-        \tsun.net.www.protocol.http.HttpURLConnection.getInputStream(HttpURLConnection.java:1627)\n\
-        \tfr.gael.dhus.server.http.webapp.search.controller.SearchController.search(SearchController.java:172)\n\
+        \tsun.net.www.protocol.http.HttpURLConnection.getInputStream0(HttpURLConnection.java:1876)\n\
+        \tsun.net.www.protocol.http.HttpURLConnection.getInputStream(HttpURLConnection.java:1474)\n\
+        \tfr.gael.dhus.server.http.webapp.search.controller.SearchController.search(SearchController.java:168)\n\
         \tfr.gael.dhus.server.http.webapp.search.controller.SearchController$$FastClassBySpringCGLIB$$e2477ad5.invoke(&lt;generated&gt;)\n\
         \torg.springframework.cglib.proxy.MethodProxy.invoke(MethodProxy.java:204)\n\
         \torg.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.invokeJoinpoint(CglibAopProxy.java:717)\n\
@@ -35,9 +36,9 @@ interactions:
         \torg.springframework.security.access.intercept.aopalliance.MethodSecurityInterceptor.invoke(MethodSecurityInterceptor.java:64)\n\
         \torg.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)\n\
         \torg.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:653)\n\
-        \tfr.gael.dhus.server.http.webapp.search.controller.SearchController$$EnhancerBySpringCGLIB$$c16661f1.search(&lt;generated&gt;)\n\
-        \tsun.reflect.GeneratedMethodAccessor347.invoke(Unknown Source)\n\tsun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)\n\
-        \tjava.lang.reflect.Method.invoke(Method.java:606)\n\torg.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:221)\n\
+        \tfr.gael.dhus.server.http.webapp.search.controller.SearchController$$EnhancerBySpringCGLIB$$b0a8cef8.search(&lt;generated&gt;)\n\
+        \tsun.reflect.GeneratedMethodAccessor359.invoke(Unknown Source)\n\tsun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)\n\
+        \tjava.lang.reflect.Method.invoke(Method.java:498)\n\torg.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:221)\n\
         \torg.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:137)\n\
         \torg.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:110)\n\
         \torg.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandleMethod(RequestMappingHandlerAdapter.java:777)\n\
@@ -81,13 +82,11 @@ interactions:
     headers:
       Content-Language: [en]
       Content-Type: [text/html;charset=utf-8]
-      Date: ['Fri, 28 Apr 2017 14:18:54 GMT']
       Pragma: [no-cache]
       Server: [Apache-Coyote/1.1]
-      Transfer-Encoding: [chunked]
       Vary: [Accept-Encoding]
       cause-message: ['IOException : Server returned HTTP response code: 400 for URL:
           http://localhost:30333//solr/dhus/select?q=xxx:yyy&wt=xslt&tr=opensearch_atom.xsl&dhusLongName=Sentinels+Scientific+Data+Hub&dhusServer=https%3A%2F%2Fscihub.copernicus.eu%2Fapihub%2F&originalQuery=xxx%3Ayyy&rows=100&start=0&sort=ingestiondate+desc']
-      content-length: ['7840']
+      content-length: ['7930']
     status: {code: 500, message: Internal Server Error}
 version: 1

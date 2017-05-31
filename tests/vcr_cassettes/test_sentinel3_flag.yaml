@@ -7,46 +7,45 @@ interactions:
       Connection: [keep-alive]
       Content-Length: ['307']
       Content-Type: [application/x-www-form-urlencoded]
-      User-Agent: [sentinelsat/0.9.1]
+      User-Agent: [sentinelsat/0.10]
     method: POST
     uri: https://scihub.copernicus.eu/s3/search?format=json&rows=100&start=0
   response:
-    body: {string: "{\"feed\": {\n   \"xmlns:opensearch\": \"http://a9.com/-/spec/opensearch/1.1/\"\
-        ,\n   \"link\": [\n      {\n         \"rel\": \"self\",\n         \"type\"\
-        : \"application/atom+xml\",\n         \"href\": \"https://scihub.copernicus.eu/s3/search?q=(beginPosition:[2016-12-01T00:00:00Z\
+    body: {string: "{\"feed\": {\n   \"opensearch:Query\": {\n      \"startPage\"\
+        : \"1\",\n      \"role\": \"request\",\n      \"searchTerms\": \"(beginPosition:[2016-12-01T00:00:00Z\
+        \ TO 2016-12-02T00:00:00Z]) AND (footprint:\\\"Intersects(POLYGON ((-66.2695312\
+        \ -8.0592296, -66.2695312 0.7031074, -57.3046875 0.7031074, -57.3046875 -8.0592296,\
+        \ -66.2695312 -8.0592296)))\\\") AND (platformname:Sentinel-3)\"\n   },\n\
+        \   \"author\": {\"name\": \"Sentinel-3 Scientific Data Hub\"},\n   \"link\"\
+        : [\n      {\n         \"rel\": \"self\",\n         \"href\": \"https://scihub.copernicus.eu/s3/search?q=(beginPosition:[2016-12-01T00:00:00Z\
         \ TO 2016-12-02T00:00:00Z]) AND (footprint:\\\"Intersects(POLYGON ((-66.2695312\
         \ -8.0592296, -66.2695312 0.7031074, -57.3046875 0.7031074, -57.3046875 -8.0592296,\
         \ -66.2695312 -8.0592296)))\\\") AND (platformname:Sentinel-3)&start=0&rows=100\"\
-        \n      },\n      {\n         \"rel\": \"first\",\n         \"type\": \"application/atom+xml\"\
-        ,\n         \"href\": \"https://scihub.copernicus.eu/s3/search?q=(beginPosition:[2016-12-01T00:00:00Z\
+        ,\n         \"type\": \"application/atom+xml\"\n      },\n      {\n      \
+        \   \"rel\": \"first\",\n         \"href\": \"https://scihub.copernicus.eu/s3/search?q=(beginPosition:[2016-12-01T00:00:00Z\
         \ TO 2016-12-02T00:00:00Z]) AND (footprint:\\\"Intersects(POLYGON ((-66.2695312\
         \ -8.0592296, -66.2695312 0.7031074, -57.3046875 0.7031074, -57.3046875 -8.0592296,\
         \ -66.2695312 -8.0592296)))\\\") AND (platformname:Sentinel-3)&start=0&rows=100\"\
-        \n      },\n      {\n         \"rel\": \"last\",\n         \"type\": \"application/atom+xml\"\
-        ,\n         \"href\": \"https://scihub.copernicus.eu/s3/search?q=(beginPosition:[2016-12-01T00:00:00Z\
+        ,\n         \"type\": \"application/atom+xml\"\n      },\n      {\n      \
+        \   \"rel\": \"last\",\n         \"href\": \"https://scihub.copernicus.eu/s3/search?q=(beginPosition:[2016-12-01T00:00:00Z\
         \ TO 2016-12-02T00:00:00Z]) AND (footprint:\\\"Intersects(POLYGON ((-66.2695312\
         \ -8.0592296, -66.2695312 0.7031074, -57.3046875 0.7031074, -57.3046875 -8.0592296,\
         \ -66.2695312 -8.0592296)))\\\") AND (platformname:Sentinel-3)&start=7&rows=100\"\
-        \n      },\n      {\n         \"rel\": \"search\",\n         \"type\": \"\
-        application/opensearchdescription+xml\",\n         \"href\": \"opensearch_description.xml\"\
-        \n      }\n   ],\n   \"xmlns\": \"http://www.w3.org/2005/Atom\",\n   \"opensearch:itemsPerPage\"\
-        : \"100\",\n   \"id\": \"https://scihub.copernicus.eu/s3/search?q=(beginPosition:[2016-12-01T00:00:00Z\
-        \ TO 2016-12-02T00:00:00Z]) AND (footprint:\\\"Intersects(POLYGON ((-66.2695312\
-        \ -8.0592296, -66.2695312 0.7031074, -57.3046875 0.7031074, -57.3046875 -8.0592296,\
-        \ -66.2695312 -8.0592296)))\\\") AND (platformname:Sentinel-3)\",\n   \"author\"\
-        : {\"name\": \"Sentinel-3 Scientific Data Hub\"},\n   \"title\": \"Sentinel-3\
-        \ Scientific Data Hub search results for: (beginPosition:[2016-12-01T00:00:00Z\
-        \ TO 2016-12-02T00:00:00Z]) AND (footprint:\\\"Intersects(POLYGON ((-66.2695312\
-        \ -8.0592296, -66.2695312 0.7031074, -57.3046875 0.7031074, -57.3046875 -8.0592296,\
-        \ -66.2695312 -8.0592296)))\\\") AND (platformname:Sentinel-3)\",\n   \"updated\"\
-        : \"2017-04-28T14:18:30.587Z\",\n   \"opensearch:totalResults\": \"8\",\n\
-        \   \"entry\": [\n      {\n         \"summary\": \"Date: 2016-12-01T13:13:17.65Z,\
+        ,\n         \"type\": \"application/atom+xml\"\n      },\n      {\n      \
+        \   \"rel\": \"search\",\n         \"href\": \"opensearch_description.xml\"\
+        ,\n         \"type\": \"application/opensearchdescription+xml\"\n      }\n\
+        \   ],\n   \"title\": \"Sentinel-3 Scientific Data Hub search results for:\
+        \ (beginPosition:[2016-12-01T00:00:00Z TO 2016-12-02T00:00:00Z]) AND (footprint:\\\
+        \"Intersects(POLYGON ((-66.2695312 -8.0592296, -66.2695312 0.7031074, -57.3046875\
+        \ 0.7031074, -57.3046875 -8.0592296, -66.2695312 -8.0592296)))\\\") AND (platformname:Sentinel-3)\"\
+        ,\n   \"opensearch:startIndex\": \"0\",\n   \"opensearch:totalResults\": \"\
+        8\",\n   \"entry\": [\n      {\n         \"summary\": \"Date: 2016-12-01T13:13:17.65Z,\
         \ Instrument: SRAL, Mode: , Satellite: Sentinel-3, Size: 76.62 MB\",\n   \
-        \      \"id\": \"50d27cb5-70da-41c9-b0f3-023cfb25d781\",\n         \"title\"\
-        : \"S3A_SR_2_LAN____20161201T131318_20161201T140321_20161226T235359_3003_011_295______LN3_O_NT_002\"\
-        ,\n         \"str\": [\n            {\n               \"content\": \"S3A_SR_2_LAN____20161201T131318_20161201T140321_20161226T235359_3003_011_295______LN3_O_NT_002.SEN3\"\
-        ,\n               \"name\": \"filename\"\n            },\n            {\n\
-        \               \"content\": \"<gml:Polygon srsName=\\\"http://www.opengis.net/gml/srs/epsg.xml#4326\\\
+        \      \"arr\": {\n            \"str\": \"002\",\n            \"name\": \"\
+        collection\"\n         },\n         \"str\": [\n            {\n          \
+        \     \"name\": \"filename\",\n               \"content\": \"S3A_SR_2_LAN____20161201T131318_20161201T140321_20161226T235359_3003_011_295______LN3_O_NT_002.SEN3\"\
+        \n            },\n            {\n               \"name\": \"gmlfootprint\"\
+        ,\n               \"content\": \"<gml:Polygon srsName=\\\"http://www.opengis.net/gml/srs/epsg.xml#4326\\\
         \" xmlns:gml=\\\"http://www.opengis.net/gml\\\">\\n   <gml:outerBoundaryIs>\\\
         n      <gml:LinearRing>\\n         <gml:coordinates>81.2254,29.2728 80.6795,18.2472\
         \ 79.8436,8.70602 78.7824,0.751891 77.5532,-5.77262 76.2009,-11.1143 74.758,-15.5149\
@@ -91,17 +90,17 @@ interactions:
         \ 71.6861,-22.2582 73.2469,-19.1726 74.7569,-15.5093 76.1997,-11.1085 77.552,-5.76669\
         \ 78.781,0.757742 79.8421,8.71139 80.6778,18.2515 81.2237,29.2753 81.2254,29.2728<\\\
         /gml:coordinates>\\n      <\\/gml:LinearRing>\\n   <\\/gml:outerBoundaryIs>\\\
-        n<\\/gml:Polygon>\",\n               \"name\": \"gmlfootprint\"\n        \
-        \    },\n            {\n               \"content\": \"SAFE\",\n          \
-        \     \"name\": \"format\"\n            },\n            {\n              \
-        \ \"content\": \"S3A_SR_2_LAN____20161201T131318_20161201T140321_20161226T235359_3003_011_295______LN3_O_NT_002\"\
-        ,\n               \"name\": \"identifier\"\n            },\n            {\n\
-        \               \"content\": \"SRAL\",\n               \"name\": \"instrumentshortname\"\
-        \n            },\n            {\n               \"content\": \"Earth Observation\"\
-        ,\n               \"name\": \"sensoroperationalmode\"\n            },\n  \
-        \          {\n               \"content\": \"Sar Radar ALtimeter\",\n     \
-        \          \"name\": \"instrumentname\"\n            },\n            {\n \
-        \              \"content\": \"POLYGON ((29.2728 81.2254,18.2472 80.6795,8.70602\
+        n<\\/gml:Polygon>\"\n            },\n            {\n               \"name\"\
+        : \"format\",\n               \"content\": \"SAFE\"\n            },\n    \
+        \        {\n               \"name\": \"identifier\",\n               \"content\"\
+        : \"S3A_SR_2_LAN____20161201T131318_20161201T140321_20161226T235359_3003_011_295______LN3_O_NT_002\"\
+        \n            },\n            {\n               \"name\": \"instrumentshortname\"\
+        ,\n               \"content\": \"SRAL\"\n            },\n            {\n \
+        \              \"name\": \"sensoroperationalmode\",\n               \"content\"\
+        : \"Earth Observation\"\n            },\n            {\n               \"\
+        name\": \"instrumentname\",\n               \"content\": \"Sar Radar ALtimeter\"\
+        \n            },\n            {\n               \"name\": \"footprint\",\n\
+        \               \"content\": \"POLYGON ((29.2728 81.2254,18.2472 80.6795,8.70602\
         \ 79.8436,0.751891 78.7824,-5.77262 77.5532,-11.1143 76.2009,-15.5149 74.758,-19.1778\
         \ 73.2478,-22.2631 71.6869,-24.8938 70.0872,-27.1632 68.4571,-29.143 66.8029,-30.8879\
         \ 65.1294,-32.4404 63.4401,-33.8338 61.7378,-35.0943 60.0245,-36.243 58.302,-37.2969\
@@ -143,75 +142,73 @@ interactions:
         \ 63.4395,-30.884 65.1287,-29.1389 66.8022,-27.1588 68.4563,-24.8891 70.0864,-22.2582\
         \ 71.6861,-19.1726 73.2469,-15.5093 74.7569,-11.1085 76.1997,-5.76669 77.552,0.757742\
         \ 78.781,8.71139 79.8421,18.2515 80.6778,29.2753 81.2237,29.2728 81.2254))\"\
-        ,\n               \"name\": \"footprint\"\n            },\n            {\n\
-        \               \"content\": \"EO\",\n               \"name\": \"mode\"\n\
-        \            },\n            {\n               \"content\": \"2016-011A\"\
-        ,\n               \"name\": \"platformidentifier\"\n            },\n     \
-        \       {\n               \"content\": \"PASSED\",\n               \"name\"\
-        : \"onlinequalitycheck\"\n            },\n            {\n               \"\
-        content\": \"descending\",\n               \"name\": \"orbitdirection\"\n\
-        \            },\n            {\n               \"content\": \"8236\",\n  \
-        \             \"name\": \"passnumber\"\n            },\n            {\n  \
-        \             \"content\": \"descending\",\n               \"name\": \"passdirection\"\
-        \n            },\n            {\n               \"content\": \"Land Surface\
-        \ Topography Mission Processing and Archiving Centre [LN3]\",\n          \
-        \     \"name\": \"procfacilityname\"\n            },\n            {\n    \
-        \           \"content\": \"European Space Agency\",\n               \"name\"\
-        : \"procfacilityorg\"\n            },\n            {\n               \"content\"\
-        : \"2\",\n               \"name\": \"processinglevel\"\n            },\n \
-        \           {\n               \"content\": \"Data Processing\",\n        \
-        \       \"name\": \"processingname\"\n            },\n            {\n    \
-        \           \"content\": \"L2\",\n               \"name\": \"productlevel\"\
-        \n            },\n            {\n               \"content\": \"SR_2_LAN___\"\
-        ,\n               \"name\": \"producttype\"\n            },\n            {\n\
-        \               \"content\": \"descending\",\n               \"name\": \"\
-        relorbitdir\"\n            },\n            {\n               \"content\":\
-        \ \"590\",\n               \"name\": \"relpassnumber\"\n            },\n \
-        \           {\n               \"content\": \"descending\",\n             \
-        \  \"name\": \"relpassdirection\"\n            },\n            {\n       \
-        \        \"content\": \"Sentinel-3\",\n               \"name\": \"platformname\"\
-        \n            },\n            {\n               \"content\": \"76.62 MB\"\
-        ,\n               \"name\": \"size\"\n            },\n            {\n    \
-        \           \"content\": \"Non Time Critical\",\n               \"name\":\
-        \ \"timeliness\"\n            },\n            {\n               \"content\"\
-        : \"50d27cb5-70da-41c9-b0f3-023cfb25d781\",\n               \"name\": \"uuid\"\
-        \n            }\n         ],\n         \"arr\": {\n            \"str\": \"\
-        002\",\n            \"name\": \"collection\"\n         },\n         \"int\"\
-        : [\n            {\n               \"content\": \"0\",\n               \"\
-        name\": \"lrmpercentage\"\n            },\n            {\n               \"\
-        content\": \"100\",\n               \"name\": \"sarpercentage\"\n        \
-        \    },\n            {\n               \"content\": \"1\",\n             \
-        \  \"name\": \"closedseapercentage\"\n            },\n            {\n    \
-        \           \"content\": \"17\",\n               \"name\": \"continentalicepercentage\"\
-        \n            },\n            {\n               \"content\": \"57\",\n   \
-        \            \"name\": \"landpercentage\"\n            },\n            {\n\
-        \               \"content\": \"25\",\n               \"name\": \"openseapercentage\"\
-        \n            },\n            {\n               \"content\": \"4118\",\n \
-        \              \"name\": \"orbitnumber\"\n            },\n            {\n\
-        \               \"content\": \"295\",\n               \"name\": \"relativeorbitnumber\"\
-        \n            }\n         ],\n         \"link\": [\n            {\"href\"\
-        : \"https://scihub.copernicus.eu/s3/odata/v1/Products('50d27cb5-70da-41c9-b0f3-023cfb25d781')/$value\"\
+        \n            },\n            {\n               \"name\": \"mode\",\n    \
+        \           \"content\": \"EO\"\n            },\n            {\n         \
+        \      \"name\": \"platformidentifier\",\n               \"content\": \"2016-011A\"\
+        \n            },\n            {\n               \"name\": \"onlinequalitycheck\"\
+        ,\n               \"content\": \"PASSED\"\n            },\n            {\n\
+        \               \"name\": \"orbitdirection\",\n               \"content\"\
+        : \"descending\"\n            },\n            {\n               \"name\":\
+        \ \"passnumber\",\n               \"content\": \"8236\"\n            },\n\
+        \            {\n               \"name\": \"passdirection\",\n            \
+        \   \"content\": \"descending\"\n            },\n            {\n         \
+        \      \"name\": \"procfacilityname\",\n               \"content\": \"Land\
+        \ Surface Topography Mission Processing and Archiving Centre [LN3]\"\n   \
+        \         },\n            {\n               \"name\": \"procfacilityorg\"\
+        ,\n               \"content\": \"European Space Agency\"\n            },\n\
+        \            {\n               \"name\": \"processinglevel\",\n          \
+        \     \"content\": \"2\"\n            },\n            {\n               \"\
+        name\": \"processingname\",\n               \"content\": \"Data Processing\"\
+        \n            },\n            {\n               \"name\": \"productlevel\"\
+        ,\n               \"content\": \"L2\"\n            },\n            {\n   \
+        \            \"name\": \"producttype\",\n               \"content\": \"SR_2_LAN___\"\
+        \n            },\n            {\n               \"name\": \"relorbitdir\"\
+        ,\n               \"content\": \"descending\"\n            },\n          \
+        \  {\n               \"name\": \"relpassnumber\",\n               \"content\"\
+        : \"590\"\n            },\n            {\n               \"name\": \"relpassdirection\"\
+        ,\n               \"content\": \"descending\"\n            },\n          \
+        \  {\n               \"name\": \"platformname\",\n               \"content\"\
+        : \"Sentinel-3\"\n            },\n            {\n               \"name\":\
+        \ \"size\",\n               \"content\": \"76.62 MB\"\n            },\n  \
+        \          {\n               \"name\": \"timeliness\",\n               \"\
+        content\": \"Non Time Critical\"\n            },\n            {\n        \
+        \       \"name\": \"uuid\",\n               \"content\": \"50d27cb5-70da-41c9-b0f3-023cfb25d781\"\
+        \n            }\n         ],\n         \"date\": [\n            {\n      \
+        \         \"name\": \"ingestiondate\",\n               \"content\": \"2016-12-27T00:26:30.788Z\"\
+        \n            },\n            {\n               \"name\": \"beginposition\"\
+        ,\n               \"content\": \"2016-12-01T13:13:17.65Z\"\n            },\n\
+        \            {\n               \"name\": \"endposition\",\n              \
+        \ \"content\": \"2016-12-01T14:03:20.941Z\"\n            }\n         ],\n\
+        \         \"link\": [\n            {\"href\": \"https://scihub.copernicus.eu/s3/odata/v1/Products('50d27cb5-70da-41c9-b0f3-023cfb25d781')/$value\"\
         },\n            {\n               \"rel\": \"alternative\",\n            \
         \   \"href\": \"https://scihub.copernicus.eu/s3/odata/v1/Products('50d27cb5-70da-41c9-b0f3-023cfb25d781')/\"\
         \n            },\n            {\n               \"rel\": \"icon\",\n     \
         \          \"href\": \"https://scihub.copernicus.eu/s3/odata/v1/Products('50d27cb5-70da-41c9-b0f3-023cfb25d781')/Products('Quicklook')/$value\"\
-        \n            }\n         ],\n         \"date\": [\n            {\n      \
-        \         \"content\": \"2016-12-27T00:26:30.788Z\",\n               \"name\"\
-        : \"ingestiondate\"\n            },\n            {\n               \"content\"\
-        : \"2016-12-01T13:13:17.65Z\",\n               \"name\": \"beginposition\"\
-        \n            },\n            {\n               \"content\": \"2016-12-01T14:03:20.941Z\"\
-        ,\n               \"name\": \"endposition\"\n            }\n         ],\n\
-        \         \"long\": {\n            \"content\": \"11\",\n            \"name\"\
-        : \"cyclenumber\"\n         }\n      },\n      {\n         \"summary\": \"\
-        Date: 2016-12-01T13:35:35.577Z, Instrument: SLSTR, Mode: , Satellite: Sentinel-3,\
-        \ Size: 559.91 MB\",\n         \"id\": \"6424b108-d055-4fdf-95c1-79f92ff8932f\"\
-        ,\n         \"title\": \"S3A_SL_1_RBT____20161201T133535_20161201T133835_20161201T154641_0179_011_295_2879_SVL_O_NR_002\"\
-        ,\n         \"str\": [\n            {\n               \"content\": \"6424b108-d055-4fdf-95c1-79f92ff8932f\"\
-        ,\n               \"name\": \"uuid\"\n            },\n            {\n    \
-        \           \"content\": \"FORECAST\",\n               \"name\": \"ecmwf\"\
-        \n            },\n            {\n               \"content\": \"S3A_SL_1_RBT____20161201T133535_20161201T133835_20161201T154641_0179_011_295_2879_SVL_O_NR_002.SEN3\"\
-        ,\n               \"name\": \"filename\"\n            },\n            {\n\
-        \               \"content\": \"<gml:Polygon srsName=\\\"http://www.opengis.net/gml/srs/epsg.xml#4326\\\
+        \n            }\n         ],\n         \"id\": \"50d27cb5-70da-41c9-b0f3-023cfb25d781\"\
+        ,\n         \"title\": \"S3A_SR_2_LAN____20161201T131318_20161201T140321_20161226T235359_3003_011_295______LN3_O_NT_002\"\
+        ,\n         \"long\": {\n            \"name\": \"cyclenumber\",\n        \
+        \    \"content\": \"11\"\n         },\n         \"int\": [\n            {\n\
+        \               \"name\": \"lrmpercentage\",\n               \"content\":\
+        \ \"0\"\n            },\n            {\n               \"name\": \"sarpercentage\"\
+        ,\n               \"content\": \"100\"\n            },\n            {\n  \
+        \             \"name\": \"closedseapercentage\",\n               \"content\"\
+        : \"1\"\n            },\n            {\n               \"name\": \"continentalicepercentage\"\
+        ,\n               \"content\": \"17\"\n            },\n            {\n   \
+        \            \"name\": \"landpercentage\",\n               \"content\": \"\
+        57\"\n            },\n            {\n               \"name\": \"openseapercentage\"\
+        ,\n               \"content\": \"25\"\n            },\n            {\n   \
+        \            \"name\": \"orbitnumber\",\n               \"content\": \"4118\"\
+        \n            },\n            {\n               \"name\": \"relativeorbitnumber\"\
+        ,\n               \"content\": \"295\"\n            }\n         ]\n      },\n\
+        \      {\n         \"summary\": \"Date: 2016-12-01T13:35:35.577Z, Instrument:\
+        \ SLSTR, Mode: , Satellite: Sentinel-3, Size: 559.91 MB\",\n         \"str\"\
+        : [\n            {\n               \"name\": \"uuid\",\n               \"\
+        content\": \"6424b108-d055-4fdf-95c1-79f92ff8932f\"\n            },\n    \
+        \        {\n               \"name\": \"ecmwf\",\n               \"content\"\
+        : \"FORECAST\"\n            },\n            {\n               \"name\": \"\
+        filename\",\n               \"content\": \"S3A_SL_1_RBT____20161201T133535_20161201T133835_20161201T154641_0179_011_295_2879_SVL_O_NR_002.SEN3\"\
+        \n            },\n            {\n               \"name\": \"gmlfootprint\"\
+        ,\n               \"content\": \"<gml:Polygon srsName=\\\"http://www.opengis.net/gml/srs/epsg.xml#4326\\\
         \" xmlns:gml=\\\"http://www.opengis.net/gml\\\">\\n   <gml:outerBoundaryIs>\\\
         n      <gml:LinearRing>\\n         <gml:coordinates>-0.153844,-63.9829 -0.281456,-63.4221\
         \ -0.409039,-62.8613 -0.536582,-62.3005 -0.664071,-61.7397 -0.791496,-61.1788\
@@ -231,92 +228,93 @@ interactions:
         \ 10.0111,-60.0498 10.1251,-60.6222 10.2381,-61.195 10.35,-61.7682 7.71145,-62.2994\
         \ 5.07375,-62.8463 2.43727,-63.4103 -0.153844,-63.9829<\\/gml:coordinates>\\\
         n      <\\/gml:LinearRing>\\n   <\\/gml:outerBoundaryIs>\\n<\\/gml:Polygon>\"\
-        ,\n               \"name\": \"gmlfootprint\"\n            },\n           \
-        \ {\n               \"content\": \"SAFE\",\n               \"name\": \"format\"\
-        \n            },\n            {\n               \"content\": \"S3A_SL_1_RBT____20161201T133535_20161201T133835_20161201T154641_0179_011_295_2879_SVL_O_NR_002\"\
-        ,\n               \"name\": \"identifier\"\n            },\n            {\n\
-        \               \"content\": \"SLSTR\",\n               \"name\": \"instrumentshortname\"\
-        \n            },\n            {\n               \"content\": \"Earth Observation\"\
-        ,\n               \"name\": \"sensoroperationalmode\"\n            },\n  \
-        \          {\n               \"content\": \"Sea and Land Surface Temperature\
-        \ Radiometer\",\n               \"name\": \"instrumentname\"\n           \
-        \ },\n            {\n               \"content\": \"POLYGON ((-63.9829 -0.153844,-63.4221\
-        \ -0.281456,-62.8613 -0.409039,-62.3005 -0.536582,-61.7397 -0.664071,-61.1788\
-        \ -0.791496,-60.6179 -0.918843,-60.057 -1.0461,-59.496 -1.17326,-58.935 -1.3003,-58.3739\
-        \ -1.42721,-57.8127 -1.55399,-57.2515 -1.68062,-56.6902 -1.80708,-56.1289\
-        \ -1.93337,-55.5674 -2.05947,-55.0059 -2.18538,-54.4442 -2.31107,-53.8825\
-        \ -2.43654,-53.3207 -2.56177,-52.7587 -2.68675,-52.1967 -2.81148,-51.6345\
-        \ -2.93593,-51.0722 -3.0601,-50.5098 -3.18397,-49.9472 -3.30754,-49.3845 -3.43078,-48.8217\
-        \ -3.5537,-48.2587 -3.67627,-47.6955 -3.79848,-47.1322 -3.92033,-46.5687 -4.04179,-46.0051\
-        \ -4.16287,-45.8642 -4.19307,-45.3042 -1.60195,-44.7155 1.03176,-44.1058 3.66384,-43.4733\
-        \ 6.29383,-43.6137 6.32827,-44.1757 6.46566,-44.7379 6.60242,-45.3005 6.73855,-45.8634\
-        \ 6.87403,-46.4266 7.00884,-46.9901 7.14298,-47.554 7.27643,-48.1182 7.40917,-48.6827\
-        \ 7.5412,-49.2476 7.67249,-49.8128 7.80304,-50.3783 7.93284,-50.9443 8.06187,-51.5105\
-        \ 8.19011,-52.0772 8.31756,-52.6442 8.4442,-53.2115 8.57001,-53.7793 8.69499,-54.3474\
-        \ 8.81913,-54.9159 8.9424,-55.4848 9.06481,-56.054 9.18632,-56.6237 9.30694,-57.1937\
-        \ 9.42665,-57.7641 9.54543,-58.335 9.66328,-58.9062 9.78018,-59.4778 9.89612,-60.0498\
-        \ 10.0111,-60.6222 10.1251,-61.195 10.2381,-61.7682 10.35,-62.2994 7.71145,-62.8463\
-        \ 5.07375,-63.4103 2.43727,-63.9829 -0.153844))\",\n               \"name\"\
-        : \"footprint\"\n            },\n            {\n               \"content\"\
-        : \"EO\",\n               \"name\": \"mode\"\n            },\n           \
-        \ {\n               \"content\": \"0000-000A\",\n               \"name\":\
-        \ \"platformidentifier\"\n            },\n            {\n               \"\
-        content\": \"PASSED\",\n               \"name\": \"onlinequalitycheck\"\n\
-        \            },\n            {\n               \"content\": \"descending\"\
-        ,\n               \"name\": \"orbitdirection\"\n            },\n         \
-        \   {\n               \"content\": \"2879\",\n               \"name\": \"\
-        pdualongtrackcoord\"\n            },\n            {\n               \"content\"\
-        : \"179\",\n               \"name\": \"pduduration\"\n            },\n   \
-        \         {\n               \"content\": \"8236\",\n               \"name\"\
-        : \"passnumber\"\n            },\n            {\n               \"content\"\
-        : \"descending\",\n               \"name\": \"passdirection\"\n          \
-        \  },\n            {\n               \"content\": \"Svalbard Satellite Core\
-        \ Ground Station [SVL]\",\n               \"name\": \"procfacilityname\"\n\
-        \            },\n            {\n               \"content\": \"European Space\
-        \ Agency\",\n               \"name\": \"procfacilityorg\"\n            },\n\
-        \            {\n               \"content\": \"1\",\n               \"name\"\
-        : \"processinglevel\"\n            },\n            {\n               \"content\"\
-        : \"Data Processing\",\n               \"name\": \"processingname\"\n    \
-        \        },\n            {\n               \"content\": \"L1\",\n        \
-        \       \"name\": \"productlevel\"\n            },\n            {\n      \
-        \         \"content\": \"SL_1_RBT___\",\n               \"name\": \"producttype\"\
-        \n            },\n            {\n               \"content\": \"descending\"\
-        ,\n               \"name\": \"relorbitdir\"\n            },\n            {\n\
-        \               \"content\": \"590\",\n               \"name\": \"relpassnumber\"\
-        \n            },\n            {\n               \"content\": \"descending\"\
-        ,\n               \"name\": \"relpassdirection\"\n            },\n       \
-        \     {\n               \"content\": \"Sentinel-3\",\n               \"name\"\
-        : \"platformname\"\n            },\n            {\n               \"content\"\
-        : \"559.91 MB\",\n               \"name\": \"size\"\n            },\n    \
-        \        {\n               \"content\": \"Near Real Time\",\n            \
-        \   \"name\": \"timeliness\"\n            }\n         ],\n         \"arr\"\
-        : {\n            \"str\": \"002\",\n            \"name\": \"collection\"\n\
-        \         },\n         \"int\": [\n            {\n               \"content\"\
-        : \"4118\",\n               \"name\": \"orbitnumber\"\n            },\n  \
-        \          {\n               \"content\": \"295\",\n               \"name\"\
-        : \"relativeorbitnumber\"\n            }\n         ],\n         \"link\":\
-        \ [\n            {\"href\": \"https://scihub.copernicus.eu/s3/odata/v1/Products('6424b108-d055-4fdf-95c1-79f92ff8932f')/$value\"\
+        \n            },\n            {\n               \"name\": \"format\",\n  \
+        \             \"content\": \"SAFE\"\n            },\n            {\n     \
+        \          \"name\": \"identifier\",\n               \"content\": \"S3A_SL_1_RBT____20161201T133535_20161201T133835_20161201T154641_0179_011_295_2879_SVL_O_NR_002\"\
+        \n            },\n            {\n               \"name\": \"instrumentshortname\"\
+        ,\n               \"content\": \"SLSTR\"\n            },\n            {\n\
+        \               \"name\": \"sensoroperationalmode\",\n               \"content\"\
+        : \"Earth Observation\"\n            },\n            {\n               \"\
+        name\": \"instrumentname\",\n               \"content\": \"Sea and Land Surface\
+        \ Temperature Radiometer\"\n            },\n            {\n              \
+        \ \"name\": \"footprint\",\n               \"content\": \"POLYGON ((-63.9829\
+        \ -0.153844,-63.4221 -0.281456,-62.8613 -0.409039,-62.3005 -0.536582,-61.7397\
+        \ -0.664071,-61.1788 -0.791496,-60.6179 -0.918843,-60.057 -1.0461,-59.496\
+        \ -1.17326,-58.935 -1.3003,-58.3739 -1.42721,-57.8127 -1.55399,-57.2515 -1.68062,-56.6902\
+        \ -1.80708,-56.1289 -1.93337,-55.5674 -2.05947,-55.0059 -2.18538,-54.4442\
+        \ -2.31107,-53.8825 -2.43654,-53.3207 -2.56177,-52.7587 -2.68675,-52.1967\
+        \ -2.81148,-51.6345 -2.93593,-51.0722 -3.0601,-50.5098 -3.18397,-49.9472 -3.30754,-49.3845\
+        \ -3.43078,-48.8217 -3.5537,-48.2587 -3.67627,-47.6955 -3.79848,-47.1322 -3.92033,-46.5687\
+        \ -4.04179,-46.0051 -4.16287,-45.8642 -4.19307,-45.3042 -1.60195,-44.7155\
+        \ 1.03176,-44.1058 3.66384,-43.4733 6.29383,-43.6137 6.32827,-44.1757 6.46566,-44.7379\
+        \ 6.60242,-45.3005 6.73855,-45.8634 6.87403,-46.4266 7.00884,-46.9901 7.14298,-47.554\
+        \ 7.27643,-48.1182 7.40917,-48.6827 7.5412,-49.2476 7.67249,-49.8128 7.80304,-50.3783\
+        \ 7.93284,-50.9443 8.06187,-51.5105 8.19011,-52.0772 8.31756,-52.6442 8.4442,-53.2115\
+        \ 8.57001,-53.7793 8.69499,-54.3474 8.81913,-54.9159 8.9424,-55.4848 9.06481,-56.054\
+        \ 9.18632,-56.6237 9.30694,-57.1937 9.42665,-57.7641 9.54543,-58.335 9.66328,-58.9062\
+        \ 9.78018,-59.4778 9.89612,-60.0498 10.0111,-60.6222 10.1251,-61.195 10.2381,-61.7682\
+        \ 10.35,-62.2994 7.71145,-62.8463 5.07375,-63.4103 2.43727,-63.9829 -0.153844))\"\
+        \n            },\n            {\n               \"name\": \"mode\",\n    \
+        \           \"content\": \"EO\"\n            },\n            {\n         \
+        \      \"name\": \"platformidentifier\",\n               \"content\": \"0000-000A\"\
+        \n            },\n            {\n               \"name\": \"onlinequalitycheck\"\
+        ,\n               \"content\": \"PASSED\"\n            },\n            {\n\
+        \               \"name\": \"orbitdirection\",\n               \"content\"\
+        : \"descending\"\n            },\n            {\n               \"name\":\
+        \ \"pdualongtrackcoord\",\n               \"content\": \"2879\"\n        \
+        \    },\n            {\n               \"name\": \"pduduration\",\n      \
+        \         \"content\": \"179\"\n            },\n            {\n          \
+        \     \"name\": \"passnumber\",\n               \"content\": \"8236\"\n  \
+        \          },\n            {\n               \"name\": \"passdirection\",\n\
+        \               \"content\": \"descending\"\n            },\n            {\n\
+        \               \"name\": \"procfacilityname\",\n               \"content\"\
+        : \"Svalbard Satellite Core Ground Station [SVL]\"\n            },\n     \
+        \       {\n               \"name\": \"procfacilityorg\",\n               \"\
+        content\": \"European Space Agency\"\n            },\n            {\n    \
+        \           \"name\": \"processinglevel\",\n               \"content\": \"\
+        1\"\n            },\n            {\n               \"name\": \"processingname\"\
+        ,\n               \"content\": \"Data Processing\"\n            },\n     \
+        \       {\n               \"name\": \"productlevel\",\n               \"content\"\
+        : \"L1\"\n            },\n            {\n               \"name\": \"producttype\"\
+        ,\n               \"content\": \"SL_1_RBT___\"\n            },\n         \
+        \   {\n               \"name\": \"relorbitdir\",\n               \"content\"\
+        : \"descending\"\n            },\n            {\n               \"name\":\
+        \ \"relpassnumber\",\n               \"content\": \"590\"\n            },\n\
+        \            {\n               \"name\": \"relpassdirection\",\n         \
+        \      \"content\": \"descending\"\n            },\n            {\n      \
+        \         \"name\": \"platformname\",\n               \"content\": \"Sentinel-3\"\
+        \n            },\n            {\n               \"name\": \"size\",\n    \
+        \           \"content\": \"559.91 MB\"\n            },\n            {\n  \
+        \             \"name\": \"timeliness\",\n               \"content\": \"Near\
+        \ Real Time\"\n            }\n         ],\n         \"arr\": {\n         \
+        \   \"str\": \"002\",\n            \"name\": \"collection\"\n         },\n\
+        \         \"date\": [\n            {\n               \"name\": \"ingestiondate\"\
+        ,\n               \"content\": \"2016-12-01T16:38:28.976Z\"\n            },\n\
+        \            {\n               \"name\": \"beginposition\",\n            \
+        \   \"content\": \"2016-12-01T13:35:35.577Z\"\n            },\n          \
+        \  {\n               \"name\": \"endposition\",\n               \"content\"\
+        : \"2016-12-01T13:38:35.577Z\"\n            }\n         ],\n         \"link\"\
+        : [\n            {\"href\": \"https://scihub.copernicus.eu/s3/odata/v1/Products('6424b108-d055-4fdf-95c1-79f92ff8932f')/$value\"\
         },\n            {\n               \"rel\": \"alternative\",\n            \
         \   \"href\": \"https://scihub.copernicus.eu/s3/odata/v1/Products('6424b108-d055-4fdf-95c1-79f92ff8932f')/\"\
         \n            },\n            {\n               \"rel\": \"icon\",\n     \
         \          \"href\": \"https://scihub.copernicus.eu/s3/odata/v1/Products('6424b108-d055-4fdf-95c1-79f92ff8932f')/Products('Quicklook')/$value\"\
-        \n            }\n         ],\n         \"date\": [\n            {\n      \
-        \         \"content\": \"2016-12-01T16:38:28.976Z\",\n               \"name\"\
-        : \"ingestiondate\"\n            },\n            {\n               \"content\"\
-        : \"2016-12-01T13:35:35.577Z\",\n               \"name\": \"beginposition\"\
-        \n            },\n            {\n               \"content\": \"2016-12-01T13:38:35.577Z\"\
-        ,\n               \"name\": \"endposition\"\n            }\n         ],\n\
-        \         \"long\": {\n            \"content\": \"11\",\n            \"name\"\
-        : \"cyclenumber\"\n         }\n      },\n      {\n         \"summary\": \"\
-        Date: 2016-12-01T13:38:35.577Z, Instrument: SLSTR, Mode: , Satellite: Sentinel-3,\
-        \ Size: 573.10 MB\",\n         \"id\": \"f9713e0d-6ed5-4a88-a78b-f19910bb143b\"\
-        ,\n         \"title\": \"S3A_SL_1_RBT____20161201T133835_20161201T134135_20161201T154640_0179_011_295_3059_SVL_O_NR_002\"\
-        ,\n         \"str\": [\n            {\n               \"content\": \"f9713e0d-6ed5-4a88-a78b-f19910bb143b\"\
-        ,\n               \"name\": \"uuid\"\n            },\n            {\n    \
-        \           \"content\": \"FORECAST\",\n               \"name\": \"ecmwf\"\
-        \n            },\n            {\n               \"content\": \"S3A_SL_1_RBT____20161201T133835_20161201T134135_20161201T154640_0179_011_295_3059_SVL_O_NR_002.SEN3\"\
-        ,\n               \"name\": \"filename\"\n            },\n            {\n\
-        \               \"content\": \"<gml:Polygon srsName=\\\"http://www.opengis.net/gml/srs/epsg.xml#4326\\\
+        \n            }\n         ],\n         \"id\": \"6424b108-d055-4fdf-95c1-79f92ff8932f\"\
+        ,\n         \"title\": \"S3A_SL_1_RBT____20161201T133535_20161201T133835_20161201T154641_0179_011_295_2879_SVL_O_NR_002\"\
+        ,\n         \"long\": {\n            \"name\": \"cyclenumber\",\n        \
+        \    \"content\": \"11\"\n         },\n         \"int\": [\n            {\n\
+        \               \"name\": \"orbitnumber\",\n               \"content\": \"\
+        4118\"\n            },\n            {\n               \"name\": \"relativeorbitnumber\"\
+        ,\n               \"content\": \"295\"\n            }\n         ]\n      },\n\
+        \      {\n         \"summary\": \"Date: 2016-12-01T13:38:35.577Z, Instrument:\
+        \ SLSTR, Mode: , Satellite: Sentinel-3, Size: 573.10 MB\",\n         \"str\"\
+        : [\n            {\n               \"name\": \"uuid\",\n               \"\
+        content\": \"f9713e0d-6ed5-4a88-a78b-f19910bb143b\"\n            },\n    \
+        \        {\n               \"name\": \"ecmwf\",\n               \"content\"\
+        : \"FORECAST\"\n            },\n            {\n               \"name\": \"\
+        filename\",\n               \"content\": \"S3A_SL_1_RBT____20161201T133835_20161201T134135_20161201T154640_0179_011_295_3059_SVL_O_NR_002.SEN3\"\
+        \n            },\n            {\n               \"name\": \"gmlfootprint\"\
+        ,\n               \"content\": \"<gml:Polygon srsName=\\\"http://www.opengis.net/gml/srs/epsg.xml#4326\\\
         \" xmlns:gml=\\\"http://www.opengis.net/gml\\\">\\n   <gml:outerBoundaryIs>\\\
         n      <gml:LinearRing>\\n         <gml:coordinates>-10.6339,-66.5217 -10.7786,-65.9553\
         \ -10.9222,-65.3883 -11.0648,-64.8207 -11.2063,-64.2526 -11.3467,-63.684 -11.4861,-63.1148\
@@ -336,26 +334,26 @@ interactions:
         \ -0.800305,-61.1808 -0.672871,-61.7417 -0.54537,-62.3025 -0.417816,-62.8633\
         \ -0.29022,-63.4241 -0.162595,-63.9849 -2.79548,-64.5871 -5.4259,-65.2111\
         \ -8.0534,-65.859 -10.6339,-66.5217<\\/gml:coordinates>\\n      <\\/gml:LinearRing>\\\
-        n   <\\/gml:outerBoundaryIs>\\n<\\/gml:Polygon>\",\n               \"name\"\
-        : \"gmlfootprint\"\n            },\n            {\n               \"content\"\
-        : \"SAFE\",\n               \"name\": \"format\"\n            },\n       \
-        \     {\n               \"content\": \"S3A_SL_1_RBT____20161201T133835_20161201T134135_20161201T154640_0179_011_295_3059_SVL_O_NR_002\"\
-        ,\n               \"name\": \"identifier\"\n            },\n            {\n\
-        \               \"content\": \"SLSTR\",\n               \"name\": \"instrumentshortname\"\
-        \n            },\n            {\n               \"content\": \"Earth Observation\"\
-        ,\n               \"name\": \"sensoroperationalmode\"\n            },\n  \
-        \          {\n               \"content\": \"Sea and Land Surface Temperature\
-        \ Radiometer\",\n               \"name\": \"instrumentname\"\n           \
-        \ },\n            {\n               \"content\": \"POLYGON ((-66.5217 -10.6339,-65.9553\
-        \ -10.7786,-65.3883 -10.9222,-64.8207 -11.0648,-64.2526 -11.2063,-63.684 -11.3467,-63.1148\
-        \ -11.4861,-62.5451 -11.6243,-61.9748 -11.7614,-61.4039 -11.8973,-60.8325\
-        \ -12.0321,-60.2605 -12.1657,-59.6879 -12.2982,-59.1147 -12.4294,-58.541 -12.5594,-57.9667\
-        \ -12.6882,-57.3919 -12.8157,-56.8164 -12.942,-56.2404 -13.067,-55.6638 -13.1908,-55.0867\
-        \ -13.3132,-54.5089 -13.4343,-53.9306 -13.5541,-53.3517 -13.6725,-52.7722\
-        \ -13.7896,-52.1922 -13.9053,-51.6115 -14.0197,-51.0303 -14.1326,-50.4486\
-        \ -14.2442,-49.8662 -14.3543,-49.2833 -14.463,-48.6999 -14.5702,-48.1159 -14.676,-47.9698\
-        \ -14.7023,-47.4726 -12.11,-46.9529 -9.47368,-46.4177 -6.83753,-45.866 -4.20183,-46.007\
-        \ -4.17163,-46.5706 -4.05056,-47.1341 -3.92911,-47.6974 -3.80728,-48.2606\
+        n   <\\/gml:outerBoundaryIs>\\n<\\/gml:Polygon>\"\n            },\n      \
+        \      {\n               \"name\": \"format\",\n               \"content\"\
+        : \"SAFE\"\n            },\n            {\n               \"name\": \"identifier\"\
+        ,\n               \"content\": \"S3A_SL_1_RBT____20161201T133835_20161201T134135_20161201T154640_0179_011_295_3059_SVL_O_NR_002\"\
+        \n            },\n            {\n               \"name\": \"instrumentshortname\"\
+        ,\n               \"content\": \"SLSTR\"\n            },\n            {\n\
+        \               \"name\": \"sensoroperationalmode\",\n               \"content\"\
+        : \"Earth Observation\"\n            },\n            {\n               \"\
+        name\": \"instrumentname\",\n               \"content\": \"Sea and Land Surface\
+        \ Temperature Radiometer\"\n            },\n            {\n              \
+        \ \"name\": \"footprint\",\n               \"content\": \"POLYGON ((-66.5217\
+        \ -10.6339,-65.9553 -10.7786,-65.3883 -10.9222,-64.8207 -11.0648,-64.2526\
+        \ -11.2063,-63.684 -11.3467,-63.1148 -11.4861,-62.5451 -11.6243,-61.9748 -11.7614,-61.4039\
+        \ -11.8973,-60.8325 -12.0321,-60.2605 -12.1657,-59.6879 -12.2982,-59.1147\
+        \ -12.4294,-58.541 -12.5594,-57.9667 -12.6882,-57.3919 -12.8157,-56.8164 -12.942,-56.2404\
+        \ -13.067,-55.6638 -13.1908,-55.0867 -13.3132,-54.5089 -13.4343,-53.9306 -13.5541,-53.3517\
+        \ -13.6725,-52.7722 -13.7896,-52.1922 -13.9053,-51.6115 -14.0197,-51.0303\
+        \ -14.1326,-50.4486 -14.2442,-49.8662 -14.3543,-49.2833 -14.463,-48.6999 -14.5702,-48.1159\
+        \ -14.676,-47.9698 -14.7023,-47.4726 -12.11,-46.9529 -9.47368,-46.4177 -6.83753,-45.866\
+        \ -4.20183,-46.007 -4.17163,-46.5706 -4.05056,-47.1341 -3.92911,-47.6974 -3.80728,-48.2606\
         \ -3.68507,-48.8236 -3.56251,-49.3864 -3.43961,-49.9491 -3.31637,-50.5117\
         \ -3.19281,-51.0741 -3.06895,-51.6364 -2.94478,-52.1986 -2.82033,-52.7607\
         \ -2.69561,-53.3226 -2.57063,-53.8845 -2.4454,-54.4462 -2.31993,-55.0078 -2.19424,-55.5694\
@@ -363,70 +361,70 @@ interactions:
         \ -1.56284,-58.3759 -1.43606,-58.9369 -1.30914,-59.498 -1.18209,-60.059 -1.05493,-60.6199\
         \ -0.927662,-61.1808 -0.800305,-61.7417 -0.672871,-62.3025 -0.54537,-62.8633\
         \ -0.417816,-63.4241 -0.29022,-63.9849 -0.162595,-64.5871 -2.79548,-65.2111\
-        \ -5.4259,-65.859 -8.0534,-66.5217 -10.6339))\",\n               \"name\"\
-        : \"footprint\"\n            },\n            {\n               \"content\"\
-        : \"EO\",\n               \"name\": \"mode\"\n            },\n           \
-        \ {\n               \"content\": \"0000-000A\",\n               \"name\":\
-        \ \"platformidentifier\"\n            },\n            {\n               \"\
-        content\": \"PASSED\",\n               \"name\": \"onlinequalitycheck\"\n\
-        \            },\n            {\n               \"content\": \"descending\"\
-        ,\n               \"name\": \"orbitdirection\"\n            },\n         \
-        \   {\n               \"content\": \"3059\",\n               \"name\": \"\
-        pdualongtrackcoord\"\n            },\n            {\n               \"content\"\
-        : \"179\",\n               \"name\": \"pduduration\"\n            },\n   \
-        \         {\n               \"content\": \"8236\",\n               \"name\"\
-        : \"passnumber\"\n            },\n            {\n               \"content\"\
-        : \"descending\",\n               \"name\": \"passdirection\"\n          \
-        \  },\n            {\n               \"content\": \"Svalbard Satellite Core\
-        \ Ground Station [SVL]\",\n               \"name\": \"procfacilityname\"\n\
-        \            },\n            {\n               \"content\": \"European Space\
-        \ Agency\",\n               \"name\": \"procfacilityorg\"\n            },\n\
-        \            {\n               \"content\": \"1\",\n               \"name\"\
-        : \"processinglevel\"\n            },\n            {\n               \"content\"\
-        : \"Data Processing\",\n               \"name\": \"processingname\"\n    \
-        \        },\n            {\n               \"content\": \"L1\",\n        \
-        \       \"name\": \"productlevel\"\n            },\n            {\n      \
-        \         \"content\": \"SL_1_RBT___\",\n               \"name\": \"producttype\"\
-        \n            },\n            {\n               \"content\": \"descending\"\
-        ,\n               \"name\": \"relorbitdir\"\n            },\n            {\n\
-        \               \"content\": \"590\",\n               \"name\": \"relpassnumber\"\
-        \n            },\n            {\n               \"content\": \"descending\"\
-        ,\n               \"name\": \"relpassdirection\"\n            },\n       \
-        \     {\n               \"content\": \"Sentinel-3\",\n               \"name\"\
-        : \"platformname\"\n            },\n            {\n               \"content\"\
-        : \"573.10 MB\",\n               \"name\": \"size\"\n            },\n    \
-        \        {\n               \"content\": \"Near Real Time\",\n            \
-        \   \"name\": \"timeliness\"\n            }\n         ],\n         \"arr\"\
+        \ -5.4259,-65.859 -8.0534,-66.5217 -10.6339))\"\n            },\n        \
+        \    {\n               \"name\": \"mode\",\n               \"content\": \"\
+        EO\"\n            },\n            {\n               \"name\": \"platformidentifier\"\
+        ,\n               \"content\": \"0000-000A\"\n            },\n           \
+        \ {\n               \"name\": \"onlinequalitycheck\",\n               \"content\"\
+        : \"PASSED\"\n            },\n            {\n               \"name\": \"orbitdirection\"\
+        ,\n               \"content\": \"descending\"\n            },\n          \
+        \  {\n               \"name\": \"pdualongtrackcoord\",\n               \"\
+        content\": \"3059\"\n            },\n            {\n               \"name\"\
+        : \"pduduration\",\n               \"content\": \"179\"\n            },\n\
+        \            {\n               \"name\": \"passnumber\",\n               \"\
+        content\": \"8236\"\n            },\n            {\n               \"name\"\
+        : \"passdirection\",\n               \"content\": \"descending\"\n       \
+        \     },\n            {\n               \"name\": \"procfacilityname\",\n\
+        \               \"content\": \"Svalbard Satellite Core Ground Station [SVL]\"\
+        \n            },\n            {\n               \"name\": \"procfacilityorg\"\
+        ,\n               \"content\": \"European Space Agency\"\n            },\n\
+        \            {\n               \"name\": \"processinglevel\",\n          \
+        \     \"content\": \"1\"\n            },\n            {\n               \"\
+        name\": \"processingname\",\n               \"content\": \"Data Processing\"\
+        \n            },\n            {\n               \"name\": \"productlevel\"\
+        ,\n               \"content\": \"L1\"\n            },\n            {\n   \
+        \            \"name\": \"producttype\",\n               \"content\": \"SL_1_RBT___\"\
+        \n            },\n            {\n               \"name\": \"relorbitdir\"\
+        ,\n               \"content\": \"descending\"\n            },\n          \
+        \  {\n               \"name\": \"relpassnumber\",\n               \"content\"\
+        : \"590\"\n            },\n            {\n               \"name\": \"relpassdirection\"\
+        ,\n               \"content\": \"descending\"\n            },\n          \
+        \  {\n               \"name\": \"platformname\",\n               \"content\"\
+        : \"Sentinel-3\"\n            },\n            {\n               \"name\":\
+        \ \"size\",\n               \"content\": \"573.10 MB\"\n            },\n \
+        \           {\n               \"name\": \"timeliness\",\n               \"\
+        content\": \"Near Real Time\"\n            }\n         ],\n         \"arr\"\
         : {\n            \"str\": \"002\",\n            \"name\": \"collection\"\n\
-        \         },\n         \"int\": [\n            {\n               \"content\"\
-        : \"4118\",\n               \"name\": \"orbitnumber\"\n            },\n  \
-        \          {\n               \"content\": \"295\",\n               \"name\"\
-        : \"relativeorbitnumber\"\n            }\n         ],\n         \"link\":\
-        \ [\n            {\"href\": \"https://scihub.copernicus.eu/s3/odata/v1/Products('f9713e0d-6ed5-4a88-a78b-f19910bb143b')/$value\"\
+        \         },\n         \"date\": [\n            {\n               \"name\"\
+        : \"ingestiondate\",\n               \"content\": \"2016-12-01T16:38:26.133Z\"\
+        \n            },\n            {\n               \"name\": \"beginposition\"\
+        ,\n               \"content\": \"2016-12-01T13:38:35.577Z\"\n            },\n\
+        \            {\n               \"name\": \"endposition\",\n              \
+        \ \"content\": \"2016-12-01T13:41:35.577Z\"\n            }\n         ],\n\
+        \         \"link\": [\n            {\"href\": \"https://scihub.copernicus.eu/s3/odata/v1/Products('f9713e0d-6ed5-4a88-a78b-f19910bb143b')/$value\"\
         },\n            {\n               \"rel\": \"alternative\",\n            \
         \   \"href\": \"https://scihub.copernicus.eu/s3/odata/v1/Products('f9713e0d-6ed5-4a88-a78b-f19910bb143b')/\"\
         \n            },\n            {\n               \"rel\": \"icon\",\n     \
         \          \"href\": \"https://scihub.copernicus.eu/s3/odata/v1/Products('f9713e0d-6ed5-4a88-a78b-f19910bb143b')/Products('Quicklook')/$value\"\
-        \n            }\n         ],\n         \"date\": [\n            {\n      \
-        \         \"content\": \"2016-12-01T16:38:26.133Z\",\n               \"name\"\
-        : \"ingestiondate\"\n            },\n            {\n               \"content\"\
-        : \"2016-12-01T13:38:35.577Z\",\n               \"name\": \"beginposition\"\
-        \n            },\n            {\n               \"content\": \"2016-12-01T13:41:35.577Z\"\
-        ,\n               \"name\": \"endposition\"\n            }\n         ],\n\
-        \         \"long\": {\n            \"content\": \"11\",\n            \"name\"\
-        : \"cyclenumber\"\n         }\n      },\n      {\n         \"summary\": \"\
-        Date: 2016-12-01T13:21:33.755Z, Instrument: OLCI, Mode: , Satellite: Sentinel-3,\
-        \ Size: 721.66 MB\",\n         \"id\": \"c4a36e6b-4a18-46b4-b2ff-abe7a231a46f\"\
-        ,\n         \"title\": \"S3A_OL_1_ERR____20161201T132133_20161201T140547_20161201T154640_2653_011_295______SVL_O_NR_002\"\
-        ,\n         \"str\": [\n            {\n               \"content\": \"c4a36e6b-4a18-46b4-b2ff-abe7a231a46f\"\
-        ,\n               \"name\": \"uuid\"\n            },\n            {\n    \
-        \           \"content\": \"55.195362\",\n               \"name\": \"brightpixels\"\
-        \n            },\n            {\n               \"content\": \"0.0\",\n  \
-        \             \"name\": \"coastalpixels\"\n            },\n            {\n\
-        \               \"content\": \"FORECAST\",\n               \"name\": \"ecmwf\"\
-        \n            },\n            {\n               \"content\": \"S3A_OL_1_ERR____20161201T132133_20161201T140547_20161201T154640_2653_011_295______SVL_O_NR_002.SEN3\"\
-        ,\n               \"name\": \"filename\"\n            },\n            {\n\
-        \               \"content\": \"<gml:Polygon srsName=\\\"http://www.opengis.net/gml/srs/epsg.xml#4326\\\
+        \n            }\n         ],\n         \"id\": \"f9713e0d-6ed5-4a88-a78b-f19910bb143b\"\
+        ,\n         \"title\": \"S3A_SL_1_RBT____20161201T133835_20161201T134135_20161201T154640_0179_011_295_3059_SVL_O_NR_002\"\
+        ,\n         \"long\": {\n            \"name\": \"cyclenumber\",\n        \
+        \    \"content\": \"11\"\n         },\n         \"int\": [\n            {\n\
+        \               \"name\": \"orbitnumber\",\n               \"content\": \"\
+        4118\"\n            },\n            {\n               \"name\": \"relativeorbitnumber\"\
+        ,\n               \"content\": \"295\"\n            }\n         ]\n      },\n\
+        \      {\n         \"summary\": \"Date: 2016-12-01T13:21:33.755Z, Instrument:\
+        \ OLCI, Mode: , Satellite: Sentinel-3, Size: 721.66 MB\",\n         \"str\"\
+        : [\n            {\n               \"name\": \"uuid\",\n               \"\
+        content\": \"c4a36e6b-4a18-46b4-b2ff-abe7a231a46f\"\n            },\n    \
+        \        {\n               \"name\": \"brightpixels\",\n               \"\
+        content\": \"55.195362\"\n            },\n            {\n               \"\
+        name\": \"coastalpixels\",\n               \"content\": \"0.0\"\n        \
+        \    },\n            {\n               \"name\": \"ecmwf\",\n            \
+        \   \"content\": \"FORECAST\"\n            },\n            {\n           \
+        \    \"name\": \"filename\",\n               \"content\": \"S3A_OL_1_ERR____20161201T132133_20161201T140547_20161201T154640_2653_011_295______SVL_O_NR_002.SEN3\"\
+        \n            },\n            {\n               \"name\": \"gmlfootprint\"\
+        ,\n               \"content\": \"<gml:Polygon srsName=\\\"http://www.opengis.net/gml/srs/epsg.xml#4326\\\
         \" xmlns:gml=\\\"http://www.opengis.net/gml\\\">\\n   <gml:outerBoundaryIs>\\\
         n      <gml:LinearRing>\\n         <gml:coordinates>-70.4864,-179.122 -71.0315,179.982\
         \ -71.5769,179.067 -72.1176,178.097 -72.6532,177.07 -73.1832,175.979 -73.707,174.82\
@@ -474,134 +472,135 @@ interactions:
         \ -70.6909,-123.792 -71.4202,-128.991 -71.9996,-134.57 -72.4093,-140.455 -72.6332,-146.527\
         \ -72.6713,-152.709 -72.5194,-158.848 -72.182,-164.816 -71.6699,-170.521 -70.9969,-175.879\
         \ -70.4864,-179.122<\\/gml:coordinates>\\n      <\\/gml:LinearRing>\\n   <\\\
-        /gml:outerBoundaryIs>\\n<\\/gml:Polygon>\",\n               \"name\": \"gmlfootprint\"\
-        \n            },\n            {\n               \"content\": \"SAFE\",\n \
-        \              \"name\": \"format\"\n            },\n            {\n     \
-        \          \"content\": \"1.0\",\n               \"name\": \"freshwaterpixels\"\
-        \n            },\n            {\n               \"content\": \"S3A_OL_1_ERR____20161201T132133_20161201T140547_20161201T154640_2653_011_295______SVL_O_NR_002\"\
-        ,\n               \"name\": \"identifier\"\n            },\n            {\n\
-        \               \"content\": \"OLCI\",\n               \"name\": \"instrumentshortname\"\
-        \n            },\n            {\n               \"content\": \"Earth Observation\"\
-        ,\n               \"name\": \"sensoroperationalmode\"\n            },\n  \
-        \          {\n               \"content\": \"Ocean Land Colour Instrument\"\
-        ,\n               \"name\": \"instrumentname\"\n            },\n         \
-        \   {\n               \"content\": \"POLYGON ((-179.122 -70.4864,179.982 -71.0315,179.067\
-        \ -71.5769,178.097 -72.1176,177.07 -72.6532,175.979 -73.1832,174.82 -73.707,173.59\
-        \ -74.2237,172.276 -74.7334,170.874 -75.2349,169.383 -75.7292,167.782 -76.2116,166.068\
-        \ -76.6829,164.229 -77.1402,162.262 -77.5856,160.16 -78.0146,157.909 -78.427,155.496\
-        \ -78.821,152.921 -79.1936,150.152 -79.5566,154.003 -80.5114,161.659 -81.8929,172.104\
-        \ -83.0854,-173.868 -83.9757,-156.45 -84.4168,-138.011 -84.3039,-121.793 -83.6693,-109.247\
-        \ -82.6411,-100.021 -81.3611,-93.2252 -79.928,-88.1144 -78.3947,-84.1632 -76.7956,-81.0212\
-        \ -75.1537,-78.4625 -73.4807,-76.3337 -71.785,-74.5273 -70.0724,-72.9694 -68.3469,-71.6055\
-        \ -66.6119,-70.3966 -64.8679,-69.3147 -63.1158,-68.3346 -61.3589,-67.4371\
-        \ -59.5986,-66.6142 -57.8312,-65.8463 -56.0634,-65.1329 -54.2897,-64.4623\
-        \ -52.5136,-63.8274 -50.7358,-63.2269 -48.9542,-62.6543 -47.1708,-62.1048\
-        \ -45.3859,-61.5767 -43.5994,-61.0677 -41.8112,-60.577 -40.0202,-60.0987 -38.2289,-59.6355\
-        \ -36.4339,-59.1823 -34.6393,-58.7382 -32.8453,-58.3065 -31.0444,-57.8801\
-        \ -29.2462,-57.4594 -27.4482,-57.047 -25.646,-56.6384 -23.8442,-56.2336 -22.0424,-55.8334\
-        \ -20.2384,-55.436 -18.4344,-55.0405 -16.6295,-54.6475 -14.8234,-54.2546 -13.0186,-53.8637\
-        \ -11.2103,-53.4726 -9.40301,-53.0801 -7.59769,-52.6883 -5.7882,-52.2934 -3.98052,-51.8975\
-        \ -2.17361,-51.4984 -0.366423,-51.0978 1.44274,-50.692 3.249,-50.2827 5.05596,-49.8688\
-        \ 6.86249,-49.4496 8.66868,-49.0256 10.4758,-48.5935 12.28,-48.1543 14.0836,-47.7081\
-        \ 15.8881,-47.2516 17.6894,-46.7854 19.4903,-46.3082 21.2887,-45.8206 23.0881,-45.3182\
-        \ 24.8844,-44.8017 26.6783,-44.2701 28.4715,-43.723 30.2647,-43.1519 32.0496,-42.5634\
-        \ 33.8365,-41.951 35.6194,-41.3124 37.3991,-40.645 39.175,-39.9458 40.9471,-39.2115\
-        \ 42.7157,-38.4391 44.4806,-37.6194 46.2376,-36.7515 47.9909,-35.8275 49.7377,-34.8395\
-        \ 51.4767,-33.7787 53.2081,-32.6343 54.9293,-31.3951 56.6401,-32.4479 56.865,-33.5066\
-        \ 57.0909,-34.578 57.3077,-35.6624 57.5156,-36.7582 57.7138,-37.8657 57.9025,-38.9842\
-        \ 58.0823,-40.1141 58.2512,-41.2546 58.41,-42.4069 58.5563,-43.5667 58.6944,-44.7355\
-        \ 58.8221,-45.9122 58.9387,-47.0968 59.0449,-48.2884 59.1402,-49.4863 59.2245,-50.6897\
-        \ 59.2977,-51.8979 59.3598,-53.1082 59.4222,-53.3644 57.6431,-53.6247 55.8635,-53.8874\
-        \ 54.0818,-54.1532 52.2997,-54.4213 50.5169,-54.6922 48.7339,-54.9681 46.9536,-55.2435\
-        \ 45.1667,-55.5233 43.3811,-55.8061 41.5959,-56.0918 39.8109,-56.3803 38.0239,-56.6716\
-        \ 36.2346,-56.9654 34.4435,-57.266 32.662,-57.5653 30.8679,-57.8704 29.0755,-58.1796\
-        \ 27.2867,-58.4927 25.4975,-58.8086 23.7035,-59.1303 21.9136,-59.4562 20.1217,-59.7869\
-        \ 18.3312,-60.1216 16.5364,-60.4624 14.7446,-60.8088 12.9537,-61.1598 11.1591,-61.518\
-        \ 9.36697,-61.8826 7.57574,-62.2541 5.78465,-62.6333 3.99589,-63.0188 2.20339,-63.4136\
-        \ 0.41498,-63.8168 -1.37425,-64.2291 -3.15936,-64.6503 -4.94843,-65.0836 -6.73286,-65.5266\
-        \ -8.51701,-65.9811 -10.3007,-66.4495 -12.0795,-66.9307 -13.8596,-67.4268\
-        \ -15.6361,-67.9377 -17.4094,-68.4655 -19.1818,-69.0117 -20.9492,-69.5767\
-        \ -22.7139,-70.1622 -24.4794,-70.7716 -26.2358,-71.4044 -27.9897,-72.0623\
-        \ -29.7442,-72.7517 -31.4886,-73.4714 -33.2286,-74.2241 -34.9648,-75.0161\
-        \ -36.6923,-75.8476 -38.4155,-76.7253 -40.1291,-77.6521 -41.833,-78.6342 -43.529,-79.6769\
-        \ -45.2168,-80.7871 -46.8938,-81.9727 -48.5545,-83.2417 -50.2029,-84.6053\
-        \ -51.8369,-86.0739 -53.4468,-87.6609 -55.0424,-89.3816 -56.6095,-91.2527\
-        \ -58.1519,-93.2959 -59.6649,-95.5316 -61.1397,-97.9845 -62.572,-100.685 -63.9571,-103.663\
-        \ -65.286,-106.951 -66.5491,-110.581 -67.7345,-114.583 -68.8295,-118.985 -69.8215,-123.792\
+        /gml:outerBoundaryIs>\\n<\\/gml:Polygon>\"\n            },\n            {\n\
+        \               \"name\": \"format\",\n               \"content\": \"SAFE\"\
+        \n            },\n            {\n               \"name\": \"freshwaterpixels\"\
+        ,\n               \"content\": \"1.0\"\n            },\n            {\n  \
+        \             \"name\": \"identifier\",\n               \"content\": \"S3A_OL_1_ERR____20161201T132133_20161201T140547_20161201T154640_2653_011_295______SVL_O_NR_002\"\
+        \n            },\n            {\n               \"name\": \"instrumentshortname\"\
+        ,\n               \"content\": \"OLCI\"\n            },\n            {\n \
+        \              \"name\": \"sensoroperationalmode\",\n               \"content\"\
+        : \"Earth Observation\"\n            },\n            {\n               \"\
+        name\": \"instrumentname\",\n               \"content\": \"Ocean Land Colour\
+        \ Instrument\"\n            },\n            {\n               \"name\": \"\
+        footprint\",\n               \"content\": \"POLYGON ((-179.122 -70.4864,179.982\
+        \ -71.0315,179.067 -71.5769,178.097 -72.1176,177.07 -72.6532,175.979 -73.1832,174.82\
+        \ -73.707,173.59 -74.2237,172.276 -74.7334,170.874 -75.2349,169.383 -75.7292,167.782\
+        \ -76.2116,166.068 -76.6829,164.229 -77.1402,162.262 -77.5856,160.16 -78.0146,157.909\
+        \ -78.427,155.496 -78.821,152.921 -79.1936,150.152 -79.5566,154.003 -80.5114,161.659\
+        \ -81.8929,172.104 -83.0854,-173.868 -83.9757,-156.45 -84.4168,-138.011 -84.3039,-121.793\
+        \ -83.6693,-109.247 -82.6411,-100.021 -81.3611,-93.2252 -79.928,-88.1144 -78.3947,-84.1632\
+        \ -76.7956,-81.0212 -75.1537,-78.4625 -73.4807,-76.3337 -71.785,-74.5273 -70.0724,-72.9694\
+        \ -68.3469,-71.6055 -66.6119,-70.3966 -64.8679,-69.3147 -63.1158,-68.3346\
+        \ -61.3589,-67.4371 -59.5986,-66.6142 -57.8312,-65.8463 -56.0634,-65.1329\
+        \ -54.2897,-64.4623 -52.5136,-63.8274 -50.7358,-63.2269 -48.9542,-62.6543\
+        \ -47.1708,-62.1048 -45.3859,-61.5767 -43.5994,-61.0677 -41.8112,-60.577 -40.0202,-60.0987\
+        \ -38.2289,-59.6355 -36.4339,-59.1823 -34.6393,-58.7382 -32.8453,-58.3065\
+        \ -31.0444,-57.8801 -29.2462,-57.4594 -27.4482,-57.047 -25.646,-56.6384 -23.8442,-56.2336\
+        \ -22.0424,-55.8334 -20.2384,-55.436 -18.4344,-55.0405 -16.6295,-54.6475 -14.8234,-54.2546\
+        \ -13.0186,-53.8637 -11.2103,-53.4726 -9.40301,-53.0801 -7.59769,-52.6883\
+        \ -5.7882,-52.2934 -3.98052,-51.8975 -2.17361,-51.4984 -0.366423,-51.0978\
+        \ 1.44274,-50.692 3.249,-50.2827 5.05596,-49.8688 6.86249,-49.4496 8.66868,-49.0256\
+        \ 10.4758,-48.5935 12.28,-48.1543 14.0836,-47.7081 15.8881,-47.2516 17.6894,-46.7854\
+        \ 19.4903,-46.3082 21.2887,-45.8206 23.0881,-45.3182 24.8844,-44.8017 26.6783,-44.2701\
+        \ 28.4715,-43.723 30.2647,-43.1519 32.0496,-42.5634 33.8365,-41.951 35.6194,-41.3124\
+        \ 37.3991,-40.645 39.175,-39.9458 40.9471,-39.2115 42.7157,-38.4391 44.4806,-37.6194\
+        \ 46.2376,-36.7515 47.9909,-35.8275 49.7377,-34.8395 51.4767,-33.7787 53.2081,-32.6343\
+        \ 54.9293,-31.3951 56.6401,-32.4479 56.865,-33.5066 57.0909,-34.578 57.3077,-35.6624\
+        \ 57.5156,-36.7582 57.7138,-37.8657 57.9025,-38.9842 58.0823,-40.1141 58.2512,-41.2546\
+        \ 58.41,-42.4069 58.5563,-43.5667 58.6944,-44.7355 58.8221,-45.9122 58.9387,-47.0968\
+        \ 59.0449,-48.2884 59.1402,-49.4863 59.2245,-50.6897 59.2977,-51.8979 59.3598,-53.1082\
+        \ 59.4222,-53.3644 57.6431,-53.6247 55.8635,-53.8874 54.0818,-54.1532 52.2997,-54.4213\
+        \ 50.5169,-54.6922 48.7339,-54.9681 46.9536,-55.2435 45.1667,-55.5233 43.3811,-55.8061\
+        \ 41.5959,-56.0918 39.8109,-56.3803 38.0239,-56.6716 36.2346,-56.9654 34.4435,-57.266\
+        \ 32.662,-57.5653 30.8679,-57.8704 29.0755,-58.1796 27.2867,-58.4927 25.4975,-58.8086\
+        \ 23.7035,-59.1303 21.9136,-59.4562 20.1217,-59.7869 18.3312,-60.1216 16.5364,-60.4624\
+        \ 14.7446,-60.8088 12.9537,-61.1598 11.1591,-61.518 9.36697,-61.8826 7.57574,-62.2541\
+        \ 5.78465,-62.6333 3.99589,-63.0188 2.20339,-63.4136 0.41498,-63.8168 -1.37425,-64.2291\
+        \ -3.15936,-64.6503 -4.94843,-65.0836 -6.73286,-65.5266 -8.51701,-65.9811\
+        \ -10.3007,-66.4495 -12.0795,-66.9307 -13.8596,-67.4268 -15.6361,-67.9377\
+        \ -17.4094,-68.4655 -19.1818,-69.0117 -20.9492,-69.5767 -22.7139,-70.1622\
+        \ -24.4794,-70.7716 -26.2358,-71.4044 -27.9897,-72.0623 -29.7442,-72.7517\
+        \ -31.4886,-73.4714 -33.2286,-74.2241 -34.9648,-75.0161 -36.6923,-75.8476\
+        \ -38.4155,-76.7253 -40.1291,-77.6521 -41.833,-78.6342 -43.529,-79.6769 -45.2168,-80.7871\
+        \ -46.8938,-81.9727 -48.5545,-83.2417 -50.2029,-84.6053 -51.8369,-86.0739\
+        \ -53.4468,-87.6609 -55.0424,-89.3816 -56.6095,-91.2527 -58.1519,-93.2959\
+        \ -59.6649,-95.5316 -61.1397,-97.9845 -62.572,-100.685 -63.9571,-103.663 -65.286,-106.951\
+        \ -66.5491,-110.581 -67.7345,-114.583 -68.8295,-118.985 -69.8215,-123.792\
         \ -70.6909,-128.991 -71.4202,-134.57 -71.9996,-140.455 -72.4093,-146.527 -72.6332,-152.709\
         \ -72.6713,-158.848 -72.5194,-164.816 -72.182,-170.521 -71.6699,-175.879 -70.9969,-179.122\
-        \ -70.4864))\",\n               \"name\": \"footprint\"\n            },\n\
-        \            {\n               \"content\": \"EO\",\n               \"name\"\
-        : \"mode\"\n            },\n            {\n               \"content\": \"\
-        0000-000A\",\n               \"name\": \"platformidentifier\"\n          \
-        \  },\n            {\n               \"content\": \"PASSED\",\n          \
-        \     \"name\": \"onlinequalitycheck\"\n            },\n            {\n  \
-        \             \"content\": \"descending\",\n               \"name\": \"orbitdirection\"\
-        \n            },\n            {\n               \"content\": \"2653\",\n \
-        \              \"name\": \"pduduration\"\n            },\n            {\n\
-        \               \"content\": \"8236\",\n               \"name\": \"passnumber\"\
-        \n            },\n            {\n               \"content\": \"8237\",\n \
-        \              \"name\": \"lastpassnumber\"\n            },\n            {\n\
-        \               \"content\": \"descending\",\n               \"name\": \"\
-        passdirection\"\n            },\n            {\n               \"content\"\
-        : \"ascending\",\n               \"name\": \"lastpassdirection\"\n       \
-        \     },\n            {\n               \"content\": \"Svalbard Satellite\
-        \ Core Ground Station [SVL]\",\n               \"name\": \"procfacilityname\"\
-        \n            },\n            {\n               \"content\": \"European Space\
-        \ Agency\",\n               \"name\": \"procfacilityorg\"\n            },\n\
-        \            {\n               \"content\": \"1\",\n               \"name\"\
-        : \"processinglevel\"\n            },\n            {\n               \"content\"\
-        : \"Data Processing\",\n               \"name\": \"processingname\"\n    \
-        \        },\n            {\n               \"content\": \"L1\",\n        \
-        \       \"name\": \"productlevel\"\n            },\n            {\n      \
-        \         \"content\": \"OL_1_ERR___\",\n               \"name\": \"producttype\"\
-        \n            },\n            {\n               \"content\": \"descending\"\
-        ,\n               \"name\": \"relorbitdir\"\n            },\n            {\n\
-        \               \"content\": \"590\",\n               \"name\": \"relpassnumber\"\
-        \n            },\n            {\n               \"content\": \"591\",\n  \
-        \             \"name\": \"lastrelpassnumber\"\n            },\n          \
-        \  {\n               \"content\": \"descending\",\n               \"name\"\
-        : \"relpassdirection\"\n            },\n            {\n               \"content\"\
-        : \"ascending\",\n               \"name\": \"lastrelpassdirection\"\n    \
-        \        },\n            {\n               \"content\": \"61.0\",\n      \
-        \         \"name\": \"salinewaterpixels\"\n            },\n            {\n\
-        \               \"content\": \"Sentinel-3\",\n               \"name\": \"\
-        platformname\"\n            },\n            {\n               \"content\"\
-        : \"721.66 MB\",\n               \"name\": \"size\"\n            },\n    \
-        \        {\n               \"content\": \"0.0\",\n               \"name\"\
-        : \"tidalregionpixels\"\n            },\n            {\n               \"\
-        content\": \"Near Real Time\",\n               \"name\": \"timeliness\"\n\
-        \            }\n         ],\n         \"arr\": {\n            \"str\": \"\
-        002\",\n            \"name\": \"collection\"\n         },\n         \"int\"\
-        : [\n            {\n               \"content\": \"4118\",\n              \
-        \ \"name\": \"orbitnumber\"\n            },\n            {\n             \
-        \  \"content\": \"295\",\n               \"name\": \"relativeorbitnumber\"\
-        \n            }\n         ],\n         \"link\": [\n            {\"href\"\
-        : \"https://scihub.copernicus.eu/s3/odata/v1/Products('c4a36e6b-4a18-46b4-b2ff-abe7a231a46f')/$value\"\
+        \ -70.4864))\"\n            },\n            {\n               \"name\": \"\
+        mode\",\n               \"content\": \"EO\"\n            },\n            {\n\
+        \               \"name\": \"platformidentifier\",\n               \"content\"\
+        : \"0000-000A\"\n            },\n            {\n               \"name\": \"\
+        onlinequalitycheck\",\n               \"content\": \"PASSED\"\n          \
+        \  },\n            {\n               \"name\": \"orbitdirection\",\n     \
+        \          \"content\": \"descending\"\n            },\n            {\n  \
+        \             \"name\": \"pduduration\",\n               \"content\": \"2653\"\
+        \n            },\n            {\n               \"name\": \"passnumber\",\n\
+        \               \"content\": \"8236\"\n            },\n            {\n   \
+        \            \"name\": \"lastpassnumber\",\n               \"content\": \"\
+        8237\"\n            },\n            {\n               \"name\": \"passdirection\"\
+        ,\n               \"content\": \"descending\"\n            },\n          \
+        \  {\n               \"name\": \"lastpassdirection\",\n               \"content\"\
+        : \"ascending\"\n            },\n            {\n               \"name\": \"\
+        procfacilityname\",\n               \"content\": \"Svalbard Satellite Core\
+        \ Ground Station [SVL]\"\n            },\n            {\n               \"\
+        name\": \"procfacilityorg\",\n               \"content\": \"European Space\
+        \ Agency\"\n            },\n            {\n               \"name\": \"processinglevel\"\
+        ,\n               \"content\": \"1\"\n            },\n            {\n    \
+        \           \"name\": \"processingname\",\n               \"content\": \"\
+        Data Processing\"\n            },\n            {\n               \"name\"\
+        : \"productlevel\",\n               \"content\": \"L1\"\n            },\n\
+        \            {\n               \"name\": \"producttype\",\n              \
+        \ \"content\": \"OL_1_ERR___\"\n            },\n            {\n          \
+        \     \"name\": \"relorbitdir\",\n               \"content\": \"descending\"\
+        \n            },\n            {\n               \"name\": \"relpassnumber\"\
+        ,\n               \"content\": \"590\"\n            },\n            {\n  \
+        \             \"name\": \"lastrelpassnumber\",\n               \"content\"\
+        : \"591\"\n            },\n            {\n               \"name\": \"relpassdirection\"\
+        ,\n               \"content\": \"descending\"\n            },\n          \
+        \  {\n               \"name\": \"lastrelpassdirection\",\n               \"\
+        content\": \"ascending\"\n            },\n            {\n               \"\
+        name\": \"salinewaterpixels\",\n               \"content\": \"61.0\"\n   \
+        \         },\n            {\n               \"name\": \"platformname\",\n\
+        \               \"content\": \"Sentinel-3\"\n            },\n            {\n\
+        \               \"name\": \"size\",\n               \"content\": \"721.66\
+        \ MB\"\n            },\n            {\n               \"name\": \"tidalregionpixels\"\
+        ,\n               \"content\": \"0.0\"\n            },\n            {\n  \
+        \             \"name\": \"timeliness\",\n               \"content\": \"Near\
+        \ Real Time\"\n            }\n         ],\n         \"arr\": {\n         \
+        \   \"str\": \"002\",\n            \"name\": \"collection\"\n         },\n\
+        \         \"date\": [\n            {\n               \"name\": \"ingestiondate\"\
+        ,\n               \"content\": \"2016-12-01T16:34:20.086Z\"\n            },\n\
+        \            {\n               \"name\": \"beginposition\",\n            \
+        \   \"content\": \"2016-12-01T13:21:33.755Z\"\n            },\n          \
+        \  {\n               \"name\": \"endposition\",\n               \"content\"\
+        : \"2016-12-01T14:05:47.227Z\"\n            }\n         ],\n         \"link\"\
+        : [\n            {\"href\": \"https://scihub.copernicus.eu/s3/odata/v1/Products('c4a36e6b-4a18-46b4-b2ff-abe7a231a46f')/$value\"\
         },\n            {\n               \"rel\": \"alternative\",\n            \
         \   \"href\": \"https://scihub.copernicus.eu/s3/odata/v1/Products('c4a36e6b-4a18-46b4-b2ff-abe7a231a46f')/\"\
         \n            },\n            {\n               \"rel\": \"icon\",\n     \
         \          \"href\": \"https://scihub.copernicus.eu/s3/odata/v1/Products('c4a36e6b-4a18-46b4-b2ff-abe7a231a46f')/Products('Quicklook')/$value\"\
-        \n            }\n         ],\n         \"date\": [\n            {\n      \
-        \         \"content\": \"2016-12-01T16:34:20.086Z\",\n               \"name\"\
-        : \"ingestiondate\"\n            },\n            {\n               \"content\"\
-        : \"2016-12-01T13:21:33.755Z\",\n               \"name\": \"beginposition\"\
-        \n            },\n            {\n               \"content\": \"2016-12-01T14:05:47.227Z\"\
-        ,\n               \"name\": \"endposition\"\n            }\n         ],\n\
-        \         \"long\": {\n            \"content\": \"11\",\n            \"name\"\
-        : \"cyclenumber\"\n         }\n      },\n      {\n         \"summary\": \"\
-        Date: 2016-12-01T13:35:35.946Z, Instrument: OLCI, Mode: , Satellite: Sentinel-3,\
-        \ Size: 671.21 MB\",\n         \"id\": \"67d5a345-7f99-4ac1-9e3a-0229bf55ede0\"\
-        ,\n         \"title\": \"S3A_OL_1_EFR____20161201T133535_20161201T133835_20161201T153647_0179_011_295_2879_SVL_O_NR_002\"\
-        ,\n         \"str\": [\n            {\n               \"content\": \"67d5a345-7f99-4ac1-9e3a-0229bf55ede0\"\
-        ,\n               \"name\": \"uuid\"\n            },\n            {\n    \
-        \           \"content\": \"23.74897\",\n               \"name\": \"brightpixels\"\
-        \n            },\n            {\n               \"content\": \"0.0\",\n  \
-        \             \"name\": \"coastalpixels\"\n            },\n            {\n\
-        \               \"content\": \"FORECAST\",\n               \"name\": \"ecmwf\"\
-        \n            },\n            {\n               \"content\": \"S3A_OL_1_EFR____20161201T133535_20161201T133835_20161201T153647_0179_011_295_2879_SVL_O_NR_002.SEN3\"\
-        ,\n               \"name\": \"filename\"\n            },\n            {\n\
-        \               \"content\": \"<gml:Polygon srsName=\\\"http://www.opengis.net/gml/srs/epsg.xml#4326\\\
+        \n            }\n         ],\n         \"id\": \"c4a36e6b-4a18-46b4-b2ff-abe7a231a46f\"\
+        ,\n         \"title\": \"S3A_OL_1_ERR____20161201T132133_20161201T140547_20161201T154640_2653_011_295______SVL_O_NR_002\"\
+        ,\n         \"long\": {\n            \"name\": \"cyclenumber\",\n        \
+        \    \"content\": \"11\"\n         },\n         \"int\": [\n            {\n\
+        \               \"name\": \"orbitnumber\",\n               \"content\": \"\
+        4118\"\n            },\n            {\n               \"name\": \"relativeorbitnumber\"\
+        ,\n               \"content\": \"295\"\n            }\n         ]\n      },\n\
+        \      {\n         \"summary\": \"Date: 2016-12-01T13:35:35.946Z, Instrument:\
+        \ OLCI, Mode: , Satellite: Sentinel-3, Size: 671.21 MB\",\n         \"str\"\
+        : [\n            {\n               \"name\": \"uuid\",\n               \"\
+        content\": \"67d5a345-7f99-4ac1-9e3a-0229bf55ede0\"\n            },\n    \
+        \        {\n               \"name\": \"brightpixels\",\n               \"\
+        content\": \"23.74897\"\n            },\n            {\n               \"\
+        name\": \"coastalpixels\",\n               \"content\": \"0.0\"\n        \
+        \    },\n            {\n               \"name\": \"ecmwf\",\n            \
+        \   \"content\": \"FORECAST\"\n            },\n            {\n           \
+        \    \"name\": \"filename\",\n               \"content\": \"S3A_OL_1_EFR____20161201T133535_20161201T133835_20161201T153647_0179_011_295_2879_SVL_O_NR_002.SEN3\"\
+        \n            },\n            {\n               \"name\": \"gmlfootprint\"\
+        ,\n               \"content\": \"<gml:Polygon srsName=\\\"http://www.opengis.net/gml/srs/epsg.xml#4326\\\
         \" xmlns:gml=\\\"http://www.opengis.net/gml\\\">\\n   <gml:outerBoundaryIs>\\\
         n      <gml:LinearRing>\\n         <gml:coordinates>-0.270666,-63.5667 -0.409166,-62.965\
         \ -0.547214,-62.3585 -0.68565,-61.75 -0.822956,-61.1461 -0.960825,-60.5392\
@@ -614,19 +613,18 @@ interactions:
         \ 9.37328,-57.0196 9.50143,-57.6363 9.62895,-58.2528 9.75554,-58.8705 9.88044,-59.4858\
         \ 10.0052,-60.1064 10.1283,-60.7255 10.2508,-61.3403 7.61821,-61.8739 4.98738,-62.4227\
         \ 2.35389,-62.9861 -0.270666,-63.5667<\\/gml:coordinates>\\n      <\\/gml:LinearRing>\\\
-        n   <\\/gml:outerBoundaryIs>\\n<\\/gml:Polygon>\",\n               \"name\"\
-        : \"gmlfootprint\"\n            },\n            {\n               \"content\"\
-        : \"SAFE\",\n               \"name\": \"format\"\n            },\n       \
-        \     {\n               \"content\": \"1.0\",\n               \"name\": \"\
-        freshwaterpixels\"\n            },\n            {\n               \"content\"\
-        : \"S3A_OL_1_EFR____20161201T133535_20161201T133835_20161201T153647_0179_011_295_2879_SVL_O_NR_002\"\
-        ,\n               \"name\": \"identifier\"\n            },\n            {\n\
-        \               \"content\": \"OLCI\",\n               \"name\": \"instrumentshortname\"\
-        \n            },\n            {\n               \"content\": \"Earth Observation\"\
-        ,\n               \"name\": \"sensoroperationalmode\"\n            },\n  \
-        \          {\n               \"content\": \"Ocean Land Colour Instrument\"\
-        ,\n               \"name\": \"instrumentname\"\n            },\n         \
-        \   {\n               \"content\": \"POLYGON ((-63.5667 -0.270666,-62.965\
+        n   <\\/gml:outerBoundaryIs>\\n<\\/gml:Polygon>\"\n            },\n      \
+        \      {\n               \"name\": \"format\",\n               \"content\"\
+        : \"SAFE\"\n            },\n            {\n               \"name\": \"freshwaterpixels\"\
+        ,\n               \"content\": \"1.0\"\n            },\n            {\n  \
+        \             \"name\": \"identifier\",\n               \"content\": \"S3A_OL_1_EFR____20161201T133535_20161201T133835_20161201T153647_0179_011_295_2879_SVL_O_NR_002\"\
+        \n            },\n            {\n               \"name\": \"instrumentshortname\"\
+        ,\n               \"content\": \"OLCI\"\n            },\n            {\n \
+        \              \"name\": \"sensoroperationalmode\",\n               \"content\"\
+        : \"Earth Observation\"\n            },\n            {\n               \"\
+        name\": \"instrumentname\",\n               \"content\": \"Ocean Land Colour\
+        \ Instrument\"\n            },\n            {\n               \"name\": \"\
+        footprint\",\n               \"content\": \"POLYGON ((-63.5667 -0.270666,-62.965\
         \ -0.409166,-62.3585 -0.547214,-61.75 -0.68565,-61.1461 -0.822956,-60.5392\
         \ -0.960825,-59.9325 -1.09855,-59.3255 -1.23556,-58.7214 -1.37264,-58.1164\
         \ -1.50974,-57.5091 -1.64373,-56.9012 -1.78124,-56.2947 -1.91546,-55.688 -2.0528,-55.0836\
@@ -636,73 +634,73 @@ interactions:
         \ 8.58326,-53.9456 8.71895,-54.559 8.85033,-55.1739 8.98367,-55.7894 9.11245,-56.4032\
         \ 9.24317,-57.0196 9.37328,-57.6363 9.50143,-58.2528 9.62895,-58.8705 9.75554,-59.4858\
         \ 9.88044,-60.1064 10.0052,-60.7255 10.1283,-61.3403 10.2508,-61.8739 7.61821,-62.4227\
-        \ 4.98738,-62.9861 2.35389,-63.5667 -0.270666))\",\n               \"name\"\
-        : \"footprint\"\n            },\n            {\n               \"content\"\
-        : \"EO\",\n               \"name\": \"mode\"\n            },\n           \
-        \ {\n               \"content\": \"0000-000A\",\n               \"name\":\
-        \ \"platformidentifier\"\n            },\n            {\n               \"\
-        content\": \"PASSED\",\n               \"name\": \"onlinequalitycheck\"\n\
-        \            },\n            {\n               \"content\": \"descending\"\
-        ,\n               \"name\": \"orbitdirection\"\n            },\n         \
-        \   {\n               \"content\": \"2879\",\n               \"name\": \"\
-        pdualongtrackcoord\"\n            },\n            {\n               \"content\"\
-        : \"179\",\n               \"name\": \"pduduration\"\n            },\n   \
-        \         {\n               \"content\": \"8236\",\n               \"name\"\
-        : \"passnumber\"\n            },\n            {\n               \"content\"\
-        : \"descending\",\n               \"name\": \"passdirection\"\n          \
-        \  },\n            {\n               \"content\": \"Svalbard Satellite Core\
-        \ Ground Station [SVL]\",\n               \"name\": \"procfacilityname\"\n\
-        \            },\n            {\n               \"content\": \"European Space\
-        \ Agency\",\n               \"name\": \"procfacilityorg\"\n            },\n\
-        \            {\n               \"content\": \"1\",\n               \"name\"\
-        : \"processinglevel\"\n            },\n            {\n               \"content\"\
-        : \"Data Processing\",\n               \"name\": \"processingname\"\n    \
-        \        },\n            {\n               \"content\": \"L1\",\n        \
-        \       \"name\": \"productlevel\"\n            },\n            {\n      \
-        \         \"content\": \"OL_1_EFR___\",\n               \"name\": \"producttype\"\
-        \n            },\n            {\n               \"content\": \"descending\"\
-        ,\n               \"name\": \"relorbitdir\"\n            },\n            {\n\
-        \               \"content\": \"590\",\n               \"name\": \"relpassnumber\"\
-        \n            },\n            {\n               \"content\": \"descending\"\
-        ,\n               \"name\": \"relpassdirection\"\n            },\n       \
-        \     {\n               \"content\": \"25.0\",\n               \"name\": \"\
-        salinewaterpixels\"\n            },\n            {\n               \"content\"\
-        : \"Sentinel-3\",\n               \"name\": \"platformname\"\n           \
-        \ },\n            {\n               \"content\": \"671.21 MB\",\n        \
-        \       \"name\": \"size\"\n            },\n            {\n              \
-        \ \"content\": \"3.0\",\n               \"name\": \"tidalregionpixels\"\n\
-        \            },\n            {\n               \"content\": \"Near Real Time\"\
-        ,\n               \"name\": \"timeliness\"\n            }\n         ],\n \
-        \        \"arr\": {\n            \"str\": \"002\",\n            \"name\":\
-        \ \"collection\"\n         },\n         \"int\": [\n            {\n      \
-        \         \"content\": \"4118\",\n               \"name\": \"orbitnumber\"\
-        \n            },\n            {\n               \"content\": \"295\",\n  \
-        \             \"name\": \"relativeorbitnumber\"\n            }\n         ],\n\
-        \         \"link\": [\n            {\"href\": \"https://scihub.copernicus.eu/s3/odata/v1/Products('67d5a345-7f99-4ac1-9e3a-0229bf55ede0')/$value\"\
+        \ 4.98738,-62.9861 2.35389,-63.5667 -0.270666))\"\n            },\n      \
+        \      {\n               \"name\": \"mode\",\n               \"content\":\
+        \ \"EO\"\n            },\n            {\n               \"name\": \"platformidentifier\"\
+        ,\n               \"content\": \"0000-000A\"\n            },\n           \
+        \ {\n               \"name\": \"onlinequalitycheck\",\n               \"content\"\
+        : \"PASSED\"\n            },\n            {\n               \"name\": \"orbitdirection\"\
+        ,\n               \"content\": \"descending\"\n            },\n          \
+        \  {\n               \"name\": \"pdualongtrackcoord\",\n               \"\
+        content\": \"2879\"\n            },\n            {\n               \"name\"\
+        : \"pduduration\",\n               \"content\": \"179\"\n            },\n\
+        \            {\n               \"name\": \"passnumber\",\n               \"\
+        content\": \"8236\"\n            },\n            {\n               \"name\"\
+        : \"passdirection\",\n               \"content\": \"descending\"\n       \
+        \     },\n            {\n               \"name\": \"procfacilityname\",\n\
+        \               \"content\": \"Svalbard Satellite Core Ground Station [SVL]\"\
+        \n            },\n            {\n               \"name\": \"procfacilityorg\"\
+        ,\n               \"content\": \"European Space Agency\"\n            },\n\
+        \            {\n               \"name\": \"processinglevel\",\n          \
+        \     \"content\": \"1\"\n            },\n            {\n               \"\
+        name\": \"processingname\",\n               \"content\": \"Data Processing\"\
+        \n            },\n            {\n               \"name\": \"productlevel\"\
+        ,\n               \"content\": \"L1\"\n            },\n            {\n   \
+        \            \"name\": \"producttype\",\n               \"content\": \"OL_1_EFR___\"\
+        \n            },\n            {\n               \"name\": \"relorbitdir\"\
+        ,\n               \"content\": \"descending\"\n            },\n          \
+        \  {\n               \"name\": \"relpassnumber\",\n               \"content\"\
+        : \"590\"\n            },\n            {\n               \"name\": \"relpassdirection\"\
+        ,\n               \"content\": \"descending\"\n            },\n          \
+        \  {\n               \"name\": \"salinewaterpixels\",\n               \"content\"\
+        : \"25.0\"\n            },\n            {\n               \"name\": \"platformname\"\
+        ,\n               \"content\": \"Sentinel-3\"\n            },\n          \
+        \  {\n               \"name\": \"size\",\n               \"content\": \"671.21\
+        \ MB\"\n            },\n            {\n               \"name\": \"tidalregionpixels\"\
+        ,\n               \"content\": \"3.0\"\n            },\n            {\n  \
+        \             \"name\": \"timeliness\",\n               \"content\": \"Near\
+        \ Real Time\"\n            }\n         ],\n         \"arr\": {\n         \
+        \   \"str\": \"002\",\n            \"name\": \"collection\"\n         },\n\
+        \         \"date\": [\n            {\n               \"name\": \"ingestiondate\"\
+        ,\n               \"content\": \"2016-12-01T16:33:09.316Z\"\n            },\n\
+        \            {\n               \"name\": \"beginposition\",\n            \
+        \   \"content\": \"2016-12-01T13:35:35.946Z\"\n            },\n          \
+        \  {\n               \"name\": \"endposition\",\n               \"content\"\
+        : \"2016-12-01T13:38:35.946Z\"\n            }\n         ],\n         \"link\"\
+        : [\n            {\"href\": \"https://scihub.copernicus.eu/s3/odata/v1/Products('67d5a345-7f99-4ac1-9e3a-0229bf55ede0')/$value\"\
         },\n            {\n               \"rel\": \"alternative\",\n            \
         \   \"href\": \"https://scihub.copernicus.eu/s3/odata/v1/Products('67d5a345-7f99-4ac1-9e3a-0229bf55ede0')/\"\
         \n            },\n            {\n               \"rel\": \"icon\",\n     \
         \          \"href\": \"https://scihub.copernicus.eu/s3/odata/v1/Products('67d5a345-7f99-4ac1-9e3a-0229bf55ede0')/Products('Quicklook')/$value\"\
-        \n            }\n         ],\n         \"date\": [\n            {\n      \
-        \         \"content\": \"2016-12-01T16:33:09.316Z\",\n               \"name\"\
-        : \"ingestiondate\"\n            },\n            {\n               \"content\"\
-        : \"2016-12-01T13:35:35.946Z\",\n               \"name\": \"beginposition\"\
-        \n            },\n            {\n               \"content\": \"2016-12-01T13:38:35.946Z\"\
-        ,\n               \"name\": \"endposition\"\n            }\n         ],\n\
-        \         \"long\": {\n            \"content\": \"11\",\n            \"name\"\
-        : \"cyclenumber\"\n         }\n      },\n      {\n         \"summary\": \"\
-        Date: 2016-12-01T13:38:35.946Z, Instrument: OLCI, Mode: , Satellite: Sentinel-3,\
-        \ Size: 677.36 MB\",\n         \"id\": \"609777eb-414c-4fd5-8416-4bd1b664272a\"\
-        ,\n         \"title\": \"S3A_OL_1_EFR____20161201T133835_20161201T134135_20161201T152828_0180_011_295_3059_SVL_O_NR_002\"\
-        ,\n         \"str\": [\n            {\n               \"content\": \"609777eb-414c-4fd5-8416-4bd1b664272a\"\
-        ,\n               \"name\": \"uuid\"\n            },\n            {\n    \
-        \           \"content\": \"25.834007\",\n               \"name\": \"brightpixels\"\
-        \n            },\n            {\n               \"content\": \"0.0\",\n  \
-        \             \"name\": \"coastalpixels\"\n            },\n            {\n\
-        \               \"content\": \"FORECAST\",\n               \"name\": \"ecmwf\"\
-        \n            },\n            {\n               \"content\": \"S3A_OL_1_EFR____20161201T133835_20161201T134135_20161201T152828_0180_011_295_3059_SVL_O_NR_002.SEN3\"\
-        ,\n               \"name\": \"filename\"\n            },\n            {\n\
-        \               \"content\": \"<gml:Polygon srsName=\\\"http://www.opengis.net/gml/srs/epsg.xml#4326\\\
+        \n            }\n         ],\n         \"id\": \"67d5a345-7f99-4ac1-9e3a-0229bf55ede0\"\
+        ,\n         \"title\": \"S3A_OL_1_EFR____20161201T133535_20161201T133835_20161201T153647_0179_011_295_2879_SVL_O_NR_002\"\
+        ,\n         \"long\": {\n            \"name\": \"cyclenumber\",\n        \
+        \    \"content\": \"11\"\n         },\n         \"int\": [\n            {\n\
+        \               \"name\": \"orbitnumber\",\n               \"content\": \"\
+        4118\"\n            },\n            {\n               \"name\": \"relativeorbitnumber\"\
+        ,\n               \"content\": \"295\"\n            }\n         ]\n      },\n\
+        \      {\n         \"summary\": \"Date: 2016-12-01T13:38:35.946Z, Instrument:\
+        \ OLCI, Mode: , Satellite: Sentinel-3, Size: 677.36 MB\",\n         \"str\"\
+        : [\n            {\n               \"name\": \"uuid\",\n               \"\
+        content\": \"609777eb-414c-4fd5-8416-4bd1b664272a\"\n            },\n    \
+        \        {\n               \"name\": \"brightpixels\",\n               \"\
+        content\": \"25.834007\"\n            },\n            {\n               \"\
+        name\": \"coastalpixels\",\n               \"content\": \"0.0\"\n        \
+        \    },\n            {\n               \"name\": \"ecmwf\",\n            \
+        \   \"content\": \"FORECAST\"\n            },\n            {\n           \
+        \    \"name\": \"filename\",\n               \"content\": \"S3A_OL_1_EFR____20161201T133835_20161201T134135_20161201T152828_0180_011_295_3059_SVL_O_NR_002.SEN3\"\
+        \n            },\n            {\n               \"name\": \"gmlfootprint\"\
+        ,\n               \"content\": \"<gml:Polygon srsName=\\\"http://www.opengis.net/gml/srs/epsg.xml#4326\\\
         \" xmlns:gml=\\\"http://www.opengis.net/gml\\\">\\n   <gml:outerBoundaryIs>\\\
         n      <gml:LinearRing>\\n         <gml:coordinates>-10.7648,-66.102 -10.9213,-65.4922\
         \ -11.0757,-64.8787 -11.2294,-64.2624 -11.3808,-63.6495 -11.5315,-63.0338\
@@ -716,92 +714,92 @@ interactions:
         \ -0.825544,-61.1467 -0.688232,-61.7506 -0.549795,-62.3591 -0.411742,-62.9656\
         \ -0.273239,-63.5672 -2.89877,-64.1685 -5.52731,-64.7893 -8.14868,-65.4346\
         \ -10.7648,-66.102<\\/gml:coordinates>\\n      <\\/gml:LinearRing>\\n   <\\\
-        /gml:outerBoundaryIs>\\n<\\/gml:Polygon>\",\n               \"name\": \"gmlfootprint\"\
-        \n            },\n            {\n               \"content\": \"SAFE\",\n \
-        \              \"name\": \"format\"\n            },\n            {\n     \
-        \          \"content\": \"3.0\",\n               \"name\": \"freshwaterpixels\"\
-        \n            },\n            {\n               \"content\": \"S3A_OL_1_EFR____20161201T133835_20161201T134135_20161201T152828_0180_011_295_3059_SVL_O_NR_002\"\
-        ,\n               \"name\": \"identifier\"\n            },\n            {\n\
-        \               \"content\": \"OLCI\",\n               \"name\": \"instrumentshortname\"\
-        \n            },\n            {\n               \"content\": \"Earth Observation\"\
-        ,\n               \"name\": \"sensoroperationalmode\"\n            },\n  \
-        \          {\n               \"content\": \"Ocean Land Colour Instrument\"\
-        ,\n               \"name\": \"instrumentname\"\n            },\n         \
-        \   {\n               \"content\": \"POLYGON ((-66.102 -10.7648,-65.4922 -10.9213,-64.8787\
-        \ -11.0757,-64.2624 -11.2294,-63.6495 -11.3808,-63.0338 -11.5315,-62.4178\
-        \ -11.6808,-61.8034 -11.8276,-61.1848 -11.9748,-60.5668 -12.1203,-59.9486\
-        \ -12.2608,-59.3302 -12.4035,-58.7114 -12.542,-58.0919 -12.6823,-57.4717 -12.8201,-56.85\
-        \ -12.9594,-56.2285 -13.0927,-55.6039 -13.2266,-54.9822 -13.3583,-54.357 -13.4894,-53.7834\
-        \ -10.8372,-53.2071 -8.18297,-52.6309 -5.52427,-52.0497 -2.8686,-52.6558 -2.73379,-53.2625\
-        \ -2.59892,-53.8695 -2.46363,-54.4765 -2.32971,-55.0841 -2.19098,-55.6886\
-        \ -2.05541,-56.2953 -1.91807,-56.9018 -1.78384,-57.5097 -1.64633,-58.117 -1.51235,-58.7219\
-        \ -1.37524,-59.3261 -1.23816,-59.9329 -1.10117,-60.5398 -0.963413,-61.1467\
-        \ -0.825544,-61.7506 -0.688232,-62.3591 -0.549795,-62.9656 -0.411742,-63.5672\
-        \ -0.273239,-64.1685 -2.89877,-64.7893 -5.52731,-65.4346 -8.14868,-66.102\
-        \ -10.7648))\",\n               \"name\": \"footprint\"\n            },\n\
-        \            {\n               \"content\": \"EO\",\n               \"name\"\
-        : \"mode\"\n            },\n            {\n               \"content\": \"\
-        0000-000A\",\n               \"name\": \"platformidentifier\"\n          \
-        \  },\n            {\n               \"content\": \"PASSED\",\n          \
-        \     \"name\": \"onlinequalitycheck\"\n            },\n            {\n  \
-        \             \"content\": \"descending\",\n               \"name\": \"orbitdirection\"\
-        \n            },\n            {\n               \"content\": \"3059\",\n \
-        \              \"name\": \"pdualongtrackcoord\"\n            },\n        \
-        \    {\n               \"content\": \"180\",\n               \"name\": \"\
-        pduduration\"\n            },\n            {\n               \"content\":\
-        \ \"8236\",\n               \"name\": \"passnumber\"\n            },\n   \
-        \         {\n               \"content\": \"descending\",\n               \"\
-        name\": \"passdirection\"\n            },\n            {\n               \"\
-        content\": \"Svalbard Satellite Core Ground Station [SVL]\",\n           \
-        \    \"name\": \"procfacilityname\"\n            },\n            {\n     \
-        \          \"content\": \"European Space Agency\",\n               \"name\"\
-        : \"procfacilityorg\"\n            },\n            {\n               \"content\"\
-        : \"1\",\n               \"name\": \"processinglevel\"\n            },\n \
-        \           {\n               \"content\": \"Data Processing\",\n        \
-        \       \"name\": \"processingname\"\n            },\n            {\n    \
-        \           \"content\": \"L1\",\n               \"name\": \"productlevel\"\
-        \n            },\n            {\n               \"content\": \"OL_1_EFR___\"\
-        ,\n               \"name\": \"producttype\"\n            },\n            {\n\
-        \               \"content\": \"descending\",\n               \"name\": \"\
-        relorbitdir\"\n            },\n            {\n               \"content\":\
-        \ \"590\",\n               \"name\": \"relpassnumber\"\n            },\n \
-        \           {\n               \"content\": \"descending\",\n             \
-        \  \"name\": \"relpassdirection\"\n            },\n            {\n       \
-        \        \"content\": \"0.0\",\n               \"name\": \"salinewaterpixels\"\
-        \n            },\n            {\n               \"content\": \"Sentinel-3\"\
-        ,\n               \"name\": \"platformname\"\n            },\n           \
-        \ {\n               \"content\": \"677.36 MB\",\n               \"name\":\
-        \ \"size\"\n            },\n            {\n               \"content\": \"\
-        0.0\",\n               \"name\": \"tidalregionpixels\"\n            },\n \
-        \           {\n               \"content\": \"Near Real Time\",\n         \
-        \      \"name\": \"timeliness\"\n            }\n         ],\n         \"arr\"\
-        : {\n            \"str\": \"002\",\n            \"name\": \"collection\"\n\
-        \         },\n         \"int\": [\n            {\n               \"content\"\
-        : \"4118\",\n               \"name\": \"orbitnumber\"\n            },\n  \
-        \          {\n               \"content\": \"295\",\n               \"name\"\
-        : \"relativeorbitnumber\"\n            }\n         ],\n         \"link\":\
-        \ [\n            {\"href\": \"https://scihub.copernicus.eu/s3/odata/v1/Products('609777eb-414c-4fd5-8416-4bd1b664272a')/$value\"\
+        /gml:outerBoundaryIs>\\n<\\/gml:Polygon>\"\n            },\n            {\n\
+        \               \"name\": \"format\",\n               \"content\": \"SAFE\"\
+        \n            },\n            {\n               \"name\": \"freshwaterpixels\"\
+        ,\n               \"content\": \"3.0\"\n            },\n            {\n  \
+        \             \"name\": \"identifier\",\n               \"content\": \"S3A_OL_1_EFR____20161201T133835_20161201T134135_20161201T152828_0180_011_295_3059_SVL_O_NR_002\"\
+        \n            },\n            {\n               \"name\": \"instrumentshortname\"\
+        ,\n               \"content\": \"OLCI\"\n            },\n            {\n \
+        \              \"name\": \"sensoroperationalmode\",\n               \"content\"\
+        : \"Earth Observation\"\n            },\n            {\n               \"\
+        name\": \"instrumentname\",\n               \"content\": \"Ocean Land Colour\
+        \ Instrument\"\n            },\n            {\n               \"name\": \"\
+        footprint\",\n               \"content\": \"POLYGON ((-66.102 -10.7648,-65.4922\
+        \ -10.9213,-64.8787 -11.0757,-64.2624 -11.2294,-63.6495 -11.3808,-63.0338\
+        \ -11.5315,-62.4178 -11.6808,-61.8034 -11.8276,-61.1848 -11.9748,-60.5668\
+        \ -12.1203,-59.9486 -12.2608,-59.3302 -12.4035,-58.7114 -12.542,-58.0919 -12.6823,-57.4717\
+        \ -12.8201,-56.85 -12.9594,-56.2285 -13.0927,-55.6039 -13.2266,-54.9822 -13.3583,-54.357\
+        \ -13.4894,-53.7834 -10.8372,-53.2071 -8.18297,-52.6309 -5.52427,-52.0497\
+        \ -2.8686,-52.6558 -2.73379,-53.2625 -2.59892,-53.8695 -2.46363,-54.4765 -2.32971,-55.0841\
+        \ -2.19098,-55.6886 -2.05541,-56.2953 -1.91807,-56.9018 -1.78384,-57.5097\
+        \ -1.64633,-58.117 -1.51235,-58.7219 -1.37524,-59.3261 -1.23816,-59.9329 -1.10117,-60.5398\
+        \ -0.963413,-61.1467 -0.825544,-61.7506 -0.688232,-62.3591 -0.549795,-62.9656\
+        \ -0.411742,-63.5672 -0.273239,-64.1685 -2.89877,-64.7893 -5.52731,-65.4346\
+        \ -8.14868,-66.102 -10.7648))\"\n            },\n            {\n         \
+        \      \"name\": \"mode\",\n               \"content\": \"EO\"\n         \
+        \   },\n            {\n               \"name\": \"platformidentifier\",\n\
+        \               \"content\": \"0000-000A\"\n            },\n            {\n\
+        \               \"name\": \"onlinequalitycheck\",\n               \"content\"\
+        : \"PASSED\"\n            },\n            {\n               \"name\": \"orbitdirection\"\
+        ,\n               \"content\": \"descending\"\n            },\n          \
+        \  {\n               \"name\": \"pdualongtrackcoord\",\n               \"\
+        content\": \"3059\"\n            },\n            {\n               \"name\"\
+        : \"pduduration\",\n               \"content\": \"180\"\n            },\n\
+        \            {\n               \"name\": \"passnumber\",\n               \"\
+        content\": \"8236\"\n            },\n            {\n               \"name\"\
+        : \"passdirection\",\n               \"content\": \"descending\"\n       \
+        \     },\n            {\n               \"name\": \"procfacilityname\",\n\
+        \               \"content\": \"Svalbard Satellite Core Ground Station [SVL]\"\
+        \n            },\n            {\n               \"name\": \"procfacilityorg\"\
+        ,\n               \"content\": \"European Space Agency\"\n            },\n\
+        \            {\n               \"name\": \"processinglevel\",\n          \
+        \     \"content\": \"1\"\n            },\n            {\n               \"\
+        name\": \"processingname\",\n               \"content\": \"Data Processing\"\
+        \n            },\n            {\n               \"name\": \"productlevel\"\
+        ,\n               \"content\": \"L1\"\n            },\n            {\n   \
+        \            \"name\": \"producttype\",\n               \"content\": \"OL_1_EFR___\"\
+        \n            },\n            {\n               \"name\": \"relorbitdir\"\
+        ,\n               \"content\": \"descending\"\n            },\n          \
+        \  {\n               \"name\": \"relpassnumber\",\n               \"content\"\
+        : \"590\"\n            },\n            {\n               \"name\": \"relpassdirection\"\
+        ,\n               \"content\": \"descending\"\n            },\n          \
+        \  {\n               \"name\": \"salinewaterpixels\",\n               \"content\"\
+        : \"0.0\"\n            },\n            {\n               \"name\": \"platformname\"\
+        ,\n               \"content\": \"Sentinel-3\"\n            },\n          \
+        \  {\n               \"name\": \"size\",\n               \"content\": \"677.36\
+        \ MB\"\n            },\n            {\n               \"name\": \"tidalregionpixels\"\
+        ,\n               \"content\": \"0.0\"\n            },\n            {\n  \
+        \             \"name\": \"timeliness\",\n               \"content\": \"Near\
+        \ Real Time\"\n            }\n         ],\n         \"arr\": {\n         \
+        \   \"str\": \"002\",\n            \"name\": \"collection\"\n         },\n\
+        \         \"date\": [\n            {\n               \"name\": \"ingestiondate\"\
+        ,\n               \"content\": \"2016-12-01T16:28:57.025Z\"\n            },\n\
+        \            {\n               \"name\": \"beginposition\",\n            \
+        \   \"content\": \"2016-12-01T13:38:35.946Z\"\n            },\n          \
+        \  {\n               \"name\": \"endposition\",\n               \"content\"\
+        : \"2016-12-01T13:41:35.946Z\"\n            }\n         ],\n         \"link\"\
+        : [\n            {\"href\": \"https://scihub.copernicus.eu/s3/odata/v1/Products('609777eb-414c-4fd5-8416-4bd1b664272a')/$value\"\
         },\n            {\n               \"rel\": \"alternative\",\n            \
         \   \"href\": \"https://scihub.copernicus.eu/s3/odata/v1/Products('609777eb-414c-4fd5-8416-4bd1b664272a')/\"\
         \n            },\n            {\n               \"rel\": \"icon\",\n     \
         \          \"href\": \"https://scihub.copernicus.eu/s3/odata/v1/Products('609777eb-414c-4fd5-8416-4bd1b664272a')/Products('Quicklook')/$value\"\
-        \n            }\n         ],\n         \"date\": [\n            {\n      \
-        \         \"content\": \"2016-12-01T16:28:57.025Z\",\n               \"name\"\
-        : \"ingestiondate\"\n            },\n            {\n               \"content\"\
-        : \"2016-12-01T13:38:35.946Z\",\n               \"name\": \"beginposition\"\
-        \n            },\n            {\n               \"content\": \"2016-12-01T13:41:35.946Z\"\
-        ,\n               \"name\": \"endposition\"\n            }\n         ],\n\
-        \         \"long\": {\n            \"content\": \"11\",\n            \"name\"\
-        : \"cyclenumber\"\n         }\n      },\n      {\n         \"summary\": \"\
-        Date: 2016-12-01T02:36:41.032Z, Instrument: SLSTR, Mode: , Satellite: Sentinel-3,\
-        \ Size: 454.27 MB\",\n         \"id\": \"97cfb70e-f18c-4b39-b463-1bd2297f6ab8\"\
-        ,\n         \"title\": \"S3A_SL_1_RBT____20161201T023641_20161201T023941_20161201T033653_0179_011_288_5760_SVL_O_NR_002\"\
-        ,\n         \"str\": [\n            {\n               \"content\": \"97cfb70e-f18c-4b39-b463-1bd2297f6ab8\"\
-        ,\n               \"name\": \"uuid\"\n            },\n            {\n    \
-        \           \"content\": \"FORECAST\",\n               \"name\": \"ecmwf\"\
-        \n            },\n            {\n               \"content\": \"S3A_SL_1_RBT____20161201T023641_20161201T023941_20161201T033653_0179_011_288_5760_SVL_O_NR_002.SEN3\"\
-        ,\n               \"name\": \"filename\"\n            },\n            {\n\
-        \               \"content\": \"<gml:Polygon srsName=\\\"http://www.opengis.net/gml/srs/epsg.xml#4326\\\
+        \n            }\n         ],\n         \"id\": \"609777eb-414c-4fd5-8416-4bd1b664272a\"\
+        ,\n         \"title\": \"S3A_OL_1_EFR____20161201T133835_20161201T134135_20161201T152828_0180_011_295_3059_SVL_O_NR_002\"\
+        ,\n         \"long\": {\n            \"name\": \"cyclenumber\",\n        \
+        \    \"content\": \"11\"\n         },\n         \"int\": [\n            {\n\
+        \               \"name\": \"orbitnumber\",\n               \"content\": \"\
+        4118\"\n            },\n            {\n               \"name\": \"relativeorbitnumber\"\
+        ,\n               \"content\": \"295\"\n            }\n         ]\n      },\n\
+        \      {\n         \"summary\": \"Date: 2016-12-01T02:36:41.032Z, Instrument:\
+        \ SLSTR, Mode: , Satellite: Sentinel-3, Size: 454.27 MB\",\n         \"str\"\
+        : [\n            {\n               \"name\": \"uuid\",\n               \"\
+        content\": \"97cfb70e-f18c-4b39-b463-1bd2297f6ab8\"\n            },\n    \
+        \        {\n               \"name\": \"ecmwf\",\n               \"content\"\
+        : \"FORECAST\"\n            },\n            {\n               \"name\": \"\
+        filename\",\n               \"content\": \"S3A_SL_1_RBT____20161201T023641_20161201T023941_20161201T033653_0179_011_288_5760_SVL_O_NR_002.SEN3\"\
+        \n            },\n            {\n               \"name\": \"gmlfootprint\"\
+        ,\n               \"content\": \"<gml:Polygon srsName=\\\"http://www.opengis.net/gml/srs/epsg.xml#4326\\\
         \" xmlns:gml=\\\"http://www.opengis.net/gml\\\">\\n   <gml:outerBoundaryIs>\\\
         n      <gml:LinearRing>\\n         <gml:coordinates>-4.82954,-59.8915 -4.96452,-60.4526\
         \ -5.09901,-61.0139 -5.23301,-61.5755 -5.36651,-62.1373 -5.49949,-62.6993\
@@ -821,93 +819,94 @@ interactions:
         \ -15.8794,-59.4747 -15.7309,-58.8974 -15.5808,-58.3209 -15.4293,-57.7453\
         \ -15.2762,-57.1704 -12.6597,-57.897 -10.0388,-58.5926 -7.41399,-59.2601 -4.82954,-59.8915<\\\
         /gml:coordinates>\\n      <\\/gml:LinearRing>\\n   <\\/gml:outerBoundaryIs>\\\
-        n<\\/gml:Polygon>\",\n               \"name\": \"gmlfootprint\"\n        \
-        \    },\n            {\n               \"content\": \"SAFE\",\n          \
-        \     \"name\": \"format\"\n            },\n            {\n              \
-        \ \"content\": \"S3A_SL_1_RBT____20161201T023641_20161201T023941_20161201T033653_0179_011_288_5760_SVL_O_NR_002\"\
-        ,\n               \"name\": \"identifier\"\n            },\n            {\n\
-        \               \"content\": \"SLSTR\",\n               \"name\": \"instrumentshortname\"\
-        \n            },\n            {\n               \"content\": \"Earth Observation\"\
-        ,\n               \"name\": \"sensoroperationalmode\"\n            },\n  \
-        \          {\n               \"content\": \"Sea and Land Surface Temperature\
-        \ Radiometer\",\n               \"name\": \"instrumentname\"\n           \
-        \ },\n            {\n               \"content\": \"POLYGON ((-59.8915 -4.82954,-60.4526\
-        \ -4.96452,-61.0139 -5.09901,-61.5755 -5.23301,-62.1373 -5.36651,-62.6993\
-        \ -5.49949,-63.2616 -5.63194,-63.8242 -5.76385,-64.387 -5.89519,-64.9501 -6.02597,-65.5134\
-        \ -6.15616,-66.077 -6.28576,-66.6409 -6.41475,-67.2051 -6.54312,-67.7696 -6.67085,-68.3343\
-        \ -6.79794,-68.8994 -6.92437,-69.4647 -7.05012,-70.0304 -7.17519,-70.5964\
-        \ -7.29956,-71.1626 -7.42323,-71.7292 -7.54617,-72.2961 -7.66837,-72.8634\
-        \ -7.78983,-73.4309 -7.91053,-73.9988 -8.03045,-74.567 -8.14959,-75.1356 -8.26794,-75.7045\
-        \ -8.38547,-76.2737 -8.50219,-76.8433 -8.61807,-77.4132 -8.73311,-77.9835\
-        \ -8.84729,-78.1261 -8.8757,-77.6116 -11.4681,-77.1028 -14.1041,-76.6077 -16.7397,-76.1254\
-        \ -19.3747,-75.9753 -19.3502,-75.3754 -19.2511,-74.7762 -19.15,-74.1778 -19.0469,-73.5801\
-        \ -18.9419,-72.9831 -18.835,-72.3869 -18.7262,-71.7915 -18.6155,-71.1968 -18.5029,-70.603\
-        \ -18.3884,-70.0099 -18.2721,-69.4176 -18.154,-68.8261 -18.034,-68.2355 -17.9122,-67.6456\
-        \ -17.7886,-67.0566 -17.6633,-66.4683 -17.5362,-65.8809 -17.4073,-65.2944\
-        \ -17.2767,-64.7086 -17.1444,-64.1237 -17.0104,-63.5397 -16.8748,-62.9564\
-        \ -16.7374,-62.374 -16.5984,-61.7925 -16.4578,-61.2118 -16.3156,-60.6319 -16.1718,-60.0529\
-        \ -16.0263,-59.4747 -15.8794,-58.8974 -15.7309,-58.3209 -15.5808,-57.7453\
-        \ -15.4293,-57.1704 -15.2762,-57.897 -12.6597,-58.5926 -10.0388,-59.2601 -7.41399,-59.8915\
-        \ -4.82954))\",\n               \"name\": \"footprint\"\n            },\n\
-        \            {\n               \"content\": \"EO\",\n               \"name\"\
-        : \"mode\"\n            },\n            {\n               \"content\": \"\
-        0000-000A\",\n               \"name\": \"platformidentifier\"\n          \
-        \  },\n            {\n               \"content\": \"PASSED\",\n          \
-        \     \"name\": \"onlinequalitycheck\"\n            },\n            {\n  \
-        \             \"content\": \"ascending\",\n               \"name\": \"orbitdirection\"\
-        \n            },\n            {\n               \"content\": \"5760\",\n \
-        \              \"name\": \"pdualongtrackcoord\"\n            },\n        \
-        \    {\n               \"content\": \"179\",\n               \"name\": \"\
-        pduduration\"\n            },\n            {\n               \"content\":\
-        \ \"8223\",\n               \"name\": \"passnumber\"\n            },\n   \
-        \         {\n               \"content\": \"ascending\",\n               \"\
-        name\": \"passdirection\"\n            },\n            {\n               \"\
-        content\": \"Svalbard Satellite Core Ground Station [SVL]\",\n           \
-        \    \"name\": \"procfacilityname\"\n            },\n            {\n     \
-        \          \"content\": \"European Space Agency\",\n               \"name\"\
-        : \"procfacilityorg\"\n            },\n            {\n               \"content\"\
-        : \"1\",\n               \"name\": \"processinglevel\"\n            },\n \
-        \           {\n               \"content\": \"Data Processing\",\n        \
-        \       \"name\": \"processingname\"\n            },\n            {\n    \
-        \           \"content\": \"L1\",\n               \"name\": \"productlevel\"\
-        \n            },\n            {\n               \"content\": \"SL_1_RBT___\"\
-        ,\n               \"name\": \"producttype\"\n            },\n            {\n\
-        \               \"content\": \"ascending\",\n               \"name\": \"relorbitdir\"\
-        \n            },\n            {\n               \"content\": \"577\",\n  \
-        \             \"name\": \"relpassnumber\"\n            },\n            {\n\
-        \               \"content\": \"ascending\",\n               \"name\": \"relpassdirection\"\
-        \n            },\n            {\n               \"content\": \"Sentinel-3\"\
-        ,\n               \"name\": \"platformname\"\n            },\n           \
-        \ {\n               \"content\": \"454.27 MB\",\n               \"name\":\
-        \ \"size\"\n            },\n            {\n               \"content\": \"\
-        Near Real Time\",\n               \"name\": \"timeliness\"\n            }\n\
-        \         ],\n         \"arr\": {\n            \"str\": \"002\",\n       \
-        \     \"name\": \"collection\"\n         },\n         \"int\": [\n       \
-        \     {\n               \"content\": \"4111\",\n               \"name\": \"\
-        orbitnumber\"\n            },\n            {\n               \"content\":\
-        \ \"288\",\n               \"name\": \"relativeorbitnumber\"\n           \
-        \ }\n         ],\n         \"link\": [\n            {\"href\": \"https://scihub.copernicus.eu/s3/odata/v1/Products('97cfb70e-f18c-4b39-b463-1bd2297f6ab8')/$value\"\
+        n<\\/gml:Polygon>\"\n            },\n            {\n               \"name\"\
+        : \"format\",\n               \"content\": \"SAFE\"\n            },\n    \
+        \        {\n               \"name\": \"identifier\",\n               \"content\"\
+        : \"S3A_SL_1_RBT____20161201T023641_20161201T023941_20161201T033653_0179_011_288_5760_SVL_O_NR_002\"\
+        \n            },\n            {\n               \"name\": \"instrumentshortname\"\
+        ,\n               \"content\": \"SLSTR\"\n            },\n            {\n\
+        \               \"name\": \"sensoroperationalmode\",\n               \"content\"\
+        : \"Earth Observation\"\n            },\n            {\n               \"\
+        name\": \"instrumentname\",\n               \"content\": \"Sea and Land Surface\
+        \ Temperature Radiometer\"\n            },\n            {\n              \
+        \ \"name\": \"footprint\",\n               \"content\": \"POLYGON ((-59.8915\
+        \ -4.82954,-60.4526 -4.96452,-61.0139 -5.09901,-61.5755 -5.23301,-62.1373\
+        \ -5.36651,-62.6993 -5.49949,-63.2616 -5.63194,-63.8242 -5.76385,-64.387 -5.89519,-64.9501\
+        \ -6.02597,-65.5134 -6.15616,-66.077 -6.28576,-66.6409 -6.41475,-67.2051 -6.54312,-67.7696\
+        \ -6.67085,-68.3343 -6.79794,-68.8994 -6.92437,-69.4647 -7.05012,-70.0304\
+        \ -7.17519,-70.5964 -7.29956,-71.1626 -7.42323,-71.7292 -7.54617,-72.2961\
+        \ -7.66837,-72.8634 -7.78983,-73.4309 -7.91053,-73.9988 -8.03045,-74.567 -8.14959,-75.1356\
+        \ -8.26794,-75.7045 -8.38547,-76.2737 -8.50219,-76.8433 -8.61807,-77.4132\
+        \ -8.73311,-77.9835 -8.84729,-78.1261 -8.8757,-77.6116 -11.4681,-77.1028 -14.1041,-76.6077\
+        \ -16.7397,-76.1254 -19.3747,-75.9753 -19.3502,-75.3754 -19.2511,-74.7762\
+        \ -19.15,-74.1778 -19.0469,-73.5801 -18.9419,-72.9831 -18.835,-72.3869 -18.7262,-71.7915\
+        \ -18.6155,-71.1968 -18.5029,-70.603 -18.3884,-70.0099 -18.2721,-69.4176 -18.154,-68.8261\
+        \ -18.034,-68.2355 -17.9122,-67.6456 -17.7886,-67.0566 -17.6633,-66.4683 -17.5362,-65.8809\
+        \ -17.4073,-65.2944 -17.2767,-64.7086 -17.1444,-64.1237 -17.0104,-63.5397\
+        \ -16.8748,-62.9564 -16.7374,-62.374 -16.5984,-61.7925 -16.4578,-61.2118 -16.3156,-60.6319\
+        \ -16.1718,-60.0529 -16.0263,-59.4747 -15.8794,-58.8974 -15.7309,-58.3209\
+        \ -15.5808,-57.7453 -15.4293,-57.1704 -15.2762,-57.897 -12.6597,-58.5926 -10.0388,-59.2601\
+        \ -7.41399,-59.8915 -4.82954))\"\n            },\n            {\n        \
+        \       \"name\": \"mode\",\n               \"content\": \"EO\"\n        \
+        \    },\n            {\n               \"name\": \"platformidentifier\",\n\
+        \               \"content\": \"0000-000A\"\n            },\n            {\n\
+        \               \"name\": \"onlinequalitycheck\",\n               \"content\"\
+        : \"PASSED\"\n            },\n            {\n               \"name\": \"orbitdirection\"\
+        ,\n               \"content\": \"ascending\"\n            },\n           \
+        \ {\n               \"name\": \"pdualongtrackcoord\",\n               \"content\"\
+        : \"5760\"\n            },\n            {\n               \"name\": \"pduduration\"\
+        ,\n               \"content\": \"179\"\n            },\n            {\n  \
+        \             \"name\": \"passnumber\",\n               \"content\": \"8223\"\
+        \n            },\n            {\n               \"name\": \"passdirection\"\
+        ,\n               \"content\": \"ascending\"\n            },\n           \
+        \ {\n               \"name\": \"procfacilityname\",\n               \"content\"\
+        : \"Svalbard Satellite Core Ground Station [SVL]\"\n            },\n     \
+        \       {\n               \"name\": \"procfacilityorg\",\n               \"\
+        content\": \"European Space Agency\"\n            },\n            {\n    \
+        \           \"name\": \"processinglevel\",\n               \"content\": \"\
+        1\"\n            },\n            {\n               \"name\": \"processingname\"\
+        ,\n               \"content\": \"Data Processing\"\n            },\n     \
+        \       {\n               \"name\": \"productlevel\",\n               \"content\"\
+        : \"L1\"\n            },\n            {\n               \"name\": \"producttype\"\
+        ,\n               \"content\": \"SL_1_RBT___\"\n            },\n         \
+        \   {\n               \"name\": \"relorbitdir\",\n               \"content\"\
+        : \"ascending\"\n            },\n            {\n               \"name\": \"\
+        relpassnumber\",\n               \"content\": \"577\"\n            },\n  \
+        \          {\n               \"name\": \"relpassdirection\",\n           \
+        \    \"content\": \"ascending\"\n            },\n            {\n         \
+        \      \"name\": \"platformname\",\n               \"content\": \"Sentinel-3\"\
+        \n            },\n            {\n               \"name\": \"size\",\n    \
+        \           \"content\": \"454.27 MB\"\n            },\n            {\n  \
+        \             \"name\": \"timeliness\",\n               \"content\": \"Near\
+        \ Real Time\"\n            }\n         ],\n         \"arr\": {\n         \
+        \   \"str\": \"002\",\n            \"name\": \"collection\"\n         },\n\
+        \         \"date\": [\n            {\n               \"name\": \"ingestiondate\"\
+        ,\n               \"content\": \"2016-12-01T04:28:26.963Z\"\n            },\n\
+        \            {\n               \"name\": \"beginposition\",\n            \
+        \   \"content\": \"2016-12-01T02:36:41.032Z\"\n            },\n          \
+        \  {\n               \"name\": \"endposition\",\n               \"content\"\
+        : \"2016-12-01T02:39:41.032Z\"\n            }\n         ],\n         \"link\"\
+        : [\n            {\"href\": \"https://scihub.copernicus.eu/s3/odata/v1/Products('97cfb70e-f18c-4b39-b463-1bd2297f6ab8')/$value\"\
         },\n            {\n               \"rel\": \"alternative\",\n            \
         \   \"href\": \"https://scihub.copernicus.eu/s3/odata/v1/Products('97cfb70e-f18c-4b39-b463-1bd2297f6ab8')/\"\
         \n            },\n            {\n               \"rel\": \"icon\",\n     \
         \          \"href\": \"https://scihub.copernicus.eu/s3/odata/v1/Products('97cfb70e-f18c-4b39-b463-1bd2297f6ab8')/Products('Quicklook')/$value\"\
-        \n            }\n         ],\n         \"date\": [\n            {\n      \
-        \         \"content\": \"2016-12-01T04:28:26.963Z\",\n               \"name\"\
-        : \"ingestiondate\"\n            },\n            {\n               \"content\"\
-        : \"2016-12-01T02:36:41.032Z\",\n               \"name\": \"beginposition\"\
-        \n            },\n            {\n               \"content\": \"2016-12-01T02:39:41.032Z\"\
-        ,\n               \"name\": \"endposition\"\n            }\n         ],\n\
-        \         \"long\": {\n            \"content\": \"11\",\n            \"name\"\
-        : \"cyclenumber\"\n         }\n      },\n      {\n         \"summary\": \"\
-        Date: 2016-12-01T02:39:41.032Z, Instrument: SLSTR, Mode: , Satellite: Sentinel-3,\
-        \ Size: 296.42 MB\",\n         \"id\": \"c6f0fc89-d5b5-44a7-a2fd-b15232e34909\"\
-        ,\n         \"title\": \"S3A_SL_1_RBT____20161201T023941_20161201T024140_20161201T033704_0119_011_288_5940_SVL_O_NR_002\"\
-        ,\n         \"str\": [\n            {\n               \"content\": \"c6f0fc89-d5b5-44a7-a2fd-b15232e34909\"\
-        ,\n               \"name\": \"uuid\"\n            },\n            {\n    \
-        \           \"content\": \"FORECAST\",\n               \"name\": \"ecmwf\"\
-        \n            },\n            {\n               \"content\": \"S3A_SL_1_RBT____20161201T023941_20161201T024140_20161201T033704_0119_011_288_5940_SVL_O_NR_002.SEN3\"\
-        ,\n               \"name\": \"filename\"\n            },\n            {\n\
-        \               \"content\": \"<gml:Polygon srsName=\\\"http://www.opengis.net/gml/srs/epsg.xml#4326\\\
+        \n            }\n         ],\n         \"id\": \"97cfb70e-f18c-4b39-b463-1bd2297f6ab8\"\
+        ,\n         \"title\": \"S3A_SL_1_RBT____20161201T023641_20161201T023941_20161201T033653_0179_011_288_5760_SVL_O_NR_002\"\
+        ,\n         \"long\": {\n            \"name\": \"cyclenumber\",\n        \
+        \    \"content\": \"11\"\n         },\n         \"int\": [\n            {\n\
+        \               \"name\": \"orbitnumber\",\n               \"content\": \"\
+        4111\"\n            },\n            {\n               \"name\": \"relativeorbitnumber\"\
+        ,\n               \"content\": \"288\"\n            }\n         ]\n      },\n\
+        \      {\n         \"summary\": \"Date: 2016-12-01T02:39:41.032Z, Instrument:\
+        \ SLSTR, Mode: , Satellite: Sentinel-3, Size: 296.42 MB\",\n         \"str\"\
+        : [\n            {\n               \"name\": \"uuid\",\n               \"\
+        content\": \"c6f0fc89-d5b5-44a7-a2fd-b15232e34909\"\n            },\n    \
+        \        {\n               \"name\": \"ecmwf\",\n               \"content\"\
+        : \"FORECAST\"\n            },\n            {\n               \"name\": \"\
+        filename\",\n               \"content\": \"S3A_SL_1_RBT____20161201T023941_20161201T024140_20161201T033704_0119_011_288_5940_SVL_O_NR_002.SEN3\"\
+        \n            },\n            {\n               \"name\": \"gmlfootprint\"\
+        ,\n               \"content\": \"<gml:Polygon srsName=\\\"http://www.opengis.net/gml/srs/epsg.xml#4326\\\
         \" xmlns:gml=\\\"http://www.opengis.net/gml\\\">\\n   <gml:outerBoundaryIs>\\\
         n      <gml:LinearRing>\\n         <gml:coordinates>2.13282,-61.4824 2.0087,-62.0443\
         \ 1.88439,-62.6061 1.75989,-63.1679 1.63523,-63.7296 1.51041,-64.2912 1.38545,-64.8527\
@@ -926,24 +925,24 @@ interactions:
         \ -5.62313,-63.2637 -5.49069,-62.7014 -5.35772,-62.1393 -5.22424,-61.5775\
         \ -5.09025,-61.016 -4.95577,-60.4547 -4.8208,-59.8936 -1.33279,-60.7091 2.13282,-61.4824<\\\
         /gml:coordinates>\\n      <\\/gml:LinearRing>\\n   <\\/gml:outerBoundaryIs>\\\
-        n<\\/gml:Polygon>\",\n               \"name\": \"gmlfootprint\"\n        \
-        \    },\n            {\n               \"content\": \"SAFE\",\n          \
-        \     \"name\": \"format\"\n            },\n            {\n              \
-        \ \"content\": \"S3A_SL_1_RBT____20161201T023941_20161201T024140_20161201T033704_0119_011_288_5940_SVL_O_NR_002\"\
-        ,\n               \"name\": \"identifier\"\n            },\n            {\n\
-        \               \"content\": \"SLSTR\",\n               \"name\": \"instrumentshortname\"\
-        \n            },\n            {\n               \"content\": \"Earth Observation\"\
-        ,\n               \"name\": \"sensoroperationalmode\"\n            },\n  \
-        \          {\n               \"content\": \"Sea and Land Surface Temperature\
-        \ Radiometer\",\n               \"name\": \"instrumentname\"\n           \
-        \ },\n            {\n               \"content\": \"POLYGON ((-61.4824 2.13282,-62.0443\
-        \ 2.0087,-62.6061 1.88439,-63.1679 1.75989,-63.7296 1.63523,-64.2912 1.51041,-64.8527\
-        \ 1.38545,-65.4142 1.26035,-65.9756 1.13513,-66.537 1.0098,-67.0983 0.884374,-67.6596\
-        \ 0.758863,-68.2209 0.633279,-68.7821 0.507634,-69.3434 0.381941,-69.9046\
-        \ 0.25621,-70.4658 0.130455,-71.0269 0.0046877,-71.5881 -0.121081,-72.1493\
-        \ -0.246837,-72.7105 -0.37257,-73.2717 -0.498268,-73.833 -0.623917,-74.3942\
-        \ -0.749507,-74.9555 -0.875025,-75.5169 -1.00046,-76.0782 -1.1258,-76.6397\
-        \ -1.25103,-77.2011 -1.37614,-77.7627 -1.50111,-78.3243 -1.62595,-78.8859\
+        n<\\/gml:Polygon>\"\n            },\n            {\n               \"name\"\
+        : \"format\",\n               \"content\": \"SAFE\"\n            },\n    \
+        \        {\n               \"name\": \"identifier\",\n               \"content\"\
+        : \"S3A_SL_1_RBT____20161201T023941_20161201T024140_20161201T033704_0119_011_288_5940_SVL_O_NR_002\"\
+        \n            },\n            {\n               \"name\": \"instrumentshortname\"\
+        ,\n               \"content\": \"SLSTR\"\n            },\n            {\n\
+        \               \"name\": \"sensoroperationalmode\",\n               \"content\"\
+        : \"Earth Observation\"\n            },\n            {\n               \"\
+        name\": \"instrumentname\",\n               \"content\": \"Sea and Land Surface\
+        \ Temperature Radiometer\"\n            },\n            {\n              \
+        \ \"name\": \"footprint\",\n               \"content\": \"POLYGON ((-61.4824\
+        \ 2.13282,-62.0443 2.0087,-62.6061 1.88439,-63.1679 1.75989,-63.7296 1.63523,-64.2912\
+        \ 1.51041,-64.8527 1.38545,-65.4142 1.26035,-65.9756 1.13513,-66.537 1.0098,-67.0983\
+        \ 0.884374,-67.6596 0.758863,-68.2209 0.633279,-68.7821 0.507634,-69.3434\
+        \ 0.381941,-69.9046 0.25621,-70.4658 0.130455,-71.0269 0.0046877,-71.5881\
+        \ -0.121081,-72.1493 -0.246837,-72.7105 -0.37257,-73.2717 -0.498268,-73.833\
+        \ -0.623917,-74.3942 -0.749507,-74.9555 -0.875025,-75.5169 -1.00046,-76.0782\
+        \ -1.1258,-76.6397 -1.25103,-77.2011 -1.37614,-77.7627 -1.50111,-78.3243 -1.62595,-78.8859\
         \ -1.75062,-79.4477 -1.87513,-79.5881 -1.90623,-78.8457 -5.37289,-78.1279\
         \ -8.86695,-77.9853 -8.83853,-77.415 -8.72434,-76.8451 -8.60929,-76.2756 -8.49339,-75.7063\
         \ -8.37667,-75.1375 -8.25912,-74.5689 -8.14077,-74.0007 -8.02162,-73.4328\
@@ -952,76 +951,76 @@ interactions:
         \ -6.78908,-67.7716 -6.662,-67.2071 -6.53427,-66.6429 -6.4059,-66.079 -6.27692,-65.5154\
         \ -6.14733,-64.9521 -6.01714,-64.389 -5.88637,-63.8262 -5.75503,-63.2637 -5.62313,-62.7014\
         \ -5.49069,-62.1393 -5.35772,-61.5775 -5.22424,-61.016 -5.09025,-60.4547 -4.95577,-59.8936\
-        \ -4.8208,-60.7091 -1.33279,-61.4824 2.13282))\",\n               \"name\"\
-        : \"footprint\"\n            },\n            {\n               \"content\"\
-        : \"EO\",\n               \"name\": \"mode\"\n            },\n           \
-        \ {\n               \"content\": \"0000-000A\",\n               \"name\":\
-        \ \"platformidentifier\"\n            },\n            {\n               \"\
-        content\": \"PASSED\",\n               \"name\": \"onlinequalitycheck\"\n\
-        \            },\n            {\n               \"content\": \"ascending\"\
-        ,\n               \"name\": \"orbitdirection\"\n            },\n         \
-        \   {\n               \"content\": \"ascending\",\n               \"name\"\
-        : \"lastorbitdirection\"\n            },\n            {\n               \"\
-        content\": \"5940\",\n               \"name\": \"pdualongtrackcoord\"\n  \
-        \          },\n            {\n               \"content\": \"119\",\n     \
-        \          \"name\": \"pduduration\"\n            },\n            {\n    \
-        \           \"content\": \"8223\",\n               \"name\": \"passnumber\"\
-        \n            },\n            {\n               \"content\": \"ascending\"\
-        ,\n               \"name\": \"passdirection\"\n            },\n          \
-        \  {\n               \"content\": \"Svalbard Satellite Core Ground Station\
-        \ [SVL]\",\n               \"name\": \"procfacilityname\"\n            },\n\
-        \            {\n               \"content\": \"European Space Agency\",\n \
-        \              \"name\": \"procfacilityorg\"\n            },\n           \
-        \ {\n               \"content\": \"1\",\n               \"name\": \"processinglevel\"\
-        \n            },\n            {\n               \"content\": \"Data Processing\"\
-        ,\n               \"name\": \"processingname\"\n            },\n         \
-        \   {\n               \"content\": \"L1\",\n               \"name\": \"productlevel\"\
-        \n            },\n            {\n               \"content\": \"SL_1_RBT___\"\
-        ,\n               \"name\": \"producttype\"\n            },\n            {\n\
-        \               \"content\": \"ascending\",\n               \"name\": \"relorbitdir\"\
-        \n            },\n            {\n               \"content\": \"ascending\"\
-        ,\n               \"name\": \"lastrelorbitdirection\"\n            },\n  \
-        \          {\n               \"content\": \"577\",\n               \"name\"\
-        : \"relpassnumber\"\n            },\n            {\n               \"content\"\
-        : \"ascending\",\n               \"name\": \"relpassdirection\"\n        \
-        \    },\n            {\n               \"content\": \"Sentinel-3\",\n    \
-        \           \"name\": \"platformname\"\n            },\n            {\n  \
-        \             \"content\": \"296.42 MB\",\n               \"name\": \"size\"\
-        \n            },\n            {\n               \"content\": \"Near Real Time\"\
-        ,\n               \"name\": \"timeliness\"\n            }\n         ],\n \
-        \        \"arr\": {\n            \"str\": \"002\",\n            \"name\":\
-        \ \"collection\"\n         },\n         \"int\": [\n            {\n      \
-        \         \"content\": \"4111\",\n               \"name\": \"orbitnumber\"\
-        \n            },\n            {\n               \"content\": \"4112\",\n \
-        \              \"name\": \"lastorbitnumber\"\n            },\n           \
-        \ {\n               \"content\": \"288\",\n               \"name\": \"relativeorbitnumber\"\
-        \n            },\n            {\n               \"content\": \"289\",\n  \
-        \             \"name\": \"lastrelativeorbitnumber\"\n            }\n     \
-        \    ],\n         \"link\": [\n            {\"href\": \"https://scihub.copernicus.eu/s3/odata/v1/Products('c6f0fc89-d5b5-44a7-a2fd-b15232e34909')/$value\"\
+        \ -4.8208,-60.7091 -1.33279,-61.4824 2.13282))\"\n            },\n       \
+        \     {\n               \"name\": \"mode\",\n               \"content\": \"\
+        EO\"\n            },\n            {\n               \"name\": \"platformidentifier\"\
+        ,\n               \"content\": \"0000-000A\"\n            },\n           \
+        \ {\n               \"name\": \"onlinequalitycheck\",\n               \"content\"\
+        : \"PASSED\"\n            },\n            {\n               \"name\": \"orbitdirection\"\
+        ,\n               \"content\": \"ascending\"\n            },\n           \
+        \ {\n               \"name\": \"lastorbitdirection\",\n               \"content\"\
+        : \"ascending\"\n            },\n            {\n               \"name\": \"\
+        pdualongtrackcoord\",\n               \"content\": \"5940\"\n            },\n\
+        \            {\n               \"name\": \"pduduration\",\n              \
+        \ \"content\": \"119\"\n            },\n            {\n               \"name\"\
+        : \"passnumber\",\n               \"content\": \"8223\"\n            },\n\
+        \            {\n               \"name\": \"passdirection\",\n            \
+        \   \"content\": \"ascending\"\n            },\n            {\n          \
+        \     \"name\": \"procfacilityname\",\n               \"content\": \"Svalbard\
+        \ Satellite Core Ground Station [SVL]\"\n            },\n            {\n \
+        \              \"name\": \"procfacilityorg\",\n               \"content\"\
+        : \"European Space Agency\"\n            },\n            {\n             \
+        \  \"name\": \"processinglevel\",\n               \"content\": \"1\"\n   \
+        \         },\n            {\n               \"name\": \"processingname\",\n\
+        \               \"content\": \"Data Processing\"\n            },\n       \
+        \     {\n               \"name\": \"productlevel\",\n               \"content\"\
+        : \"L1\"\n            },\n            {\n               \"name\": \"producttype\"\
+        ,\n               \"content\": \"SL_1_RBT___\"\n            },\n         \
+        \   {\n               \"name\": \"relorbitdir\",\n               \"content\"\
+        : \"ascending\"\n            },\n            {\n               \"name\": \"\
+        lastrelorbitdirection\",\n               \"content\": \"ascending\"\n    \
+        \        },\n            {\n               \"name\": \"relpassnumber\",\n\
+        \               \"content\": \"577\"\n            },\n            {\n    \
+        \           \"name\": \"relpassdirection\",\n               \"content\": \"\
+        ascending\"\n            },\n            {\n               \"name\": \"platformname\"\
+        ,\n               \"content\": \"Sentinel-3\"\n            },\n          \
+        \  {\n               \"name\": \"size\",\n               \"content\": \"296.42\
+        \ MB\"\n            },\n            {\n               \"name\": \"timeliness\"\
+        ,\n               \"content\": \"Near Real Time\"\n            }\n       \
+        \  ],\n         \"arr\": {\n            \"str\": \"002\",\n            \"\
+        name\": \"collection\"\n         },\n         \"date\": [\n            {\n\
+        \               \"name\": \"ingestiondate\",\n               \"content\":\
+        \ \"2016-12-01T04:28:17.959Z\"\n            },\n            {\n          \
+        \     \"name\": \"beginposition\",\n               \"content\": \"2016-12-01T02:39:41.032Z\"\
+        \n            },\n            {\n               \"name\": \"endposition\"\
+        ,\n               \"content\": \"2016-12-01T02:41:40.253Z\"\n            }\n\
+        \         ],\n         \"link\": [\n            {\"href\": \"https://scihub.copernicus.eu/s3/odata/v1/Products('c6f0fc89-d5b5-44a7-a2fd-b15232e34909')/$value\"\
         },\n            {\n               \"rel\": \"alternative\",\n            \
         \   \"href\": \"https://scihub.copernicus.eu/s3/odata/v1/Products('c6f0fc89-d5b5-44a7-a2fd-b15232e34909')/\"\
         \n            },\n            {\n               \"rel\": \"icon\",\n     \
         \          \"href\": \"https://scihub.copernicus.eu/s3/odata/v1/Products('c6f0fc89-d5b5-44a7-a2fd-b15232e34909')/Products('Quicklook')/$value\"\
-        \n            }\n         ],\n         \"date\": [\n            {\n      \
-        \         \"content\": \"2016-12-01T04:28:17.959Z\",\n               \"name\"\
-        : \"ingestiondate\"\n            },\n            {\n               \"content\"\
-        : \"2016-12-01T02:39:41.032Z\",\n               \"name\": \"beginposition\"\
-        \n            },\n            {\n               \"content\": \"2016-12-01T02:41:40.253Z\"\
-        ,\n               \"name\": \"endposition\"\n            }\n         ],\n\
-        \         \"long\": {\n            \"content\": \"11\",\n            \"name\"\
-        : \"cyclenumber\"\n         }\n      }\n   ],\n   \"subtitle\": \"Displaying\
-        \ 8 results. Request done in 0.001 seconds.\",\n   \"opensearch:startIndex\"\
-        : \"0\",\n   \"opensearch:Query\": {\n      \"searchTerms\": \"(beginPosition:[2016-12-01T00:00:00Z\
+        \n            }\n         ],\n         \"id\": \"c6f0fc89-d5b5-44a7-a2fd-b15232e34909\"\
+        ,\n         \"title\": \"S3A_SL_1_RBT____20161201T023941_20161201T024140_20161201T033704_0119_011_288_5940_SVL_O_NR_002\"\
+        ,\n         \"long\": {\n            \"name\": \"cyclenumber\",\n        \
+        \    \"content\": \"11\"\n         },\n         \"int\": [\n            {\n\
+        \               \"name\": \"orbitnumber\",\n               \"content\": \"\
+        4111\"\n            },\n            {\n               \"name\": \"lastorbitnumber\"\
+        ,\n               \"content\": \"4112\"\n            },\n            {\n \
+        \              \"name\": \"relativeorbitnumber\",\n               \"content\"\
+        : \"288\"\n            },\n            {\n               \"name\": \"lastrelativeorbitnumber\"\
+        ,\n               \"content\": \"289\"\n            }\n         ]\n      }\n\
+        \   ],\n   \"xmlns\": \"http://www.w3.org/2005/Atom\",\n   \"subtitle\": \"\
+        Displaying 8 results. Request done in 0.366 seconds.\",\n   \"opensearch:itemsPerPage\"\
+        : \"100\",\n   \"id\": \"https://scihub.copernicus.eu/s3/search?q=(beginPosition:[2016-12-01T00:00:00Z\
         \ TO 2016-12-02T00:00:00Z]) AND (footprint:\\\"Intersects(POLYGON ((-66.2695312\
         \ -8.0592296, -66.2695312 0.7031074, -57.3046875 0.7031074, -57.3046875 -8.0592296,\
-        \ -66.2695312 -8.0592296)))\\\") AND (platformname:Sentinel-3)\",\n      \"\
-        role\": \"request\",\n      \"startPage\": \"1\"\n   }\n}}"}
+        \ -66.2695312 -8.0592296)))\\\") AND (platformname:Sentinel-3)\",\n   \"updated\"\
+        : \"2017-05-31T20:31:48.245Z\",\n   \"xmlns:opensearch\": \"http://a9.com/-/spec/opensearch/1.1/\"\
+        \n}}"}
     headers:
       Content-Type: [application/json]
-      Date: ['Fri, 28 Apr 2017 14:18:30 GMT']
       Pragma: [no-cache]
       Server: [Apache-Coyote/1.1]
-      Transfer-Encoding: [chunked]
       Vary: [Accept-Encoding]
       content-length: ['76650']
     status: {code: 200, message: OK}

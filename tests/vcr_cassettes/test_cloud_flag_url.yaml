@@ -7,52 +7,47 @@ interactions:
       Connection: [keep-alive]
       Content-Length: ['354']
       Content-Type: [application/x-www-form-urlencoded]
-      User-Agent: [sentinelsat/0.9.1]
+      User-Agent: [sentinelsat/0.10]
     method: POST
     uri: https://scihub.copernicus.eu/apihub/search?format=json&rows=100&start=0
   response:
-    body: {string: "{\"feed\": {\n   \"xmlns:opensearch\": \"http://a9.com/-/spec/opensearch/1.1/\"\
-        ,\n   \"link\": [\n      {\n         \"rel\": \"self\",\n         \"type\"\
-        : \"application/atom+xml\",\n         \"href\": \"https://scihub.copernicus.eu/apihub/search?q=(beginPosition:[2015-12-19T00:00:00Z\
+    body: {string: "{\"feed\": {\n   \"opensearch:Query\": {\n      \"startPage\"\
+        : \"1\",\n      \"role\": \"request\",\n      \"searchTerms\": \"(beginPosition:[2015-12-19T00:00:00Z\
         \ TO 2015-12-28T00:00:00Z]) AND (footprint:\\\"Intersects(POLYGON ((-66.2695312\
         \ -8.0592296, -66.2695312 0.7031074, -57.3046875 0.7031074, -57.3046875 -8.0592296,\
         \ -66.2695312 -8.0592296)))\\\") AND (cloudcoverpercentage:[0 TO 10]) AND\
-        \ (platformname:Sentinel-2)&start=0&rows=100\"\n      },\n      {\n      \
-        \   \"rel\": \"first\",\n         \"type\": \"application/atom+xml\",\n  \
-        \       \"href\": \"https://scihub.copernicus.eu/apihub/search?q=(beginPosition:[2015-12-19T00:00:00Z\
+        \ (platformname:Sentinel-2)\"\n   },\n   \"author\": {\"name\": \"Sentinels\
+        \ Scientific Data Hub\"},\n   \"link\": [\n      {\n         \"rel\": \"self\"\
+        ,\n         \"href\": \"https://scihub.copernicus.eu/apihub/search?q=(beginPosition:[2015-12-19T00:00:00Z\
         \ TO 2015-12-28T00:00:00Z]) AND (footprint:\\\"Intersects(POLYGON ((-66.2695312\
         \ -8.0592296, -66.2695312 0.7031074, -57.3046875 0.7031074, -57.3046875 -8.0592296,\
         \ -66.2695312 -8.0592296)))\\\") AND (cloudcoverpercentage:[0 TO 10]) AND\
-        \ (platformname:Sentinel-2)&start=0&rows=100\"\n      },\n      {\n      \
-        \   \"rel\": \"last\",\n         \"type\": \"application/atom+xml\",\n   \
-        \      \"href\": \"https://scihub.copernicus.eu/apihub/search?q=(beginPosition:[2015-12-19T00:00:00Z\
+        \ (platformname:Sentinel-2)&start=0&rows=100\",\n         \"type\": \"application/atom+xml\"\
+        \n      },\n      {\n         \"rel\": \"first\",\n         \"href\": \"https://scihub.copernicus.eu/apihub/search?q=(beginPosition:[2015-12-19T00:00:00Z\
         \ TO 2015-12-28T00:00:00Z]) AND (footprint:\\\"Intersects(POLYGON ((-66.2695312\
         \ -8.0592296, -66.2695312 0.7031074, -57.3046875 0.7031074, -57.3046875 -8.0592296,\
         \ -66.2695312 -8.0592296)))\\\") AND (cloudcoverpercentage:[0 TO 10]) AND\
-        \ (platformname:Sentinel-2)&start=2&rows=100\"\n      },\n      {\n      \
-        \   \"rel\": \"search\",\n         \"type\": \"application/opensearchdescription+xml\"\
-        ,\n         \"href\": \"opensearch_description.xml\"\n      }\n   ],\n   \"\
-        xmlns\": \"http://www.w3.org/2005/Atom\",\n   \"opensearch:itemsPerPage\"\
-        : \"100\",\n   \"id\": \"https://scihub.copernicus.eu/apihub/search?q=(beginPosition:[2015-12-19T00:00:00Z\
+        \ (platformname:Sentinel-2)&start=0&rows=100\",\n         \"type\": \"application/atom+xml\"\
+        \n      },\n      {\n         \"rel\": \"last\",\n         \"href\": \"https://scihub.copernicus.eu/apihub/search?q=(beginPosition:[2015-12-19T00:00:00Z\
         \ TO 2015-12-28T00:00:00Z]) AND (footprint:\\\"Intersects(POLYGON ((-66.2695312\
         \ -8.0592296, -66.2695312 0.7031074, -57.3046875 0.7031074, -57.3046875 -8.0592296,\
         \ -66.2695312 -8.0592296)))\\\") AND (cloudcoverpercentage:[0 TO 10]) AND\
-        \ (platformname:Sentinel-2)\",\n   \"author\": {\"name\": \"Sentinels Scientific\
-        \ Data Hub\"},\n   \"title\": \"Sentinels Scientific Data Hub search results\
+        \ (platformname:Sentinel-2)&start=2&rows=100\",\n         \"type\": \"application/atom+xml\"\
+        \n      },\n      {\n         \"rel\": \"search\",\n         \"href\": \"\
+        opensearch_description.xml\",\n         \"type\": \"application/opensearchdescription+xml\"\
+        \n      }\n   ],\n   \"title\": \"Sentinels Scientific Data Hub search results\
         \ for: (beginPosition:[2015-12-19T00:00:00Z TO 2015-12-28T00:00:00Z]) AND\
         \ (footprint:\\\"Intersects(POLYGON ((-66.2695312 -8.0592296, -66.2695312\
         \ 0.7031074, -57.3046875 0.7031074, -57.3046875 -8.0592296, -66.2695312 -8.0592296)))\\\
         \") AND (cloudcoverpercentage:[0 TO 10]) AND (platformname:Sentinel-2)\",\n\
-        \   \"updated\": \"2017-04-28T14:18:29.284Z\",\n   \"opensearch:totalResults\"\
-        : \"3\",\n   \"entry\": [\n      {\n         \"summary\": \"Date: 2015-12-27T14:22:29Z,\
+        \   \"opensearch:startIndex\": \"0\",\n   \"opensearch:totalResults\": \"\
+        3\",\n   \"entry\": [\n      {\n         \"summary\": \"Date: 2015-12-27T14:22:29Z,\
         \ Instrument: MSI, Mode: , Satellite: Sentinel-2, Size: 5.47 GB\",\n     \
-        \    \"id\": \"6ed0b7de-3435-43df-98bf-ad63c8d077ef\",\n         \"title\"\
-        : \"S2A_OPER_PRD_MSIL1C_PDMC_20151228T112701_R110_V20151227T142229_20151227T142229\"\
-        ,\n         \"str\": [\n            {\n               \"content\": \"T\",\n\
-        \               \"name\": \"processed\"\n            },\n            {\n \
-        \              \"content\": \"S2A_OPER_PRD_MSIL1C_PDMC_20151228T112701_R110_V20151227T142229_20151227T142229.SAFE\"\
-        ,\n               \"name\": \"filename\"\n            },\n            {\n\
-        \               \"content\": \"<gml:Polygon srsName=\\\"http://www.opengis.net/gml/srs/epsg.xml#4326\\\
+        \    \"str\": [\n            {\n               \"name\": \"processed\",\n\
+        \               \"content\": \"T\"\n            },\n            {\n      \
+        \         \"name\": \"filename\",\n               \"content\": \"S2A_OPER_PRD_MSIL1C_PDMC_20151228T112701_R110_V20151227T142229_20151227T142229.SAFE\"\
+        \n            },\n            {\n               \"name\": \"gmlfootprint\"\
+        ,\n               \"content\": \"<gml:Polygon srsName=\\\"http://www.opengis.net/gml/srs/epsg.xml#4326\\\
         \" xmlns:gml=\\\"http://www.opengis.net/gml\\\">\\n   <gml:outerBoundaryIs>\\\
         n      <gml:LinearRing>\\n         <gml:coordinates>-7.277741311151398,-58.81156740766095\
         \ -8.226396486361141,-58.81561785311765 -8.229371267918506,-57.90828889229284\
@@ -69,17 +64,17 @@ interactions:
         \ -5.427580735171929,-57.85862076311558 -5.425529942673673,-58.80508864893815\
         \ -6.373701120217797,-58.808170510311776 -7.277741311151398,-58.81156740766095<\\\
         /gml:coordinates>\\n      <\\/gml:LinearRing>\\n   <\\/gml:outerBoundaryIs>\\\
-        n<\\/gml:Polygon>\",\n               \"name\": \"gmlfootprint\"\n        \
-        \    },\n            {\n               \"content\": \"SAFE\",\n          \
-        \     \"name\": \"format\"\n            },\n            {\n              \
-        \ \"content\": \"S2A_OPER_PRD_MSIL1C_PDMC_20151228T112701_R110_V20151227T142229_20151227T142229\"\
-        ,\n               \"name\": \"identifier\"\n            },\n            {\n\
-        \               \"content\": \"MSI\",\n               \"name\": \"instrumentshortname\"\
-        \n            },\n            {\n               \"content\": \"INS-NOBS\"\
-        ,\n               \"name\": \"sensoroperationalmode\"\n            },\n  \
-        \          {\n               \"content\": \"Multi-Spectral Instrument\",\n\
-        \               \"name\": \"instrumentname\"\n            },\n           \
-        \ {\n               \"content\": \"POLYGON ((-58.81156740766095 -7.277741311151398,-58.81561785311765\
+        n<\\/gml:Polygon>\"\n            },\n            {\n               \"name\"\
+        : \"format\",\n               \"content\": \"SAFE\"\n            },\n    \
+        \        {\n               \"name\": \"identifier\",\n               \"content\"\
+        : \"S2A_OPER_PRD_MSIL1C_PDMC_20151228T112701_R110_V20151227T142229_20151227T142229\"\
+        \n            },\n            {\n               \"name\": \"instrumentshortname\"\
+        ,\n               \"content\": \"MSI\"\n            },\n            {\n  \
+        \             \"name\": \"sensoroperationalmode\",\n               \"content\"\
+        : \"INS-NOBS\"\n            },\n            {\n               \"name\": \"\
+        instrumentname\",\n               \"content\": \"Multi-Spectral Instrument\"\
+        \n            },\n            {\n               \"name\": \"footprint\",\n\
+        \               \"content\": \"POLYGON ((-58.81156740766095 -7.277741311151398,-58.81561785311765\
         \ -8.226396486361141,-57.90828889229284 -8.229371267918506,-57.908289107748466\
         \ -8.229472125991359,-57.863631654095585 -8.229517681770952,-57.818955784450985\
         \ -8.229664156708727,-57.81895559010358 -8.22956325653525,-57.00018159295572\
@@ -92,47 +87,48 @@ interactions:
         \ -6.373383001663421,-55.10649394534545 -5.425259436921197,-56.05319609957077\
         \ -5.427449229390539,-56.956038252707735 -5.428189238842002,-57.85862076311558\
         \ -5.427580735171929,-58.80508864893815 -5.425529942673673,-58.808170510311776\
-        \ -6.373701120217797,-58.81156740766095 -7.277741311151398))\",\n        \
-        \       \"name\": \"footprint\"\n            },\n            {\n         \
-        \      \"content\": \"GS2A_20151227T140932_002681_N02.01\",\n            \
-        \   \"name\": \"s2datatakeid\"\n            },\n            {\n          \
-        \     \"content\": \"2015-000A\",\n               \"name\": \"platformidentifier\"\
-        \n            },\n            {\n               \"content\": \"DESCENDING\"\
-        ,\n               \"name\": \"orbitdirection\"\n            },\n         \
-        \   {\n               \"content\": \"Sentinel-2A\",\n               \"name\"\
-        : \"platformserialidentifier\"\n            },\n            {\n          \
-        \     \"content\": \"02.01\",\n               \"name\": \"processingbaseline\"\
-        \n            },\n            {\n               \"content\": \"Level-1C\"\
-        ,\n               \"name\": \"processinglevel\"\n            },\n        \
-        \    {\n               \"content\": \"S2MSI1C\",\n               \"name\"\
-        : \"producttype\"\n            },\n            {\n               \"content\"\
-        : \"Sentinel-2\",\n               \"name\": \"platformname\"\n           \
-        \ },\n            {\n               \"content\": \"5.47 GB\",\n          \
-        \     \"name\": \"size\"\n            }\n         ],\n         \"int\": [\n\
-        \            {\n               \"content\": \"2681\",\n               \"name\"\
-        : \"orbitnumber\"\n            },\n            {\n               \"content\"\
-        : \"110\",\n               \"name\": \"relativeorbitnumber\"\n           \
-        \ }\n         ],\n         \"link\": [\n            {\"href\": \"https://scihub.copernicus.eu/apihub/odata/v1/Products('6ed0b7de-3435-43df-98bf-ad63c8d077ef')/$value\"\
+        \ -6.373701120217797,-58.81156740766095 -7.277741311151398))\"\n         \
+        \   },\n            {\n               \"name\": \"s2datatakeid\",\n      \
+        \         \"content\": \"GS2A_20151227T140932_002681_N02.01\"\n          \
+        \  },\n            {\n               \"name\": \"platformidentifier\",\n \
+        \              \"content\": \"2015-000A\"\n            },\n            {\n\
+        \               \"name\": \"orbitdirection\",\n               \"content\"\
+        : \"DESCENDING\"\n            },\n            {\n               \"name\":\
+        \ \"platformserialidentifier\",\n               \"content\": \"Sentinel-2A\"\
+        \n            },\n            {\n               \"name\": \"processingbaseline\"\
+        ,\n               \"content\": \"02.01\"\n            },\n            {\n\
+        \               \"name\": \"processinglevel\",\n               \"content\"\
+        : \"Level-1C\"\n            },\n            {\n               \"name\": \"\
+        producttype\",\n               \"content\": \"S2MSI1C\"\n            },\n\
+        \            {\n               \"name\": \"platformname\",\n             \
+        \  \"content\": \"Sentinel-2\"\n            },\n            {\n          \
+        \     \"name\": \"size\",\n               \"content\": \"5.47 GB\"\n     \
+        \       }\n         ],\n         \"date\": [\n            {\n            \
+        \   \"name\": \"ingestiondate\",\n               \"content\": \"2015-12-28T10:57:09.913Z\"\
+        \n            },\n            {\n               \"name\": \"beginposition\"\
+        ,\n               \"content\": \"2015-12-27T14:22:29Z\"\n            },\n\
+        \            {\n               \"name\": \"endposition\",\n              \
+        \ \"content\": \"2015-12-27T14:22:29Z\"\n            }\n         ],\n    \
+        \     \"double\": {\n            \"name\": \"cloudcoverpercentage\",\n   \
+        \         \"content\": \"5.166666666666667\"\n         },\n         \"link\"\
+        : [\n            {\"href\": \"https://scihub.copernicus.eu/apihub/odata/v1/Products('6ed0b7de-3435-43df-98bf-ad63c8d077ef')/$value\"\
         },\n            {\n               \"rel\": \"alternative\",\n            \
         \   \"href\": \"https://scihub.copernicus.eu/apihub/odata/v1/Products('6ed0b7de-3435-43df-98bf-ad63c8d077ef')/\"\
         \n            },\n            {\n               \"rel\": \"icon\",\n     \
         \          \"href\": \"https://scihub.copernicus.eu/apihub/odata/v1/Products('6ed0b7de-3435-43df-98bf-ad63c8d077ef')/Products('Quicklook')/$value\"\
-        \n            }\n         ],\n         \"date\": [\n            {\n      \
-        \         \"content\": \"2015-12-28T10:57:09.913Z\",\n               \"name\"\
-        : \"ingestiondate\"\n            },\n            {\n               \"content\"\
-        : \"2015-12-27T14:22:29Z\",\n               \"name\": \"beginposition\"\n\
-        \            },\n            {\n               \"content\": \"2015-12-27T14:22:29Z\"\
-        ,\n               \"name\": \"endposition\"\n            }\n         ],\n\
-        \         \"double\": {\n            \"content\": \"5.166666666666667\",\n\
-        \            \"name\": \"cloudcoverpercentage\"\n         }\n      },\n  \
-        \    {\n         \"summary\": \"Date: 2015-12-19T14:58:32Z, Instrument: MSI,\
-        \ Mode: , Satellite: Sentinel-2, Size: 6.13 GB\",\n         \"id\": \"37ecee60-23d8-4ec2-a65f-2de24f51d30e\"\
-        ,\n         \"title\": \"S2A_OPER_PRD_MSIL1C_PDMC_20151219T221009_R139_V20151219T145832_20151219T145832\"\
-        ,\n         \"str\": [\n            {\n               \"content\": \"T\",\n\
-        \               \"name\": \"processed\"\n            },\n            {\n \
-        \              \"content\": \"S2A_OPER_PRD_MSIL1C_PDMC_20151219T221009_R139_V20151219T145832_20151219T145832.SAFE\"\
-        ,\n               \"name\": \"filename\"\n            },\n            {\n\
-        \               \"content\": \"<gml:Polygon srsName=\\\"http://www.opengis.net/gml/srs/epsg.xml#4326\\\
+        \n            }\n         ],\n         \"id\": \"6ed0b7de-3435-43df-98bf-ad63c8d077ef\"\
+        ,\n         \"title\": \"S2A_OPER_PRD_MSIL1C_PDMC_20151228T112701_R110_V20151227T142229_20151227T142229\"\
+        ,\n         \"int\": [\n            {\n               \"name\": \"orbitnumber\"\
+        ,\n               \"content\": \"2681\"\n            },\n            {\n \
+        \              \"name\": \"relativeorbitnumber\",\n               \"content\"\
+        : \"110\"\n            }\n         ]\n      },\n      {\n         \"summary\"\
+        : \"Date: 2015-12-19T14:58:32Z, Instrument: MSI, Mode: , Satellite: Sentinel-2,\
+        \ Size: 6.13 GB\",\n         \"str\": [\n            {\n               \"\
+        name\": \"processed\",\n               \"content\": \"T\"\n            },\n\
+        \            {\n               \"name\": \"filename\",\n               \"\
+        content\": \"S2A_OPER_PRD_MSIL1C_PDMC_20151219T221009_R139_V20151219T145832_20151219T145832.SAFE\"\
+        \n            },\n            {\n               \"name\": \"gmlfootprint\"\
+        ,\n               \"content\": \"<gml:Polygon srsName=\\\"http://www.opengis.net/gml/srs/epsg.xml#4326\\\
         \" xmlns:gml=\\\"http://www.opengis.net/gml\\\">\\n   <gml:outerBoundaryIs>\\\
         n      <gml:LinearRing>\\n         <gml:coordinates>0,-68.10136233979134 -0.9042567278595974,-68.10124020406684\
         \ -0.904256732085073,-68.10125115193745 -0.9487435865088351,-68.10123419533664\
@@ -157,17 +153,17 @@ interactions:
         \ 0,-63.81057740574847 0,-64.70920384697635 0,-64.7970528123519 0,-65.31996054306995\
         \ 0,-65.69520275703948 0,-66.21736699592725 0,-66.30515631259404 0,-67.11492283955806\
         \ 0,-67.2033064795971 0,-68.10136233979134<\\/gml:coordinates>\\n      <\\\
-        /gml:LinearRing>\\n   <\\/gml:outerBoundaryIs>\\n<\\/gml:Polygon>\",\n   \
-        \            \"name\": \"gmlfootprint\"\n            },\n            {\n \
-        \              \"content\": \"SAFE\",\n               \"name\": \"format\"\
-        \n            },\n            {\n               \"content\": \"S2A_OPER_PRD_MSIL1C_PDMC_20151219T221009_R139_V20151219T145832_20151219T145832\"\
-        ,\n               \"name\": \"identifier\"\n            },\n            {\n\
-        \               \"content\": \"MSI\",\n               \"name\": \"instrumentshortname\"\
-        \n            },\n            {\n               \"content\": \"INS-NOBS\"\
-        ,\n               \"name\": \"sensoroperationalmode\"\n            },\n  \
-        \          {\n               \"content\": \"Multi-Spectral Instrument\",\n\
-        \               \"name\": \"instrumentname\"\n            },\n           \
-        \ {\n               \"content\": \"POLYGON ((-68.10136233979134 0,-68.10124020406684\
+        /gml:LinearRing>\\n   <\\/gml:outerBoundaryIs>\\n<\\/gml:Polygon>\"\n    \
+        \        },\n            {\n               \"name\": \"format\",\n       \
+        \        \"content\": \"SAFE\"\n            },\n            {\n          \
+        \     \"name\": \"identifier\",\n               \"content\": \"S2A_OPER_PRD_MSIL1C_PDMC_20151219T221009_R139_V20151219T145832_20151219T145832\"\
+        \n            },\n            {\n               \"name\": \"instrumentshortname\"\
+        ,\n               \"content\": \"MSI\"\n            },\n            {\n  \
+        \             \"name\": \"sensoroperationalmode\",\n               \"content\"\
+        : \"INS-NOBS\"\n            },\n            {\n               \"name\": \"\
+        instrumentname\",\n               \"content\": \"Multi-Spectral Instrument\"\
+        \n            },\n            {\n               \"name\": \"footprint\",\n\
+        \               \"content\": \"POLYGON ((-68.10136233979134 0,-68.10124020406684\
         \ -0.9042567278595974,-68.10125115193745 -0.904256732085073,-68.10123419533664\
         \ -0.9487435865088351,-68.10122818112512 -0.993271027199255,-68.10121722326775\
         \ -0.9932710225536353,-68.10090628048391 -1.8090516449458767,-68.10091718433367\
@@ -189,47 +185,48 @@ interactions:
         \ -0.9487654858953135,-63.810677701030464 -0.904277604986451,-63.810687576387814\
         \ -0.9042776014159831,-63.81057740574847 0,-64.70920384697635 0,-64.7970528123519\
         \ 0,-65.31996054306995 0,-65.69520275703948 0,-66.21736699592725 0,-66.30515631259404\
-        \ 0,-67.11492283955806 0,-67.2033064795971 0,-68.10136233979134 0))\",\n \
-        \              \"name\": \"footprint\"\n            },\n            {\n  \
-        \             \"content\": \"GS2A_20151219T144722_002567_N02.01\",\n     \
-        \          \"name\": \"s2datatakeid\"\n            },\n            {\n   \
-        \            \"content\": \"2015-000A\",\n               \"name\": \"platformidentifier\"\
-        \n            },\n            {\n               \"content\": \"DESCENDING\"\
-        ,\n               \"name\": \"orbitdirection\"\n            },\n         \
-        \   {\n               \"content\": \"Sentinel-2A\",\n               \"name\"\
-        : \"platformserialidentifier\"\n            },\n            {\n          \
-        \     \"content\": \"02.01\",\n               \"name\": \"processingbaseline\"\
-        \n            },\n            {\n               \"content\": \"Level-1C\"\
-        ,\n               \"name\": \"processinglevel\"\n            },\n        \
-        \    {\n               \"content\": \"S2MSI1C\",\n               \"name\"\
-        : \"producttype\"\n            },\n            {\n               \"content\"\
-        : \"Sentinel-2\",\n               \"name\": \"platformname\"\n           \
-        \ },\n            {\n               \"content\": \"6.13 GB\",\n          \
-        \     \"name\": \"size\"\n            }\n         ],\n         \"int\": [\n\
-        \            {\n               \"content\": \"2567\",\n               \"name\"\
-        : \"orbitnumber\"\n            },\n            {\n               \"content\"\
-        : \"139\",\n               \"name\": \"relativeorbitnumber\"\n           \
-        \ }\n         ],\n         \"link\": [\n            {\"href\": \"https://scihub.copernicus.eu/apihub/odata/v1/Products('37ecee60-23d8-4ec2-a65f-2de24f51d30e')/$value\"\
+        \ 0,-67.11492283955806 0,-67.2033064795971 0,-68.10136233979134 0))\"\n  \
+        \          },\n            {\n               \"name\": \"s2datatakeid\",\n\
+        \               \"content\": \"GS2A_20151219T144722_002567_N02.01\"\n    \
+        \        },\n            {\n               \"name\": \"platformidentifier\"\
+        ,\n               \"content\": \"2015-000A\"\n            },\n           \
+        \ {\n               \"name\": \"orbitdirection\",\n               \"content\"\
+        : \"DESCENDING\"\n            },\n            {\n               \"name\":\
+        \ \"platformserialidentifier\",\n               \"content\": \"Sentinel-2A\"\
+        \n            },\n            {\n               \"name\": \"processingbaseline\"\
+        ,\n               \"content\": \"02.01\"\n            },\n            {\n\
+        \               \"name\": \"processinglevel\",\n               \"content\"\
+        : \"Level-1C\"\n            },\n            {\n               \"name\": \"\
+        producttype\",\n               \"content\": \"S2MSI1C\"\n            },\n\
+        \            {\n               \"name\": \"platformname\",\n             \
+        \  \"content\": \"Sentinel-2\"\n            },\n            {\n          \
+        \     \"name\": \"size\",\n               \"content\": \"6.13 GB\"\n     \
+        \       }\n         ],\n         \"date\": [\n            {\n            \
+        \   \"name\": \"ingestiondate\",\n               \"content\": \"2015-12-19T21:28:48.174Z\"\
+        \n            },\n            {\n               \"name\": \"beginposition\"\
+        ,\n               \"content\": \"2015-12-19T14:58:32Z\"\n            },\n\
+        \            {\n               \"name\": \"endposition\",\n              \
+        \ \"content\": \"2015-12-19T14:58:32Z\"\n            }\n         ],\n    \
+        \     \"double\": {\n            \"name\": \"cloudcoverpercentage\",\n   \
+        \         \"content\": \"6.666666666666667\"\n         },\n         \"link\"\
+        : [\n            {\"href\": \"https://scihub.copernicus.eu/apihub/odata/v1/Products('37ecee60-23d8-4ec2-a65f-2de24f51d30e')/$value\"\
         },\n            {\n               \"rel\": \"alternative\",\n            \
         \   \"href\": \"https://scihub.copernicus.eu/apihub/odata/v1/Products('37ecee60-23d8-4ec2-a65f-2de24f51d30e')/\"\
         \n            },\n            {\n               \"rel\": \"icon\",\n     \
         \          \"href\": \"https://scihub.copernicus.eu/apihub/odata/v1/Products('37ecee60-23d8-4ec2-a65f-2de24f51d30e')/Products('Quicklook')/$value\"\
-        \n            }\n         ],\n         \"date\": [\n            {\n      \
-        \         \"content\": \"2015-12-19T21:28:48.174Z\",\n               \"name\"\
-        : \"ingestiondate\"\n            },\n            {\n               \"content\"\
-        : \"2015-12-19T14:58:32Z\",\n               \"name\": \"beginposition\"\n\
-        \            },\n            {\n               \"content\": \"2015-12-19T14:58:32Z\"\
-        ,\n               \"name\": \"endposition\"\n            }\n         ],\n\
-        \         \"double\": {\n            \"content\": \"6.666666666666667\",\n\
-        \            \"name\": \"cloudcoverpercentage\"\n         }\n      },\n  \
-        \    {\n         \"summary\": \"Date: 2015-12-19T14:58:32Z, Instrument: MSI,\
-        \ Mode: , Satellite: Sentinel-2, Size: 5.79 GB\",\n         \"id\": \"0848f6b8-5730-4759-850e-fc9945d42296\"\
-        ,\n         \"title\": \"S2A_OPER_PRD_MSIL1C_PDMC_20151219T221022_R139_V20151219T145832_20151219T145832\"\
-        ,\n         \"str\": [\n            {\n               \"content\": \"T\",\n\
-        \               \"name\": \"processed\"\n            },\n            {\n \
-        \              \"content\": \"S2A_OPER_PRD_MSIL1C_PDMC_20151219T221022_R139_V20151219T145832_20151219T145832.SAFE\"\
-        ,\n               \"name\": \"filename\"\n            },\n            {\n\
-        \               \"content\": \"<gml:Polygon srsName=\\\"http://www.opengis.net/gml/srs/epsg.xml#4326\\\
+        \n            }\n         ],\n         \"id\": \"37ecee60-23d8-4ec2-a65f-2de24f51d30e\"\
+        ,\n         \"title\": \"S2A_OPER_PRD_MSIL1C_PDMC_20151219T221009_R139_V20151219T145832_20151219T145832\"\
+        ,\n         \"int\": [\n            {\n               \"name\": \"orbitnumber\"\
+        ,\n               \"content\": \"2567\"\n            },\n            {\n \
+        \              \"name\": \"relativeorbitnumber\",\n               \"content\"\
+        : \"139\"\n            }\n         ]\n      },\n      {\n         \"summary\"\
+        : \"Date: 2015-12-19T14:58:32Z, Instrument: MSI, Mode: , Satellite: Sentinel-2,\
+        \ Size: 5.79 GB\",\n         \"str\": [\n            {\n               \"\
+        name\": \"processed\",\n               \"content\": \"T\"\n            },\n\
+        \            {\n               \"name\": \"filename\",\n               \"\
+        content\": \"S2A_OPER_PRD_MSIL1C_PDMC_20151219T221022_R139_V20151219T145832_20151219T145832.SAFE\"\
+        \n            },\n            {\n               \"name\": \"gmlfootprint\"\
+        ,\n               \"content\": \"<gml:Polygon srsName=\\\"http://www.opengis.net/gml/srs/epsg.xml#4326\\\
         \" xmlns:gml=\\\"http://www.opengis.net/gml\\\">\\n   <gml:outerBoundaryIs>\\\
         n      <gml:LinearRing>\\n         <gml:coordinates>0.904463645229748,-67.20308401831022\
         \ 0.8602259997031759,-67.20309383506546 0.816024921206463,-67.20312539953586\
@@ -258,17 +255,17 @@ interactions:
         \ 1.719941930287078,-67.20250180864736 1.7199419038295671,-67.20247990259755\
         \ 0.9044636313989689,-67.20306224449203 0.904463645229748,-67.20308401831022<\\\
         /gml:coordinates>\\n      <\\/gml:LinearRing>\\n   <\\/gml:outerBoundaryIs>\\\
-        n<\\/gml:Polygon>\",\n               \"name\": \"gmlfootprint\"\n        \
-        \    },\n            {\n               \"content\": \"SAFE\",\n          \
-        \     \"name\": \"format\"\n            },\n            {\n              \
-        \ \"content\": \"S2A_OPER_PRD_MSIL1C_PDMC_20151219T221022_R139_V20151219T145832_20151219T145832\"\
-        ,\n               \"name\": \"identifier\"\n            },\n            {\n\
-        \               \"content\": \"MSI\",\n               \"name\": \"instrumentshortname\"\
-        \n            },\n            {\n               \"content\": \"INS-NOBS\"\
-        ,\n               \"name\": \"sensoroperationalmode\"\n            },\n  \
-        \          {\n               \"content\": \"Multi-Spectral Instrument\",\n\
-        \               \"name\": \"instrumentname\"\n            },\n           \
-        \ {\n               \"content\": \"POLYGON ((-67.20308401831022 0.904463645229748,-67.20309383506546\
+        n<\\/gml:Polygon>\"\n            },\n            {\n               \"name\"\
+        : \"format\",\n               \"content\": \"SAFE\"\n            },\n    \
+        \        {\n               \"name\": \"identifier\",\n               \"content\"\
+        : \"S2A_OPER_PRD_MSIL1C_PDMC_20151219T221022_R139_V20151219T145832_20151219T145832\"\
+        \n            },\n            {\n               \"name\": \"instrumentshortname\"\
+        ,\n               \"content\": \"MSI\"\n            },\n            {\n  \
+        \             \"name\": \"sensoroperationalmode\",\n               \"content\"\
+        : \"INS-NOBS\"\n            },\n            {\n               \"name\": \"\
+        instrumentname\",\n               \"content\": \"Multi-Spectral Instrument\"\
+        \n            },\n            {\n               \"name\": \"footprint\",\n\
+        \               \"content\": \"POLYGON ((-67.20308401831022 0.904463645229748,-67.20309383506546\
         \ 0.8602259997031759,-67.20312539953586 0.816024921206463,-67.2031036437089\
         \ 0.8160249087382706,-67.2033043528574 -0.088438933321785,-66.30515312497471\
         \ -0.0883831463539118,-66.30515312533039 -0.08838421517998,-66.26122896745512\
@@ -293,52 +290,52 @@ interactions:
         \ 2.712829405650466,-67.20239441735558 1.8089225183646764,-67.20241636055403\
         \ 1.808922546237677,-67.20244815849307 1.7643945316073189,-67.20250180864736\
         \ 1.719941930287078,-67.20247990259755 1.7199419038295671,-67.20306224449203\
-        \ 0.9044636313989689,-67.20308401831022 0.904463645229748))\",\n         \
-        \      \"name\": \"footprint\"\n            },\n            {\n          \
-        \     \"content\": \"GS2A_20151219T144722_002567_N02.01\",\n             \
-        \  \"name\": \"s2datatakeid\"\n            },\n            {\n           \
-        \    \"content\": \"2015-000A\",\n               \"name\": \"platformidentifier\"\
-        \n            },\n            {\n               \"content\": \"DESCENDING\"\
-        ,\n               \"name\": \"orbitdirection\"\n            },\n         \
-        \   {\n               \"content\": \"Sentinel-2A\",\n               \"name\"\
-        : \"platformserialidentifier\"\n            },\n            {\n          \
-        \     \"content\": \"02.01\",\n               \"name\": \"processingbaseline\"\
-        \n            },\n            {\n               \"content\": \"Level-1C\"\
-        ,\n               \"name\": \"processinglevel\"\n            },\n        \
-        \    {\n               \"content\": \"S2MSI1C\",\n               \"name\"\
-        : \"producttype\"\n            },\n            {\n               \"content\"\
-        : \"Sentinel-2\",\n               \"name\": \"platformname\"\n           \
-        \ },\n            {\n               \"content\": \"5.79 GB\",\n          \
-        \     \"name\": \"size\"\n            }\n         ],\n         \"int\": [\n\
-        \            {\n               \"content\": \"2567\",\n               \"name\"\
-        : \"orbitnumber\"\n            },\n            {\n               \"content\"\
-        : \"139\",\n               \"name\": \"relativeorbitnumber\"\n           \
-        \ }\n         ],\n         \"link\": [\n            {\"href\": \"https://scihub.copernicus.eu/apihub/odata/v1/Products('0848f6b8-5730-4759-850e-fc9945d42296')/$value\"\
+        \ 0.9044636313989689,-67.20308401831022 0.904463645229748))\"\n          \
+        \  },\n            {\n               \"name\": \"s2datatakeid\",\n       \
+        \        \"content\": \"GS2A_20151219T144722_002567_N02.01\"\n           \
+        \ },\n            {\n               \"name\": \"platformidentifier\",\n  \
+        \             \"content\": \"2015-000A\"\n            },\n            {\n\
+        \               \"name\": \"orbitdirection\",\n               \"content\"\
+        : \"DESCENDING\"\n            },\n            {\n               \"name\":\
+        \ \"platformserialidentifier\",\n               \"content\": \"Sentinel-2A\"\
+        \n            },\n            {\n               \"name\": \"processingbaseline\"\
+        ,\n               \"content\": \"02.01\"\n            },\n            {\n\
+        \               \"name\": \"processinglevel\",\n               \"content\"\
+        : \"Level-1C\"\n            },\n            {\n               \"name\": \"\
+        producttype\",\n               \"content\": \"S2MSI1C\"\n            },\n\
+        \            {\n               \"name\": \"platformname\",\n             \
+        \  \"content\": \"Sentinel-2\"\n            },\n            {\n          \
+        \     \"name\": \"size\",\n               \"content\": \"5.79 GB\"\n     \
+        \       }\n         ],\n         \"date\": [\n            {\n            \
+        \   \"name\": \"ingestiondate\",\n               \"content\": \"2015-12-19T21:28:42.109Z\"\
+        \n            },\n            {\n               \"name\": \"beginposition\"\
+        ,\n               \"content\": \"2015-12-19T14:58:32Z\"\n            },\n\
+        \            {\n               \"name\": \"endposition\",\n              \
+        \ \"content\": \"2015-12-19T14:58:32Z\"\n            }\n         ],\n    \
+        \     \"double\": {\n            \"name\": \"cloudcoverpercentage\",\n   \
+        \         \"content\": \"6.230769230769231\"\n         },\n         \"link\"\
+        : [\n            {\"href\": \"https://scihub.copernicus.eu/apihub/odata/v1/Products('0848f6b8-5730-4759-850e-fc9945d42296')/$value\"\
         },\n            {\n               \"rel\": \"alternative\",\n            \
         \   \"href\": \"https://scihub.copernicus.eu/apihub/odata/v1/Products('0848f6b8-5730-4759-850e-fc9945d42296')/\"\
         \n            },\n            {\n               \"rel\": \"icon\",\n     \
         \          \"href\": \"https://scihub.copernicus.eu/apihub/odata/v1/Products('0848f6b8-5730-4759-850e-fc9945d42296')/Products('Quicklook')/$value\"\
-        \n            }\n         ],\n         \"date\": [\n            {\n      \
-        \         \"content\": \"2015-12-19T21:28:42.109Z\",\n               \"name\"\
-        : \"ingestiondate\"\n            },\n            {\n               \"content\"\
-        : \"2015-12-19T14:58:32Z\",\n               \"name\": \"beginposition\"\n\
-        \            },\n            {\n               \"content\": \"2015-12-19T14:58:32Z\"\
-        ,\n               \"name\": \"endposition\"\n            }\n         ],\n\
-        \         \"double\": {\n            \"content\": \"6.230769230769231\",\n\
-        \            \"name\": \"cloudcoverpercentage\"\n         }\n      }\n   ],\n\
-        \   \"subtitle\": \"Displaying 3 results. Request done in 0.028 seconds.\"\
-        ,\n   \"opensearch:startIndex\": \"0\",\n   \"opensearch:Query\": {\n    \
-        \  \"searchTerms\": \"(beginPosition:[2015-12-19T00:00:00Z TO 2015-12-28T00:00:00Z])\
-        \ AND (footprint:\\\"Intersects(POLYGON ((-66.2695312 -8.0592296, -66.2695312\
-        \ 0.7031074, -57.3046875 0.7031074, -57.3046875 -8.0592296, -66.2695312 -8.0592296)))\\\
-        \") AND (cloudcoverpercentage:[0 TO 10]) AND (platformname:Sentinel-2)\",\n\
-        \      \"role\": \"request\",\n      \"startPage\": \"1\"\n   }\n}}"}
+        \n            }\n         ],\n         \"id\": \"0848f6b8-5730-4759-850e-fc9945d42296\"\
+        ,\n         \"title\": \"S2A_OPER_PRD_MSIL1C_PDMC_20151219T221022_R139_V20151219T145832_20151219T145832\"\
+        ,\n         \"int\": [\n            {\n               \"name\": \"orbitnumber\"\
+        ,\n               \"content\": \"2567\"\n            },\n            {\n \
+        \              \"name\": \"relativeorbitnumber\",\n               \"content\"\
+        : \"139\"\n            }\n         ]\n      }\n   ],\n   \"xmlns\": \"http://www.w3.org/2005/Atom\"\
+        ,\n   \"subtitle\": \"Displaying 3 results. Request done in 1.699 seconds.\"\
+        ,\n   \"opensearch:itemsPerPage\": \"100\",\n   \"id\": \"https://scihub.copernicus.eu/apihub/search?q=(beginPosition:[2015-12-19T00:00:00Z\
+        \ TO 2015-12-28T00:00:00Z]) AND (footprint:\\\"Intersects(POLYGON ((-66.2695312\
+        \ -8.0592296, -66.2695312 0.7031074, -57.3046875 0.7031074, -57.3046875 -8.0592296,\
+        \ -66.2695312 -8.0592296)))\\\") AND (cloudcoverpercentage:[0 TO 10]) AND\
+        \ (platformname:Sentinel-2)\",\n   \"updated\": \"2017-05-31T20:31:44.996Z\"\
+        ,\n   \"xmlns:opensearch\": \"http://a9.com/-/spec/opensearch/1.1/\"\n}}"}
     headers:
       Content-Type: [application/json]
-      Date: ['Fri, 28 Apr 2017 14:18:28 GMT']
       Pragma: [no-cache]
       Server: [Apache-Coyote/1.1]
-      Transfer-Encoding: [chunked]
       Vary: [Accept-Encoding]
       content-length: ['24257']
     status: {code: 200, message: OK}
