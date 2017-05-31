@@ -141,6 +141,7 @@ def test_sentinel2_flag():
     expected = "Product 91c2503c-3c58-4a8c-a70b-207b128e6833 - Date: 2015-12-27T14:22:29Z, Instrument: MSI, Mode: , Satellite: Sentinel-2, Size: 5.73 GB"
     assert result.output.split("\n")[2] == expected
 
+
 @my_vcr.use_cassette
 @pytest.mark.scihub
 def test_sentinel3_flag():
@@ -149,7 +150,7 @@ def test_sentinel3_flag():
     result = runner.invoke(
         cli,
         ['search'] +
-        ['s3guest', 's3guest']+
+        ['s3guest', 's3guest'] +
         ['tests/map.geojson',
          '--url', 'https://scihub.copernicus.eu/s3/',
          '-s', '20161201',
@@ -160,6 +161,7 @@ def test_sentinel3_flag():
 
     expected = "Product c4a36e6b-4a18-46b4-b2ff-abe7a231a46f - Date: 2016-12-01T13:21:33.755Z, Instrument: OLCI, Mode: , Satellite: Sentinel-3, Size: 721.66 MB"
     assert result.output.split("\n")[3] == expected
+
 
 @my_vcr.use_cassette
 @pytest.mark.scihub
@@ -180,6 +182,7 @@ def test_product_flag():
     expected = "Product 2223103a-3754-473d-9a29-24ef8efa2880 - Date: 2016-12-01T09:30:22.149Z, Instrument: SAR-C SAR, Mode: VV VH, Satellite: Sentinel-1, Size: 7.98 GB"
     assert result.output.split("\n")[3] == expected
 
+
 @my_vcr.use_cassette
 @pytest.mark.scihub
 def test_instrument_flag():
@@ -188,7 +191,7 @@ def test_instrument_flag():
     result = runner.invoke(
         cli,
         ['search'] +
-        ['s3guest', 's3guest']+
+        ['s3guest', 's3guest'] +
         ['tests/map.geojson',
          '--url', 'https://scihub.copernicus.eu/s3/',
          '-s', '20161201',
@@ -199,6 +202,7 @@ def test_instrument_flag():
 
     expected = "Product 50d27cb5-70da-41c9-b0f3-023cfb25d781 - Date: 2016-12-01T13:13:17.65Z, Instrument: SRAL, Mode: , Satellite: Sentinel-3, Size: 76.62 MB"
     assert result.output.split("\n")[0] == expected
+
 
 @my_vcr.use_cassette
 @pytest.mark.scihub
