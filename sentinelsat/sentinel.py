@@ -476,12 +476,10 @@ def _check_scihub_response(response):
         response.json()
     except (requests.HTTPError, ValueError) as e:
         msg = "API response not valid. JSON decoding failed."
-        code = None
         try:
-            msg = response.json()['error']['message']['value']
-            code = response.json()['error']['code']
+            msg = response.headers['cause-message']
         except:
-            if not response.text.rstrip().startswith('{'):
+            if not response.text.strip().startswith('{'):
                 try:
                     h = html2text.HTML2Text()
                     h.ignore_images = True
@@ -489,7 +487,7 @@ def _check_scihub_response(response):
                     msg = h.handle(response.text).strip()
                 except:
                     pass
-        api_error = SentinelAPIError(response.status_code, code, msg, response.content)
+        api_error = SentinelAPIError(msg, response)
         # Suppress "During handling of the above exception..." message
         # See PEP 409
         api_error.__cause__ = None
@@ -565,29 +563,6 @@ def _parse_odata_timestamp(in_date):
     ms = timestamp % 1000
     return datetime.utcfromtimestamp(seconds) + timedelta(milliseconds=ms)
 
-def _check_scihub_response(response):
-    """Check that the response from server has status code 2xx and that the response is valid JSON."""
-    try:
-        response.raise_for_status()
-        response.json()
-    except (requests.HTTPError, ValueError) as e:
-        msg = "API response not valid. JSON decoding failed."
-        try:
-            msg = response.headers['cause-message']
-        except:
-            if not response.text.strip().startswith('{'):
-                try:
-                    h = html2text.HTML2Text()
-                    h.ignore_images = True
-                    h.ignore_anchors = True
-                    msg = h.handle(response.text).strip()
-                except:
-                    pass
-        api_error = SentinelAPIError(msg, response)
-        # Suppress "During handling of the above exception..." message
-        # See PEP 409
-        api_error.__cause__ = None
-        raise api_error
 
 def _parse_opensearch_response(products):
     """Convert a query response to a dictionary.
