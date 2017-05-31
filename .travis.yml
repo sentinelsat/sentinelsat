@@ -11,13 +11,13 @@ branches:
 before_install:
 - pip install -U pip
 install:
-- pip install coveralls
+- pip install codecov
 - pip install -e .[test]
 script:
 - if [[ $TRAVIS_PULL_REQUEST = false ]]; then coverage run --source=sentinelsat -m py.test -v; fi
 - if [[ $TRAVIS_PULL_REQUEST != false ]]; then coverage run --source=sentinelsat -m py.test -v -m "not homura"; fi
 after_success:
-- if [[ $TRAVIS_PYTHON_VERSION = 3.6 ]]; then coveralls; fi
+- codecov
 - if [[ $TRAVIS_PYTHON_VERSION = 3.6 && $TRAVIS_PULL_REQUEST = false ]]; then curl -X POST http://readthedocs.org/build/sentinelsat; fi
 sudo: false
 notifications:

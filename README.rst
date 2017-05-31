@@ -7,8 +7,8 @@ sentinelsat
 .. image:: https://travis-ci.org/sentinelsat/sentinelsat.svg
     :target: https://travis-ci.org/sentinelsat/sentinelsat
 
-.. image:: https://coveralls.io/repos/sentinelsat/sentinelsat/badge.svg?branch=master&service=github
-    :target: https://coveralls.io/github/sentinelsat/sentinelsat?branch=master
+.. image:: https://codecov.io/gh/sentinelsat/sentinelsat/branch/master/graph/badge.svg
+    :target: https://codecov.io/gh/sentinelsat/sentinelsat
 
 .. image:: https://readthedocs.org/projects/sentinelsat/badge/?version=master
     :target: http://sentinelsat.readthedocs.io/en/master/?badge=master
