@@ -161,9 +161,7 @@ class SentinelAPI(object):
             json_feed = response.json()['feed']
             total_results = int(json_feed['opensearch:totalResults'])
         except (ValueError, KeyError):
-            raise SentinelAPIError(http_status=response.status_code,
-                                   msg='API response not valid. JSON decoding failed.',
-                                   response_body=response.content)
+            raise SentinelAPIError('API response not valid. JSON decoding failed.', response)
 
         entries = json_feed.get('entry', [])
         # this verification is necessary because if the query returns only
@@ -469,24 +467,28 @@ def geojson_to_wkt(geojson_obj, feature_number=0):
     return geomet.wkt.dumps(geometry, decimals=7)
 
 
-def _check_scihub_response(response):
+def _check_scihub_response(response, test_json=True):
     """Check that the response from server has status code 2xx and that the response is valid JSON."""
     try:
         response.raise_for_status()
-        response.json()
-    except (requests.HTTPError, ValueError) as e:
-        msg = "API response not valid. JSON decoding failed."
+        if test_json:
+            response.json()
+    except (requests.HTTPError, ValueError):
+        msg = "Invalid API response."
         try:
             msg = response.headers['cause-message']
         except:
-            if not response.text.strip().startswith('{'):
-                try:
-                    h = html2text.HTML2Text()
-                    h.ignore_images = True
-                    h.ignore_anchors = True
-                    msg = h.handle(response.text).strip()
-                except:
-                    pass
+            try:
+                msg = response.json()['error']['message']['value']
+            except:
+                if not response.text.strip().startswith('{'):
+                    try:
+                        h = html2text.HTML2Text()
+                        h.ignore_images = True
+                        h.ignore_anchors = True
+                        msg = h.handle(response.text).strip()
+                    except:
+                        pass
         api_error = SentinelAPIError(msg, response)
         # Suppress "During handling of the above exception..." message
         # See PEP 409
