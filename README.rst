@@ -193,7 +193,7 @@ To allow the tests to run actual queries against SciHub set the environment vari
     export SENTINEL_PASSWORD=<your scihub password>
 
 and add ``--vcr disable`` to ``py.test`` arguments.
-To update the recordings use ``--vcr record_new`` or ``--vcr reset_all``.
+To update the recordings use ``--vcr record_new`` or ``--vcr reset``.
 
 Documentation
 =============
