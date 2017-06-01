@@ -30,18 +30,23 @@ def scrub_response(response):
     return response
 
 
+def range_header_matcher(r1, r2):
+    return r1.headers.get('Range', '') == r2.headers.get('Range', '')
+
+
 if vcr_option != "disable":
     my_vcr = vcr.VCR(
         record_mode=record_mode,
         serializer='yaml',
         cassette_library_dir='tests/vcr_cassettes/',
         path_transformer=vcr.VCR.ensure_suffix('.yaml'),
-        match_on=['uri', 'method', 'body', 'headers'],
         filter_headers=['Set-Cookie'],
         before_record_request=scrub_request,
         before_record_response=scrub_response,
         decode_compressed_response=True
     )
+    my_vcr.register_matcher('range_header', range_header_matcher)
+    my_vcr.match_on = ['uri', 'method', 'body', 'range_header']
 else:
     print("Tests will not use any prerecorded query responses.")
     class DummyVCR:
