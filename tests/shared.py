@@ -1,6 +1,5 @@
 import warnings
-from glob import glob
-from os import environ, unlink
+from os import environ
 
 import pytest
 import vcr
@@ -12,9 +11,10 @@ if vcr_option == "use":
 elif vcr_option == "record_new":
     print("Tests will use prerecorded query responses and record any new ones.")
     record_mode = "new_episodes"
-elif vcr_option == "reset_all":
-    print("Tests will re-record all query responses.")
+elif vcr_option == "reset":
+    print("Tests will re-record query responses.")
     record_mode = "all"
+
 
 def scrub_request(request):
     for header in ("Authorization", "Set-Cookie", "Cookie"):
@@ -22,11 +22,13 @@ def scrub_request(request):
             del request.headers[header]
     return request
 
+
 def scrub_response(response):
-    for header in ("Authorization", "Set-Cookie", "Cookie"):
+    for header in ("Authorization", "Set-Cookie", "Cookie", "Date", "Expires", "Transfer-Encoding"):
         if header in response["headers"]:
             del response["headers"][header]
     return response
+
 
 if vcr_option != "disable":
     my_vcr = vcr.VCR(
@@ -34,7 +36,7 @@ if vcr_option != "disable":
         serializer='yaml',
         cassette_library_dir='tests/vcr_cassettes/',
         path_transformer=vcr.VCR.ensure_suffix('.yaml'),
-        match_on=['url', 'method', 'query'],
+        match_on=['uri', 'method', 'body', 'headers'],
         filter_headers=['Set-Cookie'],
         before_record_request=scrub_request,
         before_record_response=scrub_response,

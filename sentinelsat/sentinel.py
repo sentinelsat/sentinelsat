@@ -6,16 +6,14 @@ import logging
 import re
 import xml.etree.ElementTree as ET
 from collections import OrderedDict
+from contextlib import closing
 from datetime import date, datetime, timedelta
 from os import remove
 from os.path import exists, getsize, join
-from time import sleep
 
 import geojson
 import geomet.wkt
-import homura
 import html2text
-import pycurl
 import requests
 from tqdm import tqdm
 
@@ -23,11 +21,6 @@ from six import string_types
 from six.moves.urllib.parse import urljoin
 
 from . import __version__ as sentinelsat_version
-
-try:
-    import certifi
-except ImportError:
-    certifi = None
 
 
 class SentinelAPI(object):
@@ -161,9 +154,7 @@ class SentinelAPI(object):
             json_feed = response.json()['feed']
             total_results = int(json_feed['opensearch:totalResults'])
         except (ValueError, KeyError):
-            raise SentinelAPIError(http_status=response.status_code,
-                                   msg='API response not valid. JSON decoding failed.',
-                                   response_body=response.content)
+            raise SentinelAPIError('API response not valid. JSON decoding failed.', response)
 
         entries = json_feed.get('entry', [])
         # this verification is necessary because if the query returns only
@@ -256,20 +247,18 @@ class SentinelAPI(object):
         url = urljoin(self.api_url, "odata/v1/Products('{}')?$format=json".format(id))
         if full:
             url += '&$expand=Attributes'
-        response = self.session.get(url)
+        response = self.session.get(url, auth=self.session.auth)
         _check_scihub_response(response)
         values = _parse_odata_response(response.json()['d'])
         return values
 
-    def download(self, id, directory_path='.', checksum=False, check_existing=False, **kwargs):
-        """Download a product using homura.
+    def download(self, id, directory_path='.', checksum=False, check_existing=False):
+        """Download a product.
 
         Uses the filename on the server for the downloaded file, e.g.
         "S1A_EW_GRDH_1SDH_20141003T003840_20141003T003920_002658_002F54_4DD1.zip".
 
         Incomplete downloads are continued and complete files are skipped.
-
-        Further keyword arguments are passed to the homura.download() function.
 
         Parameters
         ----------
@@ -296,25 +285,15 @@ class SentinelAPI(object):
         InvalidChecksumError
             If the MD5 checksum does not match the checksum on the server.
         """
-        # Check if API is reachable.
-        product_info = None
-        while product_info is None:
-            try:
-                product_info = self.get_product_odata(id)
-            except SentinelAPIError as e:
-                if 'Invalid key' in e.msg:
-                    raise
-                self.logger.info("Invalid API response:\n{}\nTrying again in 1 minute.".format(str(e)))
-                sleep(60)
-
+        product_info = self.get_product_odata(id)
         path = join(directory_path, product_info['title'] + '.zip')
         product_info['path'] = path
-        kwargs = _fillin_cainfo(kwargs)
+        product_info['downloaded_bytes'] = 0
 
         self.logger.info('Downloading %s to %s' % (id, path))
 
         # Check if the file exists and passes md5 test
-        # Homura will by default continue the download if the file exists but is incomplete
+        # The download function will by default continue the download if the file exists but is incomplete
         if exists(path) and getsize(path) == product_info['size']:
             if not check_existing or _md5_compare(path, product_info['md5']):
                 self.logger.info('%s was already downloaded.' % path)
@@ -324,14 +303,8 @@ class SentinelAPI(object):
                     '%s was already downloaded but is corrupt: checksums do not match. Re-downloading.' % path)
                 remove(path)
 
-        if (exists(path) and getsize(path) >= 2 ** 31 and
-                    pycurl.version.split()[0].lower() <= 'pycurl/7.43.0'):
-            # Workaround for PycURL's bug when continuing > 2 GB files
-            # https://github.com/pycurl/pycurl/issues/405
-            remove(path)
-
-        homura.download(product_info['url'], path=path, auth=self.session.auth,
-                        user_agent=self.user_agent, **kwargs)
+        # Store the number of downloaded bytes for unit tests
+        product_info['downloaded_bytes'] = _download(product_info['url'], path, self.session, product_info['size'])
 
         # Check integrity with MD5 checksum
         if checksum is True:
@@ -341,7 +314,7 @@ class SentinelAPI(object):
         return product_info
 
     def download_all(self, products, directory_path='.', max_attempts=10, checksum=False,
-                     check_existing=False, **kwargs):
+                     check_existing=False):
         """Download a list of products.
 
         Takes a list of product IDs as input. This means that the return value of query() can be
@@ -366,6 +339,10 @@ class SentinelAPI(object):
         ----------------
         See download().
 
+        Raises
+        ------
+        Raises the most recent downloading exception if all downloads failed.
+
         Returns
         -------
         dict[string, dict]
@@ -376,20 +353,28 @@ class SentinelAPI(object):
         product_ids = list(products)
         self.logger.info("Will download %d products" % len(product_ids))
         return_values = OrderedDict()
+        last_exception = None
         for i, product_id in enumerate(products):
             for attempt_num in range(max_attempts):
                 try:
-                    product_info = self.download(product_id, directory_path, checksum, check_existing, **kwargs)
+                    product_info = self.download(product_id, directory_path, checksum,
+                                                 check_existing)
                     return_values[product_id] = product_info
                     break
                 except (KeyboardInterrupt, SystemExit):
                     raise
-                except InvalidChecksumError:
-                    self.logger.warning("Invalid checksum. The downloaded file for '{}' is corrupted.".format(product_id))
-                except:
+                except InvalidChecksumError as e:
+                    last_exception = e
+                    self.logger.warning(
+                        "Invalid checksum. The downloaded file for '{}' is corrupted.".format(product_id))
+                except Exception as e:
+                    last_exception = e
                     self.logger.exception("There was an error downloading %s" % product_id)
             self.logger.info("{}/{} products downloaded".format(i + 1, len(product_ids)))
         failed = set(products) - set(return_values)
+
+        if len(failed) == len(product_ids) and last_exception is not None:
+            raise last_exception
         return return_values, failed
 
     @staticmethod
@@ -469,53 +454,33 @@ def geojson_to_wkt(geojson_obj, feature_number=0):
     return geomet.wkt.dumps(geometry, decimals=7)
 
 
-def _check_scihub_response(response):
+def _check_scihub_response(response, test_json=True):
     """Check that the response from server has status code 2xx and that the response is valid JSON."""
     try:
         response.raise_for_status()
-        response.json()
-    except (requests.HTTPError, ValueError) as e:
-        msg = "API response not valid. JSON decoding failed."
+        if test_json:
+            response.json()
+    except (requests.HTTPError, ValueError):
+        msg = "Invalid API response."
         try:
             msg = response.headers['cause-message']
         except:
-            if not response.text.strip().startswith('{'):
-                try:
-                    h = html2text.HTML2Text()
-                    h.ignore_images = True
-                    h.ignore_anchors = True
-                    msg = h.handle(response.text).strip()
-                except:
-                    pass
+            try:
+                msg = response.json()['error']['message']['value']
+            except:
+                if not response.text.strip().startswith('{'):
+                    try:
+                        h = html2text.HTML2Text()
+                        h.ignore_images = True
+                        h.ignore_anchors = True
+                        msg = h.handle(response.text).strip()
+                    except:
+                        pass
         api_error = SentinelAPIError(msg, response)
         # Suppress "During handling of the above exception..." message
         # See PEP 409
         api_error.__cause__ = None
         raise api_error
-
-
-def _fillin_cainfo(kwargs_dict):
-    """Fill in the path of the PEM file containing the CA certificate.
-
-    The priority is: 1. user provided path, 2. path to the cacert.pem
-    bundle provided by certifi (if installed), 3. let pycurl use the
-    system path where libcurl's cacert bundle is assumed to be stored,
-    as established at libcurl build time.
-    """
-    try:
-        cainfo = kwargs_dict['pass_through_opts'][pycurl.CAINFO]
-    except KeyError:
-        try:
-            cainfo = certifi.where()
-        except AttributeError:
-            cainfo = None
-
-    if cainfo is not None:
-        pass_through_opts = kwargs_dict.get('pass_through_opts', {})
-        pass_through_opts[pycurl.CAINFO] = cainfo
-        kwargs_dict['pass_through_opts'] = pass_through_opts
-
-    return kwargs_dict
 
 
 def _format_query_date(in_date):
@@ -631,14 +596,34 @@ def _parse_odata_response(product):
 
 def _md5_compare(file_path, checksum, block_size=2 ** 13):
     """Compare a given md5 checksum with one calculated from a file"""
-    md5 = hashlib.md5()
-    with open(file_path, "rb") as f:
-        progress = tqdm(desc="MD5 checksumming", total=getsize(file_path), unit="B", unit_scale=True)
-        while True:
-            block_data = f.read(block_size)
-            if not block_data:
-                break
-            md5.update(block_data)
-            progress.update(len(block_data))
-        progress.close()
-    return md5.hexdigest().lower() == checksum.lower()
+    with closing(tqdm(desc="MD5 checksumming", total=getsize(file_path), unit="B", unit_scale=True)) as progress:
+        md5 = hashlib.md5()
+        with open(file_path, "rb") as f:
+            while True:
+                block_data = f.read(block_size)
+                if not block_data:
+                    break
+                md5.update(block_data)
+                progress.update(len(block_data))
+        return md5.hexdigest().lower() == checksum.lower()
+
+
+def _download(url, path, session, file_size):
+    headers = {}
+    continuing = exists(path)
+    if continuing:
+        headers = {'Range': 'bytes={}-'.format(getsize(path))}
+    downloaded_bytes = 0
+    with closing(session.get(url, stream=True, auth=session.auth, headers=headers)) as r, \
+            closing(tqdm(desc="Downloading", total=file_size, unit="B", unit_scale=True)) as progress:
+        _check_scihub_response(r, test_json=False)
+        chunk_size = 2 ** 20  # download in 1 MB chunks
+        mode = 'ab' if continuing else 'wb'
+        with open(path, mode) as f:
+            for chunk in r.iter_content(chunk_size=chunk_size):
+                if chunk:  # filter out keep-alive new chunks
+                    f.write(chunk)
+                    progress.update(len(chunk))
+                    downloaded_bytes += len(chunk)
+        # Return the number of bytes downloaded
+        return progress.n

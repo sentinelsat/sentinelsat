@@ -53,19 +53,11 @@ Documentation is published at http://sentinelsat.readthedocs.io/.
 Installation
 ============
 
-Sentinelsat depends on `homura <https://github.com/shichao-an/homura>`_, which depends on
-`PycURL <http://pycurl.sourceforge.net/>`_, so you might need to install some dependencies on your system.
-
 Install ``sentinelsat`` through pip:
 
 .. code-block:: console
 
     pip install sentinelsat
-
-The documentation contains examples on how to install the dependencies for
-`Ubuntu <https://sentinelsat.readthedocs.io/en/latest/install.html#ubuntu>`_,
-`Fedora <https://sentinelsat.readthedocs.io/en/latest/install.html#fedora>`_ and
-`Windows <https://sentinelsat.readthedocs.io/en/latest/install.html#windows>`_.
 
 Usage
 =====
@@ -175,17 +167,16 @@ Options
 Tests
 =====
 
-To run the tests on `sentinelsat`:
+To run the tests on ``sentinelsat``:
 
 .. code-block:: console
 
     git clone https://github.com/sentinelsat/sentinelsat.git
     cd sentinelsat
     pip install -e .[test]
-    py.test -v -m "not homura"
+    py.test -v
 
-By default, prerecorded responses to Copernicus Open Access Hub queries are used to not be affected by it's downtime.
-The only exceptions are downloading tests, which can be disabled with ``-m "not homura"``.
+By default, prerecorded responses to Copernicus Open Access Hub queries are used to not be affected by its downtime.
 To allow the tests to run actual queries against the Copernicus Open Access Hub set the environment variables
 
 .. code-block:: bash
@@ -193,7 +184,7 @@ To allow the tests to run actual queries against the Copernicus Open Access Hub 
     export SENTINEL_PASSWORD=<password>
 
 and add ``--vcr disable`` to ``py.test`` arguments.
-To update the recordings use ``--vcr record_new`` or ``--vcr reset_all``.
+To update the recordings use either ``--vcr record_new`` or ``--vcr reset``.
 
 Documentation
 =============

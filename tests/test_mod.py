@@ -6,6 +6,7 @@ from os import environ
 import geojson
 import py.path
 import pytest
+import requests
 import requests_mock
 
 from sentinelsat import InvalidChecksumError, SentinelAPI, SentinelAPIError, geojson_to_wkt, read_geojson
@@ -103,6 +104,18 @@ def test_SentinelAPI_wrong_credentials():
     )
     with pytest.raises(SentinelAPIError) as excinfo:
         api.query(**_small_query)
+    assert excinfo.value.response.status_code == 401
+
+    with pytest.raises(SentinelAPIError) as excinfo:
+        api.get_product_odata('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')
+    assert excinfo.value.response.status_code == 401
+
+    with pytest.raises(SentinelAPIError) as excinfo:
+        api.download('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')
+    assert excinfo.value.response.status_code == 401
+
+    with pytest.raises(SentinelAPIError) as excinfo:
+        api.download_all(['8df46c9e-a20c-43db-a19a-4240c2ed3b8b'])
     assert excinfo.value.response.status_code == 401
 
 
@@ -354,29 +367,42 @@ def test_get_product_info_bad_key():
         api.get_product_odata('invalid-xyz')
     assert excinfo.value.msg == "InvalidKeyException : Invalid key (invalid-xyz) to access Products"
 
+
 @pytest.mark.mock_api
 def test_get_product_odata_scihub_down():
     api = SentinelAPI("mock_user", "mock_password")
 
+    request_url = "https://scihub.copernicus.eu/apihub/odata/v1/Products('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')?$format=json"
+
     with requests_mock.mock() as rqst:
         rqst.get(
-            "https://scihub.copernicus.eu/apihub/odata/v1/Products('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')?$format=json",
+            request_url,
             text="Mock SciHub is Down", status_code=503
         )
         with pytest.raises(SentinelAPIError) as excinfo:
             api.get_product_odata('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')
+        assert excinfo.value.msg == "Mock SciHub is Down"
 
         rqst.get(
-            "https://scihub.copernicus.eu/apihub/odata/v1/Products('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')/?$format=json",
+            request_url,
+            text='{"error":{"code":null,"message":{"lang":"en","value":'
+                 '"No Products found with key \'8df46c9e-a20c-43db-a19a-4240c2ed3b8b\' "}}}', status_code=500
+        )
+        with pytest.raises(SentinelAPIError) as excinfo:
+            api.get_product_odata('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')
+        assert excinfo.value.msg == "No Products found with key \'8df46c9e-a20c-43db-a19a-4240c2ed3b8b\' "
+
+        rqst.get(
+            request_url,
             text="Mock SciHub is Down", status_code=200
         )
         with pytest.raises(SentinelAPIError) as excinfo:
             api.get_product_odata('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')
         assert excinfo.value.msg == "Mock SciHub is Down"
 
-        # Test with a real server response
+        # Test with a real "server under maintenance" response
         rqst.get(
-            "https://scihub.copernicus.eu/apihub/odata/v1/Products('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')?$format=json",
+            request_url,
             text=textwrap.dedent("""\
             <!doctype html>
             <title>The Sentinels Scientific Data Hub</title>
@@ -412,6 +438,25 @@ def test_get_product_odata_scihub_down():
 
 
 @pytest.mark.mock_api
+def test_scihub_unresponsive():
+    api = SentinelAPI("mock_user", "mock_password")
+
+    with requests_mock.mock() as rqst:
+        rqst.request(requests_mock.ANY, requests_mock.ANY, exc=requests.exceptions.ConnectTimeout)
+        with pytest.raises(requests.exceptions.Timeout) as excinfo:
+            api.query(**_small_query)
+
+        with pytest.raises(requests.exceptions.Timeout) as excinfo:
+            api.get_product_odata('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')
+
+        with pytest.raises(requests.exceptions.Timeout) as excinfo:
+            api.download('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')
+
+        with pytest.raises(requests.exceptions.Timeout) as excinfo:
+            api.download_all(['8df46c9e-a20c-43db-a19a-4240c2ed3b8b'])
+
+
+@pytest.mark.mock_api
 def test_get_products_invalid_json():
     api = SentinelAPI("mock_user", "mock_password")
     with requests_mock.mock() as rqst:
@@ -426,7 +471,7 @@ def test_get_products_invalid_json():
                 end_date="20151228",
                 platformname="Sentinel-2"
             )
-        assert excinfo.value.msg == "API response not valid. JSON decoding failed."
+        assert excinfo.value.msg == "Invalid API response."
 
 
 @my_vcr.use_cassette
@@ -519,8 +564,7 @@ def test_to_geopandas(products):
     assert abs(gdf.unary_union.area - 132.16) < 0.01
 
 
-@my_vcr.use_cassette(decode_compressed_response=False)
-@pytest.mark.homura
+@my_vcr.use_cassette
 @pytest.mark.scihub
 def test_download(tmpdir):
     api = SentinelAPI(**_api_auth)
@@ -533,86 +577,83 @@ def test_download(tmpdir):
     assert expected_path.samefile(product_info["path"])
     assert product_info["title"] == filename
     assert product_info["size"] == expected_path.size()
+    assert product_info["downloaded_bytes"] == expected_path.size()
 
-    hash = expected_path.computehash()
+    hash = expected_path.computehash("md5")
     modification_time = expected_path.mtime()
     expected_product_info = product_info
-    del expected_product_info['path']
 
     # File exists, test with checksum
     # Expect no modification
     product_info = api.download(uuid, str(tmpdir), check_existing=True)
     assert expected_path.mtime() == modification_time
-    del product_info['path']
+    expected_product_info["downloaded_bytes"] = 0
     assert product_info == expected_product_info
 
     # File exists, test without checksum
     # Expect no modification
     product_info = api.download(uuid, str(tmpdir), check_existing=False)
     assert expected_path.mtime() == modification_time
-    del product_info['path']
+    expected_product_info["downloaded_bytes"] = 0
     assert product_info == expected_product_info
 
-    # Create invalid file, expect re-download
+    # Create invalid but full-sized file, expect re-download
     with expected_path.open("wb") as f:
         f.seek(expected_product_info["size"] - 1)
         f.write(b'\0')
     assert expected_path.computehash("md5") != hash
     product_info = api.download(uuid, str(tmpdir), check_existing=True)
     assert expected_path.computehash("md5") == hash
-    del product_info['path']
+    expected_product_info["downloaded_bytes"] = expected_product_info["size"]
     assert product_info == expected_product_info
 
-    # Test continue
-    with expected_path.open("rb") as f:
-        content = f.read()
+    # Create invalid file, no checksum check
+    # Expect continued download but no exception raised
+    dummy_content = b'aaaaaaaaaaaaaaaaaaaaaaaaa'
     with expected_path.open("wb") as f:
-        f.write(content[:100])
+        f.write(dummy_content)
+    product_info = api.download(uuid, str(tmpdir), check_existing=False)
     assert expected_path.computehash("md5") != hash
-    product_info = api.download(uuid, str(tmpdir), check_existing=True)
-    assert expected_path.computehash("md5") == hash
-    del product_info['path']
+    expected_product_info["downloaded_bytes"] = expected_product_info["size"] - len(dummy_content)
     assert product_info == expected_product_info
 
-    # Test MD5 check
+    # Create invalid file, with checksum check
+    # Expect continued download and exception raised
+    dummy_content = b'aaaaaaaaaaaaaaaaaaaaaaaaa'
     with expected_path.open("wb") as f:
-        f.write(b'abcd' * 100)
-    assert expected_path.computehash("md5") != hash
+        f.write(dummy_content)
     with pytest.raises(InvalidChecksumError):
-        api.download(uuid, str(tmpdir), check_existing=True, checksum=True)
+        product_info = api.download(uuid, str(tmpdir), check_existing=False, checksum=True)
+    pypath = py.path.local(product_info['path'])
+    assert pypath.check(exists=0)
+    expected_product_info["downloaded_bytes"] = expected_product_info["size"] - len(dummy_content)
+    assert product_info == expected_product_info
 
 
-@my_vcr.use_cassette()
-@pytest.mark.scihub
-def test_download_invalid_id():
-    api = SentinelAPI(**_api_auth)
-    uuid = "1f62a176-c980-41dc-xxxx-c735d660c910"
-    with pytest.raises(SentinelAPIError) as excinfo:
-        api.download(uuid)
-        assert 'Invalid key' in excinfo.value.msg
-
-
-@my_vcr.use_cassette(decode_compressed_response=False)
-@pytest.mark.homura
+@my_vcr.use_cassette
 @pytest.mark.scihub
 def test_download_all(tmpdir):
     api = SentinelAPI(**_api_auth)
     # From https://scihub.copernicus.eu/apihub/odata/v1/Products?$top=5&$orderby=ContentLength
-    filenames = ["S1A_WV_OCN__2SSH_20150603T092625_20150603T093332_006207_008194_521E",
-                 "S1A_WV_OCN__2SSV_20150526T211029_20150526T211737_006097_007E78_134A",
-                 "S1A_WV_OCN__2SSV_20150526T081641_20150526T082418_006090_007E3E_104C"]
+    # filenames = ["S1A_WV_OCN__2SSH_20150603T092625_20150603T093332_006207_008194_521E",
+    #              "S1A_WV_OCN__2SSV_20150526T211029_20150526T211737_006097_007E78_134A",
+    #              "S1A_WV_OCN__2SSV_20150526T081641_20150526T082418_006090_007E3E_104C"]
 
-    ids = list(api.query_raw(" OR ".join(filenames)))
-    assert len(ids) == len(filenames)
+    # Corresponding IDs
+    ids = [
+        "5618ce1b-923b-4df2-81d9-50b53e5aded9",
+        "d8340134-878f-4891-ba4f-4df54f1e3ab4",
+        "1f62a176-c980-41dc-b3a1-c735d660c910"
+    ]
 
     # Download normally
     product_infos, failed_downloads = api.download_all(ids, str(tmpdir))
     assert len(failed_downloads) == 0
-    assert len(product_infos) == len(filenames)
+    assert len(product_infos) == len(ids)
     for product_id, product_info in product_infos.items():
         pypath = py.path.local(product_info['path'])
-        assert pypath.purebasename in filenames
         assert pypath.check(exists=1, file=1)
+        assert pypath.purebasename in product_info['title']
         assert pypath.size() == product_info["size"]
 
     # Force one download to fail
@@ -627,5 +668,15 @@ def test_download_all(tmpdir):
         product_infos, failed_downloads = api.download_all(
             ids, str(tmpdir), max_attempts=1, checksum=True)
         assert len(failed_downloads) == 1
-        assert len(product_infos) + len(failed_downloads) == len(filenames)
+        assert len(product_infos) + len(failed_downloads) == len(ids)
         assert id in failed_downloads
+
+
+@my_vcr.use_cassette
+@pytest.mark.scihub
+def test_download_invalid_id():
+    api = SentinelAPI(**_api_auth)
+    uuid = "1f62a176-c980-41dc-xxxx-c735d660c910"
+    with pytest.raises(SentinelAPIError) as excinfo:
+        api.download(uuid)
+        assert 'Invalid key' in excinfo.value.msg

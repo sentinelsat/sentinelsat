@@ -1,11 +1,11 @@
-import click
-import geojson as gj
 import logging
-
 import os
 
+import click
+import geojson as gj
+
 from sentinelsat import __version__ as sentinelsat_version
-from sentinelsat.sentinel import SentinelAPI, SentinelAPIError, read_geojson, geojson_to_wkt
+from sentinelsat.sentinel import SentinelAPI, SentinelAPIError, geojson_to_wkt, read_geojson
 
 logger = logging.getLogger('sentinelsat')
 
@@ -75,7 +75,7 @@ def cli():
     '--instrument', type=click.Choice(['MSI', 'SAR-C SAR', 'SLSTR', 'OLCI', 'SRAL']),
     help='Limit search to a specific instrument on a Sentinel satellite.')
 @click.option(
-    '--producttype', type=click.Choice(['SLC', 'GRD', 'OCN','RAW', 'S2MSI1C', 'S2MSI2Ap']),
+    '--producttype', type=click.Choice(['SLC', 'GRD', 'OCN', 'RAW', 'S2MSI1C', 'S2MSI2Ap']),
     help='Limit search to a Sentinel product type.')
 @click.option(
     '-c', '--cloud', type=int,
@@ -95,32 +95,32 @@ def search(
 
     search_kwargs = {}
     if sentinel and not (producttype or instrument):
-        search_kwargs.update({"platformname": "Sentinel-" + sentinel})
+        search_kwargs["platformname"] = "Sentinel-" + sentinel
 
     if instrument and not producttype:
-        search_kwargs.update({"instrumentshortname": instrument})
+        search_kwargs["instrumentshortname"] = instrument
 
     if producttype:
-        search_kwargs.update({"producttype": producttype})
+        search_kwargs["producttype"] = producttype
 
     if cloud:
         if sentinel not in ['2', '3']:
             logger.error('Cloud cover is only supported for Sentinel 2 and 3.')
             raise ValueError('Cloud cover is only supported for Sentinel 2 and 3.')
-        search_kwargs.update({"cloudcoverpercentage": "[0 TO %s]" % cloud})
+        search_kwargs["cloudcoverpercentage"] = "[0 TO %s]" % cloud
 
     # DEPRECATED: to be removed with next major release
     elif sentinel2:
-        search_kwargs.update({"platformname": "Sentinel-2"})
+        search_kwargs["platformname"] = "Sentinel-2"
         logger.info('DEPRECATED: Please use --sentinel instead')
 
     # DEPRECATED: to be removed with next major release
     elif sentinel1:
-        search_kwargs.update({"platformname": "Sentinel-1"})
+        search_kwargs["platformname"] = "Sentinel-1"
         logger.info('DEPRECATED: Please use --sentinel instead')
 
     if query is not None:
-        search_kwargs.update(dict([i.split('=') for i in query.split(',')]))
+        search_kwargs.update((x.split('=') for x in query.split(',')))
 
     wkt = geojson_to_wkt(read_geojson(geojson))
     products = api.query(wkt, start, end, **search_kwargs)
