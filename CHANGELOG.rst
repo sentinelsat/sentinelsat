@@ -10,6 +10,7 @@ All notable changes to ``sentinelsat`` will be listed here.
 Changed
 ~~~~~~~
 * Replace ``pycurl`` dependency with ``requests``. This makes installation significantly easier. (#117)
+* An exception is raised in ``download_all()`` if all downloads failed.
 * Change 'Sentinels Scientific Datahub' to 'Copernicus Open Access Hub' (#100)
 * Renamed ``py.test`` option ``--vcr reset_all`` to ``--vcr reset`` to better reflect its true behavior.
 
