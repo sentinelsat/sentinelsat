@@ -4,12 +4,14 @@ Change Log
 All notable changes to ``sentinelsat`` will be listed here.
 
 
-[0.10.1] – 2017-XX-XX
+[0.11] – 2017-06-01
 -------------------
 
 Changed
 ~~~~~~~
-* change 'Sentinels Scientific Datahub' to 'Copernicus Open Access Hub' (#100)
+* Replace ``pycurl`` dependency with ``requests``. This makes installation significantly easier. (#117)
+* Change 'Sentinels Scientific Datahub' to 'Copernicus Open Access Hub' (#100)
+* Renamed ``py.test`` option ``--vcr reset_all`` to ``--vcr reset`` to better reflect its true behavior.
 
 
 [0.10] – 2017-05-30
