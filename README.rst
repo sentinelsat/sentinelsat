@@ -180,6 +180,7 @@ By default, prerecorded responses to Copernicus Open Access Hub queries are used
 To allow the tests to run actual queries against the Copernicus Open Access Hub set the environment variables
 
 .. code-block:: bash
+
     export SENTINEL_USER=<username>
     export SENTINEL_PASSWORD=<password>
 
