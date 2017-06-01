@@ -21,8 +21,8 @@ To run the tests on ``sentinelsat``:
     pip install -e .[test]
     py.test -v
 
-By default, prerecorded responses to SciHub queries are used to not be affected by Scihub's downtime.
-To allow the tests to run actual queries against SciHub set the environment variables
+By default, prerecorded responses to Copernicus Open Access Hub queries are used to not be affected by its downtime.
+To allow the tests to run actual queries against Copernicus Open Access Hub set the environment variables
 
 .. code-block:: bash
     export SENTINEL_USER=<your scihub username>
@@ -30,7 +30,6 @@ To allow the tests to run actual queries against SciHub set the environment vari
 
 and add ``--vcr disable`` to ``py.test`` arguments.
 To update the recordings use either ``--vcr record_new`` or ``--vcr reset``.
-
 
 Supported Python versions
 -------------------------
@@ -43,4 +42,3 @@ Optional dependencies
 
 The convenience functions ``to_dataframe()`` and ``to_geodataframe()`` require ``pandas`` and/or
 ``geopandas`` to be present.
-

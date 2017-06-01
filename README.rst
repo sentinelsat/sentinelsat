@@ -100,14 +100,14 @@ Python Library
   # Get the product's full metadata available on the server
   api.get_product_odata(<product_id>, full=True)
 
-Valid search query keywords can be found at the `ESA SciHub documentation
+Valid search query keywords can be found at the `Copernicus Open Access Hub documentation
 <https://scihub.copernicus.eu/userguide/3FullTextSearch>`_.
 
 Command Line Interface
 ----------------------
 
 A basic search query consists of a search polygon as well as the username and
-password to access the SciHub.
+password to access the Copernicus Open Access Hub.
 
 .. code-block:: bash
 
@@ -176,12 +176,12 @@ To run the tests on ``sentinelsat``:
     pip install -e .[test]
     py.test -v
 
-By default, prerecorded responses to SciHub queries are used to not be affected by Scihub's downtime.
-To allow the tests to run actual queries against SciHub set the environment variables
+By default, prerecorded responses to Copernicus Open Access Hub queries are used to not be affected by its downtime.
+To allow the tests to run actual queries against the Copernicus Open Access Hub set the environment variables
 
 .. code-block:: bash
-    export SENTINEL_USER=<your scihub username>
-    export SENTINEL_PASSWORD=<your scihub password>
+    export SENTINEL_USER=<username>
+    export SENTINEL_PASSWORD=<password>
 
 and add ``--vcr disable`` to ``py.test`` arguments.
 To update the recordings use either ``--vcr record_new`` or ``--vcr reset``.
