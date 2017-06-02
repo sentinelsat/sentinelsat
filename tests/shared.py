@@ -1,5 +1,6 @@
 import warnings
 from os import environ
+import types
 
 import pytest
 import vcr
@@ -49,12 +50,24 @@ if vcr_option != "disable":
     my_vcr.match_on = ['uri', 'method', 'body', 'range_header']
 else:
     print("Tests will not use any prerecorded query responses.")
+
+    class DummyCassette:
+        def __enter__(self):
+            return
+
+        def __exit__(self, *args):
+            return
+
+        def __call__(self, func, *args, **kwargs):
+            return func
+
     class DummyVCR:
         @staticmethod
         def use_cassette(func=None, *args, **kwargs):
-            if not func:
-                return lambda x: x
+            if not isinstance(func, types.FunctionType):
+                return DummyCassette()
             return func
+
     my_vcr = DummyVCR()
 
 if vcr_option != "use" and ('SENTINEL_USER' not in environ or 'SENTINEL_PASSWORD' not in environ):
