@@ -1,4 +1,5 @@
 import hashlib
+import logging
 import textwrap
 from datetime import date, datetime, timedelta
 from os import environ
@@ -8,6 +9,7 @@ import py.path
 import pytest
 import requests
 import requests_mock
+from six import StringIO
 
 from sentinelsat import InvalidChecksumError, SentinelAPI, SentinelAPIError, geojson_to_wkt, read_geojson
 from sentinelsat.sentinel import _format_query_date, _md5_compare, _parse_odata_timestamp, _parse_opensearch_response
@@ -194,6 +196,32 @@ def test_large_query():
         'AND (footprint:"Intersects(POLYGON((0 0,0 10,10 10,10 0,0 0)))")')
     assert api._last_status_code == 200
     assert len(products) > api.page_size
+
+
+@my_vcr.use_cassette
+@pytest.mark.scihub
+def test_too_long_query():
+    api = SentinelAPI(**_api_kwargs)
+    logger = logging.getLogger('sentinelsat')
+    stream = StringIO()
+    h = logging.StreamHandler(stream)
+    logger.addHandler(h)
+
+    def create_query(n):
+        return " AND ".join([api.format_query(None, "NOW", "NOW")] + ["orbitdirection:descending"] * n)
+
+    # Expect no error
+    api.query_raw(create_query(100))
+    stream.seek(0)
+    assert "excessive length" not in stream.read()
+
+    # Expect HTTP status 500 Internal Server Error
+    # sentinelsat should print a warning in this case
+    with pytest.raises(SentinelAPIError) as excinfo:
+        api.query_raw(create_query(120))
+    assert excinfo.value.response.status_code == 500
+    stream.seek(0)
+    assert "excessive length" in stream.read()
 
 
 @pytest.mark.fast

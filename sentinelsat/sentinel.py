@@ -134,7 +134,17 @@ class SentinelAPI(object):
             Products returned by the query as a dictionary with the product ID as the key and
             the product's attributes (a dictionary) as the value.
         """
-        response = self._load_query(query)
+        try:
+            response = self._load_query(query)
+        except SentinelAPIError as e:
+            # Queries with length greater than about 2700-3600 characters (depending on content) may
+            # produce "HTTP status 500 Internal Server Error"
+            if e.response.status_code == 500 and len(query) > 2700:
+                self.logger.warning(
+                    "The query likely failed due to its excessive length ({} bytes, the limit is "
+                    "~3000)".format(len(query.encode())))
+            e.__cause__ = None
+            raise e
         return _parse_opensearch_response(response)
 
     def _load_query(self, query, start_row=0):
