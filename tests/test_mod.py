@@ -10,7 +10,8 @@ import requests
 import requests_mock
 
 from sentinelsat import InvalidChecksumError, SentinelAPI, SentinelAPIError, geojson_to_wkt, read_geojson
-from sentinelsat.sentinel import _format_query_date, _md5_compare, _parse_odata_timestamp, _parse_opensearch_response
+from sentinelsat.sentinel import _format_order_by, _format_query_date, _md5_compare, \
+    _parse_odata_timestamp, _parse_opensearch_response
 from .shared import my_vcr
 
 _api_auth = dict(user=environ.get('SENTINEL_USER'), password=environ.get('SENTINEL_PASSWORD'))
@@ -169,8 +170,7 @@ def test_invalid_query():
     assert excinfo.value.msg is not None
 
 
-@my_vcr.use_cassette
-@pytest.mark.scihub
+@pytest.mark.fast
 def test_format_url():
     api = SentinelAPI(**_api_auth)
     start_row = 0
@@ -184,6 +184,9 @@ def test_format_url():
     url = api._format_url(limit=api.page_size + 50, offset=start_row)
     assert url == 'https://scihub.copernicus.eu/apihub/search?format=json&rows={rows}&start={start}'.format(
         rows=api.page_size, start=start_row)
+    url = api._format_url(order_by="beginposition desc", limit=api.page_size + 50, offset=10)
+    assert url == 'https://scihub.copernicus.eu/apihub/search?format=json&rows={rows}&start={start}' \
+                  '&orderby={orderby}'.format(rows=api.page_size, start=10, orderby="beginposition desc")
 
 
 @pytest.mark.fast
@@ -195,6 +198,21 @@ def test_format_url_custom_api_url():
     api = SentinelAPI("user", "pw", api_url='https://scihub.copernicus.eu/dhus')
     url = api._format_url()
     assert url.startswith('https://scihub.copernicus.eu/dhus/search')
+
+
+@pytest.mark.fast
+def test_format_order_by():
+    res = _format_order_by("cloudcoverpercentage")
+    assert res == "cloudcoverpercentage asc"
+
+    res = _format_order_by("+cloudcoverpercentage,-beginposition")
+    assert res == "cloudcoverpercentage asc,beginposition desc"
+
+    res = _format_order_by(" +cloudcoverpercentage, -beginposition ")
+    assert res == "cloudcoverpercentage asc,beginposition desc"
+
+    with pytest.raises(ValueError) as excinfo:
+        _format_order_by("+cloudcoverpercentage-beginposition")
 
 
 @my_vcr.use_cassette
@@ -601,6 +619,26 @@ def test_s2_cloudcover():
     assert product_ids[0] == "6ed0b7de-3435-43df-98bf-ad63c8d077ef"
     assert product_ids[1] == "37ecee60-23d8-4ec2-a65f-2de24f51d30e"
     assert product_ids[2] == "0848f6b8-5730-4759-850e-fc9945d42296"
+
+    # For order-by test
+    vals = [x["cloudcoverpercentage"] for x in products.values()]
+    assert sorted(vals) != vals
+
+
+@my_vcr.use_cassette
+@pytest.mark.scihub
+def test_order_by():
+    api = SentinelAPI(**_api_auth)
+    products = api.query(
+        geojson_to_wkt(read_geojson('tests/map.geojson')),
+        "20151219", "20151228",
+        platformname="Sentinel-2",
+        cloudcoverpercentage="[0 TO 10]",
+        order_by="cloudcoverpercentage, -beginposition"
+    )
+    assert len(products) == 3
+    vals = [x["cloudcoverpercentage"] for x in products.values()]
+    assert sorted(vals) == vals
 
 
 @my_vcr.use_cassette

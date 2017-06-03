@@ -101,6 +101,29 @@ def test_cloud_flag_url():
 
     expected = "Product 6ed0b7de-3435-43df-98bf-ad63c8d077ef - Date: 2015-12-27T14:22:29Z, Instrument: MSI, Mode: , Satellite: Sentinel-2, Size: 5.47 GB"
     assert re.findall("^Product .+$", result.output, re.M)[0] == expected
+    # For order-by test
+    assert '0848f6b8-5730-4759-850e-fc9945d42296' not in re.findall("^Product .+$", result.output, re.M)[1]
+
+
+@my_vcr.use_cassette
+@pytest.mark.scihub
+def test_order_by_flag():
+    runner = CliRunner()
+    result = runner.invoke(
+        cli,
+        ['search'] +
+        _api_auth +
+        ['tests/map.geojson',
+         '--url', 'https://scihub.copernicus.eu/apihub/',
+         '-s', '20151219',
+         '-e', '20151228',
+         '-c', '10',
+         '--sentinel', '2',
+         '--order-by', 'cloudcoverpercentage,-beginposition'],
+        catch_exceptions=False
+    )
+    print(result.output)
+    assert '0848f6b8-5730-4759-850e-fc9945d42296' in re.findall("^Product .+$", result.output, re.M)[1]
 
 
 @my_vcr.use_cassette

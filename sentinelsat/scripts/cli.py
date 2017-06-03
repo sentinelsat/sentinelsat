@@ -81,12 +81,15 @@ def cli():
     '-c', '--cloud', type=int,
     help='Maximum cloud cover in percent. (requires --sentinel to be 2 or 3)')
 @click.option(
+    '-o', '--order-by', type=str,
+    help="Comma-separated list of keywords to order the result by. Prefix keywords with '-' for descending order.")
+@click.option(
     '-l', '--limit', type=int,
     help='Maximum number of results to return. Defaults to no limit.')
 @click.version_option(version=sentinelsat_version, prog_name="sentinelsat")
 def search(
         user, password, geojson, start, end, download, md5, sentinel, producttype,
-        instrument, sentinel1, sentinel2, cloud, footprints, path, query, url, limit):
+        instrument, sentinel1, sentinel2, cloud, footprints, path, query, url, order_by, limit):
     """Search for Sentinel products and, optionally, download all the results
     and/or create a geojson file with the search result footprints.
     Beyond your Copernicus Open Access Hub user and password, you must pass a geojson file
@@ -126,7 +129,7 @@ def search(
         search_kwargs.update((x.split('=') for x in query.split(',')))
 
     wkt = geojson_to_wkt(read_geojson(geojson))
-    products = api.query(wkt, start, end, limit=limit, **search_kwargs)
+    products = api.query(wkt, start, end, order_by=order_by, limit=limit, **search_kwargs)
 
     if footprints is True:
         footprints_geojson = api.to_geojson(products)
