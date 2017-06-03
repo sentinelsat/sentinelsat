@@ -18,12 +18,12 @@ import requests
 from tqdm import tqdm
 
 from six import string_types
-from six.moves.urllib.parse import urljoin, quote_plus
+from six.moves.urllib.parse import urljoin
 
 from . import __version__ as sentinelsat_version
 
 
-class SentinelAPI(object):
+class SentinelAPI:
     """Class to connect to Copernicus Open Access Hub, search and download imagery.
 
     Parameters
@@ -323,8 +323,7 @@ class SentinelAPI(object):
                 raise InvalidChecksumError('File corrupt: checksums do not match')
         return product_info
 
-    def download_all(self, products, directory_path='.', max_attempts=10, checksum=False,
-                     check_existing=False):
+    def download_all(self, products, directory_path='.', max_attempts=10, checksum=False, check_existing=False):
         """Download a list of products.
 
         Takes a list of product IDs as input. This means that the return value of query() can be
@@ -406,17 +405,9 @@ class SentinelAPI(object):
     def check_query_length(query):
         """Determine whether a query to the OpenSearch API is too long.
 
-        The query size limit is dependent on the length of the server's internal query,
-        which looks like
-
-        http://localhost:30333//solr/dhus/select?q=...
-        &wt=xslt&tr=opensearch_atom.xsl&dhusLongName=Sentinels+Scientific+Data+Hub
-        &dhusServer=https%3A%2F%2Fscihub.copernicus.eu%2Fapihub%2F&originalQuery=...
-        &rows=100&start=0&sort=ingestiondate+desc
-
-        This function will estimate the size of the "q" and "originalQuery" parameters to
-        determine whether the query will fail. Their combined length can be at most about
-        7786 bytes.
+        The length of a query string is limited to approximately 3893 characters but
+        any special characters (that is, not alphanumeric or -_.~) are counted twice
+        towards that limit.
 
         Parameters
         ----------
@@ -427,11 +418,26 @@ class SentinelAPI(object):
         -------
         float
             Ratio of the query length to the maximum length
+
+        Notes
+        -----
+        The query size limit arises from a limit on the length of the server's internal query,
+        which looks like
+
+        http://localhost:30333//solr/dhus/select?q=...
+        &wt=xslt&tr=opensearch_atom.xsl&dhusLongName=Sentinels+Scientific+Data+Hub
+        &dhusServer=https%3A%2F%2Fscihub.copernicus.eu%2Fapihub%2F&originalQuery=...
+        &rows=100&start=0&sort=ingestiondate+desc
+
+        This function will estimate the length of the "q" and "originalQuery" parameters to
+        determine whether the query will fail. Their combined length can be at most about
+        7786 bytes.
         """
-        q = query.replace(" ", "%20")
-        original_query = quote_plus(query)
-        total_length = len(q) + len(original_query)
-        return total_length / 7786
+        # q = query.replace(" ", "%20")
+        # originalQuery = quote_plus(query)
+        # This can be simplified to just counting the number of special characters
+        effective_length = len(query) + len(re.findall('[^-_.~0-9A-Za-z]', query))
+        return effective_length / 3893
 
 
 class SentinelAPIError(Exception):
