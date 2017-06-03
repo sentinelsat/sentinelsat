@@ -51,7 +51,8 @@ class SentinelAPI(object):
 
     def __init__(self, user, password, api_url='https://scihub.copernicus.eu/apihub/'):
         self.session = requests.Session()
-        self.session.auth = (user, password)
+        if user and password:
+            self.session.auth = (user, password)
         self.api_url = api_url if api_url.endswith('/') else api_url + '/'
         self.page_size = 100
         self.user_agent = 'sentinelsat/' + sentinelsat_version
