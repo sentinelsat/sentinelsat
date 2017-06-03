@@ -1,5 +1,6 @@
 import warnings
 from os import environ
+from os.path import abspath, dirname
 import types
 
 import pytest
@@ -36,10 +37,11 @@ def range_header_matcher(r1, r2):
 
 
 if vcr_option != "disable":
+    tests_dir = dirname(abspath(__file__))
     my_vcr = vcr.VCR(
         record_mode=record_mode,
         serializer='yaml',
-        cassette_library_dir='tests/vcr_cassettes/',
+        cassette_library_dir=tests_dir + '/vcr_cassettes/',
         path_transformer=vcr.VCR.ensure_suffix('.yaml'),
         filter_headers=['Set-Cookie'],
         before_record_request=scrub_request,
