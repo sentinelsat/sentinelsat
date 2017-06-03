@@ -18,7 +18,7 @@ import requests
 from tqdm import tqdm
 
 from six import string_types
-from six.moves.urllib.parse import urljoin
+from six.moves.urllib.parse import urljoin, quote_plus
 
 from . import __version__ as sentinelsat_version
 
@@ -139,10 +139,10 @@ class SentinelAPI(object):
         except SentinelAPIError as e:
             # Queries with length greater than about 2700-3600 characters (depending on content) may
             # produce "HTTP status 500 Internal Server Error"
-            if e.response.status_code == 500 and len(query) > 2700:
-                self.logger.warning(
-                    "The query likely failed due to its excessive length ({} bytes, the limit is "
-                    "~3000)".format(len(query.encode())))
+            factor = self.check_query_length(query)
+            if e.response.status_code == 500 and not e.msg and factor > 0.95 :
+                e.msg = ("The query likely failed due to its length "
+                         "({:.1%} of the limit)".format(factor))
             e.__cause__ = None
             raise e
         return _parse_opensearch_response(response)
@@ -401,6 +401,37 @@ class SentinelAPI(object):
                 size_value /= 1024. * 1024.
             size_total += size_value
         return round(size_total, 2)
+
+    @staticmethod
+    def check_query_length(query):
+        """Determine whether a query to the OpenSearch API is too long.
+
+        The query size limit is dependent on the length of the server's internal query,
+        which looks like
+
+        http://localhost:30333//solr/dhus/select?q=...
+        &wt=xslt&tr=opensearch_atom.xsl&dhusLongName=Sentinels+Scientific+Data+Hub
+        &dhusServer=https%3A%2F%2Fscihub.copernicus.eu%2Fapihub%2F&originalQuery=...
+        &rows=100&start=0&sort=ingestiondate+desc
+
+        This function will estimate the size of the "q" and "originalQuery" parameters to
+        determine whether the query will fail. Their combined length can be at most about
+        7786 bytes.
+
+        Parameters
+        ----------
+        query : str
+            The query string
+
+        Returns
+        -------
+        float
+            Ratio of the query length to the maximum length
+        """
+        q = query.replace(" ", "%20")
+        original_query = quote_plus(query)
+        total_length = len(q) + len(original_query)
+        return total_length / 7786
 
 
 class SentinelAPIError(Exception):

@@ -202,26 +202,25 @@ def test_large_query():
 @pytest.mark.scihub
 def test_too_long_query():
     api = SentinelAPI(**_api_kwargs)
-    logger = logging.getLogger('sentinelsat')
-    stream = StringIO()
-    h = logging.StreamHandler(stream)
-    logger.addHandler(h)
+
+    # Test whether our limit calculation is reasonably correct and
+    # that a relevant error message is provided
 
     def create_query(n):
-        return " AND ".join([api.format_query(None, "NOW", "NOW")] + ["orbitdirection:descending"] * n)
+        return api.format_query(None, "NOW", "NOW") + " AND orbitdirection:descending" * n
 
     # Expect no error
-    api.query_raw(create_query(100))
-    stream.seek(0)
-    assert "excessive length" not in stream.read()
+    q = create_query(116)
+    assert api.check_query_length(q) < 1.0
+    api.query_raw(q)
 
     # Expect HTTP status 500 Internal Server Error
-    # sentinelsat should print a warning in this case
+    q = create_query(117)
+    assert api.check_query_length(q) >= 1.0
     with pytest.raises(SentinelAPIError) as excinfo:
-        api.query_raw(create_query(120))
+        api.query_raw(q)
     assert excinfo.value.response.status_code == 500
-    stream.seek(0)
-    assert "excessive length" in stream.read()
+    assert "failed due to its length" in excinfo.value.msg
 
 
 @pytest.mark.fast
