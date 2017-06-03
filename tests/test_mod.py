@@ -1,5 +1,4 @@
 import hashlib
-import logging
 import textwrap
 from datetime import date, datetime, timedelta
 from os import environ
@@ -9,7 +8,6 @@ import py.path
 import pytest
 import requests
 import requests_mock
-from six import StringIO
 
 from sentinelsat import InvalidChecksumError, SentinelAPI, SentinelAPIError, geojson_to_wkt, read_geojson
 from sentinelsat.sentinel import _format_query_date, _md5_compare, _parse_odata_timestamp, _parse_opensearch_response
@@ -62,10 +60,27 @@ def test_format_date():
     assert _format_query_date('20150101') == '2015-01-01T00:00:00Z'
 
     for date_str in ("NOW", "NOW-1DAY", "NOW-1DAYS", "NOW-500DAY", "NOW-500DAYS",
-                     "NOW-2MONTH", "NOW-2MONTHS", "NOW-20MINUTE", "NOW-20MINUTES"):
+                     "NOW-2MONTH", "NOW-2MONTHS", "NOW-20MINUTE", "NOW-20MINUTES",
+                     "NOW+10HOUR", "2015-01-01T00:00:00Z+1DAY"):
         assert _format_query_date(date_str) == date_str
 
-    for date_str in ("NOW - 1HOUR", "NOW -   1HOURS", "NOW-1 HOURS", "NOW+10HOUR", "NOW-1", "NOW-"):
+    for date_str in ("NOW - 1HOUR", "NOW -   1HOURS", "NOW-1 HOURS", "NOW-1", "NOW-"):
+        with pytest.raises(ValueError) as excinfo:
+            _format_query_date(date_str)
+            
+@pytest.mark.fast
+def test_format_date():
+    assert _format_query_date(datetime(2015, 1, 1)) == '2015-01-01T00:00:00Z'
+    assert _format_query_date(date(2015, 1, 1)) == '2015-01-01T00:00:00Z'
+    assert _format_query_date('2015-01-01T00:00:00Z') == '2015-01-01T00:00:00Z'
+    assert _format_query_date('20150101') == '2015-01-01T00:00:00Z'
+
+    for date_str in ("NOW", "NOW-1DAY", "NOW-1DAYS", "NOW-500DAY", "NOW-500DAYS",
+                     "NOW-2MONTH", "NOW-2MONTHS", "NOW-20MINUTE", "NOW-20MINUTES",
+                     "NOW+10HOUR", "2015-01-01T00:00:00Z+1DAY", "NOW+3MONTHS-7DAYS/DAYS"):
+        assert _format_query_date(date_str) == date_str
+
+    for date_str in ("NOW - 1HOUR", "NOW -   1HOURS", "NOW-1 HOURS", "NOW-1", "NOW-"):
         with pytest.raises(ValueError) as excinfo:
             _format_query_date(date_str)
 
@@ -94,7 +109,7 @@ def test_SentinelAPI_connection():
     assert api._last_query == (
         '(beginPosition:[2015-01-01T00:00:00Z TO 2015-01-02T00:00:00Z]) '
         'AND (footprint:"Intersects(POLYGON((0 0,1 1,0 1,0 0)))")')
-    assert api._last_status_code == 200
+    assert api._last_response.status_code == 200
 
 
 @my_vcr.use_cassette
@@ -183,7 +198,18 @@ def test_small_query():
     assert api._last_query == (
         '(beginPosition:[2015-01-01T00:00:00Z TO 2015-01-02T00:00:00Z]) '
         'AND (footprint:"Intersects(POLYGON((0 0,1 1,0 1,0 0)))")')
-    assert api._last_status_code == 200
+    assert api._last_response.status_code == 200
+
+
+@my_vcr.use_cassette
+@pytest.mark.scihub
+def test_date_arithmetic():
+    api = SentinelAPI(**_api_kwargs)
+    products = api.query('ENVELOPE(0, 10, 10, 0)',
+                         '2015-12-01T00:00:00Z-1DAY',
+                         '2015-12-01T00:00:00Z+1DAY-1HOUR')
+    assert api._last_response.status_code == 200
+    assert len(products) > 0
 
 
 @my_vcr.use_cassette(decode_compressed_response=False)
@@ -194,7 +220,7 @@ def test_large_query():
     assert api._last_query == (
         '(beginPosition:[2015-12-01T00:00:00Z TO 2015-12-31T00:00:00Z]) '
         'AND (footprint:"Intersects(POLYGON((0 0,0 10,10 10,10 0,0 0)))")')
-    assert api._last_status_code == 200
+    assert api._last_response.status_code == 200
     assert len(products) > api.page_size
 
 

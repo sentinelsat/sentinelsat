@@ -58,7 +58,7 @@ class SentinelAPI:
         self.session.headers['User-Agent'] = self.user_agent
         # For unit tests
         self._last_query = None
-        self._last_status_code = None
+        self._last_response = None
 
     def query(self, area=None, initial_date='NOW-1DAY', end_date='NOW', **keywords):
         """Query the OpenSearch API with the coordinates of an area, a date interval
@@ -75,10 +75,10 @@ class SentinelAPI:
                 - yyyy-MM-ddThh:mm:ssZ
                 - YYYMMdd
                 - NOW
-                - NOW-<n>MINUTE(S)
-                - NOW-<n>HOUR(S)
-                - NOW-<n>DAY(S)
-                - NOW-<n>MONTH(S)
+                - NOW-<n>DAY(S) (or HOUR(S), MONTH(S), etc.)
+                - NOW+<n>DAY(S)
+                - yyyy-MM-ddThh:mm:ssZ-<n>DAY(S)
+                - NOW/DAY (or HOUR, MONTH etc.) - rounds the value to the given unit
         end_date : str or datetime
             Beginning of the time interval for sensing time.  Defaults to 'NOW'.
             See initial_date for allowed format.
@@ -117,6 +117,8 @@ class SentinelAPI:
             query_parts += ['(%s:%s)' % (kw, keywords[kw])]
 
         query = ' AND '.join(query_parts)
+        # plus symbols would be interpreted as spaces without escaping
+        query = query.replace('+', '%2B')
         return query
 
     def query_raw(self, query):
@@ -134,6 +136,8 @@ class SentinelAPI:
             Products returned by the query as a dictionary with the product ID as the key and
             the product's attributes (a dictionary) as the value.
         """
+        # plus symbols would be interpreted as spaces without escaping
+        query = query.replace('+', '%2B')
         try:
             response = self._load_query(query)
         except SentinelAPIError as e:
@@ -157,7 +161,7 @@ class SentinelAPI:
         _check_scihub_response(response)
 
         # store last status code (for testing)
-        self._last_status_code = response.status_code
+        self._last_response = response
 
         # parse response content
         try:
@@ -165,6 +169,8 @@ class SentinelAPI:
             total_results = int(json_feed['opensearch:totalResults'])
         except (ValueError, KeyError):
             raise SentinelAPIError('API response not valid. JSON decoding failed.', response)
+
+        self.logger.debug("Query found {} products".format(total_results))
 
         entries = json_feed.get('entry', [])
         # this verification is necessary because if the query returns only
@@ -433,6 +439,9 @@ class SentinelAPI:
         determine whether the query will fail. Their combined length can be at most about
         7786 bytes.
         """
+        # fix plus symbols for consistency with .query()
+        # they would be interpreted as spaces without escaping
+        query = query.replace('+', '%2B')
         # q = query.replace(" ", "%20")
         # originalQuery = quote_plus(query)
         # This can be simplified to just counting the number of special characters
@@ -537,10 +546,18 @@ def _format_query_date(in_date):
     if isinstance(in_date, (datetime, date)):
         return in_date.strftime('%Y-%m-%dT%H:%M:%SZ')
 
+    # Reference: https://cwiki.apache.org/confluence/display/solr/Working+with+Dates
+
+    # ISO-8601 date or NOW
+    valid_date_pattern = r'^(?:\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(?:\.\d+)?Z|NOW)'
+    # date arithmetic suffix is allowed
+    units = r'(?:YEAR|MONTH|DAY|HOUR|MINUTE|SECOND)'
+    valid_date_pattern += r'(?:[-+]\d+{}S?)*'.format(units)
+    # dates can be rounded to a unit of time
+    # e.g. "NOW/DAY" for dates since 00:00 today
+    valid_date_pattern += r'(?:/{}S?)*$'.format(units)
     in_date = in_date.strip()
-    if re.match(r'^NOW(?:-\d+(?:MONTH|DAY|HOUR|MINUTE)S?)?$', in_date):
-        return in_date
-    if re.match(r'^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(?:\.\d+)?Z$', in_date):
+    if re.match(valid_date_pattern, in_date):
         return in_date
 
     try:
