@@ -61,16 +61,16 @@ class SentinelAPI:
         self._last_query = None
         self._last_response = None
 
-    def query(self, area=None, initial_date='NOW-1DAY', end_date='NOW',
+    def query(self, area=None, initial_date='NOW-1DAY', end_date='NOW', limit=None, offset=0,
               area_relation='Intersects', **keywords):
         """Query the OpenSearch API with the coordinates of an area, a date interval
         and any other search keywords accepted by the API.
 
         Parameters
         ----------
-        area : str
+        area : str, optional
             The area of interest formatted as a Well-Known Text string.
-        initial_date : str or datetime
+        initial_date : str or datetime, optional
             Beginning of the time interval for sensing time. Defaults to 'NOW-1DAY'.
             Either a Python datetime or a string in one of the following formats:
                 - yyyy-MM-ddThh:mm:ss.SSSZ (ISO-8601)
@@ -81,9 +81,13 @@ class SentinelAPI:
                 - NOW+<n>DAY(S)
                 - yyyy-MM-ddThh:mm:ssZ-<n>DAY(S)
                 - NOW/DAY (or HOUR, MONTH etc.) - rounds the value to the given unit
-        end_date : str or datetime
+        end_date : str or datetime, optional
             Beginning of the time interval for sensing time.  Defaults to 'NOW'.
             See initial_date for allowed format.
+        limit: int, optional
+            Maximum number of products returned. Defaults to no limit.
+        offset: int, optional
+            The number of results to skip. Defaults to 0.
         area_relation : {'Intersection', 'Contains', 'IsWithin'}, optional
             What relation to use for testing the AOI. Case insensitive.
                 - Intersects: true if the AOI and the footprint intersect (default)
@@ -104,7 +108,7 @@ class SentinelAPI:
             the product's attributes (a dictionary) as the value.
         """
         query = self.format_query(area, initial_date, end_date, area_relation, **keywords)
-        return self.query_raw(query)
+        return self.query_raw(query, limit, offset)
 
     @staticmethod
     def format_query(area=None, initial_date='NOW-1DAY', end_date='NOW', area_relation='Intersects', **keywords):
@@ -131,14 +135,18 @@ class SentinelAPI:
         query = query.replace('+', '%2B')
         return query
 
-    def query_raw(self, query):
+    def query_raw(self, query, limit=None, offset=0):
         """Do a full-text query on the OpenSearch API using the format specified in
            https://scihub.copernicus.eu/twiki/do/view/SciHubUserGuide/3FullTextSearch
 
         Parameters
         ----------
         query : str
-            The query string
+            The query string.
+        limit: int, optional
+            Maximum number of products returned. Defaults to no limit.
+        offset: int, optional
+            The number of results to skip. Defaults to 0.
 
         Returns
         -------
@@ -149,7 +157,7 @@ class SentinelAPI:
         # plus symbols would be interpreted as spaces without escaping
         query = query.replace('+', '%2B')
         try:
-            response = self._load_query(query)
+            response = self._load_query(query, limit, offset)
         except SentinelAPIError as e:
             # Queries with length greater than about 2700-3600 characters (depending on content) may
             # produce "HTTP status 500 Internal Server Error"
@@ -161,13 +169,13 @@ class SentinelAPI:
             raise e
         return _parse_opensearch_response(response)
 
-    def _load_query(self, query, start_row=0):
+    def _load_query(self, query, limit=None, offset=0):
         # store last query (for testing)
         self._last_query = query
 
         # load query results
-        url = self._format_url(start_row=start_row)
-        response = self.session.post(url, dict(q=query), auth=self.session.auth)
+        url = self._format_url(limit, offset)
+        response = self.session.post(url, {'q': query}, auth=self.session.auth)
         _check_scihub_response(response)
 
         # store last status code (for testing)
@@ -180,23 +188,28 @@ class SentinelAPI:
         except (ValueError, KeyError):
             raise SentinelAPIError('API response not valid. JSON decoding failed.', response)
 
-        self.logger.debug("Query found {} products".format(total_results))
-
-        entries = json_feed.get('entry', [])
+        products = json_feed.get('entry', [])
         # this verification is necessary because if the query returns only
         # one product, self.products will be a dict not a list
-        if isinstance(entries, dict):
-            entries = [entries]
+        if isinstance(products, dict):
+            products = [products]
 
-        output = entries
         # repeat query until all results have been loaded
-        if total_results > start_row + self.page_size - 1:
-            output += self._load_query(query, start_row=(start_row + self.page_size))
-        return output
+        new_limit = limit
+        if limit is not None:
+            new_limit -= len(products)
+            if new_limit <= 0:
+                return products
+        new_offset = offset + self.page_size
+        if total_results >= new_offset:
+            products += self._load_query(query, limit=new_limit, offset=new_offset)
+        return products
 
-    def _format_url(self, start_row=0):
+    def _format_url(self, limit=None, offset=0):
+        limit = limit or self.page_size
+        limit = min(limit, self.page_size)
         blank = 'search?format=json&rows={rows}&start={start}'.format(
-            rows=self.page_size, start=start_row
+            rows=limit, start=offset
         )
         return urljoin(self.api_url, blank)
 

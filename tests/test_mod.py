@@ -174,7 +174,14 @@ def test_invalid_query():
 def test_format_url():
     api = SentinelAPI(**_api_auth)
     start_row = 0
-    url = api._format_url(start_row=start_row)
+    url = api._format_url(offset=start_row)
+    assert url == 'https://scihub.copernicus.eu/apihub/search?format=json&rows={rows}&start={start}'.format(
+        rows=api.page_size, start=start_row)
+    limit = 50
+    url = api._format_url(limit=limit, offset=start_row)
+    assert url == 'https://scihub.copernicus.eu/apihub/search?format=json&rows={rows}&start={start}'.format(
+        rows=limit, start=start_row)
+    url = api._format_url(limit=api.page_size + 50, offset=start_row)
     assert url == 'https://scihub.copernicus.eu/apihub/search?format=json&rows={rows}&start={start}'.format(
         rows=api.page_size, start=start_row)
 
@@ -216,12 +223,21 @@ def test_date_arithmetic():
 @pytest.mark.scihub
 def test_large_query():
     api = SentinelAPI(**_api_kwargs)
-    products = api.query(**_large_query)
+    full_products = list(api.query(**_large_query))
     assert api._last_query == (
         '(beginPosition:[2015-12-01T00:00:00Z TO 2015-12-31T00:00:00Z]) '
         'AND (footprint:"Intersects(POLYGON((0 0,0 10,10 10,10 0,0 0)))")')
     assert api._last_response.status_code == 200
-    assert len(products) > api.page_size
+    assert len(full_products) > api.page_size
+
+    result = list(api.query(limit=150, **_large_query))
+    assert result == full_products[:150]
+
+    result = list(api.query(limit=20, offset=90, **_large_query))
+    assert result == full_products[90:110]
+
+    result = list(api.query(limit=20, offset=len(full_products) - 10, **_large_query))
+    assert result == full_products[-10:]
 
 
 @my_vcr.use_cassette

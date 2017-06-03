@@ -1,4 +1,5 @@
 from os import environ
+import re
 
 import pytest
 import requests_mock
@@ -225,6 +226,26 @@ def test_option_hierarchy():
 
     expected = "Product 0e66b563-78d9-4480-9c3d-b64a60cf1a9f - Date: 2016-12-01T14:10:42Z, Instrument: MSI, Mode: , Satellite: Sentinel-2, Size: 526.15 MB"
     assert result.output.split("\n")[1] == expected
+
+
+@my_vcr.use_cassette
+@pytest.mark.scihub
+def test_limit_flag():
+    runner = CliRunner()
+    limit = 15
+    result = runner.invoke(
+        cli,
+        ['search'] +
+        _api_auth +
+        ['tests/map.geojson',
+         '--url', 'https://scihub.copernicus.eu/apihub/',
+         '-s', '20161201',
+         '-e', '20161230',
+         '--limit', str(limit)],
+        catch_exceptions=False
+    )
+    num_products = len(re.findall("^Product ", result.output, re.MULTILINE))
+    assert num_products == limit
 
 
 @my_vcr.use_cassette
