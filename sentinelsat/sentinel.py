@@ -62,7 +62,7 @@ class SentinelAPI(object):
         self._last_status_code = None
 
     def query(self, area=None, initial_date='NOW-1DAY', end_date='NOW',
-              area_predicate='Intersects', **keywords):
+              area_relation='Intersects', **keywords):
         """Query the OpenSearch API with the coordinates of an area, a date interval
         and any other search keywords accepted by the API.
 
@@ -84,7 +84,7 @@ class SentinelAPI(object):
         end_date : str or datetime
             Beginning of the time interval for sensing time.  Defaults to 'NOW'.
             See initial_date for allowed format.
-        area_predicate : {'Intersection', 'Contains', 'IsWithin'}, optional
+        area_relation : {'Intersection', 'Contains', 'IsWithin'}, optional
             What relation to use for testing the AOI. Case insensitive.
                 - Intersects: true if the AOI and the footprint intersect (default)
                 - Contains: true if the AOI is inside the footprint
@@ -103,15 +103,15 @@ class SentinelAPI(object):
             Products returned by the query as a dictionary with the product ID as the key and
             the product's attributes (a dictionary) as the value.
         """
-        query = self.format_query(area, initial_date, end_date, area_predicate, **keywords)
+        query = self.format_query(area, initial_date, end_date, area_relation, **keywords)
         return self.query_raw(query)
 
     @staticmethod
-    def format_query(area=None, initial_date='NOW-1DAY', end_date='NOW', area_predicate='Intersects', **keywords):
+    def format_query(area=None, initial_date='NOW-1DAY', end_date='NOW', area_relation='Intersects', **keywords):
         """Create OpenSearch API query string
         """
-        if area_predicate.lower() not in {"intersects", "contains", "iswithin"}:
-            raise ValueError("Incorrect AOI predicate provided ({})".format(area_predicate))
+        if area_relation.lower() not in {"intersects", "contains", "iswithin"}:
+            raise ValueError("Incorrect AOI relation provided ({})".format(area_relation))
 
         query_parts = []
         if initial_date is not None and end_date is not None:
@@ -121,7 +121,7 @@ class SentinelAPI(object):
             )]
 
         if area is not None:
-            query_parts += ['(footprint:"%s(%s)")' % (area_predicate, area)]
+            query_parts += ['(footprint:"%s(%s)")' % (area_relation, area)]
 
         for kw in sorted(keywords):
             query_parts += ['(%s:%s)' % (kw, keywords[kw])]

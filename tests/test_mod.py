@@ -527,7 +527,7 @@ def test_s2_cloudcover():
 
 @my_vcr.use_cassette
 @pytest.mark.scihub
-def test_area_predicate():
+def test_area_relation():
     api = SentinelAPI(**_api_auth)
     params = dict(
         area="POLYGON((10.83 53.04,11.64 53.04,11.64 52.65,10.83 52.65,10.83 53.04))",
@@ -538,16 +538,16 @@ def test_area_predicate():
     n_intersects = len(result)
     assert n_intersects > 10
 
-    result = api.query(area_predicate="contains", **params)
+    result = api.query(area_relation="contains", **params)
     n_contains = len(result)
     assert 0 < n_contains < n_intersects
-    result = api.query(area_predicate="IsWithin", **params)
+    result = api.query(area_relation="IsWithin", **params)
     n_iswithin = len(result)
     assert n_iswithin == 0
 
-    # Check that unsupported predicates raise an error
+    # Check that unsupported relations raise an error
     with pytest.raises(ValueError) as excinfo:
-        api.query(area_predicate="disjoint", **params)
+        api.query(area_relation="disjoint", **params)
 
 
 @pytest.mark.scihub
