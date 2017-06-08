@@ -60,10 +60,27 @@ def test_format_date():
     assert _format_query_date('20150101') == '2015-01-01T00:00:00Z'
 
     for date_str in ("NOW", "NOW-1DAY", "NOW-1DAYS", "NOW-500DAY", "NOW-500DAYS",
-                     "NOW-2MONTH", "NOW-2MONTHS", "NOW-20MINUTE", "NOW-20MINUTES"):
+                     "NOW-2MONTH", "NOW-2MONTHS", "NOW-20MINUTE", "NOW-20MINUTES",
+                     "NOW+10HOUR", "2015-01-01T00:00:00Z+1DAY"):
         assert _format_query_date(date_str) == date_str
 
-    for date_str in ("NOW - 1HOUR", "NOW -   1HOURS", "NOW-1 HOURS", "NOW+10HOUR", "NOW-1", "NOW-"):
+    for date_str in ("NOW - 1HOUR", "NOW -   1HOURS", "NOW-1 HOURS", "NOW-1", "NOW-"):
+        with pytest.raises(ValueError) as excinfo:
+            _format_query_date(date_str)
+            
+@pytest.mark.fast
+def test_format_date():
+    assert _format_query_date(datetime(2015, 1, 1)) == '2015-01-01T00:00:00Z'
+    assert _format_query_date(date(2015, 1, 1)) == '2015-01-01T00:00:00Z'
+    assert _format_query_date('2015-01-01T00:00:00Z') == '2015-01-01T00:00:00Z'
+    assert _format_query_date('20150101') == '2015-01-01T00:00:00Z'
+
+    for date_str in ("NOW", "NOW-1DAY", "NOW-1DAYS", "NOW-500DAY", "NOW-500DAYS",
+                     "NOW-2MONTH", "NOW-2MONTHS", "NOW-20MINUTE", "NOW-20MINUTES",
+                     "NOW+10HOUR", "2015-01-01T00:00:00Z+1DAY", "NOW+3MONTHS-7DAYS/DAYS"):
+        assert _format_query_date(date_str) == date_str
+
+    for date_str in ("NOW - 1HOUR", "NOW -   1HOURS", "NOW-1 HOURS", "NOW-1", "NOW-"):
         with pytest.raises(ValueError) as excinfo:
             _format_query_date(date_str)
 
@@ -92,7 +109,7 @@ def test_SentinelAPI_connection():
     assert api._last_query == (
         '(beginPosition:[2015-01-01T00:00:00Z TO 2015-01-02T00:00:00Z]) '
         'AND (footprint:"Intersects(POLYGON((0 0,1 1,0 1,0 0)))")')
-    assert api._last_status_code == 200
+    assert api._last_response.status_code == 200
 
 
 @my_vcr.use_cassette
@@ -181,7 +198,18 @@ def test_small_query():
     assert api._last_query == (
         '(beginPosition:[2015-01-01T00:00:00Z TO 2015-01-02T00:00:00Z]) '
         'AND (footprint:"Intersects(POLYGON((0 0,1 1,0 1,0 0)))")')
-    assert api._last_status_code == 200
+    assert api._last_response.status_code == 200
+
+
+@my_vcr.use_cassette
+@pytest.mark.scihub
+def test_date_arithmetic():
+    api = SentinelAPI(**_api_kwargs)
+    products = api.query('ENVELOPE(0, 10, 10, 0)',
+                         '2015-12-01T00:00:00Z-1DAY',
+                         '2015-12-01T00:00:00Z+1DAY-1HOUR')
+    assert api._last_response.status_code == 200
+    assert len(products) > 0
 
 
 @my_vcr.use_cassette(decode_compressed_response=False)
@@ -192,8 +220,33 @@ def test_large_query():
     assert api._last_query == (
         '(beginPosition:[2015-12-01T00:00:00Z TO 2015-12-31T00:00:00Z]) '
         'AND (footprint:"Intersects(POLYGON((0 0,0 10,10 10,10 0,0 0)))")')
-    assert api._last_status_code == 200
+    assert api._last_response.status_code == 200
     assert len(products) > api.page_size
+
+
+@my_vcr.use_cassette
+@pytest.mark.scihub
+def test_too_long_query():
+    api = SentinelAPI(**_api_kwargs)
+
+    # Test whether our limit calculation is reasonably correct and
+    # that a relevant error message is provided
+
+    def create_query(n):
+        return api.format_query(None, "NOW", "NOW") + " AND orbitdirection:descending" * n
+
+    # Expect no error
+    q = create_query(116)
+    assert api.check_query_length(q) < 1.0
+    api.query_raw(q)
+
+    # Expect HTTP status 500 Internal Server Error
+    q = create_query(117)
+    assert api.check_query_length(q) >= 1.0
+    with pytest.raises(SentinelAPIError) as excinfo:
+        api.query_raw(q)
+    assert excinfo.value.response.status_code == 500
+    assert "failed due to its length" in excinfo.value.msg
 
 
 @pytest.mark.fast

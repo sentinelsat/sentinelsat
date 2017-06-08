@@ -23,7 +23,7 @@ from six.moves.urllib.parse import urljoin
 from . import __version__ as sentinelsat_version
 
 
-class SentinelAPI(object):
+class SentinelAPI:
     """Class to connect to Copernicus Open Access Hub, search and download imagery.
 
     Parameters
@@ -59,7 +59,7 @@ class SentinelAPI(object):
         self.session.headers['User-Agent'] = self.user_agent
         # For unit tests
         self._last_query = None
-        self._last_status_code = None
+        self._last_response = None
 
     def query(self, area=None, initial_date='NOW-1DAY', end_date='NOW', **keywords):
         """Query the OpenSearch API with the coordinates of an area, a date interval
@@ -76,10 +76,10 @@ class SentinelAPI(object):
                 - yyyy-MM-ddThh:mm:ssZ
                 - YYYMMdd
                 - NOW
-                - NOW-<n>MINUTE(S)
-                - NOW-<n>HOUR(S)
-                - NOW-<n>DAY(S)
-                - NOW-<n>MONTH(S)
+                - NOW-<n>DAY(S) (or HOUR(S), MONTH(S), etc.)
+                - NOW+<n>DAY(S)
+                - yyyy-MM-ddThh:mm:ssZ-<n>DAY(S)
+                - NOW/DAY (or HOUR, MONTH etc.) - rounds the value to the given unit
         end_date : str or datetime
             Beginning of the time interval for sensing time.  Defaults to 'NOW'.
             See initial_date for allowed format.
@@ -118,6 +118,8 @@ class SentinelAPI(object):
             query_parts += ['(%s:%s)' % (kw, keywords[kw])]
 
         query = ' AND '.join(query_parts)
+        # plus symbols would be interpreted as spaces without escaping
+        query = query.replace('+', '%2B')
         return query
 
     def query_raw(self, query):
@@ -135,7 +137,19 @@ class SentinelAPI(object):
             Products returned by the query as a dictionary with the product ID as the key and
             the product's attributes (a dictionary) as the value.
         """
-        response = self._load_query(query)
+        # plus symbols would be interpreted as spaces without escaping
+        query = query.replace('+', '%2B')
+        try:
+            response = self._load_query(query)
+        except SentinelAPIError as e:
+            # Queries with length greater than about 2700-3600 characters (depending on content) may
+            # produce "HTTP status 500 Internal Server Error"
+            factor = self.check_query_length(query)
+            if e.response.status_code == 500 and not e.msg and factor > 0.95 :
+                e.msg = ("The query likely failed due to its length "
+                         "({:.1%} of the limit)".format(factor))
+            e.__cause__ = None
+            raise e
         return _parse_opensearch_response(response)
 
     def _load_query(self, query, start_row=0):
@@ -148,7 +162,7 @@ class SentinelAPI(object):
         _check_scihub_response(response)
 
         # store last status code (for testing)
-        self._last_status_code = response.status_code
+        self._last_response = response
 
         # parse response content
         try:
@@ -156,6 +170,8 @@ class SentinelAPI(object):
             total_results = int(json_feed['opensearch:totalResults'])
         except (ValueError, KeyError):
             raise SentinelAPIError('API response not valid. JSON decoding failed.', response)
+
+        self.logger.debug("Query found {} products".format(total_results))
 
         entries = json_feed.get('entry', [])
         # this verification is necessary because if the query returns only
@@ -314,8 +330,7 @@ class SentinelAPI(object):
                 raise InvalidChecksumError('File corrupt: checksums do not match')
         return product_info
 
-    def download_all(self, products, directory_path='.', max_attempts=10, checksum=False,
-                     check_existing=False):
+    def download_all(self, products, directory_path='.', max_attempts=10, checksum=False, check_existing=False):
         """Download a list of products.
 
         Takes a list of product IDs as input. This means that the return value of query() can be
@@ -392,6 +407,47 @@ class SentinelAPI(object):
                 size_value /= 1024. * 1024.
             size_total += size_value
         return round(size_total, 2)
+
+    @staticmethod
+    def check_query_length(query):
+        """Determine whether a query to the OpenSearch API is too long.
+
+        The length of a query string is limited to approximately 3893 characters but
+        any special characters (that is, not alphanumeric or -_.~) are counted twice
+        towards that limit.
+
+        Parameters
+        ----------
+        query : str
+            The query string
+
+        Returns
+        -------
+        float
+            Ratio of the query length to the maximum length
+
+        Notes
+        -----
+        The query size limit arises from a limit on the length of the server's internal query,
+        which looks like
+
+        http://localhost:30333//solr/dhus/select?q=...
+        &wt=xslt&tr=opensearch_atom.xsl&dhusLongName=Sentinels+Scientific+Data+Hub
+        &dhusServer=https%3A%2F%2Fscihub.copernicus.eu%2Fapihub%2F&originalQuery=...
+        &rows=100&start=0&sort=ingestiondate+desc
+
+        This function will estimate the length of the "q" and "originalQuery" parameters to
+        determine whether the query will fail. Their combined length can be at most about
+        7786 bytes.
+        """
+        # fix plus symbols for consistency with .query()
+        # they would be interpreted as spaces without escaping
+        query = query.replace('+', '%2B')
+        # q = query.replace(" ", "%20")
+        # originalQuery = quote_plus(query)
+        # This can be simplified to just counting the number of special characters
+        effective_length = len(query) + len(re.findall('[^-_.~0-9A-Za-z]', query))
+        return effective_length / 3893
 
 
 class SentinelAPIError(Exception):
@@ -491,10 +547,18 @@ def _format_query_date(in_date):
     if isinstance(in_date, (datetime, date)):
         return in_date.strftime('%Y-%m-%dT%H:%M:%SZ')
 
+    # Reference: https://cwiki.apache.org/confluence/display/solr/Working+with+Dates
+
+    # ISO-8601 date or NOW
+    valid_date_pattern = r'^(?:\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(?:\.\d+)?Z|NOW)'
+    # date arithmetic suffix is allowed
+    units = r'(?:YEAR|MONTH|DAY|HOUR|MINUTE|SECOND)'
+    valid_date_pattern += r'(?:[-+]\d+{}S?)*'.format(units)
+    # dates can be rounded to a unit of time
+    # e.g. "NOW/DAY" for dates since 00:00 today
+    valid_date_pattern += r'(?:/{}S?)*$'.format(units)
     in_date = in_date.strip()
-    if re.match(r'^NOW(?:-\d+(?:MONTH|DAY|HOUR|MINUTE)S?)?$', in_date):
-        return in_date
-    if re.match(r'^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(?:\.\d+)?Z$', in_date):
+    if re.match(valid_date_pattern, in_date):
         return in_date
 
     try:
