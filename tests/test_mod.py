@@ -578,6 +578,31 @@ def test_s2_cloudcover():
     assert product_ids[2] == "0848f6b8-5730-4759-850e-fc9945d42296"
 
 
+@my_vcr.use_cassette
+@pytest.mark.scihub
+def test_area_relation():
+    api = SentinelAPI(**_api_auth)
+    params = dict(
+        area="POLYGON((10.83 53.04,11.64 53.04,11.64 52.65,10.83 52.65,10.83 53.04))",
+        initial_date="20151219",
+        end_date="20151226"
+    )
+    result = api.query(**params)
+    n_intersects = len(result)
+    assert n_intersects > 10
+
+    result = api.query(area_relation="contains", **params)
+    n_contains = len(result)
+    assert 0 < n_contains < n_intersects
+    result = api.query(area_relation="IsWithin", **params)
+    n_iswithin = len(result)
+    assert n_iswithin == 0
+
+    # Check that unsupported relations raise an error
+    with pytest.raises(ValueError) as excinfo:
+        api.query(area_relation="disjoint", **params)
+
+
 @pytest.mark.scihub
 def test_get_products_size(products):
     assert SentinelAPI.get_products_size(products) == 90.94
