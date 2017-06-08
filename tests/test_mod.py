@@ -48,7 +48,7 @@ def raw_products():
     raw_products = api._load_query(api.format_query(
         geojson_to_wkt(read_geojson('tests/map.geojson')),
         "20151219", "20151228")
-    )
+    )[0]
     return raw_products
 
 
@@ -238,6 +238,15 @@ def test_large_query():
 
     result = list(api.query(limit=20, offset=len(full_products) - 10, **_large_query))
     assert result == full_products[-10:]
+
+
+@my_vcr.use_cassette
+@pytest.mark.scihub
+def test_count():
+    api = SentinelAPI(**_api_kwargs)
+    query = api.format_query(None, "20150101", "20151231")
+    count = api.count(query)
+    assert count > 100000
 
 
 @my_vcr.use_cassette

@@ -157,7 +157,7 @@ class SentinelAPI:
         # plus symbols would be interpreted as spaces without escaping
         query = query.replace('+', '%2B')
         try:
-            response = self._load_query(query, limit, offset)
+            response, count = self._load_query(query, limit, offset)
         except SentinelAPIError as e:
             # Queries with length greater than about 2700-3600 characters (depending on content) may
             # produce "HTTP status 500 Internal Server Error"
@@ -167,7 +167,27 @@ class SentinelAPI:
                          "({:.1%} of the limit)".format(factor))
             e.__cause__ = None
             raise e
+        self.logger.info("Found {} products".format(count))
         return _parse_opensearch_response(response)
+
+    def count(self, query):
+        """Get the number of products matching a query.
+
+        This is a significantly more efficient alternative to doing len(api.query_raw(...)),
+        which can take minutes to run for queries matching thousands of products.
+
+        Parameters
+        ----------
+        query : str
+            The query string.
+
+        Returns
+        -------
+        int
+            The number of products matching a query.
+        """
+        _, total_count = self._load_query(query, limit=0)
+        return total_count
 
     def _load_query(self, query, limit=None, offset=0):
         # store last query (for testing)
@@ -199,14 +219,15 @@ class SentinelAPI:
         if limit is not None:
             new_limit -= len(products)
             if new_limit <= 0:
-                return products
+                return products, total_results
         new_offset = offset + self.page_size
         if total_results >= new_offset:
-            products += self._load_query(query, limit=new_limit, offset=new_offset)
-        return products
+            products += self._load_query(query, limit=new_limit, offset=new_offset)[0]
+        return products, total_results
 
     def _format_url(self, limit=None, offset=0):
-        limit = limit or self.page_size
+        if limit is None:
+            limit = self.page_size
         limit = min(limit, self.page_size)
         blank = 'search?format=json&rows={rows}&start={start}'.format(
             rows=limit, start=offset
