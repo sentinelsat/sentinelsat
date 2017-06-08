@@ -712,10 +712,12 @@ def test_download(tmpdir):
     uuid = "1f62a176-c980-41dc-b3a1-c735d660c910"
     filename = "S1A_WV_OCN__2SSH_20150603T092625_20150603T093332_006207_008194_521E"
     expected_path = tmpdir.join(filename + ".zip")
+    tempfile_path = tmpdir.join(filename + ".zip.incomplete")
 
     # Download normally
     product_info = api.download(uuid, str(tmpdir), checksum=True)
     assert expected_path.samefile(product_info["path"])
+    assert not tempfile_path.check(exists=1)
     assert product_info["title"] == filename
     assert product_info["size"] == expected_path.size()
     assert product_info["downloaded_bytes"] == expected_path.size()
@@ -724,51 +726,48 @@ def test_download(tmpdir):
     modification_time = expected_path.mtime()
     expected_product_info = product_info
 
-    # File exists, test with checksum
-    # Expect no modification
-    product_info = api.download(uuid, str(tmpdir), check_existing=True)
+    # File exists, expect nothing to happen
+    product_info = api.download(uuid, str(tmpdir))
+    assert not tempfile_path.check(exists=1)
     assert expected_path.mtime() == modification_time
     expected_product_info["downloaded_bytes"] = 0
     assert product_info == expected_product_info
 
-    # File exists, test without checksum
-    # Expect no modification
-    product_info = api.download(uuid, str(tmpdir), check_existing=False)
-    assert expected_path.mtime() == modification_time
-    expected_product_info["downloaded_bytes"] = 0
-    assert product_info == expected_product_info
-
-    # Create invalid but full-sized file, expect re-download
-    with expected_path.open("wb") as f:
+    # Create invalid but full-sized tempfile, expect re-download
+    expected_path.move(tempfile_path)
+    with tempfile_path.open("wb") as f:
         f.seek(expected_product_info["size"] - 1)
         f.write(b'\0')
-    assert expected_path.computehash("md5") != hash
-    product_info = api.download(uuid, str(tmpdir), check_existing=True)
+    assert tempfile_path.computehash("md5") != hash
+    product_info = api.download(uuid, str(tmpdir))
+    assert expected_path.check(exists=1, file=1)
     assert expected_path.computehash("md5") == hash
     expected_product_info["downloaded_bytes"] = expected_product_info["size"]
     assert product_info == expected_product_info
 
-    # Create invalid file, no checksum check
-    # Expect continued download but no exception raised
+    # Create invalid tempfile, without checksum check
+    # Expect continued download and no exception
     dummy_content = b'aaaaaaaaaaaaaaaaaaaaaaaaa'
-    with expected_path.open("wb") as f:
+    with tempfile_path.open("wb") as f:
         f.write(dummy_content)
-    product_info = api.download(uuid, str(tmpdir), check_existing=False)
+    expected_path.remove()
+    product_info = api.download(uuid, str(tmpdir), checksum=False)
+    assert not tempfile_path.check(exists=1)
+    assert expected_path.check(exists=1, file=1)
     assert expected_path.computehash("md5") != hash
     expected_product_info["downloaded_bytes"] = expected_product_info["size"] - len(dummy_content)
     assert product_info == expected_product_info
 
-    # Create invalid file, with checksum check
+    # Create invalid tempfile, with checksum check
     # Expect continued download and exception raised
     dummy_content = b'aaaaaaaaaaaaaaaaaaaaaaaaa'
-    with expected_path.open("wb") as f:
+    with tempfile_path.open("wb") as f:
         f.write(dummy_content)
+    expected_path.remove()
     with pytest.raises(InvalidChecksumError):
-        product_info = api.download(uuid, str(tmpdir), check_existing=False, checksum=True)
-    pypath = py.path.local(product_info['path'])
-    assert pypath.check(exists=0)
-    expected_product_info["downloaded_bytes"] = expected_product_info["size"] - len(dummy_content)
-    assert product_info == expected_product_info
+        api.download(uuid, str(tmpdir), checksum=True)
+    assert not tempfile_path.check(exists=1)
+    assert not expected_path.check(exists=1, file=1)
 
 
 @my_vcr.use_cassette
