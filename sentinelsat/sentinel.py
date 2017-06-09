@@ -4,6 +4,7 @@ from __future__ import absolute_import, division, print_function
 import hashlib
 import logging
 import re
+import shutil
 import xml.etree.ElementTree as ET
 from collections import OrderedDict
 from contextlib import closing
@@ -326,7 +327,7 @@ class SentinelAPI:
         values = _parse_odata_response(response.json()['d'])
         return values
 
-    def download(self, id, directory_path='.', checksum=False, check_existing=False):
+    def download(self, id, directory_path='.', checksum=False):
         """Download a product.
 
         Uses the filename on the server for the downloaded file, e.g.
@@ -343,10 +344,6 @@ class SentinelAPI:
         checksum : bool, optional
             If True, verify the downloaded file's integrity by checking its MD5 checksum.
             Throws InvalidChecksumError if the checksum does not match.
-            Defaults to False.
-        check_existing : bool, optional
-            If True and a fully downloaded file with the same name exists on the disk,
-            verify its integrity using its MD5 checksum. Re-download in case of non-matching checksums.
             Defaults to False.
 
         Returns
@@ -366,28 +363,53 @@ class SentinelAPI:
 
         self.logger.info('Downloading %s to %s' % (id, path))
 
-        # Check if the file exists and passes md5 test
-        # The download function will by default continue the download if the file exists but is incomplete
-        if exists(path) and getsize(path) == product_info['size']:
-            if not check_existing or _md5_compare(path, product_info['md5']):
-                self.logger.info('%s was already downloaded.' % path)
-                return product_info
-            else:
-                self.logger.info(
-                    '%s was already downloaded but is corrupt: checksums do not match. Re-downloading.' % path)
-                remove(path)
+        if exists(path):
+            # We assume that the product has been downloaded and is complete
+            return product_info
 
-        # Store the number of downloaded bytes for unit tests
-        product_info['downloaded_bytes'] = _download(product_info['url'], path, self.session, product_info['size'])
+        # Use a temporary file for downloading
+        temp_path = path + '.incomplete'
+
+        skip_download = False
+        if exists(temp_path):
+            if getsize(temp_path) > product_info['size']:
+                self.logger.warning(
+                    "Existing incomplete file {} is larger than the expected final size"
+                    " ({} vs {} bytes). Deleting it.".format(
+                    str(temp_path), getsize(temp_path), product_info['size']))
+                remove(temp_path)
+            elif getsize(temp_path) == product_info['size']:
+                if _md5_compare(temp_path, product_info['md5']):
+                    skip_download = True
+                else:
+                    # Log a warning since this should never happen
+                    self.logger.warning(
+                        "Existing incomplete file {} appears to be fully downloaded but "
+                        "its checksum is incorrect. Deleting it.".format(
+                            str(temp_path), getsize(temp_path), product_info['size']))
+                    remove(temp_path)
+            else:
+                # continue downloading
+                self.logger.info("Download will resume from existing incomplete file "
+                                 "{}.".format(temp_path))
+                pass
+
+        if not skip_download:
+            # Store the number of downloaded bytes for unit tests
+            product_info['downloaded_bytes'] = _download(
+                product_info['url'], temp_path, self.session, product_info['size'])
 
         # Check integrity with MD5 checksum
         if checksum is True:
-            if not _md5_compare(path, product_info['md5']):
-                remove(path)
+            if not _md5_compare(temp_path, product_info['md5']):
+                remove(temp_path)
                 raise InvalidChecksumError('File corrupt: checksums do not match')
+
+        # Download successful, rename the temporary file to its proper name
+        shutil.move(temp_path, path)
         return product_info
 
-    def download_all(self, products, directory_path='.', max_attempts=10, checksum=False, check_existing=False):
+    def download_all(self, products, directory_path='.', max_attempts=10, checksum=False):
         """Download a list of products.
 
         Takes a list of product IDs as input. This means that the return value of query() can be
@@ -430,8 +452,7 @@ class SentinelAPI:
         for i, product_id in enumerate(products):
             for attempt_num in range(max_attempts):
                 try:
-                    product_info = self.download(product_id, directory_path, checksum,
-                                                 check_existing)
+                    product_info = self.download(product_id, directory_path, checksum)
                     return_values[product_id] = product_info
                     break
                 except (KeyboardInterrupt, SystemExit):
