@@ -1,4 +1,5 @@
 from os import environ
+import re
 
 import pytest
 import requests_mock
@@ -99,7 +100,7 @@ def test_cloud_flag_url():
     )
 
     expected = "Product 6ed0b7de-3435-43df-98bf-ad63c8d077ef - Date: 2015-12-27T14:22:29Z, Instrument: MSI, Mode: , Satellite: Sentinel-2, Size: 5.47 GB"
-    assert result.output.split("\n")[0] == expected
+    assert re.findall("^Product .+$", result.output, re.M)[0] == expected
 
 
 @my_vcr.use_cassette
@@ -119,7 +120,7 @@ def test_sentinel1_flag():
     )
 
     expected = "Product 6a62313b-3d6f-489e-bfab-71ce8d7f57db - Date: 2015-12-24T09:40:34.129Z, Instrument: SAR-C SAR, Mode: VV VH, Satellite: Sentinel-1, Size: 7.7 GB"
-    assert result.output.split("\n")[4] == expected
+    assert re.findall("^Product .+$", result.output, re.M)[4] == expected
 
 
 @my_vcr.use_cassette
@@ -139,7 +140,7 @@ def test_sentinel2_flag():
     )
 
     expected = "Product 91c2503c-3c58-4a8c-a70b-207b128e6833 - Date: 2015-12-27T14:22:29Z, Instrument: MSI, Mode: , Satellite: Sentinel-2, Size: 5.73 GB"
-    assert result.output.split("\n")[2] == expected
+    assert re.findall("^Product .+$", result.output, re.M)[2] == expected
 
 
 @my_vcr.use_cassette
@@ -160,7 +161,7 @@ def test_sentinel3_flag():
     )
 
     expected = "Product c4a36e6b-4a18-46b4-b2ff-abe7a231a46f - Date: 2016-12-01T13:21:33.755Z, Instrument: OLCI, Mode: , Satellite: Sentinel-3, Size: 721.66 MB"
-    assert result.output.split("\n")[3] == expected
+    assert re.findall("^Product .+$", result.output, re.M)[3] == expected
 
 
 @my_vcr.use_cassette
@@ -180,7 +181,7 @@ def test_product_flag():
     )
 
     expected = "Product 2223103a-3754-473d-9a29-24ef8efa2880 - Date: 2016-12-01T09:30:22.149Z, Instrument: SAR-C SAR, Mode: VV VH, Satellite: Sentinel-1, Size: 7.98 GB"
-    assert result.output.split("\n")[3] == expected
+    assert re.findall("^Product .+$", result.output, re.M)[3] == expected
 
 
 @my_vcr.use_cassette
@@ -201,7 +202,7 @@ def test_instrument_flag():
     )
 
     expected = "Product 50d27cb5-70da-41c9-b0f3-023cfb25d781 - Date: 2016-12-01T13:13:17.65Z, Instrument: SRAL, Mode: , Satellite: Sentinel-3, Size: 76.62 MB"
-    assert result.output.split("\n")[0] == expected
+    assert re.findall("^Product .+$", result.output, re.M)[0] == expected
 
 
 @my_vcr.use_cassette
@@ -224,7 +225,27 @@ def test_option_hierarchy():
     )
 
     expected = "Product 0e66b563-78d9-4480-9c3d-b64a60cf1a9f - Date: 2016-12-01T14:10:42Z, Instrument: MSI, Mode: , Satellite: Sentinel-2, Size: 526.15 MB"
-    assert result.output.split("\n")[1] == expected
+    assert re.findall("^Product .+$", result.output, re.M)[1] == expected
+
+
+@my_vcr.use_cassette
+@pytest.mark.scihub
+def test_limit_flag():
+    runner = CliRunner()
+    limit = 15
+    result = runner.invoke(
+        cli,
+        ['search'] +
+        _api_auth +
+        ['tests/map.geojson',
+         '--url', 'https://scihub.copernicus.eu/apihub/',
+         '-s', '20161201',
+         '-e', '20161230',
+         '--limit', str(limit)],
+        catch_exceptions=False
+    )
+    num_products = len(re.findall("^Product ", result.output, re.MULTILINE))
+    assert num_products == limit
 
 
 @my_vcr.use_cassette
