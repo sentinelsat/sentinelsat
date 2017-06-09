@@ -6,10 +6,11 @@ from os.path import abspath, dirname
 import pytest
 import vcr
 
-from . import custom_serializer
+from .custom_serializer import BinaryContentSerializer
 
 TESTS_DIR = dirname(abspath(__file__))
 FIXTURES_DIR = dirname(abspath(__file__)) + '/fixtures'
+CASSETTE_DIR = FIXTURES_DIR + '/vcr_cassettes/'
 
 vcr_option = pytest.config.getoption("--vcr")
 record_mode = "none"
@@ -44,14 +45,14 @@ def range_header_matcher(r1, r2):
 if vcr_option != "disable":
     my_vcr = vcr.VCR(
         record_mode=record_mode,
-        cassette_library_dir=FIXTURES_DIR + '/vcr_cassettes/',
+        cassette_library_dir=CASSETTE_DIR,
         path_transformer=vcr.VCR.ensure_suffix('.yaml'),
         filter_headers=['Set-Cookie'],
         before_record_request=scrub_request,
         before_record_response=scrub_response,
         decode_compressed_response=True
     )
-    my_vcr.register_serializer('custom', custom_serializer)
+    my_vcr.register_serializer('custom', BinaryContentSerializer(CASSETTE_DIR))
     my_vcr.serializer = 'custom'
     my_vcr.register_matcher('range_header', range_header_matcher)
     my_vcr.match_on = ['uri', 'method', 'body', 'range_header']
