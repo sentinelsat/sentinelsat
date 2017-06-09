@@ -127,16 +127,16 @@ class SentinelAPI:
 
         query_parts = []
         if initial_date is not None and end_date is not None:
-            query_parts += ['(beginPosition:[%s TO %s])' % (
+            query_parts += ['beginPosition:[%s TO %s]' % (
                 _format_query_date(initial_date),
                 _format_query_date(end_date)
             )]
 
         if area is not None:
-            query_parts += ['(footprint:"%s(%s)")' % (area_relation, area)]
+            query_parts += ['footprint:"%s(%s)"' % (area_relation, area)]
 
         for kw in sorted(keywords):
-            query_parts += ['(%s:%s)' % (kw, keywords[kw])]
+            query_parts += ['%s:%s' % (kw, keywords[kw])]
 
         query = ' AND '.join(query_parts)
         # plus symbols would be interpreted as spaces without escaping

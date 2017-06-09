@@ -1,35 +1,35 @@
 interactions:
 - request:
-    body: q=%28beginPosition%3A%5B2015-12-01T00%3A00%3A00Z-1DAY+TO+2015-12-01T00%3A00%3A00Z%252B1DAY-1HOUR%5D%29+AND+%28footprint%3A%22Intersects%28ENVELOPE%280%2C+10%2C+10%2C+0%29%29%22%29
+    body: q=beginPosition%3A%5B2015-12-01T00%3A00%3A00Z-1DAY+TO+2015-12-01T00%3A00%3A00Z%252B1DAY-1HOUR%5D+AND+footprint%3A%22Intersects%28ENVELOPE%280%2C+10%2C+10%2C+0%29%29%22
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
       Connection: [keep-alive]
-      Content-Length: ['179']
+      Content-Length: ['167']
       Content-Type: [application/x-www-form-urlencoded]
       User-Agent: [sentinelsat/0.11]
     method: POST
     uri: https://scihub.copernicus.eu/apihub/search?format=json&rows=100&start=0
   response:
     body: {string: "{\"feed\": {\n   \"opensearch:Query\": {\n      \"startPage\"\
-        : \"1\",\n      \"role\": \"request\",\n      \"searchTerms\": \"(beginPosition:[2015-12-01T00:00:00Z-1DAY\
-        \ TO 2015-12-01T00:00:00Z%2B1DAY-1HOUR]) AND (footprint:\\\"Intersects(ENVELOPE(0,\
-        \ 10, 10, 0))\\\")\"\n   },\n   \"author\": {\"name\": \"Sentinels Scientific\
+        : \"1\",\n      \"role\": \"request\",\n      \"searchTerms\": \"beginPosition:[2015-12-01T00:00:00Z-1DAY\
+        \ TO 2015-12-01T00:00:00Z%2B1DAY-1HOUR] AND footprint:\\\"Intersects(ENVELOPE(0,\
+        \ 10, 10, 0))\\\"\"\n   },\n   \"author\": {\"name\": \"Sentinels Scientific\
         \ Data Hub\"},\n   \"link\": [\n      {\n         \"rel\": \"self\",\n   \
-        \      \"href\": \"https://scihub.copernicus.eu/apihub/search?q=(beginPosition:[2015-12-01T00:00:00Z-1DAY\
-        \ TO 2015-12-01T00:00:00Z%2B1DAY-1HOUR]) AND (footprint:\\\"Intersects(ENVELOPE(0,\
-        \ 10, 10, 0))\\\")&start=0&rows=100\",\n         \"type\": \"application/atom+xml\"\
-        \n      },\n      {\n         \"rel\": \"first\",\n         \"href\": \"https://scihub.copernicus.eu/apihub/search?q=(beginPosition:[2015-12-01T00:00:00Z-1DAY\
-        \ TO 2015-12-01T00:00:00Z%2B1DAY-1HOUR]) AND (footprint:\\\"Intersects(ENVELOPE(0,\
-        \ 10, 10, 0))\\\")&start=0&rows=100\",\n         \"type\": \"application/atom+xml\"\
-        \n      },\n      {\n         \"rel\": \"last\",\n         \"href\": \"https://scihub.copernicus.eu/apihub/search?q=(beginPosition:[2015-12-01T00:00:00Z-1DAY\
-        \ TO 2015-12-01T00:00:00Z%2B1DAY-1HOUR]) AND (footprint:\\\"Intersects(ENVELOPE(0,\
-        \ 10, 10, 0))\\\")&start=21&rows=100\",\n         \"type\": \"application/atom+xml\"\
+        \      \"href\": \"https://scihub.copernicus.eu/apihub/search?q=beginPosition:[2015-12-01T00:00:00Z-1DAY\
+        \ TO 2015-12-01T00:00:00Z%2B1DAY-1HOUR] AND footprint:\\\"Intersects(ENVELOPE(0,\
+        \ 10, 10, 0))\\\"&start=0&rows=100\",\n         \"type\": \"application/atom+xml\"\
+        \n      },\n      {\n         \"rel\": \"first\",\n         \"href\": \"https://scihub.copernicus.eu/apihub/search?q=beginPosition:[2015-12-01T00:00:00Z-1DAY\
+        \ TO 2015-12-01T00:00:00Z%2B1DAY-1HOUR] AND footprint:\\\"Intersects(ENVELOPE(0,\
+        \ 10, 10, 0))\\\"&start=0&rows=100\",\n         \"type\": \"application/atom+xml\"\
+        \n      },\n      {\n         \"rel\": \"last\",\n         \"href\": \"https://scihub.copernicus.eu/apihub/search?q=beginPosition:[2015-12-01T00:00:00Z-1DAY\
+        \ TO 2015-12-01T00:00:00Z%2B1DAY-1HOUR] AND footprint:\\\"Intersects(ENVELOPE(0,\
+        \ 10, 10, 0))\\\"&start=21&rows=100\",\n         \"type\": \"application/atom+xml\"\
         \n      },\n      {\n         \"rel\": \"search\",\n         \"href\": \"\
         opensearch_description.xml\",\n         \"type\": \"application/opensearchdescription+xml\"\
         \n      }\n   ],\n   \"title\": \"Sentinels Scientific Data Hub search results\
-        \ for: (beginPosition:[2015-12-01T00:00:00Z-1DAY TO 2015-12-01T00:00:00Z%2B1DAY-1HOUR])\
-        \ AND (footprint:\\\"Intersects(ENVELOPE(0, 10, 10, 0))\\\")\",\n   \"opensearch:startIndex\"\
+        \ for: beginPosition:[2015-12-01T00:00:00Z-1DAY TO 2015-12-01T00:00:00Z%2B1DAY-1HOUR]\
+        \ AND footprint:\\\"Intersects(ENVELOPE(0, 10, 10, 0))\\\"\",\n   \"opensearch:startIndex\"\
         : \"0\",\n   \"opensearch:totalResults\": \"22\",\n   \"entry\": [\n     \
         \ {\n         \"summary\": \"Date: 2015-12-01T17:46:09.185Z, Instrument: SAR-C\
         \ SAR, Mode: VV VH, Satellite: Sentinel-1, Size: 6.92 GB\",\n         \"str\"\
@@ -1351,16 +1351,16 @@ interactions:
         ,\n               \"content\": \"30\"\n            },\n            {\n   \
         \            \"name\": \"slicenumber\",\n               \"content\": \"6\"\
         \n            }\n         ]\n      }\n   ],\n   \"xmlns\": \"http://www.w3.org/2005/Atom\"\
-        ,\n   \"subtitle\": \"Displaying 22 results. Request done in 2.267 seconds.\"\
-        ,\n   \"opensearch:itemsPerPage\": \"100\",\n   \"id\": \"https://scihub.copernicus.eu/apihub/search?q=(beginPosition:[2015-12-01T00:00:00Z-1DAY\
-        \ TO 2015-12-01T00:00:00Z%2B1DAY-1HOUR]) AND (footprint:\\\"Intersects(ENVELOPE(0,\
-        \ 10, 10, 0))\\\")\",\n   \"updated\": \"2017-06-03T18:02:25.921Z\",\n   \"\
+        ,\n   \"subtitle\": \"Displaying 22 results. Request done in 0.03 seconds.\"\
+        ,\n   \"opensearch:itemsPerPage\": \"100\",\n   \"id\": \"https://scihub.copernicus.eu/apihub/search?q=beginPosition:[2015-12-01T00:00:00Z-1DAY\
+        \ TO 2015-12-01T00:00:00Z%2B1DAY-1HOUR] AND footprint:\\\"Intersects(ENVELOPE(0,\
+        \ 10, 10, 0))\\\"\",\n   \"updated\": \"2017-06-09T16:51:47.755Z\",\n   \"\
         xmlns:opensearch\": \"http://a9.com/-/spec/opensearch/1.1/\"\n}}"}
     headers:
       Content-Type: [application/json]
       Pragma: [no-cache]
       Server: [Apache-Coyote/1.1]
       Vary: [Accept-Encoding]
-      content-length: ['100824']
+      content-length: ['100799']
     status: {code: 200, message: OK}
 version: 1

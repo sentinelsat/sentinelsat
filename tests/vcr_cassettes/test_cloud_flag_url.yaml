@@ -1,51 +1,50 @@
 interactions:
 - request:
-    body: q=%28beginPosition%3A%5B2015-12-19T00%3A00%3A00Z+TO+2015-12-28T00%3A00%3A00Z%5D%29+AND+%28footprint%3A%22Intersects%28POLYGON+%28%28-66.2695312+-8.0592296%2C+-66.2695312+0.7031074%2C+-57.3046875+0.7031074%2C+-57.3046875+-8.0592296%2C+-66.2695312+-8.0592296%29%29%29%22%29+AND+%28cloudcoverpercentage%3A%5B0+TO+10%5D%29+AND+%28platformname%3ASentinel-2%29
+    body: q=beginPosition%3A%5B2015-12-19T00%3A00%3A00Z+TO+2015-12-28T00%3A00%3A00Z%5D+AND+footprint%3A%22Intersects%28POLYGON+%28%28-66.2695+-8.0592%2C+-66.2695+0.7031%2C+-57.3047+0.7031%2C+-57.3047+-8.0592%2C+-66.2695+-8.0592%29%29%29%22+AND+cloudcoverpercentage%3A%5B0+TO+10%5D+AND+platformname%3ASentinel-2
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
       Connection: [keep-alive]
-      Content-Length: ['354']
+      Content-Length: ['300']
       Content-Type: [application/x-www-form-urlencoded]
-      User-Agent: [sentinelsat/0.10]
+      User-Agent: [sentinelsat/0.11]
     method: POST
     uri: https://scihub.copernicus.eu/apihub/search?format=json&rows=100&start=0
   response:
     body: {string: "{\"feed\": {\n   \"opensearch:Query\": {\n      \"startPage\"\
-        : \"1\",\n      \"role\": \"request\",\n      \"searchTerms\": \"(beginPosition:[2015-12-19T00:00:00Z\
-        \ TO 2015-12-28T00:00:00Z]) AND (footprint:\\\"Intersects(POLYGON ((-66.2695312\
-        \ -8.0592296, -66.2695312 0.7031074, -57.3046875 0.7031074, -57.3046875 -8.0592296,\
-        \ -66.2695312 -8.0592296)))\\\") AND (cloudcoverpercentage:[0 TO 10]) AND\
-        \ (platformname:Sentinel-2)\"\n   },\n   \"author\": {\"name\": \"Sentinels\
-        \ Scientific Data Hub\"},\n   \"link\": [\n      {\n         \"rel\": \"self\"\
-        ,\n         \"href\": \"https://scihub.copernicus.eu/apihub/search?q=(beginPosition:[2015-12-19T00:00:00Z\
-        \ TO 2015-12-28T00:00:00Z]) AND (footprint:\\\"Intersects(POLYGON ((-66.2695312\
-        \ -8.0592296, -66.2695312 0.7031074, -57.3046875 0.7031074, -57.3046875 -8.0592296,\
-        \ -66.2695312 -8.0592296)))\\\") AND (cloudcoverpercentage:[0 TO 10]) AND\
-        \ (platformname:Sentinel-2)&start=0&rows=100\",\n         \"type\": \"application/atom+xml\"\
-        \n      },\n      {\n         \"rel\": \"first\",\n         \"href\": \"https://scihub.copernicus.eu/apihub/search?q=(beginPosition:[2015-12-19T00:00:00Z\
-        \ TO 2015-12-28T00:00:00Z]) AND (footprint:\\\"Intersects(POLYGON ((-66.2695312\
-        \ -8.0592296, -66.2695312 0.7031074, -57.3046875 0.7031074, -57.3046875 -8.0592296,\
-        \ -66.2695312 -8.0592296)))\\\") AND (cloudcoverpercentage:[0 TO 10]) AND\
-        \ (platformname:Sentinel-2)&start=0&rows=100\",\n         \"type\": \"application/atom+xml\"\
-        \n      },\n      {\n         \"rel\": \"last\",\n         \"href\": \"https://scihub.copernicus.eu/apihub/search?q=(beginPosition:[2015-12-19T00:00:00Z\
-        \ TO 2015-12-28T00:00:00Z]) AND (footprint:\\\"Intersects(POLYGON ((-66.2695312\
-        \ -8.0592296, -66.2695312 0.7031074, -57.3046875 0.7031074, -57.3046875 -8.0592296,\
-        \ -66.2695312 -8.0592296)))\\\") AND (cloudcoverpercentage:[0 TO 10]) AND\
-        \ (platformname:Sentinel-2)&start=2&rows=100\",\n         \"type\": \"application/atom+xml\"\
-        \n      },\n      {\n         \"rel\": \"search\",\n         \"href\": \"\
-        opensearch_description.xml\",\n         \"type\": \"application/opensearchdescription+xml\"\
-        \n      }\n   ],\n   \"title\": \"Sentinels Scientific Data Hub search results\
-        \ for: (beginPosition:[2015-12-19T00:00:00Z TO 2015-12-28T00:00:00Z]) AND\
-        \ (footprint:\\\"Intersects(POLYGON ((-66.2695312 -8.0592296, -66.2695312\
-        \ 0.7031074, -57.3046875 0.7031074, -57.3046875 -8.0592296, -66.2695312 -8.0592296)))\\\
-        \") AND (cloudcoverpercentage:[0 TO 10]) AND (platformname:Sentinel-2)\",\n\
-        \   \"opensearch:startIndex\": \"0\",\n   \"opensearch:totalResults\": \"\
-        3\",\n   \"entry\": [\n      {\n         \"summary\": \"Date: 2015-12-27T14:22:29Z,\
-        \ Instrument: MSI, Mode: , Satellite: Sentinel-2, Size: 5.47 GB\",\n     \
-        \    \"str\": [\n            {\n               \"name\": \"processed\",\n\
-        \               \"content\": \"T\"\n            },\n            {\n      \
-        \         \"name\": \"filename\",\n               \"content\": \"S2A_OPER_PRD_MSIL1C_PDMC_20151228T112701_R110_V20151227T142229_20151227T142229.SAFE\"\
+        : \"1\",\n      \"role\": \"request\",\n      \"searchTerms\": \"beginPosition:[2015-12-19T00:00:00Z\
+        \ TO 2015-12-28T00:00:00Z] AND footprint:\\\"Intersects(POLYGON ((-66.2695\
+        \ -8.0592, -66.2695 0.7031, -57.3047 0.7031, -57.3047 -8.0592, -66.2695 -8.0592)))\\\
+        \" AND cloudcoverpercentage:[0 TO 10] AND platformname:Sentinel-2\"\n   },\n\
+        \   \"author\": {\"name\": \"Sentinels Scientific Data Hub\"},\n   \"link\"\
+        : [\n      {\n         \"rel\": \"self\",\n         \"href\": \"https://scihub.copernicus.eu/apihub/search?q=beginPosition:[2015-12-19T00:00:00Z\
+        \ TO 2015-12-28T00:00:00Z] AND footprint:\\\"Intersects(POLYGON ((-66.2695\
+        \ -8.0592, -66.2695 0.7031, -57.3047 0.7031, -57.3047 -8.0592, -66.2695 -8.0592)))\\\
+        \" AND cloudcoverpercentage:[0 TO 10] AND platformname:Sentinel-2&start=0&rows=100\"\
+        ,\n         \"type\": \"application/atom+xml\"\n      },\n      {\n      \
+        \   \"rel\": \"first\",\n         \"href\": \"https://scihub.copernicus.eu/apihub/search?q=beginPosition:[2015-12-19T00:00:00Z\
+        \ TO 2015-12-28T00:00:00Z] AND footprint:\\\"Intersects(POLYGON ((-66.2695\
+        \ -8.0592, -66.2695 0.7031, -57.3047 0.7031, -57.3047 -8.0592, -66.2695 -8.0592)))\\\
+        \" AND cloudcoverpercentage:[0 TO 10] AND platformname:Sentinel-2&start=0&rows=100\"\
+        ,\n         \"type\": \"application/atom+xml\"\n      },\n      {\n      \
+        \   \"rel\": \"last\",\n         \"href\": \"https://scihub.copernicus.eu/apihub/search?q=beginPosition:[2015-12-19T00:00:00Z\
+        \ TO 2015-12-28T00:00:00Z] AND footprint:\\\"Intersects(POLYGON ((-66.2695\
+        \ -8.0592, -66.2695 0.7031, -57.3047 0.7031, -57.3047 -8.0592, -66.2695 -8.0592)))\\\
+        \" AND cloudcoverpercentage:[0 TO 10] AND platformname:Sentinel-2&start=2&rows=100\"\
+        ,\n         \"type\": \"application/atom+xml\"\n      },\n      {\n      \
+        \   \"rel\": \"search\",\n         \"href\": \"opensearch_description.xml\"\
+        ,\n         \"type\": \"application/opensearchdescription+xml\"\n      }\n\
+        \   ],\n   \"title\": \"Sentinels Scientific Data Hub search results for:\
+        \ beginPosition:[2015-12-19T00:00:00Z TO 2015-12-28T00:00:00Z] AND footprint:\\\
+        \"Intersects(POLYGON ((-66.2695 -8.0592, -66.2695 0.7031, -57.3047 0.7031,\
+        \ -57.3047 -8.0592, -66.2695 -8.0592)))\\\" AND cloudcoverpercentage:[0 TO\
+        \ 10] AND platformname:Sentinel-2\",\n   \"opensearch:startIndex\": \"0\"\
+        ,\n   \"opensearch:totalResults\": \"3\",\n   \"entry\": [\n      {\n    \
+        \     \"summary\": \"Date: 2015-12-27T14:22:29Z, Instrument: MSI, Mode: ,\
+        \ Satellite: Sentinel-2, Size: 5.47 GB\",\n         \"str\": [\n         \
+        \   {\n               \"name\": \"processed\",\n               \"content\"\
+        : \"T\"\n            },\n            {\n               \"name\": \"filename\"\
+        ,\n               \"content\": \"S2A_OPER_PRD_MSIL1C_PDMC_20151228T112701_R110_V20151227T142229_20151227T142229.SAFE\"\
         \n            },\n            {\n               \"name\": \"gmlfootprint\"\
         ,\n               \"content\": \"<gml:Polygon srsName=\\\"http://www.opengis.net/gml/srs/epsg.xml#4326\\\
         \" xmlns:gml=\\\"http://www.opengis.net/gml\\\">\\n   <gml:outerBoundaryIs>\\\
@@ -325,18 +324,18 @@ interactions:
         ,\n               \"content\": \"2567\"\n            },\n            {\n \
         \              \"name\": \"relativeorbitnumber\",\n               \"content\"\
         : \"139\"\n            }\n         ]\n      }\n   ],\n   \"xmlns\": \"http://www.w3.org/2005/Atom\"\
-        ,\n   \"subtitle\": \"Displaying 3 results. Request done in 1.699 seconds.\"\
-        ,\n   \"opensearch:itemsPerPage\": \"100\",\n   \"id\": \"https://scihub.copernicus.eu/apihub/search?q=(beginPosition:[2015-12-19T00:00:00Z\
-        \ TO 2015-12-28T00:00:00Z]) AND (footprint:\\\"Intersects(POLYGON ((-66.2695312\
-        \ -8.0592296, -66.2695312 0.7031074, -57.3046875 0.7031074, -57.3046875 -8.0592296,\
-        \ -66.2695312 -8.0592296)))\\\") AND (cloudcoverpercentage:[0 TO 10]) AND\
-        \ (platformname:Sentinel-2)\",\n   \"updated\": \"2017-05-31T20:31:44.996Z\"\
-        ,\n   \"xmlns:opensearch\": \"http://a9.com/-/spec/opensearch/1.1/\"\n}}"}
+        ,\n   \"subtitle\": \"Displaying 3 results. Request done in 0.046 seconds.\"\
+        ,\n   \"opensearch:itemsPerPage\": \"100\",\n   \"id\": \"https://scihub.copernicus.eu/apihub/search?q=beginPosition:[2015-12-19T00:00:00Z\
+        \ TO 2015-12-28T00:00:00Z] AND footprint:\\\"Intersects(POLYGON ((-66.2695\
+        \ -8.0592, -66.2695 0.7031, -57.3047 0.7031, -57.3047 -8.0592, -66.2695 -8.0592)))\\\
+        \" AND cloudcoverpercentage:[0 TO 10] AND platformname:Sentinel-2\",\n   \"\
+        updated\": \"2017-06-09T16:51:10.451Z\",\n   \"xmlns:opensearch\": \"http://a9.com/-/spec/opensearch/1.1/\"\
+        \n}}"}
     headers:
       Content-Type: [application/json]
       Pragma: [no-cache]
       Server: [Apache-Coyote/1.1]
       Vary: [Accept-Encoding]
-      content-length: ['24257']
+      content-length: ['24029']
     status: {code: 200, message: OK}
 version: 1
