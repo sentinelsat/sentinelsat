@@ -8,7 +8,7 @@ Please search existing issues, open and closed, before creating a new one.
 
 Providing a Short, Self Contained, Correct (Compilable), Example (`SSCCE <http://sscce.org/>`_) demonstrating the issue is encouraged.
 
-``sentinelsat`` is not ``v1.0``. There may be backwards incompatible changes which you can find in the changelog (CHANGELOG). We invite you to propose changes and features you would like to see in ``v1.0``.
+``sentinelsat`` is not ``v1.0``. There may be backwards incompatible changes which you can find in the changelog (`CHANGELOG.rst <https://github.com/sentinelsat/sentinelsat/blob/master/CHANGELOG.rst>`_). We invite you to propose changes and features you would like to see in ``v1.0``.
 
 
 Design Principles
@@ -23,9 +23,9 @@ Contributing
 
 If you want to contribute code or documentation the proposed way is:
 
-1. Fork the repository.
-2. Create a branch and make your changes in it.
-3. Create a pull request.
+1. `Fork <https://help.github.com/articles/fork-a-repo/>`_ the repository.
+2. Create a `branch <https://help.github.com/articles/creating-and-deleting-branches-within-your-repository/>`_ and make your changes in it.
+3. Create a `pull request <https://help.github.com/articles/creating-a-pull-request-from-a-fork/>`_.
 
 If you plan on introducing major changes it is a good idea to create an issue first and discuss these changes with other contributors.
 
@@ -40,7 +40,7 @@ Tests are mandatory for new features. We use `pytest <https://pytest.org>`_ and 
 All unit tests must use prerecorded responses to Copernicus Open Access Hub. We use `VCR.py <https://github.com/kevin1024/vcrpy>`_ to record the responses.
 We aspire to 100% coverage but regard meaningful tests to be more important than reaching this goal. Test coverage is tracked with `Codecov <https://codecov.io/gh/sentinelsat/sentinelsat>`_.
 
-We keep a changelog (CHANGELOG) following the `keepachangelog <http://keepachangelog.com>`_ template.
+We keep a changelog (`CHANGELOG.rst <https://github.com/sentinelsat/sentinelsat/blob/master/CHANGELOG.rst>`_) following the `keepachangelog <http://keepachangelog.com>`_ template.
 
 Good documentation is important to us. We use `Sphinx <http://www.sphinx-doc.org>`_ and host the documentation at `sentinelsat.readthedocs.io <https://sentinelsat.readthedocs.io/en/master/>`_.
 
@@ -132,4 +132,4 @@ A new package is release on PyPi with the following commands.
 License
 =======
 
-The GNU Affero General Public License v3.0 (LICENSE) applies to all contributions.
+The GNU Affero General Public License v3.0 (`LICENSE <https://github.com/sentinelsat/sentinelsat/blob/master/LICENSE>`_) applies to all contributions.
