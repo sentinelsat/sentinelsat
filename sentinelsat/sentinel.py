@@ -61,7 +61,8 @@ class SentinelAPI:
         self._last_query = None
         self._last_response = None
 
-    def query(self, area=None, initial_date='NOW-1DAY', end_date='NOW', limit=None, offset=0,
+    def query(self, area=None, initial_date='NOW-1DAY', end_date='NOW',
+              order_by=None, limit=None, offset=0,
               area_relation='Intersects', **keywords):
         """Query the OpenSearch API with the coordinates of an area, a date interval
         and any other search keywords accepted by the API.
@@ -84,6 +85,11 @@ class SentinelAPI:
         end_date : str or datetime, optional
             Beginning of the time interval for sensing time.  Defaults to 'NOW'.
             See initial_date for allowed format.
+        order_by: str, optional
+            A comma-separated list of fields to order by (on server side).
+            Prefix the field name by '+' or '-' to sort in ascending or descending order, respectively.
+            Ascending order is used, if prefix is omitted.
+            Example: "cloudcoverpercentage, -beginposition".
         limit: int, optional
             Maximum number of products returned. Defaults to no limit.
         offset: int, optional
@@ -93,6 +99,7 @@ class SentinelAPI:
                 - Intersects: true if the AOI and the footprint intersect (default)
                 - Contains: true if the AOI is inside the footprint
                 - IsWithin: true if the footprint is inside the AOI
+
 
         Other Parameters
         ----------------
@@ -108,7 +115,7 @@ class SentinelAPI:
             the product's attributes (a dictionary) as the value.
         """
         query = self.format_query(area, initial_date, end_date, area_relation, **keywords)
-        return self.query_raw(query, limit, offset)
+        return self.query_raw(query, order_by, limit, offset)
 
     @staticmethod
     def format_query(area=None, initial_date='NOW-1DAY', end_date='NOW', area_relation='Intersects', **keywords):
@@ -135,7 +142,7 @@ class SentinelAPI:
         query = query.replace('+', '%2B')
         return query
 
-    def query_raw(self, query, limit=None, offset=0):
+    def query_raw(self, query, order_by=None, limit=None, offset=0):
         """Do a full-text query on the OpenSearch API using the format specified in
            https://scihub.copernicus.eu/twiki/do/view/SciHubUserGuide/3FullTextSearch
 
@@ -143,6 +150,11 @@ class SentinelAPI:
         ----------
         query : str
             The query string.
+        order_by: str, optional
+            A comma-separated list of fields to order by (on server side).
+            Prefix the field name by '+' or '-' to sort in ascending or descending order, respectively.
+            Ascending order is used, if prefix is omitted.
+            Example: "cloudcoverpercentage, -beginposition".
         limit: int, optional
             Maximum number of products returned. Defaults to no limit.
         offset: int, optional
@@ -156,8 +168,9 @@ class SentinelAPI:
         """
         # plus symbols would be interpreted as spaces without escaping
         query = query.replace('+', '%2B')
+        formatted_order_by = _format_order_by(order_by)
         try:
-            response, count = self._load_query(query, limit, offset)
+            response, count = self._load_query(query, formatted_order_by, limit, offset)
         except SentinelAPIError as e:
             # Queries with length greater than about 2700-3600 characters (depending on content) may
             # produce "HTTP status 500 Internal Server Error"
@@ -189,12 +202,12 @@ class SentinelAPI:
         _, total_count = self._load_query(query, limit=0)
         return total_count
 
-    def _load_query(self, query, limit=None, offset=0):
+    def _load_query(self, query, order_by=None, limit=None, offset=0):
         # store last query (for testing)
         self._last_query = query
 
         # load query results
-        url = self._format_url(limit, offset)
+        url = self._format_url(order_by, limit, offset)
         response = self.session.post(url, {'q': query}, auth=self.session.auth)
         _check_scihub_response(response)
 
@@ -225,14 +238,15 @@ class SentinelAPI:
             products += self._load_query(query, limit=new_limit, offset=new_offset)[0]
         return products, total_results
 
-    def _format_url(self, limit=None, offset=0):
+    def _format_url(self, order_by=None, limit=None, offset=0):
         if limit is None:
             limit = self.page_size
         limit = min(limit, self.page_size)
-        blank = 'search?format=json&rows={rows}&start={start}'.format(
-            rows=limit, start=offset
-        )
-        return urljoin(self.api_url, blank)
+        url = 'search?format=json&rows={}'.format(limit)
+        url += '&start={}'.format(offset)
+        if order_by:
+            url += '&orderby={}'.format(order_by)
+        return urljoin(self.api_url, url)
 
     @staticmethod
     def to_geojson(products):
@@ -608,6 +622,24 @@ def _format_query_date(in_date):
         return datetime.strptime(in_date, '%Y%m%d').strftime('%Y-%m-%dT%H:%M:%SZ')
     except ValueError:
         raise ValueError('Unsupported date value {}'.format(in_date))
+
+
+def _format_order_by(order_by):
+    if not order_by or not order_by.strip():
+        return None
+    output = []
+    for part in order_by.split(','):
+        part = part.strip()
+        dir = " asc"
+        if part[0] == '+':
+            part = part[1:]
+        elif part[0] == '-':
+            dir = " desc"
+            part = part[1:]
+        if not part or not part.isalnum():
+            raise ValueError("Invalid order by value ({})".format(order_by))
+        output.append(part + dir)
+    return ",".join(output)
 
 
 def _parse_gml_footprint(geometry_str):
