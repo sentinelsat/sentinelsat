@@ -373,14 +373,25 @@ class SentinelAPI:
         skip_download = False
         if exists(temp_path):
             if getsize(temp_path) > product_info['size']:
+                self.logger.warning(
+                    "Existing incomplete file {} is larger than the expected final size"
+                    " ({} vs {} bytes). Deleting it.".format(
+                    str(temp_path), getsize(temp_path), product_info['size']))
                 remove(temp_path)
             elif getsize(temp_path) == product_info['size']:
                 if _md5_compare(temp_path, product_info['md5']):
                     skip_download = True
                 else:
+                    # Log a warning since this should never happen
+                    self.logger.warning(
+                        "Existing incomplete file {} appears to be fully downloaded but "
+                        "its checksum is incorrect. Deleting it.".format(
+                            str(temp_path), getsize(temp_path), product_info['size']))
                     remove(temp_path)
             else:
                 # continue downloading
+                self.logger.info("Download will resume from existing incomplete file "
+                                 "{}.".format(temp_path))
                 pass
 
         if not skip_download:
