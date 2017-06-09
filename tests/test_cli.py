@@ -7,7 +7,7 @@ from click.testing import CliRunner
 
 from sentinelsat import InvalidChecksumError, SentinelAPI
 from sentinelsat.scripts.cli import cli
-from .shared import my_vcr
+from .shared import my_vcr, FIXTURES_DIR
 
 _api_auth = [environ.get('SENTINEL_USER', "user"), environ.get('SENTINEL_PASSWORD', "pw")]
 
@@ -20,7 +20,7 @@ def test_cli():
         cli,
         ['search'] +
         _api_auth +
-        ['tests/map.geojson'],
+        [FIXTURES_DIR + '/map.geojson'],
         catch_exceptions=False
     )
 
@@ -30,7 +30,7 @@ def test_cli():
         cli,
         ['search'] +
         _api_auth +
-        ['tests/map.geojson',
+        [FIXTURES_DIR + '/map.geojson',
          '--url', 'https://scihub.copernicus.eu/dhus/'],
         catch_exceptions=False
     )
@@ -40,7 +40,7 @@ def test_cli():
         cli,
         ['search'] +
         _api_auth +
-        ['tests/map.geojson',
+        [FIXTURES_DIR + '/map.geojson',
          '-q', 'producttype=GRD,polarisationmode=HH'],
         catch_exceptions=False
     )
@@ -56,7 +56,7 @@ def test_returned_filesize():
         cli,
         ['search'] +
         _api_auth +
-        ['tests/map.geojson',
+        [FIXTURES_DIR + '/map.geojson',
          '--url', 'https://scihub.copernicus.eu/dhus/',
          '-s', '20141205',
          '-e', '20141208',
@@ -70,7 +70,7 @@ def test_returned_filesize():
         cli,
         ['search'] +
         _api_auth +
-        ['tests/map.geojson',
+        [FIXTURES_DIR + '/map.geojson',
          '--url', 'https://scihub.copernicus.eu/dhus/',
          '-s', '20140101',
          '-e', '20141231',
@@ -90,7 +90,7 @@ def test_cloud_flag_url():
         cli,
         ['search'] +
         _api_auth +
-        ['tests/map.geojson',
+        [FIXTURES_DIR + '/map.geojson',
          '--url', 'https://scihub.copernicus.eu/apihub/',
          '-s', '20151219',
          '-e', '20151228',
@@ -113,7 +113,7 @@ def test_order_by_flag():
         cli,
         ['search'] +
         _api_auth +
-        ['tests/map.geojson',
+        [FIXTURES_DIR + '/map.geojson',
          '--url', 'https://scihub.copernicus.eu/apihub/',
          '-s', '20151219',
          '-e', '20151228',
@@ -134,7 +134,7 @@ def test_sentinel1_flag():
         cli,
         ['search'] +
         _api_auth +
-        ['tests/map.geojson',
+        [FIXTURES_DIR + '/map.geojson',
          '--url', 'https://scihub.copernicus.eu/apihub/',
          '-s', '20151219',
          '-e', '20151228',
@@ -154,7 +154,7 @@ def test_sentinel2_flag():
         cli,
         ['search'] +
         _api_auth +
-        ['tests/map.geojson',
+        [FIXTURES_DIR + '/map.geojson',
          '--url', 'https://scihub.copernicus.eu/apihub/',
          '-s', '20151219',
          '-e', '20151228',
@@ -175,7 +175,7 @@ def test_sentinel3_flag():
         cli,
         ['search'] +
         ['s3guest', 's3guest'] +
-        ['tests/map.geojson',
+        [FIXTURES_DIR + '/map.geojson',
          '--url', 'https://scihub.copernicus.eu/s3/',
          '-s', '20161201',
          '-e', '20161202',
@@ -195,7 +195,7 @@ def test_product_flag():
         cli,
         ['search'] +
         _api_auth +
-        ['tests/map.geojson',
+        [FIXTURES_DIR + '/map.geojson',
          '--url', 'https://scihub.copernicus.eu/apihub/',
          '-s', '20161201',
          '-e', '20161202',
@@ -216,7 +216,7 @@ def test_instrument_flag():
         cli,
         ['search'] +
         ['s3guest', 's3guest'] +
-        ['tests/map.geojson',
+        [FIXTURES_DIR + '/map.geojson',
          '--url', 'https://scihub.copernicus.eu/s3/',
          '-s', '20161201',
          '-e', '20161202',
@@ -237,7 +237,7 @@ def test_option_hierarchy():
         cli,
         ['search'] +
         _api_auth +
-        ['tests/map.geojson',
+        [FIXTURES_DIR + '/map.geojson',
          '--url', 'https://scihub.copernicus.eu/apihub/',
          '-s', '20161201',
          '-e', '20161202',
@@ -260,7 +260,7 @@ def test_limit_flag():
         cli,
         ['search'] +
         _api_auth +
-        ['tests/map.geojson',
+        [FIXTURES_DIR + '/map.geojson',
          '--url', 'https://scihub.copernicus.eu/apihub/',
          '-s', '20161201',
          '-e', '20161230',
@@ -279,7 +279,7 @@ def test_footprints_cli(tmpdir):
         cli,
         ['search'] +
         _api_auth +
-        ['tests/map.geojson',
+        [FIXTURES_DIR + '/map.geojson',
          '-s', '20151219',
          '-e', '20151228',
          '--sentinel2',
@@ -352,7 +352,7 @@ def test_download_many(tmpdir):
     runner = CliRunner()
 
     command = ['search'] + _api_auth + [
-        'tests/map_download.geojson',
+        FIXTURES_DIR + '/map_download.geojson',
         '-s', '20150501',
         '-e', '20150705',
         '-q', 'producttype=OCN',
