@@ -776,6 +776,8 @@ def test_download(tmpdir):
     assert not tempfile_path.check(exists=1)
     assert not expected_path.check(exists=1, file=1)
 
+    tmpdir.remove()
+
 
 @my_vcr.use_cassette
 @pytest.mark.scihub
@@ -818,6 +820,8 @@ def test_download_all(tmpdir):
         assert len(product_infos) + len(failed_downloads) == len(ids)
         assert id in failed_downloads
 
+    tmpdir.remove()
+
 
 @my_vcr.use_cassette
 @pytest.mark.scihub
@@ -827,3 +831,86 @@ def test_download_invalid_id():
     with pytest.raises(SentinelAPIError) as excinfo:
         api.download(uuid)
         assert 'Invalid key' in excinfo.value.msg
+
+
+@my_vcr.use_cassette
+@pytest.mark.scihub
+def test_query_by_names():
+    api = SentinelAPI(**_api_auth)
+    names = ["S2A_MSIL1C_20170205T105221_N0204_R051_T31TCF_20170205T105426",
+             "S1A_EW_GRDH_1SDH_20141003T003840_20141003T003920_002658_002F54_4DD1"]
+    expected = {names[0]: {"2f379a52-3041-4b92-a8a8-92bddc495594",
+                           "10762fc0-461d-48d7-ad93-7ce71af9bd1a"},
+                names[1]: {"2d116e6a-536e-49b3-a587-5cd6b5baa3c9"}}
+
+    result = api._query_names(names)
+    assert list(result) == names
+    for name in names:
+        assert set(result[name]) == expected[name]
+
+    result2 = api._query_names(names * 100)
+    assert result == result2
+
+
+@my_vcr.use_cassette
+@pytest.mark.scihub
+def test_check_existing(tmpdir):
+    api = SentinelAPI(**_api_auth)
+    ids = [
+        "5618ce1b-923b-4df2-81d9-50b53e5aded9",
+        "d8340134-878f-4891-ba4f-4df54f1e3ab4",
+        "1f62a176-c980-41dc-b3a1-c735d660c910"
+    ]
+    names = ["S1A_WV_OCN__2SSV_20150526T081641_20150526T082418_006090_007E3E_104C",
+             "S1A_WV_OCN__2SSV_20150526T211029_20150526T211737_006097_007E78_134A",
+             "S1A_WV_OCN__2SSH_20150603T092625_20150603T093332_006207_008194_521E"]
+    paths = [tmpdir.join(fn + ".zip") for fn in names]
+    path_strings = list(map(str, paths))
+
+    # Init files used for testing
+    api.download(ids[0], str(tmpdir))
+    # File #1: complete and correct
+    assert paths[0].check(exists=1, file=1)
+    # File #2: complete but incorrect
+    with paths[1].open("wb") as f:
+        size = 130102
+        f.seek(size - 1)
+        f.write(b'\0')
+    # File #3: incomplete
+    dummy_content = b'aaaaaaaaaaaaaaaaaaaaaaaaa'
+    with paths[2].open("wb") as f:
+        f.write(dummy_content)
+    assert paths[2].check(exists=1, file=1)
+
+    expected = {str(paths[1]), str(paths[2])}
+
+    result = api.check_existing(ids=ids, directory=str(tmpdir))
+    assert set(result) == expected
+    assert paths[0].check(exists=1, file=1)
+    assert paths[1].check(exists=1, file=1)
+    assert paths[2].check(exists=1, file=1)
+
+    result = api.check_existing(paths=path_strings)
+    assert set(result) == expected
+    assert paths[0].check(exists=1, file=1)
+    assert paths[1].check(exists=1, file=1)
+    assert paths[2].check(exists=1, file=1)
+
+    result = api.check_existing(paths=path_strings, delete=True)
+    assert set(result) == expected
+    assert paths[0].check(exists=1, file=1)
+    assert not paths[1].check(exists=1, file=1)
+    assert not paths[2].check(exists=1, file=1)
+
+    missing_file = str(tmpdir.join(
+        "S1A_EW_GRDH_1SDH_20141003T003840_20141003T003920_002658_002F54_4DD1.zip"))
+    result = api.check_existing(paths=[missing_file])
+    assert result == [missing_file]
+
+    with pytest.raises(ValueError):
+        api.check_existing(ids=ids)
+
+    with pytest.raises(ValueError):
+        api.check_existing()
+
+    tmpdir.remove()

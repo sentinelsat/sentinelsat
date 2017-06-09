@@ -6,20 +6,19 @@ import logging
 import re
 import shutil
 import xml.etree.ElementTree as ET
-from collections import OrderedDict
+from collections import OrderedDict, defaultdict
 from contextlib import closing
 from datetime import date, datetime, timedelta
 from os import remove
-from os.path import exists, getsize, join
+from os.path import basename, exists, getsize, join, splitext
 
 import geojson
 import geomet.wkt
 import html2text
 import requests
-from tqdm import tqdm
-
 from six import string_types
 from six.moves.urllib.parse import urljoin
+from tqdm import tqdm
 
 from . import __version__ as sentinelsat_version
 
@@ -119,7 +118,8 @@ class SentinelAPI:
         return self.query_raw(query, order_by, limit, offset)
 
     @staticmethod
-    def format_query(area=None, initial_date='NOW-1DAY', end_date='NOW', area_relation='Intersects', **keywords):
+    def format_query(area=None, initial_date='NOW-1DAY', end_date='NOW', area_relation='Intersects',
+                     **keywords):
         """Create OpenSearch API query string
         """
         if area_relation.lower() not in {"intersects", "contains", "iswithin"}:
@@ -176,7 +176,7 @@ class SentinelAPI:
             # Queries with length greater than about 2700-3600 characters (depending on content) may
             # produce "HTTP status 500 Internal Server Error"
             factor = self.check_query_length(query)
-            if e.response.status_code == 500 and not e.msg and factor > 0.95 :
+            if e.response.status_code == 500 and not e.msg and factor > 0.95:
                 e.msg = ("The query likely failed due to its length "
                          "({:.1%} of the limit)".format(factor))
             e.__cause__ = None
@@ -376,7 +376,7 @@ class SentinelAPI:
                 self.logger.warning(
                     "Existing incomplete file {} is larger than the expected final size"
                     " ({} vs {} bytes). Deleting it.".format(
-                    str(temp_path), getsize(temp_path), product_info['size']))
+                        str(temp_path), getsize(temp_path), product_info['size']))
                 remove(temp_path)
             elif getsize(temp_path) == product_info['size']:
                 if _md5_compare(temp_path, product_info['md5']):
@@ -526,6 +526,124 @@ class SentinelAPI:
         # This can be simplified to just counting the number of special characters
         effective_length = len(query) + len(re.findall('[^-_.~0-9A-Za-z]', query))
         return effective_length / 3893
+
+    def _query_names(self, names):
+        """Find products by their names, e.g.
+        S1A_EW_GRDH_1SDH_20141003T003840_20141003T003920_002658_002F54_4DD1.
+
+        Note that duplicates exist on server, so multiple products can be returned for each name.
+
+        Parameters
+        ----------
+        names : list[string]
+            List of product names.
+
+        Returns
+        -------
+        dict[string, dict[str, dict]]
+            A dictionary mapping each name to a dictionary which contains the products with
+            that name (with ID as the key).
+        """
+
+        def chunks(l, n):
+            """Yield successive n-sized chunks from l."""
+            for i in range(0, len(l), n):
+                yield l[i:i + n]
+
+        products = {}
+        # 40 names per query fits reasonably well inside the query limit
+        for chunk in chunks(names, 40):
+            query = " OR ".join(chunk)
+            products.update(self.query_raw(query))
+
+        # Group the products
+        output = OrderedDict((name, dict()) for name in names)
+        for id, metadata in products.items():
+            name = metadata['identifier']
+            output[name][id] = metadata
+
+        return output
+
+    def check_existing(self, paths=None, ids=None, directory=None, delete=False):
+        """Verify the integrity of product files on disk.
+
+        The input can be a list of products to check or a list of IDs and a directory.
+
+        Integrity is checked by comparing the size and checksum of the file with the respective
+        values on the server.
+
+        In cases where multiple products with different IDs exist on the server for given product
+        name, the file is considered to be correct if any of them matches the file size and
+        checksum.
+
+        Parameters
+        ----------
+        paths : list[string]
+            List of product file paths.
+        ids : list[string]
+            List of product IDs.
+        directory : string
+            Directory where the files are located, if checking based on product IDs.
+        delete : bool
+            Whether to delete corrupt products. Defaults to False.
+
+        Returns
+        -------
+        list[str]
+            List of invalid or missing files.
+        """
+        if not ids and not paths:
+            raise ValueError("Must provide either file paths or product IDs and a directory")
+        if ids and not directory:
+            raise ValueError("Directory value missing")
+        paths = paths or []
+        ids = ids or []
+
+        def name_from_path(path):
+            return splitext(basename(path))[0]
+
+        # Get product IDs corresponding to the files on disk
+        names = []
+        if paths:
+            names = list(map(name_from_path, paths))
+            result = self._query_names(names)
+            for product_dicts in result.values():
+                ids += list(product_dicts)
+        names_from_paths = set(names)
+        ids = set(ids)
+
+        # Collect the OData information for each product
+        # Product name -> list of matching odata dicts
+        product_infos = defaultdict(list)
+        for id in ids:
+            odata = self.get_product_odata(id)
+            name = odata['title']
+            product_infos[name].append(odata)
+
+            # Collect
+            if name not in names_from_paths:
+                paths.append(join(directory, name + '.zip'))
+
+        # Now go over the list of products and check them
+        corrupt = []
+        for path in paths:
+            if not exists(path):
+                # We will consider missing files as corrupt also
+                corrupt.append(path)
+                continue
+            name = name_from_path(path)
+            is_fine = False
+            for product_info in product_infos[name]:
+                if (getsize(path) == product_info['size'] and
+                        _md5_compare(path, product_info['md5'])):
+                    is_fine = True
+                    break
+            if not is_fine:
+                corrupt.append(path)
+                if delete:
+                    remove(path)
+
+        return corrupt
 
 
 class SentinelAPIError(Exception):
