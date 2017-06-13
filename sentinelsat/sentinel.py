@@ -564,17 +564,20 @@ class SentinelAPI:
 
         return output
 
-    def check_existing(self, paths=None, ids=None, directory=None, delete=False):
+    def check_files(self, paths=None, ids=None, directory=None, delete=False):
         """Verify the integrity of product files on disk.
-
-        The input can be a list of products to check or a list of IDs and a directory.
 
         Integrity is checked by comparing the size and checksum of the file with the respective
         values on the server.
 
+        The input can be a list of products to check or a list of IDs and a directory.
+
         In cases where multiple products with different IDs exist on the server for given product
         name, the file is considered to be correct if any of them matches the file size and
-        checksum.
+        checksum. A warning is logged in such situations.
+
+        The corrupt products' OData info is included in the return value to make it easier to
+        re-download the products, if necessary.
 
         Parameters
         ----------
@@ -589,8 +592,10 @@ class SentinelAPI:
 
         Returns
         -------
-        list[str]
-            List of invalid or missing files.
+        dict[str, list[dict]]
+            A dictionary listing the invalid or missing files. The dictionary maps the corrupt
+            file paths to a list of OData dictionaries of matching products on the server (as
+            returned by ``SentinelAPI.get_product_odata()``).
         """
         if not ids and not paths:
             raise ValueError("Must provide either file paths or product IDs and a directory")
@@ -625,13 +630,19 @@ class SentinelAPI:
                 paths.append(join(directory, name + '.zip'))
 
         # Now go over the list of products and check them
-        corrupt = []
+        corrupt = {}
         for path in paths:
+            name = name_from_path(path)
+
+            if len(product_infos[name]) > 1:
+                self.logger.warning("{} matches multiple products on server".format(path))
+
             if not exists(path):
                 # We will consider missing files as corrupt also
-                corrupt.append(path)
+                self.logger.info("{} does not exist on disk".format(path))
+                corrupt[path] = product_infos[name]
                 continue
-            name = name_from_path(path)
+
             is_fine = False
             for product_info in product_infos[name]:
                 if (getsize(path) == product_info['size'] and
@@ -639,7 +650,8 @@ class SentinelAPI:
                     is_fine = True
                     break
             if not is_fine:
-                corrupt.append(path)
+                self.logger.info("{} is corrupt".format(path))
+                corrupt[path] = product_infos[name]
                 if delete:
                     remove(path)
 

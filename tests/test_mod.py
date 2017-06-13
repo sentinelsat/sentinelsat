@@ -882,35 +882,43 @@ def test_check_existing(tmpdir):
         f.write(dummy_content)
     assert paths[2].check(exists=1, file=1)
 
+    # Test
     expected = {str(paths[1]), str(paths[2])}
 
-    result = api.check_existing(ids=ids, directory=str(tmpdir))
+    result = api.check_files(ids=ids, directory=str(tmpdir))
     assert set(result) == expected
+    assert result[paths[1]][0]['id'] == ids[1]
+    assert result[paths[2]][0]['id'] == ids[2]
     assert paths[0].check(exists=1, file=1)
     assert paths[1].check(exists=1, file=1)
     assert paths[2].check(exists=1, file=1)
 
-    result = api.check_existing(paths=path_strings)
+    result = api.check_files(paths=path_strings)
     assert set(result) == expected
+    assert result[paths[1]][0]['id'] == ids[1]
+    assert result[paths[2]][0]['id'] == ids[2]
     assert paths[0].check(exists=1, file=1)
     assert paths[1].check(exists=1, file=1)
     assert paths[2].check(exists=1, file=1)
 
-    result = api.check_existing(paths=path_strings, delete=True)
+    result = api.check_files(paths=path_strings, delete=True)
     assert set(result) == expected
+    assert result[paths[1]][0]['id'] == ids[1]
+    assert result[paths[2]][0]['id'] == ids[2]
     assert paths[0].check(exists=1, file=1)
     assert not paths[1].check(exists=1, file=1)
     assert not paths[2].check(exists=1, file=1)
 
     missing_file = str(tmpdir.join(
         "S1A_EW_GRDH_1SDH_20141003T003840_20141003T003920_002658_002F54_4DD1.zip"))
-    result = api.check_existing(paths=[missing_file])
-    assert result == [missing_file]
+    result = api.check_files(paths=[missing_file])
+    assert set(result) == {missing_file}
+    assert result[missing_file][0]['id']
 
     with pytest.raises(ValueError):
-        api.check_existing(ids=ids)
+        api.check_files(ids=ids)
 
     with pytest.raises(ValueError):
-        api.check_existing()
+        api.check_files()
 
     tmpdir.remove()
