@@ -5,6 +5,7 @@ python:
 - 3.5
 - 3.6
 - pypy
+- pypy3
 cache: pip
 branches:
   only:
@@ -13,8 +14,8 @@ before_install:
 - pip install -U pip
 install:
 - pip install codecov
-- if [[ $TRAVIS_PYTHON_VERSION != pypy ]]; then pip install -e .[test]; fi
-- if [[ $TRAVIS_PYTHON_VERSION = pypy ]]; then pip install -e .[test-basic]; PYTEST_MARKS="not pandas"; fi
+- if [[ $TRAVIS_PYTHON_VERSION != pypy* ]]; then pip install -e .[test]; fi
+- if [[ $TRAVIS_PYTHON_VERSION = pypy* ]]; then pip install -e .[test-basic]; PYTEST_MARKS="not pandas"; fi
 script:
 - coverage run --source=sentinelsat -m py.test -v -m "$PYTEST_MARKS"
 after_success:
