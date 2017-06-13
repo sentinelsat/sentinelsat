@@ -9,10 +9,11 @@ import pytest
 import requests
 import requests_mock
 
-from sentinelsat import InvalidChecksumError, SentinelAPI, SentinelAPIError, geojson_to_wkt, read_geojson
+from sentinelsat import InvalidChecksumError, SentinelAPI, SentinelAPIError, geojson_to_wkt, \
+    read_geojson
 from sentinelsat.sentinel import _format_order_by, _format_query_date, _md5_compare, \
     _parse_odata_timestamp, _parse_opensearch_response
-from .shared import my_vcr
+from .shared import FIXTURES_DIR, my_vcr
 
 _api_auth = dict(user=environ.get('SENTINEL_USER'), password=environ.get('SENTINEL_PASSWORD'))
 
@@ -35,7 +36,7 @@ def products():
     """A fixture for tests that need some non-specific set of products as input."""
     api = SentinelAPI(**_api_auth)
     products = api.query(
-        geojson_to_wkt(read_geojson('tests/map.geojson')),
+        geojson_to_wkt(read_geojson(FIXTURES_DIR + '/map.geojson')),
         "20151219", "20151228"
     )
     return products
@@ -47,7 +48,7 @@ def raw_products():
     """A fixture for tests that need some non-specific set of products in the form of a raw response as input."""
     api = SentinelAPI(**_api_auth)
     raw_products = api._load_query(api.format_query(
-        geojson_to_wkt(read_geojson('tests/map.geojson')),
+        geojson_to_wkt(read_geojson(FIXTURES_DIR + '/map.geojson')),
         "20151219", "20151228")
     )[0]
     return raw_products
@@ -68,7 +69,8 @@ def test_format_date():
     for date_str in ("NOW - 1HOUR", "NOW -   1HOURS", "NOW-1 HOURS", "NOW-1", "NOW-"):
         with pytest.raises(ValueError) as excinfo:
             _format_query_date(date_str)
-            
+
+
 @pytest.mark.fast
 def test_format_date():
     assert _format_query_date(datetime(2015, 1, 1)) == '2015-01-01T00:00:00Z'
@@ -88,17 +90,18 @@ def test_format_date():
 
 @pytest.mark.fast
 def test_convert_timestamp():
-    assert _parse_odata_timestamp('/Date(1445588544652)/') == datetime(2015, 10, 23, 8, 22, 24, 652000)
+    assert _parse_odata_timestamp('/Date(1445588544652)/') == datetime(2015, 10, 23, 8, 22, 24,
+                                                                       652000)
 
 
 @pytest.mark.fast
 def test_md5_comparison():
     testfile_md5 = hashlib.md5()
-    with open("tests/expected_search_footprints_s1.geojson", "rb") as testfile:
+    with open(FIXTURES_DIR + "/expected_search_footprints_s1.geojson", "rb") as testfile:
         testfile_md5.update(testfile.read())
         real_md5 = testfile_md5.hexdigest()
-    assert _md5_compare("tests/expected_search_footprints_s1.geojson", real_md5) is True
-    assert _md5_compare("tests/map.geojson", real_md5) is False
+    assert _md5_compare(FIXTURES_DIR + "/expected_search_footprints_s1.geojson", real_md5) is True
+    assert _md5_compare(FIXTURES_DIR + "/map.geojson", real_md5) is False
 
 
 @my_vcr.use_cassette
@@ -108,8 +111,8 @@ def test_SentinelAPI_connection():
     api.query(**_small_query)
 
     assert api._last_query == (
-        '(beginPosition:[2015-01-01T00:00:00Z TO 2015-01-02T00:00:00Z]) '
-        'AND (footprint:"Intersects(POLYGON((0 0,1 1,0 1,0 0)))")')
+        'beginPosition:[2015-01-01T00:00:00Z TO 2015-01-02T00:00:00Z] '
+        'AND footprint:"Intersects(POLYGON((0 0,1 1,0 1,0 0)))"')
     assert api._last_response.status_code == 200
 
 
@@ -146,16 +149,16 @@ def test_api_query_format():
     now = datetime.now()
     last_24h = _format_query_date(now - timedelta(hours=24))
     query = api.format_query(wkt, initial_date=last_24h, end_date=now)
-    assert query == '(beginPosition:[%s TO %s]) ' % (last_24h, _format_query_date(now)) + \
-                    'AND (footprint:"Intersects(POLYGON((0 0,1 1,0 1,0 0)))")'
+    assert query == 'beginPosition:[%s TO %s] ' % (last_24h, _format_query_date(now)) + \
+                    'AND footprint:"Intersects(POLYGON((0 0,1 1,0 1,0 0)))"'
 
     query = api.format_query(wkt, end_date=now, producttype='SLC')
-    assert query == '(beginPosition:[NOW-1DAY TO %s]) ' % (_format_query_date(now)) + \
-                    'AND (footprint:"Intersects(POLYGON((0 0,1 1,0 1,0 0)))") ' + \
-                    'AND (producttype:SLC)'
+    assert query == 'beginPosition:[NOW-1DAY TO %s] ' % (_format_query_date(now)) + \
+                    'AND footprint:"Intersects(POLYGON((0 0,1 1,0 1,0 0)))" ' + \
+                    'AND producttype:SLC'
 
     query = api.format_query()
-    assert query == '(beginPosition:[NOW-1DAY TO NOW])'
+    assert query == 'beginPosition:[NOW-1DAY TO NOW]'
 
     query = api.format_query(area=None, initial_date=None, end_date=None)
     assert query == ''
@@ -186,7 +189,8 @@ def test_format_url():
         rows=api.page_size, start=start_row)
     url = api._format_url(order_by="beginposition desc", limit=api.page_size + 50, offset=10)
     assert url == 'https://scihub.copernicus.eu/apihub/search?format=json&rows={rows}&start={start}' \
-                  '&orderby={orderby}'.format(rows=api.page_size, start=10, orderby="beginposition desc")
+                  '&orderby={orderby}'.format(rows=api.page_size, start=10,
+                                              orderby="beginposition desc")
 
 
 @pytest.mark.fast
@@ -221,8 +225,8 @@ def test_small_query():
     api = SentinelAPI(**_api_kwargs)
     api.query(**_small_query)
     assert api._last_query == (
-        '(beginPosition:[2015-01-01T00:00:00Z TO 2015-01-02T00:00:00Z]) '
-        'AND (footprint:"Intersects(POLYGON((0 0,1 1,0 1,0 0)))")')
+        'beginPosition:[2015-01-01T00:00:00Z TO 2015-01-02T00:00:00Z] '
+        'AND footprint:"Intersects(POLYGON((0 0,1 1,0 1,0 0)))"')
     assert api._last_response.status_code == 200
 
 
@@ -243,8 +247,8 @@ def test_large_query():
     api = SentinelAPI(**_api_kwargs)
     full_products = list(api.query(**_large_query))
     assert api._last_query == (
-        '(beginPosition:[2015-12-01T00:00:00Z TO 2015-12-31T00:00:00Z]) '
-        'AND (footprint:"Intersects(POLYGON((0 0,0 10,10 10,10 0,0 0)))")')
+        'beginPosition:[2015-12-01T00:00:00Z TO 2015-12-31T00:00:00Z] '
+        'AND footprint:"Intersects(POLYGON((0 0,0 10,10 10,10 0,0 0)))"')
     assert api._last_response.status_code == 200
     assert len(full_products) > api.page_size
 
@@ -279,12 +283,12 @@ def test_too_long_query():
         return api.format_query(None, "NOW", "NOW") + " AND orbitdirection:descending" * n
 
     # Expect no error
-    q = create_query(116)
+    q = create_query(117)
     assert api.check_query_length(q) < 1.0
     api.query_raw(q)
 
     # Expect HTTP status 500 Internal Server Error
-    q = create_query(117)
+    q = create_query(118)
     assert api.check_query_length(q) >= 1.0
     with pytest.raises(SentinelAPIError) as excinfo:
         api.query_raw(q)
@@ -294,10 +298,10 @@ def test_too_long_query():
 
 @pytest.mark.fast
 def test_get_coordinates():
-    wkt = ('POLYGON ((-66.2695312 -8.0592296, -66.2695312 0.7031074, ' +
-           '-57.3046875 0.7031074, -57.3046875 -8.0592296, -66.2695312 -8.0592296))')
-    assert geojson_to_wkt(read_geojson('tests/map.geojson')) == wkt
-    assert geojson_to_wkt(read_geojson('tests/map_z.geojson')) == wkt
+    wkt = ('POLYGON ((-66.2695 -8.0592, -66.2695 0.7031, '
+           '-57.3047 0.7031, -57.3047 -8.0592, -66.2695 -8.0592))')
+    assert geojson_to_wkt(read_geojson(FIXTURES_DIR + '/map.geojson')) == wkt
+    assert geojson_to_wkt(read_geojson(FIXTURES_DIR + '/map_z.geojson')) == wkt
 
 
 @my_vcr.use_cassette
@@ -482,7 +486,8 @@ def test_get_product_odata_scihub_down():
         rqst.get(
             request_url,
             text='{"error":{"code":null,"message":{"lang":"en","value":'
-                 '"No Products found with key \'8df46c9e-a20c-43db-a19a-4240c2ed3b8b\' "}}}', status_code=500
+                 '"No Products found with key \'8df46c9e-a20c-43db-a19a-4240c2ed3b8b\' "}}}',
+            status_code=500
         )
         with pytest.raises(SentinelAPIError) as excinfo:
             api.get_product_odata('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')
@@ -562,7 +567,7 @@ def test_get_products_invalid_json():
         )
         with pytest.raises(SentinelAPIError) as excinfo:
             api.query(
-                area=geojson_to_wkt(read_geojson("tests/map.geojson")),
+                area=geojson_to_wkt(read_geojson(FIXTURES_DIR + "/map.geojson")),
                 initial_date="20151219",
                 end_date="20151228",
                 platformname="Sentinel-2"
@@ -575,7 +580,7 @@ def test_get_products_invalid_json():
 def test_footprints_s1():
     api = SentinelAPI(**_api_auth)
     products = api.query(
-        geojson_to_wkt(read_geojson('tests/map.geojson')),
+        geojson_to_wkt(read_geojson(FIXTURES_DIR + '/map.geojson')),
         datetime(2014, 10, 10), datetime(2014, 12, 31), producttype="GRD"
     )
 
@@ -584,7 +589,7 @@ def test_footprints_s1():
         validation = geojson.is_valid(footprint['geometry'])
         assert validation['valid'] == 'yes', validation['message']
 
-    with open('tests/expected_search_footprints_s1.geojson') as geojson_file:
+    with open(FIXTURES_DIR + '/expected_search_footprints_s1.geojson') as geojson_file:
         expected_footprints = geojson.loads(geojson_file.read())
     # to compare unordered lists (JSON objects) they need to be sorted or changed to sets
     assert set(footprints) == set(expected_footprints)
@@ -597,7 +602,7 @@ def test_footprints_s2(products):
         validation = geojson.is_valid(footprint['geometry'])
         assert validation['valid'] == 'yes', validation['message']
 
-    with open('tests/expected_search_footprints_s2.geojson') as geojson_file:
+    with open(FIXTURES_DIR + '/expected_search_footprints_s2.geojson') as geojson_file:
         expected_footprints = geojson.loads(geojson_file.read())
     # to compare unordered lists (JSON objects) they need to be sorted or changed to sets
     assert set(footprints) == set(expected_footprints)
@@ -608,7 +613,7 @@ def test_footprints_s2(products):
 def test_s2_cloudcover():
     api = SentinelAPI(**_api_auth)
     products = api.query(
-        geojson_to_wkt(read_geojson('tests/map.geojson')),
+        geojson_to_wkt(read_geojson(FIXTURES_DIR + '/map.geojson')),
         "20151219", "20151228",
         platformname="Sentinel-2",
         cloudcoverpercentage="[0 TO 10]"
@@ -630,7 +635,7 @@ def test_s2_cloudcover():
 def test_order_by():
     api = SentinelAPI(**_api_auth)
     products = api.query(
-        geojson_to_wkt(read_geojson('tests/map.geojson')),
+        geojson_to_wkt(read_geojson(FIXTURES_DIR + '/map.geojson')),
         "20151219", "20151228",
         platformname="Sentinel-2",
         cloudcoverpercentage="[0 TO 10]",
@@ -673,7 +678,8 @@ def test_get_products_size(products):
     # load a new very small query
     api = SentinelAPI(**_api_auth)
     with my_vcr.use_cassette('test_get_products_size'):
-        products = api.query_raw("S1A_WV_OCN__2SSH_20150603T092625_20150603T093332_006207_008194_521E")
+        products = api.query_raw(
+            "S1A_WV_OCN__2SSH_20150603T092625_20150603T093332_006207_008194_521E")
     assert len(products) > 0
     # Rounded to zero
     assert SentinelAPI.get_products_size(products) == 0
@@ -687,7 +693,8 @@ def test_response_to_dict(raw_products):
     # check if dictionary has id key
     assert '44517f66-9845-4792-a988-b5ae6e81fd3e' in dictionary
     props = dictionary['44517f66-9845-4792-a988-b5ae6e81fd3e']
-    assert props['title'] == 'S2A_OPER_PRD_MSIL1C_PDMC_20151228T112523_R110_V20151227T142229_20151227T142229'
+    assert props[
+               'title'] == 'S2A_OPER_PRD_MSIL1C_PDMC_20151228T112523_R110_V20151227T142229_20151227T142229'
 
 
 @pytest.mark.pandas

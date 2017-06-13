@@ -127,16 +127,16 @@ class SentinelAPI:
 
         query_parts = []
         if initial_date is not None and end_date is not None:
-            query_parts += ['(beginPosition:[%s TO %s])' % (
+            query_parts += ['beginPosition:[%s TO %s]' % (
                 _format_query_date(initial_date),
                 _format_query_date(end_date)
             )]
 
         if area is not None:
-            query_parts += ['(footprint:"%s(%s)")' % (area_relation, area)]
+            query_parts += ['footprint:"%s(%s)"' % (area_relation, area)]
 
         for kw in sorted(keywords):
-            query_parts += ['(%s:%s)' % (kw, keywords[kw])]
+            query_parts += ['%s:%s' % (kw, keywords[kw])]
 
         query = ' AND '.join(query_parts)
         # plus symbols would be interpreted as spaces without escaping
@@ -553,7 +553,7 @@ def read_geojson(geojson_file):
         return geojson.load(f)
 
 
-def geojson_to_wkt(geojson_obj, feature_number=0):
+def geojson_to_wkt(geojson_obj, feature_number=0, decimals=4):
     """Convert a GeoJSON object to Well-Known Text. Intended for use with OpenSearch queries.
 
     In case of FeatureCollection, only one of the features is used (the first by default).
@@ -563,9 +563,12 @@ def geojson_to_wkt(geojson_obj, feature_number=0):
     ----------
     geojson_obj : dict
         a GeoJSON object
-    feature_number : int
+    feature_number : int, optional
         Feature to extract polygon from (in case of MultiPolygon
         FeatureCollection), defaults to first Feature
+    decimals : int, optional
+        Number of decimal figures after point to round coordinate to. Defaults to 4 (about 10
+        meters).
 
     Returns
     -------
@@ -586,7 +589,7 @@ def geojson_to_wkt(geojson_obj, feature_number=0):
     # Discard z-coordinate, if it exists
     geometry['coordinates'] = ensure_2d(geometry['coordinates'])
 
-    return geomet.wkt.dumps(geometry, decimals=7)
+    return geomet.wkt.dumps(geometry, decimals=decimals)
 
 
 def _check_scihub_response(response, test_json=True):

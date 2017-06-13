@@ -1,10 +1,16 @@
+import types
 import warnings
 from os import environ
 from os.path import abspath, dirname
-import types
 
 import pytest
 import vcr
+
+from .custom_serializer import BinaryContentSerializer
+
+TESTS_DIR = dirname(abspath(__file__))
+FIXTURES_DIR = dirname(abspath(__file__)) + '/fixtures'
+CASSETTE_DIR = FIXTURES_DIR + '/vcr_cassettes/'
 
 vcr_option = pytest.config.getoption("--vcr")
 record_mode = "none"
@@ -37,21 +43,22 @@ def range_header_matcher(r1, r2):
 
 
 if vcr_option != "disable":
-    tests_dir = dirname(abspath(__file__))
     my_vcr = vcr.VCR(
         record_mode=record_mode,
-        serializer='yaml',
-        cassette_library_dir=tests_dir + '/vcr_cassettes/',
+        cassette_library_dir=CASSETTE_DIR,
         path_transformer=vcr.VCR.ensure_suffix('.yaml'),
         filter_headers=['Set-Cookie'],
         before_record_request=scrub_request,
         before_record_response=scrub_response,
         decode_compressed_response=True
     )
+    my_vcr.register_serializer('custom', BinaryContentSerializer(CASSETTE_DIR))
+    my_vcr.serializer = 'custom'
     my_vcr.register_matcher('range_header', range_header_matcher)
     my_vcr.match_on = ['uri', 'method', 'body', 'range_header']
 else:
     print("Tests will not use any prerecorded query responses.")
+
 
     class DummyCassette:
         def __enter__(self):
@@ -63,12 +70,14 @@ else:
         def __call__(self, func, *args, **kwargs):
             return func
 
+
     class DummyVCR:
         @staticmethod
         def use_cassette(func=None, *args, **kwargs):
             if not isinstance(func, types.FunctionType):
                 return DummyCassette()
             return func
+
 
     my_vcr = DummyVCR()
 
