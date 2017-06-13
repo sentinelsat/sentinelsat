@@ -1,11 +1,11 @@
 interactions:
 - request:
-    body: q=beginPosition%3A%5B2016-12-01T00%3A00%3A00Z+TO+2016-12-02T00%3A00%3A00Z%5D+AND+footprint%3A%22Intersects%28POLYGON+%28%28-66.2695+-8.0592%2C+-66.2695+0.7031%2C+-57.3047+0.7031%2C+-57.3047+-8.0592%2C+-66.2695+-8.0592%29%29%29%22+AND+platformname%3ASentinel-3
+    body: q=beginPosition%3A%5B2016-12-01T00%3A00%3A00Z+TO+2016-12-02T00%3A00%3A00Z%5D+AND+footprint%3A%22Intersects%28POLYGON%28%28-66.2695+-8.0592%2C-66.2695+0.7031%2C-57.3047+0.7031%2C-57.3047+-8.0592%2C-66.2695+-8.0592%29%29%29%22+AND+platformname%3ASentinel-3
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
       Connection: [keep-alive]
-      Content-Length: ['259']
+      Content-Length: ['254']
       Content-Type: [application/x-www-form-urlencoded]
       User-Agent: [sentinelsat/0.11]
     method: POST
@@ -13,30 +13,30 @@ interactions:
   response:
     body: {string: "{\"feed\": {\n   \"opensearch:Query\": {\n      \"startPage\"\
         : \"1\",\n      \"role\": \"request\",\n      \"searchTerms\": \"beginPosition:[2016-12-01T00:00:00Z\
-        \ TO 2016-12-02T00:00:00Z] AND footprint:\\\"Intersects(POLYGON ((-66.2695\
-        \ -8.0592, -66.2695 0.7031, -57.3047 0.7031, -57.3047 -8.0592, -66.2695 -8.0592)))\\\
+        \ TO 2016-12-02T00:00:00Z] AND footprint:\\\"Intersects(POLYGON((-66.2695\
+        \ -8.0592,-66.2695 0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\\\
         \" AND platformname:Sentinel-3\"\n   },\n   \"author\": {\"name\": \"Sentinel-3\
         \ Scientific Data Hub\"},\n   \"link\": [\n      {\n         \"rel\": \"self\"\
         ,\n         \"href\": \"https://scihub.copernicus.eu/s3/search?q=beginPosition:[2016-12-01T00:00:00Z\
-        \ TO 2016-12-02T00:00:00Z] AND footprint:\\\"Intersects(POLYGON ((-66.2695\
-        \ -8.0592, -66.2695 0.7031, -57.3047 0.7031, -57.3047 -8.0592, -66.2695 -8.0592)))\\\
+        \ TO 2016-12-02T00:00:00Z] AND footprint:\\\"Intersects(POLYGON((-66.2695\
+        \ -8.0592,-66.2695 0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\\\
         \" AND platformname:Sentinel-3&start=0&rows=100\",\n         \"type\": \"\
         application/atom+xml\"\n      },\n      {\n         \"rel\": \"first\",\n\
         \         \"href\": \"https://scihub.copernicus.eu/s3/search?q=beginPosition:[2016-12-01T00:00:00Z\
-        \ TO 2016-12-02T00:00:00Z] AND footprint:\\\"Intersects(POLYGON ((-66.2695\
-        \ -8.0592, -66.2695 0.7031, -57.3047 0.7031, -57.3047 -8.0592, -66.2695 -8.0592)))\\\
+        \ TO 2016-12-02T00:00:00Z] AND footprint:\\\"Intersects(POLYGON((-66.2695\
+        \ -8.0592,-66.2695 0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\\\
         \" AND platformname:Sentinel-3&start=0&rows=100\",\n         \"type\": \"\
         application/atom+xml\"\n      },\n      {\n         \"rel\": \"last\",\n \
         \        \"href\": \"https://scihub.copernicus.eu/s3/search?q=beginPosition:[2016-12-01T00:00:00Z\
-        \ TO 2016-12-02T00:00:00Z] AND footprint:\\\"Intersects(POLYGON ((-66.2695\
-        \ -8.0592, -66.2695 0.7031, -57.3047 0.7031, -57.3047 -8.0592, -66.2695 -8.0592)))\\\
+        \ TO 2016-12-02T00:00:00Z] AND footprint:\\\"Intersects(POLYGON((-66.2695\
+        \ -8.0592,-66.2695 0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\\\
         \" AND platformname:Sentinel-3&start=7&rows=100\",\n         \"type\": \"\
         application/atom+xml\"\n      },\n      {\n         \"rel\": \"search\",\n\
         \         \"href\": \"opensearch_description.xml\",\n         \"type\": \"\
         application/opensearchdescription+xml\"\n      }\n   ],\n   \"title\": \"\
         Sentinel-3 Scientific Data Hub search results for: beginPosition:[2016-12-01T00:00:00Z\
-        \ TO 2016-12-02T00:00:00Z] AND footprint:\\\"Intersects(POLYGON ((-66.2695\
-        \ -8.0592, -66.2695 0.7031, -57.3047 0.7031, -57.3047 -8.0592, -66.2695 -8.0592)))\\\
+        \ TO 2016-12-02T00:00:00Z] AND footprint:\\\"Intersects(POLYGON((-66.2695\
+        \ -8.0592,-66.2695 0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\\\
         \" AND platformname:Sentinel-3\",\n   \"opensearch:startIndex\": \"0\",\n\
         \   \"opensearch:totalResults\": \"8\",\n   \"entry\": [\n      {\n      \
         \   \"summary\": \"Date: 2016-12-01T13:13:17.65Z, Instrument: SRAL, Mode:\
@@ -1010,17 +1010,17 @@ interactions:
         : \"288\"\n            },\n            {\n               \"name\": \"lastrelativeorbitnumber\"\
         ,\n               \"content\": \"289\"\n            }\n         ]\n      }\n\
         \   ],\n   \"xmlns\": \"http://www.w3.org/2005/Atom\",\n   \"subtitle\": \"\
-        Displaying 8 results. Request done in 0.363 seconds.\",\n   \"opensearch:itemsPerPage\"\
+        Displaying 8 results. Request done in 0.011 seconds.\",\n   \"opensearch:itemsPerPage\"\
         : \"100\",\n   \"id\": \"https://scihub.copernicus.eu/s3/search?q=beginPosition:[2016-12-01T00:00:00Z\
-        \ TO 2016-12-02T00:00:00Z] AND footprint:\\\"Intersects(POLYGON ((-66.2695\
-        \ -8.0592, -66.2695 0.7031, -57.3047 0.7031, -57.3047 -8.0592, -66.2695 -8.0592)))\\\
-        \" AND platformname:Sentinel-3\",\n   \"updated\": \"2017-06-09T19:42:42.067Z\"\
+        \ TO 2016-12-02T00:00:00Z] AND footprint:\\\"Intersects(POLYGON((-66.2695\
+        \ -8.0592,-66.2695 0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\\\
+        \" AND platformname:Sentinel-3\",\n   \"updated\": \"2017-06-13T16:36:35.904Z\"\
         ,\n   \"xmlns:opensearch\": \"http://a9.com/-/spec/opensearch/1.1/\"\n}}"}
     headers:
       Content-Type: [application/json]
       Pragma: [no-cache]
       Server: [Apache-Coyote/1.1]
       Vary: [Accept-Encoding]
-      content-length: ['76434']
+      content-length: ['76404']
     status: {code: 200, message: OK}
 version: 1

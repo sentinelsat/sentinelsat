@@ -36,8 +36,8 @@ interactions:
         \torg.springframework.security.access.intercept.aopalliance.MethodSecurityInterceptor.invoke(MethodSecurityInterceptor.java:64)\n\
         \torg.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)\n\
         \torg.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:653)\n\
-        \tfr.gael.dhus.server.http.webapp.search.controller.SearchController$$EnhancerBySpringCGLIB$$6885dade.search(&lt;generated&gt;)\n\
-        \tsun.reflect.GeneratedMethodAccessor349.invoke(Unknown Source)\n\tsun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)\n\
+        \tfr.gael.dhus.server.http.webapp.search.controller.SearchController$$EnhancerBySpringCGLIB$$723035f7.search(&lt;generated&gt;)\n\
+        \tsun.reflect.GeneratedMethodAccessor350.invoke(Unknown Source)\n\tsun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)\n\
         \tjava.lang.reflect.Method.invoke(Method.java:498)\n\torg.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:221)\n\
         \torg.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:137)\n\
         \torg.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:110)\n\

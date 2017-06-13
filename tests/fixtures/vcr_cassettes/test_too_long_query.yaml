@@ -54,7 +54,7 @@ interactions:
         \ AND orbitdirection:descending AND orbitdirection:descending AND orbitdirection:descending\
         \ AND orbitdirection:descending\"\n   },\n   \"xmlns\": \"http://www.w3.org/2005/Atom\"\
         ,\n   \"author\": {\"name\": \"Sentinels Scientific Data Hub\"},\n   \"subtitle\"\
-        : \"Displaying 0 results. Request done in 0.017 seconds.\",\n   \"link\":\
+        : \"Displaying 0 results. Request done in 0.015 seconds.\",\n   \"link\":\
         \ [\n      {\n         \"rel\": \"self\",\n         \"href\": \"https://scihub.copernicus.eu/apihub/search?q=beginPosition:[NOW\
         \ TO NOW] AND orbitdirection:descending AND orbitdirection:descending AND\
         \ orbitdirection:descending AND orbitdirection:descending AND orbitdirection:descending\
@@ -264,7 +264,7 @@ interactions:
         \ AND orbitdirection:descending AND orbitdirection:descending AND orbitdirection:descending\
         \ AND orbitdirection:descending AND orbitdirection:descending AND orbitdirection:descending\
         \ AND orbitdirection:descending AND orbitdirection:descending\",\n   \"opensearch:startIndex\"\
-        : \"0\",\n   \"updated\": \"2017-06-09T19:43:05.641Z\",\n   \"opensearch:totalResults\"\
+        : \"0\",\n   \"updated\": \"2017-06-13T16:37:22.118Z\",\n   \"opensearch:totalResults\"\
         : \"0\",\n   \"xmlns:opensearch\": \"http://a9.com/-/spec/opensearch/1.1/\"\
         \n}}"}
     headers:

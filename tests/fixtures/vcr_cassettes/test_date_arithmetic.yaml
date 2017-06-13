@@ -1351,10 +1351,10 @@ interactions:
         ,\n               \"content\": \"30\"\n            },\n            {\n   \
         \            \"name\": \"slicenumber\",\n               \"content\": \"6\"\
         \n            }\n         ]\n      }\n   ],\n   \"xmlns\": \"http://www.w3.org/2005/Atom\"\
-        ,\n   \"subtitle\": \"Displaying 22 results. Request done in 1.995 seconds.\"\
+        ,\n   \"subtitle\": \"Displaying 22 results. Request done in 2.376 seconds.\"\
         ,\n   \"opensearch:itemsPerPage\": \"100\",\n   \"id\": \"https://scihub.copernicus.eu/apihub/search?q=beginPosition:[2015-12-01T00:00:00Z-1DAY\
         \ TO 2015-12-01T00:00:00Z%2B1DAY-1HOUR] AND footprint:\\\"Intersects(ENVELOPE(0,\
-        \ 10, 10, 0))\\\"\",\n   \"updated\": \"2017-06-09T19:42:57.504Z\",\n   \"\
+        \ 10, 10, 0))\\\"\",\n   \"updated\": \"2017-06-13T16:36:49.880Z\",\n   \"\
         xmlns:opensearch\": \"http://a9.com/-/spec/opensearch/1.1/\"\n}}"}
     headers:
       Content-Type: [application/json]
