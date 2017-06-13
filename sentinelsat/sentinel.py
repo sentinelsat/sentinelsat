@@ -589,7 +589,10 @@ def geojson_to_wkt(geojson_obj, feature_number=0, decimals=4):
     # Discard z-coordinate, if it exists
     geometry['coordinates'] = ensure_2d(geometry['coordinates'])
 
-    return geomet.wkt.dumps(geometry, decimals=decimals)
+    wkt = geomet.wkt.dumps(geometry, decimals=decimals)
+    # Strip unnecessary spaces
+    wkt = re.sub(r'(?<!\d) ', '', wkt)
+    return wkt
 
 
 def _check_scihub_response(response, test_json=True):

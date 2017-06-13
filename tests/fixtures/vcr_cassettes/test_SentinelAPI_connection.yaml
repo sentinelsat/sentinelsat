@@ -16,7 +16,7 @@ interactions:
         \ TO 2015-01-02T00:00:00Z] AND footprint:\\\"Intersects(POLYGON((0 0,1 1,0\
         \ 1,0 0)))\\\"\"\n   },\n   \"xmlns\": \"http://www.w3.org/2005/Atom\",\n\
         \   \"author\": {\"name\": \"Sentinels Scientific Data Hub\"},\n   \"subtitle\"\
-        : \"Displaying 0 results. Request done in 0.022 seconds.\",\n   \"link\":\
+        : \"Displaying 0 results. Request done in 0.012 seconds.\",\n   \"link\":\
         \ [\n      {\n         \"rel\": \"self\",\n         \"href\": \"https://scihub.copernicus.eu/apihub/search?q=beginPosition:[2015-01-01T00:00:00Z\
         \ TO 2015-01-02T00:00:00Z] AND footprint:\\\"Intersects(POLYGON((0 0,1 1,0\
         \ 1,0 0)))\\\"&start=0&rows=100\",\n         \"type\": \"application/atom+xml\"\
@@ -34,7 +34,7 @@ interactions:
         \ 1,0 0)))\\\"\",\n   \"title\": \"Sentinels Scientific Data Hub search results\
         \ for: beginPosition:[2015-01-01T00:00:00Z TO 2015-01-02T00:00:00Z] AND footprint:\\\
         \"Intersects(POLYGON((0 0,1 1,0 1,0 0)))\\\"\",\n   \"opensearch:startIndex\"\
-        : \"0\",\n   \"updated\": \"2017-06-09T19:42:53.643Z\",\n   \"opensearch:totalResults\"\
+        : \"0\",\n   \"updated\": \"2017-06-13T16:36:46.487Z\",\n   \"opensearch:totalResults\"\
         : \"0\",\n   \"xmlns:opensearch\": \"http://a9.com/-/spec/opensearch/1.1/\"\
         \n}}"}
     headers:
