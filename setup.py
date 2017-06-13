@@ -41,6 +41,11 @@ setup(name='sentinelsat',
               'requests-mock',
               'vcrpy'
           ],
+          'test-basic': [
+              'pytest',
+              'requests-mock',
+              'vcrpy'
+          ],
           'docs': [
               'sphinx',
               'numpydoc',

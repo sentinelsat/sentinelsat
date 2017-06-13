@@ -4,6 +4,8 @@ python:
 - 3.4
 - 3.5
 - 3.6
+- pypy
+- pypy3
 cache: pip
 branches:
   only:
@@ -12,9 +14,10 @@ before_install:
 - pip install -U pip
 install:
 - pip install codecov
-- pip install -e .[test]
+- if [[ $TRAVIS_PYTHON_VERSION != pypy* ]]; then pip install -e .[test]; fi
+- if [[ $TRAVIS_PYTHON_VERSION = pypy* ]]; then pip install -e .[test-basic]; PYTEST_MARKS="not pandas"; fi
 script:
-- coverage run --source=sentinelsat -m py.test -v
+- coverage run --source=sentinelsat -m py.test -v -m "$PYTEST_MARKS"
 after_success:
 - codecov
 - if [[ $TRAVIS_PYTHON_VERSION = 3.6 && $TRAVIS_PULL_REQUEST = false ]]; then curl -X POST http://readthedocs.org/build/sentinelsat; fi
