@@ -6,11 +6,11 @@ import logging
 import re
 import shutil
 import xml.etree.ElementTree as ET
-from collections import OrderedDict
+from collections import OrderedDict, defaultdict
 from contextlib import closing
 from datetime import date, datetime, timedelta
 from os import remove
-from os.path import exists, getsize, join
+from os.path import basename, exists, getsize, join, splitext
 
 import geojson
 import geomet.wkt
@@ -530,6 +530,136 @@ class SentinelAPI:
         # This can be simplified to just counting the number of special characters
         effective_length = len(query) + len(re.findall('[^-_.~0-9A-Za-z]', query))
         return effective_length / 3893
+
+    def _query_names(self, names):
+        """Find products by their names, e.g.
+        S1A_EW_GRDH_1SDH_20141003T003840_20141003T003920_002658_002F54_4DD1.
+
+        Note that duplicates exist on server, so multiple products can be returned for each name.
+
+        Parameters
+        ----------
+        names : list[string]
+            List of product names.
+
+        Returns
+        -------
+        dict[string, dict[str, dict]]
+            A dictionary mapping each name to a dictionary which contains the products with
+            that name (with ID as the key).
+        """
+
+        def chunks(l, n):
+            """Yield successive n-sized chunks from l."""
+            for i in range(0, len(l), n):
+                yield l[i:i + n]
+
+        products = {}
+        # 40 names per query fits reasonably well inside the query limit
+        for chunk in chunks(names, 40):
+            query = " OR ".join(chunk)
+            products.update(self.query_raw(query))
+
+        # Group the products
+        output = OrderedDict((name, dict()) for name in names)
+        for id, metadata in products.items():
+            name = metadata['identifier']
+            output[name][id] = metadata
+
+        return output
+
+    def check_files(self, paths=None, ids=None, directory=None, delete=False):
+        """Verify the integrity of product files on disk.
+
+        Integrity is checked by comparing the size and checksum of the file with the respective
+        values on the server.
+
+        The input can be a list of products to check or a list of IDs and a directory.
+
+        In cases where multiple products with different IDs exist on the server for given product
+        name, the file is considered to be correct if any of them matches the file size and
+        checksum. A warning is logged in such situations.
+
+        The corrupt products' OData info is included in the return value to make it easier to
+        re-download the products, if necessary.
+
+        Parameters
+        ----------
+        paths : list[string]
+            List of product file paths.
+        ids : list[string]
+            List of product IDs.
+        directory : string
+            Directory where the files are located, if checking based on product IDs.
+        delete : bool
+            Whether to delete corrupt products. Defaults to False.
+
+        Returns
+        -------
+        dict[str, list[dict]]
+            A dictionary listing the invalid or missing files. The dictionary maps the corrupt
+            file paths to a list of OData dictionaries of matching products on the server (as
+            returned by ``SentinelAPI.get_product_odata()``).
+        """
+        if not ids and not paths:
+            raise ValueError("Must provide either file paths or product IDs and a directory")
+        if ids and not directory:
+            raise ValueError("Directory value missing")
+        paths = paths or []
+        ids = ids or []
+
+        def name_from_path(path):
+            return splitext(basename(path))[0]
+
+        # Get product IDs corresponding to the files on disk
+        names = []
+        if paths:
+            names = list(map(name_from_path, paths))
+            result = self._query_names(names)
+            for product_dicts in result.values():
+                ids += list(product_dicts)
+        names_from_paths = set(names)
+        ids = set(ids)
+
+        # Collect the OData information for each product
+        # Product name -> list of matching odata dicts
+        product_infos = defaultdict(list)
+        for id in ids:
+            odata = self.get_product_odata(id)
+            name = odata['title']
+            product_infos[name].append(odata)
+
+            # Collect
+            if name not in names_from_paths:
+                paths.append(join(directory, name + '.zip'))
+
+        # Now go over the list of products and check them
+        corrupt = {}
+        for path in paths:
+            name = name_from_path(path)
+
+            if len(product_infos[name]) > 1:
+                self.logger.warning("{} matches multiple products on server".format(path))
+
+            if not exists(path):
+                # We will consider missing files as corrupt also
+                self.logger.info("{} does not exist on disk".format(path))
+                corrupt[path] = product_infos[name]
+                continue
+
+            is_fine = False
+            for product_info in product_infos[name]:
+                if (getsize(path) == product_info['size'] and
+                        _md5_compare(path, product_info['md5'])):
+                    is_fine = True
+                    break
+            if not is_fine:
+                self.logger.info("{} is corrupt".format(path))
+                corrupt[path] = product_infos[name]
+                if delete:
+                    remove(path)
+
+        return corrupt
 
 
 class SentinelAPIError(Exception):
