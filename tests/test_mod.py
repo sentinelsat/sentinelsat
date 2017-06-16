@@ -163,6 +163,11 @@ def test_api_query_format():
     query = api.format_query(area=None, initial_date=None, end_date=None)
     assert query == ''
 
+    # Verify that initial_date and end_date are the only parameters that change the
+    # query string by default so we don't break the query_raw()-equivalent functionality.
+    query = api.format_query(initial_date=None, end_date=None, raw='test')
+    assert query == 'test'
+
 
 @my_vcr.use_cassette
 @pytest.mark.scihub

@@ -136,8 +136,8 @@ class SentinelAPI:
         return _parse_opensearch_response(response)
 
     @staticmethod
-    def format_query(area=None, initial_date='NOW-1DAY', end_date='NOW',
-                     raw=None, area_relation='Intersects',
+    def format_query(area=None, initial_date='NOW-1DAY', end_date='NOW', raw=None,
+                     area_relation='Intersects',
                      **keywords):
         """Create OpenSearch API query string
         """
