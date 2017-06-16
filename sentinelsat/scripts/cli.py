@@ -145,11 +145,10 @@ def search(
                         outfile.write("%s : %s\n" % (failed_id, products[failed_id]['title']))
     else:
         for product_id, props in products.items():
-            logger.info('Product %s - %s' % (product_id, props['summary']))
+            logger.info('Product %s - %s', product_id, props['summary'])
         logger.info('---')
-        logger.info(
-            '%s scenes found with a total size of %.2f GB' %
-            (len(products), api.get_products_size(products)))
+        logger.info('%s scenes found with a total size of %.2f GB',
+                    len(products), api.get_products_size(products))
 
 
 @cli.command()

@@ -168,6 +168,8 @@ class SentinelAPI:
             the product's attributes (a dictionary) as the value.
         """
         # plus symbols would be interpreted as spaces without escaping
+        self.logger.debug("Running query: order_by=%s, limit=%s, offset=%s, query=%s",
+                          order_by, limit, offset, query)
         query = query.replace('+', '%2B')
         formatted_order_by = _format_order_by(order_by)
         try:
@@ -181,7 +183,7 @@ class SentinelAPI:
                          "({:.1%} of the limit)".format(factor))
             e.__cause__ = None
             raise e
-        self.logger.info("Found {} products".format(count))
+        self.logger.info("Found %s products", count)
         return _parse_opensearch_response(response)
 
     def count(self, query):
@@ -206,6 +208,7 @@ class SentinelAPI:
     def _load_query(self, query, order_by=None, limit=None, offset=0):
         # store last query (for testing)
         self._last_query = query
+        self.logger.debug("Sub-query: offset=%s, limit=%s", offset, limit)
 
         # load query results
         url = self._format_url(order_by, limit, offset)
@@ -236,6 +239,7 @@ class SentinelAPI:
                 return products, total_results
         new_offset = offset + self.page_size
         if total_results >= new_offset:
+            self.logger.debug('%s products left to retrieve', total_results - new_offset)
             products += self._load_query(query, limit=new_limit, offset=new_offset)[0]
         return products, total_results
 
@@ -361,7 +365,7 @@ class SentinelAPI:
         product_info['path'] = path
         product_info['downloaded_bytes'] = 0
 
-        self.logger.info('Downloading %s to %s' % (id, path))
+        self.logger.info('Downloading %s to %s', id, path)
 
         if exists(path):
             # We assume that the product has been downloaded and is complete
@@ -374,9 +378,9 @@ class SentinelAPI:
         if exists(temp_path):
             if getsize(temp_path) > product_info['size']:
                 self.logger.warning(
-                    "Existing incomplete file {} is larger than the expected final size"
-                    " ({} vs {} bytes). Deleting it.".format(
-                        str(temp_path), getsize(temp_path), product_info['size']))
+                    "Existing incomplete file %s is larger than the expected final size"
+                    " (%s vs %s bytes). Deleting it.",
+                    str(temp_path), getsize(temp_path), product_info['size'])
                 remove(temp_path)
             elif getsize(temp_path) == product_info['size']:
                 if _md5_compare(temp_path, product_info['md5']):
@@ -384,14 +388,14 @@ class SentinelAPI:
                 else:
                     # Log a warning since this should never happen
                     self.logger.warning(
-                        "Existing incomplete file {} appears to be fully downloaded but "
-                        "its checksum is incorrect. Deleting it.".format(
-                            str(temp_path), getsize(temp_path), product_info['size']))
+                        "Existing incomplete file %s appears to be fully downloaded but "
+                        "its checksum is incorrect. Deleting it.",
+                        str(temp_path))
                     remove(temp_path)
             else:
                 # continue downloading
-                self.logger.info("Download will resume from existing incomplete file "
-                                 "{}.".format(temp_path))
+                self.logger.info(
+                    "Download will resume from existing incomplete file %s.", temp_path)
                 pass
 
         if not skip_download:
@@ -446,7 +450,7 @@ class SentinelAPI:
             The list of products that failed to download.
         """
         product_ids = list(products)
-        self.logger.info("Will download %d products" % len(product_ids))
+        self.logger.info("Will download %d products", len(product_ids))
         return_values = OrderedDict()
         last_exception = None
         for i, product_id in enumerate(products):
@@ -460,11 +464,11 @@ class SentinelAPI:
                 except InvalidChecksumError as e:
                     last_exception = e
                     self.logger.warning(
-                        "Invalid checksum. The downloaded file for '{}' is corrupted.".format(product_id))
+                        "Invalid checksum. The downloaded file for '%s' is corrupted.", product_id)
                 except Exception as e:
                     last_exception = e
-                    self.logger.exception("There was an error downloading %s" % product_id)
-            self.logger.info("{}/{} products downloaded".format(i + 1, len(product_ids)))
+                    self.logger.exception("There was an error downloading %s", product_id)
+            self.logger.info("%s/%s products downloaded", i + 1, len(product_ids))
         failed = set(products) - set(return_values)
 
         if len(failed) == len(product_ids) and last_exception is not None:
@@ -893,7 +897,8 @@ def _parse_odata_response(product):
 
 def _md5_compare(file_path, checksum, block_size=2 ** 13):
     """Compare a given md5 checksum with one calculated from a file"""
-    with closing(tqdm(desc="MD5 checksumming", total=getsize(file_path), unit="B", unit_scale=True)) as progress:
+    with closing(tqdm(desc="MD5 checksumming", total=getsize(file_path), unit="B",
+                      unit_scale=True)) as progress:
         md5 = hashlib.md5()
         with open(file_path, "rb") as f:
             while True:
@@ -912,7 +917,8 @@ def _download(url, path, session, file_size):
         headers = {'Range': 'bytes={}-'.format(getsize(path))}
     downloaded_bytes = 0
     with closing(session.get(url, stream=True, auth=session.auth, headers=headers)) as r, \
-            closing(tqdm(desc="Downloading", total=file_size, unit="B", unit_scale=True)) as progress:
+            closing(
+                tqdm(desc="Downloading", total=file_size, unit="B", unit_scale=True)) as progress:
         _check_scihub_response(r, test_json=False)
         chunk_size = 2 ** 20  # download in 1 MB chunks
         mode = 'ab' if continuing else 'wb'
