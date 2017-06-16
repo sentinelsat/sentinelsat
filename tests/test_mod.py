@@ -152,10 +152,10 @@ def test_api_query_format():
     assert query == 'beginPosition:[%s TO %s] ' % (last_24h, _format_query_date(now)) + \
                     'AND footprint:"Intersects(POLYGON((0 0,1 1,0 1,0 0)))"'
 
-    query = api.format_query(wkt, end_date=now, producttype='SLC')
+    query = api.format_query(wkt, end_date=now, producttype='SLC', raw='IW')
     assert query == 'beginPosition:[NOW-1DAY TO %s] ' % (_format_query_date(now)) + \
                     'AND footprint:"Intersects(POLYGON((0 0,1 1,0 1,0 0)))" ' + \
-                    'AND producttype:SLC'
+                    'AND producttype:SLC AND IW'
 
     query = api.format_query()
     assert query == 'beginPosition:[NOW-1DAY TO NOW]'
@@ -169,7 +169,7 @@ def test_api_query_format():
 def test_invalid_query():
     api = SentinelAPI(**_api_auth)
     with pytest.raises(SentinelAPIError) as excinfo:
-        api.query_raw("xxx:yyy")
+        api.query(None, None, None, raw="xxx:yyy")
     assert excinfo.value.msg is not None
 
 
@@ -266,8 +266,7 @@ def test_large_query():
 @pytest.mark.scihub
 def test_count():
     api = SentinelAPI(**_api_kwargs)
-    query = api.format_query(None, "20150101", "20151231")
-    count = api.count(query)
+    count = api.count(None, "20150101", "20151231")
     assert count > 100000
 
 
@@ -280,18 +279,19 @@ def test_too_long_query():
     # that a relevant error message is provided
 
     def create_query(n):
-        return api.format_query(None, "NOW", "NOW") + " AND orbitdirection:descending" * n
+        return api.format_query(
+            None, "NOW", "NOW", raw=" AND ".join(["orbitdirection:descending"] * n))
 
     # Expect no error
     q = create_query(117)
     assert api.check_query_length(q) < 1.0
-    api.query_raw(q)
+    api.query(None, None, None, raw=q)
 
     # Expect HTTP status 500 Internal Server Error
     q = create_query(118)
     assert api.check_query_length(q) >= 1.0
     with pytest.raises(SentinelAPIError) as excinfo:
-        api.query_raw(q)
+        api.query(None, None, None, raw=q)
     assert excinfo.value.response.status_code == 500
     assert "failed due to its length" in excinfo.value.msg
 
@@ -678,8 +678,8 @@ def test_get_products_size(products):
     # load a new very small query
     api = SentinelAPI(**_api_auth)
     with my_vcr.use_cassette('test_get_products_size'):
-        products = api.query_raw(
-            "S1A_WV_OCN__2SSH_20150603T092625_20150603T093332_006207_008194_521E")
+        products = api.query(None, None, None, raw=
+        "S1A_WV_OCN__2SSH_20150603T092625_20150603T093332_006207_008194_521E")
     assert len(products) > 0
     # Rounded to zero
     assert SentinelAPI.get_products_size(products) == 0

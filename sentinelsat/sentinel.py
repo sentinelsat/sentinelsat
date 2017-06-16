@@ -61,9 +61,9 @@ class SentinelAPI:
         self._last_query = None
         self._last_response = None
 
-    def query(self, area=None, initial_date='NOW-1DAY', end_date='NOW',
-              order_by=None, limit=None, offset=0,
-              area_relation='Intersects', **keywords):
+    def query(self, area=None, initial_date='NOW-1DAY', end_date='NOW', raw=None,
+              area_relation='Intersects',
+              order_by=None, limit=None, offset=0, **keywords):
         """Query the OpenSearch API with the coordinates of an area, a date interval
         and any other search keywords accepted by the API.
 
@@ -85,6 +85,14 @@ class SentinelAPI:
         end_date : str or datetime, optional
             Beginning of the time interval for sensing time.  Defaults to 'NOW'.
             See initial_date for allowed format.
+        raw : str, optional
+            Additional query text that will be appended to the query (joined by 'AND', i.e.
+            '<main query text> AND <raw>').
+        area_relation : {'Intersection', 'Contains', 'IsWithin'}, optional
+            What relation to use for testing the AOI. Case insensitive.
+                - Intersects: true if the AOI and the footprint intersect (default)
+                - Contains: true if the AOI is inside the footprint
+                - IsWithin: true if the footprint is inside the AOI
         order_by: str, optional
             A comma-separated list of fields to order by (on server side).
             Prefix the field name by '+' or '-' to sort in ascending or descending order, respectively.
@@ -94,12 +102,6 @@ class SentinelAPI:
             Maximum number of products returned. Defaults to no limit.
         offset: int, optional
             The number of results to skip. Defaults to 0.
-        area_relation : {'Intersection', 'Contains', 'IsWithin'}, optional
-            What relation to use for testing the AOI. Case insensitive.
-                - Intersects: true if the AOI and the footprint intersect (default)
-                - Contains: true if the AOI is inside the footprint
-                - IsWithin: true if the footprint is inside the AOI
-
 
         Other Parameters
         ----------------
@@ -114,63 +116,10 @@ class SentinelAPI:
             Products returned by the query as a dictionary with the product ID as the key and
             the product's attributes (a dictionary) as the value.
         """
-        query = self.format_query(area, initial_date, end_date, area_relation, **keywords)
-        return self.query_raw(query, order_by, limit, offset)
+        query = self.format_query(area, initial_date, end_date, raw, area_relation, **keywords)
 
-    @staticmethod
-    def format_query(area=None, initial_date='NOW-1DAY', end_date='NOW', area_relation='Intersects',
-                     **keywords):
-        """Create OpenSearch API query string
-        """
-        if area_relation.lower() not in {"intersects", "contains", "iswithin"}:
-            raise ValueError("Incorrect AOI relation provided ({})".format(area_relation))
-
-        query_parts = []
-        if initial_date is not None and end_date is not None:
-            query_parts += ['beginPosition:[%s TO %s]' % (
-                _format_query_date(initial_date),
-                _format_query_date(end_date)
-            )]
-
-        if area is not None:
-            query_parts += ['footprint:"%s(%s)"' % (area_relation, area)]
-
-        for kw in sorted(keywords):
-            query_parts += ['%s:%s' % (kw, keywords[kw])]
-
-        query = ' AND '.join(query_parts)
-        # plus symbols would be interpreted as spaces without escaping
-        query = query.replace('+', '%2B')
-        return query
-
-    def query_raw(self, query, order_by=None, limit=None, offset=0):
-        """Do a full-text query on the OpenSearch API using the format specified in
-           https://scihub.copernicus.eu/twiki/do/view/SciHubUserGuide/3FullTextSearch
-
-        Parameters
-        ----------
-        query : str
-            The query string.
-        order_by: str, optional
-            A comma-separated list of fields to order by (on server side).
-            Prefix the field name by '+' or '-' to sort in ascending or descending order, respectively.
-            Ascending order is used, if prefix is omitted.
-            Example: "cloudcoverpercentage, -beginposition".
-        limit: int, optional
-            Maximum number of products returned. Defaults to no limit.
-        offset: int, optional
-            The number of results to skip. Defaults to 0.
-
-        Returns
-        -------
-        dict[string, dict]
-            Products returned by the query as a dictionary with the product ID as the key and
-            the product's attributes (a dictionary) as the value.
-        """
-        # plus symbols would be interpreted as spaces without escaping
         self.logger.debug("Running query: order_by=%s, limit=%s, offset=%s, query=%s",
                           order_by, limit, offset, query)
-        query = query.replace('+', '%2B')
         formatted_order_by = _format_order_by(order_by)
         try:
             response, count = self._load_query(query, formatted_order_by, limit, offset)
@@ -186,22 +135,52 @@ class SentinelAPI:
         self.logger.info("Found %s products", count)
         return _parse_opensearch_response(response)
 
-    def count(self, query):
+    @staticmethod
+    def format_query(area=None, initial_date='NOW-1DAY', end_date='NOW',
+                     raw=None, area_relation='Intersects',
+                     **keywords):
+        """Create OpenSearch API query string
+        """
+        if area_relation.lower() not in {"intersects", "contains", "iswithin"}:
+            raise ValueError("Incorrect AOI relation provided ({})".format(area_relation))
+
+        query_parts = []
+        if initial_date is not None and end_date is not None:
+            query_parts += ['beginPosition:[%s TO %s]' % (
+                _format_query_date(initial_date),
+                _format_query_date(end_date)
+            )]
+
+        if area is not None:
+            query_parts.append('footprint:"%s(%s)"' % (area_relation, area))
+
+        for kw in sorted(keywords):
+            query_parts.append('%s:%s' % (kw, keywords[kw]))
+
+        if raw:
+            query_parts.append(raw)
+
+        query = ' AND '.join(query_parts)
+        # plus symbols would be interpreted as spaces without escaping
+        query = query.replace('+', '%2B')
+        return query
+
+    def count(self, *args, **kwargs):
         """Get the number of products matching a query.
 
-        This is a significantly more efficient alternative to doing len(api.query_raw(...)),
+        This is a significantly more efficient alternative to doing len(api.query()),
         which can take minutes to run for queries matching thousands of products.
 
         Parameters
         ----------
-        query : str
-            The query string.
+        Identical to the parameters of api.query().
 
         Returns
         -------
         int
             The number of products matching a query.
         """
+        query = self.format_query(*args, **kwargs)
         _, total_count = self._load_query(query, limit=0)
         return total_count
 
@@ -558,7 +537,7 @@ class SentinelAPI:
         # 40 names per query fits reasonably well inside the query limit
         for chunk in chunks(names, 40):
             query = " OR ".join(chunk)
-            products.update(self.query_raw(query))
+            products.update(self.query(None, None, None, raw=query))
 
         # Group the products
         output = OrderedDict((name, dict()) for name in names)
