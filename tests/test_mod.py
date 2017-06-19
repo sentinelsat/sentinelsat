@@ -230,17 +230,6 @@ def test_small_query():
     assert api._last_response.status_code == 200
 
 
-@my_vcr.use_cassette
-@pytest.mark.scihub
-def test_date_arithmetic():
-    api = SentinelAPI(**_api_kwargs)
-    products = api.query('ENVELOPE(0, 10, 10, 0)',
-                         '2015-12-01T00:00:00Z-1DAY',
-                         '2015-12-01T00:00:00Z+1DAY-1HOUR')
-    assert api._last_response.status_code == 200
-    assert len(products) > 0
-
-
 @my_vcr.use_cassette(decode_compressed_response=False)
 @pytest.mark.scihub
 def test_large_query():
@@ -294,6 +283,33 @@ def test_too_long_query():
         api.query_raw(q)
     assert excinfo.value.response.status_code == 500
     assert "failed due to its length" in excinfo.value.msg
+
+
+@my_vcr.use_cassette
+@pytest.mark.scihub
+def test_date_arithmetic():
+    api = SentinelAPI(**_api_kwargs)
+    products = api.query('ENVELOPE(0, 10, 10, 0)',
+                         '2015-12-01T00:00:00Z-1DAY',
+                         '2015-12-01T00:00:00Z+1DAY-1HOUR')
+    assert api._last_response.status_code == 200
+    assert len(products) > 0
+
+
+@my_vcr.use_cassette
+@pytest.mark.scihub
+def test_quote_symbol_bug():
+    # A test to check if plus symbol handling has been fixed in the DHuS
+    # https://github.com/SentinelDataHub/DataHubSystem/issues/23
+    api = SentinelAPI(**_api_kwargs)
+
+    q = 'beginposition:[2017-05-30T00:00:00Z TO 2017-05-31T00:00:00Z+1DAY]'
+    with pytest.raises(SentinelAPIError) as excinfo:
+        api._load_query(q, limit=0)
+    assert excinfo.value.response.status_code == 500
+
+    api._load_query(q.replace('+', '%2B'), limit=0)
+    assert api._last_response.status_code == 200
 
 
 @pytest.mark.fast
