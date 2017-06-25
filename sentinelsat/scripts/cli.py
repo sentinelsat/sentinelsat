@@ -19,21 +19,26 @@ def _set_logger_handler(level='INFO'):
     logger.addHandler(h)
 
 
-@click.group()
-def cli():
-    _set_logger_handler()
-
-
-@cli.command()
-@click.argument('user', type=str, metavar='<user>')
-@click.argument('password', type=str, metavar='<password>')
-@click.argument('geojson', type=click.Path(exists=True), metavar='<geojson>')
+@click.command()
+@click.option(
+'--user', '-u', type=str, required=True,
+help='Username')
+@click.option(
+'--password', '-p', type=str, required=True,
+help='Password')
+@click.option(
+    '--geojson', type=click.Path(exists=True),
+    help='Search area GeoJSON file.')
 @click.option(
     '--start', '-s', type=str, default='NOW-1DAY',
     help='Start date of the query in the format YYYYMMDD.')
 @click.option(
     '--end', '-e', type=str, default='NOW',
     help='End date of the query in the format YYYYMMDD.')
+@click.option(
+    '--uuid', type=str,
+    help='Select a specific product UUID instead of a query. Multiple UUIDs can separated by commas.'
+)
 @click.option(
     '--download', '-d', is_flag=True,
     help='Download all results of the query.')
@@ -57,17 +62,7 @@ def cli():
         """)
 @click.option(
     '--md5', is_flag=True,
-    help="""Verify the MD5 checksum and write corrupt product ids and filenames
-    to corrupt_scenes.txt.
-    """)
-# DEPRECATED: to be removed with next major release
-@click.option(
-    '--sentinel1', is_flag=True,
-    help='DEPRECATED: Please use --sentinel instead. Limit search to Sentinel-1 products.')
-# DEPRECATED: to be removed with next major release
-@click.option(
-    '--sentinel2', is_flag=True,
-    help='DEPRECATED: Please use --sentinel instead. Limit search to Sentinel-2 products.')
+    help='Verify the MD5 checksum and write corrupt product ids and filenames to corrupt_scenes.txt.')
 @click.option(
     '--sentinel', type=click.Choice(['1', '2', '3']),
     help='Limit search to a Sentinel satellite (constellation)')
@@ -87,15 +82,18 @@ def cli():
     '-l', '--limit', type=int,
     help='Maximum number of results to return. Defaults to no limit.')
 @click.version_option(version=sentinelsat_version, prog_name="sentinelsat")
-def search(
-        user, password, geojson, start, end, download, md5, sentinel, producttype,
-        instrument, sentinel1, sentinel2, cloud, footprints, path, query, url, order_by, limit):
+
+def cli(
+        user, password, geojson, start, end, id, download, md5, sentinel, producttype,
+        instrument, cloud, footprints, path, query, url, order_by, limit):
     """Search for Sentinel products and, optionally, download all the results
     and/or create a geojson file with the search result footprints.
     Beyond your Copernicus Open Access Hub user and password, you must pass a geojson file
     containing the polygon of the area you want to search for. If you
     don't specify the start and end dates, it will search in the last 24 hours.
     """
+
+    _set_logger_handler()
 
     api = SentinelAPI(user, password, url)
 
@@ -115,21 +113,16 @@ def search(
             raise ValueError('Cloud cover is only supported for Sentinel 2 and 3.')
         search_kwargs["cloudcoverpercentage"] = "[0 TO %s]" % cloud
 
-    # DEPRECATED: to be removed with next major release
-    elif sentinel2:
-        search_kwargs["platformname"] = "Sentinel-2"
-        logger.info('DEPRECATED: Please use --sentinel instead')
-
-    # DEPRECATED: to be removed with next major release
-    elif sentinel1:
-        search_kwargs["platformname"] = "Sentinel-1"
-        logger.info('DEPRECATED: Please use --sentinel instead')
-
     if query is not None:
         search_kwargs.update((x.split('=') for x in query.split(',')))
 
     wkt = geojson_to_wkt(read_geojson(geojson))
-    products = api.query(wkt, start, end, order_by=order_by, limit=limit, **search_kwargs)
+
+
+    if uuid is not None:
+        products = list(uuid)
+    else:
+        products = api.query(wkt, start, end, order_by=order_by, limit=limit, **search_kwargs)
 
     if footprints is True:
         footprints_geojson = api.to_geojson(products)
@@ -149,35 +142,3 @@ def search(
         logger.info('---')
         logger.info('%s scenes found with a total size of %.2f GB',
                     len(products), api.get_products_size(products))
-
-
-@cli.command()
-@click.argument('user', type=str, metavar='<user>')
-@click.argument('password', type=str, metavar='<password>')
-@click.argument('productid', type=str, metavar='<productid>')
-@click.option(
-    '--path', '-p', type=click.Path(exists=True), default='.',
-    help='Set the path where the files will be saved.')
-@click.option(
-    '--url', '-u', type=str, default='https://scihub.copernicus.eu/apihub/',
-    help="""Define another API URL. Default URL is
-        'https://scihub.copernicus.eu/apihub/'.
-        """)
-@click.option(
-    '--md5', is_flag=True,
-    help="""Verify the MD5 checksum and write corrupt product ids and filenames
-    to corrupt_scenes.txt.')
-    """)
-@click.version_option(version=sentinelsat_version, prog_name="sentinelsat")
-def download(user, password, productid, path, md5, url):
-    """Download a Sentinel Product with your Copernicus Open Access Hub user and password
-    and the id of the product you want to download.
-    """
-    api = SentinelAPI(user, password, url)
-    try:
-        api.download(productid, path, md5)
-    except SentinelAPIError as e:
-        if 'Invalid key' in e.msg:
-            logger.error('No product with ID \'%s\' exists on server', productid)
-        else:
-            raise

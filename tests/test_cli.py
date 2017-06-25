@@ -11,6 +11,8 @@ from .shared import my_vcr, FIXTURES_DIR
 
 _api_auth = [environ.get('SENTINEL_USER', "user"), environ.get('SENTINEL_PASSWORD', "pw")]
 
+# TODO: change test fictures from subcommands to unified commands
+# TODO: include test for --uuid option, with comma separated list.
 
 @my_vcr.use_cassette
 @pytest.mark.scihub
