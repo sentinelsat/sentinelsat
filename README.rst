@@ -55,7 +55,7 @@ Installation
 
 Install ``sentinelsat`` through pip:
 
-.. code-block:: console
+.. code-block:: bash
 
     pip install sentinelsat
 
@@ -169,7 +169,7 @@ Tests
 
 To run the tests on ``sentinelsat``:
 
-.. code-block:: console
+.. code-block:: bash
 
     git clone https://github.com/sentinelsat/sentinelsat.git
     cd sentinelsat
@@ -192,7 +192,7 @@ Documentation
 
 To build the documentation:
 
-.. code-block:: console
+.. code-block:: bash
 
     git clone https://github.com/sentinelsat/sentinelsat.git
     cd sentinelsat
