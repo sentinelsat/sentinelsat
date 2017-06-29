@@ -914,11 +914,15 @@ def _download(url, path, session, file_size):
     headers = {}
     continuing = exists(path)
     if continuing:
-        headers = {'Range': 'bytes={}-'.format(getsize(path))}
+        already_downloaded_bytes = getsize(path)
+        headers = {'Range': 'bytes={}-'.format(already_downloaded_bytes)}
+    else:
+        already_downloaded_bytes = 0
     downloaded_bytes = 0
     with closing(session.get(url, stream=True, auth=session.auth, headers=headers)) as r, \
             closing(
-                tqdm(desc="Downloading", total=file_size, unit="B", unit_scale=True)) as progress:
+                tqdm(desc="Downloading", total=file_size, unit="B",
+                    unit_scale=True, initial=already_downloaded_bytes)) as progress:
         _check_scihub_response(r, test_json=False)
         chunk_size = 2 ** 20  # download in 1 MB chunks
         mode = 'ab' if continuing else 'wb'
@@ -929,4 +933,4 @@ def _download(url, path, session, file_size):
                     progress.update(len(chunk))
                     downloaded_bytes += len(chunk)
         # Return the number of bytes downloaded
-        return progress.n
+        return downloaded_bytes
