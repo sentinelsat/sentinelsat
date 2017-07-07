@@ -171,6 +171,25 @@ def test_api_query_format():
     assert query == 'test'
 
 
+@pytest.mark.fast
+def test_api_query_format_ranges():
+    api = SentinelAPI("mock_user", "mock_password")
+    query = api.format_query(cloudcoverpercentage=(0, 30))
+    assert query == 'cloudcoverpercentage:[0 TO 30]'
+
+    query = api.format_query(cloudcoverpercentage=[0, 30])
+    assert query == 'cloudcoverpercentage:[0 TO 30]'
+
+    with pytest.raises(ValueError):
+        api.format_query(cloudcoverpercentage=[])
+
+    with pytest.raises(ValueError):
+        api.format_query(cloudcoverpercentage=[0])
+
+    with pytest.raises(ValueError):
+        api.format_query(cloudcoverpercentage=[0, 1, 2])
+
+
 @my_vcr.use_cassette
 @pytest.mark.scihub
 def test_invalid_query():
@@ -623,7 +642,7 @@ def test_s2_cloudcover():
         geojson_to_wkt(read_geojson(FIXTURES_DIR + '/map.geojson')),
         "20151219", "20151228",
         platformname="Sentinel-2",
-        cloudcoverpercentage="[0 TO 10]"
+        cloudcoverpercentage=(0, 10)
     )
     assert len(products) == 3
 
@@ -645,7 +664,7 @@ def test_order_by():
         geojson_to_wkt(read_geojson(FIXTURES_DIR + '/map.geojson')),
         "20151219", "20151228",
         platformname="Sentinel-2",
-        cloudcoverpercentage="[0 TO 10]",
+        cloudcoverpercentage=(0, 10),
         order_by="cloudcoverpercentage, -beginposition"
     )
     assert len(products) == 3

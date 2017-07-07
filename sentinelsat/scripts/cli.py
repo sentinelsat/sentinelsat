@@ -113,7 +113,7 @@ def search(
         if sentinel not in ['2', '3']:
             logger.error('Cloud cover is only supported for Sentinel 2 and 3.')
             raise ValueError('Cloud cover is only supported for Sentinel 2 and 3.')
-        search_kwargs["cloudcoverpercentage"] = "[0 TO %s]" % cloud
+        search_kwargs["cloudcoverpercentage"] = (0, cloud)
 
     # DEPRECATED: to be removed with next major release
     elif sentinel2:

@@ -106,6 +106,7 @@ class SentinelAPI:
         Other Parameters
         ----------------
         Additional keywords can be used to specify other query parameters, e.g. orbitnumber=70.
+        Range values can be passed as two-element tuples, e.g. cloudcoverpercentage=(0, 30).
 
         See https://scihub.copernicus.eu/twiki/do/view/SciHubUserGuide/3FullTextSearch
         for a full list of accepted parameters.
@@ -146,16 +147,22 @@ class SentinelAPI:
 
         query_parts = []
         if initial_date is not None:
-            query_parts += ['beginPosition:[%s TO %s]' % (
+            query_parts += ['beginPosition:[{} TO {}]'.format(
                 _format_query_date(initial_date),
                 _format_query_date(end_date)
             )]
 
         if area is not None:
-            query_parts.append('footprint:"%s(%s)"' % (area_relation, area))
+            query_parts.append('footprint:"{}({})"'.format(area_relation, area))
 
-        for kw in sorted(keywords):
-            query_parts.append('%s:%s' % (kw, keywords[kw]))
+        for attr, value in sorted(keywords.items()):
+            if isinstance(value, (list, tuple)):
+                if len(value) == 2:
+                    value = '[{} TO {}]'.format(*value)
+                else:
+                    raise ValueError("Invalid number of elements in list. Expected 2, received "
+                                     "{}".format(len(value)))
+            query_parts.append('{}:{}'.format(attr, value))
 
         if raw:
             query_parts.append(raw)
