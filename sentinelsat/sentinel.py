@@ -683,6 +683,8 @@ class InvalidChecksumError(Exception):
 
 
 def read_geojson(geojson_file):
+    """Read a GeoJSON file into a GeoJSON object.
+    """
     with open(geojson_file) as f:
         return geojson.load(f)
 

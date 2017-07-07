@@ -9,7 +9,7 @@ All notable changes to ``sentinelsat`` will be listed here.
 Added
 ~~~~~
 * contribution guidelines
-
+* tests for validity of documentation and RST files
 
 [0.11] – 2017-06-01
 -------------------

@@ -43,7 +43,7 @@ We aspire to 100% coverage but regard meaningful tests to be more important than
 We keep a changelog (`CHANGELOG.rst <https://github.com/sentinelsat/sentinelsat/blob/master/CHANGELOG.rst>`_) following the `keepachangelog <http://keepachangelog.com>`_ template.
 
 Good documentation is important to us. We use `Sphinx <http://www.sphinx-doc.org>`_ and host the documentation at `sentinelsat.readthedocs.io <https://sentinelsat.readthedocs.io/en/master/>`_.
-
+All public functions should have docstrings. We use the `numpy docstring standard <https://github.com/numpy/numpy/blob/master/doc/HOWTO_DOCUMENT.rst.txt#docstring-standard>`_.
 
 Development Environment
 =======================
