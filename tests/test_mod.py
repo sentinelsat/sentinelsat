@@ -152,20 +152,22 @@ def test_api_query_format():
     assert query == 'beginPosition:[%s TO %s] ' % (last_24h, _format_query_date(now)) + \
                     'AND footprint:"Intersects(POLYGON((0 0,1 1,0 1,0 0)))"'
 
-    query = api.format_query(wkt, end_date=now, producttype='SLC', raw='IW')
-    assert query == 'beginPosition:[NOW-1DAY TO %s] ' % (_format_query_date(now)) + \
+    query = api.format_query(wkt, initial_date=last_24h, producttype='SLC', raw='IW')
+    assert query == 'beginPosition:[%s TO NOW] ' % (_format_query_date(last_24h)) + \
                     'AND footprint:"Intersects(POLYGON((0 0,1 1,0 1,0 0)))" ' + \
                     'AND producttype:SLC AND IW'
 
-    query = api.format_query()
-    assert query == 'beginPosition:[NOW-1DAY TO NOW]'
+    query = api.format_query(wkt, end_date=now, producttype='SLC', raw='IW')
+    assert query == 'footprint:"Intersects(POLYGON((0 0,1 1,0 1,0 0)))" ' + \
+                    'AND producttype:SLC AND IW'
 
     query = api.format_query(area=None, initial_date=None, end_date=None)
     assert query == ''
 
-    # Verify that initial_date and end_date are the only parameters that change the
-    # query string by default so we don't break the query_raw()-equivalent functionality.
-    query = api.format_query(initial_date=None, end_date=None, raw='test')
+    query = api.format_query()
+    assert query == ''
+
+    query = api.format_query(raw='test')
     assert query == 'test'
 
 
@@ -174,7 +176,7 @@ def test_api_query_format():
 def test_invalid_query():
     api = SentinelAPI(**_api_auth)
     with pytest.raises(SentinelAPIError) as excinfo:
-        api.query(None, None, None, raw="xxx:yyy")
+        api.query(raw="xxx:yyy")
     assert excinfo.value.msg is not None
 
 
@@ -290,13 +292,13 @@ def test_too_long_query():
     # Expect no error
     q = create_query(117)
     assert api.check_query_length(q) < 1.0
-    api.query(None, None, None, raw=q)
+    api.query(raw=q)
 
     # Expect HTTP status 500 Internal Server Error
     q = create_query(118)
     assert api.check_query_length(q) >= 1.0
     with pytest.raises(SentinelAPIError) as excinfo:
-        api.query(None, None, None, raw=q)
+        api.query(raw=q)
     assert excinfo.value.response.status_code == 500
     assert "failed due to its length" in excinfo.value.msg
 
@@ -683,8 +685,8 @@ def test_get_products_size(products):
     # load a new very small query
     api = SentinelAPI(**_api_auth)
     with my_vcr.use_cassette('test_get_products_size'):
-        products = api.query(None, None, None, raw=
-        "S1A_WV_OCN__2SSH_20150603T092625_20150603T093332_006207_008194_521E")
+        products = api.query(
+            raw="S1A_WV_OCN__2SSH_20150603T092625_20150603T093332_006207_008194_521E")
     assert len(products) > 0
     # Rounded to zero
     assert SentinelAPI.get_products_size(products) == 0
@@ -698,8 +700,8 @@ def test_response_to_dict(raw_products):
     # check if dictionary has id key
     assert '44517f66-9845-4792-a988-b5ae6e81fd3e' in dictionary
     props = dictionary['44517f66-9845-4792-a988-b5ae6e81fd3e']
-    assert props[
-               'title'] == 'S2A_OPER_PRD_MSIL1C_PDMC_20151228T112523_R110_V20151227T142229_20151227T142229'
+    expected_title = 'S2A_OPER_PRD_MSIL1C_PDMC_20151228T112523_R110_V20151227T142229_20151227T142229'
+    assert props['title'] == expected_title
 
 
 @pytest.mark.pandas

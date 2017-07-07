@@ -61,7 +61,7 @@ class SentinelAPI:
         self._last_query = None
         self._last_response = None
 
-    def query(self, area=None, initial_date='NOW-1DAY', end_date='NOW', raw=None,
+    def query(self, area=None, initial_date=None, end_date='NOW', raw=None,
               area_relation='Intersects',
               order_by=None, limit=None, offset=0, **keywords):
         """Query the OpenSearch API with the coordinates of an area, a date interval
@@ -72,7 +72,7 @@ class SentinelAPI:
         area : str, optional
             The area of interest formatted as a Well-Known Text string.
         initial_date : str or datetime, optional
-            Beginning of the time interval for sensing time. Defaults to 'NOW-1DAY'.
+            Beginning of the time interval for the sensing time.
             Either a Python datetime or a string in one of the following formats:
                 - yyyy-MM-ddThh:mm:ss.SSSZ (ISO-8601)
                 - yyyy-MM-ddThh:mm:ssZ
@@ -83,8 +83,8 @@ class SentinelAPI:
                 - yyyy-MM-ddThh:mm:ssZ-<n>DAY(S)
                 - NOW/DAY (or HOUR, MONTH etc.) - rounds the value to the given unit
         end_date : str or datetime, optional
-            Beginning of the time interval for sensing time.  Defaults to 'NOW'.
-            See initial_date for allowed format.
+            End of the time interval for the sensing time. Only used if initial_date is set.
+            Defaults to NOW. See initial_date for the allowed formats.
         raw : str, optional
             Additional query text that will be appended to the query (joined by 'AND', i.e.
             '<main query text> AND <raw>').
@@ -95,8 +95,8 @@ class SentinelAPI:
                 - IsWithin: true if the footprint is inside the AOI
         order_by: str, optional
             A comma-separated list of fields to order by (on server side).
-            Prefix the field name by '+' or '-' to sort in ascending or descending order, respectively.
-            Ascending order is used, if prefix is omitted.
+            Prefix the field name by '+' or '-' to sort in ascending or descending order,
+            respectively. Ascending order is used, if prefix is omitted.
             Example: "cloudcoverpercentage, -beginposition".
         limit: int, optional
             Maximum number of products returned. Defaults to no limit.
@@ -136,7 +136,7 @@ class SentinelAPI:
         return _parse_opensearch_response(response)
 
     @staticmethod
-    def format_query(area=None, initial_date='NOW-1DAY', end_date='NOW', raw=None,
+    def format_query(area=None, initial_date=None, end_date='NOW', raw=None,
                      area_relation='Intersects',
                      **keywords):
         """Create OpenSearch API query string
@@ -145,7 +145,7 @@ class SentinelAPI:
             raise ValueError("Incorrect AOI relation provided ({})".format(area_relation))
 
         query_parts = []
-        if initial_date is not None and end_date is not None:
+        if initial_date is not None:
             query_parts += ['beginPosition:[%s TO %s]' % (
                 _format_query_date(initial_date),
                 _format_query_date(end_date)
@@ -537,7 +537,7 @@ class SentinelAPI:
         # 40 names per query fits reasonably well inside the query limit
         for chunk in chunks(names, 40):
             query = " OR ".join(chunk)
-            products.update(self.query(None, None, None, raw=query))
+            products.update(self.query(raw=query))
 
         # Group the products
         output = OrderedDict((name, dict()) for name in names)
