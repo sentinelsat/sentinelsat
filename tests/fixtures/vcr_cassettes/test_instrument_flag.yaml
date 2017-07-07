@@ -1,11 +1,11 @@
 interactions:
 - request:
-    body: q=beginPosition%3A%5B2016-12-01T00%3A00%3A00Z+TO+2016-12-02T00%3A00%3A00Z%5D+footprint%3A%22Intersects%28POLYGON%28%28-66.2695+-8.0592%2C-66.2695+0.7031%2C-57.3047+0.7031%2C-57.3047+-8.0592%2C-66.2695+-8.0592%29%29%29%22+instrumentshortname%3ASRAL
+    body: q=beginPosition%3A%5B2016-12-01T00%3A00%3A00Z+TO+2016-12-02T00%3A00%3A00Z%5D+instrumentshortname%3ASRAL+footprint%3A%22Intersects%28POLYGON%28%28-66.2695+-8.0592%2C-66.2695+0.7031%2C-57.3047+0.7031%2C-57.3047+-8.0592%2C-66.2695+-8.0592%29%29%29%22
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
       Connection: [keep-alive]
-      Content-Length: ['255']
+      Content-Length: ['247']
       Content-Type: [application/x-www-form-urlencoded]
       User-Agent: [sentinelsat/0.11]
     method: POST
@@ -13,36 +13,33 @@ interactions:
   response:
     body: {string: "{\"feed\": {\n   \"opensearch:Query\": {\n      \"startPage\"\
         : \"1\",\n      \"role\": \"request\",\n      \"searchTerms\": \"beginPosition:[2016-12-01T00:00:00Z\
-        \ TO 2016-12-02T00:00:00Z] footprint:\\\"Intersects(POLYGON((-66.2695\
+        \ TO 2016-12-02T00:00:00Z] instrumentshortname:SRAL footprint:\\\"Intersects(POLYGON((-66.2695\
         \ -8.0592,-66.2695 0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\\\
-        \" instrumentshortname:SRAL\"\n   },\n   \"author\": {\"name\": \"Sentinel-3\
-        \ Scientific Data Hub\"},\n   \"link\": [\n      {\n         \"rel\": \"self\"\
-        ,\n         \"href\": \"https://scihub.copernicus.eu/s3/search?q=beginPosition:[2016-12-01T00:00:00Z\
-        \ TO 2016-12-02T00:00:00Z] footprint:\\\"Intersects(POLYGON((-66.2695\
+        \"\"\n   },\n   \"author\": {\"name\": \"Sentinel-3 Scientific Data Hub\"\
+        },\n   \"link\": [\n      {\n         \"rel\": \"self\",\n         \"href\"\
+        : \"https://scihub.copernicus.eu/s3/search?q=beginPosition:[2016-12-01T00:00:00Z\
+        \ TO 2016-12-02T00:00:00Z] instrumentshortname:SRAL footprint:\\\"Intersects(POLYGON((-66.2695\
         \ -8.0592,-66.2695 0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\\\
-        \" instrumentshortname:SRAL&start=0&rows=100\",\n         \"type\": \"\
-        application/atom+xml\"\n      },\n      {\n         \"rel\": \"first\",\n\
-        \         \"href\": \"https://scihub.copernicus.eu/s3/search?q=beginPosition:[2016-12-01T00:00:00Z\
-        \ TO 2016-12-02T00:00:00Z] footprint:\\\"Intersects(POLYGON((-66.2695\
+        \"&start=0&rows=100\",\n         \"type\": \"application/atom+xml\"\n    \
+        \  },\n      {\n         \"rel\": \"first\",\n         \"href\": \"https://scihub.copernicus.eu/s3/search?q=beginPosition:[2016-12-01T00:00:00Z\
+        \ TO 2016-12-02T00:00:00Z] instrumentshortname:SRAL footprint:\\\"Intersects(POLYGON((-66.2695\
         \ -8.0592,-66.2695 0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\\\
-        \" instrumentshortname:SRAL&start=0&rows=100\",\n         \"type\": \"\
-        application/atom+xml\"\n      },\n      {\n         \"rel\": \"last\",\n \
-        \        \"href\": \"https://scihub.copernicus.eu/s3/search?q=beginPosition:[2016-12-01T00:00:00Z\
-        \ TO 2016-12-02T00:00:00Z] footprint:\\\"Intersects(POLYGON((-66.2695\
+        \"&start=0&rows=100\",\n         \"type\": \"application/atom+xml\"\n    \
+        \  },\n      {\n         \"rel\": \"last\",\n         \"href\": \"https://scihub.copernicus.eu/s3/search?q=beginPosition:[2016-12-01T00:00:00Z\
+        \ TO 2016-12-02T00:00:00Z] instrumentshortname:SRAL footprint:\\\"Intersects(POLYGON((-66.2695\
         \ -8.0592,-66.2695 0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\\\
-        \" instrumentshortname:SRAL&start=0&rows=100\",\n         \"type\": \"\
-        application/atom+xml\"\n      },\n      {\n         \"rel\": \"search\",\n\
-        \         \"href\": \"opensearch_description.xml\",\n         \"type\": \"\
-        application/opensearchdescription+xml\"\n      }\n   ],\n   \"title\": \"\
-        Sentinel-3 Scientific Data Hub search results for: beginPosition:[2016-12-01T00:00:00Z\
-        \ TO 2016-12-02T00:00:00Z] footprint:\\\"Intersects(POLYGON((-66.2695\
-        \ -8.0592,-66.2695 0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\\\
-        \" instrumentshortname:SRAL\",\n   \"opensearch:startIndex\": \"0\",\n\
-        \   \"opensearch:totalResults\": \"1\",\n   \"entry\": {\n      \"summary\"\
-        : \"Date: 2016-12-01T13:13:17.65Z, Instrument: SRAL, Mode: , Satellite: Sentinel-3,\
-        \ Size: 76.62 MB\",\n      \"arr\": {\n         \"str\": \"002\",\n      \
-        \   \"name\": \"collection\"\n      },\n      \"str\": [\n         {\n   \
-        \         \"name\": \"filename\",\n            \"content\": \"S3A_SR_2_LAN____20161201T131318_20161201T140321_20161226T235359_3003_011_295______LN3_O_NT_002.SEN3\"\
+        \"&start=0&rows=100\",\n         \"type\": \"application/atom+xml\"\n    \
+        \  },\n      {\n         \"rel\": \"search\",\n         \"href\": \"opensearch_description.xml\"\
+        ,\n         \"type\": \"application/opensearchdescription+xml\"\n      }\n\
+        \   ],\n   \"title\": \"Sentinel-3 Scientific Data Hub search results for:\
+        \ beginPosition:[2016-12-01T00:00:00Z TO 2016-12-02T00:00:00Z] instrumentshortname:SRAL\
+        \ footprint:\\\"Intersects(POLYGON((-66.2695 -8.0592,-66.2695 0.7031,-57.3047\
+        \ 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\\\"\",\n   \"opensearch:startIndex\"\
+        : \"0\",\n   \"opensearch:totalResults\": \"1\",\n   \"entry\": {\n      \"\
+        summary\": \"Date: 2016-12-01T13:13:17.65Z, Instrument: SRAL, Mode: , Satellite:\
+        \ Sentinel-3, Size: 76.62 MB\",\n      \"arr\": {\n         \"str\": \"002\"\
+        ,\n         \"name\": \"collection\"\n      },\n      \"str\": [\n       \
+        \  {\n            \"name\": \"filename\",\n            \"content\": \"S3A_SR_2_LAN____20161201T131318_20161201T140321_20161226T235359_3003_011_295______LN3_O_NT_002.SEN3\"\
         \n         },\n         {\n            \"name\": \"gmlfootprint\",\n     \
         \       \"content\": \"<gml:Polygon srsName=\\\"http://www.opengis.net/gml/srs/epsg.xml#4326\\\
         \" xmlns:gml=\\\"http://www.opengis.net/gml\\\">\\n   <gml:outerBoundaryIs>\\\
@@ -193,17 +190,17 @@ interactions:
         name\": \"orbitnumber\",\n            \"content\": \"4118\"\n         },\n\
         \         {\n            \"name\": \"relativeorbitnumber\",\n            \"\
         content\": \"295\"\n         }\n      ]\n   },\n   \"xmlns\": \"http://www.w3.org/2005/Atom\"\
-        ,\n   \"subtitle\": \"Displaying 1 results. Request done in 0.01 seconds.\"\
+        ,\n   \"subtitle\": \"Displaying 1 results. Request done in 0.017 seconds.\"\
         ,\n   \"opensearch:itemsPerPage\": \"100\",\n   \"id\": \"https://scihub.copernicus.eu/s3/search?q=beginPosition:[2016-12-01T00:00:00Z\
-        \ TO 2016-12-02T00:00:00Z] footprint:\\\"Intersects(POLYGON((-66.2695\
+        \ TO 2016-12-02T00:00:00Z] instrumentshortname:SRAL footprint:\\\"Intersects(POLYGON((-66.2695\
         \ -8.0592,-66.2695 0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\\\
-        \" instrumentshortname:SRAL\",\n   \"updated\": \"2017-06-13T16:36:36.770Z\"\
-        ,\n   \"xmlns:opensearch\": \"http://a9.com/-/spec/opensearch/1.1/\"\n}}"}
+        \"\",\n   \"updated\": \"2017-07-07T22:00:25.814Z\",\n   \"xmlns:opensearch\"\
+        : \"http://a9.com/-/spec/opensearch/1.1/\"\n}}"}
     headers:
       Content-Type: [application/json]
       Pragma: [no-cache]
       Server: [Apache-Coyote/1.1]
       Vary: [Accept-Encoding]
-      content-length: ['14640']
+      content-length: ['14593']
     status: {code: 200, message: OK}
 version: 1

@@ -107,6 +107,10 @@ class SentinelAPI:
         Additional keywords can be used to specify other query parameters, e.g. orbitnumber=70.
         Range values can be passed as two-element tuples, e.g. cloudcoverpercentage=(0, 30).
 
+        Any value types and formats accepted by initial_date and end_date can also be used with
+        other parameters that expect date ranges (that is: 'beginposition', 'endposition', 'date',
+        'creationdate', and 'ingestiondate').
+
         See https://scihub.copernicus.eu/twiki/do/view/SciHubUserGuide/3FullTextSearch
         for a full list of accepted parameters.
 
@@ -145,26 +149,32 @@ class SentinelAPI:
             raise ValueError("Incorrect AOI relation provided ({})".format(area_relation))
 
         query_parts = []
-        if initial_date is not None:
-            query_parts += ['beginPosition:[{} TO {}]'.format(
-                _format_query_date(initial_date),
-                _format_query_date(end_date)
-            )]
 
-        if area is not None:
-            query_parts.append('footprint:"{}({})"'.format(area_relation, area))
+        if initial_date is not None:
+            keywords['beginPosition'] = (initial_date, end_date)
 
         for attr, value in sorted(keywords.items()):
+            # From https://github.com/SentinelDataHub/DataHubSystem/search?q=text/date+iso8601
+            date_attrs = ['beginposition', 'endposition', 'date', 'creationdate', 'ingestiondate']
+            if attr.lower() in date_attrs and not isinstance(value, string_types):
+                # Automatically format date-type attributes
+                value = (format_query_date(value[0]), format_query_date(value[1]))
+
             if isinstance(value, (list, tuple)):
+                # Handle value ranges
                 if len(value) == 2:
                     value = '[{} TO {}]'.format(*value)
                 else:
                     raise ValueError("Invalid number of elements in list. Expected 2, received "
                                      "{}".format(len(value)))
+
             query_parts.append('{}:{}'.format(attr, value))
 
         if raw:
             query_parts.append(raw)
+
+        if area is not None:
+            query_parts.append('footprint:"{}({})"'.format(area_relation, area))
 
         query = ' '.join(query_parts)
         # plus symbols would be interpreted as spaces without escaping

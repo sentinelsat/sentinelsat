@@ -1,11 +1,11 @@
 interactions:
 - request:
-    body: q=beginPosition%3A%5B2014-10-10T00%3A00%3A00Z+TO+2014-12-31T00%3A00%3A00Z%5D+footprint%3A%22Intersects%28POLYGON%28%28-66.2695+-8.0592%2C-66.2695+0.7031%2C-57.3047+0.7031%2C-57.3047+-8.0592%2C-66.2695+-8.0592%29%29%29%22+producttype%3AGRD
+    body: q=beginPosition%3A%5B2014-10-10T00%3A00%3A00Z+TO+2014-12-31T00%3A00%3A00Z%5D+producttype%3AGRD+footprint%3A%22Intersects%28POLYGON%28%28-66.2695+-8.0592%2C-66.2695+0.7031%2C-57.3047+0.7031%2C-57.3047+-8.0592%2C-66.2695+-8.0592%29%29%29%22
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
       Connection: [keep-alive]
-      Content-Length: ['246']
+      Content-Length: ['238']
       Content-Type: [application/x-www-form-urlencoded]
       User-Agent: [sentinelsat/0.11]
     method: POST
@@ -13,28 +13,28 @@ interactions:
   response:
     body: {string: "{\"feed\": {\n   \"opensearch:Query\": {\n      \"startPage\"\
         : \"1\",\n      \"role\": \"request\",\n      \"searchTerms\": \"beginPosition:[2014-10-10T00:00:00Z\
-        \ TO 2014-12-31T00:00:00Z] footprint:\\\"Intersects(POLYGON((-66.2695\
+        \ TO 2014-12-31T00:00:00Z] producttype:GRD footprint:\\\"Intersects(POLYGON((-66.2695\
         \ -8.0592,-66.2695 0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\\\
-        \" producttype:GRD\"\n   },\n   \"author\": {\"name\": \"Sentinels Scientific\
-        \ Data Hub\"},\n   \"link\": [\n      {\n         \"rel\": \"self\",\n   \
-        \      \"href\": \"https://scihub.copernicus.eu/apihub/search?q=beginPosition:[2014-10-10T00:00:00Z\
-        \ TO 2014-12-31T00:00:00Z] footprint:\\\"Intersects(POLYGON((-66.2695\
+        \"\"\n   },\n   \"author\": {\"name\": \"Sentinels Scientific Data Hub\"},\n\
+        \   \"link\": [\n      {\n         \"rel\": \"self\",\n         \"href\":\
+        \ \"https://scihub.copernicus.eu/apihub/search?q=beginPosition:[2014-10-10T00:00:00Z\
+        \ TO 2014-12-31T00:00:00Z] producttype:GRD footprint:\\\"Intersects(POLYGON((-66.2695\
         \ -8.0592,-66.2695 0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\\\
-        \" producttype:GRD&start=0&rows=100\",\n         \"type\": \"application/atom+xml\"\
-        \n      },\n      {\n         \"rel\": \"first\",\n         \"href\": \"https://scihub.copernicus.eu/apihub/search?q=beginPosition:[2014-10-10T00:00:00Z\
-        \ TO 2014-12-31T00:00:00Z] footprint:\\\"Intersects(POLYGON((-66.2695\
+        \"&start=0&rows=100\",\n         \"type\": \"application/atom+xml\"\n    \
+        \  },\n      {\n         \"rel\": \"first\",\n         \"href\": \"https://scihub.copernicus.eu/apihub/search?q=beginPosition:[2014-10-10T00:00:00Z\
+        \ TO 2014-12-31T00:00:00Z] producttype:GRD footprint:\\\"Intersects(POLYGON((-66.2695\
         \ -8.0592,-66.2695 0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\\\
-        \" producttype:GRD&start=0&rows=100\",\n         \"type\": \"application/atom+xml\"\
-        \n      },\n      {\n         \"rel\": \"last\",\n         \"href\": \"https://scihub.copernicus.eu/apihub/search?q=beginPosition:[2014-10-10T00:00:00Z\
-        \ TO 2014-12-31T00:00:00Z] footprint:\\\"Intersects(POLYGON((-66.2695\
+        \"&start=0&rows=100\",\n         \"type\": \"application/atom+xml\"\n    \
+        \  },\n      {\n         \"rel\": \"last\",\n         \"href\": \"https://scihub.copernicus.eu/apihub/search?q=beginPosition:[2014-10-10T00:00:00Z\
+        \ TO 2014-12-31T00:00:00Z] producttype:GRD footprint:\\\"Intersects(POLYGON((-66.2695\
         \ -8.0592,-66.2695 0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\\\
-        \" producttype:GRD&start=19&rows=100\",\n         \"type\": \"application/atom+xml\"\
-        \n      },\n      {\n         \"rel\": \"search\",\n         \"href\": \"\
-        opensearch_description.xml\",\n         \"type\": \"application/opensearchdescription+xml\"\
-        \n      }\n   ],\n   \"title\": \"Sentinels Scientific Data Hub search results\
-        \ for: beginPosition:[2014-10-10T00:00:00Z TO 2014-12-31T00:00:00Z] footprint:\\\
-        \"Intersects(POLYGON((-66.2695 -8.0592,-66.2695 0.7031,-57.3047 0.7031,-57.3047\
-        \ -8.0592,-66.2695 -8.0592)))\\\" producttype:GRD\",\n   \"opensearch:startIndex\"\
+        \"&start=19&rows=100\",\n         \"type\": \"application/atom+xml\"\n   \
+        \   },\n      {\n         \"rel\": \"search\",\n         \"href\": \"opensearch_description.xml\"\
+        ,\n         \"type\": \"application/opensearchdescription+xml\"\n      }\n\
+        \   ],\n   \"title\": \"Sentinels Scientific Data Hub search results for:\
+        \ beginPosition:[2014-10-10T00:00:00Z TO 2014-12-31T00:00:00Z] producttype:GRD\
+        \ footprint:\\\"Intersects(POLYGON((-66.2695 -8.0592,-66.2695 0.7031,-57.3047\
+        \ 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\\\"\",\n   \"opensearch:startIndex\"\
         : \"0\",\n   \"opensearch:totalResults\": \"20\",\n   \"entry\": [\n     \
         \ {\n         \"summary\": \"Date: 2014-12-20T10:04:37.543Z, Instrument: SAR-C\
         \ SAR, Mode: HH HV, Satellite: Sentinel-1, Size: 506 MB\",\n         \"str\"\
@@ -1217,17 +1217,17 @@ interactions:
         ,\n               \"content\": \"32\"\n            },\n            {\n   \
         \            \"name\": \"lastrelativeorbitnumber\",\n               \"content\"\
         : \"32\"\n            }\n         ]\n      }\n   ],\n   \"xmlns\": \"http://www.w3.org/2005/Atom\"\
-        ,\n   \"subtitle\": \"Displaying 20 results. Request done in 0.493 seconds.\"\
+        ,\n   \"subtitle\": \"Displaying 20 results. Request done in 0.336 seconds.\"\
         ,\n   \"opensearch:itemsPerPage\": \"100\",\n   \"id\": \"https://scihub.copernicus.eu/apihub/search?q=beginPosition:[2014-10-10T00:00:00Z\
-        \ TO 2014-12-31T00:00:00Z] footprint:\\\"Intersects(POLYGON((-66.2695\
+        \ TO 2014-12-31T00:00:00Z] producttype:GRD footprint:\\\"Intersects(POLYGON((-66.2695\
         \ -8.0592,-66.2695 0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\\\
-        \" producttype:GRD\",\n   \"updated\": \"2017-06-13T16:37:27.394Z\",\n\
-        \   \"xmlns:opensearch\": \"http://a9.com/-/spec/opensearch/1.1/\"\n}}"}
+        \"\",\n   \"updated\": \"2017-07-07T22:00:45.182Z\",\n   \"xmlns:opensearch\"\
+        : \"http://a9.com/-/spec/opensearch/1.1/\"\n}}"}
     headers:
       Content-Type: [application/json]
       Pragma: [no-cache]
       Server: [Apache-Coyote/1.1]
       Vary: [Accept-Encoding]
-      content-length: ['90735']
+      content-length: ['90687']
     status: {code: 200, message: OK}
 version: 1

@@ -1,11 +1,11 @@
 interactions:
 - request:
-    body: q=beginPosition%3A%5B2016-12-01T00%3A00%3A00Z+TO+2016-12-02T00%3A00%3A00Z%5D+footprint%3A%22Intersects%28POLYGON%28%28-66.2695+-8.0592%2C-66.2695+0.7031%2C-57.3047+0.7031%2C-57.3047+-8.0592%2C-66.2695+-8.0592%29%29%29%22+producttype%3ASLC
+    body: q=beginPosition%3A%5B2016-12-01T00%3A00%3A00Z+TO+2016-12-02T00%3A00%3A00Z%5D+producttype%3ASLC+footprint%3A%22Intersects%28POLYGON%28%28-66.2695+-8.0592%2C-66.2695+0.7031%2C-57.3047+0.7031%2C-57.3047+-8.0592%2C-66.2695+-8.0592%29%29%29%22
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
       Connection: [keep-alive]
-      Content-Length: ['246']
+      Content-Length: ['238']
       Content-Type: [application/x-www-form-urlencoded]
       User-Agent: [sentinelsat/0.11]
     method: POST
@@ -13,28 +13,28 @@ interactions:
   response:
     body: {string: "{\"feed\": {\n   \"opensearch:Query\": {\n      \"startPage\"\
         : \"1\",\n      \"role\": \"request\",\n      \"searchTerms\": \"beginPosition:[2016-12-01T00:00:00Z\
-        \ TO 2016-12-02T00:00:00Z] footprint:\\\"Intersects(POLYGON((-66.2695\
+        \ TO 2016-12-02T00:00:00Z] producttype:SLC footprint:\\\"Intersects(POLYGON((-66.2695\
         \ -8.0592,-66.2695 0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\\\
-        \" producttype:SLC\"\n   },\n   \"author\": {\"name\": \"Sentinels Scientific\
-        \ Data Hub\"},\n   \"link\": [\n      {\n         \"rel\": \"self\",\n   \
-        \      \"href\": \"https://scihub.copernicus.eu/apihub/search?q=beginPosition:[2016-12-01T00:00:00Z\
-        \ TO 2016-12-02T00:00:00Z] footprint:\\\"Intersects(POLYGON((-66.2695\
+        \"\"\n   },\n   \"author\": {\"name\": \"Sentinels Scientific Data Hub\"},\n\
+        \   \"link\": [\n      {\n         \"rel\": \"self\",\n         \"href\":\
+        \ \"https://scihub.copernicus.eu/apihub/search?q=beginPosition:[2016-12-01T00:00:00Z\
+        \ TO 2016-12-02T00:00:00Z] producttype:SLC footprint:\\\"Intersects(POLYGON((-66.2695\
         \ -8.0592,-66.2695 0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\\\
-        \" producttype:SLC&start=0&rows=100\",\n         \"type\": \"application/atom+xml\"\
-        \n      },\n      {\n         \"rel\": \"first\",\n         \"href\": \"https://scihub.copernicus.eu/apihub/search?q=beginPosition:[2016-12-01T00:00:00Z\
-        \ TO 2016-12-02T00:00:00Z] footprint:\\\"Intersects(POLYGON((-66.2695\
+        \"&start=0&rows=100\",\n         \"type\": \"application/atom+xml\"\n    \
+        \  },\n      {\n         \"rel\": \"first\",\n         \"href\": \"https://scihub.copernicus.eu/apihub/search?q=beginPosition:[2016-12-01T00:00:00Z\
+        \ TO 2016-12-02T00:00:00Z] producttype:SLC footprint:\\\"Intersects(POLYGON((-66.2695\
         \ -8.0592,-66.2695 0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\\\
-        \" producttype:SLC&start=0&rows=100\",\n         \"type\": \"application/atom+xml\"\
-        \n      },\n      {\n         \"rel\": \"last\",\n         \"href\": \"https://scihub.copernicus.eu/apihub/search?q=beginPosition:[2016-12-01T00:00:00Z\
-        \ TO 2016-12-02T00:00:00Z] footprint:\\\"Intersects(POLYGON((-66.2695\
+        \"&start=0&rows=100\",\n         \"type\": \"application/atom+xml\"\n    \
+        \  },\n      {\n         \"rel\": \"last\",\n         \"href\": \"https://scihub.copernicus.eu/apihub/search?q=beginPosition:[2016-12-01T00:00:00Z\
+        \ TO 2016-12-02T00:00:00Z] producttype:SLC footprint:\\\"Intersects(POLYGON((-66.2695\
         \ -8.0592,-66.2695 0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\\\
-        \" producttype:SLC&start=5&rows=100\",\n         \"type\": \"application/atom+xml\"\
-        \n      },\n      {\n         \"rel\": \"search\",\n         \"href\": \"\
-        opensearch_description.xml\",\n         \"type\": \"application/opensearchdescription+xml\"\
-        \n      }\n   ],\n   \"title\": \"Sentinels Scientific Data Hub search results\
-        \ for: beginPosition:[2016-12-01T00:00:00Z TO 2016-12-02T00:00:00Z] footprint:\\\
-        \"Intersects(POLYGON((-66.2695 -8.0592,-66.2695 0.7031,-57.3047 0.7031,-57.3047\
-        \ -8.0592,-66.2695 -8.0592)))\\\" producttype:SLC\",\n   \"opensearch:startIndex\"\
+        \"&start=5&rows=100\",\n         \"type\": \"application/atom+xml\"\n    \
+        \  },\n      {\n         \"rel\": \"search\",\n         \"href\": \"opensearch_description.xml\"\
+        ,\n         \"type\": \"application/opensearchdescription+xml\"\n      }\n\
+        \   ],\n   \"title\": \"Sentinels Scientific Data Hub search results for:\
+        \ beginPosition:[2016-12-01T00:00:00Z TO 2016-12-02T00:00:00Z] producttype:SLC\
+        \ footprint:\\\"Intersects(POLYGON((-66.2695 -8.0592,-66.2695 0.7031,-57.3047\
+        \ 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\\\"\",\n   \"opensearch:startIndex\"\
         : \"0\",\n   \"opensearch:totalResults\": \"6\",\n   \"entry\": [\n      {\n\
         \         \"summary\": \"Date: 2016-12-01T09:32:29.967Z, Instrument: SAR-C\
         \ SAR, Mode: VV VH, Satellite: Sentinel-1, Size: 7.18 GB\",\n         \"str\"\
@@ -410,17 +410,17 @@ interactions:
         ,\n               \"content\": \"112\"\n            },\n            {\n  \
         \             \"name\": \"slicenumber\",\n               \"content\": \"3\"\
         \n            }\n         ]\n      }\n   ],\n   \"xmlns\": \"http://www.w3.org/2005/Atom\"\
-        ,\n   \"subtitle\": \"Displaying 6 results. Request done in 0.011 seconds.\"\
+        ,\n   \"subtitle\": \"Displaying 6 results. Request done in 0.04 seconds.\"\
         ,\n   \"opensearch:itemsPerPage\": \"100\",\n   \"id\": \"https://scihub.copernicus.eu/apihub/search?q=beginPosition:[2016-12-01T00:00:00Z\
-        \ TO 2016-12-02T00:00:00Z] footprint:\\\"Intersects(POLYGON((-66.2695\
+        \ TO 2016-12-02T00:00:00Z] producttype:SLC footprint:\\\"Intersects(POLYGON((-66.2695\
         \ -8.0592,-66.2695 0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\\\
-        \" producttype:SLC\",\n   \"updated\": \"2017-06-13T16:36:36.427Z\",\n\
-        \   \"xmlns:opensearch\": \"http://a9.com/-/spec/opensearch/1.1/\"\n}}"}
+        \"\",\n   \"updated\": \"2017-07-07T22:00:25.487Z\",\n   \"xmlns:opensearch\"\
+        : \"http://a9.com/-/spec/opensearch/1.1/\"\n}}"}
     headers:
       Content-Type: [application/json]
       Pragma: [no-cache]
       Server: [Apache-Coyote/1.1]
       Vary: [Accept-Encoding]
-      content-length: ['30399']
+      content-length: ['30350']
     status: {code: 200, message: OK}
 version: 1

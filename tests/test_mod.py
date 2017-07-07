@@ -186,6 +186,24 @@ def test_api_query_format_ranges():
         SentinelAPI.format_query(cloudcoverpercentage=[0, 1, 2])
 
 
+@pytest.mark.fast
+def test_api_query_format_dates():
+    query = SentinelAPI.format_query(ingestiondate=('NOW-1DAY', 'NOW'))
+    assert query == 'ingestiondate:[NOW-1DAY TO NOW]'
+
+    query = SentinelAPI.format_query(ingestiondate=(date(2017, 1, 1), '20170203'))
+    assert query == 'ingestiondate:[2017-01-01T00:00:00Z TO 2017-02-03T00:00:00Z]'
+
+    query = SentinelAPI.format_query(ingestiondate='[NOW-1DAY TO NOW]')
+    assert query == 'ingestiondate:[NOW-1DAY TO NOW]'
+
+    with pytest.raises(Exception):
+        SentinelAPI.format_query(ingestiondate=[])
+
+    with pytest.raises(Exception):
+        SentinelAPI.format_query(ingestiondate=[None, 'NOW'])
+
+
 @my_vcr.use_cassette
 @pytest.mark.scihub
 def test_invalid_query():
