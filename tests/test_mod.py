@@ -11,7 +11,7 @@ import requests_mock
 
 from sentinelsat import InvalidChecksumError, SentinelAPI, SentinelAPIError, geojson_to_wkt, \
     read_geojson
-from sentinelsat.sentinel import _format_order_by, _format_query_date, _md5_compare, \
+from sentinelsat.sentinel import _format_order_by, _format_query_date, \
     _parse_odata_timestamp, _parse_opensearch_response
 from .shared import FIXTURES_DIR, my_vcr
 
@@ -95,13 +95,22 @@ def test_convert_timestamp():
 
 
 @pytest.mark.fast
-def test_md5_comparison():
+def test_progressbars(capsys):
+    api = SentinelAPI("mock_user", "mock_password")
     testfile_md5 = hashlib.md5()
-    with open(FIXTURES_DIR + "/expected_search_footprints_s1.geojson", "rb") as testfile:
+    true_path = FIXTURES_DIR + "/expected_search_footprints_s1.geojson"
+    with open(true_path, "rb") as testfile:
         testfile_md5.update(testfile.read())
         real_md5 = testfile_md5.hexdigest()
-    assert _md5_compare(FIXTURES_DIR + "/expected_search_footprints_s1.geojson", real_md5) is True
-    assert _md5_compare(FIXTURES_DIR + "/map.geojson", real_md5) is False
+
+    api.progressbar_opts = dict(desc="Testing")
+    assert api._md5_compare(true_path, real_md5) is True
+    api.progressbar_opts = dict(desc="Disabled", disable=True)
+    assert api._md5_compare(FIXTURES_DIR + "/map.geojson", real_md5) is False
+    out, err = capsys.readouterr()
+    assert out == ""
+    assert "Testing" in err
+    assert "Disabled" not in err
 
 
 @my_vcr.use_cassette

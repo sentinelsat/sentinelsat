@@ -57,6 +57,8 @@ class SentinelAPI:
         self.page_size = 100
         self.user_agent = 'sentinelsat/' + sentinelsat_version
         self.session.headers['User-Agent'] = self.user_agent
+        # Can be modified by the user, e.g. to set to {'disable': True}
+        self.progressbar_opts = {}
         # For unit tests
         self._last_query = None
         self._last_response = None
@@ -213,10 +215,10 @@ class SentinelAPI:
         if limit is not None:
             max_offset = min(count, offset + limit)
         if max_offset > offset + self.page_size:
-            progress = tqdm(desc="Querying products",
-                            initial=self.page_size,
-                            total=max_offset - offset,
-                            unit=' products')
+            progress = self._tqdm(desc="Querying products",
+                                  initial=self.page_size,
+                                  total=max_offset - offset,
+                                  unit=' products')
             for new_offset in range(offset + self.page_size, max_offset, self.page_size):
                 new_limit = limit
                 if limit is not None:
@@ -396,7 +398,7 @@ class SentinelAPI:
                     str(temp_path), getsize(temp_path), product_info['size'])
                 remove(temp_path)
             elif getsize(temp_path) == product_info['size']:
-                if _md5_compare(temp_path, product_info['md5']):
+                if self._md5_compare(temp_path, product_info['md5']):
                     skip_download = True
                 else:
                     # Log a warning since this should never happen
@@ -413,12 +415,12 @@ class SentinelAPI:
 
         if not skip_download:
             # Store the number of downloaded bytes for unit tests
-            product_info['downloaded_bytes'] = _download(
+            product_info['downloaded_bytes'] = self._download(
                 product_info['url'], temp_path, self.session, product_info['size'])
 
         # Check integrity with MD5 checksum
         if checksum is True:
-            if not _md5_compare(temp_path, product_info['md5']):
+            if not self._md5_compare(temp_path, product_info['md5']):
                 remove(temp_path)
                 raise InvalidChecksumError('File corrupt: checksums do not match')
 
@@ -663,7 +665,7 @@ class SentinelAPI:
             is_fine = False
             for product_info in product_infos[name]:
                 if (getsize(path) == product_info['size'] and
-                        _md5_compare(path, product_info['md5'])):
+                        self._md5_compare(path, product_info['md5'])):
                     is_fine = True
                     break
             if not is_fine:
@@ -673,6 +675,49 @@ class SentinelAPI:
                     remove(path)
 
         return corrupt
+
+    def _md5_compare(self, file_path, checksum, block_size=2 ** 13):
+        """Compare a given md5 checksum with one calculated from a file"""
+        with closing(self._tqdm(desc="MD5 checksumming", total=getsize(file_path), unit="B",
+                                unit_scale=True)) as progress:
+            md5 = hashlib.md5()
+            with open(file_path, "rb") as f:
+                while True:
+                    block_data = f.read(block_size)
+                    if not block_data:
+                        break
+                    md5.update(block_data)
+                    progress.update(len(block_data))
+            return md5.hexdigest().lower() == checksum.lower()
+
+    def _download(self, url, path, session, file_size):
+        headers = {}
+        continuing = exists(path)
+        if continuing:
+            already_downloaded_bytes = getsize(path)
+            headers = {'Range': 'bytes={}-'.format(already_downloaded_bytes)}
+        else:
+            already_downloaded_bytes = 0
+        downloaded_bytes = 0
+        with closing(session.get(url, stream=True, auth=session.auth, headers=headers)) as r, \
+                closing(self._tqdm(desc="Downloading", total=file_size, unit="B",
+                                   unit_scale=True, initial=already_downloaded_bytes)) as progress:
+            _check_scihub_response(r, test_json=False)
+            chunk_size = 2 ** 20  # download in 1 MB chunks
+            mode = 'ab' if continuing else 'wb'
+            with open(path, mode) as f:
+                for chunk in r.iter_content(chunk_size=chunk_size):
+                    if chunk:  # filter out keep-alive new chunks
+                        f.write(chunk)
+                        progress.update(len(chunk))
+                        downloaded_bytes += len(chunk)
+            # Return the number of bytes downloaded
+            return downloaded_bytes
+
+    def _tqdm(self, **kwargs):
+        """tqdm progressbar wrapper. May be overridden to customize progressbar behavior"""
+        kwargs.update(self.progressbar_opts)
+        return tqdm(**kwargs)
 
 
 class SentinelAPIError(Exception):
@@ -906,44 +951,3 @@ def _parse_odata_response(product):
                 pass
         output[attr['Name']] = value
     return output
-
-
-def _md5_compare(file_path, checksum, block_size=2 ** 13):
-    """Compare a given md5 checksum with one calculated from a file"""
-    with closing(tqdm(desc="MD5 checksumming", total=getsize(file_path), unit="B",
-                      unit_scale=True)) as progress:
-        md5 = hashlib.md5()
-        with open(file_path, "rb") as f:
-            while True:
-                block_data = f.read(block_size)
-                if not block_data:
-                    break
-                md5.update(block_data)
-                progress.update(len(block_data))
-        return md5.hexdigest().lower() == checksum.lower()
-
-
-def _download(url, path, session, file_size):
-    headers = {}
-    continuing = exists(path)
-    if continuing:
-        already_downloaded_bytes = getsize(path)
-        headers = {'Range': 'bytes={}-'.format(already_downloaded_bytes)}
-    else:
-        already_downloaded_bytes = 0
-    downloaded_bytes = 0
-    with closing(session.get(url, stream=True, auth=session.auth, headers=headers)) as r, \
-            closing(
-                tqdm(desc="Downloading", total=file_size, unit="B",
-                     unit_scale=True, initial=already_downloaded_bytes)) as progress:
-        _check_scihub_response(r, test_json=False)
-        chunk_size = 2 ** 20  # download in 1 MB chunks
-        mode = 'ab' if continuing else 'wb'
-        with open(path, mode) as f:
-            for chunk in r.iter_content(chunk_size=chunk_size):
-                if chunk:  # filter out keep-alive new chunks
-                    f.write(chunk)
-                    progress.update(len(chunk))
-                    downloaded_bytes += len(chunk)
-        # Return the number of bytes downloaded
-        return downloaded_bytes
