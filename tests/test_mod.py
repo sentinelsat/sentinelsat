@@ -112,7 +112,7 @@ def test_SentinelAPI_connection():
 
     assert api._last_query == (
         'beginPosition:[2015-01-01T00:00:00Z TO 2015-01-02T00:00:00Z] '
-        'AND footprint:"Intersects(POLYGON((0 0,1 1,0 1,0 0)))"')
+        'footprint:"Intersects(POLYGON((0 0,1 1,0 1,0 0)))"')
     assert api._last_response.status_code == 200
 
 
@@ -150,16 +150,16 @@ def test_api_query_format():
     last_24h = _format_query_date(now - timedelta(hours=24))
     query = api.format_query(wkt, initial_date=last_24h, end_date=now)
     assert query == 'beginPosition:[%s TO %s] ' % (last_24h, _format_query_date(now)) + \
-                    'AND footprint:"Intersects(POLYGON((0 0,1 1,0 1,0 0)))"'
+                    'footprint:"Intersects(POLYGON((0 0,1 1,0 1,0 0)))"'
 
     query = api.format_query(wkt, initial_date=last_24h, producttype='SLC', raw='IW')
     assert query == 'beginPosition:[%s TO NOW] ' % (_format_query_date(last_24h)) + \
-                    'AND footprint:"Intersects(POLYGON((0 0,1 1,0 1,0 0)))" ' + \
-                    'AND producttype:SLC AND IW'
+                    'footprint:"Intersects(POLYGON((0 0,1 1,0 1,0 0)))" ' + \
+                    'producttype:SLC IW'
 
     query = api.format_query(wkt, end_date=now, producttype='SLC', raw='IW')
     assert query == 'footprint:"Intersects(POLYGON((0 0,1 1,0 1,0 0)))" ' + \
-                    'AND producttype:SLC AND IW'
+                    'producttype:SLC IW'
 
     query = api.format_query(area=None, initial_date=None, end_date=None)
     assert query == ''
@@ -252,7 +252,7 @@ def test_small_query():
     api.query(**_small_query)
     assert api._last_query == (
         'beginPosition:[2015-01-01T00:00:00Z TO 2015-01-02T00:00:00Z] '
-        'AND footprint:"Intersects(POLYGON((0 0,1 1,0 1,0 0)))"')
+        'footprint:"Intersects(POLYGON((0 0,1 1,0 1,0 0)))"')
     assert api._last_response.status_code == 200
 
 
@@ -274,7 +274,7 @@ def test_large_query():
     full_products = list(api.query(**_large_query))
     assert api._last_query == (
         'beginPosition:[2015-12-01T00:00:00Z TO 2015-12-31T00:00:00Z] '
-        'AND footprint:"Intersects(POLYGON((0 0,0 10,10 10,10 0,0 0)))"')
+        'footprint:"Intersects(POLYGON((0 0,0 10,10 10,10 0,0 0)))"')
     assert api._last_response.status_code == 200
     assert len(full_products) > api.page_size
 
@@ -305,17 +305,16 @@ def test_too_long_query():
     # that a relevant error message is provided
 
     def create_query(n):
-        return api.format_query(
-            None, "NOW", "NOW", raw=" AND ".join(["orbitdirection:descending"] * n))
+        return api.format_query(None, "NOW", "NOW", raw=" orbitdirection:descending" * n)
 
     # Expect no error
-    q = create_query(117)
-    assert api.check_query_length(q) < 1.0
+    q = create_query(137)
+    assert 0.99 < api.check_query_length(q) < 1.0
     api.query(raw=q)
 
     # Expect HTTP status 500 Internal Server Error
-    q = create_query(118)
-    assert api.check_query_length(q) >= 1.0
+    q = create_query(138)
+    assert 1.0 <= api.check_query_length(q) < 1.01
     with pytest.raises(SentinelAPIError) as excinfo:
         api.query(raw=q)
     assert excinfo.value.response.status_code == 500

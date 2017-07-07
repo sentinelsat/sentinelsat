@@ -1,6 +1,6 @@
 interactions:
 - request:
-    body: q=beginPosition%3A%5B2015-12-19T00%3A00%3A00Z+TO+2015-12-28T00%3A00%3A00Z%5D+AND+footprint%3A%22Intersects%28POLYGON%28%28-66.2695+-8.0592%2C-66.2695+0.7031%2C-57.3047+0.7031%2C-57.3047+-8.0592%2C-66.2695+-8.0592%29%29%29%22
+    body: q=beginPosition%3A%5B2015-12-19T00%3A00%3A00Z+TO+2015-12-28T00%3A00%3A00Z%5D+footprint%3A%22Intersects%28POLYGON%28%28-66.2695+-8.0592%2C-66.2695+0.7031%2C-57.3047+0.7031%2C-57.3047+-8.0592%2C-66.2695+-8.0592%29%29%29%22
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']

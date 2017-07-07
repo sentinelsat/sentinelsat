@@ -86,8 +86,7 @@ class SentinelAPI:
             End of the time interval for the sensing time. Only used if initial_date is set.
             Defaults to NOW. See initial_date for the allowed formats.
         raw : str, optional
-            Additional query text that will be appended to the query (joined by 'AND', i.e.
-            '<main query text> AND <raw>').
+            Additional query text that will be appended to the query.
         area_relation : {'Intersection', 'Contains', 'IsWithin'}, optional
             What relation to use for testing the AOI. Case insensitive.
                 - Intersects: true if the AOI and the footprint intersect (default)
@@ -167,7 +166,7 @@ class SentinelAPI:
         if raw:
             query_parts.append(raw)
 
-        query = ' AND '.join(query_parts)
+        query = ' '.join(query_parts)
         # plus symbols would be interpreted as spaces without escaping
         query = query.replace('+', '%2B')
         return query

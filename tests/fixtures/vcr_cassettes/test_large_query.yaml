@@ -1,6 +1,6 @@
 interactions:
 - request:
-    body: q=beginPosition%3A%5B2015-12-01T00%3A00%3A00Z+TO+2015-12-31T00%3A00%3A00Z%5D+AND+footprint%3A%22Intersects%28POLYGON%28%280+0%2C0+10%2C10+10%2C10+0%2C0+0%29%29%29%22
+    body: q=beginPosition%3A%5B2015-12-01T00%3A00%3A00Z+TO+2015-12-31T00%3A00%3A00Z%5D+footprint%3A%22Intersects%28POLYGON%28%280+0%2C0+10%2C10+10%2C10+0%2C0+0%29%29%29%22
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
@@ -1220,7 +1220,7 @@ interactions:
       Vary: [Accept-Encoding]
     status: {code: 200, message: OK}
 - request:
-    body: q=beginPosition%3A%5B2015-12-01T00%3A00%3A00Z+TO+2015-12-31T00%3A00%3A00Z%5D+AND+footprint%3A%22Intersects%28POLYGON%28%280+0%2C0+10%2C10+10%2C10+0%2C0+0%29%29%29%22
+    body: q=beginPosition%3A%5B2015-12-01T00%3A00%3A00Z+TO+2015-12-31T00%3A00%3A00Z%5D+footprint%3A%22Intersects%28POLYGON%28%280+0%2C0+10%2C10+10%2C10+0%2C0+0%29%29%29%22
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
@@ -1783,7 +1783,7 @@ interactions:
       Vary: [Accept-Encoding]
     status: {code: 200, message: OK}
 - request:
-    body: q=beginPosition%3A%5B2015-12-01T00%3A00%3A00Z+TO+2015-12-31T00%3A00%3A00Z%5D+AND+footprint%3A%22Intersects%28POLYGON%28%280+0%2C0+10%2C10+10%2C10+0%2C0+0%29%29%29%22
+    body: q=beginPosition%3A%5B2015-12-01T00%3A00%3A00Z+TO+2015-12-31T00%3A00%3A00Z%5D+footprint%3A%22Intersects%28POLYGON%28%280+0%2C0+10%2C10+10%2C10+0%2C0+0%29%29%29%22
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
@@ -2453,7 +2453,7 @@ interactions:
       Vary: [Accept-Encoding]
     status: {code: 200, message: OK}
 - request:
-    body: q=beginPosition%3A%5B2015-12-01T00%3A00%3A00Z+TO+2015-12-31T00%3A00%3A00Z%5D+AND+footprint%3A%22Intersects%28POLYGON%28%280+0%2C0+10%2C10+10%2C10+0%2C0+0%29%29%29%22
+    body: q=beginPosition%3A%5B2015-12-01T00%3A00%3A00Z+TO+2015-12-31T00%3A00%3A00Z%5D+footprint%3A%22Intersects%28POLYGON%28%280+0%2C0+10%2C10+10%2C10+0%2C0+0%29%29%29%22
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
@@ -2547,7 +2547,7 @@ interactions:
       Vary: [Accept-Encoding]
     status: {code: 200, message: OK}
 - request:
-    body: q=beginPosition%3A%5B2015-12-01T00%3A00%3A00Z+TO+2015-12-31T00%3A00%3A00Z%5D+AND+footprint%3A%22Intersects%28POLYGON%28%280+0%2C0+10%2C10+10%2C10+0%2C0+0%29%29%29%22
+    body: q=beginPosition%3A%5B2015-12-01T00%3A00%3A00Z+TO+2015-12-31T00%3A00%3A00Z%5D+footprint%3A%22Intersects%28POLYGON%28%280+0%2C0+10%2C10+10%2C10+0%2C0+0%29%29%29%22
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
@@ -3767,7 +3767,7 @@ interactions:
       Vary: [Accept-Encoding]
     status: {code: 200, message: OK}
 - request:
-    body: q=beginPosition%3A%5B2015-12-01T00%3A00%3A00Z+TO+2015-12-31T00%3A00%3A00Z%5D+AND+footprint%3A%22Intersects%28POLYGON%28%280+0%2C0+10%2C10+10%2C10+0%2C0+0%29%29%29%22
+    body: q=beginPosition%3A%5B2015-12-01T00%3A00%3A00Z+TO+2015-12-31T00%3A00%3A00Z%5D+footprint%3A%22Intersects%28POLYGON%28%280+0%2C0+10%2C10+10%2C10+0%2C0+0%29%29%29%22
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
@@ -4130,7 +4130,7 @@ interactions:
       Vary: [Accept-Encoding]
     status: {code: 200, message: OK}
 - request:
-    body: q=beginPosition%3A%5B2015-12-01T00%3A00%3A00Z+TO+2015-12-31T00%3A00%3A00Z%5D+AND+footprint%3A%22Intersects%28POLYGON%28%280+0%2C0+10%2C10+10%2C10+0%2C0+0%29%29%29%22
+    body: q=beginPosition%3A%5B2015-12-01T00%3A00%3A00Z+TO+2015-12-31T00%3A00%3A00Z%5D+footprint%3A%22Intersects%28POLYGON%28%280+0%2C0+10%2C10+10%2C10+0%2C0+0%29%29%29%22
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
@@ -4362,7 +4362,7 @@ interactions:
       Vary: [Accept-Encoding]
     status: {code: 200, message: OK}
 - request:
-    body: q=beginPosition%3A%5B2015-12-01T00%3A00%3A00Z+TO+2015-12-31T00%3A00%3A00Z%5D+AND+footprint%3A%22Intersects%28POLYGON%28%280+0%2C0+10%2C10+10%2C10+0%2C0+0%29%29%29%22
+    body: q=beginPosition%3A%5B2015-12-01T00%3A00%3A00Z+TO+2015-12-31T00%3A00%3A00Z%5D+footprint%3A%22Intersects%28POLYGON%28%280+0%2C0+10%2C10+10%2C10+0%2C0+0%29%29%29%22
     headers:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
