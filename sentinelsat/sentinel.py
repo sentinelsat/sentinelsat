@@ -206,6 +206,29 @@ class SentinelAPI:
         return total_count
 
     def _load_query(self, query, order_by=None, limit=None, offset=0):
+        products, count = self._load_subquery(query, order_by, limit, offset)
+
+        # repeat query until all results have been loaded
+        max_offset = count
+        if limit is not None:
+            max_offset = min(count, offset + limit)
+        if max_offset > offset + self.page_size:
+            progress = tqdm(desc="Querying products",
+                            initial=self.page_size,
+                            total=max_offset - offset,
+                            unit=' products')
+            for new_offset in range(offset + self.page_size, max_offset, self.page_size):
+                new_limit = limit
+                if limit is not None:
+                    new_limit = limit - new_offset + offset
+                ret = self._load_subquery(query, limit=new_limit, offset=new_offset)[0]
+                progress.update(len(ret))
+                products += ret
+            progress.close()
+
+        return products, count
+
+    def _load_subquery(self, query, order_by=None, limit=None, offset=0):
         # store last query (for testing)
         self._last_query = query
         self.logger.debug("Sub-query: offset=%s, limit=%s", offset, limit)
@@ -231,16 +254,6 @@ class SentinelAPI:
         if isinstance(products, dict):
             products = [products]
 
-        # repeat query until all results have been loaded
-        new_limit = limit
-        if limit is not None:
-            new_limit -= len(products)
-            if new_limit <= 0:
-                return products, total_results
-        new_offset = offset + self.page_size
-        if total_results >= new_offset:
-            self.logger.debug('%s products left to retrieve', total_results - new_offset)
-            products += self._load_query(query, limit=new_limit, offset=new_offset)[0]
         return products, total_results
 
     def _format_url(self, order_by=None, limit=None, offset=0):
@@ -922,7 +935,7 @@ def _download(url, path, session, file_size):
     with closing(session.get(url, stream=True, auth=session.auth, headers=headers)) as r, \
             closing(
                 tqdm(desc="Downloading", total=file_size, unit="B",
-                    unit_scale=True, initial=already_downloaded_bytes)) as progress:
+                     unit_scale=True, initial=already_downloaded_bytes)) as progress:
         _check_scihub_response(r, test_json=False)
         chunk_size = 2 ** 20  # download in 1 MB chunks
         mode = 'ab' if continuing else 'wb'
