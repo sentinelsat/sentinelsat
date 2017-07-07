@@ -260,4 +260,17 @@ API
 ---
 
 .. automodule:: sentinelsat
+
+.. autoclass:: SentinelAPI
     :members:
+
+.. autofunction:: read_geojson
+
+.. autofunction:: geojson_to_wkt
+
+Exceptions
+----------
+
+.. autoexception:: SentinelAPIError
+
+.. autoexception:: InvalidChecksumError
