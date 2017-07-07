@@ -714,6 +714,33 @@ def geojson_to_wkt(geojson_obj, feature_number=0, decimals=4):
     return wkt
 
 
+def format_query_date(in_date):
+    """Format a date, datetime or a YYYYMMDD string input as YYYY-MM-DDThh:mm:ssZ
+    or validate a string input as suitable for the full text search interface and return it.
+    """
+    if isinstance(in_date, (datetime, date)):
+        return in_date.strftime('%Y-%m-%dT%H:%M:%SZ')
+
+    # Reference: https://cwiki.apache.org/confluence/display/solr/Working+with+Dates
+
+    # ISO-8601 date or NOW
+    valid_date_pattern = r'^(?:\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(?:\.\d+)?Z|NOW)'
+    # date arithmetic suffix is allowed
+    units = r'(?:YEAR|MONTH|DAY|HOUR|MINUTE|SECOND)'
+    valid_date_pattern += r'(?:[-+]\d+{}S?)*'.format(units)
+    # dates can be rounded to a unit of time
+    # e.g. "NOW/DAY" for dates since 00:00 today
+    valid_date_pattern += r'(?:/{}S?)*$'.format(units)
+    in_date = in_date.strip()
+    if re.match(valid_date_pattern, in_date):
+        return in_date
+
+    try:
+        return datetime.strptime(in_date, '%Y%m%d').strftime('%Y-%m-%dT%H:%M:%SZ')
+    except ValueError:
+        raise ValueError('Unsupported date value {}'.format(in_date))
+
+
 def _check_scihub_response(response, test_json=True):
     """Check that the response from server has status code 2xx and that the response is valid JSON."""
     try:
@@ -741,33 +768,6 @@ def _check_scihub_response(response, test_json=True):
         # See PEP 409
         api_error.__cause__ = None
         raise api_error
-
-
-def _format_query_date(in_date):
-    """Format a date, datetime or a YYYYMMDD string input as YYYY-MM-DDThh:mm:ssZ
-    or validate a string input as suitable for the full text search interface and return it.
-    """
-    if isinstance(in_date, (datetime, date)):
-        return in_date.strftime('%Y-%m-%dT%H:%M:%SZ')
-
-    # Reference: https://cwiki.apache.org/confluence/display/solr/Working+with+Dates
-
-    # ISO-8601 date or NOW
-    valid_date_pattern = r'^(?:\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(?:\.\d+)?Z|NOW)'
-    # date arithmetic suffix is allowed
-    units = r'(?:YEAR|MONTH|DAY|HOUR|MINUTE|SECOND)'
-    valid_date_pattern += r'(?:[-+]\d+{}S?)*'.format(units)
-    # dates can be rounded to a unit of time
-    # e.g. "NOW/DAY" for dates since 00:00 today
-    valid_date_pattern += r'(?:/{}S?)*$'.format(units)
-    in_date = in_date.strip()
-    if re.match(valid_date_pattern, in_date):
-        return in_date
-
-    try:
-        return datetime.strptime(in_date, '%Y%m%d').strftime('%Y-%m-%dT%H:%M:%SZ')
-    except ValueError:
-        raise ValueError('Unsupported date value {}'.format(in_date))
 
 
 def _format_order_by(order_by):

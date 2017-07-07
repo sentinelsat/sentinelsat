@@ -11,7 +11,7 @@ import requests_mock
 
 from sentinelsat import InvalidChecksumError, SentinelAPI, SentinelAPIError, geojson_to_wkt, \
     read_geojson
-from sentinelsat.sentinel import _format_order_by, _format_query_date, _md5_compare, \
+from sentinelsat.sentinel import _format_order_by, format_query_date, _md5_compare, \
     _parse_odata_timestamp, _parse_opensearch_response
 from .shared import FIXTURES_DIR, my_vcr
 
@@ -56,36 +56,36 @@ def raw_products():
 
 @pytest.mark.fast
 def test_format_date():
-    assert _format_query_date(datetime(2015, 1, 1)) == '2015-01-01T00:00:00Z'
-    assert _format_query_date(date(2015, 1, 1)) == '2015-01-01T00:00:00Z'
-    assert _format_query_date('2015-01-01T00:00:00Z') == '2015-01-01T00:00:00Z'
-    assert _format_query_date('20150101') == '2015-01-01T00:00:00Z'
+    assert format_query_date(datetime(2015, 1, 1)) == '2015-01-01T00:00:00Z'
+    assert format_query_date(date(2015, 1, 1)) == '2015-01-01T00:00:00Z'
+    assert format_query_date('2015-01-01T00:00:00Z') == '2015-01-01T00:00:00Z'
+    assert format_query_date('20150101') == '2015-01-01T00:00:00Z'
 
     for date_str in ("NOW", "NOW-1DAY", "NOW-1DAYS", "NOW-500DAY", "NOW-500DAYS",
                      "NOW-2MONTH", "NOW-2MONTHS", "NOW-20MINUTE", "NOW-20MINUTES",
                      "NOW+10HOUR", "2015-01-01T00:00:00Z+1DAY"):
-        assert _format_query_date(date_str) == date_str
+        assert format_query_date(date_str) == date_str
 
     for date_str in ("NOW - 1HOUR", "NOW -   1HOURS", "NOW-1 HOURS", "NOW-1", "NOW-"):
         with pytest.raises(ValueError) as excinfo:
-            _format_query_date(date_str)
+            format_query_date(date_str)
 
 
 @pytest.mark.fast
 def test_format_date():
-    assert _format_query_date(datetime(2015, 1, 1)) == '2015-01-01T00:00:00Z'
-    assert _format_query_date(date(2015, 1, 1)) == '2015-01-01T00:00:00Z'
-    assert _format_query_date('2015-01-01T00:00:00Z') == '2015-01-01T00:00:00Z'
-    assert _format_query_date('20150101') == '2015-01-01T00:00:00Z'
+    assert format_query_date(datetime(2015, 1, 1)) == '2015-01-01T00:00:00Z'
+    assert format_query_date(date(2015, 1, 1)) == '2015-01-01T00:00:00Z'
+    assert format_query_date('2015-01-01T00:00:00Z') == '2015-01-01T00:00:00Z'
+    assert format_query_date('20150101') == '2015-01-01T00:00:00Z'
 
     for date_str in ("NOW", "NOW-1DAY", "NOW-1DAYS", "NOW-500DAY", "NOW-500DAYS",
                      "NOW-2MONTH", "NOW-2MONTHS", "NOW-20MINUTE", "NOW-20MINUTES",
                      "NOW+10HOUR", "2015-01-01T00:00:00Z+1DAY", "NOW+3MONTHS-7DAYS/DAYS"):
-        assert _format_query_date(date_str) == date_str
+        assert format_query_date(date_str) == date_str
 
     for date_str in ("NOW - 1HOUR", "NOW -   1HOURS", "NOW-1 HOURS", "NOW-1", "NOW-"):
         with pytest.raises(ValueError) as excinfo:
-            _format_query_date(date_str)
+            format_query_date(date_str)
 
 
 @pytest.mark.fast
@@ -143,51 +143,47 @@ def test_SentinelAPI_wrong_credentials():
 @my_vcr.use_cassette
 @pytest.mark.fast
 def test_api_query_format():
-    api = SentinelAPI("mock_user", "mock_password")
     wkt = 'POLYGON((0 0,1 1,0 1,0 0))'
 
     now = datetime.now()
-    last_24h = _format_query_date(now - timedelta(hours=24))
-    query = api.format_query(wkt, initial_date=last_24h, end_date=now)
-    assert query == 'beginPosition:[%s TO %s] ' % (last_24h, _format_query_date(now)) + \
+    last_24h = format_query_date(now - timedelta(hours=24))
+    query = SentinelAPI.format_query(wkt, initial_date=last_24h, end_date=now)
+    assert query == 'beginPosition:[%s TO %s] ' % (last_24h, format_query_date(now)) + \
                     'footprint:"Intersects(POLYGON((0 0,1 1,0 1,0 0)))"'
 
-    query = api.format_query(wkt, initial_date=last_24h, producttype='SLC', raw='IW')
-    assert query == 'beginPosition:[%s TO NOW] ' % (_format_query_date(last_24h)) + \
-                    'footprint:"Intersects(POLYGON((0 0,1 1,0 1,0 0)))" ' + \
-                    'producttype:SLC IW'
+    query = SentinelAPI.format_query(wkt, initial_date=last_24h, producttype='SLC', raw='IW')
+    assert query == 'beginPosition:[%s TO NOW] ' % (format_query_date(last_24h)) + \
+                    'producttype:SLC IW footprint:"Intersects(POLYGON((0 0,1 1,0 1,0 0)))"'
 
-    query = api.format_query(wkt, end_date=now, producttype='SLC', raw='IW')
-    assert query == 'footprint:"Intersects(POLYGON((0 0,1 1,0 1,0 0)))" ' + \
-                    'producttype:SLC IW'
+    query = SentinelAPI.format_query(wkt, end_date=now, producttype='SLC', raw='IW')
+    assert query == 'producttype:SLC IW footprint:"Intersects(POLYGON((0 0,1 1,0 1,0 0)))"'
 
-    query = api.format_query(area=None, initial_date=None, end_date=None)
+    query = SentinelAPI.format_query(area=None, initial_date=None, end_date=None)
     assert query == ''
 
-    query = api.format_query()
+    query = SentinelAPI.format_query()
     assert query == ''
 
-    query = api.format_query(raw='test')
+    query = SentinelAPI.format_query(raw='test')
     assert query == 'test'
 
 
 @pytest.mark.fast
 def test_api_query_format_ranges():
-    api = SentinelAPI("mock_user", "mock_password")
-    query = api.format_query(cloudcoverpercentage=(0, 30))
+    query = SentinelAPI.format_query(cloudcoverpercentage=(0, 30))
     assert query == 'cloudcoverpercentage:[0 TO 30]'
 
-    query = api.format_query(cloudcoverpercentage=[0, 30])
+    query = SentinelAPI.format_query(cloudcoverpercentage=[0, 30])
     assert query == 'cloudcoverpercentage:[0 TO 30]'
 
     with pytest.raises(ValueError):
-        api.format_query(cloudcoverpercentage=[])
+        SentinelAPI.format_query(cloudcoverpercentage=[])
 
     with pytest.raises(ValueError):
-        api.format_query(cloudcoverpercentage=[0])
+        SentinelAPI.format_query(cloudcoverpercentage=[0])
 
     with pytest.raises(ValueError):
-        api.format_query(cloudcoverpercentage=[0, 1, 2])
+        SentinelAPI.format_query(cloudcoverpercentage=[0, 1, 2])
 
 
 @my_vcr.use_cassette
