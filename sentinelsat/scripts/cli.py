@@ -82,7 +82,8 @@ def cli():
     help='Maximum cloud cover in percent. (requires --sentinel to be 2 or 3)')
 @click.option(
     '-o', '--order-by', type=str,
-    help="Comma-separated list of keywords to order the result by. Prefix keywords with '-' for descending order.")
+    help="Comma-separated list of keywords to order the result by. "
+         "Prefix keywords with '-' for descending order.")
 @click.option(
     '-l', '--limit', type=int,
     help='Maximum number of results to return. Defaults to no limit.')

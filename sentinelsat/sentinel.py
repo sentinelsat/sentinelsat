@@ -353,7 +353,8 @@ class SentinelAPI:
         Returns
         -------
         product_info : dict
-            Dictionary containing the product's info from get_product_info() as well as the path on disk.
+            Dictionary containing the product's info from get_product_info() as well as
+            the path on disk.
 
         Raises
         ------
@@ -422,8 +423,9 @@ class SentinelAPI:
         File names on the server are used for the downloaded files, e.g.
         "S1A_EW_GRDH_1SDH_20141003T003840_20141003T003920_002658_002F54_4DD1.zip".
 
-        In case of interruptions or other exceptions, downloading will restart from where it left off.
-        Downloading is attempted at most max_attempts times to avoid getting stuck with unrecoverable errors.
+        In case of interruptions or other exceptions, downloading will restart from where it left
+        off. Downloading is attempted at most max_attempts times to avoid getting stuck with
+        unrecoverable errors.
 
         Parameters
         ----------
@@ -445,7 +447,8 @@ class SentinelAPI:
         Returns
         -------
         dict[string, dict]
-            A dictionary containing the return value from download() for each successfully downloaded product.
+            A dictionary containing the return value from download() for each successfully
+            downloaded product.
         set[string]
             The list of products that failed to download.
         """
@@ -730,7 +733,8 @@ def geojson_to_wkt(geojson_obj, feature_number=0, decimals=4):
 
 
 def _check_scihub_response(response, test_json=True):
-    """Check that the response from server has status code 2xx and that the response is valid JSON."""
+    """Check that the response from server has status code 2xx and that the response is valid JSON.
+    """
     try:
         response.raise_for_status()
         if test_json:
@@ -834,7 +838,8 @@ def _parse_opensearch_response(products):
     """Convert a query response to a dictionary.
 
     The resulting dictionary structure is {<product id>: {<property>: <value>}}.
-    The property values are converted to their respective Python types unless `parse_values` is set to `False`.
+    The property values are converted to their respective Python types unless `parse_values`
+    is set to `False`.
     """
 
     converters = {'date': _parse_iso_date, 'int': int, 'long': int, 'float': float, 'double': float}
@@ -866,7 +871,9 @@ def _parse_opensearch_response(products):
                     for p in properties:
                         try:
                             product_dict[p['name']] = f(p['content'])
-                        except KeyError:  # Sentinel-3 has one element 'arr' which violates the name:content convention
+                        except KeyError:
+                            # Sentinel-3 has one element 'arr'
+                            # which violates the name:content convention
                             product_dict[p['name']] = f(p['str'])
     return output
 
@@ -922,7 +929,7 @@ def _download(url, path, session, file_size):
     with closing(session.get(url, stream=True, auth=session.auth, headers=headers)) as r, \
             closing(
                 tqdm(desc="Downloading", total=file_size, unit="B",
-                    unit_scale=True, initial=already_downloaded_bytes)) as progress:
+                     unit_scale=True, initial=already_downloaded_bytes)) as progress:
         _check_scihub_response(r, test_json=False)
         chunk_size = 2 ** 20  # download in 1 MB chunks
         mode = 'ab' if continuing else 'wb'
