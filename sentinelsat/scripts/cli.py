@@ -27,8 +27,8 @@ help='Username')
 '--password', '-p', type=str, required=True,
 help='Password')
 @click.option(
-    '--geojson', type=click.Path(exists=True),
-    help='Search area GeoJSON file.')
+    '-g', '--geometry', type=click.Path(exists=True),
+    help='Search area geometry as GeoJSON file.')
 @click.option(
     '--start', '-s', type=str, default='NOW-1DAY',
     help='Start date of the query in the format YYYYMMDD.')
@@ -37,8 +37,7 @@ help='Password')
     help='End date of the query in the format YYYYMMDD.')
 @click.option(
     '--uuid', type=str,
-    help='Select a specific product UUID instead of a query. Multiple UUIDs can separated by commas.'
-)
+    help='Select a specific product UUID instead of a query. Multiple UUIDs can separated by commas.')
 @click.option(
     '--download', '-d', is_flag=True,
     help='Download all results of the query.')
@@ -48,7 +47,7 @@ help='Password')
     and metadata of the returned products.
     """)
 @click.option(
-    '--path', '-p', type=click.Path(exists=True), default='.',
+    '--path', type=click.Path(exists=True), default='.',
     help='Set the path where the files will be saved.')
 @click.option(
     '--query', '-q', type=str, default=None,
@@ -56,7 +55,7 @@ help='Password')
         keywords with comma. Example: 'producttype=GRD,polarisationmode=HH'.
         """)
 @click.option(
-    '--url', '-u', type=str, default='https://scihub.copernicus.eu/apihub/',
+    '--url', type=str, default='https://scihub.copernicus.eu/apihub/',
     help="""Define another API URL. Default URL is
         'https://scihub.copernicus.eu/apihub/'.
         """)
@@ -83,13 +82,12 @@ help='Password')
     help='Maximum number of results to return. Defaults to no limit.')
 @click.version_option(version=sentinelsat_version, prog_name="sentinelsat")
 
-def cli(
-        user, password, geojson, start, end, id, download, md5, sentinel, producttype,
+def cli(user, password, geometry, start, end, uuid, download, md5, sentinel, producttype,
         instrument, cloud, footprints, path, query, url, order_by, limit):
     """Search for Sentinel products and, optionally, download all the results
     and/or create a geojson file with the search result footprints.
     Beyond your Copernicus Open Access Hub user and password, you must pass a geojson file
-    containing the polygon of the area you want to search for. If you
+    containing the geometry of the area you want to search for or the UUIDs of the products. If you
     don't specify the start and end dates, it will search in the last 24 hours.
     """
 
@@ -116,11 +114,18 @@ def cli(
     if query is not None:
         search_kwargs.update((x.split('=') for x in query.split(',')))
 
-    wkt = geojson_to_wkt(read_geojson(geojson))
-
+    if geometry is not None:
+        wkt = geojson_to_wkt(read_geojson(geometry))
 
     if uuid is not None:
-        products = list(uuid)
+        uuid_list = [x.strip() for x in uuid.split(',')]
+        products = {}
+        for productid in uuid_list:
+            try:
+                products[productid] = api.get_product_odata(productid)
+            except SentinelAPIError as e:
+                if 'Invalid key' in e.msg:
+                    logger.error('No product with ID \'%s\' exists on server', productid)
     else:
         products = api.query(wkt, start, end, order_by=order_by, limit=limit, **search_kwargs)
 
@@ -138,7 +143,12 @@ def cli(
                         outfile.write("%s : %s\n" % (failed_id, products[failed_id]['title']))
     else:
         for product_id, props in products.items():
-            logger.info('Product %s - %s', product_id, props['summary'])
-        logger.info('---')
-        logger.info('%s scenes found with a total size of %.2f GB',
-                    len(products), api.get_products_size(products))
+            if uuid is None:
+                logger.info('Product %s - %s', product_id, props['summary'])
+            else:  # querying uuids has no summary key
+                logger.info('Product %s - %s - %s MB', product_id, props['title'],
+                            round(int(props['size']) / (1024. * 1024.), 2))
+        if uuid is None:
+            logger.info('---')
+            logger.info('%s scenes found with a total size of %.2f GB',
+                        len(products), api.get_products_size(products))
