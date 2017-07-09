@@ -1613,4 +1613,460 @@ interactions:
       Pragma: [no-cache]
       Server: [Apache-Coyote/1.1]
     status: {code: 200, message: OK}
+- request:
+    body: q=beginPosition%3A%5B2015-05-01T00%3A00%3A00Z+TO+2015-07-05T00%3A00%3A00Z%5D+AND+footprint%3A%22Intersects%28POLYGON%28%28-66.2695+-8.0592%2C-66.2695+0.7031%2C-57.3047+0.7031%2C-57.3047+-8.0592%2C-66.2695+-8.0592%29%29%29%22+AND+producttype%3AOCN
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['246']
+      Content-Type: [application/x-www-form-urlencoded]
+      User-Agent: [sentinelsat/0.11]
+    method: POST
+    uri: https://scihub.copernicus.eu/apihub/search?format=json&rows=100&start=0
+  response:
+    body: {string: "{\"feed\": {\n   \"opensearch:Query\": {\n      \"startPage\"\
+        : \"1\",\n      \"role\": \"request\",\n      \"searchTerms\": \"beginPosition:[2015-05-01T00:00:00Z\
+        \ TO 2015-07-05T00:00:00Z] AND footprint:\\\"Intersects(POLYGON((-66.2695\
+        \ -8.0592,-66.2695 0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\\\
+        \" AND producttype:OCN\"\n   },\n   \"xmlns\": \"http://www.w3.org/2005/Atom\"\
+        ,\n   \"author\": {\"name\": \"Sentinels Scientific Data Hub\"},\n   \"subtitle\"\
+        : \"Displaying 0 results. Request done in 1.061 seconds.\",\n   \"link\":\
+        \ [\n      {\n         \"rel\": \"self\",\n         \"href\": \"https://scihub.copernicus.eu/apihub/search?q=beginPosition:[2015-05-01T00:00:00Z\
+        \ TO 2015-07-05T00:00:00Z] AND footprint:\\\"Intersects(POLYGON((-66.2695\
+        \ -8.0592,-66.2695 0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\\\
+        \" AND producttype:OCN&start=0&rows=100\",\n         \"type\": \"application/atom+xml\"\
+        \n      },\n      {\n         \"rel\": \"first\",\n         \"href\": \"https://scihub.copernicus.eu/apihub/search?q=beginPosition:[2015-05-01T00:00:00Z\
+        \ TO 2015-07-05T00:00:00Z] AND footprint:\\\"Intersects(POLYGON((-66.2695\
+        \ -8.0592,-66.2695 0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\\\
+        \" AND producttype:OCN&start=0&rows=100\",\n         \"type\": \"application/atom+xml\"\
+        \n      },\n      {\n         \"rel\": \"last\",\n         \"href\": \"https://scihub.copernicus.eu/apihub/search?q=beginPosition:[2015-05-01T00:00:00Z\
+        \ TO 2015-07-05T00:00:00Z] AND footprint:\\\"Intersects(POLYGON((-66.2695\
+        \ -8.0592,-66.2695 0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\\\
+        \" AND producttype:OCN&start=-1&rows=100\",\n         \"type\": \"application/atom+xml\"\
+        \n      },\n      {\n         \"rel\": \"search\",\n         \"href\": \"\
+        opensearch_description.xml\",\n         \"type\": \"application/opensearchdescription+xml\"\
+        \n      }\n   ],\n   \"opensearch:itemsPerPage\": \"100\",\n   \"id\": \"\
+        https://scihub.copernicus.eu/apihub/search?q=beginPosition:[2015-05-01T00:00:00Z\
+        \ TO 2015-07-05T00:00:00Z] AND footprint:\\\"Intersects(POLYGON((-66.2695\
+        \ -8.0592,-66.2695 0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\\\
+        \" AND producttype:OCN\",\n   \"title\": \"Sentinels Scientific Data Hub search\
+        \ results for: beginPosition:[2015-05-01T00:00:00Z TO 2015-07-05T00:00:00Z]\
+        \ AND footprint:\\\"Intersects(POLYGON((-66.2695 -8.0592,-66.2695 0.7031,-57.3047\
+        \ 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\\\" AND producttype:OCN\",\n\
+        \   \"opensearch:startIndex\": \"0\",\n   \"updated\": \"2017-07-09T10:13:09.863Z\"\
+        ,\n   \"opensearch:totalResults\": \"0\",\n   \"xmlns:opensearch\": \"http://a9.com/-/spec/opensearch/1.1/\"\
+        \n}}"}
+    headers:
+      Content-Type: [application/json]
+      Pragma: [no-cache]
+      Server: [Apache-Coyote/1.1]
+      Vary: [Accept-Encoding]
+      content-length: ['2503']
+    status: {code: 200, message: OK}
+- request:
+    body: q=beginPosition%3A%5B2015-05-01T00%3A00%3A00Z+TO+2015-07-05T00%3A00%3A00Z%5D+AND+footprint%3A%22Intersects%28POLYGON%28%28-66.2695+-8.0592%2C-66.2695+0.7031%2C-57.3047+0.7031%2C-57.3047+-8.0592%2C-66.2695+-8.0592%29%29%29%22+AND+producttype%3AOCN
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['246']
+      Content-Type: [application/x-www-form-urlencoded]
+      User-Agent: [sentinelsat/0.11]
+    method: POST
+    uri: https://scihub.copernicus.eu/apihub/search?format=json&rows=100&start=0
+  response:
+    body: {string: "{\"feed\": {\n   \"opensearch:Query\": {\n      \"startPage\"\
+        : \"1\",\n      \"role\": \"request\",\n      \"searchTerms\": \"beginPosition:[2015-05-01T00:00:00Z\
+        \ TO 2015-07-05T00:00:00Z] AND footprint:\\\"Intersects(POLYGON((-66.2695\
+        \ -8.0592,-66.2695 0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\\\
+        \" AND producttype:OCN\"\n   },\n   \"xmlns\": \"http://www.w3.org/2005/Atom\"\
+        ,\n   \"author\": {\"name\": \"Sentinels Scientific Data Hub\"},\n   \"subtitle\"\
+        : \"Displaying 0 results. Request done in 0 seconds.\",\n   \"link\": [\n\
+        \      {\n         \"rel\": \"self\",\n         \"href\": \"https://scihub.copernicus.eu/apihub/search?q=beginPosition:[2015-05-01T00:00:00Z\
+        \ TO 2015-07-05T00:00:00Z] AND footprint:\\\"Intersects(POLYGON((-66.2695\
+        \ -8.0592,-66.2695 0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\\\
+        \" AND producttype:OCN&start=0&rows=100\",\n         \"type\": \"application/atom+xml\"\
+        \n      },\n      {\n         \"rel\": \"first\",\n         \"href\": \"https://scihub.copernicus.eu/apihub/search?q=beginPosition:[2015-05-01T00:00:00Z\
+        \ TO 2015-07-05T00:00:00Z] AND footprint:\\\"Intersects(POLYGON((-66.2695\
+        \ -8.0592,-66.2695 0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\\\
+        \" AND producttype:OCN&start=0&rows=100\",\n         \"type\": \"application/atom+xml\"\
+        \n      },\n      {\n         \"rel\": \"last\",\n         \"href\": \"https://scihub.copernicus.eu/apihub/search?q=beginPosition:[2015-05-01T00:00:00Z\
+        \ TO 2015-07-05T00:00:00Z] AND footprint:\\\"Intersects(POLYGON((-66.2695\
+        \ -8.0592,-66.2695 0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\\\
+        \" AND producttype:OCN&start=-1&rows=100\",\n         \"type\": \"application/atom+xml\"\
+        \n      },\n      {\n         \"rel\": \"search\",\n         \"href\": \"\
+        opensearch_description.xml\",\n         \"type\": \"application/opensearchdescription+xml\"\
+        \n      }\n   ],\n   \"opensearch:itemsPerPage\": \"100\",\n   \"id\": \"\
+        https://scihub.copernicus.eu/apihub/search?q=beginPosition:[2015-05-01T00:00:00Z\
+        \ TO 2015-07-05T00:00:00Z] AND footprint:\\\"Intersects(POLYGON((-66.2695\
+        \ -8.0592,-66.2695 0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\\\
+        \" AND producttype:OCN\",\n   \"title\": \"Sentinels Scientific Data Hub search\
+        \ results for: beginPosition:[2015-05-01T00:00:00Z TO 2015-07-05T00:00:00Z]\
+        \ AND footprint:\\\"Intersects(POLYGON((-66.2695 -8.0592,-66.2695 0.7031,-57.3047\
+        \ 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\\\" AND producttype:OCN\",\n\
+        \   \"opensearch:startIndex\": \"0\",\n   \"updated\": \"2017-07-09T10:13:10.049Z\"\
+        ,\n   \"opensearch:totalResults\": \"0\",\n   \"xmlns:opensearch\": \"http://a9.com/-/spec/opensearch/1.1/\"\
+        \n}}"}
+    headers:
+      Content-Type: [application/json]
+      Pragma: [no-cache]
+      Server: [Apache-Coyote/1.1]
+      Vary: [Accept-Encoding]
+      content-length: ['2499']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [sentinelsat/0.11]
+    method: GET
+    uri: https://scihub.copernicus.eu/apihub/odata/v1/Products('f30b2a6a-b0c1-49f1-b19e-e10c3cf06101')?$format=json
+  response:
+    body: {string: '{"d":{"__metadata":{"id":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''f30b2a6a-b0c1-49f1-b19e-e10c3cf06101'')","uri":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''f30b2a6a-b0c1-49f1-b19e-e10c3cf06101'')","type":"DHuS.Product","content_type":"application/octet-stream","media_src":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''f30b2a6a-b0c1-49f1-b19e-e10c3cf06101'')/$value","edit_media":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''f30b2a6a-b0c1-49f1-b19e-e10c3cf06101'')/$value"},"Id":"f30b2a6a-b0c1-49f1-b19e-e10c3cf06101","Name":"S1A_WV_OCN__2SSV_20150619T211030_20150619T211738_006447_008883_C1F4","ContentType":"application/octet-stream","ContentLength":"539922","ChildrenNumber":"0","Value":null,"CreationDate":"\/Date(1447805161063)\/","IngestionDate":"\/Date(1447805161063)\/","EvictionDate":null,"ContentDate":{"__metadata":{"type":"DHuS.TimeRange"},"Start":"\/Date(1434748230362)\/","End":"\/Date(1434748658785)\/"},"Checksum":{"__metadata":{"type":"DHuS.Checksum"},"Algorithm":"MD5","Value":"E8C626CD343621C572F30BA1E0BF5AA7"},"ContentGeometry":"<gml:Polygon
+        srsName=\"http://www.opengis.net/gml/srs/epsg.xml#4326\" xmlns:gml=\"http://www.opengis.net/gml\">\n   <gml:outerBoundaryIs>\n      <gml:LinearRing>\n         <gml:coordinates>-53.931267,-32.057858
+        -53.866734,-31.750776 -54.038925,-31.648441 -54.103718,-31.956841 -53.931267,-32.057858</gml:coordinates>\n      </gml:LinearRing>\n   </gml:outerBoundaryIs>\n</gml:Polygon>","Metalink":"<?xml
+        version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><metalink xmlns=\"urn:ietf:params:xml:ns:metalink\"><file
+        name=\"S1A_WV_OCN__2SSV_20150619T211030_20150619T211738_006447_008883_C1F4.zip\"><hash
+        type=\"MD5\">E8C626CD343621C572F30BA1E0BF5AA7</hash><size>539922</size><url>https://scihub.copernicus.eu/apihub/odata/v1/Products(''f30b2a6a-b0c1-49f1-b19e-e10c3cf06101'')/$value</url></file></metalink>","Products":{"__deferred":{"uri":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''f30b2a6a-b0c1-49f1-b19e-e10c3cf06101'')/Products"}},"Nodes":{"__deferred":{"uri":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''f30b2a6a-b0c1-49f1-b19e-e10c3cf06101'')/Nodes"}},"Attributes":{"__deferred":{"uri":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''f30b2a6a-b0c1-49f1-b19e-e10c3cf06101'')/Attributes"}},"Class":{"__deferred":{"uri":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''f30b2a6a-b0c1-49f1-b19e-e10c3cf06101'')/Class"}}}}'}
+    headers:
+      Content-Type: [application/json]
+      DataServiceVersion: ['2.0']
+      Pragma: [no-cache]
+      Server: [Apache-Coyote/1.1]
+      Vary: [Accept-Encoding]
+      content-length: ['2449']
+    status: {code: 200, message: OK}
+- request:
+    body: q=beginPosition%3A%5B2015-05-01T00%3A00%3A00Z+TO+2015-07-05T00%3A00%3A00Z%5D+AND+footprint%3A%22Intersects%28POLYGON%28%28-66.2695+-8.0592%2C-66.2695+0.7031%2C-57.3047+0.7031%2C-57.3047+-8.0592%2C-66.2695+-8.0592%29%29%29%22+AND+producttype%3AOCN
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['246']
+      Content-Type: [application/x-www-form-urlencoded]
+      User-Agent: [sentinelsat/0.11]
+    method: POST
+    uri: https://scihub.copernicus.eu/apihub/search?format=json&rows=100&start=0
+  response:
+    body: {string: "{\"feed\": {\n   \"opensearch:Query\": {\n      \"startPage\"\
+        : \"1\",\n      \"role\": \"request\",\n      \"searchTerms\": \"beginPosition:[2015-05-01T00:00:00Z\
+        \ TO 2015-07-05T00:00:00Z] AND footprint:\\\"Intersects(POLYGON((-66.2695\
+        \ -8.0592,-66.2695 0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\\\
+        \" AND producttype:OCN\"\n   },\n   \"xmlns\": \"http://www.w3.org/2005/Atom\"\
+        ,\n   \"author\": {\"name\": \"Sentinels Scientific Data Hub\"},\n   \"subtitle\"\
+        : \"Displaying 0 results. Request done in 0 seconds.\",\n   \"link\": [\n\
+        \      {\n         \"rel\": \"self\",\n         \"href\": \"https://scihub.copernicus.eu/apihub/search?q=beginPosition:[2015-05-01T00:00:00Z\
+        \ TO 2015-07-05T00:00:00Z] AND footprint:\\\"Intersects(POLYGON((-66.2695\
+        \ -8.0592,-66.2695 0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\\\
+        \" AND producttype:OCN&start=0&rows=100\",\n         \"type\": \"application/atom+xml\"\
+        \n      },\n      {\n         \"rel\": \"first\",\n         \"href\": \"https://scihub.copernicus.eu/apihub/search?q=beginPosition:[2015-05-01T00:00:00Z\
+        \ TO 2015-07-05T00:00:00Z] AND footprint:\\\"Intersects(POLYGON((-66.2695\
+        \ -8.0592,-66.2695 0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\\\
+        \" AND producttype:OCN&start=0&rows=100\",\n         \"type\": \"application/atom+xml\"\
+        \n      },\n      {\n         \"rel\": \"last\",\n         \"href\": \"https://scihub.copernicus.eu/apihub/search?q=beginPosition:[2015-05-01T00:00:00Z\
+        \ TO 2015-07-05T00:00:00Z] AND footprint:\\\"Intersects(POLYGON((-66.2695\
+        \ -8.0592,-66.2695 0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\\\
+        \" AND producttype:OCN&start=-1&rows=100\",\n         \"type\": \"application/atom+xml\"\
+        \n      },\n      {\n         \"rel\": \"search\",\n         \"href\": \"\
+        opensearch_description.xml\",\n         \"type\": \"application/opensearchdescription+xml\"\
+        \n      }\n   ],\n   \"opensearch:itemsPerPage\": \"100\",\n   \"id\": \"\
+        https://scihub.copernicus.eu/apihub/search?q=beginPosition:[2015-05-01T00:00:00Z\
+        \ TO 2015-07-05T00:00:00Z] AND footprint:\\\"Intersects(POLYGON((-66.2695\
+        \ -8.0592,-66.2695 0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\\\
+        \" AND producttype:OCN\",\n   \"title\": \"Sentinels Scientific Data Hub search\
+        \ results for: beginPosition:[2015-05-01T00:00:00Z TO 2015-07-05T00:00:00Z]\
+        \ AND footprint:\\\"Intersects(POLYGON((-66.2695 -8.0592,-66.2695 0.7031,-57.3047\
+        \ 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\\\" AND producttype:OCN\",\n\
+        \   \"opensearch:startIndex\": \"0\",\n   \"updated\": \"2017-07-09T10:13:10.715Z\"\
+        ,\n   \"opensearch:totalResults\": \"0\",\n   \"xmlns:opensearch\": \"http://a9.com/-/spec/opensearch/1.1/\"\
+        \n}}"}
+    headers:
+      Content-Type: [application/json]
+      Pragma: [no-cache]
+      Server: [Apache-Coyote/1.1]
+      Vary: [Accept-Encoding]
+      content-length: ['2499']
+    status: {code: 200, message: OK}
+- request:
+    body: q=beginPosition%3A%5B2015-05-01T00%3A00%3A00Z+TO+2015-07-05T00%3A00%3A00Z%5D+AND+footprint%3A%22Intersects%28POLYGON%28%28-66.2695+-8.0592%2C-66.2695+0.7031%2C-57.3047+0.7031%2C-57.3047+-8.0592%2C-66.2695+-8.0592%29%29%29%22+AND+producttype%3AOCN
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['246']
+      Content-Type: [application/x-www-form-urlencoded]
+      User-Agent: [sentinelsat/0.11]
+    method: POST
+    uri: https://scihub.copernicus.eu/apihub/search?format=json&rows=100&start=0
+  response:
+    body: {string: "{\"feed\": {\n   \"opensearch:Query\": {\n      \"startPage\"\
+        : \"1\",\n      \"role\": \"request\",\n      \"searchTerms\": \"beginPosition:[2015-05-01T00:00:00Z\
+        \ TO 2015-07-05T00:00:00Z] AND footprint:\\\"Intersects(POLYGON((-66.2695\
+        \ -8.0592,-66.2695 0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\\\
+        \" AND producttype:OCN\"\n   },\n   \"xmlns\": \"http://www.w3.org/2005/Atom\"\
+        ,\n   \"author\": {\"name\": \"Sentinels Scientific Data Hub\"},\n   \"subtitle\"\
+        : \"Displaying 0 results. Request done in 0 seconds.\",\n   \"link\": [\n\
+        \      {\n         \"rel\": \"self\",\n         \"href\": \"https://scihub.copernicus.eu/apihub/search?q=beginPosition:[2015-05-01T00:00:00Z\
+        \ TO 2015-07-05T00:00:00Z] AND footprint:\\\"Intersects(POLYGON((-66.2695\
+        \ -8.0592,-66.2695 0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\\\
+        \" AND producttype:OCN&start=0&rows=100\",\n         \"type\": \"application/atom+xml\"\
+        \n      },\n      {\n         \"rel\": \"first\",\n         \"href\": \"https://scihub.copernicus.eu/apihub/search?q=beginPosition:[2015-05-01T00:00:00Z\
+        \ TO 2015-07-05T00:00:00Z] AND footprint:\\\"Intersects(POLYGON((-66.2695\
+        \ -8.0592,-66.2695 0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\\\
+        \" AND producttype:OCN&start=0&rows=100\",\n         \"type\": \"application/atom+xml\"\
+        \n      },\n      {\n         \"rel\": \"last\",\n         \"href\": \"https://scihub.copernicus.eu/apihub/search?q=beginPosition:[2015-05-01T00:00:00Z\
+        \ TO 2015-07-05T00:00:00Z] AND footprint:\\\"Intersects(POLYGON((-66.2695\
+        \ -8.0592,-66.2695 0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\\\
+        \" AND producttype:OCN&start=-1&rows=100\",\n         \"type\": \"application/atom+xml\"\
+        \n      },\n      {\n         \"rel\": \"search\",\n         \"href\": \"\
+        opensearch_description.xml\",\n         \"type\": \"application/opensearchdescription+xml\"\
+        \n      }\n   ],\n   \"opensearch:itemsPerPage\": \"100\",\n   \"id\": \"\
+        https://scihub.copernicus.eu/apihub/search?q=beginPosition:[2015-05-01T00:00:00Z\
+        \ TO 2015-07-05T00:00:00Z] AND footprint:\\\"Intersects(POLYGON((-66.2695\
+        \ -8.0592,-66.2695 0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\\\
+        \" AND producttype:OCN\",\n   \"title\": \"Sentinels Scientific Data Hub search\
+        \ results for: beginPosition:[2015-05-01T00:00:00Z TO 2015-07-05T00:00:00Z]\
+        \ AND footprint:\\\"Intersects(POLYGON((-66.2695 -8.0592,-66.2695 0.7031,-57.3047\
+        \ 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\\\" AND producttype:OCN\",\n\
+        \   \"opensearch:startIndex\": \"0\",\n   \"updated\": \"2017-07-09T10:13:10.900Z\"\
+        ,\n   \"opensearch:totalResults\": \"0\",\n   \"xmlns:opensearch\": \"http://a9.com/-/spec/opensearch/1.1/\"\
+        \n}}"}
+    headers:
+      Content-Type: [application/json]
+      Pragma: [no-cache]
+      Server: [Apache-Coyote/1.1]
+      Vary: [Accept-Encoding]
+      content-length: ['2499']
+    status: {code: 200, message: OK}
+- request:
+    body: q=beginPosition%3A%5B2015-05-01T00%3A00%3A00Z+TO+2015-07-05T00%3A00%3A00Z%5D+AND+footprint%3A%22Intersects%28POLYGON%28%28-66.2695+-8.0592%2C-66.2695+0.7031%2C-57.3047+0.7031%2C-57.3047+-8.0592%2C-66.2695+-8.0592%29%29%29%22+AND+producttype%3AOCN
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['246']
+      Content-Type: [application/x-www-form-urlencoded]
+      User-Agent: [sentinelsat/0.11]
+    method: POST
+    uri: https://scihub.copernicus.eu/apihub/search?format=json&rows=100&start=0
+  response:
+    body: {string: "{\"feed\": {\n   \"opensearch:Query\": {\n      \"startPage\"\
+        : \"1\",\n      \"role\": \"request\",\n      \"searchTerms\": \"beginPosition:[2015-05-01T00:00:00Z\
+        \ TO 2015-07-05T00:00:00Z] AND footprint:\\\"Intersects(POLYGON((-66.2695\
+        \ -8.0592,-66.2695 0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\\\
+        \" AND producttype:OCN\"\n   },\n   \"xmlns\": \"http://www.w3.org/2005/Atom\"\
+        ,\n   \"author\": {\"name\": \"Sentinels Scientific Data Hub\"},\n   \"subtitle\"\
+        : \"Displaying 0 results. Request done in 0.036 seconds.\",\n   \"link\":\
+        \ [\n      {\n         \"rel\": \"self\",\n         \"href\": \"https://scihub.copernicus.eu/apihub/search?q=beginPosition:[2015-05-01T00:00:00Z\
+        \ TO 2015-07-05T00:00:00Z] AND footprint:\\\"Intersects(POLYGON((-66.2695\
+        \ -8.0592,-66.2695 0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\\\
+        \" AND producttype:OCN&start=0&rows=100\",\n         \"type\": \"application/atom+xml\"\
+        \n      },\n      {\n         \"rel\": \"first\",\n         \"href\": \"https://scihub.copernicus.eu/apihub/search?q=beginPosition:[2015-05-01T00:00:00Z\
+        \ TO 2015-07-05T00:00:00Z] AND footprint:\\\"Intersects(POLYGON((-66.2695\
+        \ -8.0592,-66.2695 0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\\\
+        \" AND producttype:OCN&start=0&rows=100\",\n         \"type\": \"application/atom+xml\"\
+        \n      },\n      {\n         \"rel\": \"last\",\n         \"href\": \"https://scihub.copernicus.eu/apihub/search?q=beginPosition:[2015-05-01T00:00:00Z\
+        \ TO 2015-07-05T00:00:00Z] AND footprint:\\\"Intersects(POLYGON((-66.2695\
+        \ -8.0592,-66.2695 0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\\\
+        \" AND producttype:OCN&start=-1&rows=100\",\n         \"type\": \"application/atom+xml\"\
+        \n      },\n      {\n         \"rel\": \"search\",\n         \"href\": \"\
+        opensearch_description.xml\",\n         \"type\": \"application/opensearchdescription+xml\"\
+        \n      }\n   ],\n   \"opensearch:itemsPerPage\": \"100\",\n   \"id\": \"\
+        https://scihub.copernicus.eu/apihub/search?q=beginPosition:[2015-05-01T00:00:00Z\
+        \ TO 2015-07-05T00:00:00Z] AND footprint:\\\"Intersects(POLYGON((-66.2695\
+        \ -8.0592,-66.2695 0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\\\
+        \" AND producttype:OCN\",\n   \"title\": \"Sentinels Scientific Data Hub search\
+        \ results for: beginPosition:[2015-05-01T00:00:00Z TO 2015-07-05T00:00:00Z]\
+        \ AND footprint:\\\"Intersects(POLYGON((-66.2695 -8.0592,-66.2695 0.7031,-57.3047\
+        \ 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\\\" AND producttype:OCN\",\n\
+        \   \"opensearch:startIndex\": \"0\",\n   \"updated\": \"2017-07-09T10:14:13.967Z\"\
+        ,\n   \"opensearch:totalResults\": \"0\",\n   \"xmlns:opensearch\": \"http://a9.com/-/spec/opensearch/1.1/\"\
+        \n}}"}
+    headers:
+      Content-Type: [application/json]
+      Pragma: [no-cache]
+      Server: [Apache-Coyote/1.1]
+      Vary: [Accept-Encoding]
+      content-length: ['2503']
+    status: {code: 200, message: OK}
+- request:
+    body: q=beginPosition%3A%5B2015-05-01T00%3A00%3A00Z+TO+2015-07-05T00%3A00%3A00Z%5D+AND+footprint%3A%22Intersects%28POLYGON%28%28-66.2695+-8.0592%2C-66.2695+0.7031%2C-57.3047+0.7031%2C-57.3047+-8.0592%2C-66.2695+-8.0592%29%29%29%22+AND+producttype%3AOCN
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['246']
+      Content-Type: [application/x-www-form-urlencoded]
+      User-Agent: [sentinelsat/0.11]
+    method: POST
+    uri: https://scihub.copernicus.eu/apihub/search?format=json&rows=100&start=0
+  response:
+    body: {string: "{\"feed\": {\n   \"opensearch:Query\": {\n      \"startPage\"\
+        : \"1\",\n      \"role\": \"request\",\n      \"searchTerms\": \"beginPosition:[2015-05-01T00:00:00Z\
+        \ TO 2015-07-05T00:00:00Z] AND footprint:\\\"Intersects(POLYGON((-66.2695\
+        \ -8.0592,-66.2695 0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\\\
+        \" AND producttype:OCN\"\n   },\n   \"xmlns\": \"http://www.w3.org/2005/Atom\"\
+        ,\n   \"author\": {\"name\": \"Sentinels Scientific Data Hub\"},\n   \"subtitle\"\
+        : \"Displaying 0 results. Request done in 0 seconds.\",\n   \"link\": [\n\
+        \      {\n         \"rel\": \"self\",\n         \"href\": \"https://scihub.copernicus.eu/apihub/search?q=beginPosition:[2015-05-01T00:00:00Z\
+        \ TO 2015-07-05T00:00:00Z] AND footprint:\\\"Intersects(POLYGON((-66.2695\
+        \ -8.0592,-66.2695 0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\\\
+        \" AND producttype:OCN&start=0&rows=100\",\n         \"type\": \"application/atom+xml\"\
+        \n      },\n      {\n         \"rel\": \"first\",\n         \"href\": \"https://scihub.copernicus.eu/apihub/search?q=beginPosition:[2015-05-01T00:00:00Z\
+        \ TO 2015-07-05T00:00:00Z] AND footprint:\\\"Intersects(POLYGON((-66.2695\
+        \ -8.0592,-66.2695 0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\\\
+        \" AND producttype:OCN&start=0&rows=100\",\n         \"type\": \"application/atom+xml\"\
+        \n      },\n      {\n         \"rel\": \"last\",\n         \"href\": \"https://scihub.copernicus.eu/apihub/search?q=beginPosition:[2015-05-01T00:00:00Z\
+        \ TO 2015-07-05T00:00:00Z] AND footprint:\\\"Intersects(POLYGON((-66.2695\
+        \ -8.0592,-66.2695 0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\\\
+        \" AND producttype:OCN&start=-1&rows=100\",\n         \"type\": \"application/atom+xml\"\
+        \n      },\n      {\n         \"rel\": \"search\",\n         \"href\": \"\
+        opensearch_description.xml\",\n         \"type\": \"application/opensearchdescription+xml\"\
+        \n      }\n   ],\n   \"opensearch:itemsPerPage\": \"100\",\n   \"id\": \"\
+        https://scihub.copernicus.eu/apihub/search?q=beginPosition:[2015-05-01T00:00:00Z\
+        \ TO 2015-07-05T00:00:00Z] AND footprint:\\\"Intersects(POLYGON((-66.2695\
+        \ -8.0592,-66.2695 0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\\\
+        \" AND producttype:OCN\",\n   \"title\": \"Sentinels Scientific Data Hub search\
+        \ results for: beginPosition:[2015-05-01T00:00:00Z TO 2015-07-05T00:00:00Z]\
+        \ AND footprint:\\\"Intersects(POLYGON((-66.2695 -8.0592,-66.2695 0.7031,-57.3047\
+        \ 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\\\" AND producttype:OCN\",\n\
+        \   \"opensearch:startIndex\": \"0\",\n   \"updated\": \"2017-07-09T10:14:14.166Z\"\
+        ,\n   \"opensearch:totalResults\": \"0\",\n   \"xmlns:opensearch\": \"http://a9.com/-/spec/opensearch/1.1/\"\
+        \n}}"}
+    headers:
+      Content-Type: [application/json]
+      Pragma: [no-cache]
+      Server: [Apache-Coyote/1.1]
+      Vary: [Accept-Encoding]
+      content-length: ['2499']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [sentinelsat/0.11]
+    method: GET
+    uri: https://scihub.copernicus.eu/apihub/odata/v1/Products('f30b2a6a-b0c1-49f1-b19e-e10c3cf06101')?$format=json
+  response:
+    body: {string: '{"d":{"__metadata":{"id":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''f30b2a6a-b0c1-49f1-b19e-e10c3cf06101'')","uri":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''f30b2a6a-b0c1-49f1-b19e-e10c3cf06101'')","type":"DHuS.Product","content_type":"application/octet-stream","media_src":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''f30b2a6a-b0c1-49f1-b19e-e10c3cf06101'')/$value","edit_media":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''f30b2a6a-b0c1-49f1-b19e-e10c3cf06101'')/$value"},"Id":"f30b2a6a-b0c1-49f1-b19e-e10c3cf06101","Name":"S1A_WV_OCN__2SSV_20150619T211030_20150619T211738_006447_008883_C1F4","ContentType":"application/octet-stream","ContentLength":"539922","ChildrenNumber":"0","Value":null,"CreationDate":"\/Date(1447805161063)\/","IngestionDate":"\/Date(1447805161063)\/","EvictionDate":null,"ContentDate":{"__metadata":{"type":"DHuS.TimeRange"},"Start":"\/Date(1434748230362)\/","End":"\/Date(1434748658785)\/"},"Checksum":{"__metadata":{"type":"DHuS.Checksum"},"Algorithm":"MD5","Value":"E8C626CD343621C572F30BA1E0BF5AA7"},"ContentGeometry":"<gml:Polygon
+        srsName=\"http://www.opengis.net/gml/srs/epsg.xml#4326\" xmlns:gml=\"http://www.opengis.net/gml\">\n   <gml:outerBoundaryIs>\n      <gml:LinearRing>\n         <gml:coordinates>-53.931267,-32.057858
+        -53.866734,-31.750776 -54.038925,-31.648441 -54.103718,-31.956841 -53.931267,-32.057858</gml:coordinates>\n      </gml:LinearRing>\n   </gml:outerBoundaryIs>\n</gml:Polygon>","Metalink":"<?xml
+        version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><metalink xmlns=\"urn:ietf:params:xml:ns:metalink\"><file
+        name=\"S1A_WV_OCN__2SSV_20150619T211030_20150619T211738_006447_008883_C1F4.zip\"><hash
+        type=\"MD5\">E8C626CD343621C572F30BA1E0BF5AA7</hash><size>539922</size><url>https://scihub.copernicus.eu/apihub/odata/v1/Products(''f30b2a6a-b0c1-49f1-b19e-e10c3cf06101'')/$value</url></file></metalink>","Products":{"__deferred":{"uri":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''f30b2a6a-b0c1-49f1-b19e-e10c3cf06101'')/Products"}},"Nodes":{"__deferred":{"uri":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''f30b2a6a-b0c1-49f1-b19e-e10c3cf06101'')/Nodes"}},"Attributes":{"__deferred":{"uri":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''f30b2a6a-b0c1-49f1-b19e-e10c3cf06101'')/Attributes"}},"Class":{"__deferred":{"uri":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''f30b2a6a-b0c1-49f1-b19e-e10c3cf06101'')/Class"}}}}'}
+    headers:
+      Content-Type: [application/json]
+      DataServiceVersion: ['2.0']
+      Pragma: [no-cache]
+      Server: [Apache-Coyote/1.1]
+      Vary: [Accept-Encoding]
+      content-length: ['2449']
+    status: {code: 200, message: OK}
+- request:
+    body: q=beginPosition%3A%5B2015-05-01T00%3A00%3A00Z+TO+2015-07-05T00%3A00%3A00Z%5D+AND+footprint%3A%22Intersects%28POLYGON%28%28-66.2695+-8.0592%2C-66.2695+0.7031%2C-57.3047+0.7031%2C-57.3047+-8.0592%2C-66.2695+-8.0592%29%29%29%22+AND+producttype%3AOCN
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['246']
+      Content-Type: [application/x-www-form-urlencoded]
+      User-Agent: [sentinelsat/0.11]
+    method: POST
+    uri: https://scihub.copernicus.eu/apihub/search?format=json&rows=100&start=0
+  response:
+    body: {string: "{\"feed\": {\n   \"opensearch:Query\": {\n      \"startPage\"\
+        : \"1\",\n      \"role\": \"request\",\n      \"searchTerms\": \"beginPosition:[2015-05-01T00:00:00Z\
+        \ TO 2015-07-05T00:00:00Z] AND footprint:\\\"Intersects(POLYGON((-66.2695\
+        \ -8.0592,-66.2695 0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\\\
+        \" AND producttype:OCN\"\n   },\n   \"xmlns\": \"http://www.w3.org/2005/Atom\"\
+        ,\n   \"author\": {\"name\": \"Sentinels Scientific Data Hub\"},\n   \"subtitle\"\
+        : \"Displaying 0 results. Request done in 0 seconds.\",\n   \"link\": [\n\
+        \      {\n         \"rel\": \"self\",\n         \"href\": \"https://scihub.copernicus.eu/apihub/search?q=beginPosition:[2015-05-01T00:00:00Z\
+        \ TO 2015-07-05T00:00:00Z] AND footprint:\\\"Intersects(POLYGON((-66.2695\
+        \ -8.0592,-66.2695 0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\\\
+        \" AND producttype:OCN&start=0&rows=100\",\n         \"type\": \"application/atom+xml\"\
+        \n      },\n      {\n         \"rel\": \"first\",\n         \"href\": \"https://scihub.copernicus.eu/apihub/search?q=beginPosition:[2015-05-01T00:00:00Z\
+        \ TO 2015-07-05T00:00:00Z] AND footprint:\\\"Intersects(POLYGON((-66.2695\
+        \ -8.0592,-66.2695 0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\\\
+        \" AND producttype:OCN&start=0&rows=100\",\n         \"type\": \"application/atom+xml\"\
+        \n      },\n      {\n         \"rel\": \"last\",\n         \"href\": \"https://scihub.copernicus.eu/apihub/search?q=beginPosition:[2015-05-01T00:00:00Z\
+        \ TO 2015-07-05T00:00:00Z] AND footprint:\\\"Intersects(POLYGON((-66.2695\
+        \ -8.0592,-66.2695 0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\\\
+        \" AND producttype:OCN&start=-1&rows=100\",\n         \"type\": \"application/atom+xml\"\
+        \n      },\n      {\n         \"rel\": \"search\",\n         \"href\": \"\
+        opensearch_description.xml\",\n         \"type\": \"application/opensearchdescription+xml\"\
+        \n      }\n   ],\n   \"opensearch:itemsPerPage\": \"100\",\n   \"id\": \"\
+        https://scihub.copernicus.eu/apihub/search?q=beginPosition:[2015-05-01T00:00:00Z\
+        \ TO 2015-07-05T00:00:00Z] AND footprint:\\\"Intersects(POLYGON((-66.2695\
+        \ -8.0592,-66.2695 0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\\\
+        \" AND producttype:OCN\",\n   \"title\": \"Sentinels Scientific Data Hub search\
+        \ results for: beginPosition:[2015-05-01T00:00:00Z TO 2015-07-05T00:00:00Z]\
+        \ AND footprint:\\\"Intersects(POLYGON((-66.2695 -8.0592,-66.2695 0.7031,-57.3047\
+        \ 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\\\" AND producttype:OCN\",\n\
+        \   \"opensearch:startIndex\": \"0\",\n   \"updated\": \"2017-07-09T10:14:14.581Z\"\
+        ,\n   \"opensearch:totalResults\": \"0\",\n   \"xmlns:opensearch\": \"http://a9.com/-/spec/opensearch/1.1/\"\
+        \n}}"}
+    headers:
+      Content-Type: [application/json]
+      Pragma: [no-cache]
+      Server: [Apache-Coyote/1.1]
+      Vary: [Accept-Encoding]
+      content-length: ['2499']
+    status: {code: 200, message: OK}
+- request:
+    body: q=beginPosition%3A%5B2015-05-01T00%3A00%3A00Z+TO+2015-07-05T00%3A00%3A00Z%5D+AND+footprint%3A%22Intersects%28POLYGON%28%28-66.2695+-8.0592%2C-66.2695+0.7031%2C-57.3047+0.7031%2C-57.3047+-8.0592%2C-66.2695+-8.0592%29%29%29%22+AND+producttype%3AOCN
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['246']
+      Content-Type: [application/x-www-form-urlencoded]
+      User-Agent: [sentinelsat/0.11]
+    method: POST
+    uri: https://scihub.copernicus.eu/apihub/search?format=json&rows=100&start=0
+  response:
+    body: {string: "{\"feed\": {\n   \"opensearch:Query\": {\n      \"startPage\"\
+        : \"1\",\n      \"role\": \"request\",\n      \"searchTerms\": \"beginPosition:[2015-05-01T00:00:00Z\
+        \ TO 2015-07-05T00:00:00Z] AND footprint:\\\"Intersects(POLYGON((-66.2695\
+        \ -8.0592,-66.2695 0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\\\
+        \" AND producttype:OCN\"\n   },\n   \"xmlns\": \"http://www.w3.org/2005/Atom\"\
+        ,\n   \"author\": {\"name\": \"Sentinels Scientific Data Hub\"},\n   \"subtitle\"\
+        : \"Displaying 0 results. Request done in 0 seconds.\",\n   \"link\": [\n\
+        \      {\n         \"rel\": \"self\",\n         \"href\": \"https://scihub.copernicus.eu/apihub/search?q=beginPosition:[2015-05-01T00:00:00Z\
+        \ TO 2015-07-05T00:00:00Z] AND footprint:\\\"Intersects(POLYGON((-66.2695\
+        \ -8.0592,-66.2695 0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\\\
+        \" AND producttype:OCN&start=0&rows=100\",\n         \"type\": \"application/atom+xml\"\
+        \n      },\n      {\n         \"rel\": \"first\",\n         \"href\": \"https://scihub.copernicus.eu/apihub/search?q=beginPosition:[2015-05-01T00:00:00Z\
+        \ TO 2015-07-05T00:00:00Z] AND footprint:\\\"Intersects(POLYGON((-66.2695\
+        \ -8.0592,-66.2695 0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\\\
+        \" AND producttype:OCN&start=0&rows=100\",\n         \"type\": \"application/atom+xml\"\
+        \n      },\n      {\n         \"rel\": \"last\",\n         \"href\": \"https://scihub.copernicus.eu/apihub/search?q=beginPosition:[2015-05-01T00:00:00Z\
+        \ TO 2015-07-05T00:00:00Z] AND footprint:\\\"Intersects(POLYGON((-66.2695\
+        \ -8.0592,-66.2695 0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\\\
+        \" AND producttype:OCN&start=-1&rows=100\",\n         \"type\": \"application/atom+xml\"\
+        \n      },\n      {\n         \"rel\": \"search\",\n         \"href\": \"\
+        opensearch_description.xml\",\n         \"type\": \"application/opensearchdescription+xml\"\
+        \n      }\n   ],\n   \"opensearch:itemsPerPage\": \"100\",\n   \"id\": \"\
+        https://scihub.copernicus.eu/apihub/search?q=beginPosition:[2015-05-01T00:00:00Z\
+        \ TO 2015-07-05T00:00:00Z] AND footprint:\\\"Intersects(POLYGON((-66.2695\
+        \ -8.0592,-66.2695 0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\\\
+        \" AND producttype:OCN\",\n   \"title\": \"Sentinels Scientific Data Hub search\
+        \ results for: beginPosition:[2015-05-01T00:00:00Z TO 2015-07-05T00:00:00Z]\
+        \ AND footprint:\\\"Intersects(POLYGON((-66.2695 -8.0592,-66.2695 0.7031,-57.3047\
+        \ 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\\\" AND producttype:OCN\",\n\
+        \   \"opensearch:startIndex\": \"0\",\n   \"updated\": \"2017-07-09T10:14:14.801Z\"\
+        ,\n   \"opensearch:totalResults\": \"0\",\n   \"xmlns:opensearch\": \"http://a9.com/-/spec/opensearch/1.1/\"\
+        \n}}"}
+    headers:
+      Content-Type: [application/json]
+      Pragma: [no-cache]
+      Server: [Apache-Coyote/1.1]
+      Vary: [Accept-Encoding]
+      content-length: ['2499']
+    status: {code: 200, message: OK}
 version: 1
