@@ -1,4 +1,4 @@
-from os import environ
+from os import environ, path
 import re
 
 import pytest
@@ -20,9 +20,9 @@ def test_cli():
     runner = CliRunner()
     result = runner.invoke(
         cli,
-        ['search'] +
-        _api_auth +
-        [FIXTURES_DIR + '/map.geojson'],
+        ['--user', _api_auth[0],
+         '--password', _api_auth[1],
+         '--geometry', path.join(FIXTURES_DIR, 'map.geojson')],
         catch_exceptions=False
     )
 
@@ -30,9 +30,9 @@ def test_cli():
 
     result = runner.invoke(
         cli,
-        ['search'] +
-        _api_auth +
-        [FIXTURES_DIR + '/map.geojson',
+        ['--user', _api_auth[0],
+         '--password', _api_auth[1],
+         '--geometry', path.join(FIXTURES_DIR, 'map.geojson'),
          '--url', 'https://scihub.copernicus.eu/dhus/'],
         catch_exceptions=False
     )
@@ -40,9 +40,9 @@ def test_cli():
 
     result = runner.invoke(
         cli,
-        ['search'] +
-        _api_auth +
-        [FIXTURES_DIR + '/map.geojson',
+        ['--user', _api_auth[0],
+         '--password', _api_auth[1],
+         '--geometry', path.join(FIXTURES_DIR, 'map.geojson'),
          '-q', 'producttype=GRD,polarisationmode=HH'],
         catch_exceptions=False
     )
@@ -56,9 +56,9 @@ def test_returned_filesize():
 
     result = runner.invoke(
         cli,
-        ['search'] +
-        _api_auth +
-        [FIXTURES_DIR + '/map.geojson',
+        ['--user', _api_auth[0],
+         '--password', _api_auth[1],
+         '--geometry', path.join(FIXTURES_DIR, 'map.geojson'),
          '--url', 'https://scihub.copernicus.eu/dhus/',
          '-s', '20141205',
          '-e', '20141208',
@@ -70,9 +70,9 @@ def test_returned_filesize():
 
     result = runner.invoke(
         cli,
-        ['search'] +
-        _api_auth +
-        [FIXTURES_DIR + '/map.geojson',
+        ['--user', _api_auth[0],
+         '--password', _api_auth[1],
+         '--geometry', path.join(FIXTURES_DIR, 'map.geojson'),
          '--url', 'https://scihub.copernicus.eu/dhus/',
          '-s', '20140101',
          '-e', '20141231',
@@ -90,9 +90,9 @@ def test_cloud_flag_url():
     runner = CliRunner()
     result = runner.invoke(
         cli,
-        ['search'] +
-        _api_auth +
-        [FIXTURES_DIR + '/map.geojson',
+        ['--user', _api_auth[0],
+         '--password', _api_auth[1],
+         '--geometry', path.join(FIXTURES_DIR, 'map.geojson'),
          '--url', 'https://scihub.copernicus.eu/apihub/',
          '-s', '20151219',
          '-e', '20151228',
@@ -113,9 +113,9 @@ def test_order_by_flag():
     runner = CliRunner()
     result = runner.invoke(
         cli,
-        ['search'] +
-        _api_auth +
-        [FIXTURES_DIR + '/map.geojson',
+        ['--user', _api_auth[0],
+         '--password', _api_auth[1],
+         '--geometry', path.join(FIXTURES_DIR, 'map.geojson'),
          '--url', 'https://scihub.copernicus.eu/apihub/',
          '-s', '20151219',
          '-e', '20151228',
@@ -134,9 +134,9 @@ def test_sentinel1_flag():
     runner = CliRunner()
     result = runner.invoke(
         cli,
-        ['search'] +
-        _api_auth +
-        [FIXTURES_DIR + '/map.geojson',
+        ['--user', _api_auth[0],
+         '--password', _api_auth[1],
+         '--geometry', path.join(FIXTURES_DIR, 'map.geojson'),
          '--url', 'https://scihub.copernicus.eu/apihub/',
          '-s', '20151219',
          '-e', '20151228',
@@ -154,9 +154,9 @@ def test_sentinel2_flag():
     runner = CliRunner()
     result = runner.invoke(
         cli,
-        ['search'] +
-        _api_auth +
-        [FIXTURES_DIR + '/map.geojson',
+        ['--user', _api_auth[0],
+         '--password', _api_auth[1],
+         '--geometry', path.join(FIXTURES_DIR, 'map.geojson'),
          '--url', 'https://scihub.copernicus.eu/apihub/',
          '-s', '20151219',
          '-e', '20151228',
@@ -175,9 +175,9 @@ def test_sentinel3_flag():
     runner = CliRunner()
     result = runner.invoke(
         cli,
-        ['search'] +
-        ['s3guest', 's3guest'] +
-        [FIXTURES_DIR + '/map.geojson',
+        ['--user', 's3guest',
+         '--password', 's3guest',
+         '--geometry', path.join(FIXTURES_DIR, 'map.geojson'),
          '--url', 'https://scihub.copernicus.eu/s3/',
          '-s', '20161201',
          '-e', '20161202',
@@ -195,9 +195,9 @@ def test_product_flag():
     runner = CliRunner()
     result = runner.invoke(
         cli,
-        ['search'] +
-        _api_auth +
-        [FIXTURES_DIR + '/map.geojson',
+        ['--user', _api_auth[0],
+         '--password', _api_auth[1],
+         '--geometry', path.join(FIXTURES_DIR, 'map.geojson'),
          '--url', 'https://scihub.copernicus.eu/apihub/',
          '-s', '20161201',
          '-e', '20161202',
@@ -216,9 +216,9 @@ def test_instrument_flag():
     runner = CliRunner()
     result = runner.invoke(
         cli,
-        ['search'] +
-        ['s3guest', 's3guest'] +
-        [FIXTURES_DIR + '/map.geojson',
+        ['--user', 's3guest',
+         '--password', 's3guest',
+         '--geometry', path.join(FIXTURES_DIR, 'map.geojson'),
          '--url', 'https://scihub.copernicus.eu/s3/',
          '-s', '20161201',
          '-e', '20161202',
@@ -237,9 +237,9 @@ def test_option_hierarchy():
     runner = CliRunner()
     result = runner.invoke(
         cli,
-        ['search'] +
-        _api_auth +
-        [FIXTURES_DIR + '/map.geojson',
+        ['--user', _api_auth[0],
+         '--password', _api_auth[1],
+         '--geometry', path.join(FIXTURES_DIR, 'map.geojson'),
          '--url', 'https://scihub.copernicus.eu/apihub/',
          '-s', '20161201',
          '-e', '20161202',
@@ -260,9 +260,9 @@ def test_limit_flag():
     limit = 15
     result = runner.invoke(
         cli,
-        ['search'] +
-        _api_auth +
-        [FIXTURES_DIR + '/map.geojson',
+        ['--user', _api_auth[0],
+         '--password', _api_auth[1],
+         '--geometry', path.join(FIXTURES_DIR, 'map.geojson'),
          '--url', 'https://scihub.copernicus.eu/apihub/',
          '-s', '20161201',
          '-e', '20161230',
@@ -279,9 +279,9 @@ def test_footprints_cli(tmpdir):
     runner = CliRunner()
     result = runner.invoke(
         cli,
-        ['search'] +
-        _api_auth +
-        [FIXTURES_DIR + '/map.geojson',
+        ['--user', _api_auth[0],
+         '--password', _api_auth[1],
+         '--geometry', path.join(FIXTURES_DIR, 'map.geojson'),
          '-s', '20151219',
          '-e', '20151228',
          '--sentinel2',
@@ -297,7 +297,11 @@ def test_download_single(tmpdir):
     runner = CliRunner()
 
     product_id = '5618ce1b-923b-4df2-81d9-50b53e5aded9'
-    command = ['download'] + _api_auth + [product_id, '--path', str(tmpdir)]
+    command = ['--user', _api_auth[0],
+        '--password', _api_auth[1],
+        '--uuid', product_id,
+        '--download',
+        '--path', str(tmpdir)]
     result = runner.invoke(
         cli,
         command,
@@ -353,8 +357,9 @@ def test_download_single(tmpdir):
 def test_download_many(tmpdir):
     runner = CliRunner()
 
-    command = ['search'] + _api_auth + [
-        FIXTURES_DIR + '/map_download.geojson',
+    command = ['--user', _api_auth[0],
+        '--password', _api_auth[1],
+        '--geometry', path.join(FIXTURES_DIR, 'map.geojson'),
         '-s', '20150501',
         '-e', '20150705',
         '-q', 'producttype=OCN',
@@ -424,7 +429,12 @@ def test_download_many(tmpdir):
 def test_download_invalid_id(tmpdir):
     runner = CliRunner()
     product_id = 'f30b2a6a-b0c1-49f1-xxxx-e10c3cf06101'
-    command = ['download'] + _api_auth + [product_id, '--path', str(tmpdir)]
+    command = ['--user', _api_auth[0],
+        '--password', _api_auth[1],
+        '--uuid', product_id,
+        '--download',
+        '--path', str(tmpdir)]
+
     result = runner.invoke(
         cli,
         command,
