@@ -359,10 +359,8 @@ def test_download_many(tmpdir):
 
     command = ['--user', _api_auth[0],
         '--password', _api_auth[1],
-        '--geometry', path.join(FIXTURES_DIR, 'map.geojson'),
-        '-s', '20150501',
-        '-e', '20150705',
-        '-q', 'producttype=OCN',
+        '--uuid',
+        '1f62a176-c980-41dc-b3a1-c735d660c910,5618ce1b-923b-4df2-81d9-50b53e5aded9,d8340134-878f-4891-ba4f-4df54f1e3ab4',
         '--download',
         '--path', str(tmpdir)]
 
@@ -386,7 +384,7 @@ def test_download_many(tmpdir):
         f.remove()
 
     # Prepare a response with an invalid checksum
-    product_id = 'f30b2a6a-b0c1-49f1-b19e-e10c3cf06101'
+    product_id = 'd8340134-878f-4891-ba4f-4df54f1e3ab4'
     url = "https://scihub.copernicus.eu/apihub/odata/v1/Products('%s')?$format=json" % product_id
     api = SentinelAPI(*_api_auth)
     json = api.session.get(url).json()
@@ -428,7 +426,7 @@ def test_download_many(tmpdir):
 @pytest.mark.scihub
 def test_download_invalid_id(tmpdir):
     runner = CliRunner()
-    product_id = 'f30b2a6a-b0c1-49f1-xxxx-e10c3cf06101'
+    product_id = 'f30b2a6a-b0c1-49f1-INVALID-e10c3cf06101'
     command = ['--user', _api_auth[0],
         '--password', _api_auth[1],
         '--uuid', product_id,
