@@ -39,7 +39,8 @@ setup(name='sentinelsat',
               'shapely',
               'pytest',
               'requests-mock',
-              'vcrpy'
+              'vcrpy',
+              'rstcheck'
           ],
           'docs': [
               'sphinx',

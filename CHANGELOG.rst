@@ -4,12 +4,12 @@ Change Log
 All notable changes to ``sentinelsat`` will be listed here.
 
 [0.11.1] – 2017-XX-XX
--------------------
+---------------------
 
 Added
 ~~~~~
 * contribution guidelines
-
+* tests for validity of documentation and RST files
 
 [0.11] – 2017-06-01
 -------------------
