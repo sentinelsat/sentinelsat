@@ -71,15 +71,15 @@ def _set_logger_handler(level='INFO'):
     '--path', type=click.Path(exists=True), default='.',
     help='Set the path where the files will be saved.')
 @click.option(
-    '--footprints', is_flag=True,
-    help="""Create a geojson file search_footprints.geojson with footprints
-    and metadata of the returned products.
-    """)
-@click.option(
     '--query', '-q', type=str, default=None,
     help="""Extra search keywords you want to use in the query. Separate
         keywords with comma. Example: 'producttype=GRD,polarisationmode=HH'.
         """)
+@click.option(
+    '--footprints', is_flag=True,
+    help="""Create a geojson file search_footprints.geojson with footprints
+    and metadata of the returned products.
+    """)
 @click.option(
     '--md5', is_flag=True,
     help='Verify the MD5 checksum and write corrupt product ids and filenames to corrupt_scenes.txt.')

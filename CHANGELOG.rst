@@ -3,13 +3,18 @@ Change Log
 
 All notable changes to ``sentinelsat`` will be listed here.
 
-[0.11.1] – 2017-XX-XX
--------------------
+[0.XX.X] – 2017-XX-XX
+---------------------
 
 Added
 ~~~~~
 * contribution guidelines
+* CLI option to query by uuid or filename
 
+Changed
+~~~~~~~
+* merged CLI subcommands ``sentinel search`` and ``sentinel download`` into ``sentinelsat``
+* CLI uses keywords instead of positional arguments, i.e. ``--user <username>``
 
 [0.11] – 2017-06-01
 -------------------
