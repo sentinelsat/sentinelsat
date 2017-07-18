@@ -21,14 +21,16 @@ def _set_logger_handler(level='INFO'):
 
 @click.command()
 @click.option(
-'--user', '-u', type=str, required=True,
-help='Username')
+    '--user', '-u', type=str, required=True,
+    help='Username')
 @click.option(
-'--password', '-p', type=str, required=True,
-help='Password')
+    '--password', '-p', type=str, required=True,
+    help='Password')
 @click.option(
-    '-g', '--geometry', type=click.Path(exists=True),
-    help='Search area geometry as GeoJSON file.')
+    '--url', type=str, default='https://scihub.copernicus.eu/apihub/',
+    help="""Define API URL. Default URL is
+        'https://scihub.copernicus.eu/apihub/'.
+        """)
 @click.option(
     '--start', '-s', type=str, default='NOW-1DAY',
     help='Start date of the query in the format YYYYMMDD.')
@@ -36,32 +38,14 @@ help='Password')
     '--end', '-e', type=str, default='NOW',
     help='End date of the query in the format YYYYMMDD.')
 @click.option(
+    '--geometry', '-g', type=click.Path(exists=True),
+    help='Search area geometry as GeoJSON file.')
+@click.option(
     '--uuid', type=str,
     help='Select a specific product UUID instead of a query. Multiple UUIDs can separated by commas.')
 @click.option(
-    '--download', '-d', is_flag=True,
-    help='Download all results of the query.')
-@click.option(
-    '--footprints', '-f', is_flag=True,
-    help="""Create a geojson file search_footprints.geojson with footprints
-    and metadata of the returned products.
-    """)
-@click.option(
-    '--path', type=click.Path(exists=True), default='.',
-    help='Set the path where the files will be saved.')
-@click.option(
-    '--query', '-q', type=str, default=None,
-    help="""Extra search keywords you want to use in the query. Separate
-        keywords with comma. Example: 'producttype=GRD,polarisationmode=HH'.
-        """)
-@click.option(
-    '--url', type=str, default='https://scihub.copernicus.eu/apihub/',
-    help="""Define another API URL. Default URL is
-        'https://scihub.copernicus.eu/apihub/'.
-        """)
-@click.option(
-    '--md5', is_flag=True,
-    help='Verify the MD5 checksum and write corrupt product ids and filenames to corrupt_scenes.txt.')
+    '--name', type=str,
+    help='Select specific product(s) by filename. Supports wildcards.')
 @click.option(
     '--sentinel', type=click.Choice(['1', '2', '3']),
     help='Limit search to a Sentinel satellite (constellation)')
@@ -80,9 +64,28 @@ help='Password')
 @click.option(
     '-l', '--limit', type=int,
     help='Maximum number of results to return. Defaults to no limit.')
+@click.option(
+    '--download', '-d', is_flag=True,
+    help='Download all results of the query.')
+@click.option(
+    '--path', type=click.Path(exists=True), default='.',
+    help='Set the path where the files will be saved.')
+@click.option(
+    '--footprints', is_flag=True,
+    help="""Create a geojson file search_footprints.geojson with footprints
+    and metadata of the returned products.
+    """)
+@click.option(
+    '--query', '-q', type=str, default=None,
+    help="""Extra search keywords you want to use in the query. Separate
+        keywords with comma. Example: 'producttype=GRD,polarisationmode=HH'.
+        """)
+@click.option(
+    '--md5', is_flag=True,
+    help='Verify the MD5 checksum and write corrupt product ids and filenames to corrupt_scenes.txt.')
 @click.version_option(version=sentinelsat_version, prog_name="sentinelsat")
 
-def cli(user, password, geometry, start, end, uuid, download, md5, sentinel, producttype,
+def cli(user, password, geometry, start, end, uuid, name, download, md5, sentinel, producttype,
         instrument, cloud, footprints, path, query, url, order_by, limit):
     """Search for Sentinel products and, optionally, download all the results
     and/or create a geojson file with the search result footprints.
@@ -126,6 +129,9 @@ def cli(user, password, geometry, start, end, uuid, download, md5, sentinel, pro
             except SentinelAPIError as e:
                 if 'Invalid key' in e.msg:
                     logger.error('No product with ID \'%s\' exists on server', productid)
+    elif name is not None:
+        search_kwargs["identifier"] = name
+        products = api.query(None, None, None, order_by, limit, **search_kwargs)
     else:
         products = api.query(wkt, start, end, order_by=order_by, limit=limit, **search_kwargs)
 

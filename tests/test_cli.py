@@ -87,17 +87,18 @@ def test_returned_filesize():
 @my_vcr.use_cassette
 @pytest.mark.scihub
 def test_cloud_flag_url():
+    command = ['--user', _api_auth[0],
+     '--password', _api_auth[1],
+     '--geometry', path.join(FIXTURES_DIR, 'map.geojson'),
+     '--url', 'https://scihub.copernicus.eu/apihub/',
+     '-s', '20151219',
+     '-e', '20151228',
+     '-c', '10']
+
     runner = CliRunner()
     result = runner.invoke(
         cli,
-        ['--user', _api_auth[0],
-         '--password', _api_auth[1],
-         '--geometry', path.join(FIXTURES_DIR, 'map.geojson'),
-         '--url', 'https://scihub.copernicus.eu/apihub/',
-         '-s', '20151219',
-         '-e', '20151228',
-         '-c', '10',
-         '--sentinel', '2'],
+        command + ['--sentinel', '2'],
         catch_exceptions=False
     )
 
@@ -106,6 +107,13 @@ def test_cloud_flag_url():
     # For order-by test
     assert '0848f6b8-5730-4759-850e-fc9945d42296' not in re.findall("^Product .+$", result.output, re.M)[1]
 
+
+    with pytest.raises(ValueError) as excinfo:
+        result = runner.invoke(
+            cli,
+            command + ['--sentinel', '1'],
+            catch_exceptions=False
+        )
 
 @my_vcr.use_cassette
 @pytest.mark.scihub
@@ -232,6 +240,58 @@ def test_instrument_flag():
 
 @my_vcr.use_cassette
 @pytest.mark.scihub
+def test_limit_flag():
+    runner = CliRunner()
+    limit = 15
+    result = runner.invoke(
+        cli,
+        ['--user', _api_auth[0],
+         '--password', _api_auth[1],
+         '--geometry', path.join(FIXTURES_DIR, 'map.geojson'),
+         '--url', 'https://scihub.copernicus.eu/apihub/',
+         '-s', '20161201',
+         '-e', '20161230',
+         '--limit', str(limit)],
+        catch_exceptions=False
+    )
+    num_products = len(re.findall("^Product ", result.output, re.MULTILINE))
+    assert num_products == limit
+
+
+@my_vcr.use_cassette
+@pytest.mark.scihub
+def test_uuid_search():
+    runner = CliRunner()
+    result = runner.invoke(
+        cli,
+        ['--user', _api_auth[0],
+         '--password', _api_auth[1],
+         '--uuid', 'd8340134-878f-4891-ba4f-4df54f1e3ab4'],
+        catch_exceptions=False
+    )
+
+    expected = "Product d8340134-878f-4891-ba4f-4df54f1e3ab4 - S1A_WV_OCN__2SSV_20150526T211029_20150526T211737_006097_007E78_134A - 0.12 MB"
+    assert re.findall("^Product .+$", result.output, re.M)[0] == expected
+
+
+@my_vcr.use_cassette
+@pytest.mark.scihub
+def test_name_search():
+    runner = CliRunner()
+    result = runner.invoke(
+        cli,
+        ['--user', _api_auth[0],
+         '--password', _api_auth[1],
+         '--name', 'S1A_WV_OCN__2SSV_20150526T211029_20150526T211737_006097_007E78_134A'],
+        catch_exceptions=False
+    )
+
+    expected = "Product d8340134-878f-4891-ba4f-4df54f1e3ab4 - Date: 2015-05-26T21:10:28.984Z, Instrument: SAR-C SAR, Mode: VV, Satellite: Sentinel-1, Size: 10.65 KB"
+    assert re.findall("^Product .+$", result.output, re.M)[0] == expected
+
+
+@my_vcr.use_cassette
+@pytest.mark.scihub
 def test_option_hierarchy():
     # expected hierarchy is producttype > instrument > plattform from most to least specific
     runner = CliRunner()
@@ -251,26 +311,6 @@ def test_option_hierarchy():
 
     expected = "Product 0e66b563-78d9-4480-9c3d-b64a60cf1a9f - Date: 2016-12-01T14:10:42Z, Instrument: MSI, Mode: , Satellite: Sentinel-2, Size: 526.15 MB"
     assert re.findall("^Product .+$", result.output, re.M)[1] == expected
-
-
-@my_vcr.use_cassette
-@pytest.mark.scihub
-def test_limit_flag():
-    runner = CliRunner()
-    limit = 15
-    result = runner.invoke(
-        cli,
-        ['--user', _api_auth[0],
-         '--password', _api_auth[1],
-         '--geometry', path.join(FIXTURES_DIR, 'map.geojson'),
-         '--url', 'https://scihub.copernicus.eu/apihub/',
-         '-s', '20161201',
-         '-e', '20161230',
-         '--limit', str(limit)],
-        catch_exceptions=False
-    )
-    num_products = len(re.findall("^Product ", result.output, re.MULTILINE))
-    assert num_products == limit
 
 
 @my_vcr.use_cassette
