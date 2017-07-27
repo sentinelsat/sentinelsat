@@ -31,6 +31,8 @@ Changed
   Similar functionality has been provided in the new ``check_files()`` function.
 * Show a more informative error message if a too long query string was likely the cause
   of the query failing on the server side.
+* Added a progressbar to long-running queries.
+* Progressbars can be customized by modifying the ``progressbar_opts`` attribute or by overriding the ``_tqdm()`` method.
 * Tests can now be run from any directory rather than the repository root.
 * Made the query string slightly more compact by getting rid of unnecessary 'AND' operators, spaces and parentheses.
 * Reduced the size of the VCR.py cassettes used in unit tests.
