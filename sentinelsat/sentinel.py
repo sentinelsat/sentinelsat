@@ -5,6 +5,7 @@ import hashlib
 import logging
 import re
 import shutil
+import warnings
 import xml.etree.ElementTree as ET
 from collections import OrderedDict, defaultdict
 from contextlib import closing
@@ -183,6 +184,38 @@ class SentinelAPI:
         # plus symbols would be interpreted as spaces without escaping
         query = query.replace('+', '%2B')
         return query
+
+    def query_raw(self, query, order_by=None, limit=None, offset=0):
+        """Do a full-text query on the OpenSearch API using the format specified in
+           https://scihub.copernicus.eu/twiki/do/view/SciHubUserGuide/3FullTextSearch
+
+        DEPRECATED: use query(raw=...) instead. This method will be removed in the next major release.
+
+        Parameters
+        ----------
+        query : str
+            The query string.
+        order_by: str, optional
+            A comma-separated list of fields to order by (on server side).
+            Prefix the field name by '+' or '-' to sort in ascending or descending order, respectively.
+            Ascending order is used, if prefix is omitted.
+            Example: "cloudcoverpercentage, -beginposition".
+        limit: int, optional
+            Maximum number of products returned. Defaults to no limit.
+        offset: int, optional
+            The number of results to skip. Defaults to 0.
+
+        Returns
+        -------
+        dict[string, dict]
+            Products returned by the query as a dictionary with the product ID as the key and
+            the product's attributes (a dictionary) as the value.
+        """
+        warnings.warn(
+            "query_raw() has been merged with query(). use query(raw=...) instead.",
+            PendingDeprecationWarning
+        )
+        return self.query(raw=query, order_by=order_by, limit=limit, offset=offset)
 
     def count(self, *args, **kwargs):
         """Get the number of products matching a query.
