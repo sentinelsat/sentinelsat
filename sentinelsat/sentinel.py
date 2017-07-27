@@ -45,6 +45,8 @@ class SentinelAPI:
     page_size : int
         number of results per query page
         current value: 100 (maximum allowed on ApiHub)
+    progressbar_opts : dict
+        Progressbar options passed to tqdm(), e.g. to set {'disable': True}
     """
 
     logger = logging.getLogger('sentinelsat.SentinelAPI')
@@ -57,7 +59,6 @@ class SentinelAPI:
         self.page_size = 100
         self.user_agent = 'sentinelsat/' + sentinelsat_version
         self.session.headers['User-Agent'] = self.user_agent
-        # Can be modified by the user, e.g. to set to {'disable': True}
         self.progressbar_opts = {}
         # For unit tests
         self._last_query = None
