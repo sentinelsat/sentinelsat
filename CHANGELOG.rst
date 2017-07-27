@@ -26,6 +26,8 @@ Added
 
 Changed
 ~~~~~~~
+* Merged CLI subcommands ``sentinel search`` and ``sentinel download`` into ``sentinelsat``.
+* CLI uses keywords instead of positional arguments, i.e. ``--user <username>``.
 * Files being downloaded now include an '.incomplete' suffix in their name until the download is finished.
 * Removed ``check_existing`` option from ``download()`` and ``download_all()``.
   Similar functionality has been provided in the new ``check_files()`` function.
@@ -42,10 +44,6 @@ Fixed
 * Show the correct progress value in the download progressbar when continuing from an incomplete file. (Thanks @gbaier!)
 * Added a workaround for a server-side bug when plus symbols are used in a query.
 
-Changed
-~~~~~~~
-* merged CLI subcommands ``sentinel search`` and ``sentinel download`` into ``sentinelsat``
-* CLI uses keywords instead of positional arguments, i.e. ``--user <username>``
 
 [0.11] – 2017-06-01
 -------------------
