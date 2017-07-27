@@ -27,7 +27,7 @@ setup(name='sentinelsat',
       author="Wille Marcel",
       author_email='wille@wille.blog.br',
       url='https://github.com/sentinelsat/sentinelsat',
-      license='GPLv3+',
+      license='AGPL-3.0',
       packages=find_packages(exclude=['ez_setup', 'examples', 'tests']),
       include_package_data=True,
       zip_safe=False,
@@ -39,7 +39,8 @@ setup(name='sentinelsat',
               'shapely',
               'pytest',
               'requests-mock',
-              'vcrpy'
+              'vcrpy',
+              'rstcheck'
           ],
           'docs': [
               'sphinx',
