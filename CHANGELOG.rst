@@ -3,15 +3,17 @@ Change Log
 
 All notable changes to ``sentinelsat`` will be listed here.
 
-[0.11.1] – 2017-XX-XX
+
+[0.12.0] – 2017-XX-XX
 ---------------------
 
 Added
 ~~~~~
+* CLI option to query by UUID (``--uuid``) or filename (``--name``).
 * Added ``order_by`` option to ``query()`` which controls the fields by which the products are sorted on the
-  server side before being returned. Added ``-o/--order-by`` to the CLI.
+  server side before being returned. ``-o/--order-by`` on the CLI.
 * Added the option to ``limit`` the number of products returned by ``query()`` and to set the number
-  of products to skip via ``offset``. ``-l/--limit`` can be used on the CLI to limit the number of returned products.
+  of products to skip via ``offset``. ``-l/--limit`` on the CLI.
 * Option to change the type of spatial relation for the AOI in ``query()``.
   The choices are 'Interesects', 'Contains' and 'IsWithin'.
 * Added ``count()`` which quickly returns the number of products matching a query on the server
@@ -38,6 +40,10 @@ Fixed
 * Show the correct progress value in the download progressbar when continuing from an incomplete file. (Thanks @gbaier!)
 * Added a workaround for a server-side bug when plus symbols are used in a query.
 
+Changed
+~~~~~~~
+* merged CLI subcommands ``sentinel search`` and ``sentinel download`` into ``sentinelsat``
+* CLI uses keywords instead of positional arguments, i.e. ``--user <username>``
 
 [0.11] – 2017-06-01
 -------------------
