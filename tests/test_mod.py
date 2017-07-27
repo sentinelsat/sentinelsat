@@ -9,10 +9,9 @@ import pytest
 import requests
 import requests_mock
 
-from sentinelsat import InvalidChecksumError, SentinelAPI, SentinelAPIError, geojson_to_wkt, \
+from sentinelsat import InvalidChecksumError, SentinelAPI, SentinelAPIError, format_query_date, geojson_to_wkt, \
     read_geojson
-from sentinelsat.sentinel import _format_order_by, format_query_date, _md5_compare, \
-    _parse_odata_timestamp, _parse_opensearch_response
+from sentinelsat.sentinel import _format_order_by, _parse_odata_timestamp, _parse_opensearch_response
 from .shared import FIXTURES_DIR, my_vcr
 
 _api_auth = dict(user=environ.get('SENTINEL_USER'), password=environ.get('SENTINEL_PASSWORD'))
@@ -95,13 +94,22 @@ def test_convert_timestamp():
 
 
 @pytest.mark.fast
-def test_md5_comparison():
+def test_progressbars(capsys):
+    api = SentinelAPI("mock_user", "mock_password")
     testfile_md5 = hashlib.md5()
-    with open(FIXTURES_DIR + "/expected_search_footprints_s1.geojson", "rb") as testfile:
+    true_path = FIXTURES_DIR + "/expected_search_footprints_s1.geojson"
+    with open(true_path, "rb") as testfile:
         testfile_md5.update(testfile.read())
         real_md5 = testfile_md5.hexdigest()
-    assert _md5_compare(FIXTURES_DIR + "/expected_search_footprints_s1.geojson", real_md5) is True
-    assert _md5_compare(FIXTURES_DIR + "/map.geojson", real_md5) is False
+
+    assert api._md5_compare(true_path, real_md5) is True
+    out, err = capsys.readouterr()
+    assert "checksumming" in err
+    api = SentinelAPI("mock_user", "mock_password", show_progressbars=False)
+    assert api._md5_compare(FIXTURES_DIR + "/map.geojson", real_md5) is False
+    out, err = capsys.readouterr()
+    assert out == ""
+    assert "checksumming" not in err
 
 
 @my_vcr.use_cassette
@@ -270,17 +278,6 @@ def test_small_query():
     assert api._last_response.status_code == 200
 
 
-@my_vcr.use_cassette
-@pytest.mark.scihub
-def test_date_arithmetic():
-    api = SentinelAPI(**_api_kwargs)
-    products = api.query('ENVELOPE(0, 10, 10, 0)',
-                         '2015-12-01T00:00:00Z-1DAY',
-                         '2015-12-01T00:00:00Z+1DAY-1HOUR')
-    assert api._last_response.status_code == 200
-    assert len(products) > 0
-
-
 @my_vcr.use_cassette(decode_compressed_response=False)
 @pytest.mark.scihub
 def test_large_query():
@@ -333,6 +330,33 @@ def test_too_long_query():
         api.query(raw=q)
     assert excinfo.value.response.status_code == 500
     assert "failed due to its length" in excinfo.value.msg
+
+
+@my_vcr.use_cassette
+@pytest.mark.scihub
+def test_date_arithmetic():
+    api = SentinelAPI(**_api_kwargs)
+    products = api.query('ENVELOPE(0, 10, 10, 0)',
+                         '2015-12-01T00:00:00Z-1DAY',
+                         '2015-12-01T00:00:00Z+1DAY-1HOUR')
+    assert api._last_response.status_code == 200
+    assert len(products) > 0
+
+
+@my_vcr.use_cassette
+@pytest.mark.scihub
+def test_quote_symbol_bug():
+    # A test to check if plus symbol handling has been fixed in the DHuS
+    # https://github.com/SentinelDataHub/DataHubSystem/issues/23
+    api = SentinelAPI(**_api_kwargs)
+
+    q = 'beginposition:[2017-05-30T00:00:00Z TO 2017-05-31T00:00:00Z+1DAY]'
+    with pytest.raises(SentinelAPIError) as excinfo:
+        api._load_query(q, limit=0)
+    assert excinfo.value.response.status_code == 500
+
+    api._load_query(q.replace('+', '%2B'), limit=0)
+    assert api._last_response.status_code == 200
 
 
 @pytest.mark.fast

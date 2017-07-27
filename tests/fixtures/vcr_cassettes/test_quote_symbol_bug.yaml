@@ -1,0 +1,137 @@
+interactions:
+- request:
+    body: q=beginposition%3A%5B2017-05-30T00%3A00%3A00Z+TO+2017-05-31T00%3A00%3A00Z%2B1DAY%5D
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['83']
+      Content-Type: [application/x-www-form-urlencoded]
+      User-Agent: [sentinelsat/0.11]
+    method: POST
+    uri: https://scihub.copernicus.eu/apihub/search?format=json&rows=0&start=0
+  response:
+    body: {string: "<!DOCTYPE html><html><head><title>Apache Tomcat/8.0.36 - Error\
+        \ report</title><style type=\"text/css\">H1 {font-family:Tahoma,Arial,sans-serif;color:white;background-color:#525D76;font-size:22px;}\
+        \ H2 {font-family:Tahoma,Arial,sans-serif;color:white;background-color:#525D76;font-size:16px;}\
+        \ H3 {font-family:Tahoma,Arial,sans-serif;color:white;background-color:#525D76;font-size:14px;}\
+        \ BODY {font-family:Tahoma,Arial,sans-serif;color:black;background-color:white;}\
+        \ B {font-family:Tahoma,Arial,sans-serif;color:white;background-color:#525D76;}\
+        \ P {font-family:Tahoma,Arial,sans-serif;background:white;color:black;font-size:12px;}A\
+        \ {color : black;}A.name {color : black;}.line {height: 1px; background-color:\
+        \ #525D76; border: none;}</style> </head><body><h1>HTTP Status 500 - Server\
+        \ returned HTTP response code: 400 for URL: http://localhost:30333//solr/dhus/select?q=beginposition:[2017-05-30T00:00:00Z%20TO%202017-05-31T00:00:00Z+1DAY]&amp;wt=xslt&amp;tr=opensearch_atom.xsl&amp;dhusLongName=Sentinels+Scientific+Data+Hub&amp;dhusServer=https%3A%2F%2Fscihub.copernicus.eu%2Fapihub%2F&amp;originalQuery=beginposition%3A%5B2017-05-30T00%3A00%3A00Z+TO+2017-05-31T00%3A00%3A00Z%2B1DAY%5D&amp;rows=0&amp;start=0&amp;sort=ingestiondate+desc</h1><div\
+        \ class=\"line\"></div><p><b>type</b> Exception report</p><p><b>message</b>\
+        \ <u>Server returned HTTP response code: 400 for URL: http://localhost:30333//solr/dhus/select?q=beginposition:[2017-05-30T00:00:00Z%20TO%202017-05-31T00:00:00Z+1DAY]&amp;wt=xslt&amp;tr=opensearch_atom.xsl&amp;dhusLongName=Sentinels+Scientific+Data+Hub&amp;dhusServer=https%3A%2F%2Fscihub.copernicus.eu%2Fapihub%2F&amp;originalQuery=beginposition%3A%5B2017-05-30T00%3A00%3A00Z+TO+2017-05-31T00%3A00%3A00Z%2B1DAY%5D&amp;rows=0&amp;start=0&amp;sort=ingestiondate+desc</u></p><p><b>description</b>\
+        \ <u>The server encountered an internal error that prevented it from fulfilling\
+        \ this request.</u></p><p><b>exception</b></p><pre>java.io.IOException: Server\
+        \ returned HTTP response code: 400 for URL: http://localhost:30333//solr/dhus/select?q=beginposition:[2017-05-30T00:00:00Z%20TO%202017-05-31T00:00:00Z+1DAY]&amp;wt=xslt&amp;tr=opensearch_atom.xsl&amp;dhusLongName=Sentinels+Scientific+Data+Hub&amp;dhusServer=https%3A%2F%2Fscihub.copernicus.eu%2Fapihub%2F&amp;originalQuery=beginposition%3A%5B2017-05-30T00%3A00%3A00Z+TO+2017-05-31T00%3A00%3A00Z%2B1DAY%5D&amp;rows=0&amp;start=0&amp;sort=ingestiondate+desc\n\
+        \tsun.net.www.protocol.http.HttpURLConnection.getInputStream0(HttpURLConnection.java:1876)\n\
+        \tsun.net.www.protocol.http.HttpURLConnection.getInputStream(HttpURLConnection.java:1474)\n\
+        \tfr.gael.dhus.server.http.webapp.search.controller.SearchController.search(SearchController.java:168)\n\
+        \tfr.gael.dhus.server.http.webapp.search.controller.SearchController$$FastClassBySpringCGLIB$$e2477ad5.invoke(&lt;generated&gt;)\n\
+        \torg.springframework.cglib.proxy.MethodProxy.invoke(MethodProxy.java:204)\n\
+        \torg.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.invokeJoinpoint(CglibAopProxy.java:717)\n\
+        \torg.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:157)\n\
+        \torg.springframework.security.access.intercept.aopalliance.MethodSecurityInterceptor.invoke(MethodSecurityInterceptor.java:64)\n\
+        \torg.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)\n\
+        \torg.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:653)\n\
+        \tfr.gael.dhus.server.http.webapp.search.controller.SearchController$$EnhancerBySpringCGLIB$$2f7c716a.search(&lt;generated&gt;)\n\
+        \tsun.reflect.GeneratedMethodAccessor347.invoke(Unknown Source)\n\tsun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)\n\
+        \tjava.lang.reflect.Method.invoke(Method.java:498)\n\torg.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:221)\n\
+        \torg.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:137)\n\
+        \torg.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:110)\n\
+        \torg.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandleMethod(RequestMappingHandlerAdapter.java:777)\n\
+        \torg.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:706)\n\
+        \torg.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:85)\n\
+        \torg.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:943)\n\
+        \torg.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:877)\n\
+        \torg.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:966)\n\
+        \torg.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:868)\n\
+        \tjavax.servlet.http.HttpServlet.service(HttpServlet.java:648)\n\torg.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:842)\n\
+        \tjavax.servlet.http.HttpServlet.service(HttpServlet.java:729)\n\tfr.gael.dhus.spring.CacheControlFilter.doFilter(CacheControlFilter.java:47)\n\
+        \torg.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:330)\n\
+        \torg.springframework.security.web.access.intercept.FilterSecurityInterceptor.invoke(FilterSecurityInterceptor.java:118)\n\
+        \torg.springframework.security.web.access.intercept.FilterSecurityInterceptor.doFilter(FilterSecurityInterceptor.java:84)\n\
+        \torg.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:342)\n\
+        \torg.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:113)\n\
+        \torg.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:342)\n\
+        \torg.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:103)\n\
+        \torg.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:342)\n\
+        \torg.springframework.security.web.authentication.AnonymousAuthenticationFilter.doFilter(AnonymousAuthenticationFilter.java:113)\n\
+        \torg.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:342)\n\
+        \torg.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter.doFilter(SecurityContextHolderAwareRequestFilter.java:154)\n\
+        \torg.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:342)\n\
+        \torg.springframework.security.web.savedrequest.RequestCacheAwareFilter.doFilter(RequestCacheAwareFilter.java:45)\n\
+        \torg.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:342)\n\
+        \torg.springframework.security.web.authentication.www.BasicAuthenticationFilter.doFilter(BasicAuthenticationFilter.java:201)\n\
+        \torg.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:342)\n\
+        \tfr.gael.dhus.spring.security.filter.PreAuthFilter.doFilter(PreAuthFilter.java:79)\n\
+        \torg.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:342)\n\
+        \torg.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:50)\n\
+        \torg.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)\n\
+        \torg.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:342)\n\
+        \torg.springframework.security.web.context.SecurityContextPersistenceFilter.doFilter(SecurityContextPersistenceFilter.java:87)\n\
+        \torg.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:342)\n\
+        \torg.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:192)\n\
+        \torg.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:160)\n\
+        \torg.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:344)\n\
+        \torg.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:261)\n\
+        </pre><p><b>note</b> <u>The full stack trace of the root cause is available\
+        \ in the Apache Tomcat/8.0.36 logs.</u></p><hr class=\"line\"><h3>Apache Tomcat/8.0.36</h3></body></html>"}
+    headers:
+      Content-Language: [en]
+      Content-Type: [text/html;charset=utf-8]
+      Pragma: [no-cache]
+      Server: [Apache-Coyote/1.1]
+      Vary: [Accept-Encoding]
+      cause-message: ['IOException : Server returned HTTP response code: 400 for URL:
+          http://localhost:30333//solr/dhus/select?q=beginposition:[2017-05-30T00:00:00Z%20TO%202017-05-31T00:00:00Z+1DAY]&wt=xslt&tr=opensearch_atom.xsl&dhusLongName=Sentinels+Scientific+Data+Hub&dhusServer=https%3A%2F%2Fscihub.copernicus.eu%2Fapihub%2F&originalQuery=beginposition%3A%5B2017-05-30T00%3A00%3A00Z+TO+2017-05-31T00%3A00%3A00Z%2B1DAY%5D&rows=0&start=0&sort=ingestiondate+desc']
+      content-length: ['8326']
+    status: {code: 500, message: Internal Server Error}
+- request:
+    body: q=beginposition%3A%5B2017-05-30T00%3A00%3A00Z+TO+2017-05-31T00%3A00%3A00Z%252B1DAY%5D
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['85']
+      Content-Type: [application/x-www-form-urlencoded]
+      User-Agent: [sentinelsat/0.11]
+    method: POST
+    uri: https://scihub.copernicus.eu/apihub/search?format=json&rows=0&start=0
+  response:
+    body: {string: "{\"feed\": {\n   \"opensearch:Query\": {\n      \"startPage\"\
+        : 1,\n      \"role\": \"request\",\n      \"searchTerms\": \"beginposition:[2017-05-30T00:00:00Z\
+        \ TO 2017-05-31T00:00:00Z%2B1DAY]\"\n   },\n   \"xmlns\": \"http://www.w3.org/2005/Atom\"\
+        ,\n   \"author\": {\"name\": \"Sentinels Scientific Data Hub\"},\n   \"subtitle\"\
+        : \"Displaying 0 to -1 of 15918 total results. Request done in 0 seconds.\"\
+        ,\n   \"link\": [\n      {\n         \"rel\": \"self\",\n         \"href\"\
+        : \"https://scihub.copernicus.eu/apihub/search?q=beginposition:[2017-05-30T00:00:00Z\
+        \ TO 2017-05-31T00:00:00Z%2B1DAY]&start=0&rows=0\",\n         \"type\": \"\
+        application/atom+xml\"\n      },\n      {\n         \"rel\": \"first\",\n\
+        \         \"href\": \"https://scihub.copernicus.eu/apihub/search?q=beginposition:[2017-05-30T00:00:00Z\
+        \ TO 2017-05-31T00:00:00Z%2B1DAY]&start=0&rows=0\",\n         \"type\": \"\
+        application/atom+xml\"\n      },\n      {\n         \"rel\": \"next\",\n \
+        \        \"href\": \"https://scihub.copernicus.eu/apihub/search?q=beginposition:[2017-05-30T00:00:00Z\
+        \ TO 2017-05-31T00:00:00Z%2B1DAY]&start=NaN&rows=0\",\n         \"type\":\
+        \ \"application/atom+xml\"\n      },\n      {\n         \"rel\": \"last\"\
+        ,\n         \"href\": \"https://scihub.copernicus.eu/apihub/search?q=beginposition:[2017-05-30T00:00:00Z\
+        \ TO 2017-05-31T00:00:00Z%2B1DAY]&start=15917&rows=0\",\n         \"type\"\
+        : \"application/atom+xml\"\n      },\n      {\n         \"rel\": \"search\"\
+        ,\n         \"href\": \"opensearch_description.xml\",\n         \"type\":\
+        \ \"application/opensearchdescription+xml\"\n      }\n   ],\n   \"opensearch:itemsPerPage\"\
+        : 0,\n   \"id\": \"https://scihub.copernicus.eu/apihub/search?q=beginposition:[2017-05-30T00:00:00Z\
+        \ TO 2017-05-31T00:00:00Z%2B1DAY]\",\n   \"title\": \"Sentinels Scientific\
+        \ Data Hub search results for: beginposition:[2017-05-30T00:00:00Z TO 2017-05-31T00:00:00Z%2B1DAY]\"\
+        ,\n   \"opensearch:startIndex\": 0,\n   \"updated\": \"2017-06-19T11:34:42.818Z\"\
+        ,\n   \"opensearch:totalResults\": 15918,\n   \"xmlns:opensearch\": \"http://a9.com/-/spec/opensearch/1.1/\"\
+        \n}}"}
+    headers:
+      Content-Type: [application/json]
+      Pragma: [no-cache]
+      Server: [Apache-Coyote/1.1]
+      Vary: [Accept-Encoding]
+      content-length: ['1920']
+    status: {code: 200, message: OK}
+version: 1

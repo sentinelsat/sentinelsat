@@ -59,7 +59,6 @@ if vcr_option != "disable":
 else:
     print("Tests will not use any prerecorded query responses.")
 
-
     class DummyCassette:
         def __enter__(self):
             return
@@ -70,14 +69,12 @@ else:
         def __call__(self, func, *args, **kwargs):
             return func
 
-
     class DummyVCR:
         @staticmethod
         def use_cassette(func=None, *args, **kwargs):
             if not isinstance(func, types.FunctionType):
                 return DummyCassette()
             return func
-
 
     my_vcr = DummyVCR()
 

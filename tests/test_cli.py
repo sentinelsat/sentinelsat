@@ -1,4 +1,4 @@
-from os import environ
+from os import environ, path
 import re
 
 import pytest
@@ -11,6 +11,8 @@ from .shared import my_vcr, FIXTURES_DIR
 
 _api_auth = [environ.get('SENTINEL_USER', "user"), environ.get('SENTINEL_PASSWORD', "pw")]
 
+# TODO: change test fictures from subcommands to unified commands
+# TODO: include test for --uuid option, with comma separated list.
 
 @my_vcr.use_cassette
 @pytest.mark.scihub
@@ -18,9 +20,9 @@ def test_cli():
     runner = CliRunner()
     result = runner.invoke(
         cli,
-        ['search'] +
-        _api_auth +
-        [FIXTURES_DIR + '/map.geojson'],
+        ['--user', _api_auth[0],
+         '--password', _api_auth[1],
+         '--geometry', path.join(FIXTURES_DIR, 'map.geojson')],
         catch_exceptions=False
     )
 
@@ -28,9 +30,9 @@ def test_cli():
 
     result = runner.invoke(
         cli,
-        ['search'] +
-        _api_auth +
-        [FIXTURES_DIR + '/map.geojson',
+        ['--user', _api_auth[0],
+         '--password', _api_auth[1],
+         '--geometry', path.join(FIXTURES_DIR, 'map.geojson'),
          '--url', 'https://scihub.copernicus.eu/dhus/'],
         catch_exceptions=False
     )
@@ -38,9 +40,9 @@ def test_cli():
 
     result = runner.invoke(
         cli,
-        ['search'] +
-        _api_auth +
-        [FIXTURES_DIR + '/map.geojson',
+        ['--user', _api_auth[0],
+         '--password', _api_auth[1],
+         '--geometry', path.join(FIXTURES_DIR, 'map.geojson'),
          '-q', 'producttype=GRD,polarisationmode=HH'],
         catch_exceptions=False
     )
@@ -54,9 +56,9 @@ def test_returned_filesize():
 
     result = runner.invoke(
         cli,
-        ['search'] +
-        _api_auth +
-        [FIXTURES_DIR + '/map.geojson',
+        ['--user', _api_auth[0],
+         '--password', _api_auth[1],
+         '--geometry', path.join(FIXTURES_DIR, 'map.geojson'),
          '--url', 'https://scihub.copernicus.eu/dhus/',
          '-s', '20141205',
          '-e', '20141208',
@@ -68,9 +70,9 @@ def test_returned_filesize():
 
     result = runner.invoke(
         cli,
-        ['search'] +
-        _api_auth +
-        [FIXTURES_DIR + '/map.geojson',
+        ['--user', _api_auth[0],
+         '--password', _api_auth[1],
+         '--geometry', path.join(FIXTURES_DIR, 'map.geojson'),
          '--url', 'https://scihub.copernicus.eu/dhus/',
          '-s', '20140101',
          '-e', '20141231',
@@ -85,17 +87,18 @@ def test_returned_filesize():
 @my_vcr.use_cassette
 @pytest.mark.scihub
 def test_cloud_flag_url():
+    command = ['--user', _api_auth[0],
+     '--password', _api_auth[1],
+     '--geometry', path.join(FIXTURES_DIR, 'map.geojson'),
+     '--url', 'https://scihub.copernicus.eu/apihub/',
+     '-s', '20151219',
+     '-e', '20151228',
+     '-c', '10']
+
     runner = CliRunner()
     result = runner.invoke(
         cli,
-        ['search'] +
-        _api_auth +
-        [FIXTURES_DIR + '/map.geojson',
-         '--url', 'https://scihub.copernicus.eu/apihub/',
-         '-s', '20151219',
-         '-e', '20151228',
-         '-c', '10',
-         '--sentinel', '2'],
+        command + ['--sentinel', '2'],
         catch_exceptions=False
     )
 
@@ -105,15 +108,22 @@ def test_cloud_flag_url():
     assert '0848f6b8-5730-4759-850e-fc9945d42296' not in re.findall("^Product .+$", result.output, re.M)[1]
 
 
+    with pytest.raises(ValueError) as excinfo:
+        result = runner.invoke(
+            cli,
+            command + ['--sentinel', '1'],
+            catch_exceptions=False
+        )
+
 @my_vcr.use_cassette
 @pytest.mark.scihub
 def test_order_by_flag():
     runner = CliRunner()
     result = runner.invoke(
         cli,
-        ['search'] +
-        _api_auth +
-        [FIXTURES_DIR + '/map.geojson',
+        ['--user', _api_auth[0],
+         '--password', _api_auth[1],
+         '--geometry', path.join(FIXTURES_DIR, 'map.geojson'),
          '--url', 'https://scihub.copernicus.eu/apihub/',
          '-s', '20151219',
          '-e', '20151228',
@@ -132,9 +142,9 @@ def test_sentinel1_flag():
     runner = CliRunner()
     result = runner.invoke(
         cli,
-        ['search'] +
-        _api_auth +
-        [FIXTURES_DIR + '/map.geojson',
+        ['--user', _api_auth[0],
+         '--password', _api_auth[1],
+         '--geometry', path.join(FIXTURES_DIR, 'map.geojson'),
          '--url', 'https://scihub.copernicus.eu/apihub/',
          '-s', '20151219',
          '-e', '20151228',
@@ -152,9 +162,9 @@ def test_sentinel2_flag():
     runner = CliRunner()
     result = runner.invoke(
         cli,
-        ['search'] +
-        _api_auth +
-        [FIXTURES_DIR + '/map.geojson',
+        ['--user', _api_auth[0],
+         '--password', _api_auth[1],
+         '--geometry', path.join(FIXTURES_DIR, 'map.geojson'),
          '--url', 'https://scihub.copernicus.eu/apihub/',
          '-s', '20151219',
          '-e', '20151228',
@@ -173,9 +183,9 @@ def test_sentinel3_flag():
     runner = CliRunner()
     result = runner.invoke(
         cli,
-        ['search'] +
-        ['s3guest', 's3guest'] +
-        [FIXTURES_DIR + '/map.geojson',
+        ['--user', 's3guest',
+         '--password', 's3guest',
+         '--geometry', path.join(FIXTURES_DIR, 'map.geojson'),
          '--url', 'https://scihub.copernicus.eu/s3/',
          '-s', '20161201',
          '-e', '20161202',
@@ -193,9 +203,9 @@ def test_product_flag():
     runner = CliRunner()
     result = runner.invoke(
         cli,
-        ['search'] +
-        _api_auth +
-        [FIXTURES_DIR + '/map.geojson',
+        ['--user', _api_auth[0],
+         '--password', _api_auth[1],
+         '--geometry', path.join(FIXTURES_DIR, 'map.geojson'),
          '--url', 'https://scihub.copernicus.eu/apihub/',
          '-s', '20161201',
          '-e', '20161202',
@@ -214,9 +224,9 @@ def test_instrument_flag():
     runner = CliRunner()
     result = runner.invoke(
         cli,
-        ['search'] +
-        ['s3guest', 's3guest'] +
-        [FIXTURES_DIR + '/map.geojson',
+        ['--user', 's3guest',
+         '--password', 's3guest',
+         '--geometry', path.join(FIXTURES_DIR, 'map.geojson'),
          '--url', 'https://scihub.copernicus.eu/s3/',
          '-s', '20161201',
          '-e', '20161202',
@@ -230,14 +240,66 @@ def test_instrument_flag():
 
 @my_vcr.use_cassette
 @pytest.mark.scihub
+def test_limit_flag():
+    runner = CliRunner()
+    limit = 15
+    result = runner.invoke(
+        cli,
+        ['--user', _api_auth[0],
+         '--password', _api_auth[1],
+         '--geometry', path.join(FIXTURES_DIR, 'map.geojson'),
+         '--url', 'https://scihub.copernicus.eu/apihub/',
+         '-s', '20161201',
+         '-e', '20161230',
+         '--limit', str(limit)],
+        catch_exceptions=False
+    )
+    num_products = len(re.findall("^Product ", result.output, re.MULTILINE))
+    assert num_products == limit
+
+
+@my_vcr.use_cassette
+@pytest.mark.scihub
+def test_uuid_search():
+    runner = CliRunner()
+    result = runner.invoke(
+        cli,
+        ['--user', _api_auth[0],
+         '--password', _api_auth[1],
+         '--uuid', 'd8340134-878f-4891-ba4f-4df54f1e3ab4'],
+        catch_exceptions=False
+    )
+
+    expected = "Product d8340134-878f-4891-ba4f-4df54f1e3ab4 - S1A_WV_OCN__2SSV_20150526T211029_20150526T211737_006097_007E78_134A - 0.12 MB"
+    assert re.findall("^Product .+$", result.output, re.M)[0] == expected
+
+
+@my_vcr.use_cassette
+@pytest.mark.scihub
+def test_name_search():
+    runner = CliRunner()
+    result = runner.invoke(
+        cli,
+        ['--user', _api_auth[0],
+         '--password', _api_auth[1],
+         '--name', 'S1A_WV_OCN__2SSV_20150526T211029_20150526T211737_006097_007E78_134A'],
+        catch_exceptions=False
+    )
+
+    expected = "Product d8340134-878f-4891-ba4f-4df54f1e3ab4 - Date: 2015-05-26T21:10:28.984Z, Instrument: SAR-C SAR, Mode: VV, Satellite: Sentinel-1, Size: 10.65 KB"
+    assert re.findall("^Product .+$", result.output, re.M)[0] == expected
+
+
+@my_vcr.use_cassette
+@pytest.mark.scihub
 def test_option_hierarchy():
     # expected hierarchy is producttype > instrument > plattform from most to least specific
     runner = CliRunner()
     result = runner.invoke(
         cli,
-        ['search'] +
-        _api_auth +
-        [FIXTURES_DIR + '/map.geojson',
+        ['--user', _api_auth[0],
+         '--password', _api_auth[1],
+         '--geometry', path.join(FIXTURES_DIR, 'map.geojson'),
          '--url', 'https://scihub.copernicus.eu/apihub/',
          '-s', '20161201',
          '-e', '20161202',
@@ -253,33 +315,13 @@ def test_option_hierarchy():
 
 @my_vcr.use_cassette
 @pytest.mark.scihub
-def test_limit_flag():
-    runner = CliRunner()
-    limit = 15
-    result = runner.invoke(
-        cli,
-        ['search'] +
-        _api_auth +
-        [FIXTURES_DIR + '/map.geojson',
-         '--url', 'https://scihub.copernicus.eu/apihub/',
-         '-s', '20161201',
-         '-e', '20161230',
-         '--limit', str(limit)],
-        catch_exceptions=False
-    )
-    num_products = len(re.findall("^Product ", result.output, re.MULTILINE))
-    assert num_products == limit
-
-
-@my_vcr.use_cassette
-@pytest.mark.scihub
 def test_footprints_cli(tmpdir):
     runner = CliRunner()
     result = runner.invoke(
         cli,
-        ['search'] +
-        _api_auth +
-        [FIXTURES_DIR + '/map.geojson',
+        ['--user', _api_auth[0],
+         '--password', _api_auth[1],
+         '--geometry', path.join(FIXTURES_DIR, 'map.geojson'),
          '-s', '20151219',
          '-e', '20151228',
          '--sentinel2',
@@ -295,7 +337,11 @@ def test_download_single(tmpdir):
     runner = CliRunner()
 
     product_id = '5618ce1b-923b-4df2-81d9-50b53e5aded9'
-    command = ['download'] + _api_auth + [product_id, '--path', str(tmpdir)]
+    command = ['--user', _api_auth[0],
+        '--password', _api_auth[1],
+        '--uuid', product_id,
+        '--download',
+        '--path', str(tmpdir)]
     result = runner.invoke(
         cli,
         command,
@@ -351,11 +397,10 @@ def test_download_single(tmpdir):
 def test_download_many(tmpdir):
     runner = CliRunner()
 
-    command = ['search'] + _api_auth + [
-        FIXTURES_DIR + '/map_download.geojson',
-        '-s', '20150501',
-        '-e', '20150705',
-        '-q', 'producttype=OCN',
+    command = ['--user', _api_auth[0],
+        '--password', _api_auth[1],
+        '--uuid',
+        '1f62a176-c980-41dc-b3a1-c735d660c910,5618ce1b-923b-4df2-81d9-50b53e5aded9,d8340134-878f-4891-ba4f-4df54f1e3ab4',
         '--download',
         '--path', str(tmpdir)]
 
@@ -379,7 +424,7 @@ def test_download_many(tmpdir):
         f.remove()
 
     # Prepare a response with an invalid checksum
-    product_id = 'f30b2a6a-b0c1-49f1-b19e-e10c3cf06101'
+    product_id = 'd8340134-878f-4891-ba4f-4df54f1e3ab4'
     url = "https://scihub.copernicus.eu/apihub/odata/v1/Products('%s')?$format=json" % product_id
     api = SentinelAPI(*_api_auth)
     json = api.session.get(url).json()
@@ -421,8 +466,13 @@ def test_download_many(tmpdir):
 @pytest.mark.scihub
 def test_download_invalid_id(tmpdir):
     runner = CliRunner()
-    product_id = 'f30b2a6a-b0c1-49f1-xxxx-e10c3cf06101'
-    command = ['download'] + _api_auth + [product_id, '--path', str(tmpdir)]
+    product_id = 'f30b2a6a-b0c1-49f1-INVALID-e10c3cf06101'
+    command = ['--user', _api_auth[0],
+        '--password', _api_auth[1],
+        '--uuid', product_id,
+        '--download',
+        '--path', str(tmpdir)]
+
     result = runner.invoke(
         cli,
         command,
