@@ -103,14 +103,14 @@ def test_progressbars(capsys):
         testfile_md5.update(testfile.read())
         real_md5 = testfile_md5.hexdigest()
 
-    api.progressbar_opts = dict(desc="Testing")
     assert api._md5_compare(true_path, real_md5) is True
-    api.progressbar_opts = dict(desc="Disabled", disable=True)
+    out, err = capsys.readouterr()
+    assert "checksumming" in err
+    api = SentinelAPI("mock_user", "mock_password", show_progressbars=False)
     assert api._md5_compare(FIXTURES_DIR + "/map.geojson", real_md5) is False
     out, err = capsys.readouterr()
     assert out == ""
-    assert "Testing" in err
-    assert "Disabled" not in err
+    assert "checksumming" not in err
 
 
 @my_vcr.use_cassette

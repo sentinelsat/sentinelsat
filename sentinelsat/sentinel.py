@@ -35,6 +35,8 @@ class SentinelAPI:
     api_url : string, optional
         URL of the DataHub
         defaults to 'https://scihub.copernicus.eu/apihub'
+    show_progressbars : bool
+        Whether progressbars should be shown or not, e.g. during download. Defaults to True.
 
     Attributes
     ----------
@@ -45,13 +47,11 @@ class SentinelAPI:
     page_size : int
         number of results per query page
         current value: 100 (maximum allowed on ApiHub)
-    progressbar_opts : dict
-        Progressbar options passed to tqdm(), e.g. to set {'disable': True}
     """
 
     logger = logging.getLogger('sentinelsat.SentinelAPI')
 
-    def __init__(self, user, password, api_url='https://scihub.copernicus.eu/apihub/'):
+    def __init__(self, user, password, api_url='https://scihub.copernicus.eu/apihub/', show_progressbars=True):
         self.session = requests.Session()
         if user and password:
             self.session.auth = (user, password)
@@ -59,7 +59,7 @@ class SentinelAPI:
         self.page_size = 100
         self.user_agent = 'sentinelsat/' + sentinelsat_version
         self.session.headers['User-Agent'] = self.user_agent
-        self.progressbar_opts = {}
+        self.show_progressbars = show_progressbars
         # For unit tests
         self._last_query = None
         self._last_response = None
@@ -720,7 +720,7 @@ class SentinelAPI:
 
     def _tqdm(self, **kwargs):
         """tqdm progressbar wrapper. May be overridden to customize progressbar behavior"""
-        kwargs.update(self.progressbar_opts)
+        kwargs.update({'disable': not self.show_progressbars})
         return tqdm(**kwargs)
 
 
