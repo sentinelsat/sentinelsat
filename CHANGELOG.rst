@@ -8,8 +8,36 @@ All notable changes to ``sentinelsat`` will be listed here.
 
 Added
 ~~~~~
-* contribution guidelines
-* tests for validity of documentation and RST files
+* Added ``order_by`` option to ``query()`` which controls the fields by which the products are sorted on the
+  server side before being returned. Added ``-o/--order-by`` to the CLI.
+* Added the option to ``limit`` the number of products returned by ``query()`` and to set the number
+  of products to skip via ``offset``. ``-l/--limit`` can be used on the CLI to limit the number of returned products.
+* Option to change the type of spatial relation for the AOI in ``query()``.
+  The choices are 'Interesects', 'Contains' and 'IsWithin'.
+* Added ``count()`` which quickly returns the number of products matching a query on the server
+  without retrieving the full response.
+* Method ``check_query_length`` to check if a query will fail because of being excessively long.
+* Option to adjust the number of decimal figures in the coordinates of the WKT string returned by ``geojson_to_wkt()``.
+  This can be useful if the WKT string length would cause the query to fail otherwise.
+* Contribution guidelines.
+* Tests for validity of documentation and RST files.
+
+Changed
+~~~~~~~
+* Files being downloaded now include an '.incomplete' suffix in their name until the download is finished.
+* Removed ``check_existing`` option from ``download()`` and ``download_all()``.
+  Similar functionality has been provided in the new ``check_files()`` function.
+* Show a more informative error message if a too long query string was likely the cause
+  of the query failing on the server side.
+* Tests can now be run from any directory rather than the repository root.
+* Made the query string slightly more compact by getting rid of unnecessary 'AND' operators, spaces and parentheses.
+* Reduced the size of the VCR.py cassettes used in unit tests.
+
+Fixed
+~~~~~
+* Show the correct progress value in the download progressbar when continuing from an incomplete file. (Thanks @gbaier!)
+* Added a workaround for a server-side bug when plus symbols are used in a query.
+
 
 [0.11] – 2017-06-01
 -------------------
