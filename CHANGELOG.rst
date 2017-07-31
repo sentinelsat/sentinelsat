@@ -21,6 +21,8 @@ Added
 * Method ``check_query_length`` to check if a query will fail because of being excessively long.
 * Option to adjust the number of decimal figures in the coordinates of the WKT string returned by ``geojson_to_wkt()``.
   This can be useful if the WKT string length would cause the query to fail otherwise.
+* Progressbars can be disabled by setting ``show_progressbars`` to ``False``.
+  Progressbars may be customized by overriding the ``_tqdm()`` method.
 * Contribution guidelines.
 * Tests for validity of documentation and RST files.
 
@@ -33,6 +35,7 @@ Changed
   Similar functionality has been provided in the new ``check_files()`` function.
 * Show a more informative error message if a too long query string was likely the cause
   of the query failing on the server side.
+* Added a progressbar to long-running queries.
 * Tests can now be run from any directory rather than the repository root.
 * Made the query string slightly more compact by getting rid of unnecessary 'AND' operators, spaces and parentheses.
 * Reduced the size of the VCR.py cassettes used in unit tests.
