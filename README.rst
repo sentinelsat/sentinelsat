@@ -234,4 +234,4 @@ Contributors
 License
 =======
 
-AGPL
+GPLv3+

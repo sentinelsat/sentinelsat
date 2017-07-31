@@ -39,6 +39,7 @@ Changed
 * Tests can now be run from any directory rather than the repository root.
 * Made the query string slightly more compact by getting rid of unnecessary 'AND' operators, spaces and parentheses.
 * Reduced the size of the VCR.py cassettes used in unit tests.
+* changed license from AGPLv3 to GPLv3+
 
 Fixed
 ~~~~~
