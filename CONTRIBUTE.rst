@@ -132,4 +132,4 @@ A new package is release on PyPi with the following commands.
 License
 =======
 
-The GNU Affero General Public License v3.0 (`LICENSE <https://github.com/sentinelsat/sentinelsat/blob/master/LICENSE>`_) applies to all contributions.
+The GNU General Public License version 3 or later (GPLv3+, see `LICENSE <https://github.com/sentinelsat/sentinelsat/blob/master/LICENSE>`_) applies to all contributions.
