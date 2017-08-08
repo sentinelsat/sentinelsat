@@ -80,9 +80,9 @@ Python Library
   # search by polygon, time, and SciHub query keywords
   footprint = geojson_to_wkt(read_geojson('map.geojson'))
   products = api.query(footprint,
-                       '20151219', date(2015, 12, 29),
+                       date = ('20151219', date(2015, 12, 29)),
                        platformname = 'Sentinel-2',
-                       cloudcoverpercentage = '[0 TO 30]')
+                       cloudcoverpercentage = (0, 30))
 
   # download all results from the search
   api.download_all(products)

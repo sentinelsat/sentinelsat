@@ -133,7 +133,9 @@ def cli(user, password, geometry, start, end, uuid, name, download, md5, sentine
         search_kwargs["identifier"] = name
         products = api.query(order_by=order_by, limit=limit, **search_kwargs)
     else:
-        products = api.query(area=wkt, initial_date=start, end_date=end,
+        start = start or "19000101"
+        end = end or "NOW"
+        products = api.query(area=wkt, date=(start, end),
                              order_by=order_by, limit=limit, **search_kwargs)
 
     if footprints is True:

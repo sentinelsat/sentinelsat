@@ -18,7 +18,7 @@ Added
   The choices are 'Interesects', 'Contains' and 'IsWithin'.
 * Added ``raw`` parameter to ``query()`` to append any additional raw query string to the query.
 * Query parameters that take intervals as values can now be passed a tuple of the interval range values.
-* Date validation and parsing has been extended to all date-type parameters in queries, such as 'ingestindate'.
+* Date validation and parsing has been extended to all date-type parameters in queries, such as 'ingestiondate'.
 * Added ``count()`` which quickly returns the number of products matching a query on the server
   without retrieving the full response.
 * Method ``check_query_length`` to check if a query will fail because of being excessively long.
@@ -33,7 +33,8 @@ Changed
 ~~~~~~~
 * Merged CLI subcommands ``sentinel search`` and ``sentinel download`` into ``sentinelsat``.
 * CLI uses keywords instead of positional arguments, i.e. ``--user <username>``.
-* ``initial_date`` and ``end_date`` parameter default values have been removed in ``query()``.
+* ``initial_date`` and ``end_date`` parameters in ``query()`` have been replaced with a single
+  ``date`` parameter that takes a tuple of start and end dates as input.
 * Files being downloaded now include an '.incomplete' suffix in their name until the download is finished.
 * Removed ``check_existing`` option from ``download()`` and ``download_all()``.
   Similar functionality has been provided in the new ``check_files()`` function.

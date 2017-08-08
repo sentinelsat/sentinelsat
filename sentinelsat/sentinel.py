@@ -52,7 +52,8 @@ class SentinelAPI:
 
     logger = logging.getLogger('sentinelsat.SentinelAPI')
 
-    def __init__(self, user, password, api_url='https://scihub.copernicus.eu/apihub/', show_progressbars=True):
+    def __init__(self, user, password, api_url='https://scihub.copernicus.eu/apihub/',
+                 show_progressbars=True):
         self.session = requests.Session()
         if user and password:
             self.session.auth = (user, password)
@@ -65,8 +66,7 @@ class SentinelAPI:
         self._last_query = None
         self._last_response = None
 
-    def query(self, area=None, initial_date=None, end_date='NOW', raw=None,
-              area_relation='Intersects',
+    def query(self, area=None, date=None, raw=None, area_relation='Intersects',
               order_by=None, limit=None, offset=0, **keywords):
         """Query the OpenSearch API with the coordinates of an area, a date interval
         and any other search keywords accepted by the API.
@@ -75,20 +75,21 @@ class SentinelAPI:
         ----------
         area : str, optional
             The area of interest formatted as a Well-Known Text string.
-        initial_date : str or datetime, optional
-            Beginning of the time interval for the sensing time.
-            Either a Python datetime or a string in one of the following formats:
+        date : tuple of (str or datetime) or str, optional
+            A time interval filter based on the Sensing Start Time of the products.
+            Expects a tuple of (start, end), e.g. ("NOW-1DAY", "NOW").
+            The timestamps can be either a Python datetime or a string in one of the
+            following formats:
+                - yyyyMMdd
                 - yyyy-MM-ddThh:mm:ss.SSSZ (ISO-8601)
                 - yyyy-MM-ddThh:mm:ssZ
-                - YYYMMdd
                 - NOW
                 - NOW-<n>DAY(S) (or HOUR(S), MONTH(S), etc.)
                 - NOW+<n>DAY(S)
                 - yyyy-MM-ddThh:mm:ssZ-<n>DAY(S)
                 - NOW/DAY (or HOUR, MONTH etc.) - rounds the value to the given unit
-        end_date : str or datetime, optional
-            End of the time interval for the sensing time. Only used if initial_date is set.
-            Defaults to NOW. See initial_date for the allowed formats.
+            Alternatively, an already fully formatted string such as "[NOW-1DAY TO NOW]" can be
+            used as well.
         raw : str, optional
             Additional query text that will be appended to the query.
         area_relation : {'Intersection', 'Contains', 'IsWithin'}, optional
@@ -108,15 +109,16 @@ class SentinelAPI:
 
         Other Parameters
         ----------------
-        Additional keywords can be used to specify other query parameters, e.g. orbitnumber=70.
+        Additional keywords can be used to specify other query parameters,
+        e.g. relativeorbitnumber=70.
+        See https://scihub.copernicus.eu/twiki/do/view/SciHubUserGuide/3FullTextSearch
+        for a full list.
+
         Range values can be passed as two-element tuples, e.g. cloudcoverpercentage=(0, 30).
 
-        Any value types and formats accepted by initial_date and end_date can also be used with
-        other parameters that expect date ranges (that is: 'beginposition', 'endposition', 'date',
-        'creationdate', and 'ingestiondate').
-
-        See https://scihub.copernicus.eu/twiki/do/view/SciHubUserGuide/3FullTextSearch
-        for a full list of accepted parameters.
+        The time interval formats accepted by the ``date`` parameter can also be used with
+        any other parameters that expect time intervals (that is: 'beginposition', 'endposition',
+        'date', 'creationdate', and 'ingestiondate').
 
         Returns
         -------
@@ -124,7 +126,7 @@ class SentinelAPI:
             Products returned by the query as a dictionary with the product ID as the key and
             the product's attributes (a dictionary) as the value.
         """
-        query = self.format_query(area, initial_date, end_date, raw, area_relation, **keywords)
+        query = self.format_query(area, date, raw, area_relation, **keywords)
 
         self.logger.debug("Running query: order_by=%s, limit=%s, offset=%s, query=%s",
                           order_by, limit, offset, query)
@@ -144,8 +146,7 @@ class SentinelAPI:
         return _parse_opensearch_response(response)
 
     @staticmethod
-    def format_query(area=None, initial_date=None, end_date='NOW', raw=None,
-                     area_relation='Intersects',
+    def format_query(area=None, date=None, raw=None, area_relation='Intersects',
                      **keywords):
         """Create OpenSearch API query string
         """
@@ -154,15 +155,23 @@ class SentinelAPI:
 
         query_parts = []
 
-        if initial_date is not None:
-            keywords['beginPosition'] = (initial_date, end_date)
+        if date is not None:
+            keywords['beginPosition'] = date
 
         for attr, value in sorted(keywords.items()):
             # From https://github.com/SentinelDataHub/DataHubSystem/search?q=text/date+iso8601
             date_attrs = ['beginposition', 'endposition', 'date', 'creationdate', 'ingestiondate']
-            if attr.lower() in date_attrs and not isinstance(value, string_types):
+            if attr.lower() in date_attrs:
                 # Automatically format date-type attributes
-                value = (format_query_date(value[0]), format_query_date(value[1]))
+                if isinstance(value, string_types) and ' TO ' in value:
+                    # This is a string already formatted as a date interval,
+                    # e.g. '[NOW-1DAY TO NOW]'
+                    pass
+                elif not isinstance(value, string_types) and len(value) == 2:
+                    value = (format_query_date(value[0]), format_query_date(value[1]))
+                else:
+                    raise ValueError("Date-type query parameter '{}' expects a two-element tuple "
+                                     "of str or datetime objects. Received {}".format(attr, value))
 
             if isinstance(value, (list, tuple)):
                 # Handle value ranges
@@ -827,6 +836,8 @@ def format_query_date(in_date):
     """
     if isinstance(in_date, (datetime, date)):
         return in_date.strftime('%Y-%m-%dT%H:%M:%SZ')
+    elif not isinstance(in_date, string_types):
+        raise ValueError('Expected a string or a datetime object. Received {}.'.format(in_date))
 
     # Reference: https://cwiki.apache.org/confluence/display/solr/Working+with+Dates
 
