@@ -108,7 +108,7 @@ OpenSearch example
 
 .. code-block:: python
 
-  >>> api.query(initial_date='NOW-8HOURS', producttype='SLC')
+  >>> api.query(date=('NOW-8HOURS', 'NOW'), producttype='SLC')
   OrderedDict([('04548172-c64a-418f-8e83-7a4d148adf1e',
                 {'acquisitiontype': 'NOMINAL',
                  'beginposition': datetime.datetime(2017, 4, 25, 15, 56, 12, 814000),

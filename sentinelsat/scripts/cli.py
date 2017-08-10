@@ -85,7 +85,6 @@ def _set_logger_handler(level='INFO'):
     '--md5', is_flag=True,
     help='Verify the MD5 checksum and write corrupt product ids and filenames to corrupt_scenes.txt.')
 @click.version_option(version=sentinelsat_version, prog_name="sentinelsat")
-
 def cli(user, password, geometry, start, end, uuid, name, download, md5, sentinel, producttype,
         instrument, cloud, footprints, path, query, url, order_by, limit):
     """Search for Sentinel products and, optionally, download all the results
@@ -113,7 +112,7 @@ def cli(user, password, geometry, start, end, uuid, name, download, md5, sentine
         if sentinel not in ['2', '3']:
             logger.error('Cloud cover is only supported for Sentinel 2 and 3.')
             raise ValueError('Cloud cover is only supported for Sentinel 2 and 3.')
-        search_kwargs["cloudcoverpercentage"] = "[0 TO %s]" % cloud
+        search_kwargs["cloudcoverpercentage"] = (0, cloud)
 
     if query is not None:
         search_kwargs.update((x.split('=') for x in query.split(',')))
@@ -132,9 +131,12 @@ def cli(user, password, geometry, start, end, uuid, name, download, md5, sentine
                     logger.error('No product with ID \'%s\' exists on server', productid)
     elif name is not None:
         search_kwargs["identifier"] = name
-        products = api.query(None, None, None, order_by, limit, **search_kwargs)
+        products = api.query(order_by=order_by, limit=limit, **search_kwargs)
     else:
-        products = api.query(wkt, start, end, order_by=order_by, limit=limit, **search_kwargs)
+        start = start or "19000101"
+        end = end or "NOW"
+        products = api.query(area=wkt, date=(start, end),
+                             order_by=order_by, limit=limit, **search_kwargs)
 
     if footprints is True:
         footprints_geojson = api.to_geojson(products)

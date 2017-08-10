@@ -333,11 +333,11 @@ interactions:
         : \"10\"\n            },\n            {\n               \"name\": \"lastrelativeorbitnumber\"\
         ,\n               \"content\": \"10\"\n            }\n         ]\n      }\n\
         \   ],\n   \"xmlns\": \"http://www.w3.org/2005/Atom\",\n   \"subtitle\": \"\
-        Displaying 3 results. Request done in 0.095 seconds.\",\n   \"opensearch:itemsPerPage\"\
+        Displaying 3 results. Request done in 0.001 seconds.\",\n   \"opensearch:itemsPerPage\"\
         : \"100\",\n   \"id\": \"https://scihub.copernicus.eu/apihub/search?q=S1A_WV_OCN__2SSV_20150526T081641_20150526T082418_006090_007E3E_104C\
         \ OR S1A_WV_OCN__2SSV_20150526T211029_20150526T211737_006097_007E78_134A OR\
         \ S1A_WV_OCN__2SSH_20150603T092625_20150603T093332_006207_008194_521E\",\n\
-        \   \"updated\": \"2017-06-13T11:37:18.507Z\",\n   \"xmlns:opensearch\": \"\
+        \   \"updated\": \"2017-07-07T22:00:59.021Z\",\n   \"xmlns:opensearch\": \"\
         http://a9.com/-/spec/opensearch/1.1/\"\n}}"}
     headers:
       Content-Type: [application/json]
@@ -637,7 +637,7 @@ interactions:
         : \"100\",\n   \"id\": \"https://scihub.copernicus.eu/apihub/search?q=S1A_WV_OCN__2SSV_20150526T081641_20150526T082418_006090_007E3E_104C\
         \ OR S1A_WV_OCN__2SSV_20150526T211029_20150526T211737_006097_007E78_134A OR\
         \ S1A_WV_OCN__2SSH_20150603T092625_20150603T093332_006207_008194_521E\",\n\
-        \   \"updated\": \"2017-06-13T11:37:18.894Z\",\n   \"xmlns:opensearch\": \"\
+        \   \"updated\": \"2017-07-07T22:00:59.258Z\",\n   \"xmlns:opensearch\": \"\
         http://a9.com/-/spec/opensearch/1.1/\"\n}}"}
     headers:
       Content-Type: [application/json]
@@ -801,16 +801,16 @@ interactions:
         \         },\n         {\n            \"name\": \"lastrelativeorbitnumber\"\
         ,\n            \"content\": \"138\"\n         }\n      ]\n   },\n   \"xmlns\"\
         : \"http://www.w3.org/2005/Atom\",\n   \"subtitle\": \"Displaying 1 results.\
-        \ Request done in 0.001 seconds.\",\n   \"opensearch:itemsPerPage\": \"100\"\
-        ,\n   \"id\": \"https://scihub.copernicus.eu/apihub/search?q=S1A_EW_GRDH_1SDH_20141003T003840_20141003T003920_002658_002F54_4DD1\"\
-        ,\n   \"updated\": \"2017-06-13T11:37:19.149Z\",\n   \"xmlns:opensearch\"\
+        \ Request done in 0 seconds.\",\n   \"opensearch:itemsPerPage\": \"100\",\n\
+        \   \"id\": \"https://scihub.copernicus.eu/apihub/search?q=S1A_EW_GRDH_1SDH_20141003T003840_20141003T003920_002658_002F54_4DD1\"\
+        ,\n   \"updated\": \"2017-07-07T22:00:59.513Z\",\n   \"xmlns:opensearch\"\
         : \"http://a9.com/-/spec/opensearch/1.1/\"\n}}"}
     headers:
       Content-Type: [application/json]
       Pragma: [no-cache]
       Server: [Apache-Coyote/1.1]
       Vary: [Accept-Encoding]
-      content-length: ['5708']
+      content-length: ['5704']
     status: {code: 200, message: OK}
 - request:
     body: null

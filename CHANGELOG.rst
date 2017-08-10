@@ -16,10 +16,15 @@ Added
   of products to skip via ``offset``. ``-l/--limit`` on the CLI.
 * Option to change the type of spatial relation for the AOI in ``query()``.
   The choices are 'Interesects', 'Contains' and 'IsWithin'.
+* Added ``raw`` parameter to ``query()`` to append any additional raw query string to the query.
+* Query parameters that take intervals as values can now be passed a tuple of the interval range values.
+* Date validation and parsing has been extended to all date-type parameters in queries, such as 'ingestiondate'.
 * Added ``count()`` which quickly returns the number of products matching a query on the server
   without retrieving the full response.
 * Method ``check_query_length`` to check if a query will fail because of being excessively long.
 * Option to adjust the number of decimal figures in the coordinates of the WKT string returned by ``geojson_to_wkt()``.
+* A more informative error message is shown if a too long query string was likely the cause
+  of the query failing on the server side.
   This can be useful if the WKT string length would cause the query to fail otherwise.
 * Progressbars can be disabled by setting ``show_progressbars`` to ``False``.
   Progressbars may be customized by overriding the ``_tqdm()`` method.
@@ -30,16 +35,21 @@ Changed
 ~~~~~~~
 * Merged CLI subcommands ``sentinel search`` and ``sentinel download`` into ``sentinelsat``.
 * CLI uses keywords instead of positional arguments, i.e. ``--user <username>``.
+* ``initial_date`` and ``end_date`` parameters in ``query()`` have been replaced with a single
+  ``date`` parameter that takes a tuple of start and end dates as input.
 * Files being downloaded now include an '.incomplete' suffix in their name until the download is finished.
 * Removed ``check_existing`` option from ``download()`` and ``download_all()``.
   Similar functionality has been provided in the new ``check_files()`` function.
-* Show a more informative error message if a too long query string was likely the cause
-  of the query failing on the server side.
+* ``format_query_date`` has been changed into a public function.
 * Added a progressbar to long-running queries.
 * Tests can now be run from any directory rather than the repository root.
 * Made the query string slightly more compact by getting rid of unnecessary 'AND' operators, spaces and parentheses.
 * Reduced the size of the VCR.py cassettes used in unit tests.
 * changed license from AGPLv3 to GPLv3+
+
+Deprecated
+~~~~~~~~~~
+* ``query_raw()`` has been merged with ``query()`` and is deprecated. Used ``query(raw=...)`` instead.
 
 Fixed
 ~~~~~

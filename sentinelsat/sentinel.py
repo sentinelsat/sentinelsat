@@ -5,6 +5,7 @@ import hashlib
 import logging
 import re
 import shutil
+import warnings
 import xml.etree.ElementTree as ET
 from collections import OrderedDict, defaultdict
 from contextlib import closing
@@ -51,7 +52,8 @@ class SentinelAPI:
 
     logger = logging.getLogger('sentinelsat.SentinelAPI')
 
-    def __init__(self, user, password, api_url='https://scihub.copernicus.eu/apihub/', show_progressbars=True):
+    def __init__(self, user, password, api_url='https://scihub.copernicus.eu/apihub/',
+                 show_progressbars=True):
         self.session = requests.Session()
         if user and password:
             self.session.auth = (user, password)
@@ -64,9 +66,8 @@ class SentinelAPI:
         self._last_query = None
         self._last_response = None
 
-    def query(self, area=None, initial_date='NOW-1DAY', end_date='NOW',
-              order_by=None, limit=None, offset=0,
-              area_relation='Intersects', **keywords):
+    def query(self, area=None, date=None, raw=None, area_relation='Intersects',
+              order_by=None, limit=None, offset=0, **keywords):
         """Query the OpenSearch API with the coordinates of an area, a date interval
         and any other search keywords accepted by the API.
 
@@ -74,106 +75,61 @@ class SentinelAPI:
         ----------
         area : str, optional
             The area of interest formatted as a Well-Known Text string.
-        initial_date : str or datetime, optional
-            Beginning of the time interval for sensing time. Defaults to 'NOW-1DAY'.
-            Either a Python datetime or a string in one of the following formats:
+        date : tuple of (str or datetime) or str, optional
+            A time interval filter based on the Sensing Start Time of the products.
+            Expects a tuple of (start, end), e.g. ("NOW-1DAY", "NOW").
+            The timestamps can be either a Python datetime or a string in one of the
+            following formats:
+                - yyyyMMdd
                 - yyyy-MM-ddThh:mm:ss.SSSZ (ISO-8601)
                 - yyyy-MM-ddThh:mm:ssZ
-                - YYYMMdd
                 - NOW
                 - NOW-<n>DAY(S) (or HOUR(S), MONTH(S), etc.)
                 - NOW+<n>DAY(S)
                 - yyyy-MM-ddThh:mm:ssZ-<n>DAY(S)
                 - NOW/DAY (or HOUR, MONTH etc.) - rounds the value to the given unit
-        end_date : str or datetime, optional
-            Beginning of the time interval for sensing time.  Defaults to 'NOW'.
-            See initial_date for allowed format.
-        order_by: str, optional
-            A comma-separated list of fields to order by (on server side).
-            Prefix the field name by '+' or '-' to sort in ascending or descending order, respectively.
-            Ascending order is used, if prefix is omitted.
-            Example: "cloudcoverpercentage, -beginposition".
-        limit: int, optional
-            Maximum number of products returned. Defaults to no limit.
-        offset: int, optional
-            The number of results to skip. Defaults to 0.
+            Alternatively, an already fully formatted string such as "[NOW-1DAY TO NOW]" can be
+            used as well.
+        raw : str, optional
+            Additional query text that will be appended to the query.
         area_relation : {'Intersection', 'Contains', 'IsWithin'}, optional
             What relation to use for testing the AOI. Case insensitive.
                 - Intersects: true if the AOI and the footprint intersect (default)
                 - Contains: true if the AOI is inside the footprint
                 - IsWithin: true if the footprint is inside the AOI
-
-
-        Other Parameters
-        ----------------
-        Additional keywords can be used to specify other query parameters, e.g. orbitnumber=70.
-
-        See https://scihub.copernicus.eu/twiki/do/view/SciHubUserGuide/3FullTextSearch
-        for a full list of accepted parameters.
-
-        Returns
-        -------
-        dict[string, dict]
-            Products returned by the query as a dictionary with the product ID as the key and
-            the product's attributes (a dictionary) as the value.
-        """
-        query = self.format_query(area, initial_date, end_date, area_relation, **keywords)
-        return self.query_raw(query, order_by, limit, offset)
-
-    @staticmethod
-    def format_query(area=None, initial_date='NOW-1DAY', end_date='NOW', area_relation='Intersects',
-                     **keywords):
-        """Create OpenSearch API query string
-        """
-        if area_relation.lower() not in {"intersects", "contains", "iswithin"}:
-            raise ValueError("Incorrect AOI relation provided ({})".format(area_relation))
-
-        query_parts = []
-        if initial_date is not None and end_date is not None:
-            query_parts += ['beginPosition:[%s TO %s]' % (
-                _format_query_date(initial_date),
-                _format_query_date(end_date)
-            )]
-
-        if area is not None:
-            query_parts += ['footprint:"%s(%s)"' % (area_relation, area)]
-
-        for kw in sorted(keywords):
-            query_parts += ['%s:%s' % (kw, keywords[kw])]
-
-        query = ' AND '.join(query_parts)
-        # plus symbols would be interpreted as spaces without escaping
-        query = query.replace('+', '%2B')
-        return query
-
-    def query_raw(self, query, order_by=None, limit=None, offset=0):
-        """Do a full-text query on the OpenSearch API using the format specified in
-           https://scihub.copernicus.eu/twiki/do/view/SciHubUserGuide/3FullTextSearch
-
-        Parameters
-        ----------
-        query : str
-            The query string.
         order_by: str, optional
             A comma-separated list of fields to order by (on server side).
-            Prefix the field name by '+' or '-' to sort in ascending or descending order, respectively.
-            Ascending order is used, if prefix is omitted.
+            Prefix the field name by '+' or '-' to sort in ascending or descending order,
+            respectively. Ascending order is used, if prefix is omitted.
             Example: "cloudcoverpercentage, -beginposition".
         limit: int, optional
             Maximum number of products returned. Defaults to no limit.
         offset: int, optional
             The number of results to skip. Defaults to 0.
 
+        Other Parameters
+        ----------------
+        Additional keywords can be used to specify other query parameters,
+        e.g. relativeorbitnumber=70.
+        See https://scihub.copernicus.eu/twiki/do/view/SciHubUserGuide/3FullTextSearch
+        for a full list.
+
+        Range values can be passed as two-element tuples, e.g. cloudcoverpercentage=(0, 30).
+
+        The time interval formats accepted by the ``date`` parameter can also be used with
+        any other parameters that expect time intervals (that is: 'beginposition', 'endposition',
+        'date', 'creationdate', and 'ingestiondate').
+
         Returns
         -------
         dict[string, dict]
             Products returned by the query as a dictionary with the product ID as the key and
             the product's attributes (a dictionary) as the value.
         """
-        # plus symbols would be interpreted as spaces without escaping
+        query = self.format_query(area, date, raw, area_relation, **keywords)
+
         self.logger.debug("Running query: order_by=%s, limit=%s, offset=%s, query=%s",
                           order_by, limit, offset, query)
-        query = query.replace('+', '%2B')
         formatted_order_by = _format_order_by(order_by)
         try:
             response, count = self._load_query(query, formatted_order_by, limit, offset)
@@ -189,22 +145,103 @@ class SentinelAPI:
         self.logger.info("Found %s products", count)
         return _parse_opensearch_response(response)
 
-    def count(self, query):
-        """Get the number of products matching a query.
+    @staticmethod
+    def format_query(area=None, date=None, raw=None, area_relation='Intersects',
+                     **keywords):
+        """Create OpenSearch API query string
+        """
+        if area_relation.lower() not in {"intersects", "contains", "iswithin"}:
+            raise ValueError("Incorrect AOI relation provided ({})".format(area_relation))
 
-        This is a significantly more efficient alternative to doing len(api.query_raw(...)),
-        which can take minutes to run for queries matching thousands of products.
+        query_parts = []
+
+        if date is not None:
+            keywords['beginPosition'] = date
+
+        for attr, value in sorted(keywords.items()):
+            # From https://github.com/SentinelDataHub/DataHubSystem/search?q=text/date+iso8601
+            date_attrs = ['beginposition', 'endposition', 'date', 'creationdate', 'ingestiondate']
+            if attr.lower() in date_attrs:
+                # Automatically format date-type attributes
+                if isinstance(value, string_types) and ' TO ' in value:
+                    # This is a string already formatted as a date interval,
+                    # e.g. '[NOW-1DAY TO NOW]'
+                    pass
+                elif not isinstance(value, string_types) and len(value) == 2:
+                    value = (format_query_date(value[0]), format_query_date(value[1]))
+                else:
+                    raise ValueError("Date-type query parameter '{}' expects a two-element tuple "
+                                     "of str or datetime objects. Received {}".format(attr, value))
+
+            if isinstance(value, (list, tuple)):
+                # Handle value ranges
+                if len(value) == 2:
+                    value = '[{} TO {}]'.format(*value)
+                else:
+                    raise ValueError("Invalid number of elements in list. Expected 2, received "
+                                     "{}".format(len(value)))
+
+            query_parts.append('{}:{}'.format(attr, value))
+
+        if raw:
+            query_parts.append(raw)
+
+        if area is not None:
+            query_parts.append('footprint:"{}({})"'.format(area_relation, area))
+
+        query = ' '.join(query_parts)
+        # plus symbols would be interpreted as spaces without escaping
+        query = query.replace('+', '%2B')
+        return query
+
+    def query_raw(self, query, order_by=None, limit=None, offset=0):
+        """Do a full-text query on the OpenSearch API using the format specified in
+           https://scihub.copernicus.eu/twiki/do/view/SciHubUserGuide/3FullTextSearch
+
+        DEPRECATED: use query(raw=...) instead. This method will be removed in the next major release.
 
         Parameters
         ----------
         query : str
             The query string.
+        order_by: str, optional
+            A comma-separated list of fields to order by (on server side).
+            Prefix the field name by '+' or '-' to sort in ascending or descending order, respectively.
+            Ascending order is used, if prefix is omitted.
+            Example: "cloudcoverpercentage, -beginposition".
+        limit: int, optional
+            Maximum number of products returned. Defaults to no limit.
+        offset: int, optional
+            The number of results to skip. Defaults to 0.
+
+        Returns
+        -------
+        dict[string, dict]
+            Products returned by the query as a dictionary with the product ID as the key and
+            the product's attributes (a dictionary) as the value.
+        """
+        warnings.warn(
+            "query_raw() has been merged with query(). use query(raw=...) instead.",
+            PendingDeprecationWarning
+        )
+        return self.query(raw=query, order_by=order_by, limit=limit, offset=offset)
+
+    def count(self, *args, **kwargs):
+        """Get the number of products matching a query.
+
+        This is a significantly more efficient alternative to doing len(api.query()),
+        which can take minutes to run for queries matching thousands of products.
+
+        Parameters
+        ----------
+        Identical to the parameters of api.query().
 
         Returns
         -------
         int
             The number of products matching a query.
         """
+        query = self.format_query(*args, **kwargs)
         _, total_count = self._load_query(query, limit=0)
         return total_count
 
@@ -577,7 +614,7 @@ class SentinelAPI:
         # 40 names per query fits reasonably well inside the query limit
         for chunk in chunks(names, 40):
             query = " OR ".join(chunk)
-            products.update(self.query_raw(query))
+            products.update(self.query(raw=query))
 
         # Group the products
         output = OrderedDict((name, dict()) for name in names)
@@ -793,6 +830,35 @@ def geojson_to_wkt(geojson_obj, feature_number=0, decimals=4):
     return wkt
 
 
+def format_query_date(in_date):
+    """Format a date, datetime or a YYYYMMDD string input as YYYY-MM-DDThh:mm:ssZ
+    or validate a string input as suitable for the full text search interface and return it.
+    """
+    if isinstance(in_date, (datetime, date)):
+        return in_date.strftime('%Y-%m-%dT%H:%M:%SZ')
+    elif not isinstance(in_date, string_types):
+        raise ValueError('Expected a string or a datetime object. Received {}.'.format(in_date))
+
+    # Reference: https://cwiki.apache.org/confluence/display/solr/Working+with+Dates
+
+    # ISO-8601 date or NOW
+    valid_date_pattern = r'^(?:\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(?:\.\d+)?Z|NOW)'
+    # date arithmetic suffix is allowed
+    units = r'(?:YEAR|MONTH|DAY|HOUR|MINUTE|SECOND)'
+    valid_date_pattern += r'(?:[-+]\d+{}S?)*'.format(units)
+    # dates can be rounded to a unit of time
+    # e.g. "NOW/DAY" for dates since 00:00 today
+    valid_date_pattern += r'(?:/{}S?)*$'.format(units)
+    in_date = in_date.strip()
+    if re.match(valid_date_pattern, in_date):
+        return in_date
+
+    try:
+        return datetime.strptime(in_date, '%Y%m%d').strftime('%Y-%m-%dT%H:%M:%SZ')
+    except ValueError:
+        raise ValueError('Unsupported date value {}'.format(in_date))
+
+
 def _check_scihub_response(response, test_json=True):
     """Check that the response from server has status code 2xx and that the response is valid JSON.
     """
@@ -821,33 +887,6 @@ def _check_scihub_response(response, test_json=True):
         # See PEP 409
         api_error.__cause__ = None
         raise api_error
-
-
-def _format_query_date(in_date):
-    """Format a date, datetime or a YYYYMMDD string input as YYYY-MM-DDThh:mm:ssZ
-    or validate a string input as suitable for the full text search interface and return it.
-    """
-    if isinstance(in_date, (datetime, date)):
-        return in_date.strftime('%Y-%m-%dT%H:%M:%SZ')
-
-    # Reference: https://cwiki.apache.org/confluence/display/solr/Working+with+Dates
-
-    # ISO-8601 date or NOW
-    valid_date_pattern = r'^(?:\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(?:\.\d+)?Z|NOW)'
-    # date arithmetic suffix is allowed
-    units = r'(?:YEAR|MONTH|DAY|HOUR|MINUTE|SECOND)'
-    valid_date_pattern += r'(?:[-+]\d+{}S?)*'.format(units)
-    # dates can be rounded to a unit of time
-    # e.g. "NOW/DAY" for dates since 00:00 today
-    valid_date_pattern += r'(?:/{}S?)*$'.format(units)
-    in_date = in_date.strip()
-    if re.match(valid_date_pattern, in_date):
-        return in_date
-
-    try:
-        return datetime.strptime(in_date, '%Y%m%d').strftime('%Y-%m-%dT%H:%M:%SZ')
-    except ValueError:
-        raise ValueError('Unsupported date value {}'.format(in_date))
 
 
 def _format_order_by(order_by):
