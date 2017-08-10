@@ -123,7 +123,7 @@ A new package is release on PyPi with the following commands.
 .. code-block:: console
 
   pip install rstcheck twine
-  rstcheck README.rst
+  rstcheck README.rst CONTRIBUTE.rst
   python setup.py sdist bdist --universal
   twine upload dist/*
 
