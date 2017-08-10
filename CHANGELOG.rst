@@ -3,19 +3,30 @@ Change Log
 
 All notable changes to ``sentinelsat`` will be listed here.
 
-
-[0.12.0] – 2017-XX-XX
+[master] – 2017-XX-XX
 ---------------------
 
 Added
 ~~~~~
-* CLI option to query by UUID (``--uuid``) or filename (``--name``).
-* Added ``order_by`` option to ``query()`` which controls the fields by which the products are sorted on the
-  server side before being returned. ``-o/--order-by`` on the CLI.
-* Added the option to ``limit`` the number of products returned by ``query()`` and to set the number
-  of products to skip via ``offset``. ``-l/--limit`` on the CLI.
+
+Changed
+~~~~~~~
+
+Deprecated
+~~~~~~~~~~
+
+
+[0.12.0] – 2017-08-10
+---------------------
+
+Added
+~~~~~
 * Option to change the type of spatial relation for the AOI in ``query()``.
   The choices are 'Interesects', 'Contains' and 'IsWithin'.
+* ``order_by`` option to ``query()`` which controls the fields by which the products are sorted on the
+  server side before being returned. ``-o/--order-by`` on the CLI.
+* ``limit`` the number of products returned by ``query()`` and to set the number
+  of products to skip via ``offset``. ``-l/--limit`` on the CLI.
 * Added ``raw`` parameter to ``query()`` to append any additional raw query string to the query.
 * Query parameters that take intervals as values can now be passed a tuple of the interval range values.
 * Date validation and parsing has been extended to all date-type parameters in queries, such as 'ingestiondate'.
@@ -23,6 +34,7 @@ Added
   without retrieving the full response.
 * Method ``check_query_length`` to check if a query will fail because of being excessively long.
 * Option to adjust the number of decimal figures in the coordinates of the WKT string returned by ``geojson_to_wkt()``.
+* CLI option to query by UUID (``--uuid``) or filename (``--name``).
 * A more informative error message is shown if a too long query string was likely the cause
   of the query failing on the server side.
   This can be useful if the WKT string length would cause the query to fail otherwise.
@@ -49,7 +61,7 @@ Changed
 
 Deprecated
 ~~~~~~~~~~
-* ``query_raw()`` has been merged with ``query()`` and is deprecated. Used ``query(raw=...)`` instead.
+* ``query_raw()`` has been merged with ``query()`` and is deprecated. Use ``query(raw=...)`` instead.
 
 Fixed
 ~~~~~

@@ -231,6 +231,8 @@ Contributors
 * Jonas Sølvsteen
 * Luca Delucchi
 
+We invite anyone to participate by contributing code, reporting bugs, fixing bugs, writing documentation and tutorials and discussing the future of this project. Please check `CONTRIBUTE.rst <CONTRIBUTE.rst>`_.
+
 License
 =======
 
