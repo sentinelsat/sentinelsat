@@ -862,6 +862,9 @@ def format_query_date(in_date):
 def _check_scihub_response(response, test_json=True):
     """Check that the response from server has status code 2xx and that the response is valid JSON.
     """
+    # Prevent requests from needing to guess the encoding
+    # SciHub appears to be using UTF-8 in all of their responses
+    response.encoding = 'utf-8'
     try:
         response.raise_for_status()
         if test_json:
