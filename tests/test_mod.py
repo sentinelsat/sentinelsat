@@ -652,8 +652,7 @@ def test_footprints_s1():
 
     footprints = api.to_geojson(products)
     for footprint in footprints['features']:
-        validation = geojson.is_valid(footprint['geometry'])
-        assert validation['valid'] == 'yes', validation['message']
+        assert not footprint['geometry'].errors()
 
     with open(FIXTURES_DIR + '/expected_search_footprints_s1.geojson') as geojson_file:
         expected_footprints = geojson.loads(geojson_file.read())
@@ -665,8 +664,7 @@ def test_footprints_s1():
 def test_footprints_s2(products):
     footprints = SentinelAPI.to_geojson(products)
     for footprint in footprints['features']:
-        validation = geojson.is_valid(footprint['geometry'])
-        assert validation['valid'] == 'yes', validation['message']
+        assert not footprint['geometry'].errors()
 
     with open(FIXTURES_DIR + '/expected_search_footprints_s2.geojson') as geojson_file:
         expected_footprints = geojson.loads(geojson_file.read())
