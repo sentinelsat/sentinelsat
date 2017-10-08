@@ -69,15 +69,16 @@ Python Library
 --------------
 
 .. code-block:: python
+  from sentinelsat.sentinel import SentinelAPI, read_geojson, geojson_to_wkt
+  from datetime import date
 
   # connect to the API
-  from sentinelsat.sentinel import SentinelAPI, read_geojson, geojson_to_wkt
   api = SentinelAPI('user', 'password', 'https://scihub.copernicus.eu/dhus')
 
   # download single scene by known product id
   api.download(<product_id>)
 
-  # search by polygon, time, and SciHub query keywords
+  # search by polygon, time, and Hub query keywords
   footprint = geojson_to_wkt(read_geojson('map.geojson'))
   products = api.query(footprint,
                        date = ('20151219', date(2015, 12, 29)),
@@ -106,14 +107,14 @@ Valid search query keywords can be found at the `Copernicus Open Access Hub docu
 Command Line Interface
 ----------------------
 
-A basic search query consists of a search polygon as well as the username and
+A basic search query consists of a search area geometry as well as the username and
 password to access the Copernicus Open Access Hub.
 
 .. code-block:: bash
 
   sentinelsat -u <user> -p <password> -g <geojson>
 
-Search areas are provided as GeoJSON polygons, which can be created with
+Search areas are provided as GeoJSON files, which can be created with
 `QGIS <http://qgis.org/en/site/>`_ or `geojson.io <http://geojson.io>`_.
 If you do not specify a start and end date only products published in the last
 24 hours will be queried.
@@ -220,7 +221,7 @@ The full documentation is also published at http://sentinelsat.readthedocs.io/.
 Changelog
 =========
 
-See `CHANGELOG <CHANGELOG.rst>`_.
+See `CHANGELOG <CHANGELOG.rst>`_. You can also use Githubs compare view to see the `changes since last release <https://github.com/sentinelsat/sentinelsat/compare/v0.12...master>`_.
 
 Contributors
 ============

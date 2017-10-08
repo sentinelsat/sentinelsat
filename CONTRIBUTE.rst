@@ -116,7 +116,11 @@ Versioning and Release
 
 ``sentinelsat`` uses `semantic versioning <http://semver.org/>`_ from the ``v1.0`` release forward. Prior to that the versioning is ``0.Major.MinorAndPatch``.
 
-Documentation is automatically built after each merge in the ``master`` branch using a webhook. A new Zenodo DOI is created automatically with every Github release using the Zenodo webhook.
+Version numbers need to be adapted in sentinelsat/__init__.py as well as the Github compare link in the Readme.
+
+Documentation is automatically built after each merge in the ``master`` branch using a webhook. The default documentation landing page is manually pinned to the latest release by @Fernerkundung, as RTD does not allow this automatically.
+
+A new Zenodo DOI is created automatically with every Github release using the Zenodo webhook.
 
 A new package is release on PyPi with the following commands.
 
