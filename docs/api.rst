@@ -10,6 +10,8 @@ Quickstart
 
   # connect to the API
   from sentinelsat import SentinelAPI, read_geojson, geojson_to_wkt
+  from datetime import date
+
   api = SentinelAPI('user', 'password', 'https://scihub.copernicus.eu/dhus')
 
   # download single scene by known product id
@@ -18,9 +20,9 @@ Quickstart
   # search by polygon, time, and SciHub query keywords
   footprint = geojson_to_wkt(read_geojson('map.geojson'))
   products = api.query(footprint,
-                       '20151219', date(2015, 12, 29),
-                       platformname = 'Sentinel-2',
-                       cloudcoverpercentage = '[0 TO 30]')
+                       date=('20151219', date(2015, 12, 29)),
+                       platformname='Sentinel-2',
+                       cloudcoverpercentage=(0, 30))
 
   # download all results from the search
   api.download_all(products)
@@ -59,14 +61,15 @@ all data types, as long as you pass the ``id`` to the download function.
 
   # connect to the API
   from sentinelsat import SentinelAPI, read_geojson, geojson_to_wkt
+  from datetime import date
 
   api = SentinelAPI('user', 'password', 'https://scihub.copernicus.eu/dhus')
 
   # search by polygon, time, and SciHub query keywords
   footprint = geojson_to_wkt(read_geojson('map.geojson'))
   products = api.query(footprint,
-                       '20151219', date(2015, 12, 29),
-                       platformname = 'Sentinel-2')
+                       date=('20151219', date(2015, 12, 29)),
+                       platformname='Sentinel-2')
 
   # convert to Pandas DataFrame
   products_df = api.to_dataframe(products)
