@@ -268,7 +268,7 @@ To search for recent Sentinel 2 imagery by MGRS tile, use the `tileid` parameter
   from collections import OrderedDict
   from sentinelsat import SentinelAPI
 
-  api = SentinelAPI('myuser', 'mypass')
+  api = SentinelAPI('user', 'password')
 
   tiles = ['33VUC', '33UUB']
 
