@@ -17,7 +17,8 @@ script:
 - coverage run --source=sentinelsat -m py.test -v
 after_success:
 - codecov
-- if [[ $TRAVIS_PYTHON_VERSION = 3.6 && $TRAVIS_PULL_REQUEST = false ]]; then curl -X POST http://readthedocs.org/build/sentinelsat; fi
+# RTD API v2 is triggered via Github Webhook, below is the syntax for fallback to API v1
+# - if [[ $TRAVIS_PYTHON_VERSION = 3.6 && $TRAVIS_PULL_REQUEST = false ]]; then curl -X POST http://readthedocs.org/build/sentinelsat; fi
 sudo: false
 notifications:
   email: false
