@@ -118,7 +118,7 @@ def cli(user, password, geometry, start, end, uuid, name, download, md5, sentine
         search_kwargs.update((x.split('=') for x in query.split(',')))
 
     if geometry is not None:
-        wkt = geojson_to_wkt(read_geojson(geometry))
+        search_kwargs['area'] = geojson_to_wkt(read_geojson(geometry))
 
     if uuid is not None:
         uuid_list = [x.strip() for x in uuid.split(',')]
@@ -135,7 +135,7 @@ def cli(user, password, geometry, start, end, uuid, name, download, md5, sentine
     else:
         start = start or "19000101"
         end = end or "NOW"
-        products = api.query(area=wkt, date=(start, end),
+        products = api.query(date=(start, end),
                              order_by=order_by, limit=limit, **search_kwargs)
 
     if footprints is True:
