@@ -15,6 +15,11 @@ Changed
 Deprecated
 ~~~~~~~~~~
 
+Fixed
+~~~~~
+* set ``requests`` encoding to UTF8
+* fixed a backwards incompatible change in the ``geojson`` dependency
+* inconsistent documentation on the use of range parameters such as ``date=``
 
 [0.12.0] – 2017-08-10
 ---------------------

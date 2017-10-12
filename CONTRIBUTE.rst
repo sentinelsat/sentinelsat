@@ -118,7 +118,7 @@ Versioning and Release
 
 Version numbers need to be adapted in sentinelsat/__init__.py as well as the Github compare link in the Readme.
 
-Documentation is automatically built after each merge in the ``master`` branch using a webhook. The default documentation landing page is manually pinned to the latest release by @Fernerkundung, as RTD does not allow this automatically.
+Documentation is automatically built after each merge in the ``master`` branch using a webhook. The documentation landing page is set to ``stable``, which defaults to the latest release.
 
 A new Zenodo DOI is created automatically with every Github release using the Zenodo webhook.
 
