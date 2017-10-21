@@ -384,7 +384,7 @@ class SentinelAPI:
         values = _parse_odata_response(response.json()['d'])
         return values
 
-    def download(self, id, directory_path='.', checksum=False):
+    def download(self, id, directory_path='.', checksum=True):
         """Download a product.
 
         Uses the filename on the server for the downloaded file, e.g.
@@ -401,7 +401,7 @@ class SentinelAPI:
         checksum : bool, optional
             If True, verify the downloaded file's integrity by checking its MD5 checksum.
             Throws InvalidChecksumError if the checksum does not match.
-            Defaults to False.
+            Defaults to True.
 
         Returns
         -------
@@ -467,7 +467,7 @@ class SentinelAPI:
         shutil.move(temp_path, path)
         return product_info
 
-    def download_all(self, products, directory_path='.', max_attempts=10, checksum=False):
+    def download_all(self, products, directory_path='.', max_attempts=10, checksum=True):
         """Download a list of products.
 
         Takes a list of product IDs as input. This means that the return value of query() can be

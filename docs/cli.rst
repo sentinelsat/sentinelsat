@@ -41,13 +41,13 @@ on Christmas Eve 2015.
 
 .. code-block:: bash
 
-  sentinelsat -u <user> -p <password> -d --md5 --uuid a9048d1d-fea6-4df8-bedd-7bcb212be12e
+  sentinelsat -u <user> -p <password> -d --uuid a9048d1d-fea6-4df8-bedd-7bcb212be12e
 
 or by using its filename
 
 .. code-block:: bash
 
-  sentinelsat -u <user> -p <password> -d --md5 --name S1A_EW_GRDM_1SDH_20151224T154142_20151224T154207_009186_00D3B0_C71E
+  sentinelsat -u <user> -p <password> -d --name S1A_EW_GRDM_1SDH_20151224T154142_20151224T154207_009186_00D3B0_C71E
 
 Sentinel-2
 ~~~~~~~~~~
@@ -111,8 +111,6 @@ Options:
 |    |               |      | Example: 'producttype=GRD,polarisationmode=HH'.                                            |
 +----+---------------+------+--------------------------------------------------------------------------------------------+
 | -f | -\-footprints |      | Create geojson file search_footprints.geojson with footprints of the query result.         |
-+----+---------------+------+--------------------------------------------------------------------------------------------+
-|    | -\-md5        |      | Verify the MD5 checksum and write corrupt product ids and filenames to corrupt_scenes.txt. |
 +----+---------------+------+--------------------------------------------------------------------------------------------+
 |    | -\-version    |      | Show version number and exit.                                                              |
 +----+---------------+------+--------------------------------------------------------------------------------------------+

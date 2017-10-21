@@ -21,6 +21,14 @@ Fixed
 * fixed a backwards incompatible change in the ``geojson`` dependency
 * inconsistent documentation on the use of range parameters such as ``date=``
 
+[0.13.0] – 2017-10-22
+---------------------
+
+Changed
+~~~~~~~
+* Made checksumming the default behavior, and removed its flag from the CLI.
+
+
 [0.12.0] – 2017-08-10
 ---------------------
 
