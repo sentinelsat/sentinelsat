@@ -322,12 +322,12 @@ def test_too_long_query():
         return api.format_query(date=("NOW", "NOW"), raw=" abc_:*.+*~!," * n)
 
     # Expect no error
-    q = create_query(156)
+    q = create_query(170)
     assert 0.99 < SentinelAPI.check_query_length(q) < 1.0
     api.query(raw=q)
 
     # Expect HTTP status 500 Internal Server Error
-    q = create_query(157)
+    q = create_query(171)
     assert 1.0 <= SentinelAPI.check_query_length(q) < 1.01
     with pytest.raises(SentinelAPIError) as excinfo:
         api.query(raw=q)
@@ -350,17 +350,14 @@ def test_date_arithmetic():
 @my_vcr.use_cassette
 @pytest.mark.scihub
 def test_quote_symbol_bug():
-    # A test to check if plus symbol handling has been fixed in the DHuS
+    # A test to check if plus symbol handling works correctly on the server side
+    # It used to raise an error but has since been fixed
     # https://github.com/SentinelDataHub/DataHubSystem/issues/23
     api = SentinelAPI(**_api_kwargs)
 
     q = 'beginposition:[2017-05-30T00:00:00Z TO 2017-05-31T00:00:00Z+1DAY]'
-    with pytest.raises(SentinelAPIError) as excinfo:
-        api._load_query(q, limit=0)
-    assert excinfo.value.response.status_code == 500
-
-    api._load_query(q.replace('+', '%2B'), limit=0)
-    assert api._last_response.status_code == 200
+    count = api.count(raw=q)
+    assert count > 0
 
 
 @pytest.mark.fast

@@ -180,8 +180,6 @@ class SentinelAPI:
             query_parts.append('footprint:"{}({})"'.format(area_relation, area))
 
         query = ' '.join(query_parts)
-        # plus symbols would be interpreted as spaces without escaping
-        query = query.replace('+', '%2B')
         return query
 
     def query_raw(self, query, order_by=None, limit=None, offset=0):
@@ -568,9 +566,6 @@ class SentinelAPI:
         determine whether the query will fail. Their combined length can be at most about
         7786 bytes.
         """
-        # fix plus symbols for consistency with .query()
-        # they would be interpreted as spaces without escaping
-        query = query.replace('+', '%2B')
         effective_length = len(query) + 2 * len(re.findall('[^-_.* 0-9A-Za-z]', query))
         return effective_length / 3950
 
