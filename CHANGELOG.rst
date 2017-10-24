@@ -17,16 +17,20 @@ Deprecated
 
 Fixed
 ~~~~~
-* set ``requests`` encoding to UTF8
-* fixed a backwards incompatible change in the ``geojson`` dependency
-* inconsistent documentation on the use of range parameters such as ``date=``
 
-[0.13.0] – 2017-10-22
+
+[0.12.1] – 2017-10-24
 ---------------------
 
 Changed
 ~~~~~~~
-* Made checksumming the default behavior, and removed its flag from the CLI.
+* Made checksumming the default behavior, and removed its flag from the CLI. (@gbaier2)
+
+Fixed
+~~~~~
+* set ``requests`` encoding to UTF8
+* fixed a backwards incompatible change in the ``geojson`` dependency
+* inconsistent documentation on the use of range parameters such as ``date=``
 
 
 [0.12.0] – 2017-08-10
