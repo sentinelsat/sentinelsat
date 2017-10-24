@@ -173,8 +173,6 @@ Options
 +----+---------------+------+--------------------------------------------------------------------------------------------+
 | -f | -\-footprints |      | Create geojson file search_footprints.geojson with footprints of the query result.         |
 +----+---------------+------+--------------------------------------------------------------------------------------------+
-|    | -\-md5        |      | Verify the MD5 checksum and write corrupt product ids and filenames to corrupt_scenes.txt. |
-+----+---------------+------+--------------------------------------------------------------------------------------------+
 |    | -\-version    |      | Show version number and exit.                                                              |
 +----+---------------+------+--------------------------------------------------------------------------------------------+
 |    | -\-help       |      | Show help message and exit.                                                                |
@@ -232,6 +230,7 @@ Contributors
 * Martin Valgur
 * Jonas Sølvsteen
 * Luca Delucchi
+* Gaston Keller
 
 We invite anyone to participate by contributing code, reporting bugs, fixing bugs, writing documentation and tutorials and discussing the future of this project. Please check `CONTRIBUTE.rst <CONTRIBUTE.rst>`_.
 

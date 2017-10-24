@@ -351,7 +351,7 @@ def test_download_single(tmpdir):
     # The file already exists, should not be re-downloaded
     result = runner.invoke(
         cli,
-        command + ['--md5'],
+        command,
         catch_exceptions=False
     )
 
@@ -369,22 +369,11 @@ def test_download_single(tmpdir):
     with requests_mock.mock(real_http=True) as rqst:
         rqst.get(url, json=json)
 
-        # md5 flag not set, expect nothing to happen
-        result = runner.invoke(
-            cli,
-            command,
-            catch_exceptions=False
-        )
-
-        # clean up
-        for f in tmpdir.listdir():
-            f.remove()
-
-        # md5 flag set, should raise an exception
+        # md5 flag set (implicitly), should raise an exception
         with pytest.raises(InvalidChecksumError) as excinfo:
             result = runner.invoke(
                 cli,
-                command + ['--md5'],
+                command,
                 catch_exceptions=False
             )
 
@@ -412,10 +401,9 @@ def test_download_many(tmpdir):
     )
 
     # Should not re-download
-    # This time run MD5 checks
     result = runner.invoke(
         cli,
-        command + ['--md5'],
+        command,
         catch_exceptions=False
     )
 
@@ -434,22 +422,11 @@ def test_download_many(tmpdir):
     with requests_mock.mock(real_http=True) as rqst:
         rqst.get(url, json=json)
 
-        # md5 flag not set, expect nothing to happen
+        rqst.get(url, json=json)
+        # md5 flag set (implicitly), should raise an exception
         result = runner.invoke(
             cli,
             command,
-            catch_exceptions=False
-        )
-
-        # clean up
-        for f in tmpdir.listdir():
-            f.remove()
-
-        rqst.get(url, json=json)
-        # md5 flag set, should now show an error
-        result = runner.invoke(
-            cli,
-            command + ['--md5'],
             catch_exceptions=False
         )
         assert 'is corrupted' in result.output

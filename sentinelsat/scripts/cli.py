@@ -81,11 +81,8 @@ def _set_logger_handler(level='INFO'):
     help="""Create a geojson file search_footprints.geojson with footprints
     and metadata of the returned products.
     """)
-@click.option(
-    '--md5', is_flag=True,
-    help='Verify the MD5 checksum and write corrupt product ids and filenames to corrupt_scenes.txt.')
 @click.version_option(version=sentinelsat_version, prog_name="sentinelsat")
-def cli(user, password, geometry, start, end, uuid, name, download, md5, sentinel, producttype,
+def cli(user, password, geometry, start, end, uuid, name, download, sentinel, producttype,
         instrument, cloud, footprints, path, query, url, order_by, limit):
     """Search for Sentinel products and, optionally, download all the results
     and/or create a geojson file with the search result footprints.
@@ -144,12 +141,11 @@ def cli(user, password, geometry, start, end, uuid, name, download, md5, sentine
             outfile.write(gj.dumps(footprints_geojson))
 
     if download is True:
-        product_infos, failed_downloads = api.download_all(products, path, checksum=md5)
-        if md5 is True:
-            if len(failed_downloads) > 0:
-                with open(os.path.join(path, "corrupt_scenes.txt"), "w") as outfile:
-                    for failed_id in failed_downloads:
-                        outfile.write("%s : %s\n" % (failed_id, products[failed_id]['title']))
+        product_infos, failed_downloads = api.download_all(products, path)
+        if len(failed_downloads) > 0:
+            with open(os.path.join(path, "corrupt_scenes.txt"), "w") as outfile:
+                for failed_id in failed_downloads:
+                    outfile.write("%s : %s\n" % (failed_id, products[failed_id]['title']))
     else:
         for product_id, props in products.items():
             if uuid is None:
