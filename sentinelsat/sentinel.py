@@ -131,17 +131,7 @@ class SentinelAPI:
         self.logger.debug("Running query: order_by=%s, limit=%s, offset=%s, query=%s",
                           order_by, limit, offset, query)
         formatted_order_by = _format_order_by(order_by)
-        try:
-            response, count = self._load_query(query, formatted_order_by, limit, offset)
-        except SentinelAPIError as e:
-            # Queries with length greater than about 2700-3600 characters (depending on content) may
-            # produce "HTTP status 500 Internal Server Error"
-            factor = self.check_query_length(query)
-            if e.response.status_code == 500 and not e.msg and factor > 0.95:
-                e.msg = ("The query likely failed due to its length "
-                         "({:.1%} of the limit)".format(factor))
-            e.__cause__ = None
-            raise e
+        response, count = self._load_query(query, formatted_order_by, limit, offset)
         self.logger.info("Found %s products", count)
         return _parse_opensearch_response(response)
 
@@ -581,11 +571,8 @@ class SentinelAPI:
         # fix plus symbols for consistency with .query()
         # they would be interpreted as spaces without escaping
         query = query.replace('+', '%2B')
-        # q = query.replace(" ", "%20")
-        # originalQuery = quote_plus(query)
-        # This can be simplified to just counting the number of special characters
-        effective_length = len(query) + len(re.findall('[^-_.~0-9A-Za-z]', query))
-        return effective_length / 3893
+        effective_length = len(query) + 2 * len(re.findall('[^-_.* 0-9A-Za-z]', query))
+        return effective_length / 3950
 
     def _query_names(self, names):
         """Find products by their names, e.g.

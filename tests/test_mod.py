@@ -319,20 +319,21 @@ def test_too_long_query():
     # that a relevant error message is provided
 
     def create_query(n):
-        return api.format_query(None, ("NOW", "NOW"), raw=" orbitdirection:descending" * n)
+        return api.format_query(date=("NOW", "NOW"), raw=" abc_:*.+*~!," * n)
 
     # Expect no error
-    q = create_query(137)
-    assert 0.99 < api.check_query_length(q) < 1.0
+    q = create_query(156)
+    assert 0.99 < SentinelAPI.check_query_length(q) < 1.0
     api.query(raw=q)
 
     # Expect HTTP status 500 Internal Server Error
-    q = create_query(138)
-    assert 1.0 <= api.check_query_length(q) < 1.01
+    q = create_query(157)
+    assert 1.0 <= SentinelAPI.check_query_length(q) < 1.01
     with pytest.raises(SentinelAPIError) as excinfo:
         api.query(raw=q)
     assert excinfo.value.response.status_code == 500
-    assert "failed due to its length" in excinfo.value.msg
+    assert ("Request Entity Too Large" in excinfo.value.msg or
+            "Request-URI Too Long" in excinfo.value.msg)
 
 
 @my_vcr.use_cassette
