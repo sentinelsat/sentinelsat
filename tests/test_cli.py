@@ -59,7 +59,6 @@ def test_returned_filesize():
         ['--user', _api_auth[0],
          '--password', _api_auth[1],
          '--geometry', path.join(FIXTURES_DIR, 'map.geojson'),
-         '--url', 'https://scihub.copernicus.eu/dhus/',
          '-s', '20141205',
          '-e', '20141208',
          '-q', 'producttype=GRD'],
@@ -73,14 +72,12 @@ def test_returned_filesize():
         ['--user', _api_auth[0],
          '--password', _api_auth[1],
          '--geometry', path.join(FIXTURES_DIR, 'map.geojson'),
-         '--url', 'https://scihub.copernicus.eu/dhus/',
-         '-s', '20140101',
-         '-e', '20141231',
+         '-s', '20170101',
+         '-e', '20170105',
          '-q', 'producttype=GRD'],
         catch_exceptions=False
     )
-    expected = "20 scenes found with a total size of 11.06 GB"
-
+    expected = "18 scenes found with a total size of 27.81 GB"
     assert result.output.split("\n")[-2] == expected
 
 
@@ -153,7 +150,7 @@ def test_sentinel1_flag():
     )
 
     expected = "Product 6a62313b-3d6f-489e-bfab-71ce8d7f57db - Date: 2015-12-24T09:40:34.129Z, Instrument: SAR-C SAR, Mode: VV VH, Satellite: Sentinel-1, Size: 7.7 GB"
-    assert re.findall("^Product .+$", result.output, re.M)[4] == expected
+    assert expected in re.findall("^Product .+$", result.output, re.M)
 
 
 @my_vcr.use_cassette
@@ -173,28 +170,26 @@ def test_sentinel2_flag():
     )
 
     expected = "Product 91c2503c-3c58-4a8c-a70b-207b128e6833 - Date: 2015-12-27T14:22:29Z, Instrument: MSI, Mode: , Satellite: Sentinel-2, Size: 5.73 GB"
-    assert re.findall("^Product .+$", result.output, re.M)[2] == expected
+    assert expected in re.findall("^Product .+$", result.output, re.M)
 
 
 @my_vcr.use_cassette
 @pytest.mark.scihub
 def test_sentinel3_flag():
-    # preliminary Sentinel-3 test using S3 Pre-Ops Hub until data is included in OpenAccessHub
     runner = CliRunner()
     result = runner.invoke(
         cli,
-        ['--user', 's3guest',
-         '--password', 's3guest',
+        ['--user', _api_auth[0],
+         '--password', _api_auth[1],
          '--geometry', path.join(FIXTURES_DIR, 'map.geojson'),
-         '--url', 'https://scihub.copernicus.eu/s3/',
          '-s', '20161201',
          '-e', '20161202',
          '--sentinel', '3'],
         catch_exceptions=False
     )
 
-    expected = "Product c4a36e6b-4a18-46b4-b2ff-abe7a231a46f - Date: 2016-12-01T13:21:33.755Z, Instrument: OLCI, Mode: , Satellite: Sentinel-3, Size: 721.66 MB"
-    assert re.findall("^Product .+$", result.output, re.M)[3] == expected
+    expected = "Product 1d16f909-de53-44b0-88ad-841b0cae5cbe - Date: 2016-12-01T13:12:45.561Z, Instrument: SRAL, Mode: , Satellite: Sentinel-3, Size: 2.34 GB"
+    assert expected in re.findall("^Product .+$", result.output, re.M)
 
 
 @my_vcr.use_cassette
@@ -220,22 +215,20 @@ def test_product_flag():
 @my_vcr.use_cassette
 @pytest.mark.scihub
 def test_instrument_flag():
-    # preliminary Sentinel-3 test using S3 Pre-Ops Hub until data is included in OpenAccessHub
     runner = CliRunner()
     result = runner.invoke(
         cli,
-        ['--user', 's3guest',
-         '--password', 's3guest',
+        ['--user', _api_auth[0],
+         '--password', _api_auth[1],
          '--geometry', path.join(FIXTURES_DIR, 'map.geojson'),
-         '--url', 'https://scihub.copernicus.eu/s3/',
          '-s', '20161201',
          '-e', '20161202',
          '--instrument', 'SRAL'],
         catch_exceptions=False
     )
 
-    expected = "Product 50d27cb5-70da-41c9-b0f3-023cfb25d781 - Date: 2016-12-01T13:13:17.65Z, Instrument: SRAL, Mode: , Satellite: Sentinel-3, Size: 76.62 MB"
-    assert re.findall("^Product .+$", result.output, re.M)[0] == expected
+    expected = "Product 1d16f909-de53-44b0-88ad-841b0cae5cbe - Date: 2016-12-01T13:12:45.561Z, Instrument: SRAL, Mode: , Satellite: Sentinel-3, Size: 2.34 GB"
+    assert expected in re.findall("^Product .+$", result.output, re.M)
 
 
 @my_vcr.use_cassette
