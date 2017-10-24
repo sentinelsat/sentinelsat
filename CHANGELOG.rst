@@ -11,13 +11,17 @@ Added
 
 Changed
 ~~~~~~~
+* Invalid query strings no longer raise an error. #168
 
 Deprecated
 ~~~~~~~~~~
 
 Fixed
 ~~~~~
-
+* Special handling of quote symbols in query strings due to a server-side error is no
+  longer necessary and has been removed. #168
+* Updated effective query length calculation in ``check_query_length()`` to reflect
+  server-side changes.
 
 [0.12.1] – 2017-10-24
 ---------------------
