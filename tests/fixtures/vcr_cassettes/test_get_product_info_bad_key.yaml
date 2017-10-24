@@ -5,7 +5,7 @@ interactions:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
       Connection: [keep-alive]
-      User-Agent: [sentinelsat/0.11]
+      User-Agent: [sentinelsat/0.12.1]
     method: GET
     uri: https://scihub.copernicus.eu/apihub/odata/v1/Products('invalid-xyz')?$format=json
   response:
