@@ -220,9 +220,8 @@ def test_api_query_format_dates():
 @pytest.mark.scihub
 def test_invalid_query():
     api = SentinelAPI(**_api_auth)
-    with pytest.raises(SentinelAPIError) as excinfo:
-        api.query(raw="xxx:yyy")
-    assert excinfo.value.msg is not None
+    products = api.query(raw="xxx:yyy")
+    assert len(products) == 0
 
 
 @pytest.mark.fast

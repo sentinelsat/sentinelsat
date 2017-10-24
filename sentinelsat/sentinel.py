@@ -284,7 +284,7 @@ class SentinelAPI:
         # parse response content
         try:
             json_feed = response.json()['feed']
-            total_results = int(json_feed['opensearch:totalResults'])
+            total_results = int(json_feed['opensearch:totalResults'] or 0)
         except (ValueError, KeyError):
             raise SentinelAPIError('API response not valid. JSON decoding failed.', response)
 
