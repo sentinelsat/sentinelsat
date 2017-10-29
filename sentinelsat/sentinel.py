@@ -272,7 +272,12 @@ class SentinelAPI:
         # parse response content
         try:
             json_feed = response.json()['feed']
-            total_results = int(json_feed['opensearch:totalResults'] or 0)
+            if json_feed['opensearch:totalResults'] is None:
+                # We are using some unintended behavior of the server that a null is
+                # returned as the total results value when the query string was incorrect.
+                raise SentinelAPIError(
+                    'Invalid query string. Check the parameters and format.', response)
+            total_results = int(json_feed['opensearch:totalResults'])
         except (ValueError, KeyError):
             raise SentinelAPIError('API response not valid. JSON decoding failed.', response)
 
