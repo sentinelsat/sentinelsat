@@ -220,8 +220,8 @@ def test_api_query_format_dates():
 @pytest.mark.scihub
 def test_invalid_query():
     api = SentinelAPI(**_api_auth)
-    products = api.query(raw="xxx:yyy")
-    assert len(products) == 0
+    with pytest.raises(SentinelAPIError) as excinfo:
+        api.query(raw="xxx:yyy")
 
 
 @pytest.mark.fast
@@ -324,7 +324,9 @@ def test_too_long_query():
     # Expect no error
     q = create_query(170)
     assert 0.99 < SentinelAPI.check_query_length(q) < 1.0
-    api.query(raw=q)
+    with pytest.raises(SentinelAPIError) as excinfo:
+        api.query(raw=q)
+    assert "Invalid query string" in excinfo.value.msg
 
     # Expect HTTP status 500 Internal Server Error
     q = create_query(171)
