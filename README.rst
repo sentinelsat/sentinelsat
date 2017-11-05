@@ -128,7 +128,7 @@ orbit, for the year 2015.
 
 .. code-block:: bash
 
-  sentinelsat -u <user> -p <password> --area search_polygon.geojson -s 20150101 -e 20151231 -d \
+  sentinelsat -u <user> -p <password> -g <search_polygon.geojson> -s 20150101 -e 20151231 -d \
   --producttype SLC -q "orbitdirection=Descending" \
   --url "https://scihub.copernicus.eu/dhus"
 
