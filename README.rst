@@ -93,7 +93,7 @@ Python Library
   api.to_geojson(products)
 
   # GeoPandas GeoDataFrame with the metadata of the scenes and the footprints as geometries
-  api.to_geopandas(products)
+  api.to_geodataframe(products)
 
   # Get basic information about the product: its title, file size, MD5 sum, date, footprint and
   # its download url
