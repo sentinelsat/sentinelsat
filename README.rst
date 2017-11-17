@@ -6,9 +6,10 @@ sentinelsat
 
 .. image:: https://travis-ci.org/sentinelsat/sentinelsat.svg
     :target: https://travis-ci.org/sentinelsat/sentinelsat
-
+    :alt: Travis-CI
 .. image:: https://codecov.io/gh/sentinelsat/sentinelsat/branch/master/graph/badge.svg
     :target: https://codecov.io/gh/sentinelsat/sentinelsat
+    :alt: codecov.io
 
 .. image:: https://readthedocs.org/projects/sentinelsat/badge/?version=stable
     :target: http://sentinelsat.readthedocs.io/en/stable/?badge=stable
@@ -18,8 +19,9 @@ sentinelsat
     :target: https://gitter.im/sentinelsat/
     :alt: gitter.im chat
 
-.. image:: https://zenodo.org/badge/36093931.svg
-   :target: https://zenodo.org/badge/latestdoi/36093931
+.. image:: https://zenodo.org/badge/DOI/10.5281/zenodo.1035772.svg
+   :target: https://doi.org/10.5281/zenodo.1035772
+   :alt: Zenodo DOI
 
 
 Sentinelsat makes searching, downloading and retrieving the metadata of `Sentinel
