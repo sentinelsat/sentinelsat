@@ -8,6 +8,7 @@ All notable changes to ``sentinelsat`` will be listed here.
 
 Added
 ~~~~~
+* made exceptions more verbose regarding optional dependencies (#176)
 
 Changed
 ~~~~~~~

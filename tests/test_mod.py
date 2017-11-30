@@ -2,6 +2,7 @@ import hashlib
 import textwrap
 from datetime import date, datetime, timedelta
 from os import environ
+import sys
 
 import geojson
 import py.path
@@ -638,6 +639,20 @@ def test_get_products_invalid_json():
                 platformname="Sentinel-2"
             )
         assert excinfo.value.msg == "Invalid API response."
+
+@pytest.mark.fast
+def test_missing_dependency_dataframe():
+    api = SentinelAPI("mock_user", "mock_password")
+
+    with pytest.raises(ModuleNotFoundError) as excinfo:
+        sys.modules["pandas"] = None                
+        api.to_dataframe({"test":"test"})
+    assert excinfo.value.msg == "to_dataframe requires the optional dependency Pandas."
+
+    with pytest.raises(ModuleNotFoundError) as excinfo:
+        sys.modules["geopandas"] = None
+        api.to_geodataframe({"test":"tst"})
+    assert excinfo.value.msg == "to_geodataframe requires the optional dependencies GeoPandas and Shapely."
 
 
 @my_vcr.use_cassette
