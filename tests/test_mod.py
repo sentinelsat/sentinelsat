@@ -640,20 +640,6 @@ def test_get_products_invalid_json():
             )
         assert excinfo.value.msg == "Invalid API response."
 
-@pytest.mark.fast
-def test_missing_dependency_dataframe():
-    api = SentinelAPI("mock_user", "mock_password")
-
-    with pytest.raises(ModuleNotFoundError) as excinfo:
-        sys.modules["pandas"] = None                
-        api.to_dataframe({"test":"test"})
-    assert excinfo.value.msg == "to_dataframe requires the optional dependency Pandas."
-
-    with pytest.raises(ModuleNotFoundError) as excinfo:
-        sys.modules["geopandas"] = None
-        api.to_geodataframe({"test":"tst"})
-    assert excinfo.value.msg == "to_geodataframe requires the optional dependencies GeoPandas and Shapely."
-
 
 @my_vcr.use_cassette
 @pytest.mark.scihub
@@ -772,6 +758,21 @@ def test_response_to_dict(raw_products):
     props = dictionary['44517f66-9845-4792-a988-b5ae6e81fd3e']
     expected_title = 'S2A_OPER_PRD_MSIL1C_PDMC_20151228T112523_R110_V20151227T142229_20151227T142229'
     assert props['title'] == expected_title
+
+
+@pytest.mark.fast
+@pytest.mark.pandas
+@pytest.mark.geopandas
+def test_missing_dependency_dataframe(monkeypatch):
+    api = SentinelAPI("mock_user", "mock_password")
+
+    with pytest.raises(ImportError):
+        monkeypatch.setitem(sys.modules, "pandas", None)                
+        api.to_dataframe({"test":"test"})
+
+    with pytest.raises(ImportError):
+        monkeypatch.setitem(sys.modules, "geopandas", None)
+        api.to_geodataframe({"test":"tst"})
 
 
 @pytest.mark.pandas

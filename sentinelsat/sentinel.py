@@ -327,8 +327,8 @@ class SentinelAPI:
         """
         try:
             import pandas as pd
-        except ModuleNotFoundError:
-            raise ModuleNotFoundError("to_dataframe requires the optional dependency Pandas.")
+        except ImportError:
+            raise ImportError("to_dataframe requires the optional dependency Pandas.")
 
         return pd.DataFrame.from_dict(products, orient='index')
 
@@ -340,8 +340,8 @@ class SentinelAPI:
         try:
             import geopandas as gpd
             import shapely.wkt
-        except ModuleNotFoundError:
-            raise ModuleNotFoundError("to_geodataframe requires the optional dependencies GeoPandas and Shapely.")
+        except ImportError:
+            raise ImportError("to_geodataframe requires the optional dependencies GeoPandas and Shapely.")
 
         df = SentinelAPI.to_dataframe(products)
         crs = {'init': 'epsg:4326'}  # WGS84
