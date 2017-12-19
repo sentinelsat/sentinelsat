@@ -325,7 +325,10 @@ class SentinelAPI:
         """Return the products from a query response as a Pandas DataFrame
         with the values in their appropriate Python types.
         """
-        import pandas as pd
+        try:
+            import pandas as pd
+        except ImportError:
+            raise ImportError("to_dataframe requires the optional dependency Pandas.")
 
         return pd.DataFrame.from_dict(products, orient='index')
 
@@ -334,8 +337,11 @@ class SentinelAPI:
         """Return the products from a query response as a GeoPandas GeoDataFrame
         with the values in their appropriate Python types.
         """
-        import geopandas as gpd
-        import shapely.wkt
+        try:
+            import geopandas as gpd
+            import shapely.wkt
+        except ImportError:
+            raise ImportError("to_geodataframe requires the optional dependencies GeoPandas and Shapely.")
 
         df = SentinelAPI.to_dataframe(products)
         crs = {'init': 'epsg:4326'}  # WGS84

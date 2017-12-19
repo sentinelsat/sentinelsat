@@ -2,6 +2,7 @@ import hashlib
 import textwrap
 from datetime import date, datetime, timedelta
 from os import environ
+import sys
 
 import geojson
 import py.path
@@ -757,6 +758,21 @@ def test_response_to_dict(raw_products):
     props = dictionary['44517f66-9845-4792-a988-b5ae6e81fd3e']
     expected_title = 'S2A_OPER_PRD_MSIL1C_PDMC_20151228T112523_R110_V20151227T142229_20151227T142229'
     assert props['title'] == expected_title
+
+
+@pytest.mark.fast
+@pytest.mark.pandas
+@pytest.mark.geopandas
+def test_missing_dependency_dataframe(monkeypatch):
+    api = SentinelAPI("mock_user", "mock_password")
+
+    with pytest.raises(ImportError):
+        monkeypatch.setitem(sys.modules, "pandas", None)                
+        api.to_dataframe({"test":"test"})
+
+    with pytest.raises(ImportError):
+        monkeypatch.setitem(sys.modules, "geopandas", None)
+        api.to_geodataframe({"test":"tst"})
 
 
 @pytest.mark.pandas
