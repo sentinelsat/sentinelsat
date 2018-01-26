@@ -116,7 +116,9 @@ variables or via CLI arguments) to access the Copernicus Open Access Hub.
 
 .. code-block:: bash
 
-  sentinelsat -u <user> -p <password> -g <geojson>
+  export SENTINEL_USER="<user>"
+  export SENTINEL_PASSWORD="<password>"
+  sentinelsat -g <geojson>
 
 Search areas are provided as GeoJSON files, which can be created with
 `QGIS <http://qgis.org/en/site/>`_ or `geojson.io <http://geojson.io>`_.
@@ -131,7 +133,7 @@ orbit, for the year 2015.
 
 .. code-block:: bash
 
-  sentinelsat -u <user> -p <password> -g <search_polygon.geojson> -s 20150101 -e 20151231 -d \
+  sentinelsat -g <search_polygon.geojson> -s 20150101 -e 20151231 -d \
   --producttype SLC -q "orbitdirection=Descending" \
   --url "https://scihub.copernicus.eu/dhus"
 

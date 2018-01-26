@@ -26,6 +26,8 @@ the user and password (and optionally the api_url) values via environment variab
 
   sentinelsat -g <geojson>
 
+All further examples expect the `SENTINEL_USER` and `SENTINEL_PASSWORD` to be set.
+
 Search areas are provided as GeoJSON polygons, which can be created with
 `QGIS <http://qgis.org/en/site/>`_ or `geojson.io <http://geojson.io>`_.
 If you do not specify a start and end date only products published in the last
@@ -43,7 +45,7 @@ orbit for the year 2015.
 
 .. code-block:: bash
 
-  sentinelsat -u <user> -p <password> -g <search_polygon.geojson> -s 20150101 -e 20151231 -d \
+  sentinelsat -g <search_polygon.geojson> -s 20150101 -e 20151231 -d \
   --producttype SLC -q "orbitdirection=Descending" \
   --url "https://scihub.copernicus.eu/dhus"
 
@@ -52,13 +54,13 @@ on Christmas Eve 2015.
 
 .. code-block:: bash
 
-  sentinelsat -u <user> -p <password> -d --uuid a9048d1d-fea6-4df8-bedd-7bcb212be12e
+  sentinelsat -d --uuid a9048d1d-fea6-4df8-bedd-7bcb212be12e
 
 or by using its filename
 
 .. code-block:: bash
 
-  sentinelsat -u <user> -p <password> -d --name S1A_EW_GRDM_1SDH_20151224T154142_20151224T154207_009186_00D3B0_C71E
+  sentinelsat -d --name S1A_EW_GRDM_1SDH_20151224T154142_20151224T154207_009186_00D3B0_C71E
 
 Sentinel-2
 ~~~~~~~~~~
@@ -68,20 +70,20 @@ cover of 40%.
 
 .. code-block:: bash
 
-  sentinelsat -u <user> -p <password> -g <search_polygon.geojson> -s 20160101 -e 20160131 --sentinel 2 --cloud 40 -d
+  sentinelsat -g <search_polygon.geojson> -s 20160101 -e 20160131 --sentinel 2 --cloud 40 -d
 
 Download all Sentinel-2 scenes published in the last 24 hours.
 
 .. code-block:: bash
 
-  sentinelsat -u <user> -p <password> -g <search_polygon.geojson> --sentinel 2 -d
+  sentinelsat -g <search_polygon.geojson> --sentinel 2 -d
 
 sentinelsat
 ---------------
 
 .. code-block:: console
 
-    sentinelsat -u <user> -p <password> [OPTIONS]
+    sentinelsat [OPTIONS]
 
 Options:
 
