@@ -111,7 +111,7 @@ Command Line Interface
 ----------------------
 
 A basic search query consists of a search area geometry as well as the username and
-password (which can either be set via `SENTINEL_USER` and `SENTINEL_PASSWORD` environment
+password (which can either be set via ``SENTINEL_USER`` and ``SENTINEL_PASSWORD`` environment
 variables or via CLI arguments) to access the Copernicus Open Access Hub.
 
 .. code-block:: bash

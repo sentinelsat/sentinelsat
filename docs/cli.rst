@@ -26,7 +26,7 @@ the user and password (and optionally the api_url) values via environment variab
 
   sentinelsat -g <geojson>
 
-All further examples expect the `SENTINEL_USER` and `SENTINEL_PASSWORD` to be set.
+All further examples expect ``SENTINEL_USER`` and ``SENTINEL_PASSWORD`` to be set.
 
 Search areas are provided as GeoJSON polygons, which can be created with
 `QGIS <http://qgis.org/en/site/>`_ or `geojson.io <http://geojson.io>`_.
