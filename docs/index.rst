@@ -36,7 +36,7 @@ Contents
    install
    cli
    api
-   common_problems
+   known_errors
 
 .. toctree::
    :hidden:
