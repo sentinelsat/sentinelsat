@@ -9,6 +9,7 @@ All notable changes to ``sentinelsat`` will be listed here.
 Added
 ~~~~~
 * made exceptions more verbose regarding optional dependencies (#176)
+* added information about known errors and DHuS issues to docs (#186, @martinber)
 
 Changed
 ~~~~~~~
