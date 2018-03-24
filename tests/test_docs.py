@@ -17,7 +17,7 @@ def test_rst(rst_file):
         contents = input_file.read()
 
     all_errors = []
-    for error in rstcheck.check(contents, report_level=2, ignore=['python', 'bash']):
+    for error in rstcheck.check(contents, report_level=2, ignore={'languages': ['python', 'bash']}):
         # report only warnings and higher, ignore Python and Bash pseudocode examples
         if 'Title underline too short' in error[1]:
             # These are caused by unicode en dashes and can be ignored
