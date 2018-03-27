@@ -95,7 +95,8 @@ Options:
 +----+---------------+------+--------------------------------------------------------------------------------------------+
 |    | -\-instrument |      | Limit search to a specific instrument on a Sentinel satellite.                             |
 +----+---------------+------+--------------------------------------------------------------------------------------------+
-|    | -\-producttype|      | Limit search to a Sentinel product type.                                                   |
+|    | -\-producttype|      | Limit search to a Sentinel product type. List of valid product types can be found under    |
+|    |               |      | `producttype` `here <https://scihub.copernicus.eu/userguide/3FullTextSearch>`_.            |
 +----+---------------+------+--------------------------------------------------------------------------------------------+
 | -c | -\-cloud      | INT  | Maximum cloud cover in percent. (requires --sentinel to be 2 or 3)                         |
 +----+---------------+------+--------------------------------------------------------------------------------------------+
