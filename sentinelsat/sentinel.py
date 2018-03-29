@@ -10,8 +10,8 @@ import xml.etree.ElementTree as ET
 from collections import OrderedDict, defaultdict
 from contextlib import closing
 from datetime import date, datetime, timedelta
-from os import remove
-from os.path import basename, exists, getsize, join, splitext
+from os import listdir, remove
+from os.path import basename, exists, getsize, isdir, join, splitext
 
 import geojson
 import geomet.wkt
@@ -466,7 +466,7 @@ class SentinelAPI:
         shutil.move(temp_path, path)
         return product_info
 
-    def download_all(self, products, directory_path='.', max_attempts=10, checksum=True):
+    def download_all(self, products, directory_path='.', max_attempts=10, checksum=True, skip_products=[]):
         """Download a list of products.
 
         Takes a list of product IDs as input. This means that the return value of query() can be
@@ -487,6 +487,9 @@ class SentinelAPI:
             Directory where the downloaded files will be downloaded
         max_attempts : int, optional
             Number of allowed retries before giving up downloading a product. Defaults to 10.
+        skip_products: list, optional
+            List of products to exclude from downloading. List can be a mix of UUIDS and
+            directories to products containing either the -report- pdf or the INSPIRE.xml.
 
         Other Parameters
         ----------------
@@ -505,10 +508,16 @@ class SentinelAPI:
             The list of products that failed to download.
         """
         product_ids = list(products)
+
+        if len(skip_products) > 0:
+            skip_titles = [self._get_title(p) if isdir(p) else p for p in skip_products]
+            skip_ids = [t if re.match("\w{8}(-\w{4}){3}-\w{12}", t) else self._query_uuid(t) for t in skip_titles]
+            product_ids = [p for p in product_ids if p not in skip_ids]
+
         self.logger.info("Will download %d products", len(product_ids))
         return_values = OrderedDict()
         last_exception = None
-        for i, product_id in enumerate(products):
+        for i, product_id in enumerate(product_ids):
             for attempt_num in range(max_attempts):
                 try:
                     product_info = self.download(product_id, directory_path, checksum)
@@ -524,7 +533,7 @@ class SentinelAPI:
                     last_exception = e
                     self.logger.exception("There was an error downloading %s", product_id)
             self.logger.info("%s/%s products downloaded", i + 1, len(product_ids))
-        failed = set(products) - set(return_values)
+        failed = set(product_ids) - set(return_values)
 
         if len(failed) == len(product_ids) and last_exception is not None:
             raise last_exception
@@ -753,6 +762,28 @@ class SentinelAPI:
         kwargs.update({'disable': not self.show_progressbars})
         return tqdm(**kwargs)
 
+    def _get_title(self, folder):
+        """ Get the title of a product in a folder containing either the INSPIRE.xml or the -report-*.pdf"""
+
+        title_file = ([i for i in listdir(folder) if i.endswith("pdf") or i == "INSPIRE.xml"])[0]
+
+        if title_file.endswith("pdf"):
+            result = title_file.split("-report-")[0]
+        elif title_file == "INSPIRE.xml":
+            title_file = join(folder, title_file)
+            namespaces = {"gco": "http://www.isotc211.org/2005/gco", "gmd": "http://www.isotc211.org/2005/gmd"}
+            path = "gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:title/gco:CharacterString"
+            dom = ET.parse(title_file)
+            potential_title = dom.find(path, namespaces).text
+            if potential_title.endswith(".SAFE"):
+                result = potential_title
+            else:
+                raise ValueError("{} does not contain {}".format(title_file, path))
+        return result
+
+    def _query_uuid(self, title):
+        """ Get the uuid by product title from the server"""
+        return list(self.query(filename=title))[0]
 
 class SentinelAPIError(Exception):
     """Invalid responses from DataHub.

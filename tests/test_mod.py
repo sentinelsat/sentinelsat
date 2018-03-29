@@ -1,7 +1,7 @@
 import hashlib
 import textwrap
 from datetime import date, datetime, timedelta
-from os import environ
+from os import environ, path
 import sys
 
 import geojson
@@ -999,3 +999,48 @@ def test_check_existing(tmpdir):
         api.check_files()
 
     tmpdir.remove()
+
+
+@pytest.mark.parametrize("folder, expected_title",
+                         [("title_xml", "S2A_OPER_PRD_MSIL1C_PDMC_20161013T075059_R111_V20161012T161812_20161012T161807.SAFE"),
+                          ("title_pdf", "S1A_WV_OCN__2SSH_20150603T092625_20150603T093332_006207_008194_521E.SAFE")])
+def test_get_title(folder, expected_title):
+    api = SentinelAPI(**_api_auth)
+    title = api._get_title(path.join(FIXTURES_DIR, folder))
+    assert expected_title == title
+
+@my_vcr.use_cassette
+@pytest.mark.scihub
+@pytest.mark.parametrize("title, expected_uuid",
+                         [("S2A_OPER_PRD_MSIL1C_PDMC_20161013T075059_R111_V20161012T161812_20161012T161807.SAFE",
+                           "c8f3acd1-67da-4d9f-bd42-86278e3b46a8"),
+                          ("S1A_WV_OCN__2SSH_20150603T092625_20150603T093332_006207_008194_521E.SAFE",
+                           "1f62a176-c980-41dc-b3a1-c735d660c910")])
+def test_query_uuid(title, expected_uuid):
+    api = SentinelAPI(**_api_auth)
+    uuid = api._query_uuid(title)
+    assert expected_uuid == uuid
+
+
+@my_vcr.use_cassette
+@pytest.mark.scihub
+@pytest.mark.parametrize("number_to_skip", [0, 1, 2, 3])
+def test_skip_products(number_to_skip):
+    """ Test if skipping works correctly with mixed list of uuid, pdf, xml
+    uuid: (5618ce1b-923b-4df2-81d9-50b53e5aded9) S1A_WV_OCN__2SSV_20150526T081641_20150526T082418_006090_007E3E_104C
+    pdf:  (1f62a176-c980-41dc-b3a1-c735d660c910) S1A_WV_OCN__2SSH_20150603T092625_20150603T093332_006207_008194_521E
+    xml:  (c8f3acd1-67da-4d9f-bd42-86278e3b46a8) S2A_OPER_PRD_MSIL1C_PDMC_20161013T075059_R111_V20161012T161812_20161012T161807
+    """
+    api = SentinelAPI(**_api_auth)
+    ids = ["5618ce1b-923b-4df2-81d9-50b53e5aded9",
+           "1f62a176-c980-41dc-b3a1-c735d660c910",
+           "c8f3acd1-67da-4d9f-bd42-86278e3b46a8"]
+
+    skip_products = ["5618ce1b-923b-4df2-81d9-50b53e5aded9",
+                     path.join(FIXTURES_DIR, "title_pdf"),
+                     path.join(FIXTURES_DIR, "title_xml")]
+
+    product_infos, _ = api.download_all(ids, path.join(FIXTURES_DIR, "vcr_cassettes"),
+                                        skip_products=skip_products[0:number_to_skip])
+
+    assert 3 - number_to_skip == len(product_infos)
