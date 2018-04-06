@@ -297,6 +297,105 @@ December 2016 onward (i.e. for single-tile products), you can use a `filename` p
 
   kw['filename'] = '*_T{}_*'.format(tile)  # products after 2016-12-01
 
+Exclude Products already available offline from download_all
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+``SentinelAPI.download_all()`` automatically skips products that are already in the target directory (current directory
+or as specified in ``directory_path``) if their folder name has not changed. In order to exclude products stored under a
+different location and/or folder name, one has to manually filter the OrderedDict returned from the ``query()``
+method before feeding it to ``download_all()``:
+
+.. code-block:: python
+
+  from sentinelsat import SentinelAPI
+  import xml.etree.ElementTree as ET
+  import os
+  import zipfile
+  import tempfile
+  import time
+  import re
+
+  # make a demo folder:
+  demo_folder = os.path.join(tempfile.gettempdir(),"sentinelsat_exclude_products_demo_{}".format(round(time.time())))
+
+  # On (old) windows systems the maximum path length is restricted to 260 characters. Exceeding this limitation might
+  # result in errors (cp. https://msdn.microsoft.com/en-us/library/windows/desktop/aa365247(v=vs.85).aspx#maxpath).
+  # user "eryksun" on https://stackoverflow.com/questions/36219317/pathname-too-long-to-open/36237176
+  # offers the following solution (+explanations):
+  if os.name == 'nt':
+    demo_folder = u"\\\\?\\" + demo_folder
+
+  os.mkdir(demo_folder)
+  print("Watch the following folder to see what happens during the demo:\n{}".format(demo_folder))
+
+  # set up a demo query including Sentinel 1 and 2 products
+  api = SentinelAPI('user','password')
+  demo_query = api.query(filename = "S2A_OPER_PRD_MSIL1C_PDMC_20161013T075059_R111_V20161012T161812_20161012T161807.SAFE")
+  demo_query.update(api.query(filename = "S1A_WV_OCN__2SSV_20150526T081641_20150526T082418_006090_007E3E_104C.SAFE"))
+
+  # download the products in the demo_query dictionary
+  downloaded = api.download_all(demo_query, directory_path=demo_folder)
+  zip_1 = [i for i in os.listdir(demo_folder) if i.endswith(".zip")]
+  print("The following zipfiles where downloaded:\n{}".format(zip_1))
+
+  # try to download the same products a second time
+  downloaded = api.download_all(demo_query, directory_path=demo_folder)
+  zip_2 = [i for i in os.listdir(demo_folder) if i.endswith(".zip") and i not in zip_1]
+  print("Trying to download the same products again automatically skips all products so nothing is downloaded:\n{}".format(zip_2))
+
+  # unzip and rename products downloaded using the demo_query
+  zip_1_fullpath = [os.path.join(demo_folder,f) for f in zip_1]
+  unzipped_renamed = []
+  for p in zip_1_fullpath:
+      # unzip
+      with zipfile.ZipFile(p, 'r') as zip_f:
+          zip_f.extractall(path = demo_folder)
+      # remove zipfile
+      os.remove(p)
+
+      # rename based on sensor prefix and acquisition time:
+      path_unzipped = p.replace(".zip",".SAFE")
+      prefix,_,acquisition = (re.findall("(S1A|S2A)(.*)(_\d{8}T\d{6})",path_unzipped))[0]
+      path_renamed = os.path.join(demo_folder,prefix + acquisition)
+      os.rename(path_unzipped,path_renamed)
+      unzipped_renamed.append(path_renamed)
+
+  # Since the demo_folder now contains products with custom names, sentinelsat cannot exclude them from the download
+  # automatically and would download the products all over again (try it if you like by uncommenting the following):
+  # downloaded = api.download_all(demo_query, directory_path=demo_folder)
+
+  # The trick is to figure out the original filenames. Where to find the filenames depends on the sensor and the product
+  # format. Here are some common places and how to obtain it:
+  # Sentinel 1: in the filename of the -report- pdf in the root folder
+  # Sentinel 2: in the INSPIRE.xml in the root folder
+  skip_titles = []
+  for f in unzipped_renamed:
+      title_file = ([i for i in os.listdir(f) if i.endswith("pdf") or i == "INSPIRE.xml"])[0]
+
+      if title_file.endswith("pdf"):
+          # take first part of the report pdf filename
+          skip_titles.append(title_file.split("-report-")[0])
+      elif title_file == "INSPIRE.xml":
+          # parse the INSPIRE.xml document:
+          title_file = os.path.join(f, title_file)
+          namespaces = {"gco": "http://www.isotc211.org/2005/gco", "gmd": "http://www.isotc211.org/2005/gmd"}
+          path = "gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:title/gco:CharacterString"
+          dom = ET.parse(title_file)
+          skip_titles.append(dom.find(path, namespaces).text)
+
+  # Now lets say we have a new query that includes one additional product
+  demo_query.update(api.query(filename = "S1A_WV_OCN__2SSH_20150603T092625_20150603T093332_006207_008194_521E.SAFE"))
+
+  # If we want to skip the products already available offline we have to filter the query using the filenames we just
+  # recorded in the skip_titles list
+  demo_query_filtered = {k:v for k,v in demo_query.items() if v['filename'] not in skip_titles}
+
+  # Now we can pass the filtered query to the download_all method and as you can see the other products are not
+  # downloaded again even though there do not have their original filenames:
+  downloaded = api.download_all(demo_query_filtered, directory_path=demo_folder)
+  zip_new = [i for i in os.listdir(demo_folder) if i.endswith(".zip")]
+  print("The following zipfiles where downloaded in the updated and filtered query:\n{}".format(zip_1))
+
 API
 ---
 
