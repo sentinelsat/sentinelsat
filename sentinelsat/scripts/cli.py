@@ -53,7 +53,7 @@ def _set_logger_handler(level='INFO'):
     '--instrument', type=click.Choice(['MSI', 'SAR-C SAR', 'SLSTR', 'OLCI', 'SRAL']),
     help='Limit search to a specific instrument on a Sentinel satellite.')
 @click.option(
-    '--producttype', type=click.Choice(['SLC', 'GRD', 'OCN', 'RAW', 'S2MSI1C', 'S2MSI2Ap']),
+    '--producttype', type=str, default=None,
     help='Limit search to a Sentinel product type.')
 @click.option(
     '-c', '--cloud', type=int,
