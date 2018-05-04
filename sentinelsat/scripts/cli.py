@@ -21,13 +21,13 @@ def _set_logger_handler(level='INFO'):
 
 @click.command()
 @click.option(
-    '--user', '-u', type=str, required=True,
+    '--user', '-u', type=str, required=True, envvar='SENTINEL_USER',
     help='Username')
 @click.option(
-    '--password', '-p', type=str, required=True,
+    '--password', '-p', type=str, required=True, envvar='SENTINEL_PASSWORD',
     help='Password')
 @click.option(
-    '--url', type=str, default='https://scihub.copernicus.eu/apihub/',
+    '--url', type=str, default='https://scihub.copernicus.eu/apihub/', envvar='SENTINEL_URL',
     help="""Define API URL. Default URL is
         'https://scihub.copernicus.eu/apihub/'.
         """)
