@@ -21,15 +21,15 @@ def _set_logger_handler(level='INFO'):
 
 @click.command()
 @click.option(
-    '--user', '-u', type=str, required=True, envvar='SENTINEL_USER',
-    help='Username')
+    '--user', '-u', type=str, required=True, envvar='DHUS_USER',
+    help='Username (or environment variable DHUS_USER is set)')
 @click.option(
-    '--password', '-p', type=str, required=True, envvar='SENTINEL_PASSWORD',
-    help='Password')
+    '--password', '-p', type=str, required=True, envvar='DHUS_PASSWORD',
+    help='Password (or environment variable DHUS_PASSWORD is set)')
 @click.option(
-    '--url', type=str, default='https://scihub.copernicus.eu/apihub/', envvar='SENTINEL_URL',
+    '--url', type=str, default='https://scihub.copernicus.eu/apihub/', envvar='DHUS_URL',
     help="""Define API URL. Default URL is
-        'https://scihub.copernicus.eu/apihub/'.
+        'https://scihub.copernicus.eu/apihub/' (or environment variable DHUS_URL).
         """)
 @click.option(
     '--start', '-s', type=str, default='NOW-1DAY',

@@ -10,12 +10,14 @@ Added
 ~~~~~
 * made exceptions more verbose regarding optional dependencies (#176)
 * added information about known errors and DHuS issues to docs (#186, @martinber)
+* CLI username, password and DHuS URL can be set with environment variables ``DHUS_USER``, ``DHUS_PASSWORD`` and ``DHUS_URL`` (#184, @temal-)
 
 Changed
 ~~~~~~~
 
 Deprecated
 ~~~~~~~~~~
+* environment variables ``SENTINEL_USER`` and ``SENTINEL_PASSWORD`` are superceded by ``DHUS_USER`` and ``DHUS_PASSWORD``
 
 Fixed
 ~~~~~
