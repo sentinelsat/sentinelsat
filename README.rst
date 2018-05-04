@@ -209,8 +209,8 @@ To allow the tests to run actual queries against the Copernicus Open Access Hub 
 
 .. code-block:: bash
 
-    export SENTINEL_USER=<username>
-    export SENTINEL_PASSWORD=<password>
+    export DHUS_USER=<username>
+    export DHUS_PASSWORD=<password>
 
 and add ``--vcr disable`` to ``py.test`` arguments.
 To update the recordings use either ``--vcr record_new`` or ``--vcr reset``.
