@@ -14,6 +14,7 @@ Added
 
 Changed
 ~~~~~~~
+* remove hard coded product type list from cli (#190, @lenniezelk)
 
 Deprecated
 ~~~~~~~~~~
