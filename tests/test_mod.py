@@ -779,7 +779,7 @@ def test_missing_dependency_dataframe(monkeypatch):
 
 @pytest.mark.pandas
 @pytest.mark.scihub
-@pytest.mark.skipif(sys.version_info <= (3,4),
+@pytest.mark.skipif(sys.version_info < (3,5),
                     reason="Pandas requires Python 2.7 or >=3.5")
 def test_to_pandas(products):
     df = SentinelAPI.to_dataframe(products)
@@ -789,7 +789,7 @@ def test_to_pandas(products):
 @pytest.mark.pandas
 @pytest.mark.geopandas
 @pytest.mark.scihub
-@pytest.mark.skipif(sys.version_info <= (3,4),
+@pytest.mark.skipif(sys.version_info < (3,5),
                     reason="Pandas requires Python 2.7 or >=3.5")
 def test_to_geopandas(products):
     gdf = SentinelAPI.to_geodataframe(products)
