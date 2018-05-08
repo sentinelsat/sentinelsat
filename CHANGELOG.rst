@@ -27,6 +27,7 @@ Fixed
   longer necessary and has been removed. #168
 * Updated effective query length calculation in ``check_query_length()`` to reflect
   server-side changes.
+* skip failing tests on optional dependency Pandas for Python 3.3 and 3.4
 
 [0.12.1] – 2017-10-24
 ---------------------
