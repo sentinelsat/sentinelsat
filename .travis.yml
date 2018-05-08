@@ -13,7 +13,7 @@ before_install:
 install:
 - pip install codecov
 # skip Pandas on Python <3.4
-- if [ $TRAVIS_PYTHON_VERSION = 3.4 ]; then pip install -e .; else pip install -e .[test]
+- "if [[ $TRAVIS_PYTHON_VERSION == 3.4 ]]; then pip install -e .[test34]; else pip install -e .[test]; fi"
 script:
 - coverage run --source=sentinelsat -m py.test -v
 after_success:
