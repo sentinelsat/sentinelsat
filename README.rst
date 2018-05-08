@@ -239,14 +239,9 @@ See `CHANGELOG <CHANGELOG.rst>`_. You can also use Githubs compare view to see t
 Contributors
 ============
 
-* Wille Marcel
-* Kersten Clauss
-* Martin Valgur
-* Jonas Sølvsteen
-* Luca Delucchi
-* Gaston Keller
-
 We invite anyone to participate by contributing code, reporting bugs, fixing bugs, writing documentation and tutorials and discussing the future of this project. Please check `CONTRIBUTE.rst <CONTRIBUTE.rst>`_.
+
+For a list of maintainers and contributors please see `AUTHORS.rst <AUTHORS.rst>`_ and the `contributor graph <https://github.com/sentinelsat/sentinelsat/graphs/contributors>`_.
 
 License
 =======
