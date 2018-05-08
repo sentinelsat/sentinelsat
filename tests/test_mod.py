@@ -763,6 +763,8 @@ def test_response_to_dict(raw_products):
 @pytest.mark.fast
 @pytest.mark.pandas
 @pytest.mark.geopandas
+@pytest.mark.skipif(sys.version_info <= (3,4),
+                    reason="Pandas requires Python 2.7 or >=3.5")
 def test_missing_dependency_dataframe(monkeypatch):
     api = SentinelAPI("mock_user", "mock_password")
 
@@ -777,6 +779,8 @@ def test_missing_dependency_dataframe(monkeypatch):
 
 @pytest.mark.pandas
 @pytest.mark.scihub
+@pytest.mark.skipif(sys.version_info < (3,5),
+                    reason="Pandas requires Python 2.7 or >=3.5")
 def test_to_pandas(products):
     df = SentinelAPI.to_dataframe(products)
     assert '44517f66-9845-4792-a988-b5ae6e81fd3e' in df.index
@@ -785,6 +789,8 @@ def test_to_pandas(products):
 @pytest.mark.pandas
 @pytest.mark.geopandas
 @pytest.mark.scihub
+@pytest.mark.skipif(sys.version_info < (3,5),
+                    reason="Pandas requires Python 2.7 or >=3.5")
 def test_to_geopandas(products):
     gdf = SentinelAPI.to_geodataframe(products)
     assert abs(gdf.unary_union.area - 132.16) < 0.01
