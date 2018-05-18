@@ -8,6 +8,7 @@ import rstcheck
     'CONTRIBUTE.rst',
     'README.rst',
     'CHANGELOG.rst',
+    'AUTHORS.rst',
     os.path.join('docs', 'cli.rst'),
     os.path.join('docs', 'index.rst'),
     os.path.join('docs', 'install.rst')
