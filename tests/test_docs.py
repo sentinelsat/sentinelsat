@@ -2,7 +2,7 @@ import os.path
 
 import pytest
 import rstcheck
-
+from .shared import PROJECT_ROOT_DIR
 
 @pytest.mark.parametrize('rst_file', [
     'CONTRIBUTE.rst',
@@ -14,6 +14,7 @@ import rstcheck
     os.path.join('docs', 'install.rst')
 ])
 def test_rst(rst_file):
+    rst_file = os.path.join(PROJECT_ROOT_DIR, rst_file)
     with open(rst_file) as input_file:
         contents = input_file.read()
 
