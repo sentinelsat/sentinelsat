@@ -15,7 +15,7 @@ from sentinelsat import InvalidChecksumError, SentinelAPI, SentinelAPIError, for
 from sentinelsat.sentinel import _format_order_by, _parse_odata_timestamp, _parse_opensearch_response
 from .shared import FIXTURES_DIR, my_vcr
 
-_api_auth = dict(user=environ.get('SENTINEL_USER'), password=environ.get('SENTINEL_PASSWORD'))
+_api_auth = dict(user=environ.get('DHUS_USER'), password=environ.get('DHUS_PASSWORD'))
 
 _api_kwargs = dict(_api_auth, api_url='https://scihub.copernicus.eu/apihub/')
 
