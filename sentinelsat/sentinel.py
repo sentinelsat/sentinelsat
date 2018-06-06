@@ -254,7 +254,7 @@ class SentinelAPI:
                 new_limit = limit
                 if limit is not None:
                     new_limit = limit - new_offset + offset
-                ret = self._load_subquery(query, limit=new_limit, offset=new_offset)[0]
+                ret = self._load_subquery(query, order_by, new_limit, new_offset)[0]
                 progress.update(len(ret))
                 products += ret
             progress.close()

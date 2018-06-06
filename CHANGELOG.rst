@@ -22,7 +22,9 @@ Deprecated
 
 Fixed
 ~~~~~
-* Updated invalid query handling. A client-side error is raised in such cases. #168
+* Updated handling of invalid queries. An exception is raised in such cases. #168
+* Fixed ``order_by`` parameter being ignored in queries that require multiple subqueries (that is, queries that return
+  more than 100 products) (#200)
 * Special handling of quote symbols in query strings due to a server-side error is no
   longer necessary and has been removed. #168
 * Updated effective query length calculation in ``check_query_length()`` to reflect
