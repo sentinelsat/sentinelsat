@@ -15,6 +15,7 @@ Added
 Changed
 ~~~~~~~
 * remove hard coded product type list from cli (#190, @lenniezelk)
+* Made the function signature of ``count()`` fully compatible with ``query()``. Irrelevant parameters are simply ignored.
 
 Deprecated
 ~~~~~~~~~~
