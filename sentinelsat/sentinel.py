@@ -214,7 +214,7 @@ class SentinelAPI:
         )
         return self.query(raw=query, order_by=order_by, limit=limit, offset=offset)
 
-    def count(self, *args, **kwargs):
+    def count(self, area=None, date=None, raw=None, area_relation='Intersects', **keywords):
         """Get the number of products matching a query.
 
         This is a significantly more efficient alternative to doing len(api.query()),
@@ -229,7 +229,12 @@ class SentinelAPI:
         int
             The number of products matching a query.
         """
-        query = self.format_query(*args, **kwargs)
+        for kw in ['order_by', 'limit', 'offset']:
+            # Allow these function arguments to be included for compatibility with query(),
+            # but ignore them.
+            if kw in keywords:
+                del keywords[kw]
+        query = self.format_query(area, date, raw, area_relation, **keywords)
         _, total_count = self._load_query(query, limit=0)
         return total_count
 
@@ -249,7 +254,7 @@ class SentinelAPI:
                 new_limit = limit
                 if limit is not None:
                     new_limit = limit - new_offset + offset
-                ret = self._load_subquery(query, limit=new_limit, offset=new_offset)[0]
+                ret = self._load_subquery(query, order_by, new_limit, new_offset)[0]
                 progress.update(len(ret))
                 products += ret
             progress.close()
