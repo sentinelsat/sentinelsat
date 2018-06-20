@@ -698,14 +698,18 @@ def test_s2_cloudcover():
 @pytest.mark.scihub
 def test_order_by():
     api = SentinelAPI(**_api_auth)
-    products = api.query(
-        geojson_to_wkt(read_geojson(FIXTURES_DIR + '/map.geojson')),
-        ("20151219", "20151228"),
+    kwargs = dict(
+        area=geojson_to_wkt(read_geojson(FIXTURES_DIR + '/map.geojson')),
+        date=("20151219", "20161019"),
         platformname="Sentinel-2",
         cloudcoverpercentage=(0, 10),
         order_by="cloudcoverpercentage, -beginposition"
     )
-    assert len(products) == 3
+    # Check that order_by works correctly also in cases where pagination is required
+    expected_count = api.count(**kwargs)
+    assert expected_count > 100
+    products = api.query(**kwargs)
+    assert len(products) == expected_count
     vals = [x["cloudcoverpercentage"] for x in products.values()]
     assert sorted(vals) == vals
 
