@@ -234,7 +234,7 @@ The full documentation is also published at http://sentinelsat.readthedocs.io/.
 Changelog
 =========
 
-See `CHANGELOG <CHANGELOG.rst>`_. You can also use Githubs compare view to see the `changes since last release <https://github.com/sentinelsat/sentinelsat/compare/v0.12.1...master>`_.
+See `CHANGELOG <CHANGELOG.rst>`_. You can also use Githubs compare view to see the `changes in the master branch since last release <https://github.com/sentinelsat/sentinelsat/compare/v0.12.2...master>`_.
 
 Contributors
 ============
