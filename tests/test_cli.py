@@ -13,7 +13,7 @@ from .shared import my_vcr, FIXTURES_DIR
 # for Travis CI they are set as encrypted environment variables and stored
 _api_auth = [environ.get('DHUS_USER', "user"), environ.get('DHUS_PASSWORD', "pw")]
 
-# TODO: change test fictures from subcommands to unified commands
+# TODO: change test fixtures from subcommands to unified commands
 # TODO: include test for --uuid option, with comma separated list.
 
 @my_vcr.use_cassette

@@ -1,7 +1,7 @@
 import types
 import warnings
 from os import environ
-from os.path import abspath, dirname
+from os.path import abspath, dirname, join
 
 import pytest
 import vcr
@@ -9,8 +9,9 @@ import vcr
 from .custom_serializer import BinaryContentSerializer
 
 TESTS_DIR = dirname(abspath(__file__))
-FIXTURES_DIR = dirname(abspath(__file__)) + '/fixtures'
-CASSETTE_DIR = FIXTURES_DIR + '/vcr_cassettes/'
+FIXTURES_DIR = join(TESTS_DIR, 'fixtures')
+CASSETTE_DIR = join(FIXTURES_DIR, 'vcr_cassettes')
+PROJECT_ROOT_DIR = dirname(TESTS_DIR)
 
 vcr_option = pytest.config.getoption("--vcr")
 record_mode = "none"

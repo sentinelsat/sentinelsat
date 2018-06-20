@@ -28,6 +28,7 @@ Fixed
 * Updated effective query length calculation in ``check_query_length()`` to reflect
   server-side changes.
 * skip failing tests on optional dependency Pandas for Python 3.3 and 3.4
+* Unit tests work irrespective of the directory they are run from.
 
 [0.12.1] – 2017-10-24
 ---------------------
