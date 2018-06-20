@@ -41,7 +41,7 @@ interactions:
         abc_:*.+*~!, abc_:*.+*~!, abc_:*.+*~!, abc_:*.+*~!, abc_:*.+*~!, abc_:*.+*~!,
         abc_:*.+*~!, abc_:*.+*~!, abc_:*.+*~!, abc_:*.+*~!, abc_:*.+*~!, abc_:*.+*~!,
         abc_:*.+*~!, abc_:*.+*~!, abc_:*.+*~!, abc_:*.+*~!, abc_:*.+*~!, abc_:*.+*~!,
-        abc_:*.+*~!,","subtitle":"Displaying  results. Request done in 0.001 seconds.","updated":"2017-10-24T19:07:58.881Z","author":{"name":"Sentinels
+        abc_:*.+*~!,","subtitle":"Displaying  results. Request done in 0.001 seconds.","updated":"2018-06-06T14:43:29.620Z","author":{"name":"Sentinels
         Scientific Data Hub"},"id":"https://scihub.copernicus.eu/apihub/search?q=beginPosition:[NOW
         TO NOW]  abc_:*.+*~!, abc_:*.+*~!, abc_:*.+*~!, abc_:*.+*~!, abc_:*.+*~!,
         abc_:*.+*~!, abc_:*.+*~!, abc_:*.+*~!, abc_:*.+*~!, abc_:*.+*~!, abc_:*.+*~!,
@@ -273,8 +273,8 @@ interactions:
         \torg.springframework.security.access.intercept.aopalliance.MethodSecurityInterceptor.invoke(MethodSecurityInterceptor.java:64)\n\
         \torg.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)\n\
         \torg.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:653)\n\
-        \tfr.gael.dhus.server.http.webapp.search.controller.SearchController$$EnhancerBySpringCGLIB$$6a7d9b53.search(&lt;generated&gt;)\n\
-        \tsun.reflect.GeneratedMethodAccessor380.invoke(Unknown Source)\n\tsun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)\n\
+        \tfr.gael.dhus.server.http.webapp.search.controller.SearchController$$EnhancerBySpringCGLIB$$2e52af27.search(&lt;generated&gt;)\n\
+        \tsun.reflect.GeneratedMethodAccessor381.invoke(Unknown Source)\n\tsun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)\n\
         \tjava.lang.reflect.Method.invoke(Method.java:498)\n\torg.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:221)\n\
         \torg.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:137)\n\
         \torg.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:110)\n\

@@ -41,7 +41,7 @@ def products():
 
 
 @pytest.fixture(scope='session')
-@my_vcr.use_cassette('products_fixture')
+@my_vcr.use_cassette('products_fixture', decode_compressed_response=False)
 def raw_products():
     """A fixture for tests that need some non-specific set of products in the form of a raw response as input."""
     api = SentinelAPI(**_api_auth)

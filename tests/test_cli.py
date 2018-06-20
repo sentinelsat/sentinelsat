@@ -288,7 +288,7 @@ def test_name_search():
 @my_vcr.use_cassette
 @pytest.mark.scihub
 def test_option_hierarchy():
-    # expected hierarchy is producttype > instrument > plattform from most to least specific
+    # expected hierarchy is producttype > instrument > platform from most to least specific
     runner = CliRunner()
     result = runner.invoke(
         cli,
@@ -304,8 +304,10 @@ def test_option_hierarchy():
         catch_exceptions=False
     )
 
-    expected = "Product 0e66b563-78d9-4480-9c3d-b64a60cf1a9f - Date: 2016-12-01T14:10:42Z, Instrument: MSI, Mode: , Satellite: Sentinel-2, Size: 526.15 MB"
-    assert re.findall("^Product .+$", result.output, re.M)[1] == expected
+    products = re.findall("^Product .+$", result.output, re.M)
+    # Check that all returned products are of type 'S2MSI1C'
+    assert len(products) > 0
+    assert all("Instrument: MSI, Mode: , Satellite: Sentinel-2" in p for p in products)
 
 
 @my_vcr.use_cassette
