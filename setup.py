@@ -40,14 +40,16 @@ setup(name='sentinelsat',
               'pytest',
               'requests-mock',
               'vcrpy',
-              'rstcheck'
+              'rstcheck',
+              'pytest-socket'
           ],
           # Pandas and its dependencies are not available for Python <= 3.4
           'test34': [
               'pytest',
               'requests-mock',
               'vcrpy',
-              'rstcheck'
+              'rstcheck',
+              'pytest-socket'
           ],
           'docs': [
               'sphinx',
