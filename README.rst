@@ -3,9 +3,10 @@ sentinelsat
 
 .. image:: https://badge.fury.io/py/sentinelsat.svg
     :target: http://badge.fury.io/py/sentinelsat
+    :alt: PyPI package
 
-.. image:: https://travis-ci.org/sentinelsat/sentinelsat.svg
-    :target: https://travis-ci.org/sentinelsat/sentinelsat
+.. image:: https://travis-ci.com/sentinelsat/sentinelsat.svg?branch=master
+    :target: https://travis-ci.com/sentinelsat/sentinelsat
     :alt: Travis-CI
 
 .. image:: https://codecov.io/gh/sentinelsat/sentinelsat/branch/master/graph/badge.svg
