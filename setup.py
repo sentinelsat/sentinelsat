@@ -53,8 +53,8 @@ setup(name='sentinelsat',
           ],
           'docs': [
               'sphinx',
-              'numpydoc',
-              'sphinx_rtd_theme'
+              'sphinx_rtd_theme',
+              'sphinx-paramlinks'
           ],
       },
       entry_points="""

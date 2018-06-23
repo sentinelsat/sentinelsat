@@ -167,11 +167,11 @@ Options
 +----+---------------+------+--------------------------------------------------------------------------------------------+
 |    | -\-name       | TEXT | Select specific product(s) by filename. Supports wildcards.                                |
 +----+---------------+------+--------------------------------------------------------------------------------------------+
-|    | -\-sentinel   |      | Limit search to a Sentinel satellite (constellation).                                      |
+|    | -\-sentinel   | INT  | Limit search to a Sentinel satellite (constellation).                                      |
 +----+---------------+------+--------------------------------------------------------------------------------------------+
-|    | -\-instrument |      | Limit search to a specific instrument on a Sentinel satellite.                             |
+|    | -\-instrument | TEXT | Limit search to a specific instrument on a Sentinel satellite.                             |
 +----+---------------+------+--------------------------------------------------------------------------------------------+
-|    | -\-producttype|      | Limit search to a Sentinel product type.                                                   |
+|    | -\-producttype| TEXT | Limit search to a Sentinel product type.                                                   |
 +----+---------------+------+--------------------------------------------------------------------------------------------+
 | -c | -\-cloud      | INT  | Maximum cloud cover in percent. (requires --sentinel to be 2 or 3)                         |
 +----+---------------+------+--------------------------------------------------------------------------------------------+
@@ -190,7 +190,7 @@ Options
 +----+---------------+------+--------------------------------------------------------------------------------------------+
 |    | -\-version    |      | Show version number and exit.                                                              |
 +----+---------------+------+--------------------------------------------------------------------------------------------+
-|    | -\-help       |      | Show help message and exit.                                                                |
+| -h | -\-help       |      | Show help message and exit.                                                                |
 +----+---------------+------+--------------------------------------------------------------------------------------------+
 
 Tests
