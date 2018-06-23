@@ -41,13 +41,13 @@ class SentinelAPI:
 
     Attributes
     ----------
-    session : requests.Session object
+    session : requests.Session
         Session to connect to DataHub
     api_url : str
         URL to the DataHub
     page_size : int
-        number of results per query page
-        current value: 100 (maximum allowed on ApiHub)
+        Number of results per query page.
+        Current value: 100 (maximum allowed on ApiHub)
     """
 
     logger = logging.getLogger('sentinelsat.SentinelAPI')
@@ -100,23 +100,22 @@ class SentinelAPI:
         order_by: str, optional
             A comma-separated list of fields to order by (on server side).
             Prefix the field name by '+' or '-' to sort in ascending or descending order,
-            respectively. Ascending order is used, if prefix is omitted.
+            respectively. Ascending order is used if prefix is omitted.
             Example: "cloudcoverpercentage, -beginposition".
         limit: int, optional
             Maximum number of products returned. Defaults to no limit.
         offset: int, optional
             The number of results to skip. Defaults to 0.
+        **keywords
+            Additional keywords can be used to specify other query parameters,
+            e.g. relativeorbitnumber=70.
+            See https://scihub.copernicus.eu/twiki/do/view/SciHubUserGuide/3FullTextSearch
+            for a full list.
 
-        Other Parameters
-        ----------------
-        Additional keywords can be used to specify other query parameters,
-        e.g. relativeorbitnumber=70.
-        See https://scihub.copernicus.eu/twiki/do/view/SciHubUserGuide/3FullTextSearch
-        for a full list.
 
         Range values can be passed as two-element tuples, e.g. cloudcoverpercentage=(0, 30).
 
-        The time interval formats accepted by the ``date`` parameter can also be used with
+        The time interval formats accepted by the `date` parameter can also be used with
         any other parameters that expect time intervals (that is: 'beginposition', 'endposition',
         'date', 'creationdate', and 'ingestiondate').
 
@@ -138,7 +137,7 @@ class SentinelAPI:
     @staticmethod
     def format_query(area=None, date=None, raw=None, area_relation='Intersects',
                      **keywords):
-        """Create OpenSearch API query string
+        """Create a OpenSearch API query string.
         """
         if area_relation.lower() not in {"intersects", "contains", "iswithin"}:
             raise ValueError("Incorrect AOI relation provided ({})".format(area_relation))
@@ -183,10 +182,11 @@ class SentinelAPI:
         return query
 
     def query_raw(self, query, order_by=None, limit=None, offset=0):
-        """Do a full-text query on the OpenSearch API using the format specified in
-           https://scihub.copernicus.eu/twiki/do/view/SciHubUserGuide/3FullTextSearch
+        """
+        Do a full-text query on the OpenSearch API using the format specified in
+        https://scihub.copernicus.eu/twiki/do/view/SciHubUserGuide/3FullTextSearch
 
-        DEPRECATED: use query(raw=...) instead. This method will be removed in the next major release.
+        DEPRECATED: use :meth:`query(raw=...) <.query>` instead. This method will be removed in the next major release.
 
         Parameters
         ----------
@@ -217,12 +217,10 @@ class SentinelAPI:
     def count(self, area=None, date=None, raw=None, area_relation='Intersects', **keywords):
         """Get the number of products matching a query.
 
-        This is a significantly more efficient alternative to doing len(api.query()),
-        which can take minutes to run for queries matching thousands of products.
+        Accepted parameters are identical to :meth:`SentinelAPI.query()`.
 
-        Parameters
-        ----------
-        Identical to the parameters of api.query().
+        This is a significantly more efficient alternative to doing `len(api.query())`,
+        which can take minutes to run for queries matching thousands of products.
 
         Returns
         -------
@@ -361,24 +359,28 @@ class SentinelAPI:
         Returns a dict containing the id, title, size, md5sum, date, footprint and download url
         of the product. The date field corresponds to the Start ContentDate value.
 
-        If ``full`` is set to True, then the full, detailed metadata of the product is returned
-        in addition to the above. For a mapping between the OpenSearch (Solr) and OData
-        attribute names see the following definition files:
-        https://github.com/SentinelDataHub/DataHubSystem/blob/master/addon/sentinel-1/src/main/resources/META-INF/sentinel-1.owl
-        https://github.com/SentinelDataHub/DataHubSystem/blob/master/addon/sentinel-2/src/main/resources/META-INF/sentinel-2.owl
-        https://github.com/SentinelDataHub/DataHubSystem/blob/master/addon/sentinel-3/src/main/resources/META-INF/sentinel-3.owl
+        If `full` is set to True, then the full, detailed metadata of the product is returned
+        in addition to the above.
 
         Parameters
         ----------
         id : string
-            The ID of the product to query
+            The UUID of the product to query
         full : bool
-            Whether to get the full metadata for the Product
+            Whether to get the full metadata for the Product. False by default.
 
         Returns
         -------
         dict[str, Any]
             A dictionary with an item for each metadata attribute
+
+        Notes
+        -----
+        For a full list of mappings between the OpenSearch (Solr) and OData attribute names
+        see the following definition files:
+        https://github.com/SentinelDataHub/DataHubSystem/blob/master/addon/sentinel-1/src/main/resources/META-INF/sentinel-1.owl
+        https://github.com/SentinelDataHub/DataHubSystem/blob/master/addon/sentinel-2/src/main/resources/META-INF/sentinel-2.owl
+        https://github.com/SentinelDataHub/DataHubSystem/blob/master/addon/sentinel-3/src/main/resources/META-INF/sentinel-3.owl
         """
         url = urljoin(self.api_url, "odata/v1/Products('{}')?$format=json".format(id))
         if full:
@@ -492,10 +494,10 @@ class SentinelAPI:
             Directory where the downloaded files will be downloaded
         max_attempts : int, optional
             Number of allowed retries before giving up downloading a product. Defaults to 10.
-
-        Other Parameters
-        ----------------
-        See download().
+        checksum : bool, optional
+            If True, verify the downloaded files' integrity by checking its MD5 checksum.
+            Throws InvalidChecksumError if the checksum does not match.
+            Defaults to True.
 
         Raises
         ------
@@ -537,7 +539,7 @@ class SentinelAPI:
 
     @staticmethod
     def get_products_size(products):
-        """Return the total file size in GB of all products in the OpenSearch response"""
+        """Return the total file size in GB of all products in the OpenSearch response."""
         size_total = 0
         for title, props in products.items():
             size_product = props["size"]
@@ -653,7 +655,7 @@ class SentinelAPI:
         dict[str, list[dict]]
             A dictionary listing the invalid or missing files. The dictionary maps the corrupt
             file paths to a list of OData dictionaries of matching products on the server (as
-            returned by ``SentinelAPI.get_product_odata()``).
+            returned by :meth:`SentinelAPI.get_product_odata()`).
         """
         if not ids and not paths:
             raise ValueError("Must provide either file paths or product IDs and a directory")
@@ -716,7 +718,7 @@ class SentinelAPI:
         return corrupt
 
     def _md5_compare(self, file_path, checksum, block_size=2 ** 13):
-        """Compare a given md5 checksum with one calculated from a file"""
+        """Compare a given MD5 checksum with one calculated from a file."""
         with closing(self._tqdm(desc="MD5 checksumming", total=getsize(file_path), unit="B",
                                 unit_scale=True)) as progress:
             md5 = hashlib.md5()

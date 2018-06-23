@@ -3,7 +3,7 @@
 Command Line Interface
 ======================
 
-Sentinelsat provides a CLI ``sentinelsat`` to query and download multiple or single images.
+Sentinelsat provides a CLI `sentinelsat` to query and download multiple or single images.
 
 Quickstart
 ----------
@@ -78,6 +78,8 @@ Download all Sentinel-2 scenes published in the last 24 hours.
 sentinelsat
 ---------------
 
+.. program:: sentinelsat
+
 .. code-block:: console
 
     sentinelsat -u <user> -p <password> [OPTIONS]
@@ -85,9 +87,9 @@ sentinelsat
 Options:
 
 +----+---------------+------+--------------------------------------------------------------------------------------------+
-| -u | -\-user       | TEXT | Username [required] (or environment variable DHUS_USER)                                    |
+| -u | -\-user       | TEXT | Username [required] (or environment variable :envvar:`DHUS_USER`)                          |
 +----+---------------+------+--------------------------------------------------------------------------------------------+
-| -p | -\-password   | TEXT | Password [required] (or environment variable DHUS_PASSWORD)                                |
+| -p | -\-password   | TEXT | Password [required] (or environment variable :envvar:`DHUS_PASSWORD`)                      |
 +----+---------------+------+--------------------------------------------------------------------------------------------+
 |    | -\-url        | TEXT | Define another API URL. Default URL is 'https://scihub.copernicus.eu/apihub/'.             |
 +----+---------------+------+--------------------------------------------------------------------------------------------+
@@ -101,14 +103,14 @@ Options:
 +----+---------------+------+--------------------------------------------------------------------------------------------+
 |    | -\-name       | TEXT | Select specific product(s) by filename. Supports wildcards.                                |
 +----+---------------+------+--------------------------------------------------------------------------------------------+
-|    | -\-sentinel   |      | Limit search to a Sentinel satellite (constellation).                                      |
+|    | -\-sentinel   | INT  | Limit search to a Sentinel satellite (constellation).                                      |
 +----+---------------+------+--------------------------------------------------------------------------------------------+
-|    | -\-instrument |      | Limit search to a specific instrument on a Sentinel satellite.                             |
+|    | -\-instrument | TEXT | Limit search to a specific instrument on a Sentinel satellite.                             |
 +----+---------------+------+--------------------------------------------------------------------------------------------+
-|    | -\-producttype|      | Limit search to a Sentinel product type. List of valid product types can be found under    |
+|    | -\-producttype| TEXT | Limit search to a Sentinel product type. List of valid product types can be found under    |
 |    |               |      | `producttype` `here <https://scihub.copernicus.eu/userguide/3FullTextSearch>`_.            |
 +----+---------------+------+--------------------------------------------------------------------------------------------+
-| -c | -\-cloud      | INT  | Maximum cloud cover in percent. (requires --sentinel to be 2 or 3)                         |
+| -c | -\-cloud      | INT  | Maximum cloud cover in percent. (requires :option:`--sentinel` to be 2 or 3)               |
 +----+---------------+------+--------------------------------------------------------------------------------------------+
 | -o | -\-order-by   | TEXT | Comma-separated list of keywords to order the result by. Prefix '-' for descending order.  |
 +----+---------------+------+--------------------------------------------------------------------------------------------+
@@ -125,7 +127,7 @@ Options:
 +----+---------------+------+--------------------------------------------------------------------------------------------+
 |    | -\-version    |      | Show version number and exit.                                                              |
 +----+---------------+------+--------------------------------------------------------------------------------------------+
-|    | -\-help       |      | Show help message and exit.                                                                |
+| -h | -\-help       |      | Show help message and exit.                                                                |
 +----+---------------+------+--------------------------------------------------------------------------------------------+
 
 ESA maintains a `list of valid search keywords <https://scihub.copernicus.eu/userguide/3FullTextSearch>`_ that can be used with :option:`--query`.
