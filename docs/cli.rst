@@ -3,7 +3,7 @@
 Command Line Interface
 ======================
 
-Sentinelsat provides a CLI `sentinelsat` to query and download multiple or single images.
+Sentinelsat provides a CLI :program:`sentinelsat` to query and download multiple or single images.
 
 Quickstart
 ----------
