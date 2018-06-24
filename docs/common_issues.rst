@@ -1,12 +1,12 @@
-.. _known_errors:
+.. _common_issues:
 
-Known errors
-============
+Common Issues
+=============
 
 .. Using "rubric" directives as titles so they don't show on the TOC
 
 
-.. rubric:: I keep getting *HTTP 401 Unauthorized* messages
+.. rubric:: I keep getting *HTTP 401 Unauthorized* messages*
 
 This means that the given username/password combination is incorrect. Note that
 if you created your account recently it could take a while (a few days?) until
@@ -18,7 +18,7 @@ __ https://scihub.copernicus.eu/apihub/search?
 
 .. rubric:: The query fails with *HTTP 500 connection timed out*
 
-Scihub servers are known to have outages due to high demand, try again later.
+SciHub servers are known to have outages due to high demand, try again later.
 
 
 .. rubric:: My search returns 0 results
