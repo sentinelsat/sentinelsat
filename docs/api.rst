@@ -60,7 +60,7 @@ respectively.
 In this example we query Sentinel-2 scenes over a location and convert the query results to a Pandas DataFrame. The DataFrame is then sorted by cloud cover
 and ingestion date. We limit the query to first 5 results within our timespan and download them,
 starting with the least cloudy scene. Filtering can be done with
-all data types, as long as you pass the :paramref:`~SentinelAPI.download.id` to the download function.
+all data types, as long as you pass the `id` to the download function.
 
 .. code-block:: python
 
@@ -158,7 +158,7 @@ OData example
 ^^^^^^^^^^^^^
 
 Only the most basic information available from the OData API is returned by default, if
-:paramref:`full=True <SentinelAPI.get_product_odata.full>` is not set. The full metadata query response is quite large and not always required,
+`full=True` is not set. The full metadata query response is quite large and not always required,
 so it is not requested by default.
 
 .. code-block:: python
@@ -173,7 +173,7 @@ so it is not requested by default.
    'url': "https://scihub.copernicus.eu/apihub/odata/v1/Products('04548172-c64a-418f-8e83-7a4d148adf1e')/$value"}
 
 
-With :paramref:`full=True <SentinelAPI.get_product_odata.full>` we receive the full metadata available for the product.
+With `full=True` we receive the full metadata available for the product.
 
 .. code-block:: python
 
