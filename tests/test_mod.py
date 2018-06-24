@@ -52,44 +52,33 @@ def raw_products():
     return raw_products
 
 
-@pytest.mark.fast
+@my_vcr.use_cassette
+@pytest.mark.scihub
 def test_format_date():
     assert format_query_date(datetime(2015, 1, 1)) == '2015-01-01T00:00:00Z'
     assert format_query_date(date(2015, 1, 1)) == '2015-01-01T00:00:00Z'
     assert format_query_date('2015-01-01T00:00:00Z') == '2015-01-01T00:00:00Z'
     assert format_query_date('20150101') == '2015-01-01T00:00:00Z'
+    assert format_query_date(' NOW ') == 'NOW'
 
+    api = SentinelAPI(**_api_auth)
     for date_str in ("NOW", "NOW-1DAY", "NOW-1DAYS", "NOW-500DAY", "NOW-500DAYS",
                      "NOW-2MONTH", "NOW-2MONTHS", "NOW-20MINUTE", "NOW-20MINUTES",
-                     "NOW+10HOUR", "2015-01-01T00:00:00Z+1DAY"):
+                     "NOW+10HOUR", "2015-01-01T00:00:00Z+1DAY", "NOW+3MONTHS-7DAYS/DAYS",
+                     "*"):
         assert format_query_date(date_str) == date_str
+        api.query(raw='ingestiondate:[{} TO *]'.format(date_str), limit=0)
 
-    for date_str in ("NOW - 1HOUR", "NOW -   1HOURS", "NOW-1 HOURS", "NOW-1", "NOW-"):
-        with pytest.raises(ValueError) as excinfo:
+    for date_str in ("NOW - 1HOUR", "NOW -   1HOURS", "NOW-1 HOURS", "NOW-1", "NOW-", "**", "+", "-"):
+        with pytest.raises(ValueError):
             format_query_date(date_str)
-
-
-@pytest.mark.fast
-def test_format_date():
-    assert format_query_date(datetime(2015, 1, 1)) == '2015-01-01T00:00:00Z'
-    assert format_query_date(date(2015, 1, 1)) == '2015-01-01T00:00:00Z'
-    assert format_query_date('2015-01-01T00:00:00Z') == '2015-01-01T00:00:00Z'
-    assert format_query_date('20150101') == '2015-01-01T00:00:00Z'
-
-    for date_str in ("NOW", "NOW-1DAY", "NOW-1DAYS", "NOW-500DAY", "NOW-500DAYS",
-                     "NOW-2MONTH", "NOW-2MONTHS", "NOW-20MINUTE", "NOW-20MINUTES",
-                     "NOW+10HOUR", "2015-01-01T00:00:00Z+1DAY", "NOW+3MONTHS-7DAYS/DAYS"):
-        assert format_query_date(date_str) == date_str
-
-    for date_str in ("NOW - 1HOUR", "NOW -   1HOURS", "NOW-1 HOURS", "NOW-1", "NOW-"):
-        with pytest.raises(ValueError) as excinfo:
-            format_query_date(date_str)
+        with pytest.raises(SentinelAPIError):
+            api.query(raw='ingestiondate:[{} TO *]'.format(date_str), limit=0)
 
 
 @pytest.mark.fast
 def test_convert_timestamp():
-    assert _parse_odata_timestamp('/Date(1445588544652)/') == datetime(2015, 10, 23, 8, 22, 24,
-                                                                       652000)
+    assert _parse_odata_timestamp('/Date(1445588544652)/') == datetime(2015, 10, 23, 8, 22, 24, 652000)
 
 
 @pytest.mark.fast
@@ -148,7 +137,7 @@ def test_SentinelAPI_wrong_credentials():
 
 
 @my_vcr.use_cassette
-@pytest.mark.fast
+@pytest.mark.scihub
 def test_api_query_format():
     wkt = 'POLYGON((0 0,1 1,0 1,0 0))'
 

@@ -8,7 +8,7 @@ All notable changes to ``sentinelsat`` will be listed here.
 
 Added
 ~~~~~
-*
+* Date ranges now also support '\*' for single-sided ranges, e.g. ``query(date=('*', 'NOW-1YEAR'))``.
 
 Changed
 ~~~~~~~
