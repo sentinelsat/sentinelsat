@@ -111,13 +111,12 @@ def test_cloud_flag_url():
     # For order-by test
     assert '0848f6b8-5730-4759-850e-fc9945d42296' not in re.findall("^Product .+$", result.output, re.M)[1]
 
-    with pytest.raises(ValueError) as excinfo:
-        result = runner.invoke(
-            cli,
-            command + ['--sentinel', '1'],
-            catch_exceptions=False
-        )
-        assert result.exit_code == 0
+    result = runner.invoke(
+        cli,
+        command + ['--sentinel', '1'],
+        catch_exceptions=False
+    )
+    assert result.exit_code != 0
 
 
 @my_vcr.use_cassette
@@ -352,6 +351,7 @@ def test_footprints_cli(tmpdir):
     for feature in content['features']:
         assert len(feature['properties']) >= 28
         assert len(feature['geometry']['coordinates'][0]) > 3
+    tmpdir.remove()
 
 
 @my_vcr.use_cassette
@@ -395,13 +395,14 @@ def test_download_single(tmpdir):
         rqst.get(url, json=json)
 
         # md5 flag set (implicitly), should raise an exception
-        with pytest.raises(InvalidChecksumError) as excinfo:
+        with pytest.raises(InvalidChecksumError):
             result = runner.invoke(
                 cli,
                 command,
-                catch_exceptions=False
+                catch_exceptions=True
             )
-    assert result.exit_code == 0
+            assert result.exit_code != 1
+            raise result.exception
 
     # clean up
     tmpdir.remove()
@@ -484,6 +485,6 @@ def test_download_invalid_id(tmpdir):
         command,
         catch_exceptions=False
     )
-    assert result.exit_code == 0
+    assert result.exit_code != 0
     assert 'No product with' in result.output
     tmpdir.remove()
