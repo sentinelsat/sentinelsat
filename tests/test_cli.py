@@ -1,4 +1,4 @@
-from os import environ, path
+import json
 import re
 from os import environ, path
 
@@ -337,11 +337,21 @@ def test_footprints_cli(tmpdir):
          '--geometry', path.join(FIXTURES_DIR, 'map.geojson'),
          '-s', '20151219',
          '-e', '20151228',
-         '--sentinel2',
+         '--sentinel', '2',
          '--path', str(tmpdir),
          '--footprints'],
         catch_exceptions=False
     )
+    assert result.exit_code == 0
+
+    assert '11 scenes found' in result.output
+    gj_file = tmpdir / 'search_footprints.geojson'
+    assert gj_file.check()
+    content = json.loads(gj_file.read_text(encoding='utf-8'))
+    assert len(content['features']) == 11
+    for feature in content['features']:
+        assert len(feature['properties']) >= 28
+        assert len(feature['geometry']['coordinates'][0]) > 3
 
 
 @my_vcr.use_cassette
