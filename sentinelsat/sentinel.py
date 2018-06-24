@@ -850,6 +850,11 @@ def format_query_date(in_date):
     elif not isinstance(in_date, string_types):
         raise ValueError('Expected a string or a datetime object. Received {}.'.format(in_date))
 
+    in_date = in_date.strip()
+    if in_date == '*':
+        # '*' can be used for one-sided range queries e.g. ingestiondate:[* TO NOW-1YEAR]
+        return in_date
+
     # Reference: https://cwiki.apache.org/confluence/display/solr/Working+with+Dates
 
     # ISO-8601 date or NOW
