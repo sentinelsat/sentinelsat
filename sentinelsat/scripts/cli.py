@@ -127,6 +127,8 @@ def cli(user, password, geometry, start, end, uuid, name, download, sentinel, pr
                 if 'Invalid key' in e.msg:
                     logger.error('No product with ID \'%s\' exists on server', productid)
                     exit(1)
+                else:
+                    raise
     elif name is not None:
         search_kwargs["identifier"] = name
         products = api.query(order_by=order_by, limit=limit, **search_kwargs)
