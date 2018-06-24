@@ -79,6 +79,6 @@ else:
 
     my_vcr = DummyVCR()
 
-if vcr_option != "use" and ('SENTINEL_USER' not in environ or 'SENTINEL_PASSWORD' not in environ):
+if vcr_option != "use" and ('DHUS_USER' not in environ or 'DHUS_PASSWORD' not in environ):
     warnings.warn("Credentials are not set while not using prerecorded queries: "
-                  "please set SENTINEL_USER and SENTINEL_PASSWORD environment variables.")
+                  "please set DHUS_USER and DHUS_PASSWORD environment variables.")

@@ -97,8 +97,8 @@ By default, prerecorded responses to Copernicus Open Access Hub queries are used
 
 .. code-block:: console
 
-  export SENTINEL_USER=<username>
-  export SENTINEL_PASSWORD=<password>
+  export DHUS_USER=<username>
+  export DHUS_PASSWORD=<password>
   py.test -v --vcr disable
 
 

@@ -26,8 +26,8 @@ To allow the tests to run actual queries against Copernicus Open Access Hub set 
 
 .. code-block:: console
 
-    export SENTINEL_USER=<your scihub username>
-    export SENTINEL_PASSWORD=<your scihub password>
+    export DHUS_USER=<your scihub username>
+    export DHUS_PASSWORD=<your scihub password>
 
 and add ``--vcr disable`` to ``py.test`` arguments.
 To update the recordings use either ``--vcr record_new`` or ``--vcr reset``.
