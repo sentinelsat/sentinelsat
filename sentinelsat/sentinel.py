@@ -80,6 +80,7 @@ class SentinelAPI:
             Expects a tuple of (start, end), e.g. ("NOW-1DAY", "NOW").
             The timestamps can be either a Python datetime or a string in one of the
             following formats:
+
                 - yyyyMMdd
                 - yyyy-MM-ddThh:mm:ss.SSSZ (ISO-8601)
                 - yyyy-MM-ddThh:mm:ssZ
@@ -88,15 +89,18 @@ class SentinelAPI:
                 - NOW+<n>DAY(S)
                 - yyyy-MM-ddThh:mm:ssZ-<n>DAY(S)
                 - NOW/DAY (or HOUR, MONTH etc.) - rounds the value to the given unit
+
             Alternatively, an already fully formatted string such as "[NOW-1DAY TO NOW]" can be
             used as well.
         raw : str, optional
             Additional query text that will be appended to the query.
         area_relation : {'Intersection', 'Contains', 'IsWithin'}, optional
             What relation to use for testing the AOI. Case insensitive.
+
                 - Intersects: true if the AOI and the footprint intersect (default)
                 - Contains: true if the AOI is inside the footprint
                 - IsWithin: true if the footprint is inside the AOI
+
         order_by: str, optional
             A comma-separated list of fields to order by (on server side).
             Prefix the field name by '+' or '-' to sort in ascending or descending order,
@@ -108,12 +112,12 @@ class SentinelAPI:
             The number of results to skip. Defaults to 0.
         **keywords
             Additional keywords can be used to specify other query parameters,
-            e.g. relativeorbitnumber=70.
+            e.g. `relativeorbitnumber=70`.
             See https://scihub.copernicus.eu/twiki/do/view/SciHubUserGuide/3FullTextSearch
             for a full list.
 
 
-        Range values can be passed as two-element tuples, e.g. cloudcoverpercentage=(0, 30).
+        Range values can be passed as two-element tuples, e.g. `cloudcoverpercentage=(0, 30)`.
 
         The time interval formats accepted by the `date` parameter can also be used with
         any other parameters that expect time intervals (that is: 'beginposition', 'endposition',
@@ -763,6 +767,13 @@ class SentinelAPI:
 
 class SentinelAPIError(Exception):
     """Invalid responses from DataHub.
+
+    Attributes
+    ----------
+    msg: str
+        The error message.
+    response: requests.Response
+        The response from the server as a `requests.Response` object.
     """
 
     def __init__(self, msg=None, response=None):
