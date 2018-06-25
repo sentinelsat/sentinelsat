@@ -151,6 +151,10 @@ class SentinelAPI:
 
         query_parts = []
 
+        kw_lower = set(x.lower() for x in keywords)
+        if len(kw_lower) != len(keywords) or (date is not None and 'beginposition' in kw_lower):
+            raise ValueError("Query contains duplicate keywords. Note that query keywords are case-insensitive.")
+
         if date is not None:
             keywords['beginPosition'] = date
 
