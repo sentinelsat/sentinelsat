@@ -137,8 +137,7 @@ def test_SentinelAPI_wrong_credentials():
     assert excinfo.value.response.status_code == 401
 
 
-@my_vcr.use_cassette
-@pytest.mark.scihub
+@pytest.mark.fast
 def test_api_query_format():
     wkt = 'POLYGON((0 0,1 1,0 1,0 0))'
 
@@ -238,7 +237,7 @@ def test_api_query_format_dates():
 @pytest.mark.scihub
 def test_invalid_query():
     api = SentinelAPI(**_api_auth)
-    with pytest.raises(SentinelAPIError) as excinfo:
+    with pytest.raises(SentinelAPIError):
         api.query(raw="xxx:yyy")
 
 
@@ -284,7 +283,7 @@ def test_format_order_by():
     res = _format_order_by(" +cloudcoverpercentage, -beginposition ")
     assert res == "cloudcoverpercentage asc,beginposition desc"
 
-    with pytest.raises(ValueError) as excinfo:
+    with pytest.raises(ValueError):
         _format_order_by("+cloudcoverpercentage-beginposition")
 
 
@@ -628,16 +627,16 @@ def test_scihub_unresponsive():
 
     with requests_mock.mock() as rqst:
         rqst.request(requests_mock.ANY, requests_mock.ANY, exc=requests.exceptions.ConnectTimeout)
-        with pytest.raises(requests.exceptions.Timeout) as excinfo:
+        with pytest.raises(requests.exceptions.Timeout):
             api.query(**_small_query)
 
-        with pytest.raises(requests.exceptions.Timeout) as excinfo:
+        with pytest.raises(requests.exceptions.Timeout):
             api.get_product_odata('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')
 
-        with pytest.raises(requests.exceptions.Timeout) as excinfo:
+        with pytest.raises(requests.exceptions.Timeout):
             api.download('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')
 
-        with pytest.raises(requests.exceptions.Timeout) as excinfo:
+        with pytest.raises(requests.exceptions.Timeout):
             api.download_all(['8df46c9e-a20c-43db-a19a-4240c2ed3b8b'])
 
 
@@ -751,7 +750,7 @@ def test_area_relation():
     assert n_iswithin == 0
 
     # Check that unsupported relations raise an error
-    with pytest.raises(ValueError) as excinfo:
+    with pytest.raises(ValueError):
         api.query(area_relation="disjoint", **params)
 
 
@@ -935,7 +934,7 @@ def test_download_invalid_id():
     uuid = "1f62a176-c980-41dc-xxxx-c735d660c910"
     with pytest.raises(SentinelAPIError) as excinfo:
         api.download(uuid)
-        assert 'Invalid key' in excinfo.value.msg
+    assert 'Invalid key' in excinfo.value.msg
 
 
 @my_vcr.use_cassette
