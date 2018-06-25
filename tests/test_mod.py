@@ -166,6 +166,16 @@ def test_api_query_format():
 
 
 @pytest.mark.fast
+def test_api_query_format_with_duplicates():
+    with pytest.raises(ValueError) as excinfo:
+        SentinelAPI.format_query(date=('NOW-1DAY', 'NOW'), beginPosition=('NOW-3DAY', 'NOW'))
+    assert 'duplicate' in str(excinfo.value)
+    with pytest.raises(ValueError) as excinfo:
+        SentinelAPI.format_query(ingestiondate=('NOW-1DAY', 'NOW'), ingestionDate=('NOW-3DAY', 'NOW'))
+    assert 'duplicate' in str(excinfo.value)
+
+
+@pytest.mark.fast
 def test_api_query_format_ranges():
     query = SentinelAPI.format_query(cloudcoverpercentage=(0, 30))
     assert query == 'cloudcoverpercentage:[0 TO 30]'
