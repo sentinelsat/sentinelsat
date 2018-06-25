@@ -169,8 +169,13 @@ def test_api_query_format_with_duplicates():
     with pytest.raises(ValueError) as excinfo:
         SentinelAPI.format_query(date=('NOW-1DAY', 'NOW'), beginPosition=('NOW-3DAY', 'NOW'))
     assert 'duplicate' in str(excinfo.value)
+
     with pytest.raises(ValueError) as excinfo:
         SentinelAPI.format_query(ingestiondate=('NOW-1DAY', 'NOW'), ingestionDate=('NOW-3DAY', 'NOW'))
+    assert 'duplicate' in str(excinfo.value)
+
+    with pytest.raises(ValueError) as excinfo:
+        SentinelAPI.format_query(area='POINT(0, 0)', footprint='POINT(0, 0)')
     assert 'duplicate' in str(excinfo.value)
 
 
