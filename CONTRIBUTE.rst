@@ -93,7 +93,10 @@ To run the tests
   py.test -v
 
 
-By default, prerecorded responses to Copernicus Open Access Hub queries are used to not be affected by its downtime. To allow the tests to run actual queries against the Copernicus Open Access Hub set the environment variables and add ``--vcr disable`` to ``py.test`` arguments.
+By default, prerecorded responses to Copernicus Open Access Hub queries are used to not be affected by its downtime.
+Furthermore, any network accesses are blocked as well (by raising a ``pytest_socket.SocketBlockedError: A test tried to use socket.socket`` exception) to guarantee that all tests are indeed correctly covered by recorded queries.
+
+To allow the tests to run actual queries against the Copernicus Open Access Hub set the environment variables and add ``--vcr disable`` to ``py.test`` arguments.
 
 .. code-block:: console
 

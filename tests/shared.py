@@ -5,6 +5,7 @@ from os.path import abspath, dirname, join
 
 import pytest
 import vcr
+from pytest_socket import disable_socket
 
 from .custom_serializer import BinaryContentSerializer
 
@@ -17,6 +18,8 @@ vcr_option = pytest.config.getoption("--vcr")
 record_mode = "none"
 if vcr_option == "use":
     print("Tests will use prerecorded query responses.")
+    # Guarantee that only prerecorded queries are used by blocking any network traffic
+    disable_socket()
 elif vcr_option == "record_new":
     print("Tests will use prerecorded query responses and record any new ones.")
     record_mode = "new_episodes"
