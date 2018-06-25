@@ -218,6 +218,43 @@ def test_api_query_format_dates():
 
 
 @my_vcr.use_cassette
+@pytest.mark.fast
+def test_api_query_format_escape_spaces():
+    query = SentinelAPI.format_query(ingestiondate=('NOW-1DAY', 'NOW'))
+    assert query == 'ingestiondate:[NOW-1DAY TO NOW]'
+
+    query = SentinelAPI.format_query(ingestiondate='[NOW-1DAY TO NOW]')
+    assert query == 'ingestiondate:[NOW-1DAY TO NOW]'
+
+    query = SentinelAPI.format_query(ingestiondate=' [NOW-1DAY TO NOW] ')
+    assert query == 'ingestiondate:[NOW-1DAY TO NOW]'
+
+    query = SentinelAPI.format_query(relativeorbitnumber=' {101 TO 103} ')
+    assert query == 'relativeorbitnumber:{101 TO 103}'
+
+    query = SentinelAPI.format_query(filename='S3A_OL_2* ')
+    assert query == 'filename:S3A_OL_2*'
+
+    query = SentinelAPI.format_query(timeliness='Non Time Critical')
+    assert query == r'timeliness:Non\ Time\ Critical'
+
+    query = SentinelAPI.format_query(timeliness='Non\tTime\tCritical')
+    assert query == r'timeliness:Non\ Time\ Critical'
+
+    api = SentinelAPI(**_api_auth)
+    assert api.count(timeliness='Non Time Critical') > 0
+
+    # Allow for regex weirdness
+    query = SentinelAPI.format_query(timeliness='.+ Critical')
+    assert query == r'timeliness:.+\ Critical'
+    assert api.count(timeliness='.+ Critical') > 0
+
+    query = SentinelAPI.format_query(identifier='/S[123 ]A.*/')
+    assert query == r'identifier:/S[123 ]A.*/'
+    assert api.count(identifier='/S[123 ]A.*/') > 0
+
+
+@my_vcr.use_cassette
 @pytest.mark.scihub
 def test_invalid_query():
     api = SentinelAPI(**_api_auth)

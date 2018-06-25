@@ -8,11 +8,11 @@ All notable changes to ``sentinelsat`` will be listed here.
 
 Added
 ~~~~~
-*
+* 
 
 Changed
 ~~~~~~~
-*
+* 
 
 Deprecated
 ~~~~~~~~~~
@@ -20,6 +20,7 @@ Deprecated
 
 Fixed
 ~~~~~
+* Spaces in query parameter values are now escaped by adding a backslash before them, where appropriate. (#169, #211)
 * Fixed some CLI errors not returning with a non-zero exit code. (#209)
 
 [0.12.2] – 2018-06-20
