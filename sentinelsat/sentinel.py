@@ -149,11 +149,14 @@ class SentinelAPI:
         if area_relation.lower() not in {"intersects", "contains", "iswithin"}:
             raise ValueError("Incorrect AOI relation provided ({})".format(area_relation))
 
-        query_parts = []
-
+        # Check for duplicate keywords
         kw_lower = set(x.lower() for x in keywords)
-        if len(kw_lower) != len(keywords) or (date is not None and 'beginposition' in kw_lower):
+        if (len(kw_lower) != len(keywords) or
+                (date is not None and 'beginposition' in kw_lower) or
+                (area is not None and 'footprint' in kw_lower)):
             raise ValueError("Query contains duplicate keywords. Note that query keywords are case-insensitive.")
+
+        query_parts = []
 
         if date is not None:
             keywords['beginPosition'] = date
