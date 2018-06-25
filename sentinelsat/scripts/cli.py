@@ -108,7 +108,7 @@ def cli(user, password, geometry, start, end, uuid, name, download, sentinel, pr
     if cloud:
         if sentinel not in ['2', '3']:
             logger.error('Cloud cover is only supported for Sentinel 2 and 3.')
-            raise ValueError('Cloud cover is only supported for Sentinel 2 and 3.')
+            exit(1)
         search_kwargs["cloudcoverpercentage"] = (0, cloud)
 
     if query is not None:
@@ -126,6 +126,9 @@ def cli(user, password, geometry, start, end, uuid, name, download, sentinel, pr
             except SentinelAPIError as e:
                 if 'Invalid key' in e.msg:
                     logger.error('No product with ID \'%s\' exists on server', productid)
+                    exit(1)
+                else:
+                    raise
     elif name is not None:
         search_kwargs["identifier"] = name
         products = api.query(order_by=order_by, limit=limit, **search_kwargs)
