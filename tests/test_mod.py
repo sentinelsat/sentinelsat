@@ -60,6 +60,7 @@ def test_format_date():
     assert format_query_date('2015-01-01T00:00:00Z') == '2015-01-01T00:00:00Z'
     assert format_query_date('20150101') == '2015-01-01T00:00:00Z'
     assert format_query_date(' NOW ') == 'NOW'
+    assert format_query_date(None) == '*'
 
     api = SentinelAPI(**_api_auth)
     for date_str in ("NOW", "NOW-1DAY", "NOW-1DAYS", "NOW-500DAY", "NOW-500DAYS",

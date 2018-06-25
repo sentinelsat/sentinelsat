@@ -842,9 +842,29 @@ def geojson_to_wkt(geojson_obj, feature_number=0, decimals=4):
 
 
 def format_query_date(in_date):
-    """Format a date, datetime or a YYYYMMDD string input as YYYY-MM-DDThh:mm:ssZ
-    or validate a string input as suitable for the full text search interface and return it.
     """
+    Format a date, datetime or a YYYYMMDD string input as YYYY-MM-DDThh:mm:ssZ
+    or validate a date string as suitable for the full text search interface and return it.
+
+    `None` will be converted to '\*', meaning an unlimited date bound in date ranges.
+
+    Parameters
+    ----------
+    in_date : str or datetime or date or None
+        Date to be formatted
+
+    Returns
+    -------
+    str
+        Formatted string
+
+    Raises
+    ------
+    ValueError
+        If the input date type is incorrect or passed date string is invalid
+    """
+    if in_date is None:
+        return '*'
     if isinstance(in_date, (datetime, date)):
         return in_date.strftime('%Y-%m-%dT%H:%M:%SZ')
     elif not isinstance(in_date, string_types):
