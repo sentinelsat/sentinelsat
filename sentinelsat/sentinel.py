@@ -116,6 +116,9 @@ class SentinelAPI:
             See https://scihub.copernicus.eu/twiki/do/view/SciHubUserGuide/3FullTextSearch
             for a full list.
 
+        Range values can be passed as two-element tuples, e.g. `cloudcoverpercentage=(0, 30)`.
+        `None` can be used in range values for one-sided ranges, e.g. `orbitnumber=(16302, None)`.
+        Ranges with no bounds (`orbitnumber=(None, None)`) will not be included in the query.
 
         Range values can be passed as two-element tuples, e.g. `cloudcoverpercentage=(0, 30)`.
 
@@ -152,7 +155,8 @@ class SentinelAPI:
             keywords['beginPosition'] = date
 
         for attr, value in sorted(keywords.items()):
-            # From https://github.com/SentinelDataHub/DataHubSystem/search?q=text/date+iso8601
+            # Handle date keywords
+            # Keywords from https://github.com/SentinelDataHub/DataHubSystem/search?q=text/date+iso8601
             date_attrs = ['beginposition', 'endposition', 'date', 'creationdate', 'ingestiondate']
             if attr.lower() in date_attrs:
                 # Automatically format date-type attributes
@@ -166,9 +170,14 @@ class SentinelAPI:
                     raise ValueError("Date-type query parameter '{}' expects a two-element tuple "
                                      "of str or datetime objects. Received {}".format(attr, value))
 
+            # Handle ranged values
             if isinstance(value, (list, tuple)):
                 # Handle value ranges
                 if len(value) == 2:
+                    # Allow None to be used as a unlimited bound
+                    value = ['*' if x is None else x for x in value]
+                    if all(x == '*' for x in value):
+                        continue
                     value = '[{} TO {}]'.format(*value)
                 else:
                     raise ValueError("Invalid number of elements in list. Expected 2, received "
@@ -182,8 +191,7 @@ class SentinelAPI:
         if area is not None:
             query_parts.append('footprint:"{}({})"'.format(area_relation, area))
 
-        query = ' '.join(query_parts)
-        return query
+        return ' '.join(query_parts)
 
     def query_raw(self, query, order_by=None, limit=None, offset=0):
         """
