@@ -1,7 +1,0 @@
-requests
-click
-html2text
-geojson >= 2
-tqdm
-six
-geomet
