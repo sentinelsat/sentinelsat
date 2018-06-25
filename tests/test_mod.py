@@ -173,6 +173,19 @@ def test_api_query_format_ranges():
     query = SentinelAPI.format_query(cloudcoverpercentage=[0, 30])
     assert query == 'cloudcoverpercentage:[0 TO 30]'
 
+    query = SentinelAPI.format_query(cloudcoverpercentage=[None, 30])
+    assert query == 'cloudcoverpercentage:[* TO 30]'
+
+    query = SentinelAPI.format_query(orbitnumber=(16302, None))
+    assert query == 'orbitnumber:[16302 TO *]'
+
+    query = SentinelAPI.format_query(orbitnumber=(16302, '*'))
+    assert query == 'orbitnumber:[16302 TO *]'
+
+    for value in [(None, None), ('*', None), (None, '*'), ('*', '*')]:
+        query = SentinelAPI.format_query(orbitnumber=value)
+        assert query == ''
+
     with pytest.raises(ValueError):
         SentinelAPI.format_query(cloudcoverpercentage=[])
 
@@ -194,6 +207,13 @@ def test_api_query_format_dates():
     query = SentinelAPI.format_query(ingestiondate='[NOW-1DAY TO NOW]')
     assert query == 'ingestiondate:[NOW-1DAY TO NOW]'
 
+    query = SentinelAPI.format_query(ingestiondate=[None, 'NOW'])
+    assert query == 'ingestiondate:[* TO NOW]'
+
+    for value in [(None, None), ('*', None), (None, '*'), ('*', '*')]:
+        query = SentinelAPI.format_query(ingestiondate=value)
+        assert query == ''
+
     with pytest.raises(ValueError):
         SentinelAPI.format_query(date="NOW")
 
@@ -202,9 +222,6 @@ def test_api_query_format_dates():
 
     with pytest.raises(ValueError):
         SentinelAPI.format_query(ingestiondate=[])
-
-    with pytest.raises(ValueError):
-        SentinelAPI.format_query(ingestiondate=[None, 'NOW'])
 
 
 @my_vcr.use_cassette
