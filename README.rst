@@ -202,7 +202,7 @@ To run the tests on ``sentinelsat``:
 
     git clone https://github.com/sentinelsat/sentinelsat.git
     cd sentinelsat
-    pip install -e .[test]
+    pip install -e .[dev]
     py.test -v
 
 By default, prerecorded responses to Copernicus Open Access Hub queries are used to not be affected by its downtime.
@@ -225,7 +225,7 @@ To build the documentation:
 
     git clone https://github.com/sentinelsat/sentinelsat.git
     cd sentinelsat
-    pip install -e .[docs]
+    pip install -e .[dev]
     cd docs
     make html
 
@@ -235,7 +235,7 @@ The full documentation is also published at http://sentinelsat.readthedocs.io/.
 Changelog
 =========
 
-See `CHANGELOG <CHANGELOG.rst>`_. You can also use Githubs compare view to see the `changes in the master branch since last release <https://github.com/sentinelsat/sentinelsat/compare/v0.12.2...master>`_.
+See `CHANGELOG <CHANGELOG.rst>`_. You can also use GitHub's compare view to see the `changes in the master branch since last release <https://github.com/sentinelsat/sentinelsat/compare/v0.12.2...master>`_.
 
 Contributors
 ============

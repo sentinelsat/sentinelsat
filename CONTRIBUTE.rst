@@ -16,7 +16,7 @@ Design Principles
 
 - ``sentinelsat`` is meant to be a Pythonic client to the `Copernicus Open Access Hub <https://scihub.copernicus.eu/dhus>`_ and other manifestations of  the `Data Hub System (DHuS) <http://sentineldatahub.github.io/DataHubSystem>`_.
 - ``sentinelsat`` should interface the functions of DHuS where possible, rather than replicating them in Python.
-- all code must be Python 3 compliant but we strive for backwards compatability with Python 2 where possible
+- all code must be Python 3 compliant but we strive for backwards compatibility with Python 2 where possible
 
 Contributing
 ============
@@ -65,20 +65,13 @@ Development should occur within a `virtual environment <http://docs.python-guide
 Installing sentinelsat
 ----------------------
 
-``sentinelsat`` and its dependencies can be installed with ``pip``. Specifying the ``[test]`` extra in the command below tells
+``sentinelsat`` and its dependencies can be installed with ``pip``. Specifying the ``[dev]`` extra in the command below tells
 ``pip`` to also install ``sentinelsat``'s dev dependencies.
 
 .. code-block:: console
 
   cd sentinelsat/
-  pip install -e .[test]
-
-
-The dependencies required to build the docs can be installed with:
-
-.. code-block:: console
-
-  pip install -e .[docs]
+  pip install -e .[dev]
 
 
 Running the tests

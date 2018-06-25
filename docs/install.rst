@@ -18,7 +18,7 @@ To run the tests on ``sentinelsat``:
 
     git clone https://github.com/sentinelsat/sentinelsat.git
     cd sentinelsat
-    pip install -e .[test]
+    pip install -e .[dev]
     py.test -v
 
 By default, prerecorded responses to Copernicus Open Access Hub queries are used to not be affected by its downtime.
