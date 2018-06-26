@@ -8,11 +8,15 @@ All notable changes to ``sentinelsat`` will be listed here.
 
 Added
 ~~~~~
-* 
+* Query keywords with interval ranges now support single-sided ranges by using ``None`` or ``'*'`` to note no bounds,
+  for example ``query(date=(None, 'NOW-1YEAR'))``. In case both bounds are set to unlimited, the keyword will be removed
+  from the query. (#210)
+* Raise an exception in case of duplicate keywords present in a query, taking into account the fact that query keywords
+  are allowed to be case-insensitive on the server side. (#210)
 
 Changed
 ~~~~~~~
-* 
+* Replaced ``[test]`` and ``[docs]`` with a single ``[dev]`` installation extras target. Removed 'requirements.txt'. (#208)
 
 Deprecated
 ~~~~~~~~~~

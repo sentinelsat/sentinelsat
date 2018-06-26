@@ -31,31 +31,38 @@ setup(name='sentinelsat',
       packages=find_packages(exclude=['ez_setup', 'examples', 'tests']),
       include_package_data=True,
       zip_safe=False,
-      install_requires=open('requirements.txt').read().splitlines(),
+      install_requires=[
+        'requests',
+        'click',
+        'html2text',
+        'geojson >= 2',
+        'tqdm',
+        'six',
+        'geomet'
+      ],
       extras_require={
-          'test': [
+          'dev': [
               'pandas',
               'geopandas',
               'shapely',
               'pytest',
+              'pytest-socket',
               'requests-mock',
               'vcrpy',
               'rstcheck',
-              'pytest-socket'
-          ],
-          # Pandas and its dependencies are not available for Python <= 3.4
-          'test34': [
-              'pytest',
-              'requests-mock',
-              'vcrpy',
-              'rstcheck',
-              'pytest-socket'
-          ],
-          'docs': [
-              'sphinx',
-              'numpydoc',
+              'sphinx >= 1.3',
               'sphinx_rtd_theme'
           ],
+          # Pandas and its dependencies are not available for Python <= 3.4
+          'dev34': [
+              'pytest',
+              'pytest-socket',
+              'requests-mock',
+              'vcrpy',
+              'rstcheck',
+              'sphinx >= 1.3',
+              'sphinx_rtd_theme'
+          ]
       },
       entry_points="""
       [console_scripts]

@@ -52,44 +52,34 @@ def raw_products():
     return raw_products
 
 
-@pytest.mark.fast
+@my_vcr.use_cassette
+@pytest.mark.scihub
 def test_format_date():
     assert format_query_date(datetime(2015, 1, 1)) == '2015-01-01T00:00:00Z'
     assert format_query_date(date(2015, 1, 1)) == '2015-01-01T00:00:00Z'
     assert format_query_date('2015-01-01T00:00:00Z') == '2015-01-01T00:00:00Z'
     assert format_query_date('20150101') == '2015-01-01T00:00:00Z'
+    assert format_query_date(' NOW ') == 'NOW'
+    assert format_query_date(None) == '*'
 
+    api = SentinelAPI(**_api_auth)
     for date_str in ("NOW", "NOW-1DAY", "NOW-1DAYS", "NOW-500DAY", "NOW-500DAYS",
                      "NOW-2MONTH", "NOW-2MONTHS", "NOW-20MINUTE", "NOW-20MINUTES",
-                     "NOW+10HOUR", "2015-01-01T00:00:00Z+1DAY"):
+                     "NOW+10HOUR", "2015-01-01T00:00:00Z+1DAY", "NOW+3MONTHS-7DAYS/DAYS",
+                     "*"):
         assert format_query_date(date_str) == date_str
+        api.query(raw='ingestiondate:[{} TO *]'.format(date_str), limit=0)
 
-    for date_str in ("NOW - 1HOUR", "NOW -   1HOURS", "NOW-1 HOURS", "NOW-1", "NOW-"):
-        with pytest.raises(ValueError) as excinfo:
+    for date_str in ("NOW - 1HOUR", "NOW -   1HOURS", "NOW-1 HOURS", "NOW-1", "NOW-", "**", "+", "-"):
+        with pytest.raises(ValueError):
             format_query_date(date_str)
-
-
-@pytest.mark.fast
-def test_format_date():
-    assert format_query_date(datetime(2015, 1, 1)) == '2015-01-01T00:00:00Z'
-    assert format_query_date(date(2015, 1, 1)) == '2015-01-01T00:00:00Z'
-    assert format_query_date('2015-01-01T00:00:00Z') == '2015-01-01T00:00:00Z'
-    assert format_query_date('20150101') == '2015-01-01T00:00:00Z'
-
-    for date_str in ("NOW", "NOW-1DAY", "NOW-1DAYS", "NOW-500DAY", "NOW-500DAYS",
-                     "NOW-2MONTH", "NOW-2MONTHS", "NOW-20MINUTE", "NOW-20MINUTES",
-                     "NOW+10HOUR", "2015-01-01T00:00:00Z+1DAY", "NOW+3MONTHS-7DAYS/DAYS"):
-        assert format_query_date(date_str) == date_str
-
-    for date_str in ("NOW - 1HOUR", "NOW -   1HOURS", "NOW-1 HOURS", "NOW-1", "NOW-"):
-        with pytest.raises(ValueError) as excinfo:
-            format_query_date(date_str)
+        with pytest.raises(SentinelAPIError):
+            api.query(raw='ingestiondate:[{} TO *]'.format(date_str), limit=0)
 
 
 @pytest.mark.fast
 def test_convert_timestamp():
-    assert _parse_odata_timestamp('/Date(1445588544652)/') == datetime(2015, 10, 23, 8, 22, 24,
-                                                                       652000)
+    assert _parse_odata_timestamp('/Date(1445588544652)/') == datetime(2015, 10, 23, 8, 22, 24, 652000)
 
 
 @pytest.mark.fast
@@ -147,7 +137,6 @@ def test_SentinelAPI_wrong_credentials():
     assert excinfo.value.response.status_code == 401
 
 
-@my_vcr.use_cassette
 @pytest.mark.fast
 def test_api_query_format():
     wkt = 'POLYGON((0 0,1 1,0 1,0 0))'
@@ -176,12 +165,40 @@ def test_api_query_format():
 
 
 @pytest.mark.fast
+def test_api_query_format_with_duplicates():
+    with pytest.raises(ValueError) as excinfo:
+        SentinelAPI.format_query(date=('NOW-1DAY', 'NOW'), beginPosition=('NOW-3DAY', 'NOW'))
+    assert 'duplicate' in str(excinfo.value)
+
+    with pytest.raises(ValueError) as excinfo:
+        SentinelAPI.format_query(ingestiondate=('NOW-1DAY', 'NOW'), ingestionDate=('NOW-3DAY', 'NOW'))
+    assert 'duplicate' in str(excinfo.value)
+
+    with pytest.raises(ValueError) as excinfo:
+        SentinelAPI.format_query(area='POINT(0, 0)', footprint='POINT(0, 0)')
+    assert 'duplicate' in str(excinfo.value)
+
+
+@pytest.mark.fast
 def test_api_query_format_ranges():
     query = SentinelAPI.format_query(cloudcoverpercentage=(0, 30))
     assert query == 'cloudcoverpercentage:[0 TO 30]'
 
     query = SentinelAPI.format_query(cloudcoverpercentage=[0, 30])
     assert query == 'cloudcoverpercentage:[0 TO 30]'
+
+    query = SentinelAPI.format_query(cloudcoverpercentage=[None, 30])
+    assert query == 'cloudcoverpercentage:[* TO 30]'
+
+    query = SentinelAPI.format_query(orbitnumber=(16302, None))
+    assert query == 'orbitnumber:[16302 TO *]'
+
+    query = SentinelAPI.format_query(orbitnumber=(16302, '*'))
+    assert query == 'orbitnumber:[16302 TO *]'
+
+    for value in [(None, None), ('*', None), (None, '*'), ('*', '*')]:
+        query = SentinelAPI.format_query(orbitnumber=value)
+        assert query == ''
 
     with pytest.raises(ValueError):
         SentinelAPI.format_query(cloudcoverpercentage=[])
@@ -204,6 +221,13 @@ def test_api_query_format_dates():
     query = SentinelAPI.format_query(ingestiondate='[NOW-1DAY TO NOW]')
     assert query == 'ingestiondate:[NOW-1DAY TO NOW]'
 
+    query = SentinelAPI.format_query(ingestiondate=[None, 'NOW'])
+    assert query == 'ingestiondate:[* TO NOW]'
+
+    for value in [(None, None), ('*', None), (None, '*'), ('*', '*')]:
+        query = SentinelAPI.format_query(ingestiondate=value)
+        assert query == ''
+
     with pytest.raises(ValueError):
         SentinelAPI.format_query(date="NOW")
 
@@ -212,9 +236,6 @@ def test_api_query_format_dates():
 
     with pytest.raises(ValueError):
         SentinelAPI.format_query(ingestiondate=[])
-
-    with pytest.raises(ValueError):
-        SentinelAPI.format_query(ingestiondate=[None, 'NOW'])
 
 
 @my_vcr.use_cassette
@@ -258,7 +279,7 @@ def test_api_query_format_escape_spaces():
 @pytest.mark.scihub
 def test_invalid_query():
     api = SentinelAPI(**_api_auth)
-    with pytest.raises(SentinelAPIError) as excinfo:
+    with pytest.raises(SentinelAPIError):
         api.query(raw="xxx:yyy")
 
 
@@ -304,7 +325,7 @@ def test_format_order_by():
     res = _format_order_by(" +cloudcoverpercentage, -beginposition ")
     assert res == "cloudcoverpercentage asc,beginposition desc"
 
-    with pytest.raises(ValueError) as excinfo:
+    with pytest.raises(ValueError):
         _format_order_by("+cloudcoverpercentage-beginposition")
 
 
@@ -648,16 +669,16 @@ def test_scihub_unresponsive():
 
     with requests_mock.mock() as rqst:
         rqst.request(requests_mock.ANY, requests_mock.ANY, exc=requests.exceptions.ConnectTimeout)
-        with pytest.raises(requests.exceptions.Timeout) as excinfo:
+        with pytest.raises(requests.exceptions.Timeout):
             api.query(**_small_query)
 
-        with pytest.raises(requests.exceptions.Timeout) as excinfo:
+        with pytest.raises(requests.exceptions.Timeout):
             api.get_product_odata('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')
 
-        with pytest.raises(requests.exceptions.Timeout) as excinfo:
+        with pytest.raises(requests.exceptions.Timeout):
             api.download('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')
 
-        with pytest.raises(requests.exceptions.Timeout) as excinfo:
+        with pytest.raises(requests.exceptions.Timeout):
             api.download_all(['8df46c9e-a20c-43db-a19a-4240c2ed3b8b'])
 
 
@@ -771,7 +792,7 @@ def test_area_relation():
     assert n_iswithin == 0
 
     # Check that unsupported relations raise an error
-    with pytest.raises(ValueError) as excinfo:
+    with pytest.raises(ValueError):
         api.query(area_relation="disjoint", **params)
 
 
@@ -955,7 +976,7 @@ def test_download_invalid_id():
     uuid = "1f62a176-c980-41dc-xxxx-c735d660c910"
     with pytest.raises(SentinelAPIError) as excinfo:
         api.download(uuid)
-        assert 'Invalid key' in excinfo.value.msg
+    assert 'Invalid key' in excinfo.value.msg
 
 
 @my_vcr.use_cassette

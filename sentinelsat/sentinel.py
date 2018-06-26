@@ -41,13 +41,13 @@ class SentinelAPI:
 
     Attributes
     ----------
-    session : requests.Session object
+    session : requests.Session
         Session to connect to DataHub
     api_url : str
         URL to the DataHub
     page_size : int
-        number of results per query page
-        current value: 100 (maximum allowed on ApiHub)
+        Number of results per query page.
+        Current value: 100 (maximum allowed on ApiHub)
     """
 
     logger = logging.getLogger('sentinelsat.SentinelAPI')
@@ -80,6 +80,7 @@ class SentinelAPI:
             Expects a tuple of (start, end), e.g. ("NOW-1DAY", "NOW").
             The timestamps can be either a Python datetime or a string in one of the
             following formats:
+
                 - yyyyMMdd
                 - yyyy-MM-ddThh:mm:ss.SSSZ (ISO-8601)
                 - yyyy-MM-ddThh:mm:ssZ
@@ -88,35 +89,40 @@ class SentinelAPI:
                 - NOW+<n>DAY(S)
                 - yyyy-MM-ddThh:mm:ssZ-<n>DAY(S)
                 - NOW/DAY (or HOUR, MONTH etc.) - rounds the value to the given unit
+
             Alternatively, an already fully formatted string such as "[NOW-1DAY TO NOW]" can be
             used as well.
         raw : str, optional
             Additional query text that will be appended to the query.
         area_relation : {'Intersection', 'Contains', 'IsWithin'}, optional
             What relation to use for testing the AOI. Case insensitive.
+
                 - Intersects: true if the AOI and the footprint intersect (default)
                 - Contains: true if the AOI is inside the footprint
                 - IsWithin: true if the footprint is inside the AOI
+
         order_by: str, optional
             A comma-separated list of fields to order by (on server side).
             Prefix the field name by '+' or '-' to sort in ascending or descending order,
-            respectively. Ascending order is used, if prefix is omitted.
+            respectively. Ascending order is used if prefix is omitted.
             Example: "cloudcoverpercentage, -beginposition".
         limit: int, optional
             Maximum number of products returned. Defaults to no limit.
         offset: int, optional
             The number of results to skip. Defaults to 0.
+        **keywords
+            Additional keywords can be used to specify other query parameters,
+            e.g. `relativeorbitnumber=70`.
+            See https://scihub.copernicus.eu/twiki/do/view/SciHubUserGuide/3FullTextSearch
+            for a full list.
 
-        Other Parameters
-        ----------------
-        Additional keywords can be used to specify other query parameters,
-        e.g. relativeorbitnumber=70.
-        See https://scihub.copernicus.eu/twiki/do/view/SciHubUserGuide/3FullTextSearch
-        for a full list.
+        Range values can be passed as two-element tuples, e.g. `cloudcoverpercentage=(0, 30)`.
+        `None` can be used in range values for one-sided ranges, e.g. `orbitnumber=(16302, None)`.
+        Ranges with no bounds (`orbitnumber=(None, None)`) will not be included in the query.
 
-        Range values can be passed as two-element tuples, e.g. cloudcoverpercentage=(0, 30).
+        Range values can be passed as two-element tuples, e.g. `cloudcoverpercentage=(0, 30)`.
 
-        The time interval formats accepted by the ``date`` parameter can also be used with
+        The time interval formats accepted by the `date` parameter can also be used with
         any other parameters that expect time intervals (that is: 'beginposition', 'endposition',
         'date', 'creationdate', and 'ingestiondate').
 
@@ -138,10 +144,17 @@ class SentinelAPI:
     @staticmethod
     def format_query(area=None, date=None, raw=None, area_relation='Intersects',
                      **keywords):
-        """Create OpenSearch API query string
+        """Create a OpenSearch API query string.
         """
         if area_relation.lower() not in {"intersects", "contains", "iswithin"}:
             raise ValueError("Incorrect AOI relation provided ({})".format(area_relation))
+
+        # Check for duplicate keywords
+        kw_lower = set(x.lower() for x in keywords)
+        if (len(kw_lower) != len(keywords) or
+                (date is not None and 'beginposition' in kw_lower) or
+                (area is not None and 'footprint' in kw_lower)):
+            raise ValueError("Query contains duplicate keywords. Note that query keywords are case-insensitive.")
 
         query_parts = []
 
@@ -155,7 +168,8 @@ class SentinelAPI:
                 if not any(value.startswith(s[0]) and value.endswith(s[1]) for s in ['[]', '{}', '//']):
                     value = re.sub(r'\s', r'\ ', value, re.M)
 
-            # From https://github.com/SentinelDataHub/DataHubSystem/search?q=text/date+iso8601
+            # Handle date keywords
+            # Keywords from https://github.com/SentinelDataHub/DataHubSystem/search?q=text/date+iso8601
             date_attrs = ['beginposition', 'endposition', 'date', 'creationdate', 'ingestiondate']
             if attr.lower() in date_attrs:
                 # Automatically format date-type attributes
@@ -169,9 +183,14 @@ class SentinelAPI:
                     raise ValueError("Date-type query parameter '{}' expects a two-element tuple "
                                      "of str or datetime objects. Received {}".format(attr, value))
 
+            # Handle ranged values
             if isinstance(value, (list, tuple)):
                 # Handle value ranges
                 if len(value) == 2:
+                    # Allow None to be used as a unlimited bound
+                    value = ['*' if x is None else x for x in value]
+                    if all(x == '*' for x in value):
+                        continue
                     value = '[{} TO {}]'.format(*value)
                 else:
                     raise ValueError("Invalid number of elements in list. Expected 2, received "
@@ -185,14 +204,14 @@ class SentinelAPI:
         if area is not None:
             query_parts.append('footprint:"{}({})"'.format(area_relation, area))
 
-        query = ' '.join(query_parts)
-        return query
+        return ' '.join(query_parts)
 
     def query_raw(self, query, order_by=None, limit=None, offset=0):
-        """Do a full-text query on the OpenSearch API using the format specified in
-           https://scihub.copernicus.eu/twiki/do/view/SciHubUserGuide/3FullTextSearch
+        """
+        Do a full-text query on the OpenSearch API using the format specified in
+        https://scihub.copernicus.eu/twiki/do/view/SciHubUserGuide/3FullTextSearch
 
-        DEPRECATED: use query(raw=...) instead. This method will be removed in the next major release.
+        DEPRECATED: use :meth:`query(raw=...) <.query>` instead. This method will be removed in the next major release.
 
         Parameters
         ----------
@@ -223,12 +242,10 @@ class SentinelAPI:
     def count(self, area=None, date=None, raw=None, area_relation='Intersects', **keywords):
         """Get the number of products matching a query.
 
-        This is a significantly more efficient alternative to doing len(api.query()),
-        which can take minutes to run for queries matching thousands of products.
+        Accepted parameters are identical to :meth:`SentinelAPI.query()`.
 
-        Parameters
-        ----------
-        Identical to the parameters of api.query().
+        This is a significantly more efficient alternative to doing `len(api.query())`,
+        which can take minutes to run for queries matching thousands of products.
 
         Returns
         -------
@@ -367,24 +384,28 @@ class SentinelAPI:
         Returns a dict containing the id, title, size, md5sum, date, footprint and download url
         of the product. The date field corresponds to the Start ContentDate value.
 
-        If ``full`` is set to True, then the full, detailed metadata of the product is returned
-        in addition to the above. For a mapping between the OpenSearch (Solr) and OData
-        attribute names see the following definition files:
-        https://github.com/SentinelDataHub/DataHubSystem/blob/master/addon/sentinel-1/src/main/resources/META-INF/sentinel-1.owl
-        https://github.com/SentinelDataHub/DataHubSystem/blob/master/addon/sentinel-2/src/main/resources/META-INF/sentinel-2.owl
-        https://github.com/SentinelDataHub/DataHubSystem/blob/master/addon/sentinel-3/src/main/resources/META-INF/sentinel-3.owl
+        If `full` is set to True, then the full, detailed metadata of the product is returned
+        in addition to the above.
 
         Parameters
         ----------
         id : string
-            The ID of the product to query
+            The UUID of the product to query
         full : bool
-            Whether to get the full metadata for the Product
+            Whether to get the full metadata for the Product. False by default.
 
         Returns
         -------
         dict[str, Any]
             A dictionary with an item for each metadata attribute
+
+        Notes
+        -----
+        For a full list of mappings between the OpenSearch (Solr) and OData attribute names
+        see the following definition files:
+        https://github.com/SentinelDataHub/DataHubSystem/blob/master/addon/sentinel-1/src/main/resources/META-INF/sentinel-1.owl
+        https://github.com/SentinelDataHub/DataHubSystem/blob/master/addon/sentinel-2/src/main/resources/META-INF/sentinel-2.owl
+        https://github.com/SentinelDataHub/DataHubSystem/blob/master/addon/sentinel-3/src/main/resources/META-INF/sentinel-3.owl
         """
         url = urljoin(self.api_url, "odata/v1/Products('{}')?$format=json".format(id))
         if full:
@@ -498,10 +519,10 @@ class SentinelAPI:
             Directory where the downloaded files will be downloaded
         max_attempts : int, optional
             Number of allowed retries before giving up downloading a product. Defaults to 10.
-
-        Other Parameters
-        ----------------
-        See download().
+        checksum : bool, optional
+            If True, verify the downloaded files' integrity by checking its MD5 checksum.
+            Throws InvalidChecksumError if the checksum does not match.
+            Defaults to True.
 
         Raises
         ------
@@ -543,7 +564,7 @@ class SentinelAPI:
 
     @staticmethod
     def get_products_size(products):
-        """Return the total file size in GB of all products in the OpenSearch response"""
+        """Return the total file size in GB of all products in the OpenSearch response."""
         size_total = 0
         for title, props in products.items():
             size_product = props["size"]
@@ -659,7 +680,7 @@ class SentinelAPI:
         dict[str, list[dict]]
             A dictionary listing the invalid or missing files. The dictionary maps the corrupt
             file paths to a list of OData dictionaries of matching products on the server (as
-            returned by ``SentinelAPI.get_product_odata()``).
+            returned by :meth:`SentinelAPI.get_product_odata()`).
         """
         if not ids and not paths:
             raise ValueError("Must provide either file paths or product IDs and a directory")
@@ -722,7 +743,7 @@ class SentinelAPI:
         return corrupt
 
     def _md5_compare(self, file_path, checksum, block_size=2 ** 13):
-        """Compare a given md5 checksum with one calculated from a file"""
+        """Compare a given MD5 checksum with one calculated from a file."""
         with closing(self._tqdm(desc="MD5 checksumming", total=getsize(file_path), unit="B",
                                 unit_scale=True)) as progress:
             md5 = hashlib.md5()
@@ -767,6 +788,13 @@ class SentinelAPI:
 
 class SentinelAPIError(Exception):
     """Invalid responses from DataHub.
+
+    Attributes
+    ----------
+    msg: str
+        The error message.
+    response: requests.Response
+        The response from the server as a `requests.Response` object.
     """
 
     def __init__(self, msg=None, response=None):
@@ -835,13 +863,38 @@ def geojson_to_wkt(geojson_obj, feature_number=0, decimals=4):
 
 
 def format_query_date(in_date):
-    """Format a date, datetime or a YYYYMMDD string input as YYYY-MM-DDThh:mm:ssZ
-    or validate a string input as suitable for the full text search interface and return it.
     """
+    Format a date, datetime or a YYYYMMDD string input as YYYY-MM-DDThh:mm:ssZ
+    or validate a date string as suitable for the full text search interface and return it.
+
+    `None` will be converted to '\*', meaning an unlimited date bound in date ranges.
+
+    Parameters
+    ----------
+    in_date : str or datetime or date or None
+        Date to be formatted
+
+    Returns
+    -------
+    str
+        Formatted string
+
+    Raises
+    ------
+    ValueError
+        If the input date type is incorrect or passed date string is invalid
+    """
+    if in_date is None:
+        return '*'
     if isinstance(in_date, (datetime, date)):
         return in_date.strftime('%Y-%m-%dT%H:%M:%SZ')
     elif not isinstance(in_date, string_types):
         raise ValueError('Expected a string or a datetime object. Received {}.'.format(in_date))
+
+    in_date = in_date.strip()
+    if in_date == '*':
+        # '*' can be used for one-sided range queries e.g. ingestiondate:[* TO NOW-1YEAR]
+        return in_date
 
     # Reference: https://cwiki.apache.org/confluence/display/solr/Working+with+Dates
 

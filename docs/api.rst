@@ -1,4 +1,5 @@
 .. _api:
+.. currentmodule:: sentinelsat
 
 Python API
 ==========
@@ -46,16 +47,20 @@ Valid search query keywords can be found at the `Copernicus Open Access Hub docu
 Sorting & Filtering
 -------------------
 
-In addition to the `search query keywords <https://scihub.copernicus.eu/userguide/3FullTextSearch>`_ sentinelsat allows
-filtering and sorting of search results before download. To simplify these operations sentinelsat offers the convenience
-functions ``to_geojson()``, ``to_dataframe()`` and ``to_geodataframe()`` which return the search results as
-a GeoJSON object, Pandas DataFrame or a GeoPandas GeoDataFrame, respectively. ``to_dataframe()``
-and ``to_geodataframe()`` require ``pandas`` and ``geopandas`` to be installed, respectively.
+In addition to the `search query keywords <https://scihub.copernicus.eu/userguide/3FullTextSearch>`_
+sentinelsat allows filtering and sorting of search results before download. To simplify these
+operations sentinelsat offers the convenience functions :meth:`~SentinelAPI.to_geojson()`,
+:meth:`~SentinelAPI.to_dataframe()` and :meth:`~SentinelAPI.to_geodataframe()` which return the
+search results as a GeoJSON object, Pandas DataFrame or a GeoPandas GeoDataFrame, respectively.
+:meth:`~SentinelAPI.to_dataframe()` and :meth:`~SentinelAPI.to_geodataframe()` require `pandas
+<https://pandas.pydata.org/>`_ and `geopandas <http://geopandas.org/>`_ to be installed,
+respectively.
+
 
 In this example we query Sentinel-2 scenes over a location and convert the query results to a Pandas DataFrame. The DataFrame is then sorted by cloud cover
 and ingestion date. We limit the query to first 5 results within our timespan and download them,
 starting with the least cloudy scene. Filtering can be done with
-all data types, as long as you pass the ``id`` to the download function.
+all data types, as long as you pass the `id` to the download function.
 
 .. code-block:: python
 
@@ -87,21 +92,22 @@ Getting Product Metadata
 Sentinelsat provides two methods for retrieving product metadata from the server, one for each
 API offered by the Copernicus Open Access Hub:
 
-- ``query()`` for `OpenSearch (Solr) <https://scihub.copernicus.eu/userguide/5APIsAndBatchScripting#Open_Search>`_,
+- :meth:`~SentinelAPI.query()` for `OpenSearch (Solr) <https://scihub.copernicus.eu/userguide/5APIsAndBatchScripting#Open_Search>`_,
   which supports filtering products by their attributes and returns metadata for all matched
   products at once.
-- ``get_product_odata()`` for `OData <https://scihub.copernicus.eu/userguide/5APIsAndBatchScripting#Open_Data_Protocol_OData>`_,
+- :meth:`~SentinelAPI.get_product_odata()` for `OData <https://scihub.copernicus.eu/userguide/5APIsAndBatchScripting#Open_Data_Protocol_OData>`_,
   which can be queried one product at a time but provides the full metadata available for each
   product, as well as information about the product file such as the file size and checksum, which
   are not available from OpenSearch.
 
-Both methods return a dictionary containing the metadata items. More specifically, ``query()``
+Both methods return a dictionary containing the metadata items. More specifically, :meth:`~SentinelAPI.query()`
 returns a dictionary with an entry for each returned product with its ID as the key and the
 attributes' dictionary as the value.
 
 All of the attributes returned by the OpenSearch API have a corresponding but differently named
 attribute in the OData's full metadata response. See the DataHubSystem's metadata definition files
-to find the exact mapping between them (OpenSearch attributes have a ``<solrField>`` tag added):
+to find the exact mapping between them (OpenSearch attributes have a `<solrField>` tag added):
+
 - `Sentinel-1 attributes <https://github.com/SentinelDataHub/DataHubSystem/blob/master/addon/sentinel-1/src/main/resources/META-INF/sentinel-1.owl>`_
 - `Sentinel-2 attributes <https://github.com/SentinelDataHub/DataHubSystem/blob/master/addon/sentinel-2/src/main/resources/META-INF/sentinel-2.owl>`_
 - `Sentinel-3 attributes <https://github.com/SentinelDataHub/DataHubSystem/blob/master/addon/sentinel-3/src/main/resources/META-INF/sentinel-3.owl>`_
@@ -152,7 +158,7 @@ OData example
 ^^^^^^^^^^^^^
 
 Only the most basic information available from the OData API is returned by default, if
-``full=True`` is not set. The full metadata query response is quite large and not always nrequired,
+`full=True` is not set. The full metadata query response is quite large and not always required,
 so it is not requested by default.
 
 .. code-block:: python
@@ -167,7 +173,7 @@ so it is not requested by default.
    'url': "https://scihub.copernicus.eu/apihub/odata/v1/Products('04548172-c64a-418f-8e83-7a4d148adf1e')/$value"}
 
 
-With ``full=True`` we receive the full metadata available for the product.
+With `full=True` we receive the full metadata available for the product.
 
 .. code-block:: python
 
@@ -231,10 +237,10 @@ With ``full=True`` we receive the full metadata available for the product.
 Logging
 -------
 
-Sentinelsat logs to ``sentinelsat`` and the API to ``sentinelsat.SentinelAPI``.
+Sentinelsat logs to :mod:`sentinelsat` and the API to :class:`sentinelsat.SentinelAPI`.
 
 There is no predefined `logging <https://docs.python.org/3/library/logging.html>`_ handler,
-so in order to have your script print the log messages, either use ``logging.baseConfig``
+so in order to have your script print the log messages, either use :class:`logging.baseConfig`
 
 .. code-block:: python
 
@@ -243,7 +249,7 @@ so in order to have your script print the log messages, either use ``logging.bas
   logging.basicConfig(format='%(message)s', level='INFO')
 
 
-or add a custom handler for ``sentinelsat`` (as implemented in ``cli.py``)
+or add a custom handler for :mod:`sentinelsat` (as implemented in `cli.py`)
 
 .. code-block:: python
 
@@ -297,8 +303,8 @@ December 2016 onward (i.e. for single-tile products), you can use a `filename` p
 
   kw['filename'] = '*_T{}_*'.format(tile)  # products after 2016-12-01
 
-API
----
+API Reference
+-------------
 
 .. automodule:: sentinelsat
 
@@ -310,7 +316,7 @@ API
 .. autofunction:: geojson_to_wkt
 
 Exceptions
-----------
+^^^^^^^^^^
 
 .. autoexception:: SentinelAPIError
 

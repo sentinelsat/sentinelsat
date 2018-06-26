@@ -27,16 +27,14 @@ and a powerful Python API.
   api.download_all(products)
 
 
-Contents
-^^^^^^^^
-
 .. toctree::
+   :caption: Contents:
    :maxdepth: 2
 
    install
    cli
    api
-   known_errors
+   common_issues
 
 .. toctree::
    :hidden:

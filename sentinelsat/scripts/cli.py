@@ -19,7 +19,7 @@ def _set_logger_handler(level='INFO'):
     logger.addHandler(h)
 
 
-@click.command()
+@click.command(context_settings=dict(help_option_names=['-h', '--help']))
 @click.option(
     '--user', '-u', type=str, required=True, envvar='DHUS_USER',
     help='Username (or environment variable DHUS_USER is set)')
