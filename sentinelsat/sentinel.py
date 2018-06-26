@@ -116,6 +116,7 @@ class SentinelAPI:
             See https://scihub.copernicus.eu/twiki/do/view/SciHubUserGuide/3FullTextSearch
             for a full list.
 
+
         Range values can be passed as two-element tuples, e.g. `cloudcoverpercentage=(0, 30)`.
         `None` can be used in range values for one-sided ranges, e.g. `orbitnumber=(16302, None)`.
         Ranges with no bounds (`orbitnumber=(None, None)`) will not be included in the query.
