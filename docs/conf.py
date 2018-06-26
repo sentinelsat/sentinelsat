@@ -276,3 +276,6 @@ autodoc_member_order = 'bysource'
 # and environment variables
 suppress_warnings = ['ref.option', 'ref.envvar']
 
+# Improve quote and ellipsis symbols but not dashes
+# Avoid converting long program options to dashes in CLI docs
+smartquotes_action = 'qe'
