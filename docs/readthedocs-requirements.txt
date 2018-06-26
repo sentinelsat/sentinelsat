@@ -1,2 +1,8 @@
-numpydoc
--r ../requirements.txt
+requests
+click
+html2text
+geojson >= 2
+tqdm
+six
+geomet
+sphinx >= 1.3
