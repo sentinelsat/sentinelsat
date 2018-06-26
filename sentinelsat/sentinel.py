@@ -121,8 +121,6 @@ class SentinelAPI:
         `None` can be used in range values for one-sided ranges, e.g. `orbitnumber=(16302, None)`.
         Ranges with no bounds (`orbitnumber=(None, None)`) will not be included in the query.
 
-        Range values can be passed as two-element tuples, e.g. `cloudcoverpercentage=(0, 30)`.
-
         The time interval formats accepted by the `date` parameter can also be used with
         any other parameters that expect time intervals (that is: 'beginposition', 'endposition',
         'date', 'creationdate', and 'ingestiondate').
