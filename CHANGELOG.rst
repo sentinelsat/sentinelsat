@@ -16,7 +16,7 @@ Added
 
 Changed
 ~~~~~~~
-* Replaced ``[test]`` and ``[docs]`` with a single ``[dev]`` installation extras target. Removed 'requirements.txt'. (#208)
+* Replaced ``[test]`` and ``[docs]`` with a single ``[dev]`` installation extras target. (#208)
 
 Deprecated
 ~~~~~~~~~~
