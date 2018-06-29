@@ -161,6 +161,12 @@ class SentinelAPI:
             keywords['beginPosition'] = date
 
         for attr, value in sorted(keywords.items()):
+            # Escape spaces, where appropriate
+            if isinstance(value, string_types):
+                value = value.strip()
+                if not any(value.startswith(s[0]) and value.endswith(s[1]) for s in ['[]', '{}', '//']):
+                    value = re.sub(r'\s', r'\ ', value, re.M)
+
             # Handle date keywords
             # Keywords from https://github.com/SentinelDataHub/DataHubSystem/search?q=text/date+iso8601
             date_attrs = ['beginposition', 'endposition', 'date', 'creationdate', 'ingestiondate']
