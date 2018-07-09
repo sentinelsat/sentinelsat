@@ -1,5 +1,10 @@
 language: python
 cache: pip
+addons:
+  apt:
+    packages:
+    - gdal-bin
+    - libgdal-dev
 jobs:
     include:
       - python: 2.7
