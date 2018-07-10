@@ -1,19 +1,33 @@
 language: python
-python:
-- 2.7
-- 3.4
-- 3.5
-- 3.6
 cache: pip
+addons:
+  apt:
+    packages:
+    # Required for building fiona from source,
+    # since the wheel is not yet provided in Python 3.7
+    - gdal-bin
+    - libgdal-dev
+jobs:
+    include:
+      - python: 2.7
+      - python: 3.4
+      - python: 3.5
+      - python: 3.6
+      - python: 3.7  # Python 3.7 requires xenial, instead of Travis default trusty 
+        dist: xenial
+        sudo: true
 branches:
   only:
   - master
 before_install:
 - pip install -U pip
+# Workaround for fiona and pyproj issues in Python 3.7
+- if [[ $TRAVIS_PYTHON_VERSION == 3.7 ]]; then pip install -U cython; fi
+- if [[ $TRAVIS_PYTHON_VERSION == 3.7 ]]; then pip install -U git+https://github.com/jswhit/pyproj.git; fi
 install:
 - pip install codecov
 # skip Pandas on Python <3.4
-- "if [[ $TRAVIS_PYTHON_VERSION == 3.4 ]]; then pip install -e .[dev34]; else pip install -e .[dev]; fi"
+- if [[ $TRAVIS_PYTHON_VERSION == 3.4 ]]; then pip install -e .[dev34]; else pip install -e .[dev]; fi
 script:
 - coverage run --source=sentinelsat -m py.test -v
 after_success:
@@ -29,4 +43,3 @@ notifications:
     on_success: always
     on_failure: always  
     on_start: never
-    
