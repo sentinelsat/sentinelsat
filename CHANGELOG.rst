@@ -13,10 +13,12 @@ Added
   from the query. (#210)
 * Raise an exception in case of duplicate keywords present in a query, taking into account the fact that query keywords
   are allowed to be case-insensitive on the server side. (#210)
+* Support for Python 3.7
 
 Changed
 ~~~~~~~
 * Replaced ``[test]`` and ``[docs]`` with a single ``[dev]`` installation extras target. (#208)
+* Adapted `.travis.yml` to build `fiona` and `pyproj` from source for Python 3.7
 
 Deprecated
 ~~~~~~~~~~
