@@ -28,6 +28,9 @@ Quickstart
   # download all results from the search
   api.download_all(products)
 
+  # convert to Pandas DataFrame
+  products_df = api.to_dataframe(products)
+
   # GeoJSON FeatureCollection containing footprints and metadata of the scenes
   api.to_geojson(products)
 
@@ -84,7 +87,7 @@ all data types, as long as you pass the `id` to the download function.
   products_df_sorted = products_df_sorted.head(5)
 
   # download sorted and reduced products
-  api.download_all(products_df_sorted['id'])
+  api.download_all(products_df_sorted.index)
 
 Getting Product Metadata
 ------------------------
