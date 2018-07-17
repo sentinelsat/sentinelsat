@@ -755,7 +755,7 @@ class SentinelAPI:
                     progress.update(len(block_data))
             return md5.hexdigest().lower() == checksum.lower()
 
-    def _download(self, url, path, session, file_size):
+    def _download(self, url, path, session, file_size, speed_boundary_in_kb=1):
         headers = {}
         continuing = exists(path)
         if continuing:
@@ -764,20 +764,26 @@ class SentinelAPI:
         else:
             already_downloaded_bytes = 0
         downloaded_bytes = 0
-        with closing(session.get(url, stream=True, auth=session.auth, headers=headers)) as r, \
-                closing(self._tqdm(desc="Downloading", total=file_size, unit="B",
-                                   unit_scale=True, initial=already_downloaded_bytes)) as progress:
-            _check_scihub_response(r, test_json=False)
-            chunk_size = 2 ** 20  # download in 1 MB chunks
-            mode = 'ab' if continuing else 'wb'
-            with open(path, mode) as f:
-                for chunk in r.iter_content(chunk_size=chunk_size):
-                    if chunk:  # filter out keep-alive new chunks
-                        f.write(chunk)
-                        progress.update(len(chunk))
-                        downloaded_bytes += len(chunk)
-            # Return the number of bytes downloaded
-            return downloaded_bytes
+        while True:
+            try:
+                with closing(session.get(url, stream=True, auth=session.auth, headers=headers,
+                                         timeout=2 ** 20 / speed_boundary_in_kb / 2 ** 10)) as r, \
+                        closing(self._tqdm(desc="Downloading", total=file_size, unit="B",
+                                           unit_scale=True, initial=already_downloaded_bytes)) as progress:
+                    _check_scihub_response(r, test_json=False)
+                    chunk_size = 2 ** 20  # download in 1 MB chunks
+                    mode = 'ab' if continuing else 'wb'
+                    with open(path, mode) as f:
+                        for chunk in r.iter_content(chunk_size=chunk_size):
+                            if chunk:  # filter out keep-alive new chunks
+                                f.write(chunk)
+                                progress.update(len(chunk))
+                                downloaded_bytes += len(chunk)
+                    # Return the number of bytes downloaded
+                    return downloaded_bytes
+                break
+            finally:
+                pass
 
     def _tqdm(self, **kwargs):
         """tqdm progressbar wrapper. May be overridden to customize progressbar behavior"""
