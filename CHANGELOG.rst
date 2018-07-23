@@ -19,6 +19,7 @@ Changed
 ~~~~~~~
 * Replaced ``[test]`` and ``[docs]`` with a single ``[dev]`` installation extras target. (#208)
 * Adapted `.travis.yml` to build `fiona` and `pyproj` from source for Python 3.7
+* minimum pytest version ``pytest >= 3.6.3`` required by ``pytest-socket``
 
 Deprecated
 ~~~~~~~~~~
