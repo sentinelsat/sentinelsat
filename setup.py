@@ -48,7 +48,7 @@ setup(name='sentinelsat',
           ],
           # Pandas and its dependencies are not available for Python <= 3.4
           'dev34': [
-              'pytest',
+              'pytest >= 3.6.3',
               'pytest-socket',
               'requests-mock',
               'vcrpy',
