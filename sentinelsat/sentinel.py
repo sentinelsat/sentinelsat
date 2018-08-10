@@ -843,6 +843,8 @@ def geojson_to_wkt(geojson_obj, feature_number=0, decimals=4):
     """
     if 'coordinates' in geojson_obj:
         geometry = geojson_obj
+    elif 'geometry' in geojson_obj:
+        geometry = geojson_obj['geometry']
     else:
         geometry = geojson_obj['features'][feature_number]['geometry']
 
