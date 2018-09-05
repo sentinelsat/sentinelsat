@@ -29,26 +29,26 @@ _large_query = dict(
 
 
 @pytest.fixture(scope='session')
-@my_vcr.use_cassette('products_fixture', decode_compressed_response=False)
 def products():
     """A fixture for tests that need some non-specific set of products as input."""
     api = SentinelAPI(**_api_auth)
-    products = api.query(
-        geojson_to_wkt(read_geojson(FIXTURES_DIR + '/map.geojson')),
-        ("20151219", "20151228")
-    )
+    with my_vcr.use_cassette('products_fixture', decode_compressed_response=False):
+        products = api.query(
+            geojson_to_wkt(read_geojson(FIXTURES_DIR + '/map.geojson')),
+            ("20151219", "20151228")
+        )
     return products
 
 
 @pytest.fixture(scope='session')
-@my_vcr.use_cassette('products_fixture', decode_compressed_response=False)
 def raw_products():
     """A fixture for tests that need some non-specific set of products in the form of a raw response as input."""
     api = SentinelAPI(**_api_auth)
-    raw_products = api._load_query(api.format_query(
-        geojson_to_wkt(read_geojson(FIXTURES_DIR + '/map.geojson')),
-        ("20151219", "20151228"))
-    )[0]
+    with my_vcr.use_cassette('products_fixture', decode_compressed_response=False):
+        raw_products = api._load_query(api.format_query(
+            geojson_to_wkt(read_geojson(FIXTURES_DIR + '/map.geojson')),
+            ("20151219", "20151228"))
+        )[0]
     return raw_products
 
 

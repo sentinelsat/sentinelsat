@@ -6,8 +6,8 @@ interactions:
       Accept-Encoding: ['gzip, deflate']
       Connection: [keep-alive]
       Content-Length: ['283']
-      Content-Type: [application/x-www-form-urlencoded]
-      User-Agent: [sentinelsat/0.12.1]
+      Content-Type: [application/x-www-form-urlencoded; charset=UTF-8]
+      User-Agent: [sentinelsat/0.12.2]
     method: POST
     uri: https://scihub.copernicus.eu/apihub/search?format=json&rows=100&start=0
   response:
@@ -16,7 +16,7 @@ interactions:
         TO 2015-12-28T00:00:00Z] cloudcoverpercentage:[0 TO 10] platformname:Sentinel-2
         footprint:\"Intersects(POLYGON((-66.2695 -8.0592,-66.2695 0.7031,-57.3047
         0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\"","subtitle":"Displaying 3 results.
-        Request done in 0.061 seconds.","updated":"2017-10-24T19:58:42.757Z","author":{"name":"Sentinels
+        Request done in 0.118 seconds.","updated":"2018-09-06T13:23:30.560Z","author":{"name":"Sentinels
         Scientific Data Hub"},"id":"https://scihub.copernicus.eu/apihub/search?q=beginPosition:[2015-12-19T00:00:00Z
         TO 2015-12-28T00:00:00Z] cloudcoverpercentage:[0 TO 10] platformname:Sentinel-2
         footprint:\"Intersects(POLYGON((-66.2695 -8.0592,-66.2695 0.7031,-57.3047

@@ -5,7 +5,7 @@ interactions:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
       Connection: [keep-alive]
-      User-Agent: [sentinelsat/0.12.1]
+      User-Agent: [sentinelsat/0.12.2]
     method: GET
     uri: https://scihub.copernicus.eu/apihub/odata/v1/Products('invalid-xyz')?$format=json
   response:
@@ -18,5 +18,5 @@ interactions:
       Pragma: [no-cache]
       Server: [Apache-Coyote/1.1]
       cause-message: ['InvalidKeyException : Invalid key (invalid-xyz) to access Products']
-    status: {code: 500, message: Internal Server Error}
+    status: {code: 404, message: Not Found}
 version: 1

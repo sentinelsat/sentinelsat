@@ -6,7 +6,7 @@ interactions:
       Accept-Encoding: ['gzip, deflate']
       Connection: [keep-alive]
       Content-Length: ['4266']
-      Content-Type: [application/x-www-form-urlencoded]
+      Content-Type: [application/x-www-form-urlencoded; charset=UTF-8]
       User-Agent: [sentinelsat/0.12.2]
     method: POST
     uri: https://scihub.copernicus.eu/apihub/search?format=json&rows=0&start=0
@@ -36,7 +36,7 @@ interactions:
         a_-.*:,?+~! a_-.*:,?+~! a_-.*:,?+~! a_-.*:,?+~! a_-.*:,?+~! a_-.*:,?+~! a_-.*:,?+~!
         a_-.*:,?+~! a_-.*:,?+~! a_-.*:,?+~! a_-.*:,?+~! a_-.*:,?+~! a_-.*:,?+~! a_-.*:,?+~!
         a_-.*:,?+~! a_-.*:,?+~! a_-.*:,?+~! a_-.*:,?+~! a_-.*:,?+~! a_-.*:,?+~! a_-.*:,?+~!","subtitle":"Displaying  results.
-        Request done in 0.081 seconds.","updated":"2018-09-05T22:06:11.956Z","author":{"name":"Sentinels
+        Request done in 0.014 seconds.","updated":"2018-09-06T13:24:12.469Z","author":{"name":"Sentinels
         Scientific Data Hub"},"id":"https://scihub.copernicus.eu/apihub/search?q=
         a_-.*:,?+~! a_-.*:,?+~! a_-.*:,?+~! a_-.*:,?+~! a_-.*:,?+~! a_-.*:,?+~! a_-.*:,?+~!
         a_-.*:,?+~! a_-.*:,?+~! a_-.*:,?+~! a_-.*:,?+~! a_-.*:,?+~! a_-.*:,?+~! a_-.*:,?+~!
@@ -172,7 +172,7 @@ interactions:
       Accept-Encoding: ['gzip, deflate']
       Connection: [keep-alive]
       Content-Length: ['4292']
-      Content-Type: [application/x-www-form-urlencoded]
+      Content-Type: [application/x-www-form-urlencoded; charset=UTF-8]
       User-Agent: [sentinelsat/0.12.2]
     method: POST
     uri: https://scihub.copernicus.eu/apihub/search?format=json&rows=0&start=0
