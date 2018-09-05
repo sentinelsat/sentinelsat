@@ -18,7 +18,7 @@ import geomet.wkt
 import html2text
 import requests
 from six import string_types
-from six.moves.urllib.parse import urljoin
+from six.moves.urllib.parse import urljoin, quote_plus
 from tqdm import tqdm
 
 from . import __version__ as sentinelsat_version
@@ -580,9 +580,8 @@ class SentinelAPI:
     def check_query_length(query):
         """Determine whether a query to the OpenSearch API is too long.
 
-        The length of a query string is limited to approximately 3893 characters but
-        any special characters (that is, not alphanumeric or -_.~) are counted twice
-        towards that limit.
+        The length of a query string is limited to approximately 3938 characters but
+        any special characters (that is, not alphanumeric or -_.*) will take up more space.
 
         Parameters
         ----------
@@ -593,23 +592,9 @@ class SentinelAPI:
         -------
         float
             Ratio of the query length to the maximum length
-
-        Notes
-        -----
-        The query size limit arises from a limit on the length of the server's internal query,
-        which looks like
-
-        http://localhost:30333//solr/dhus/select?q=...
-        &wt=xslt&tr=opensearch_atom.xsl&dhusLongName=Sentinels+Scientific+Data+Hub
-        &dhusServer=https%3A%2F%2Fscihub.copernicus.eu%2Fapihub%2F&originalQuery=...
-        &rows=100&start=0&sort=ingestiondate+desc
-
-        This function will estimate the length of the "q" and "originalQuery" parameters to
-        determine whether the query will fail. Their combined length can be at most about
-        7786 bytes.
         """
-        effective_length = len(query) + 2 * len(re.findall('[^-_.* 0-9A-Za-z]', query))
-        return effective_length / 3950
+        effective_length = len(quote_plus(query.encode('utf8').decode('latin_1'), safe="-_.*"))
+        return effective_length / 3938
 
     def _query_names(self, names):
         """Find products by their names, e.g.

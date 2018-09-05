@@ -378,20 +378,20 @@ def test_too_long_query():
     # that a relevant error message is provided
 
     def create_query(n):
-        return api.format_query(date=("NOW", "NOW"), raw=" abc_:*.+*~!," * n)
+        return " a_-.*:,?+~!" * n
 
     # Expect no error
-    q = create_query(170)
+    q = create_query(164)
     assert 0.99 < SentinelAPI.check_query_length(q) < 1.0
     with pytest.raises(SentinelAPIError) as excinfo:
-        api.query(raw=q)
+        api.count(raw=q)
     assert "Invalid query string" in excinfo.value.msg
 
     # Expect HTTP status 500 Internal Server Error
-    q = create_query(171)
+    q = create_query(165)
     assert 1.0 <= SentinelAPI.check_query_length(q) < 1.01
     with pytest.raises(SentinelAPIError) as excinfo:
-        api.query(raw=q)
+        api.count(raw=q)
     assert excinfo.value.response.status_code == 500
     assert ("Request Entity Too Large" in excinfo.value.msg or
             "Request-URI Too Long" in excinfo.value.msg)
