@@ -593,7 +593,10 @@ class SentinelAPI:
         float
             Ratio of the query length to the maximum length
         """
-        effective_length = len(quote_plus(query.encode('utf8').decode('latin_1'), safe="-_.*"))
+        # Take the (probably unintentional) server-side encoding mangling into account
+        q = query.encode('utf8').decode('latin_1')
+        # The server uses Java's URLEncoder implementation, which we are replicating here
+        effective_length = len(quote_plus(q, safe="-_.*").replace('~', '%7E'))
         return effective_length / 3938
 
     def _query_names(self, names):
