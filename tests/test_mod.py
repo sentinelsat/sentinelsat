@@ -369,6 +369,22 @@ def test_count():
     assert count > 100000
 
 
+#@my_vcr.use_cassette
+@pytest.mark.skip(reason="Cannot mock since VCR.py has issues with Unicode request bodies.")
+@pytest.mark.scihub
+def test_unicode_support():
+    api = SentinelAPI(**_api_kwargs)
+    test_str = 'õäü:'
+
+    with pytest.raises(SentinelAPIError) as excinfo:
+        api.count(raw=test_str)
+    assert test_str == excinfo.value.response.json()['feed']['opensearch:Query']['searchTerms']
+
+    with pytest.raises(SentinelAPIError) as excinfo:
+        api.get_product_odata(test_str)
+    assert test_str in excinfo.value.msg
+
+
 @my_vcr.use_cassette
 @pytest.mark.scihub
 def test_too_long_query():

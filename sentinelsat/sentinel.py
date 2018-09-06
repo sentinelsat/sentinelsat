@@ -290,7 +290,8 @@ class SentinelAPI:
 
         # load query results
         url = self._format_url(order_by, limit, offset)
-        response = self.session.post(url, {'q': query}, auth=self.session.auth)
+        response = self.session.post(url, {'q': query}, auth=self.session.auth,
+                                     headers={'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'})
         _check_scihub_response(response)
 
         # store last status code (for testing)
@@ -593,10 +594,8 @@ class SentinelAPI:
         float
             Ratio of the query length to the maximum length
         """
-        # Take the (probably unintentional) server-side encoding mangling into account
-        q = query.encode('utf8').decode('latin_1')
-        # The server uses Java's URLEncoder implementation, which we are replicating here
-        effective_length = len(quote_plus(q, safe="-_.*").replace('~', '%7E'))
+        # The server uses the Java's URLEncoder implementation internally, which we are replicating here
+        effective_length = len(quote_plus(query, safe="-_.*", encoding='utf8').replace('~', '%7E'))
         return effective_length / 3938
 
     def _query_names(self, names):
