@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import hashlib
 import textwrap
 from datetime import date, datetime, timedelta
@@ -374,7 +375,7 @@ def test_count():
 @pytest.mark.scihub
 def test_unicode_support():
     api = SentinelAPI(**_api_kwargs)
-    test_str = 'õäü:'
+    test_str = u'٩(●̮̮̃•̃)۶:'
 
     with pytest.raises(SentinelAPIError) as excinfo:
         api.count(raw=test_str)
@@ -382,7 +383,7 @@ def test_unicode_support():
 
     with pytest.raises(SentinelAPIError) as excinfo:
         api.get_product_odata(test_str)
-    assert test_str in excinfo.value.msg
+    assert test_str in excinfo.value.response.json()['error']['message']['value']
 
 
 @my_vcr.use_cassette

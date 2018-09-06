@@ -407,7 +407,7 @@ class SentinelAPI:
         https://github.com/SentinelDataHub/DataHubSystem/blob/master/addon/sentinel-2/src/main/resources/META-INF/sentinel-2.owl
         https://github.com/SentinelDataHub/DataHubSystem/blob/master/addon/sentinel-3/src/main/resources/META-INF/sentinel-3.owl
         """
-        url = urljoin(self.api_url, "odata/v1/Products('{}')?$format=json".format(id))
+        url = urljoin(self.api_url, u"odata/v1/Products('{}')?$format=json".format(id))
         if full:
             url += '&$expand=Attributes'
         response = self.session.get(url, auth=self.session.auth)
@@ -595,7 +595,7 @@ class SentinelAPI:
             Ratio of the query length to the maximum length
         """
         # The server uses the Java's URLEncoder implementation internally, which we are replicating here
-        effective_length = len(quote_plus(query, safe="-_.*", encoding='utf8').replace('~', '%7E'))
+        effective_length = len(quote_plus(query, safe="-_.*").replace('~', '%7E'))
         return effective_length / 3938
 
     def _query_names(self, names):
