@@ -94,7 +94,7 @@ class SentinelAPI:
             used as well.
         raw : str, optional
             Additional query text that will be appended to the query.
-        area_relation : {'Intersection', 'Contains', 'IsWithin'}, optional
+        area_relation : {'Intersects', 'Contains', 'IsWithin'}, optional
             What relation to use for testing the AOI. Case insensitive.
 
                 - Intersects: true if the AOI and the footprint intersect (default)
