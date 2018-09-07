@@ -36,6 +36,8 @@ Development Changes
 * Replaced ``[test]`` and ``[docs]`` with a single ``[dev]`` installation extras target. (#208)
 * Adapted `.travis.yml` to build `fiona` and `pyproj` from source for Python 3.7.
 * Minimum pytest version ``pytest >= 3.6.3`` required by ``pytest-socket``.
+* The existing practice of not accessing the network from unit tests, unless running with ``--vcr record_new`` or
+  ``--vcr reset``, is now enforced by throwing a ``SocketBlockedError`` in such cases. (#207)
 
 [0.12.2] – 2018-06-20
 ---------------------
