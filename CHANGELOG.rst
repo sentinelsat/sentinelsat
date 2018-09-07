@@ -8,20 +8,17 @@ All notable changes to ``sentinelsat`` will be listed here.
 
 Added
 ~~~~~
-* Query keywords with interval ranges now support single-sided ranges by using ``None`` or ``'*'`` to note no bounds,
-  for example ``query(date=(None, 'NOW-1YEAR'))``. In case both bounds are set to unlimited, the keyword will be removed
+* Query keywords with interval ranges now also support single-sided ranges by using ``None`` or ``'*'`` to denote no bound,
+  for example ``query(date=(None, 'NOW-1YEAR'))``. If both bounds are set to unlimited, the keyword will be removed 
   from the query. (#210)
-* Raise an exception in case of duplicate keywords present in a query, taking into account the fact that query keywords
-  are allowed to be case-insensitive on the server side. (#210)
+* Raise an exception in case of duplicate keywords present in a query. Case is ignored to match the server-side behavior. (#210)
 * Support for Python 3.7
+* Support for GeoJSON files with a single ``Feature`` without a ``FeatureCollection.`` (#224 @scottstanie)
+* Added support for Unicode symbols in search queries. (#230)
 
 Changed
 ~~~~~~~
-* Replaced ``[test]`` and ``[docs]`` with a single ``[dev]`` installation extras target. (#208)
-* Adapted `.travis.yml` to build `fiona` and `pyproj` from source for Python 3.7
-* minimum pytest version ``pytest >= 3.6.3`` required by ``pytest-socket``
-* Updated ``check_query_length()`` logic. (#230)
-* Added support for Unicode symbols in search queries. (#230)
+* 
 
 Deprecated
 ~~~~~~~~~~
@@ -29,9 +26,16 @@ Deprecated
 
 Fixed
 ~~~~~
-* Spaces in query parameter values are now escaped by adding a backslash before them, where appropriate. (#169, #211)
-* Fixed some CLI errors not returning with a non-zero exit code. (#209)
-* Fixed typo for ``area_relation`` query parameter documentation from ``'Intersection'`` to ``'Intersects'``. (#225)
+* Spaces in query parameter values are now handled correctly be escaping them with a backslash, where appropriate. (#169, #211)
+* Fixed some CLI errors not returning a non-zero exit code. (#209)
+* Fixed typo for ``area_relation`` query parameter documentation from ``'Intersection'`` to ``'Intersects'``. (#225 @scottstanie)
+* Updated ``check_query_length()`` logic to match the changed server-side behavior. (#230)
+
+Development Changes
+~~~~~~~~~~~~~~~~~~~
+* Replaced ``[test]`` and ``[docs]`` with a single ``[dev]`` installation extras target. (#208)
+* Adapted `.travis.yml` to build `fiona` and `pyproj` from source for Python 3.7.
+* Minimum pytest version ``pytest >= 3.6.3`` required by ``pytest-socket``.
 
 [0.12.2] – 2018-06-20
 ---------------------
