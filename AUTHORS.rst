@@ -22,3 +22,4 @@ Contributors
 * Caio Castro `@caiocacastro <https://github.com/caiocacastro>`_
 * martinber `@martinber <https://github.com/martinber>`_
 * Nicklas Keck `@NiklasKeck <https://github.com/NiklasKeck>`_
+* Scott Staniewicz `@scottstanie <https://github.com/scottstanie>`_
