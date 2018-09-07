@@ -6,8 +6,8 @@ interactions:
       Accept-Encoding: ['gzip, deflate']
       Connection: [keep-alive]
       Content-Length: ['246']
-      Content-Type: [application/x-www-form-urlencoded]
-      User-Agent: [sentinelsat/0.12.1]
+      Content-Type: [application/x-www-form-urlencoded; charset=UTF-8]
+      User-Agent: [sentinelsat/0.12.2]
     method: POST
     uri: https://scihub.copernicus.eu/apihub/search?format=json&rows=100&start=0
   response:
@@ -15,7 +15,7 @@ interactions:
         Scientific Data Hub search results for: beginPosition:[2015-12-19T00:00:00Z
         TO 2015-12-28T00:00:00Z] platformname:Sentinel-1 footprint:\"Intersects(POLYGON((-66.2695
         -8.0592,-66.2695 0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\"","subtitle":"Displaying
-        11 results. Request done in 0.03 seconds.","updated":"2017-10-24T19:58:01.591Z","author":{"name":"Sentinels
+        11 results. Request done in 0.055 seconds.","updated":"2018-09-06T13:22:38.281Z","author":{"name":"Sentinels
         Scientific Data Hub"},"id":"https://scihub.copernicus.eu/apihub/search?q=beginPosition:[2015-12-19T00:00:00Z
         TO 2015-12-28T00:00:00Z] platformname:Sentinel-1 footprint:\"Intersects(POLYGON((-66.2695
         -8.0592,-66.2695 0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\"","opensearch:totalResults":"11","opensearch:startIndex":"0","opensearch:itemsPerPage":"100","opensearch:Query":{"role":"request","searchTerms":"beginPosition:[2015-12-19T00:00:00Z
@@ -142,6 +142,6 @@ interactions:
       Pragma: [no-cache]
       Server: [Apache-Coyote/1.1]
       Vary: [Accept-Encoding]
-      content-length: ['30755']
+      content-length: ['30756']
     status: {code: 200, message: OK}
 version: 1

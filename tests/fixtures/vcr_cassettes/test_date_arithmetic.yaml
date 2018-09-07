@@ -6,15 +6,15 @@ interactions:
       Accept-Encoding: ['gzip, deflate']
       Connection: [keep-alive]
       Content-Length: ['161']
-      Content-Type: [application/x-www-form-urlencoded]
-      User-Agent: [sentinelsat/0.12.1]
+      Content-Type: [application/x-www-form-urlencoded; charset=UTF-8]
+      User-Agent: [sentinelsat/0.12.2]
     method: POST
     uri: https://scihub.copernicus.eu/apihub/search?format=json&rows=100&start=0
   response:
     body: {string: '{"feed":{"xmlns:opensearch":"http://a9.com/-/spec/opensearch/1.1/","xmlns":"http://www.w3.org/2005/Atom","title":"Sentinels
         Scientific Data Hub search results for: beginPosition:[2016-12-01T00:00:00Z-1DAY
         TO 2016-12-01T00:00:00Z+1DAY-1HOUR] footprint:\"Intersects(ENVELOPE(0, 10,
-        10, 0))\"","subtitle":"Displaying 26 results. Request done in 0.031 seconds.","updated":"2017-10-24T19:58:38.196Z","author":{"name":"Sentinels
+        10, 0))\"","subtitle":"Displaying 26 results. Request done in 0.054 seconds.","updated":"2018-09-06T13:23:26.295Z","author":{"name":"Sentinels
         Scientific Data Hub"},"id":"https://scihub.copernicus.eu/apihub/search?q=beginPosition:[2016-12-01T00:00:00Z-1DAY
         TO 2016-12-01T00:00:00Z+1DAY-1HOUR] footprint:\"Intersects(ENVELOPE(0, 10,
         10, 0))\"","opensearch:totalResults":"26","opensearch:startIndex":"0","opensearch:itemsPerPage":"100","opensearch:Query":{"role":"request","searchTerms":"beginPosition:[2016-12-01T00:00:00Z-1DAY

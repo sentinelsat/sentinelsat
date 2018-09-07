@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import hashlib
 import textwrap
 from datetime import date, datetime, timedelta
@@ -29,26 +30,26 @@ _large_query = dict(
 
 
 @pytest.fixture(scope='session')
-@my_vcr.use_cassette('products_fixture', decode_compressed_response=False)
 def products():
     """A fixture for tests that need some non-specific set of products as input."""
     api = SentinelAPI(**_api_auth)
-    products = api.query(
-        geojson_to_wkt(read_geojson(FIXTURES_DIR + '/map.geojson')),
-        ("20151219", "20151228")
-    )
+    with my_vcr.use_cassette('products_fixture', decode_compressed_response=False):
+        products = api.query(
+            geojson_to_wkt(read_geojson(FIXTURES_DIR + '/map.geojson')),
+            ("20151219", "20151228")
+        )
     return products
 
 
 @pytest.fixture(scope='session')
-@my_vcr.use_cassette('products_fixture', decode_compressed_response=False)
 def raw_products():
     """A fixture for tests that need some non-specific set of products in the form of a raw response as input."""
     api = SentinelAPI(**_api_auth)
-    raw_products = api._load_query(api.format_query(
-        geojson_to_wkt(read_geojson(FIXTURES_DIR + '/map.geojson')),
-        ("20151219", "20151228"))
-    )[0]
+    with my_vcr.use_cassette('products_fixture', decode_compressed_response=False):
+        raw_products = api._load_query(api.format_query(
+            geojson_to_wkt(read_geojson(FIXTURES_DIR + '/map.geojson')),
+            ("20151219", "20151228"))
+        )[0]
     return raw_products
 
 
@@ -369,6 +370,22 @@ def test_count():
     assert count > 100000
 
 
+#@my_vcr.use_cassette
+@pytest.mark.skip(reason="Cannot mock since VCR.py has issues with Unicode request bodies.")
+@pytest.mark.scihub
+def test_unicode_support():
+    api = SentinelAPI(**_api_kwargs)
+    test_str = u'٩(●̮̮̃•̃)۶:'
+
+    with pytest.raises(SentinelAPIError) as excinfo:
+        api.count(raw=test_str)
+    assert test_str == excinfo.value.response.json()['feed']['opensearch:Query']['searchTerms']
+
+    with pytest.raises(SentinelAPIError) as excinfo:
+        api.get_product_odata(test_str)
+    assert test_str in excinfo.value.response.json()['error']['message']['value']
+
+
 @my_vcr.use_cassette
 @pytest.mark.scihub
 def test_too_long_query():
@@ -378,20 +395,20 @@ def test_too_long_query():
     # that a relevant error message is provided
 
     def create_query(n):
-        return api.format_query(date=("NOW", "NOW"), raw=" abc_:*.+*~!," * n)
+        return " a_-.*:,?+~!" * n
 
     # Expect no error
-    q = create_query(170)
+    q = create_query(164)
     assert 0.99 < SentinelAPI.check_query_length(q) < 1.0
     with pytest.raises(SentinelAPIError) as excinfo:
-        api.query(raw=q)
+        api.count(raw=q)
     assert "Invalid query string" in excinfo.value.msg
 
     # Expect HTTP status 500 Internal Server Error
-    q = create_query(171)
+    q = create_query(165)
     assert 1.0 <= SentinelAPI.check_query_length(q) < 1.01
     with pytest.raises(SentinelAPIError) as excinfo:
-        api.query(raw=q)
+        api.count(raw=q)
     assert excinfo.value.response.status_code == 500
     assert ("Request Entity Too Large" in excinfo.value.msg or
             "Request-URI Too Long" in excinfo.value.msg)
