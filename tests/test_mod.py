@@ -444,6 +444,7 @@ def test_get_coordinates():
            '-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592))')
     assert geojson_to_wkt(read_geojson(FIXTURES_DIR + '/map.geojson')) == wkt
     assert geojson_to_wkt(read_geojson(FIXTURES_DIR + '/map_z.geojson')) == wkt
+    assert geojson_to_wkt(read_geojson(FIXTURES_DIR + '/map_nested.geojson')) == wkt
 
 
 @my_vcr.use_cassette
