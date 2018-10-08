@@ -47,6 +47,9 @@ Quickstart
 Valid search query keywords can be found at the `Copernicus Open Access Hub documentation
 <https://scihub.copernicus.eu/userguide/3FullTextSearch>`_.
 
+Search areas (i.e. ``map.geojson`` ) are provided as GeoJSON polygons, which can be created with
+`QGIS <http://qgis.org/en/site/>`_ or `geojson.io <http://geojson.io>`_.
+
 Sorting & Filtering
 -------------------
 
