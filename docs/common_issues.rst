@@ -20,6 +20,10 @@ __ https://scihub.copernicus.eu/apihub/search?
 
 SciHub servers are known to have outages due to high demand, try again later.
 
+.. rubric:: Query fails with 'Longitude/Latitude is out of bounds, check your JSON format or data.'
+
+Standard GeoJSON specification mentions contains only WGS84 format, check if your data complies with it.
+
 
 .. rubric:: My search returns 0 results
 
