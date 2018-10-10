@@ -40,6 +40,13 @@ def products():
         )
     return products
 
+def test_boundaries_latitude_more():
+    with pytest.raises(ValueError):
+        geojson_to_wkt(read_geojson(FIXTURES_DIR + '/map_boundaries_lat.geojson'))
+
+def test_boundaries_longitude_less():
+    with pytest.raises(ValueError):
+        geojson_to_wkt(read_geojson(FIXTURES_DIR + '/map_boundaries_lon.geojson'))
 
 @pytest.fixture(scope='session')
 def raw_products():
@@ -849,7 +856,7 @@ def test_missing_dependency_dataframe(monkeypatch):
     api = SentinelAPI("mock_user", "mock_password")
 
     with pytest.raises(ImportError):
-        monkeypatch.setitem(sys.modules, "pandas", None)                
+        monkeypatch.setitem(sys.modules, "pandas", None)
         api.to_dataframe({"test":"test"})
 
     with pytest.raises(ImportError):
