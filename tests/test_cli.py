@@ -401,7 +401,7 @@ def test_download_single(tmpdir):
                 command,
                 catch_exceptions=True
             )
-            assert result.exit_code != 1
+            assert result.exit_code != 0
             raise result.exception
 
     # clean up
