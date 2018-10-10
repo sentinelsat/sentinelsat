@@ -840,6 +840,15 @@ def geojson_to_wkt(geojson_obj, feature_number=0, decimals=4):
             return list(map(ensure_2d, geometry))
         else:
             return geometry[:2]
+        
+    def check_bounds(geometry):
+        if isinstance(geometry[0], (list, tuple)):
+            return list(map(check_bounds,geometry))
+        else:
+            if geometry[0]>180 or geometry[0]<-180:
+                raise ValueError('Longitude is out of bounds, check your JSON format or data')
+            if geometry[1]>180 or geometry[1]<-180:
+                raise ValueError('Latitude is out of bounds, check your JSON format or data')
 
     # Discard z-coordinate, if it exists
     geometry['coordinates'] = ensure_2d(geometry['coordinates'])
