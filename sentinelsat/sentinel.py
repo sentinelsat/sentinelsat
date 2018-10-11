@@ -164,7 +164,7 @@ class SentinelAPI:
             # Escape spaces, where appropriate
             if isinstance(value, string_types):
                 value = value.strip()
-                if not any(value.startswith(s[0]) and value.endswith(s[1]) for s in ['[]', '{}', '//']):
+                if not any(value.startswith(s[0]) and value.endswith(s[1]) for s in ['[]', '{}', '//', '()']):
                     value = re.sub(r'\s', r'\ ', value, re.M)
 
             # Handle date keywords
