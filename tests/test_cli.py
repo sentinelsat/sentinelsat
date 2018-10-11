@@ -301,6 +301,26 @@ def test_name_search():
 
 @my_vcr.use_cassette
 @pytest.mark.scihub
+def test_name_search_multiple():
+    runner = CliRunner()
+    result = runner.invoke(
+        cli,
+        ['--user', _api_auth[0],
+         '--password', _api_auth[1],
+         '--name', 'S1B_IW_GRDH_1SDV_20181007T164414_20181007T164439_013049_0181B7_345E,S1B_IW_GRDH_1SDV_20181007T164349_20181007T164414_013049_0181B7_A8E3'],
+        catch_exceptions=False
+    )
+    assert result.exit_code == 0
+
+    expected = [
+        'Product b2ab53c9-abc4-4481-a9bf-1129f54c9707 - Date: 2018-10-07T16:43:49.773Z, Instrument: SAR-C SAR, Mode: VV VH, Satellite: Sentinel-1, Size: 1.65 GB',
+        'Product 9e99eaa6-711e-40c3-aae5-83ea2048949d - Date: 2018-10-07T16:44:14.774Z, Instrument: SAR-C SAR, Mode: VV VH, Satellite: Sentinel-1, Size: 1.65 GB'
+    ]
+    assert re.findall("^Product .+$", result.output, re.M) == expected
+
+
+@my_vcr.use_cassette
+@pytest.mark.scihub
 def test_option_hierarchy():
     # expected hierarchy is producttype > instrument > platform from most to least specific
     runner = CliRunner()
