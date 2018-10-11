@@ -6,7 +6,7 @@ import pytest
 import requests_mock
 from click.testing import CliRunner
 
-from sentinelsat import InvalidChecksumError, SentinelAPI
+from sentinelsat import InvalidChecksumError, SentinelAPIError, SentinelAPI
 from sentinelsat.scripts.cli import cli
 from .shared import my_vcr, FIXTURES_DIR
 
@@ -317,6 +317,22 @@ def test_name_search_multiple():
         'Product 9e99eaa6-711e-40c3-aae5-83ea2048949d - Date: 2018-10-07T16:44:14.774Z, Instrument: SAR-C SAR, Mode: VV VH, Satellite: Sentinel-1, Size: 1.65 GB'
     ]
     assert re.findall("^Product .+$", result.output, re.M) == expected
+
+
+@my_vcr.use_cassette
+@pytest.mark.scihub
+def test_name_search_empty():
+    runner = CliRunner()
+    with pytest.raises(SentinelAPIError):
+        result = runner.invoke(
+            cli,
+            ['--user', _api_auth[0],
+             '--password', _api_auth[1],
+             '--name', ''],
+            catch_exceptions=True
+        )
+        assert result.exit_code != 0
+        raise result.exception
 
 
 @my_vcr.use_cassette
