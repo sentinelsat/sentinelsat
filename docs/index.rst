@@ -20,7 +20,7 @@ and a powerful Python API.
   from sentinelsat import SentinelAPI, read_geojson, geojson_to_wkt
 
   api = SentinelAPI('user', 'password')
-  footprint = geojson_to_wkt(read_geojson('/path_to_data/search_polygon.geojson'))
+  footprint = geojson_to_wkt(read_geojson('/path/to/search_polygon.geojson'))
   products = api.query(footprint,
                        producttype='SLC',
                        orbitdirection='ASCENDING')

@@ -25,7 +25,7 @@ For convenience and added security you can set the username, password and DHuS U
 
   sentinelsat -g <search_polygon.geojson>
 
-Search areas (i.e. ``search_polygon.geojson`` ) are provided as GeoJSON polygons, which can be created with
+Search areas (i.e. ``search_polygon.geojson`` ) are provided as GeoJSON files, which can be created with
 `QGIS <http://qgis.org/en/site/>`_ or `geojson.io <http://geojson.io>`_.
 If you do not specify a start and end date only products published in the last
 24 hours will be queried.

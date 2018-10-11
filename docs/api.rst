@@ -19,7 +19,7 @@ Quickstart
   api.download(<product_id>)
 
   # search by polygon, time, and SciHub query keywords
-  footprint = geojson_to_wkt(read_geojson('map.geojson'))
+  footprint = geojson_to_wkt(read_geojson('/path/to/map.geojson'))
   products = api.query(footprint,
                        date=('20151219', date(2015, 12, 29)),
                        platformname='Sentinel-2',
@@ -46,9 +46,6 @@ Quickstart
 
 Valid search query keywords can be found at the `Copernicus Open Access Hub documentation
 <https://scihub.copernicus.eu/userguide/3FullTextSearch>`_.
-
-Search areas (i.e. ``map.geojson`` ) are provided as GeoJSON polygons, which can be created with
-`QGIS <http://qgis.org/en/site/>`_ or `geojson.io <http://geojson.io>`_.
 
 Sorting & Filtering
 -------------------
