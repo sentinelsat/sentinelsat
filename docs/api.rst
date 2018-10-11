@@ -19,7 +19,7 @@ Quickstart
   api.download(<product_id>)
 
   # search by polygon, time, and SciHub query keywords
-  footprint = geojson_to_wkt(read_geojson('map.geojson'))
+  footprint = geojson_to_wkt(read_geojson('/path/to/map.geojson'))
   products = api.query(footprint,
                        date=('20151219', date(2015, 12, 29)),
                        platformname='Sentinel-2',
