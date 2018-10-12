@@ -15,6 +15,7 @@ Added
 * Support for Python 3.7
 * Support for GeoJSON files with a single ``Feature`` without a ``FeatureCollection.`` (#224 @scottstanie)
 * Added support for Unicode symbols in search queries. (#230)
+* Raise ValueError exception if longitude is outside [-180, 180] or latitude is outside [-90, 90] (#236, #218 @Andrey-Raspopov)
 
 Changed
 ~~~~~~~
@@ -30,6 +31,7 @@ Fixed
 * Fixed some CLI errors not returning a non-zero exit code. (#209)
 * Fixed typo for ``area_relation`` query parameter documentation from ``'Intersection'`` to ``'Intersects'``. (#225 @scottstanie)
 * Updated ``check_query_length()`` logic to match the changed server-side behavior. (#230)
+* Clarify usage of GeoJSON files with CLI in docs (#229 @psal93)
 
 Development Changes
 ~~~~~~~~~~~~~~~~~~~
