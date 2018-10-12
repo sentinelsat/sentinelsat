@@ -23,3 +23,5 @@ Contributors
 * martinber `@martinber <https://github.com/martinber>`_
 * Nicklas Keck `@NiklasKeck <https://github.com/NiklasKeck>`_
 * Scott Staniewicz `@scottstanie <https://github.com/scottstanie>`_
+* Andrey Raspopov `@Andrey-Raspopov <https://github.com/Andrey-Raspopov>`_
+* Patrick Salembier `@psal93 <https://github.com/psal93>`_
