@@ -135,7 +135,7 @@ def cli(user, password, geometry, start, end, uuid, name, download, sentinel, pr
     else:
         start = start or "19000101"
         end = end or "NOW"
-        products = api.query(time_period=(start, end),
+        products = api.query(date=(start, end),
                              order_by=order_by, limit=limit, **search_kwargs)
 
     if footprints is True:

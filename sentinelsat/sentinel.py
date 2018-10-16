@@ -378,7 +378,7 @@ class SentinelAPI:
         df.drop(['footprint', 'gmlfootprint'], axis=1, inplace=True)
         return gpd.GeoDataFrame(df, crs=crs, geometry=geometry)
 
-    def get_product_odata(self, id, full=False):
+    def get_product_odata(self, product_id, full=False):
         """Access OData API to get info about a product.
 
         Returns a dict containing the id, title, size, md5sum, date, footprint and download url
@@ -389,7 +389,7 @@ class SentinelAPI:
 
         Parameters
         ----------
-        id : string
+        product_id : string
             The UUID of the product to query
         full : bool
             Whether to get the full metadata for the Product. False by default.
@@ -407,7 +407,7 @@ class SentinelAPI:
         https://github.com/SentinelDataHub/DataHubSystem/blob/master/addon/sentinel-2/src/main/resources/META-INF/sentinel-2.owl
         https://github.com/SentinelDataHub/DataHubSystem/blob/master/addon/sentinel-3/src/main/resources/META-INF/sentinel-3.owl
         """
-        url = urljoin(self.api_url, u"odata/v1/Products('{}')?$format=json".format(id))
+        url = urljoin(self.api_url, u"odata/v1/Products('{}')?$format=json".format(product_id))
         if full:
             url += '&$expand=Attributes'
         response = self.session.get(url, auth=self.session.auth)
@@ -415,7 +415,7 @@ class SentinelAPI:
         values = _parse_odata_response(response.json()['d'])
         return values
 
-    def download(self, id, directory_path='.', checksum=True):
+    def download(self, product_id, directory_path='.', checksum=True):
         """Download a product.
 
         Uses the filename on the server for the downloaded file, e.g.
@@ -425,7 +425,7 @@ class SentinelAPI:
 
         Parameters
         ----------
-        id : string
+        product_id : string
             UUID of the product, e.g. 'a8dd0cfd-613e-45ce-868c-d79177b916ed'
         directory_path : string, optional
             Where the file will be downloaded
@@ -445,12 +445,12 @@ class SentinelAPI:
         InvalidChecksumError
             If the MD5 checksum does not match the checksum on the server.
         """
-        product_info = self.get_product_odata(id)
+        product_info = self.get_product_odata(product_id)
         path = join(directory_path, product_info['title'] + '.zip')
         product_info['path'] = path
         product_info['downloaded_bytes'] = 0
 
-        self.logger.info('Downloading %s to %s', id, path)
+        self.logger.info('Downloading %s to %s', product_id, path)
 
         if exists(path):
             # We assume that the product has been downloaded and is complete
@@ -629,9 +629,9 @@ class SentinelAPI:
 
         # Group the products
         output = OrderedDict((name, dict()) for name in names)
-        for id, metadata in products.items():
+        for product_id, metadata in products.items():
             name = metadata['identifier']
-            output[name][id] = metadata
+            output[name][product_id] = metadata
 
         return output
 
@@ -675,8 +675,8 @@ class SentinelAPI:
         paths = paths or []
         ids = ids or []
 
-        def name_from_path(path):
-            return splitext(basename(path))[0]
+        def name_from_path(base_path):
+            return splitext(basename(base_path))[0]
 
         # Get product IDs corresponding to the files on disk
         names = []
@@ -691,8 +691,8 @@ class SentinelAPI:
         # Collect the OData information for each product
         # Product name -> list of matching odata dicts
         product_infos = defaultdict(list)
-        for id in ids:
-            odata = self.get_product_odata(id)
+        for product_id in ids:
+            odata = self.get_product_odata(product_id)
             name = odata['title']
             product_infos[name].append(odata)
 
@@ -835,19 +835,19 @@ def geojson_to_wkt(geojson_obj, feature_number=0, decimals=4):
     else:
         geometry = geojson_obj['features'][feature_number]['geometry']
 
-    def ensure_2d(geometry):
-        if isinstance(geometry[0], (list, tuple)):
-            return list(map(ensure_2d, geometry))
+    def ensure_2d(coordinates):
+        if isinstance(coordinates[0], (list, tuple)):
+            return list(map(ensure_2d, coordinates))
         else:
-            return geometry[:2]
+            return coordinates[:2]
 
-    def check_bounds(geometry):
-        if isinstance(geometry[0], (list, tuple)):
-            return list(map(check_bounds, geometry))
+    def check_bounds(coordinates):
+        if isinstance(coordinates[0], (list, tuple)):
+            return list(map(check_bounds, coordinates))
         else:
-            if geometry[0] > 180 or geometry[0] < -180:
+            if coordinates[0] > 180 or coordinates[0] < -180:
                 raise ValueError('Longitude is out of bounds, check your JSON format or data')
-            if geometry[1] > 90 or geometry[1] < -90:
+            if coordinates[1] > 90 or coordinates[1] < -90:
                 raise ValueError('Latitude is out of bounds, check your JSON format or data')
 
     # Discard z-coordinate, if it exists
@@ -953,15 +953,15 @@ def _format_order_by(order_by):
     output = []
     for part in order_by.split(','):
         part = part.strip()
-        dir = " asc"
+        direction = " asc"
         if part[0] == '+':
             part = part[1:]
         elif part[0] == '-':
-            dir = " desc"
+            direction = " desc"
             part = part[1:]
         if not part or not part.isalnum():
             raise ValueError("Invalid order by value ({})".format(order_by))
-        output.append(part + dir)
+        output.append(part + direction)
     return ",".join(output)
 
 
