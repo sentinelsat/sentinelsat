@@ -9,7 +9,7 @@ import warnings
 import xml.etree.ElementTree as ET
 from collections import OrderedDict, defaultdict
 from contextlib import closing
-from datetime import date, datetime, timedelta
+import datetime
 from os import remove
 from os.path import basename, exists, getsize, join, splitext
 
@@ -341,7 +341,7 @@ class SentinelAPI:
             del props['gmlfootprint']
             # Fix "'datetime' is not JSON serializable"
             for k, v in props.items():
-                if isinstance(v, (date, datetime)):
+                if isinstance(v, (datetime.date, datetime.datetime)):
                     props[k] = v.strftime('%Y-%m-%dT%H:%M:%S.%fZ')
             feature_list.append(
                 geojson.Feature(geometry=poly, id=i, properties=props)
@@ -884,7 +884,7 @@ def format_query_date(in_date):
     """
     if in_date is None:
         return '*'
-    if isinstance(in_date, (datetime, date)):
+    if isinstance(in_date, (datetime.datetime, datetime.date)):
         return in_date.strftime('%Y-%m-%dT%H:%M:%SZ')
     elif not isinstance(in_date, string_types):
         raise ValueError('Expected a string or a datetime object. Received {}.'.format(in_date))
@@ -909,7 +909,7 @@ def format_query_date(in_date):
         return in_date
 
     try:
-        return datetime.strptime(in_date, '%Y%m%d').strftime('%Y-%m-%dT%H:%M:%SZ')
+        return datetime.datetime.strptime(in_date, '%Y%m%d').strftime('%Y-%m-%dT%H:%M:%SZ')
     except ValueError:
         raise ValueError('Unsupported date value {}'.format(in_date))
 
@@ -978,9 +978,9 @@ def _parse_gml_footprint(geometry_str):
 
 def _parse_iso_date(content):
     if '.' in content:
-        return datetime.strptime(content, '%Y-%m-%dT%H:%M:%S.%fZ')
+        return datetime.datetime.strptime(content, '%Y-%m-%dT%H:%M:%S.%fZ')
     else:
-        return datetime.strptime(content, '%Y-%m-%dT%H:%M:%SZ')
+        return datetime.datetime.strptime(content, '%Y-%m-%dT%H:%M:%SZ')
 
 
 def _parse_odata_timestamp(in_date):
@@ -989,7 +989,7 @@ def _parse_odata_timestamp(in_date):
     timestamp = int(in_date.replace('/Date(', '').replace(')/', ''))
     seconds = timestamp // 1000
     ms = timestamp % 1000
-    return datetime.utcfromtimestamp(seconds) + timedelta(milliseconds=ms)
+    return datetime.datetime.utcfromtimestamp(seconds) + datetime.timedelta(milliseconds=ms)
 
 
 def _parse_opensearch_response(products):
