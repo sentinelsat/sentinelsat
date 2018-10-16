@@ -155,14 +155,14 @@ def test_api_query_format():
     assert query == 'beginPosition:[%s TO %s] ' % (last_24h, format_query_date(now)) + \
                     'footprint:"Intersects(POLYGON((0 0,1 1,0 1,0 0)))"'
 
-    query = SentinelAPI.format_query(wkt, time_period=(last_24h, "NOW"), producttype='SLC', raw='IW')
+    query = SentinelAPI.format_query(wkt, date=(last_24h, "NOW"), producttype='SLC', raw='IW')
     assert query == 'beginPosition:[%s TO NOW] ' % (format_query_date(last_24h)) + \
                     'producttype:SLC IW footprint:"Intersects(POLYGON((0 0,1 1,0 1,0 0)))"'
 
     query = SentinelAPI.format_query(wkt, producttype='SLC', raw='IW')
     assert query == 'producttype:SLC IW footprint:"Intersects(POLYGON((0 0,1 1,0 1,0 0)))"'
 
-    query = SentinelAPI.format_query(area=None, time_period=None)
+    query = SentinelAPI.format_query(area=None, date=None)
     assert query == ''
 
     query = SentinelAPI.format_query()
@@ -175,7 +175,7 @@ def test_api_query_format():
 @pytest.mark.fast
 def test_api_query_format_with_duplicates():
     with pytest.raises(ValueError) as excinfo:
-        SentinelAPI.format_query(time_period=('NOW-1DAY', 'NOW'), beginPosition=('NOW-3DAY', 'NOW'))
+        SentinelAPI.format_query(date=('NOW-1DAY', 'NOW'), beginPosition=('NOW-3DAY', 'NOW'))
     assert 'duplicate' in str(excinfo.value)
 
     with pytest.raises(ValueError) as excinfo:
@@ -237,10 +237,10 @@ def test_api_query_format_dates():
         assert query == ''
 
     with pytest.raises(ValueError):
-        SentinelAPI.format_query(time_period="NOW")
+        SentinelAPI.format_query(date="NOW")
 
     with pytest.raises(ValueError):
-        SentinelAPI.format_query(time_period=["NOW"])
+        SentinelAPI.format_query(date=["NOW"])
 
     with pytest.raises(ValueError):
         SentinelAPI.format_query(ingestiondate=[])
@@ -718,7 +718,7 @@ def test_get_products_invalid_json():
         with pytest.raises(SentinelAPIError) as excinfo:
             api.query(
                 area=geojson_to_wkt(read_geojson(FIXTURES_DIR + "/map.geojson")),
-                time_period=("20151219", "20151228"),
+                date=("20151219", "20151228"),
                 platformname="Sentinel-2"
             )
         assert excinfo.value.msg == "Invalid API response."
