@@ -22,11 +22,11 @@ _api_kwargs = dict(_api_auth, api_url='https://scihub.copernicus.eu/apihub/')
 
 _small_query = dict(
     area='POLYGON((0 0,1 1,0 1,0 0))',
-    date=(datetime(2015, 1, 1), datetime(2015, 1, 2)))
+    time_period=(datetime(2015, 1, 1), datetime(2015, 1, 2)))
 
 _large_query = dict(
     area='POLYGON((0 0,0 10,10 10,10 0,0 0))',
-    date=(datetime(2015, 12, 1), datetime(2015, 12, 31)))
+    time_period=(datetime(2015, 12, 1), datetime(2015, 12, 31)))
 
 
 @pytest.fixture(scope='session')
@@ -783,7 +783,7 @@ def test_order_by():
     api = SentinelAPI(**_api_auth)
     kwargs = dict(
         area=geojson_to_wkt(read_geojson(FIXTURES_DIR + '/map.geojson')),
-        date=("20151219", "20161019"),
+        time_period=("20151219", "20161019"),
         platformname="Sentinel-2",
         cloudcoverpercentage=(0, 10),
         order_by="cloudcoverpercentage, -beginposition"
@@ -803,7 +803,7 @@ def test_area_relation():
     api = SentinelAPI(**_api_auth)
     params = dict(
         area="POLYGON((10.83 53.04,11.64 53.04,11.64 52.65,10.83 52.65,10.83 53.04))",
-        date=("20151219", "20151226")
+        time_period=("20151219", "20151226")
     )
     result = api.query(**params)
     n_intersects = len(result)
