@@ -6,7 +6,7 @@ import logging
 import re
 import shutil
 import warnings
-import xml.etree.ElementTree as ET
+import xml.etree.ElementTree as ElemTree
 from collections import OrderedDict, defaultdict
 from contextlib import closing
 from datetime import date, datetime, timedelta
@@ -66,7 +66,7 @@ class SentinelAPI:
         self._last_query = None
         self._last_response = None
 
-    def query(self, area=None, date=None, raw=None, area_relation='Intersects',
+    def query(self, area=None, time_period=None, raw=None, area_relation='Intersects',
               order_by=None, limit=None, offset=0, **keywords):
         """Query the OpenSearch API with the coordinates of an area, a date interval
         and any other search keywords accepted by the API.
@@ -75,7 +75,7 @@ class SentinelAPI:
         ----------
         area : str, optional
             The area of interest formatted as a Well-Known Text string.
-        date : tuple of (str or datetime) or str, optional
+        time_period : tuple of (str or datetime) or str, optional
             A time interval filter based on the Sensing Start Time of the products.
             Expects a tuple of (start, end), e.g. ("NOW-1DAY", "NOW").
             The timestamps can be either a Python datetime or a string in one of the
@@ -131,7 +131,7 @@ class SentinelAPI:
             Products returned by the query as a dictionary with the product ID as the key and
             the product's attributes (a dictionary) as the value.
         """
-        query = self.format_query(area, date, raw, area_relation, **keywords)
+        query = self.format_query(area, time_period, raw, area_relation, **keywords)
 
         self.logger.debug("Running query: order_by=%s, limit=%s, offset=%s, query=%s",
                           order_by, limit, offset, query)
@@ -141,7 +141,7 @@ class SentinelAPI:
         return _parse_opensearch_response(response)
 
     @staticmethod
-    def format_query(area=None, date=None, raw=None, area_relation='Intersects',
+    def format_query(area=None, time_period=None, raw=None, area_relation='Intersects',
                      **keywords):
         """Create a OpenSearch API query string.
         """
@@ -151,14 +151,14 @@ class SentinelAPI:
         # Check for duplicate keywords
         kw_lower = set(x.lower() for x in keywords)
         if (len(kw_lower) != len(keywords) or
-                (date is not None and 'beginposition' in kw_lower) or
+                (time_period is not None and 'beginposition' in kw_lower) or
                 (area is not None and 'footprint' in kw_lower)):
             raise ValueError("Query contains duplicate keywords. Note that query keywords are case-insensitive.")
 
         query_parts = []
 
-        if date is not None:
-            keywords['beginPosition'] = date
+        if time_period is not None:
+            keywords['beginPosition'] = time_period
 
         for attr, value in sorted(keywords.items()):
             # Escape spaces, where appropriate
@@ -238,7 +238,7 @@ class SentinelAPI:
         )
         return self.query(raw=query, order_by=order_by, limit=limit, offset=offset)
 
-    def count(self, area=None, date=None, raw=None, area_relation='Intersects', **keywords):
+    def count(self, area=None, time_period=None, raw=None, area_relation='Intersects', **keywords):
         """Get the number of products matching a query.
 
         Accepted parameters are identical to :meth:`SentinelAPI.query()`.
@@ -256,7 +256,7 @@ class SentinelAPI:
             # but ignore them.
             if kw in keywords:
                 del keywords[kw]
-        query = self.format_query(area, date, raw, area_relation, **keywords)
+        query = self.format_query(area, time_period, raw, area_relation, **keywords)
         _, total_count = self._load_query(query, limit=0)
         return total_count
 
@@ -378,7 +378,7 @@ class SentinelAPI:
         df.drop(['footprint', 'gmlfootprint'], axis=1, inplace=True)
         return gpd.GeoDataFrame(df, crs=crs, geometry=geometry)
 
-    def get_product_odata(self, id, full=False):
+    def get_product_odata(self, product_id, full=False):
         """Access OData API to get info about a product.
 
         Returns a dict containing the id, title, size, md5sum, date, footprint and download url
@@ -389,7 +389,7 @@ class SentinelAPI:
 
         Parameters
         ----------
-        id : string
+        product_id : string
             The UUID of the product to query
         full : bool
             Whether to get the full metadata for the Product. False by default.
@@ -407,7 +407,7 @@ class SentinelAPI:
         https://github.com/SentinelDataHub/DataHubSystem/blob/master/addon/sentinel-2/src/main/resources/META-INF/sentinel-2.owl
         https://github.com/SentinelDataHub/DataHubSystem/blob/master/addon/sentinel-3/src/main/resources/META-INF/sentinel-3.owl
         """
-        url = urljoin(self.api_url, u"odata/v1/Products('{}')?$format=json".format(id))
+        url = urljoin(self.api_url, u"odata/v1/Products('{}')?$format=json".format(product_id))
         if full:
             url += '&$expand=Attributes'
         response = self.session.get(url, auth=self.session.auth)
@@ -415,7 +415,7 @@ class SentinelAPI:
         values = _parse_odata_response(response.json()['d'])
         return values
 
-    def download(self, id, directory_path='.', checksum=True):
+    def download(self, product_id, directory_path='.', checksum=True):
         """Download a product.
 
         Uses the filename on the server for the downloaded file, e.g.
@@ -425,7 +425,7 @@ class SentinelAPI:
 
         Parameters
         ----------
-        id : string
+        product_id : string
             UUID of the product, e.g. 'a8dd0cfd-613e-45ce-868c-d79177b916ed'
         directory_path : string, optional
             Where the file will be downloaded
@@ -445,12 +445,12 @@ class SentinelAPI:
         InvalidChecksumError
             If the MD5 checksum does not match the checksum on the server.
         """
-        product_info = self.get_product_odata(id)
+        product_info = self.get_product_odata(product_id)
         path = join(directory_path, product_info['title'] + '.zip')
         product_info['path'] = path
         product_info['downloaded_bytes'] = 0
 
-        self.logger.info('Downloading %s to %s', id, path)
+        self.logger.info('Downloading %s to %s', product_id, path)
 
         if exists(path):
             # We assume that the product has been downloaded and is complete
@@ -629,9 +629,9 @@ class SentinelAPI:
 
         # Group the products
         output = OrderedDict((name, dict()) for name in names)
-        for id, metadata in products.items():
+        for product_id, metadata in products.items():
             name = metadata['identifier']
-            output[name][id] = metadata
+            output[name][product_id] = metadata
 
         return output
 
@@ -675,8 +675,8 @@ class SentinelAPI:
         paths = paths or []
         ids = ids or []
 
-        def name_from_path(path):
-            return splitext(basename(path))[0]
+        def name_from_path(base_path):
+            return splitext(basename(base_path))[0]
 
         # Get product IDs corresponding to the files on disk
         names = []
@@ -691,8 +691,8 @@ class SentinelAPI:
         # Collect the OData information for each product
         # Product name -> list of matching odata dicts
         product_infos = defaultdict(list)
-        for id in ids:
-            odata = self.get_product_odata(id)
+        for product_id in ids:
+            odata = self.get_product_odata(product_id)
             name = odata['title']
             product_infos[name].append(odata)
 
@@ -835,19 +835,19 @@ def geojson_to_wkt(geojson_obj, feature_number=0, decimals=4):
     else:
         geometry = geojson_obj['features'][feature_number]['geometry']
 
-    def ensure_2d(geometry):
-        if isinstance(geometry[0], (list, tuple)):
-            return list(map(ensure_2d, geometry))
+    def ensure_2d(_geometry):
+        if isinstance(_geometry[0], (list, tuple)):
+            return list(map(ensure_2d, _geometry))
         else:
-            return geometry[:2]
+            return _geometry[:2]
 
-    def check_bounds(geometry):
-        if isinstance(geometry[0], (list, tuple)):
-            return list(map(check_bounds, geometry))
+    def check_bounds(_geometry):
+        if isinstance(_geometry[0], (list, tuple)):
+            return list(map(check_bounds, _geometry))
         else:
-            if geometry[0] > 180 or geometry[0] < -180:
+            if _geometry[0] > 180 or _geometry[0] < -180:
                 raise ValueError('Longitude is out of bounds, check your JSON format or data')
-            if geometry[1] > 90 or geometry[1] < -90:
+            if _geometry[1] > 90 or _geometry[1] < -90:
                 raise ValueError('Latitude is out of bounds, check your JSON format or data')
 
     # Discard z-coordinate, if it exists
@@ -953,20 +953,20 @@ def _format_order_by(order_by):
     output = []
     for part in order_by.split(','):
         part = part.strip()
-        dir = " asc"
+        direction = " asc"
         if part[0] == '+':
             part = part[1:]
         elif part[0] == '-':
-            dir = " desc"
+            direction = " desc"
             part = part[1:]
         if not part or not part.isalnum():
             raise ValueError("Invalid order by value ({})".format(order_by))
-        output.append(part + dir)
+        output.append(part + direction)
     return ",".join(output)
 
 
 def _parse_gml_footprint(geometry_str):
-    geometry_xml = ET.fromstring(geometry_str)
+    geometry_xml = ElemTree.fromstring(geometry_str)
     poly_coords_str = geometry_xml \
         .find('{http://www.opengis.net/gml}outerBoundaryIs') \
         .find('{http://www.opengis.net/gml}LinearRing') \
