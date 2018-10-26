@@ -15,7 +15,7 @@ from .shared import my_vcr, FIXTURES_DIR
 # local tests require environment variables `DHUS_USER` and `DHUS_PASSWORD`
 # for Travis CI they are set as encrypted environment variables and stored
 AUTH_VARS = ['DHUS_USER', 'DHUS_PASSWORD']
-API_AUTH = [os.environ.get(name, None) for name in AUTH_VARS]
+API_AUTH = [os.environ.get(name, name) for name in AUTH_VARS]
 
 # TODO: change test fixtures from subcommands to unified commands
 
