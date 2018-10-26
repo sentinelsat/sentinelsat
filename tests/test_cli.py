@@ -42,6 +42,8 @@ def no_netrc():
             yield
         finally:
             shutil.move(netrcpath_bak, netrcpath)
+    else:
+        yield
 
 
 @contextlib.contextmanager
