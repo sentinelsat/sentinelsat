@@ -19,6 +19,25 @@ def _set_logger_handler(level='INFO'):
     logger.addHandler(h)
 
 
+def _try_netrc_auth(url):
+    """Attempt to get user and password from ~/.netrc for hostname in url
+    and return None, None if not successful.
+    """
+    import netrc
+    try:
+        from urllib.parse import urlparse
+    except ImportError:
+        from urlparse import urlparse
+    host = urlparse(url).hostname
+    try:
+        user, _, password = netrc.netrc(os.path.expanduser('~/.netrc')).authenticators(host)
+        return user, password
+    except (FileNotFoundError, netrc.NetrcParseError, TypeError) as err:
+        logger.debug(err)
+        print(err)
+        return None, None
+
+
 class CommaSeparatedString(click.ParamType):
     name = 'comma-string'
 
@@ -31,10 +50,10 @@ class CommaSeparatedString(click.ParamType):
 
 @click.command(context_settings=dict(help_option_names=['-h', '--help']))
 @click.option(
-    '--user', '-u', type=str, required=True, envvar='DHUS_USER',
+    '--user', '-u', type=str, envvar='DHUS_USER', default=None,
     help='Username (or environment variable DHUS_USER is set)')
 @click.option(
-    '--password', '-p', type=str, required=True, envvar='DHUS_PASSWORD',
+    '--password', '-p', type=str, envvar='DHUS_PASSWORD', default=None,
     help='Password (or environment variable DHUS_PASSWORD is set)')
 @click.option(
     '--url', type=str, default='https://scihub.copernicus.eu/apihub/', envvar='DHUS_URL',
@@ -102,6 +121,14 @@ def cli(user, password, geometry, start, end, uuid, name, download, sentinel, pr
     """
 
     _set_logger_handler()
+
+    if user is None or password is None:
+        logger.debug('Trying to get auth from ~/.netrc')
+        user, password = _try_netrc_auth(url)
+
+    if user is None or password is None:
+        raise click.UsageError('Missing --user and --password. See docs '
+                               'for environment variables and .netrc support.')
 
     api = SentinelAPI(user, password, url)
 
