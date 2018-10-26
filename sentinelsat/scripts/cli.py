@@ -32,7 +32,7 @@ def _try_netrc_auth(url):
     try:
         user, _, password = netrc.netrc(os.path.expanduser('~/.netrc')).authenticators(host)
         return user, password
-    except (FileNotFoundError, netrc.NetrcParseError, TypeError) as err:
+    except (IOError, netrc.NetrcParseError, TypeError) as err:
         logger.debug(err)
         print(err)
         return None, None
