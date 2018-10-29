@@ -47,6 +47,23 @@ Quickstart
 Valid search query keywords can be found at the `Copernicus Open Access Hub documentation
 <https://scihub.copernicus.eu/userguide/3FullTextSearch>`_.
 
+Authentication
+--------------
+
+The Copernicus Open Access Hub and probably most Data Hubs require authentication.
+You can provide your credentials with :meth:`SentinelAPI(<your username>, <your password>)`. 
+Alternatively, you can use :meth:`SentinelAPI(None, None)` and enter your credentials in a 
+file `.netrc` in your user home directory in the following form:
+
+.. code-block:: netrc
+
+  machine scihub.copernicus.eu
+  login <your username>
+  password <your password>
+
+Either way, if you get an error 401 Unauthorized, your credentials were wrong or not yet 
+active for the endpoint you are contacting.
+
 Sorting & Filtering
 -------------------
 

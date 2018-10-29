@@ -15,13 +15,25 @@ password to access the Copernicus Open Access Hub.
 
   sentinelsat -u <user> -p <password> -g <search_polygon.geojson>
 
-For convenience and added security you can set the username, password and DHuS URL as environment variables and omit their entry on the command line.
+For convenience and added security, there are two ways you can store your credentials and omit them from the command line call. You can set username, password and DHuS URL as environment variables.
 
 .. code-block:: bash
 
   export DHUS_USER="<user>"
   export DHUS_PASSWORD="<password>"
   export DHUS_URL="<api_url>"
+
+Alternatively, you can add them to a file `.netrc` in your user home directory.
+
+.. code-block:: netrc
+
+  machine scihub.copernicus.eu
+  login <user>
+  password <password>
+
+The above command then becomes
+
+.. code-block:: bash
 
   sentinelsat -g <search_polygon.geojson>
 
