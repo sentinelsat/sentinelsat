@@ -10,7 +10,7 @@ from click.testing import CliRunner
 
 from sentinelsat import InvalidChecksumError, SentinelAPIError, SentinelAPI
 from sentinelsat.scripts.cli import cli
-from .shared import my_vcr, FIXTURES_DIR
+from .shared import my_vcr
 
 # local tests require environment variables `DHUS_USER` and `DHUS_PASSWORD`
 # for Travis CI they are set as encrypted environment variables and stored
