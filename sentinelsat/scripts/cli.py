@@ -3,6 +3,7 @@ import os
 
 import click
 import geojson as gj
+import requests.utils
 
 from sentinelsat import __version__ as sentinelsat_version
 from sentinelsat.sentinel import SentinelAPI, SentinelAPIError, geojson_to_wkt, read_geojson
@@ -17,23 +18,6 @@ def _set_logger_handler(level='INFO'):
     fmt = logging.Formatter('%(message)s')
     h.setFormatter(fmt)
     logger.addHandler(h)
-
-
-def _try_netrc_auth(url):
-    """Attempt to get user and password from ~/.netrc for hostname in url
-    and return None, None if not successful.
-    """
-    import netrc
-    try:
-        from urllib.parse import urlparse
-    except ImportError:
-        from urlparse import urlparse
-    host = urlparse(url).hostname
-    try:
-        user, _, password = netrc.netrc(os.path.expanduser('~/.netrc')).authenticators(host)
-        return user, password
-    except (IOError, netrc.NetrcParseError, TypeError) as err:
-        return None, None
 
 
 class CommaSeparatedString(click.ParamType):
@@ -121,11 +105,13 @@ def cli(user, password, geometry, start, end, uuid, name, download, sentinel, pr
     _set_logger_handler()
 
     if user is None or password is None:
-        logger.debug('Trying to get auth from ~/.netrc')
-        user, password = _try_netrc_auth(url)
+        try:
+            user, password = requests.utils.get_netrc_auth(url)
+        except TypeError:
+            pass
 
     if user is None or password is None:
-        raise click.UsageError('Missing --user and --password. See docs '
+        raise click.UsageError('Missing --user and --password. Please see docs '
                                'for environment variables and .netrc support.')
 
     api = SentinelAPI(user, password, url)
