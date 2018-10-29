@@ -31,8 +31,10 @@ class SentinelAPI:
     ----------
     user : string
         username for DataHub
+        set to None to use ~/.netrc
     password : string
         password for DataHub
+        set to None to use ~/.netrc
     api_url : string, optional
         URL of the DataHub
         defaults to 'https://scihub.copernicus.eu/apihub'
