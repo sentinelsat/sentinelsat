@@ -55,7 +55,7 @@ You can provide your credentials with :meth:`SentinelAPI(<your username>, <your 
 Alternatively, you can use :meth:`SentinelAPI(None, None)` and enter your credentials in a 
 file `.netrc` in your user home directory in the following form:
 
-.. code-block:: netrc
+.. code-block:: text
 
   machine scihub.copernicus.eu
   login <your username>

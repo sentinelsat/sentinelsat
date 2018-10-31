@@ -26,7 +26,7 @@ You can set username, password and DHuS URL as environment variables.
 
 Alternatively, you can add them to a file `.netrc` in your user home directory.
 
-.. code-block:: netrc
+.. code-block:: text
 
   machine scihub.copernicus.eu
   login <user>
