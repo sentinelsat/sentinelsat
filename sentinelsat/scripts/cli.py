@@ -3,6 +3,7 @@ import os
 
 import click
 import geojson as gj
+import requests.utils
 
 from sentinelsat import __version__ as sentinelsat_version
 from sentinelsat.sentinel import SentinelAPI, SentinelAPIError, geojson_to_wkt, read_geojson
@@ -31,10 +32,10 @@ class CommaSeparatedString(click.ParamType):
 
 @click.command(context_settings=dict(help_option_names=['-h', '--help']))
 @click.option(
-    '--user', '-u', type=str, required=True, envvar='DHUS_USER',
+    '--user', '-u', type=str, envvar='DHUS_USER', default=None,
     help='Username (or environment variable DHUS_USER is set)')
 @click.option(
-    '--password', '-p', type=str, required=True, envvar='DHUS_PASSWORD',
+    '--password', '-p', type=str, envvar='DHUS_PASSWORD', default=None,
     help='Password (or environment variable DHUS_PASSWORD is set)')
 @click.option(
     '--url', type=str, default='https://scihub.copernicus.eu/apihub/', envvar='DHUS_URL',
@@ -102,6 +103,16 @@ def cli(user, password, geometry, start, end, uuid, name, download, sentinel, pr
     """
 
     _set_logger_handler()
+
+    if user is None or password is None:
+        try:
+            user, password = requests.utils.get_netrc_auth(url)
+        except TypeError:
+            pass
+
+    if user is None or password is None:
+        raise click.UsageError('Missing --user and --password. Please see docs '
+                               'for environment variables and .netrc support.')
 
     api = SentinelAPI(user, password, url)
 

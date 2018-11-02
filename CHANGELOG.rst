@@ -19,7 +19,7 @@ Added
 
 Changed
 ~~~~~~~
-* 
+* Add support in the CLI for reading credentials from `~/.netrc` and document existing functionality in the API (#90)
 
 Deprecated
 ~~~~~~~~~~
