@@ -9,7 +9,7 @@ All notable changes to ``sentinelsat`` will be listed here.
 Added
 ~~~~~
 * Query keywords with interval ranges now also support single-sided ranges by using ``None`` or ``'*'`` to denote no bound,
-  for example ``query(date=(None, 'NOW-1YEAR'))``. If both bounds are set to unlimited, the keyword will be removed 
+  for example ``query(date=(None, 'NOW-1YEAR'))``. If both bounds are set to unlimited, the keyword will be removed
   from the query. (#210)
 * Raise an exception in case of duplicate keywords present in a query. Case is ignored to match the server-side behavior. (#210)
 * Support for Python 3.7
@@ -32,6 +32,7 @@ Fixed
 * Fixed typo for ``area_relation`` query parameter documentation from ``'Intersection'`` to ``'Intersects'``. (#225 @scottstanie)
 * Updated ``check_query_length()`` logic to match the changed server-side behavior. (#230)
 * Clarify usage of GeoJSON files with CLI in docs (#229 @psal93)
+* ``to_geopandas()`` now returns an empty GeoDataFrame for an empty product list input.
 
 Development Changes
 ~~~~~~~~~~~~~~~~~~~

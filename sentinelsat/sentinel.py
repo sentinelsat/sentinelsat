@@ -373,8 +373,11 @@ class SentinelAPI:
         except ImportError:
             raise ImportError("to_geodataframe requires the optional dependencies GeoPandas and Shapely.")
 
-        df = SentinelAPI.to_dataframe(products)
         crs = {'init': 'epsg:4326'}  # WGS84
+        if len(products) == 0:
+            return gpd.GeoDataFrame(crs=crs)
+
+        df = SentinelAPI.to_dataframe(products)
         geometry = [shapely.wkt.loads(fp) for fp in df['footprint']]
         # remove useless columns
         df.drop(['footprint', 'gmlfootprint'], axis=1, inplace=True)
