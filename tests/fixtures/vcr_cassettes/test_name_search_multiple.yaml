@@ -1,0 +1,51 @@
+interactions:
+- request:
+    body: q=identifier%3A%28S1B_IW_GRDH_1SDV_20181007T164414_20181007T164439_013049_0181B7_345E+OR+S1B_IW_GRDH_1SDV_20181007T164349_20181007T164414_013049_0181B7_A8E3%29
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['159']
+      Content-Type: [application/x-www-form-urlencoded; charset=UTF-8]
+      User-Agent: [sentinelsat/0.12.2]
+    method: POST
+    uri: https://scihub.copernicus.eu/apihub/search?format=json&rows=100&start=0
+  response:
+    body: {string: '{"feed":{"xmlns:opensearch":"http://a9.com/-/spec/opensearch/1.1/","xmlns":"http://www.w3.org/2005/Atom","title":"Sentinels
+        Scientific Data Hub search results for: identifier:(S1B_IW_GRDH_1SDV_20181007T164414_20181007T164439_013049_0181B7_345E
+        OR S1B_IW_GRDH_1SDV_20181007T164349_20181007T164414_013049_0181B7_A8E3)","subtitle":"Displaying
+        2 results. Request done in 0.001 seconds.","updated":"2018-10-11T10:59:37.806Z","author":{"name":"Sentinels
+        Scientific Data Hub"},"id":"https://scihub.copernicus.eu/apihub/search?q=identifier:(S1B_IW_GRDH_1SDV_20181007T164414_20181007T164439_013049_0181B7_345E
+        OR S1B_IW_GRDH_1SDV_20181007T164349_20181007T164414_013049_0181B7_A8E3)","opensearch:totalResults":"2","opensearch:startIndex":"0","opensearch:itemsPerPage":"100","opensearch:Query":{"role":"request","searchTerms":"identifier:(S1B_IW_GRDH_1SDV_20181007T164414_20181007T164439_013049_0181B7_345E
+        OR S1B_IW_GRDH_1SDV_20181007T164349_20181007T164414_013049_0181B7_A8E3)","startPage":"1"},"link":[{"rel":"self","type":"application/atom+xml","href":"https://scihub.copernicus.eu/apihub/search?q=identifier:(S1B_IW_GRDH_1SDV_20181007T164414_20181007T164439_013049_0181B7_345E
+        OR S1B_IW_GRDH_1SDV_20181007T164349_20181007T164414_013049_0181B7_A8E3)&start=0&rows=100"},{"rel":"first","type":"application/atom+xml","href":"https://scihub.copernicus.eu/apihub/search?q=identifier:(S1B_IW_GRDH_1SDV_20181007T164414_20181007T164439_013049_0181B7_345E
+        OR S1B_IW_GRDH_1SDV_20181007T164349_20181007T164414_013049_0181B7_A8E3)&start=0&rows=100"},{"rel":"last","type":"application/atom+xml","href":"https://scihub.copernicus.eu/apihub/search?q=identifier:(S1B_IW_GRDH_1SDV_20181007T164414_20181007T164439_013049_0181B7_345E
+        OR S1B_IW_GRDH_1SDV_20181007T164349_20181007T164414_013049_0181B7_A8E3)&start=1&rows=100"},{"rel":"search","type":"application/opensearchdescription+xml","href":"opensearch_description.xml"}],"entry":[{"title":"S1B_IW_GRDH_1SDV_20181007T164349_20181007T164414_013049_0181B7_A8E3","link":[{"href":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''b2ab53c9-abc4-4481-a9bf-1129f54c9707'')/$value"},{"rel":"alternative","href":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''b2ab53c9-abc4-4481-a9bf-1129f54c9707'')/"},{"rel":"icon","href":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''b2ab53c9-abc4-4481-a9bf-1129f54c9707'')/Products(''Quicklook'')/$value"}],"id":"b2ab53c9-abc4-4481-a9bf-1129f54c9707","summary":"Date:
+        2018-10-07T16:43:49.773Z, Instrument: SAR-C SAR, Mode: VV VH, Satellite: Sentinel-1,
+        Size: 1.65 GB","date":[{"name":"ingestiondate","content":"2018-10-07T20:23:18.692Z"},{"name":"beginposition","content":"2018-10-07T16:43:49.773Z"},{"name":"endposition","content":"2018-10-07T16:44:14.773Z"}],"int":[{"name":"missiondatatakeid","content":"98743"},{"name":"orbitnumber","content":"13049"},{"name":"lastorbitnumber","content":"13049"},{"name":"relativeorbitnumber","content":"73"},{"name":"lastrelativeorbitnumber","content":"73"},{"name":"slicenumber","content":"16"}],"str":[{"name":"acquisitiontype","content":"NOMINAL"},{"name":"filename","content":"S1B_IW_GRDH_1SDV_20181007T164349_20181007T164414_013049_0181B7_A8E3.SAFE"},{"name":"gmlfootprint","content":"<gml:Polygon
+        srsName=\"http://www.opengis.net/gml/srs/epsg.xml#4326\" xmlns:gml=\"http://www.opengis.net/gml\">\n   <gml:outerBoundaryIs>\n      <gml:LinearRing>\n         <gml:coordinates>55.026794,12.979671
+        55.446896,17.079388 53.953140,17.472992 53.536812,13.518810 55.026794,12.979671</gml:coordinates>\n      </gml:LinearRing>\n   </gml:outerBoundaryIs>\n</gml:Polygon>"},{"name":"format","content":"SAFE"},{"name":"identifier","content":"S1B_IW_GRDH_1SDV_20181007T164349_20181007T164414_013049_0181B7_A8E3"},{"name":"instrumentshortname","content":"SAR-C
+        SAR"},{"name":"sensoroperationalmode","content":"IW"},{"name":"instrumentname","content":"Synthetic
+        Aperture Radar (C-band)"},{"name":"swathidentifier","content":"IW"},{"name":"footprint","content":"POLYGON
+        ((12.979671 55.026794,17.079388 55.446896,17.472992 53.953140,13.518810 53.536812,12.979671
+        55.026794))"},{"name":"platformidentifier","content":"2016-025A"},{"name":"orbitdirection","content":"ASCENDING"},{"name":"polarisationmode","content":"VV
+        VH"},{"name":"productclass","content":"S"},{"name":"producttype","content":"GRD"},{"name":"platformname","content":"Sentinel-1"},{"name":"size","content":"1.65
+        GB"},{"name":"status","content":"ARCHIVED"},{"name":"timeliness","content":"Fast-24h"},{"name":"uuid","content":"b2ab53c9-abc4-4481-a9bf-1129f54c9707"}]},{"title":"S1B_IW_GRDH_1SDV_20181007T164414_20181007T164439_013049_0181B7_345E","link":[{"href":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''9e99eaa6-711e-40c3-aae5-83ea2048949d'')/$value"},{"rel":"alternative","href":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''9e99eaa6-711e-40c3-aae5-83ea2048949d'')/"},{"rel":"icon","href":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''9e99eaa6-711e-40c3-aae5-83ea2048949d'')/Products(''Quicklook'')/$value"}],"id":"9e99eaa6-711e-40c3-aae5-83ea2048949d","summary":"Date:
+        2018-10-07T16:44:14.774Z, Instrument: SAR-C SAR, Mode: VV VH, Satellite: Sentinel-1,
+        Size: 1.65 GB","date":[{"name":"ingestiondate","content":"2018-10-07T19:58:04.778Z"},{"name":"beginposition","content":"2018-10-07T16:44:14.774Z"},{"name":"endposition","content":"2018-10-07T16:44:39.772Z"}],"int":[{"name":"missiondatatakeid","content":"98743"},{"name":"orbitnumber","content":"13049"},{"name":"lastorbitnumber","content":"13049"},{"name":"relativeorbitnumber","content":"73"},{"name":"lastrelativeorbitnumber","content":"73"},{"name":"slicenumber","content":"17"}],"str":[{"name":"acquisitiontype","content":"NOMINAL"},{"name":"filename","content":"S1B_IW_GRDH_1SDV_20181007T164414_20181007T164439_013049_0181B7_345E.SAFE"},{"name":"gmlfootprint","content":"<gml:Polygon
+        srsName=\"http://www.opengis.net/gml/srs/epsg.xml#4326\" xmlns:gml=\"http://www.opengis.net/gml\">\n   <gml:outerBoundaryIs>\n      <gml:LinearRing>\n         <gml:coordinates>56.515373,12.414287
+        56.940186,16.674940 55.447117,17.080927 55.026886,12.979637 56.515373,12.414287</gml:coordinates>\n      </gml:LinearRing>\n   </gml:outerBoundaryIs>\n</gml:Polygon>"},{"name":"format","content":"SAFE"},{"name":"identifier","content":"S1B_IW_GRDH_1SDV_20181007T164414_20181007T164439_013049_0181B7_345E"},{"name":"instrumentshortname","content":"SAR-C
+        SAR"},{"name":"sensoroperationalmode","content":"IW"},{"name":"instrumentname","content":"Synthetic
+        Aperture Radar (C-band)"},{"name":"swathidentifier","content":"IW"},{"name":"footprint","content":"POLYGON
+        ((12.414287 56.515373,16.674940 56.940186,17.080927 55.447117,12.979637 55.026886,12.414287
+        56.515373))"},{"name":"platformidentifier","content":"2016-025A"},{"name":"orbitdirection","content":"ASCENDING"},{"name":"polarisationmode","content":"VV
+        VH"},{"name":"productclass","content":"S"},{"name":"producttype","content":"GRD"},{"name":"platformname","content":"Sentinel-1"},{"name":"size","content":"1.65
+        GB"},{"name":"status","content":"ARCHIVED"},{"name":"timeliness","content":"Fast-24h"},{"name":"uuid","content":"9e99eaa6-711e-40c3-aae5-83ea2048949d"}]}]}}'}
+    headers:
+      Content-Type: [application/json]
+      Pragma: [no-cache]
+      Server: [Apache-Coyote/1.1]
+      Vary: [Accept-Encoding]
+      content-length: ['7159']
+    status: {code: 200, message: OK}
+version: 1

@@ -1,0 +1,25 @@
+interactions:
+- request:
+    body: q=identifier%3A%28%29
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['21']
+      Content-Type: [application/x-www-form-urlencoded; charset=UTF-8]
+      User-Agent: [sentinelsat/0.12.2]
+    method: POST
+    uri: https://scihub.copernicus.eu/apihub/search?format=json&rows=100&start=0
+  response:
+    body: {string: '{"feed":{"xmlns:opensearch":"http://a9.com/-/spec/opensearch/1.1/","xmlns":"http://www.w3.org/2005/Atom","title":"Sentinels
+        Scientific Data Hub search results for: identifier:()","subtitle":"Displaying  results.
+        Request done in 0.002 seconds.","updated":"2018-10-11T11:21:24.489Z","author":{"name":"Sentinels
+        Scientific Data Hub"},"id":"https://scihub.copernicus.eu/apihub/search?q=identifier:()","opensearch:totalResults":null,"opensearch:startIndex":"0","opensearch:itemsPerPage":"100","opensearch:Query":{"role":"request","searchTerms":"identifier:()","startPage":"1"},"link":[{"rel":"self","type":"application/atom+xml","href":"https://scihub.copernicus.eu/apihub/search?q=identifier:()&start=0&rows=100"},{"rel":"first","type":"application/atom+xml","href":"https://scihub.copernicus.eu/apihub/search?q=identifier:()&start=0&rows=100"},{"rel":"last","type":"application/atom+xml","href":"https://scihub.copernicus.eu/apihub/search?q=identifier:()&start=NaN&rows=100"},{"rel":"search","type":"application/opensearchdescription+xml","href":"opensearch_description.xml"}]}}'}
+    headers:
+      Content-Type: [application/json]
+      Pragma: [no-cache]
+      Server: [Apache-Coyote/1.1]
+      Vary: [Accept-Encoding]
+      content-length: ['1075']
+    status: {code: 200, message: OK}
+version: 1

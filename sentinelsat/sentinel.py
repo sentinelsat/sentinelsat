@@ -31,8 +31,10 @@ class SentinelAPI:
     ----------
     user : string
         username for DataHub
+        set to None to use ~/.netrc
     password : string
         password for DataHub
+        set to None to use ~/.netrc
     api_url : string, optional
         URL of the DataHub
         defaults to 'https://scihub.copernicus.eu/apihub'
@@ -164,7 +166,7 @@ class SentinelAPI:
             # Escape spaces, where appropriate
             if isinstance(value, string_types):
                 value = value.strip()
-                if not any(value.startswith(s[0]) and value.endswith(s[1]) for s in ['[]', '{}', '//']):
+                if not any(value.startswith(s[0]) and value.endswith(s[1]) for s in ['[]', '{}', '//', '()']):
                     value = re.sub(r'\s', r'\ ', value, re.M)
 
             # Handle date keywords
@@ -371,8 +373,11 @@ class SentinelAPI:
         except ImportError:
             raise ImportError("to_geodataframe requires the optional dependencies GeoPandas and Shapely.")
 
-        df = SentinelAPI.to_dataframe(products)
         crs = {'init': 'epsg:4326'}  # WGS84
+        if len(products) == 0:
+            return gpd.GeoDataFrame(crs=crs)
+
+        df = SentinelAPI.to_dataframe(products)
         geometry = [shapely.wkt.loads(fp) for fp in df['footprint']]
         # remove useless columns
         df.drop(['footprint', 'gmlfootprint'], axis=1, inplace=True)

@@ -3,6 +3,7 @@ import os
 
 import click
 import geojson as gj
+import requests.utils
 
 from sentinelsat import __version__ as sentinelsat_version
 from sentinelsat.sentinel import SentinelAPI, SentinelAPIError, geojson_to_wkt, read_geojson
@@ -19,12 +20,22 @@ def _set_logger_handler(level='INFO'):
     logger.addHandler(h)
 
 
+class CommaSeparatedString(click.ParamType):
+    name = 'comma-string'
+
+    def convert(self, value, param, ctx):
+        if value:
+            return value.split(',')
+        else:
+            return value
+
+
 @click.command(context_settings=dict(help_option_names=['-h', '--help']))
 @click.option(
-    '--user', '-u', type=str, required=True, envvar='DHUS_USER',
+    '--user', '-u', type=str, envvar='DHUS_USER', default=None,
     help='Username (or environment variable DHUS_USER is set)')
 @click.option(
-    '--password', '-p', type=str, required=True, envvar='DHUS_PASSWORD',
+    '--password', '-p', type=str, envvar='DHUS_PASSWORD', default=None,
     help='Password (or environment variable DHUS_PASSWORD is set)')
 @click.option(
     '--url', type=str, default='https://scihub.copernicus.eu/apihub/', envvar='DHUS_URL',
@@ -41,10 +52,10 @@ def _set_logger_handler(level='INFO'):
     '--geometry', '-g', type=click.Path(exists=True),
     help='Search area geometry as GeoJSON file.')
 @click.option(
-    '--uuid', type=str,
-    help='Select a specific product UUID instead of a query. Multiple UUIDs can separated by commas.')
+    '--uuid', type=CommaSeparatedString(), default=None,
+    help='Select a specific product UUID instead of a query. Multiple UUIDs can separated by comma.')
 @click.option(
-    '--name', type=str,
+    '--name', type=CommaSeparatedString(), default=None,
     help='Select specific product(s) by filename. Supports wildcards.')
 @click.option(
     '--sentinel', type=click.Choice(['1', '2', '3']),
@@ -72,7 +83,7 @@ def _set_logger_handler(level='INFO'):
     '--path', type=click.Path(exists=True), default='.',
     help='Set the path where the files will be saved.')
 @click.option(
-    '--query', '-q', type=str, default=None,
+    '--query', '-q', type=CommaSeparatedString(), default=None,
     help="""Extra search keywords you want to use in the query. Separate
         keywords with comma. Example: 'producttype=GRD,polarisationmode=HH'.
         """)
@@ -93,6 +104,16 @@ def cli(user, password, geometry, start, end, uuid, name, download, sentinel, pr
 
     _set_logger_handler()
 
+    if user is None or password is None:
+        try:
+            user, password = requests.utils.get_netrc_auth(url)
+        except TypeError:
+            pass
+
+    if user is None or password is None:
+        raise click.UsageError('Missing --user and --password. Please see docs '
+                               'for environment variables and .netrc support.')
+
     api = SentinelAPI(user, password, url)
 
     search_kwargs = {}
@@ -112,13 +133,13 @@ def cli(user, password, geometry, start, end, uuid, name, download, sentinel, pr
         search_kwargs["cloudcoverpercentage"] = (0, cloud)
 
     if query is not None:
-        search_kwargs.update((x.split('=') for x in query.split(',')))
+        search_kwargs.update((x.split('=') for x in query))
 
     if geometry is not None:
         search_kwargs['area'] = geojson_to_wkt(read_geojson(geometry))
 
     if uuid is not None:
-        uuid_list = [x.strip() for x in uuid.split(',')]
+        uuid_list = [x.strip() for x in uuid]
         products = {}
         for productid in uuid_list:
             try:
@@ -130,7 +151,7 @@ def cli(user, password, geometry, start, end, uuid, name, download, sentinel, pr
                 else:
                     raise
     elif name is not None:
-        search_kwargs["identifier"] = name
+        search_kwargs["identifier"] = name[0] if len(name) == 1 else '(' + ' OR '.join(name) + ')'
         products = api.query(order_by=order_by, limit=limit, **search_kwargs)
     else:
         start = start or "19000101"
