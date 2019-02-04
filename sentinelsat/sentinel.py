@@ -40,6 +40,9 @@ class SentinelAPI:
         defaults to 'https://scihub.copernicus.eu/apihub'
     show_progressbars : bool
         Whether progressbars should be shown or not, e.g. during download. Defaults to True.
+    timeout : float or tuple, optional
+        How long to wait for DataHub response (in seconds).
+        Tuple (connect, read) allowed.
 
     Attributes
     ----------
@@ -50,12 +53,14 @@ class SentinelAPI:
     page_size : int
         Number of results per query page.
         Current value: 100 (maximum allowed on ApiHub)
+    timeout : float or tuple
+        How long to wait for DataHub response (in seconds).
     """
 
     logger = logging.getLogger('sentinelsat.SentinelAPI')
 
     def __init__(self, user, password, api_url='https://scihub.copernicus.eu/apihub/',
-                 show_progressbars=True):
+                 show_progressbars=True, timeout=None):
         self.session = requests.Session()
         if user and password:
             self.session.auth = (user, password)
@@ -64,6 +69,7 @@ class SentinelAPI:
         self.user_agent = 'sentinelsat/' + sentinelsat_version
         self.session.headers['User-Agent'] = self.user_agent
         self.show_progressbars = show_progressbars
+        self.timeout = timeout
         # For unit tests
         self._last_query = None
         self._last_response = None
@@ -293,7 +299,8 @@ class SentinelAPI:
         # load query results
         url = self._format_url(order_by, limit, offset)
         response = self.session.post(url, {'q': query}, auth=self.session.auth,
-                                     headers={'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'})
+                                     headers={'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},
+                                     timeout=self.timeout)
         _check_scihub_response(response)
 
         # store last status code (for testing)
