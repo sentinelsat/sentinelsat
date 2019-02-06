@@ -37,7 +37,7 @@ class SentinelAPI:
         set to None to use ~/.netrc
     api_url : string, optional
         URL of the DataHub
-        defaults to 'https://scihub.copernicus.eu/apihub'
+        defaults to 'https://scihub.copernicus.eu/dhus/'
     show_progressbars : bool
         Whether progressbars should be shown or not, e.g. during download. Defaults to True.
 
@@ -54,7 +54,7 @@ class SentinelAPI:
 
     logger = logging.getLogger('sentinelsat.SentinelAPI')
 
-    def __init__(self, user, password, api_url='https://scihub.copernicus.eu/apihub/',
+    def __init__(self, user, password, api_url='https://scihub.copernicus.eu/dhus/',
                  show_progressbars=True):
         self.session = requests.Session()
         if user and password:
