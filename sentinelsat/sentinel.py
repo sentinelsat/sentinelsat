@@ -764,7 +764,8 @@ class SentinelAPI:
         else:
             already_downloaded_bytes = 0
         downloaded_bytes = 0
-        with closing(session.get(url, stream=True, auth=session.auth, headers=headers)) as r, \
+        with closing(session.get(url, stream=True, auth=session.auth,
+                                 headers=headers, timeout=self.timeout)) as r, \
                 closing(self._tqdm(desc="Downloading", total=file_size, unit="B",
                                    unit_scale=True, initial=already_downloaded_bytes)) as progress:
             _check_scihub_response(r, test_json=False)
