@@ -696,8 +696,6 @@ def test_scihub_unresponsive():
 
     api = SentinelAPI("mock_user", "mock_password", timeout=timeout)
 
-    assert api.timeout == timeout
-
     with requests_mock.mock() as rqst:
         rqst.request(requests_mock.ANY, requests_mock.ANY, exc=requests.exceptions.ConnectTimeout)
         with pytest.raises(requests.exceptions.ConnectTimeout):
