@@ -422,7 +422,8 @@ class SentinelAPI:
         url = urljoin(self.api_url, u"odata/v1/Products('{}')?$format=json".format(id))
         if full:
             url += '&$expand=Attributes'
-        response = self.session.get(url, auth=self.session.auth)
+        response = self.session.get(url, auth=self.session.auth,
+                                    timeout=self.timeout)
         _check_scihub_response(response)
         values = _parse_odata_response(response.json()['d'])
         return values
