@@ -37,7 +37,7 @@ class SentinelAPI:
         set to None to use ~/.netrc
     api_url : string, optional
         URL of the DataHub
-        defaults to 'https://scihub.copernicus.eu/apihub'
+        defaults to 'https://scihub.copernicus.eu/dhus/'
     show_progressbars : bool
         Whether progressbars should be shown or not, e.g. during download. Defaults to True.
     timeout : float or tuple, optional
@@ -52,14 +52,14 @@ class SentinelAPI:
         URL to the DataHub
     page_size : int
         Number of results per query page.
-        Current value: 100 (maximum allowed on ApiHub)
+        Current value: 100 (maximum allowed on DHuS)
     timeout : float or tuple
         How long to wait for DataHub response (in seconds).
     """
 
     logger = logging.getLogger('sentinelsat.SentinelAPI')
 
-    def __init__(self, user, password, api_url='https://scihub.copernicus.eu/apihub/',
+    def __init__(self, user, password, api_url='https://scihub.copernicus.eu/dhus/',
                  show_progressbars=True, timeout=None):
         self.session = requests.Session()
         if user and password:

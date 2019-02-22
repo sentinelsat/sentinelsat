@@ -38,9 +38,9 @@ class CommaSeparatedString(click.ParamType):
     '--password', '-p', type=str, envvar='DHUS_PASSWORD', default=None,
     help='Password (or environment variable DHUS_PASSWORD is set)')
 @click.option(
-    '--url', type=str, default='https://scihub.copernicus.eu/apihub/', envvar='DHUS_URL',
+    '--url', type=str, default='https://scihub.copernicus.eu/dhus/', envvar='DHUS_URL',
     help="""Define API URL. Default URL is
-        'https://scihub.copernicus.eu/apihub/' (or environment variable DHUS_URL).
+        'https://scihub.copernicus.eu/dhus/' (or environment variable DHUS_URL).
         """)
 @click.option(
     '--start', '-s', type=str, default='NOW-1DAY',
