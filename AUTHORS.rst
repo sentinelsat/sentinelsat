@@ -25,3 +25,4 @@ Contributors
 * Scott Staniewicz `@scottstanie <https://github.com/scottstanie>`_
 * Andrey Raspopov `@Andrey-Raspopov <https://github.com/Andrey-Raspopov>`_
 * Patrick Salembier `@psal93 <https://github.com/psal93>`_
+* Viktor Bahr `@viktorbahr <https://github.com/viktorbahr>`_
