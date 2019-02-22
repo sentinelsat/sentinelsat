@@ -16,6 +16,7 @@ Added
 * Support for GeoJSON files with a single ``Feature`` without a ``FeatureCollection.`` (#224 @scottstanie)
 * Added support for Unicode symbols in search queries. (#230)
 * Raise ValueError exception if longitude is outside [-180, 180] or latitude is outside [-90, 90] (#236, #218 @Andrey-Raspopov)
+* optional ``timeout`` attribute to avoid indefinite wait on response from the server (#256, @viktorbahr)
 
 Changed
 ~~~~~~~

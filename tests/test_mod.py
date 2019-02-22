@@ -690,20 +690,38 @@ def test_get_product_odata_scihub_down():
 
 @pytest.mark.mock_api
 def test_scihub_unresponsive():
-    api = SentinelAPI("mock_user", "mock_password")
+    timeout_connect = 6
+    timeout_read = 6.6
+    timeout = (timeout_connect, timeout_read)
+
+    api = SentinelAPI("mock_user", "mock_password", timeout=timeout)
 
     with requests_mock.mock() as rqst:
         rqst.request(requests_mock.ANY, requests_mock.ANY, exc=requests.exceptions.ConnectTimeout)
-        with pytest.raises(requests.exceptions.Timeout):
+        with pytest.raises(requests.exceptions.ConnectTimeout):
             api.query(**_small_query)
 
-        with pytest.raises(requests.exceptions.Timeout):
+        with pytest.raises(requests.exceptions.ConnectTimeout):
             api.get_product_odata('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')
 
-        with pytest.raises(requests.exceptions.Timeout):
+        with pytest.raises(requests.exceptions.ConnectTimeout):
             api.download('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')
 
-        with pytest.raises(requests.exceptions.Timeout):
+        with pytest.raises(requests.exceptions.ConnectTimeout):
+            api.download_all(['8df46c9e-a20c-43db-a19a-4240c2ed3b8b'])
+
+    with requests_mock.mock() as rqst:
+        rqst.request(requests_mock.ANY, requests_mock.ANY, exc=requests.exceptions.ReadTimeout)
+        with pytest.raises(requests.exceptions.ReadTimeout):
+            api.query(**_small_query)
+
+        with pytest.raises(requests.exceptions.ReadTimeout):
+            api.get_product_odata('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')
+
+        with pytest.raises(requests.exceptions.ReadTimeout):
+            api.download('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')
+
+        with pytest.raises(requests.exceptions.ReadTimeout):
             api.download_all(['8df46c9e-a20c-43db-a19a-4240c2ed3b8b'])
 
 
