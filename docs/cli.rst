@@ -104,7 +104,7 @@ Options:
 +----+---------------+------+--------------------------------------------------------------------------------------------+
 | -p | -\-password   | TEXT | Password [required] (or environment variable :envvar:`DHUS_PASSWORD`)                      |
 +----+---------------+------+--------------------------------------------------------------------------------------------+
-|    | -\-url        | TEXT | Define another API URL. Default URL is 'https://scihub.copernicus.eu/apihub/'.             |
+|    | -\-url        | TEXT | Define another API URL. Default URL is 'https://scihub.copernicus.eu/dhus/'.             |
 +----+---------------+------+--------------------------------------------------------------------------------------------+
 | -s | -\-start      | TEXT | Start date of the query in the format YYYYMMDD.                                            |
 +----+---------------+------+--------------------------------------------------------------------------------------------+

@@ -50,7 +50,7 @@ Valid search query keywords can be found at the `Copernicus Open Access Hub docu
 Authentication
 --------------
 
-The Copernicus Open Access Hub and probably most Data Hubs require authentication.
+The Copernicus Open Access Hub and most other Data Hubs require authentication.
 You can provide your credentials with :meth:`SentinelAPI(<your username>, <your password>)`. 
 Alternatively, you can use :meth:`SentinelAPI(None, None)` and enter your credentials in a 
 file `.netrc` in your user home directory in the following form:
@@ -152,9 +152,9 @@ OpenSearch example
                  'instrumentshortname': 'SAR-C SAR',
                  'lastorbitnumber': 16302,
                  'lastrelativeorbitnumber': 130,
-                 'link': "https://scihub.copernicus.eu/apihub/odata/v1/Products('04548172-c64a-418f-8e83-7a4d148adf1e')/$value",
-                 'link_alternative': "https://scihub.copernicus.eu/apihub/odata/v1/Products('04548172-c64a-418f-8e83-7a4d148adf1e')/",
-                 'link_icon': "https://scihub.copernicus.eu/apihub/odata/v1/Products('04548172-c64a-418f-8e83-7a4d148adf1e')/Products('Quicklook')/$value",
+                 'link': "https://scihub.copernicus.eu/dhus/odata/v1/Products('04548172-c64a-418f-8e83-7a4d148adf1e')/$value",
+                 'link_alternative': "https://scihub.copernicus.eu/dhus/odata/v1/Products('04548172-c64a-418f-8e83-7a4d148adf1e')/",
+                 'link_icon': "https://scihub.copernicus.eu/dhus/odata/v1/Products('04548172-c64a-418f-8e83-7a4d148adf1e')/Products('Quicklook')/$value",
                  'missiondatatakeid': 110481,
                  'orbitdirection': 'ASCENDING',
                  'orbitnumber': 16302,
@@ -190,7 +190,7 @@ so it is not requested by default.
    'md5': 'E5855D1C974171D33EE4BC08B9D221AE',
    'size': 4633501134,
    'title': 'S1A_IW_SLC__1SDV_20170425T155612_20170425T155639_016302_01AF91_46FF',
-   'url': "https://scihub.copernicus.eu/apihub/odata/v1/Products('04548172-c64a-418f-8e83-7a4d148adf1e')/$value"}
+   'url': "https://scihub.copernicus.eu/dhus/odata/v1/Products('04548172-c64a-418f-8e83-7a4d148adf1e')/$value"}
 
 
 With `full=True` we receive the full metadata available for the product.
@@ -251,7 +251,7 @@ With `full=True` we receive the full metadata available for the product.
    'md5': 'E5855D1C974171D33EE4BC08B9D221AE',
    'size': 4633501134,
    'title': 'S1A_IW_SLC__1SDV_20170425T155612_20170425T155639_016302_01AF91_46FF',
-   'url': "https://scihub.copernicus.eu/apihub/odata/v1/Products('04548172-c64a-418f-8e83-7a4d148adf1e')/$value"}
+   'url': "https://scihub.copernicus.eu/dhus/odata/v1/Products('04548172-c64a-418f-8e83-7a4d148adf1e')/$value"}
 
 
 Logging
@@ -316,12 +316,11 @@ To search for recent Sentinel 2 imagery by MGRS tile, use the `tileid` parameter
   api.download_all(products)
 
 NB: The `tileid` parameter only works for products from April 2017 onward due to
-missing metadata in SciHub's DHuS catalogue. Before that, but only from
-December 2016 onward (i.e. for single-tile products), you can use a `filename` pattern instead:
+missing metadata in SciHub's DHuS catalogue. Before that you can use a `filename` pattern instead:
 
 .. code-block:: python
 
-  kw['filename'] = '*_T{}_*'.format(tile)  # products after 2016-12-01
+  kw['filename'] = '*_T{}_*'.format(tile)  # products after 2016-12-01 or reprocessed to single-tile package
 
 API Reference
 -------------
