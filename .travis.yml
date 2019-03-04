@@ -13,7 +13,7 @@ jobs:
       - python: 3.4
       - python: 3.5
       - python: 3.6
-      - python: 3.7  # Python 3.7 requires xenial, instead of Travis default trusty 
+      - python: 3.7  # Python 3.7 requires xenial, instead of Travis default trusty
         dist: xenial
         sudo: true
 branches:
@@ -21,9 +21,6 @@ branches:
   - master
 before_install:
 - pip install -U pip
-# Workaround for fiona and pyproj issues in Python 3.7
-- if [[ $TRAVIS_PYTHON_VERSION == 3.7 ]]; then pip install -U cython; fi
-- if [[ $TRAVIS_PYTHON_VERSION == 3.7 ]]; then pip install -U git+https://github.com/jswhit/pyproj.git; fi
 install:
 - pip install codecov
 # skip Pandas on Python <3.4
@@ -41,5 +38,5 @@ notifications:
     urls:
       - https://webhooks.gitter.im/e/6a12d55b44cdadee9314
     on_success: always
-    on_failure: always  
+    on_failure: always
     on_start: never
