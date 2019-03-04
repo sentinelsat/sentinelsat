@@ -11,8 +11,8 @@ import pytest
 import requests
 import requests_mock
 
-from sentinelsat import InvalidChecksumError, SentinelAPI, SentinelAPIError, format_query_date, geojson_to_wkt, \
-    read_geojson
+from sentinelsat import InvalidChecksumError, SentinelAPI, SentinelAPIError, SentinelAPILTAError, \
+    format_query_date, geojson_to_wkt, read_geojson
 from sentinelsat.sentinel import _format_order_by, _parse_odata_timestamp, _parse_opensearch_response
 from .shared import FIXTURES_DIR, my_vcr
 
@@ -733,6 +733,44 @@ def test_scihub_unresponsive():
 
         with pytest.raises(requests.exceptions.ReadTimeout):
             api.download_all(['8df46c9e-a20c-43db-a19a-4240c2ed3b8b'])
+
+
+def test_trigger_lta():
+    """ trigger retrieval form long time archive """
+    api = SentinelAPI("mock_user", "mock_password")
+
+    request_url = "https://scihub.copernicus.eu/apihub/odata/v1/Products('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')/$value"
+
+    with requests_mock.mock() as rqst:
+        rqst.get(
+            request_url,
+            text="Mock trigger accepted", status_code=202
+        )
+        assert api._trigger_offline_retrieval(request_url) == 202
+
+    with requests_mock.mock() as rqst:
+        rqst.get(
+            request_url,
+            text="Mock trigger not accepted", status_code=503
+        )
+        with pytest.raises(SentinelAPILTAError) as excinfo:
+            api._trigger_offline_retrieval(request_url)
+
+    with requests_mock.mock() as rqst:
+        rqst.get(
+            request_url,
+            text="Mock trigger exceeds user quota", status_code=403
+        )
+        with pytest.raises(SentinelAPILTAError) as excinfo:
+            api._trigger_offline_retrieval(request_url)
+
+    with requests_mock.mock() as rqst:
+        rqst.get(
+            request_url,
+            text="Mock trigger downloading an offline file", status_code=500
+        )
+        with pytest.raises(SentinelAPILTAError) as excinfo:
+            api._trigger_offline_retrieval(request_url)
 
 
 @pytest.mark.mock_api
