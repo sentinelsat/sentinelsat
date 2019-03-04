@@ -1058,7 +1058,10 @@ def _parse_odata_response(product):
         product['Checksum']['Algorithm'].lower(): product['Checksum']['Value'],
         'date': _parse_odata_timestamp(product['ContentDate']['Start']),
         'footprint': _parse_gml_footprint(product["ContentGeometry"]),
-        'url': product['__metadata']['media_src']
+        'url': product['__metadata']['media_src'],
+        'Online': product['Online'],
+        'Creation Date': _parse_odata_timestamp(product['CreationDate']),
+        'Ingestion Date': _parse_odata_timestamp(product['IngestionDate']),
     }
     # Parse the extended metadata, if provided
     converters = [int, float, _parse_iso_date]
