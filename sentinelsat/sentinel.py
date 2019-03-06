@@ -444,7 +444,6 @@ class SentinelAPI:
         https://scihub.copernicus.eu/userguide/LongTermArchive
 
         """
-        # wrapping in closing no longer necessary https://github.com/kennethreitz/requests/pull/4137
         with self.session.get(url, auth=self.session.auth, timeout=self.timeout) as r:
             # check https://scihub.copernicus.eu/userguide/LongTermArchive#HTTP_Status_codes
             if r.status_code == 202:
@@ -616,9 +615,13 @@ class SentinelAPI:
             self.logger.info("%s/%s products downloaded", i + 1, len(product_ids))
         failed = set(products) - set(return_values)
 
+        # split up sucessfully processed products into downloaded and only triggered retrieval from the LTA
+        triggered = OrderedDict([(k, v) for k, v in return_values.items() if v['Online'] is False])
+        downloaded = OrderedDict([(k, v) for k, v in return_values.items() if v['Online'] is True])
+
         if len(failed) == len(product_ids) and last_exception is not None:
             raise last_exception
-        return return_values, failed
+        return downloaded, triggered, failed
 
     @staticmethod
     def get_products_size(products):

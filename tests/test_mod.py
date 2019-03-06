@@ -735,8 +735,7 @@ def test_scihub_unresponsive():
             api.download_all(['8df46c9e-a20c-43db-a19a-4240c2ed3b8b'])
 
 
-def test_trigger_lta():
-    """ trigger retrieval form long time archive """
+def test_trigger_lta_accepted():
     api = SentinelAPI("mock_user", "mock_password")
 
     request_url = "https://scihub.copernicus.eu/apihub/odata/v1/Products('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')/$value"
@@ -748,6 +747,12 @@ def test_trigger_lta():
         )
         assert api._trigger_offline_retrieval(request_url) == 202
 
+
+def test_trigger_lta_not_accepted():
+    api = SentinelAPI("mock_user", "mock_password")
+
+    request_url = "https://scihub.copernicus.eu/apihub/odata/v1/Products('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')/$value"
+
     with requests_mock.mock() as rqst:
         rqst.get(
             request_url,
@@ -756,6 +761,11 @@ def test_trigger_lta():
         with pytest.raises(SentinelAPILTAError) as excinfo:
             api._trigger_offline_retrieval(request_url)
 
+
+def test_trigger_lta_exceeded_quota():
+    api = SentinelAPI("mock_user", "mock_password")
+
+    request_url = "https://scihub.copernicus.eu/apihub/odata/v1/Products('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')/$value"
     with requests_mock.mock() as rqst:
         rqst.get(
             request_url,
@@ -764,6 +774,11 @@ def test_trigger_lta():
         with pytest.raises(SentinelAPILTAError) as excinfo:
             api._trigger_offline_retrieval(request_url)
 
+
+def test_trigger_lta_offline_file():
+    api = SentinelAPI("mock_user", "mock_password")
+
+    request_url = "https://scihub.copernicus.eu/apihub/odata/v1/Products('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')/$value"
     with requests_mock.mock() as rqst:
         rqst.get(
             request_url,
@@ -1059,8 +1074,9 @@ def test_download_all(tmpdir):
     ]
 
     # Download normally
-    product_infos, failed_downloads = api.download_all(ids, str(tmpdir))
+    product_infos, triggered, failed_downloads = api.download_all(ids, str(tmpdir))
     assert len(failed_downloads) == 0
+    assert len(triggered) == 0
     assert len(product_infos) == len(ids)
     for product_id, product_info in product_infos.items():
         pypath = py.path.local(product_info['path'])
@@ -1077,11 +1093,42 @@ def test_download_all(tmpdir):
         json = api.session.get(url).json()
         json["d"]["Checksum"]["Value"] = "00000000000000000000000000000000"
         rqst.get(url, json=json)
-        product_infos, failed_downloads = api.download_all(
+        product_infos, triggered, failed_downloads = api.download_all(
             ids, str(tmpdir), max_attempts=1, checksum=True)
         assert len(failed_downloads) == 1
         assert len(product_infos) + len(failed_downloads) == len(ids)
         assert id in failed_downloads
+
+    tmpdir.remove()
+
+
+@my_vcr.use_cassette
+@pytest.mark.scihub
+def test_download_all_lta(tmpdir):
+    api = SentinelAPI(**_api_auth)
+
+    # Corresponding IDs, same products as in test_download_all.
+    # But the Online flag of the first id is set to False in the unit test's vcr cassette
+    ids = [
+        "5618ce1b-923b-4df2-81d9-50b53e5aded9",
+        "d8340134-878f-4891-ba4f-4df54f1e3ab4",
+        "1f62a176-c980-41dc-b3a1-c735d660c910"
+    ]
+
+    product_infos, triggered, failed_downloads = api.download_all(ids, str(tmpdir))
+    assert len(failed_downloads) == 0
+    assert len(triggered) == 1
+    assert len(product_infos) == len(ids) - len(failed_downloads) - len(triggered)
+
+    # test downloaded products
+    for product_id, product_info in product_infos.items():
+        pypath = py.path.local(product_info['path'])
+        assert pypath.check(exists=1, file=1)
+        assert pypath.purebasename in product_info['title']
+        assert pypath.size() == product_info["size"]
+
+    # test triggered product 5618ce1b-923b-4df2-81d9-50b53e5aded9
+    assert triggered['5618ce1b-923b-4df2-81d9-50b53e5aded9']['Online'] == False
 
     tmpdir.remove()
 
