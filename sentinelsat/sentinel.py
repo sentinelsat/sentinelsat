@@ -5,13 +5,17 @@ import hashlib
 import logging
 import re
 import shutil
+import time
 import warnings
 import xml.etree.ElementTree as ET
 from collections import OrderedDict, defaultdict
 from contextlib import closing
+import concurrent.futures
 from datetime import date, datetime, timedelta
 from os import remove
 from os.path import basename, exists, getsize, join, splitext
+from threading import BoundedSemaphore
+from queue import Queue
 
 import geojson
 import geomet.wkt
@@ -22,7 +26,6 @@ from six.moves.urllib.parse import urljoin, quote_plus
 from tqdm import tqdm
 
 from . import __version__ as sentinelsat_version
-
 
 class SentinelAPI:
     """Class to connect to Copernicus Open Access Hub, search and download imagery.
@@ -428,37 +431,27 @@ class SentinelAPI:
         values = _parse_odata_response(response.json()['d'])
         return values
 
-    def _trigger_offline_retrieval(self, url):
-        """ Triggers retrieval of an offline product
 
-        Trying to download an offline product triggers its retrieval from the long term archive.
-        The returned HTTP status code conveys whether this was successful.
+    def is_online(self, id):
+        """Return whether a product is online
 
         Parameters
         ----------
-        url : string
-            URL for downloading the product
+        id : string
+            UUID of the product, e.g. 'a8dd0cfd-613e-45ce-868c-d79177b916ed'
 
-        Notes
-        -----
-        https://scihub.copernicus.eu/userguide/LongTermArchive
+        Returns
+        -------
+        bool
+            True if online, False if in LTA
 
         """
+        url = urljoin(self.api_url, u"odata/v1/Products('{}')/Online/$value".format(id))
         with self.session.get(url, auth=self.session.auth, timeout=self.timeout) as r:
-            # check https://scihub.copernicus.eu/userguide/LongTermArchive#HTTP_Status_codes
-            if r.status_code == 202:
-                self.logger.info("Accepted for retrieval")
-            elif r.status_code == 503:
-                self.logger.error("Request not accepted")
-                raise SentinelAPILTAError('Request for retrieval from LTA not accepted', r)
-            elif r.status_code == 403:
-                self.logger.error("Requests exceed user quota")
-                raise SentinelAPILTAError('Requests for retrieval from LTA exceed user quota', r)
-            elif r.status_code == 500:
-                # should not happen
-                self.logger.error("Trying to download an offline product")
-                raise SentinelAPILTAError('Trying to download an offline product', r)
-            return r.status_code
+            if r.status_code == 200:
+                return r.text == 'true'
+            else:
+                raise SentinelAPIError('Could not verify whether product {} is online'.format(id), r)
 
     def download(self, id, directory_path='.', checksum=True):
         """Download a product.
@@ -501,14 +494,6 @@ class SentinelAPI:
             # We assume that the product has been downloaded and is complete
             return product_info
 
-        # An incomplete download triggers the retrieval from the LTA if the product is not online
-        if not product_info['Online']:
-            self.logger.warning(
-                'Product %s is not online. Triggering retrieval from long term archive.',
-                product_info['id'])
-            self._trigger_offline_retrieval(product_info['url'])
-            return product_info
-
         # Use a temporary file for downloading
         temp_path = path + '.incomplete'
 
@@ -517,8 +502,8 @@ class SentinelAPI:
             if getsize(temp_path) > product_info['size']:
                 self.logger.warning(
                     "Existing incomplete file %s is larger than the expected final size"
-                    " (%s vs %s bytes). Deleting it.",
-                    str(temp_path), getsize(temp_path), product_info['size'])
+                    " (%s vs %s bytes). Deleting it.", str(temp_path),
+                    getsize(temp_path), product_info['size'])
                 remove(temp_path)
             elif getsize(temp_path) == product_info['size']:
                 if self._md5_compare(temp_path, product_info['md5']):
@@ -551,7 +536,40 @@ class SentinelAPI:
         shutil.move(temp_path, path)
         return product_info
 
-    def download_all(self, products, directory_path='.', max_attempts=10, checksum=True):
+    def _trigger_offline_retrieval(self, url):
+        """ Triggers retrieval of an offline product
+
+        Trying to download an offline product triggers its retrieval from the long term archive.
+        The returned HTTP status code conveys whether this was successful.
+
+        Parameters
+        ----------
+        url : string
+            URL for downloading the product
+
+        Notes
+        -----
+        https://scihub.copernicus.eu/userguide/LongTermArchive
+        """
+        with self.session.get(url, auth=self.session.auth, timeout=self.timeout) as r:
+            # check https://scihub.copernicus.eu/userguide/LongTermArchive#HTTP_Status_codes
+            if r.status_code == 202:
+                self.logger.debug("Accepted for retrieval")
+            elif r.status_code == 403:
+                self.logger.debug("Requests exceed user quota")
+            elif r.status_code == 503:
+                self.logger.error("Request not accepted")
+                raise SentinelAPILTAError('Request for retrieval from LTA not accepted', r)
+            elif r.status_code == 500:
+                # should not happen
+                self.logger.error("Trying to download an offline product")
+                raise SentinelAPILTAError('Trying to download an offline product', r)
+            else:
+                self.logger.error("Unexpected response from SciHub")
+                raise SentinelAPILTAError("Unexpected response from SciHub", r)
+            return r.status_code
+
+    def download_all(self, products, directory_path='.', max_attempts=10, checksum=True, retry_delay=300, n_concurrent_dl=2, max_workers=4):
         """Download a list of products.
 
         Takes a list of product IDs as input. This means that the return value of query() can be
@@ -576,6 +594,12 @@ class SentinelAPI:
             If True, verify the downloaded files' integrity by checking its MD5 checksum.
             Throws InvalidChecksumError if the checksum does not match.
             Defaults to True.
+        retry_delay : integer or float
+            How long to wait after a failed download or unsucessful LTA retrieval
+        n_concurrent_dl : integer
+            number of concurrent downloads
+        max_workers : integer
+            number of concurrent threads triggering LTA retrieval
 
         Raises
         ------
@@ -586,42 +610,160 @@ class SentinelAPI:
         dict[string, dict]
             A dictionary containing the return value from download() for each successfully
             downloaded product.
-        set[string]
-            The list of products that failed to download.
+        dict[string, dict]
+            A dictionary containing the product information for product that was successfully
+            triggered for retrieval from the long term archive.
+        dict[string, dict]
+            A dictionary containing the product information of failed downloads.
         """
         product_ids = list(products)
         self.logger.info("Will download %d products", len(product_ids))
-        return_values = OrderedDict()
+
+        dl_queue = Queue() # waiting for download
+
+        product_infos = {pid: self.get_product_odata(pid) for pid in product_ids}
+
+        trig_tasks = []
+        dl_tasks = []
+
+        # limit the number of concurrent downloads
+        sem = BoundedSemaphore(n_concurrent_dl)
+
+        # Two separate threadpools for downloading and triggering retrieval. Otherwise triggering
+        # might take up all threads and nothing is downloaded.
+        with concurrent.futures.ThreadPoolExecutor(max_workers=n_concurrent_dl) as dl_exec:
+            with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as trig_exec:
+                for product_info in product_infos.values():
+                    if not product_info['Online']:
+                        trig_tasks.append(
+                            trig_exec.submit(
+                                self._async_trigger_offline_retrieval,
+                                product_info,
+                                dl_queue,
+                                retry_delay=retry_delay))
+                    else:
+                        self.logger.info('Product %s is online. Scheduling download', product_info['id'])
+                        dl_queue.put(product_info)
+
+                for _ in range(len(product_ids)):
+                    dl_tasks.append(
+                        dl_exec.submit(
+                            self._async_download,
+                            dl_queue,
+                            sem,
+                            directory_path,
+                            checksum,
+                            retry_delay=retry_delay,
+                            max_attempts=max_attempts))
+
+                # Wait for the first trigger tasks to finish. This way at least one product is in the download queue
+                if trig_tasks:
+                    concurrent.futures.wait(trig_tasks, return_when=concurrent.futures.FIRST_COMPLETED)
+
+                # Block until download queue is empty. Not all products might have been retrieved
+                # from the LTA by then. The results of each queue are analyzed later
+                dl_queue.join()
+
+                for task in trig_tasks + dl_tasks:
+                    task.cancel()
+
+
+        # Filter exceptions and unsucessful (None) tasks
+        trig_results = [x.result() for x in trig_tasks if not x.exception() if x.result()]
+        down_results = [x.result() for x in dl_tasks if not x.exception() if x.result()]
+
+        downloaded_products = {}
+        for dr in down_results:
+            downloaded_products[dr['id']] = dr
+
+        retrieval_scheduled = {}
+        for rr in trig_results:
+            pid = rr['id']
+            # Check that products that were retrieved from LTA were not downloaded
+            # while the this function was running
+            if pid not in downloaded_products:
+                retrieval_scheduled[pid] = rr
+
+        failed_products = {pid: info for pid, info in product_infos.items()
+                           if pid not in downloaded_products if pid not in retrieval_scheduled}
+
+        if len(failed_products) == len(product_ids):
+            raise next(iter(x.exception() for x in dl_tasks if x.exception()))
+
+        return downloaded_products, retrieval_scheduled, failed_products
+
+
+    def _async_trigger_offline_retrieval(self, product_info, dl_queue, retry_delay=60):
+        """ Triggers retrieval of an offline product
+
+        Trying to download an offline product triggers its retrieval from the long term archive.
+        The returned HTTP status code conveys whether this was successful. ESA currently limits
+        each user to requesting one retrieval every 30 minutes, resulting in an unsucessful
+        retrieval if the user quota is exceeded. By retrying after a certain delay this can issue
+        can be circumvented.
+
+        Parameters
+        ----------
+        url : string
+            URL for downloading the product
+        retry_delay: int or float
+            delay in seconds before retrying
+
+
+        Notes
+        -----
+        https://scihub.copernicus.eu/userguide/LongTermArchive
+
+        """
+
+        while True:
+            status_code = self._trigger_offline_retrieval(product_info['url'])
+
+            if status_code == 202:
+                self.logger.info("%s accepted for retrieval", product_info['id'])
+                dl_queue.put(product_info)
+                return product_info
+            elif status_code == 403:
+                self.logger.debug("Request for %s exceeded user quota. Retrying in %d seconds",
+                        product_info['id'], retry_delay)
+                time.sleep(retry_delay)
+            else:
+                # Should not happen. As error are processed by _trigger_offline_retrieval
+                self.logger.error("Unexpected response from SciHub")
+                raise SentinelAPILTAError("Unexpected response from SciHub")
+
+
+    def _async_download(self, dl_queue, semaphore, directory_path='.', checksum=True, retry_delay=300, max_attempts=10):
+        product_info = dl_queue.get()
+
         last_exception = None
-        for i, product_id in enumerate(products):
-            for attempt_num in range(max_attempts):
+        for cnt in range(max_attempts):
+            if self.is_online(product_info['id']):
                 try:
-                    product_info = self.download(product_id, directory_path, checksum)
-                    return_values[product_id] = product_info
-                    break
-                except (KeyboardInterrupt, SystemExit):
-                    raise
+                    with semaphore:
+                        self.logger.info('%s is online. Starting download', product_info['id'])
+                        ret_val = self.download(product_info['id'], directory_path, checksum)
+                    dl_queue.task_done()
+                    return ret_val
                 except InvalidChecksumError as e:
+                    self.logger.warning("Invalid checksum. The downloaded file for '%s' is corrupted.",
+                            product_info['id'])
                     last_exception = e
-                    self.logger.warning(
-                        "Invalid checksum. The downloaded file for '%s' is corrupted.", product_id)
-                except SentinelAPILTAError as e:
-                    last_exception = e
-                    self.logger.exception("There was an error retrieving %s from the LTA", product_id)
-                    break
+
                 except Exception as e:
+                    self.logger.exception("There was an error downloading %s", product_info['id'])
                     last_exception = e
-                    self.logger.exception("There was an error downloading %s", product_id)
-            self.logger.info("%s/%s products downloaded", i + 1, len(product_ids))
-        failed = set(products) - set(return_values)
+            else:
+                self.logger.info("%s is not yet online.", product_info['id'])
 
-        # split up sucessfully processed products into downloaded and only triggered retrieval from the LTA
-        triggered = OrderedDict([(k, v) for k, v in return_values.items() if v['Online'] is False])
-        downloaded = OrderedDict([(k, v) for k, v in return_values.items() if v['Online'] is True])
-
-        if len(failed) == len(product_ids) and last_exception is not None:
-            raise last_exception
-        return downloaded, triggered, failed
+            self.logger.info("Retrying download in %d seconds. %d retries left", retry_delay, max_attempts - cnt - 1)
+            time.sleep(retry_delay)
+        else:
+            self.logger.info("No retries left for %s. Terminating.", product_info['id'])
+            dl_queue.task_done()
+            if last_exception:
+                raise last_exception
+            return None
 
     @staticmethod
     def get_products_size(products):
@@ -730,7 +872,9 @@ class SentinelAPI:
             returned by :meth:`SentinelAPI.get_product_odata()`).
         """
         if not ids and not paths:
-            raise ValueError("Must provide either file paths or product IDs and a directory")
+            raise ValueError(
+                "Must provide either file paths or product IDs and a directory"
+            )
         if ids and not directory:
             raise ValueError("Directory value missing")
         paths = paths or []
@@ -767,7 +911,8 @@ class SentinelAPI:
             name = name_from_path(path)
 
             if len(product_infos[name]) > 1:
-                self.logger.warning("{} matches multiple products on server".format(path))
+                self.logger.warning(
+                    "{} matches multiple products on server".format(path))
 
             if not exists(path):
                 # We will consider missing files as corrupt also
@@ -777,8 +922,8 @@ class SentinelAPI:
 
             is_fine = False
             for product_info in product_infos[name]:
-                if (getsize(path) == product_info['size'] and
-                        self._md5_compare(path, product_info['md5'])):
+                if (getsize(path) == product_info['size']
+                        and self._md5_compare(path, product_info['md5'])):
                     is_fine = True
                     break
             if not is_fine:
@@ -789,10 +934,14 @@ class SentinelAPI:
 
         return corrupt
 
-    def _md5_compare(self, file_path, checksum, block_size=2 ** 13):
+    def _md5_compare(self, file_path, checksum, block_size=2**13):
         """Compare a given MD5 checksum with one calculated from a file."""
-        with closing(self._tqdm(desc="MD5 checksumming", total=getsize(file_path), unit="B",
-                                unit_scale=True)) as progress:
+        with closing(
+                self._tqdm(
+                    desc="MD5 checksumming",
+                    total=getsize(file_path),
+                    unit="B",
+                    unit_scale=True)) as progress:
             md5 = hashlib.md5()
             with open(file_path, "rb") as f:
                 while True:
@@ -817,7 +966,7 @@ class SentinelAPI:
                 closing(self._tqdm(desc="Downloading", total=file_size, unit="B",
                                    unit_scale=True, initial=already_downloaded_bytes)) as progress:
             _check_scihub_response(r, test_json=False)
-            chunk_size = 2 ** 20  # download in 1 MB chunks
+            chunk_size = 2**20  # download in 1 MB chunks
             mode = 'ab' if continuing else 'wb'
             with open(path, mode) as f:
                 for chunk in r.iter_content(chunk_size=chunk_size):
@@ -853,6 +1002,7 @@ class SentinelAPIError(Exception):
         return 'HTTP status {0} {1}: {2}'.format(
             self.response.status_code, self.response.reason,
             ('\n' if '\n' in self.msg else '') + self.msg)
+
 
 class SentinelAPILTAError(SentinelAPIError):
     """ Error when retrieving a product from the Long Term Archive
@@ -923,9 +1073,13 @@ def geojson_to_wkt(geojson_obj, feature_number=0, decimals=4):
             return list(map(check_bounds, geometry))
         else:
             if geometry[0] > 180 or geometry[0] < -180:
-                raise ValueError('Longitude is out of bounds, check your JSON format or data')
+                raise ValueError(
+                    'Longitude is out of bounds, check your JSON format or data'
+                )
             if geometry[1] > 90 or geometry[1] < -90:
-                raise ValueError('Latitude is out of bounds, check your JSON format or data')
+                raise ValueError(
+                    'Latitude is out of bounds, check your JSON format or data'
+                )
 
     # Discard z-coordinate, if it exists
     geometry['coordinates'] = ensure_2d(geometry['coordinates'])
@@ -964,7 +1118,9 @@ def format_query_date(in_date):
     if isinstance(in_date, (datetime, date)):
         return in_date.strftime('%Y-%m-%dT%H:%M:%SZ')
     elif not isinstance(in_date, string_types):
-        raise ValueError('Expected a string or a datetime object. Received {}.'.format(in_date))
+        raise ValueError(
+            'Expected a string or a datetime object. Received {}.'.format(
+                in_date))
 
     in_date = in_date.strip()
     if in_date == '*':
@@ -986,7 +1142,8 @@ def format_query_date(in_date):
         return in_date
 
     try:
-        return datetime.strptime(in_date, '%Y%m%d').strftime('%Y-%m-%dT%H:%M:%SZ')
+        return datetime.strptime(in_date,
+                                 '%Y%m%d').strftime('%Y-%m-%dT%H:%M:%SZ')
     except ValueError:
         raise ValueError('Unsupported date value {}'.format(in_date))
 
@@ -1048,7 +1205,8 @@ def _parse_gml_footprint(geometry_str):
         .find('{http://www.opengis.net/gml}outerBoundaryIs') \
         .find('{http://www.opengis.net/gml}LinearRing') \
         .findtext('{http://www.opengis.net/gml}coordinates')
-    poly_coords = (coord.split(",")[::-1] for coord in poly_coords_str.split(" "))
+    poly_coords = (coord.split(",")[::-1]
+                   for coord in poly_coords_str.split(" "))
     coord_string = ",".join(" ".join(coord) for coord in poly_coords)
     return "POLYGON(({}))".format(coord_string)
 
@@ -1077,7 +1235,13 @@ def _parse_opensearch_response(products):
     is set to `False`.
     """
 
-    converters = {'date': _parse_iso_date, 'int': int, 'long': int, 'float': float, 'double': float}
+    converters = {
+        'date': _parse_iso_date,
+        'int': int,
+        'long': int,
+        'float': float,
+        'double': float
+    }
     # Keep the string type by default
     default_converter = lambda x: x
 
