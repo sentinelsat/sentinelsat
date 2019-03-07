@@ -2,6 +2,7 @@
 import hashlib
 import textwrap
 from datetime import date, datetime, timedelta
+from functools import partialmethod
 from os import environ
 import sys
 
@@ -123,6 +124,7 @@ def test_SentinelAPI_connection():
 
 @my_vcr.use_cassette
 @pytest.mark.scihub
+@pytest.mark.enable_socket # enable until pytest-socket allows AF_UNIX for asyncio
 def test_SentinelAPI_wrong_credentials():
     api = SentinelAPI(
         "wrong_user",
@@ -699,6 +701,7 @@ def test_get_product_odata_scihub_down():
 
 
 @pytest.mark.mock_api
+@pytest.mark.enable_socket # enable until pytest-socket allows AF_UNIX for asyncio
 def test_scihub_unresponsive():
     timeout_connect = 6
     timeout_read = 6.6
@@ -771,8 +774,7 @@ def test_trigger_lta_exceeded_quota():
             request_url,
             text="Mock trigger exceeds user quota", status_code=403
         )
-        with pytest.raises(SentinelAPILTAError) as excinfo:
-            api._trigger_offline_retrieval(request_url)
+        assert api._trigger_offline_retrieval(request_url) == 403
 
 
 def test_trigger_lta_offline_file():
@@ -1059,18 +1061,26 @@ def test_download(tmpdir):
 
 @my_vcr.use_cassette
 @pytest.mark.scihub
-def test_download_all(tmpdir):
+@pytest.mark.enable_socket # enable until pytest-socket allows AF_UNIX for asyncio
+def test_download_all_online(tmpdir, monkeypatch):
+    # Change default arguments for quicker test.
+    # Also, vcrpy is not threadsafe, so only one worker is used.
+    monkeypatch.setattr(
+        'sentinelsat.SentinelAPI.download_all',
+        partialmethod(
+            SentinelAPI.download_all,
+            n_concurrent_dl=1,
+            max_attempts=2))
+    
     api = SentinelAPI(**_api_auth)
-    # From https://scihub.copernicus.eu/apihub/odata/v1/Products?$top=5&$orderby=ContentLength
-    # filenames = ["S1A_WV_OCN__2SSH_20150603T092625_20150603T093332_006207_008194_521E",
-    #              "S1A_WV_OCN__2SSV_20150526T211029_20150526T211737_006097_007E78_134A",
-    #              "S1A_WV_OCN__2SSV_20150526T081641_20150526T082418_006090_007E3E_104C"]
+    # List the three smallest, online products
+    # https://scihub.copernicus.eu/apihub/odata/v1/Products?$top=3&$orderby=ContentLength&$filter=Online%20eq%20true
 
     # Corresponding IDs
     ids = [
-        "5618ce1b-923b-4df2-81d9-50b53e5aded9",
-        "d8340134-878f-4891-ba4f-4df54f1e3ab4",
-        "1f62a176-c980-41dc-b3a1-c735d660c910"
+        "daf77008-1cba-4d4a-8c3b-7a98a3ea18c7",
+        "f46cbca6-6e5e-45b0-80cd-382683a8aea5",
+        "e00af686-2e20-43a6-8b8f-f9e411255cee"
     ]
 
     # Download normally
@@ -1084,35 +1094,68 @@ def test_download_all(tmpdir):
         assert pypath.purebasename in product_info['title']
         assert pypath.size() == product_info["size"]
 
+    tmpdir.remove()
+
+
+@my_vcr.use_cassette
+@pytest.mark.scihub
+def test_download_all_online_fail(tmpdir, monkeypatch):
+    # Change default arguments for quicker test.
+    # Also, vcrpy is not threadsafe, so only one worker is used.
+    monkeypatch.setattr(
+        'sentinelsat.SentinelAPI.download_all',
+        partialmethod(
+            SentinelAPI.download_all,
+            n_concurrent_dl=1,
+            max_attempts=2))
+
+    api = SentinelAPI(**_api_auth)
+    # List the three smallest, online products
+    # https://scihub.copernicus.eu/apihub/odata/v1/Products?$top=3&$orderby=ContentLength&$filter=Online%20eq%20true
+
+    # Corresponding IDs
+    ids = [
+        "daf77008-1cba-4d4a-8c3b-7a98a3ea18c7",
+        "f46cbca6-6e5e-45b0-80cd-382683a8aea5",
+        "e00af686-2e20-43a6-8b8f-f9e411255cee"
+    ]
+
+    failed_id = ids[0]
+
     # Force one download to fail
-    id, product_info = list(product_infos.items())[0]
-    path = product_info['path']
-    py.path.local(path).remove()
     with requests_mock.mock(real_http=True) as rqst:
-        url = "https://scihub.copernicus.eu/apihub/odata/v1/Products('%s')?$format=json" % id
+        url = "https://scihub.copernicus.eu/apihub/odata/v1/Products('%s')?$format=json" % failed_id
         json = api.session.get(url).json()
         json["d"]["Checksum"]["Value"] = "00000000000000000000000000000000"
         rqst.get(url, json=json)
         product_infos, triggered, failed_downloads = api.download_all(
-            ids, str(tmpdir), max_attempts=1, checksum=True)
+            ids, str(tmpdir), checksum=True)
         assert len(failed_downloads) == 1
         assert len(product_infos) + len(failed_downloads) == len(ids)
-        assert id in failed_downloads
+        assert failed_id in failed_downloads
 
     tmpdir.remove()
 
 
 @my_vcr.use_cassette
 @pytest.mark.scihub
-def test_download_all_lta(tmpdir):
+def test_download_all_lta(tmpdir, monkeypatch):
+    # Change default arguments for quicker test.
+    # Also, vcrpy is not threadsafe, so only one worker is used.
+    monkeypatch.setattr(
+        'sentinelsat.SentinelAPI.download_all',
+        partialmethod(
+            SentinelAPI.download_all,
+            n_concurrent_dl=1,
+            max_attempts=2))
+
     api = SentinelAPI(**_api_auth)
 
     # Corresponding IDs, same products as in test_download_all.
-    # But the Online flag of the first id is set to False in the unit test's vcr cassette
     ids = [
-        "5618ce1b-923b-4df2-81d9-50b53e5aded9",
-        "d8340134-878f-4891-ba4f-4df54f1e3ab4",
-        "1f62a176-c980-41dc-b3a1-c735d660c910"
+        "5618ce1b-923b-4df2-81d9-50b53e5aded9", # offline
+        "f46cbca6-6e5e-45b0-80cd-382683a8aea5", # online
+        "e00af686-2e20-43a6-8b8f-f9e411255cee", # online
     ]
 
     product_infos, triggered, failed_downloads = api.download_all(ids, str(tmpdir))

@@ -3,6 +3,7 @@ import re
 import json
 import shutil
 import contextlib
+from functools import partialmethod
 
 import pytest
 import requests_mock
@@ -464,10 +465,19 @@ def test_footprints_cli(tmpdir, geojson_path):
 
 @my_vcr.use_cassette
 @pytest.mark.scihub
-def test_download_single(tmpdir):
+def test_download_single(tmpdir, monkeypatch):
+    # Change default arguments for quicker test.
+    # Also, vcrpy is not threadsafe, so only one worker is used.
+    monkeypatch.setattr(
+        'sentinelsat.SentinelAPI.download_all',
+        partialmethod(
+            SentinelAPI.download_all,
+            n_concurrent_dl=1,
+            max_attempts=2))
+
     runner = CliRunner()
 
-    product_id = '5618ce1b-923b-4df2-81d9-50b53e5aded9'
+    product_id = 'daf77008-1cba-4d4a-8c3b-7a98a3ea18c7'
     command = ['--user', API_AUTH[0],
                '--password', API_AUTH[1],
                '--uuid', product_id,
@@ -518,13 +528,21 @@ def test_download_single(tmpdir):
 
 @my_vcr.use_cassette
 @pytest.mark.scihub
-def test_download_many(tmpdir):
+def test_download_many(tmpdir, monkeypatch):
+    # Change default arguments for quicker test.
+    # Also, vcrpy is not threadsafe, so only one worker is used.
+    monkeypatch.setattr(
+        'sentinelsat.SentinelAPI.download_all',
+        partialmethod(
+            SentinelAPI.download_all,
+            max_attempts=2))
+
     runner = CliRunner()
 
     command = ['--user', API_AUTH[0],
                '--password', API_AUTH[1],
                '--uuid',
-               '1f62a176-c980-41dc-b3a1-c735d660c910,5618ce1b-923b-4df2-81d9-50b53e5aded9,d8340134-878f-4891-ba4f-4df54f1e3ab4',
+               'daf77008-1cba-4d4a-8c3b-7a98a3ea18c7,f46cbca6-6e5e-45b0-80cd-382683a8aea5,e00af686-2e20-43a6-8b8f-f9e411255cee',
                '--download',
                '--path', str(tmpdir)]
 
@@ -549,7 +567,7 @@ def test_download_many(tmpdir):
         f.remove()
 
     # Prepare a response with an invalid checksum
-    product_id = 'd8340134-878f-4891-ba4f-4df54f1e3ab4'
+    product_id = 'daf77008-1cba-4d4a-8c3b-7a98a3ea18c7'
     url = "https://scihub.copernicus.eu/apihub/odata/v1/Products('%s')?$format=json" % product_id
     api = SentinelAPI(*API_AUTH)
     json = api.session.get(url).json()
