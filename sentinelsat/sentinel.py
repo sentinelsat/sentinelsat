@@ -586,6 +586,9 @@ class SentinelAPI:
         dict[string, dict]
             A dictionary containing the return value from download() for each successfully
             downloaded product.
+        dict[string, dict]
+            A dictionary containing the product information for products whose retrieval
+            from the long term archive was successfully triggered.
         set[string]
             The list of products that failed to download.
         """
