@@ -748,41 +748,19 @@ def test_trigger_lta_accepted():
         assert api._trigger_offline_retrieval(request_url) == 202
 
 
-def test_trigger_lta_not_accepted():
+@pytest.mark.parametrize("http_status_code",[
+    503, # service unavailable
+    403, # user quota exceeded
+    500, # internal server error
+])
+def test_trigger_lta_failed(http_status_code):
     api = SentinelAPI("mock_user", "mock_password")
-
     request_url = "https://scihub.copernicus.eu/apihub/odata/v1/Products('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')/$value"
 
     with requests_mock.mock() as rqst:
         rqst.get(
             request_url,
-            text="Mock trigger not accepted", status_code=503
-        )
-        with pytest.raises(SentinelAPILTAError) as excinfo:
-            api._trigger_offline_retrieval(request_url)
-
-
-def test_trigger_lta_exceeded_quota():
-    api = SentinelAPI("mock_user", "mock_password")
-
-    request_url = "https://scihub.copernicus.eu/apihub/odata/v1/Products('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')/$value"
-    with requests_mock.mock() as rqst:
-        rqst.get(
-            request_url,
-            text="Mock trigger exceeds user quota", status_code=403
-        )
-        with pytest.raises(SentinelAPILTAError) as excinfo:
-            api._trigger_offline_retrieval(request_url)
-
-
-def test_trigger_lta_offline_file():
-    api = SentinelAPI("mock_user", "mock_password")
-
-    request_url = "https://scihub.copernicus.eu/apihub/odata/v1/Products('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')/$value"
-    with requests_mock.mock() as rqst:
-        rqst.get(
-            request_url,
-            text="Mock trigger downloading an offline file", status_code=500
+            status_code=http_status_code
         )
         with pytest.raises(SentinelAPILTAError) as excinfo:
             api._trigger_offline_retrieval(request_url)
