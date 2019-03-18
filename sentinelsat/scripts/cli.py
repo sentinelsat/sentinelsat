@@ -165,7 +165,7 @@ def cli(user, password, geometry, start, end, uuid, name, download, sentinel, pr
             outfile.write(gj.dumps(footprints_geojson))
 
     if download is True:
-        product_infos, failed_downloads = api.download_all(products, path)
+        product_infos, triggered, failed_downloads = api.download_all(products, path)
         if len(failed_downloads) > 0:
             with open(os.path.join(path, "corrupt_scenes.txt"), "w") as outfile:
                 for failed_id in failed_downloads:

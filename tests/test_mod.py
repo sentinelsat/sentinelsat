@@ -11,8 +11,8 @@ import pytest
 import requests
 import requests_mock
 
-from sentinelsat import InvalidChecksumError, SentinelAPI, SentinelAPIError, format_query_date, geojson_to_wkt, \
-    read_geojson
+from sentinelsat import InvalidChecksumError, SentinelAPI, SentinelAPIError, SentinelAPILTAError, \
+    format_query_date, geojson_to_wkt, read_geojson
 from sentinelsat.sentinel import _format_order_by, _parse_odata_timestamp, _parse_opensearch_response
 from .shared import FIXTURES_DIR, my_vcr
 
@@ -468,7 +468,10 @@ def test_get_product_odata_short():
             'date': datetime(2015, 11, 21, 10, 3, 56, 675000),
             'footprint': 'POLYGON((-63.852531 -5.880887,-67.495872 -5.075419,-67.066071 -3.084356,-63.430576 -3.880541,'
                          '-63.852531 -5.880887))',
-            'title': 'S1A_EW_GRDM_1SDV_20151121T100356_20151121T100429_008701_00C622_A0EC'
+            'title': 'S1A_EW_GRDM_1SDV_20151121T100356_20151121T100429_008701_00C622_A0EC',
+            'Online': False,
+            'Creation Date': datetime(2015, 11, 21, 13, 22, 1, 652000),
+            'Ingestion Date': datetime(2015, 11, 21, 13, 22, 4, 992000),
         },
         '44517f66-9845-4792-a988-b5ae6e81fd3e': {
             'id': '44517f66-9845-4792-a988-b5ae6e81fd3e',
@@ -486,7 +489,10 @@ def test_get_product_odata_short():
             'md5': '48C5648C2644CE07207B3C943DEDEB44',
             'size': 5854429622,
             'title': 'S2A_OPER_PRD_MSIL1C_PDMC_20151228T112523_R110_V20151227T142229_20151227T142229',
-            'url': "https://scihub.copernicus.eu/apihub/odata/v1/Products('44517f66-9845-4792-a988-b5ae6e81fd3e')/$value"
+            'url': "https://scihub.copernicus.eu/apihub/odata/v1/Products('44517f66-9845-4792-a988-b5ae6e81fd3e')/$value",
+            'Online': True,
+            'Creation Date': datetime(2015, 12, 28, 10, 50, 0, 90000),
+            'Ingestion Date': datetime(2015, 12, 28, 10, 57, 13, 725000),
         }
     }
     for id, expected in expected_short.items():
@@ -512,6 +518,7 @@ def test_get_product_odata_full():
             'url': "https://scihub.copernicus.eu/apihub/odata/v1/Products('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')/$value",
             'Acquisition Type': 'NOMINAL',
             'Carrier rocket': 'Soyuz',
+            'Creation Date': datetime(2015, 11, 21, 13, 22, 1, 652000),
             'Cycle number': 64,
             'Date': datetime(2015, 11, 21, 10, 3, 56, 675000),
             'Filename': 'S1A_EW_GRDM_1SDV_20151121T100356_20151121T100429_008701_00C622_A0EC.SAFE',
@@ -532,6 +539,7 @@ def test_get_product_odata_full():
             'Mission type': 'Earth observation',
             'Mode': 'EW',
             'NSSDC identifier': '0000-000A',
+            'Online': False,
             'Operator': 'European Space Agency',
             'Orbit number (start)': 8701,
             'Orbit number (stop)': 8701,
@@ -566,6 +574,7 @@ def test_get_product_odata_full():
             'footprint': 'POLYGON((-58.80274769505742 -4.565257232533263,-58.80535376268811 -5.513960396525286,-57.90315169909761 -5.515947033626909,-57.903151791669515 -5.516014389089381,-57.85874693129081 -5.516044812342758,-57.814323596961835 -5.516142631941845,-57.81432351345917 -5.516075248310466,-57.00018056571297 -5.516633044843839,-57.000180565731384 -5.516700066819259,-56.95603179187787 -5.51666329264377,-56.91188395837315 -5.516693539799448,-56.91188396736038 -5.51662651925904,-56.097209386295305 -5.515947927683427,-56.09720929423562 -5.516014937246069,-56.053056977999596 -5.5159111504805916,-56.00892491028779 -5.515874390220655,-56.00892501130261 -5.515807411549814,-55.10621586418906 -5.513685455771881,-55.108821882251775 -4.6092845892233,-54.20840287327946 -4.606372862374043,-54.21169990975238 -3.658594390979672,-54.214267703869346 -2.710949551849636,-55.15704255065496 -2.7127451087194463,-56.0563616875051 -2.71378646425769,-56.9561852630143 -2.7141556791285275,-57.8999998009875 -2.713837142510183,-57.90079161941062 -3.6180222056692726,-58.800616247288836 -3.616721351843382,-58.80274769505742 -4.565257232533263))',
             'url': "https://scihub.copernicus.eu/apihub/odata/v1/Products('44517f66-9845-4792-a988-b5ae6e81fd3e')/$value",
             'Cloud cover percentage': 18.153846153846153,
+            'Creation Date': datetime(2015, 12, 28, 10, 50, 0, 90000),
             'Date': datetime(2015, 12, 27, 14, 22, 29),
             'Degraded MSI data percentage': 0, 'Degraded ancillary data percentage': 0,
             'Filename': 'S2A_OPER_PRD_MSIL1C_PDMC_20151228T112523_R110_V20151227T142229_20151227T142229.SAFE',
@@ -584,6 +593,7 @@ def test_get_product_odata_full():
             'JTS footprint': 'POLYGON ((-58.80274769505742 -4.565257232533263,-58.80535376268811 -5.513960396525286,-57.90315169909761 -5.515947033626909,-57.903151791669515 -5.516014389089381,-57.85874693129081 -5.516044812342758,-57.814323596961835 -5.516142631941845,-57.81432351345917 -5.516075248310466,-57.00018056571297 -5.516633044843839,-57.000180565731384 -5.516700066819259,-56.95603179187787 -5.51666329264377,-56.91188395837315 -5.516693539799448,-56.91188396736038 -5.51662651925904,-56.097209386295305 -5.515947927683427,-56.09720929423562 -5.516014937246069,-56.053056977999596 -5.5159111504805916,-56.00892491028779 -5.515874390220655,-56.00892501130261 -5.515807411549814,-55.10621586418906 -5.513685455771881,-55.108821882251775 -4.6092845892233,-54.20840287327946 -4.606372862374043,-54.21169990975238 -3.658594390979672,-54.214267703869346 -2.710949551849636,-55.15704255065496 -2.7127451087194463,-56.0563616875051 -2.71378646425769,-56.9561852630143 -2.7141556791285275,-57.8999998009875 -2.713837142510183,-57.90079161941062 -3.6180222056692726,-58.800616247288836 -3.616721351843382,-58.80274769505742 -4.565257232533263))',
             'Mission datatake id': 'GS2A_20151227T140932_002681_N02.01',
             'NSSDC identifier': '2015-000A',
+            'Online': True,
             'Orbit number (start)': 2681,
             'Pass direction': 'DESCENDING',
             'Platform serial identifier': 'Sentinel-2A',
@@ -723,6 +733,37 @@ def test_scihub_unresponsive():
 
         with pytest.raises(requests.exceptions.ReadTimeout):
             api.download_all(['8df46c9e-a20c-43db-a19a-4240c2ed3b8b'])
+
+
+def test_trigger_lta_accepted():
+    api = SentinelAPI("mock_user", "mock_password")
+
+    request_url = "https://scihub.copernicus.eu/apihub/odata/v1/Products('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')/$value"
+
+    with requests_mock.mock() as rqst:
+        rqst.get(
+            request_url,
+            text="Mock trigger accepted", status_code=202
+        )
+        assert api._trigger_offline_retrieval(request_url) == 202
+
+
+@pytest.mark.parametrize("http_status_code",[
+    503, # service unavailable
+    403, # user quota exceeded
+    500, # internal server error
+])
+def test_trigger_lta_failed(http_status_code):
+    api = SentinelAPI("mock_user", "mock_password")
+    request_url = "https://scihub.copernicus.eu/apihub/odata/v1/Products('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')/$value"
+
+    with requests_mock.mock() as rqst:
+        rqst.get(
+            request_url,
+            status_code=http_status_code
+        )
+        with pytest.raises(SentinelAPILTAError) as excinfo:
+            api._trigger_offline_retrieval(request_url)
 
 
 @pytest.mark.mock_api
@@ -1011,8 +1052,9 @@ def test_download_all(tmpdir):
     ]
 
     # Download normally
-    product_infos, failed_downloads = api.download_all(ids, str(tmpdir))
+    product_infos, triggered, failed_downloads = api.download_all(ids, str(tmpdir))
     assert len(failed_downloads) == 0
+    assert len(triggered) == 0
     assert len(product_infos) == len(ids)
     for product_id, product_info in product_infos.items():
         pypath = py.path.local(product_info['path'])
@@ -1029,11 +1071,42 @@ def test_download_all(tmpdir):
         json = api.session.get(url).json()
         json["d"]["Checksum"]["Value"] = "00000000000000000000000000000000"
         rqst.get(url, json=json)
-        product_infos, failed_downloads = api.download_all(
+        product_infos, triggered, failed_downloads = api.download_all(
             ids, str(tmpdir), max_attempts=1, checksum=True)
         assert len(failed_downloads) == 1
         assert len(product_infos) + len(failed_downloads) == len(ids)
         assert id in failed_downloads
+
+    tmpdir.remove()
+
+
+@my_vcr.use_cassette
+@pytest.mark.scihub
+def test_download_all_lta(tmpdir):
+    api = SentinelAPI(**_api_auth)
+
+    # Corresponding IDs, same products as in test_download_all.
+    # But the Online flag of the first id is set to False in the unit test's vcr cassette
+    ids = [
+        "5618ce1b-923b-4df2-81d9-50b53e5aded9",
+        "d8340134-878f-4891-ba4f-4df54f1e3ab4",
+        "1f62a176-c980-41dc-b3a1-c735d660c910"
+    ]
+
+    product_infos, triggered, failed_downloads = api.download_all(ids, str(tmpdir))
+    assert len(failed_downloads) == 0
+    assert len(triggered) == 1
+    assert len(product_infos) == len(ids) - len(failed_downloads) - len(triggered)
+
+    # test downloaded products
+    for product_id, product_info in product_infos.items():
+        pypath = py.path.local(product_info['path'])
+        assert pypath.check(exists=1, file=1)
+        assert pypath.purebasename in product_info['title']
+        assert pypath.size() == product_info["size"]
+
+    # test triggered product 5618ce1b-923b-4df2-81d9-50b53e5aded9
+    assert triggered['5618ce1b-923b-4df2-81d9-50b53e5aded9']['Online'] == False
 
     tmpdir.remove()
 

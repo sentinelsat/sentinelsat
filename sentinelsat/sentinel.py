@@ -428,6 +428,38 @@ class SentinelAPI:
         values = _parse_odata_response(response.json()['d'])
         return values
 
+    def _trigger_offline_retrieval(self, url):
+        """ Triggers retrieval of an offline product
+
+        Trying to download an offline product triggers its retrieval from the long term archive.
+        The returned HTTP status code conveys whether this was successful.
+
+        Parameters
+        ----------
+        url : string
+            URL for downloading the product
+
+        Notes
+        -----
+        https://scihub.copernicus.eu/userguide/LongTermArchive
+
+        """
+        with self.session.get(url, auth=self.session.auth, timeout=self.timeout) as r:
+            # check https://scihub.copernicus.eu/userguide/LongTermArchive#HTTP_Status_codes
+            if r.status_code == 202:
+                self.logger.info("Accepted for retrieval")
+            elif r.status_code == 503:
+                self.logger.error("Request not accepted")
+                raise SentinelAPILTAError('Request for retrieval from LTA not accepted', r)
+            elif r.status_code == 403:
+                self.logger.error("Requests exceed user quota")
+                raise SentinelAPILTAError('Requests for retrieval from LTA exceed user quota', r)
+            elif r.status_code == 500:
+                # should not happen
+                self.logger.error("Trying to download an offline product")
+                raise SentinelAPILTAError('Trying to download an offline product', r)
+            return r.status_code
+
     def download(self, id, directory_path='.', checksum=True):
         """Download a product.
 
@@ -467,6 +499,14 @@ class SentinelAPI:
 
         if exists(path):
             # We assume that the product has been downloaded and is complete
+            return product_info
+
+        # An incomplete download triggers the retrieval from the LTA if the product is not online
+        if not product_info['Online']:
+            self.logger.warning(
+                'Product %s is not online. Triggering retrieval from long term archive.',
+                product_info['id'])
+            self._trigger_offline_retrieval(product_info['url'])
             return product_info
 
         # Use a temporary file for downloading
@@ -546,6 +586,9 @@ class SentinelAPI:
         dict[string, dict]
             A dictionary containing the return value from download() for each successfully
             downloaded product.
+        dict[string, dict]
+            A dictionary containing the product information for products whose retrieval
+            from the long term archive was successfully triggered.
         set[string]
             The list of products that failed to download.
         """
@@ -565,15 +608,23 @@ class SentinelAPI:
                     last_exception = e
                     self.logger.warning(
                         "Invalid checksum. The downloaded file for '%s' is corrupted.", product_id)
+                except SentinelAPILTAError as e:
+                    last_exception = e
+                    self.logger.exception("There was an error retrieving %s from the LTA", product_id)
+                    break
                 except Exception as e:
                     last_exception = e
                     self.logger.exception("There was an error downloading %s", product_id)
             self.logger.info("%s/%s products downloaded", i + 1, len(product_ids))
         failed = set(products) - set(return_values)
 
+        # split up sucessfully processed products into downloaded and only triggered retrieval from the LTA
+        triggered = OrderedDict([(k, v) for k, v in return_values.items() if v['Online'] is False])
+        downloaded = OrderedDict([(k, v) for k, v in return_values.items() if v['Online'] is True])
+
         if len(failed) == len(product_ids) and last_exception is not None:
             raise last_exception
-        return return_values, failed
+        return downloaded, triggered, failed
 
     @staticmethod
     def get_products_size(products):
@@ -805,6 +856,21 @@ class SentinelAPIError(Exception):
         return 'HTTP status {0} {1}: {2}'.format(
             self.response.status_code, self.response.reason,
             ('\n' if '\n' in self.msg else '') + self.msg)
+
+class SentinelAPILTAError(SentinelAPIError):
+    """ Error when retrieving a product from the Long Term Archive
+
+    Attributes
+    ----------
+    msg: str
+        The error message.
+    response: requests.Response
+        The response from the server as a `requests.Response` object.
+    """
+
+    def __init__(self, msg=None, response=None):
+        self.msg = msg
+        self.response = response
 
 
 class InvalidChecksumError(Exception):
@@ -1058,7 +1124,10 @@ def _parse_odata_response(product):
         product['Checksum']['Algorithm'].lower(): product['Checksum']['Value'],
         'date': _parse_odata_timestamp(product['ContentDate']['Start']),
         'footprint': _parse_gml_footprint(product["ContentGeometry"]),
-        'url': product['__metadata']['media_src']
+        'url': product['__metadata']['media_src'],
+        'Online': product['Online'],
+        'Creation Date': _parse_odata_timestamp(product['CreationDate']),
+        'Ingestion Date': _parse_odata_timestamp(product['IngestionDate']),
     }
     # Parse the extended metadata, if provided
     converters = [int, float, _parse_iso_date]
