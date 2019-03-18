@@ -254,6 +254,15 @@ With `full=True` we receive the full metadata available for the product.
    'url': "https://scihub.copernicus.eu/apihub/odata/v1/Products('04548172-c64a-418f-8e83-7a4d148adf1e')/$value"}
 
 
+LTA-Products
+------------
+
+Copernicus Open Access Hub no longer stores all products online for immediate retrieval.
+Offline products can be requested from the `Long Term Archive (LTA) <https://scihub.copernicus.eu/userguide/LongTermArchive>`_ and should become available within 24 hours.
+Copernicus Open Access Hub's quota currently permits users to request an offline product every 30 minutes.
+When trying to download an offline product, both :meth:`~SentinelAPI.download` and :meth:`~SentinelAPI.download_all` try to trigger its retrieval from the LTA.
+
+
 Logging
 -------
 
