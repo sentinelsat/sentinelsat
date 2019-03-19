@@ -260,8 +260,20 @@ LTA-Products
 Copernicus Open Access Hub no longer stores all products online for immediate retrieval.
 Offline products can be requested from the `Long Term Archive (LTA) <https://scihub.copernicus.eu/userguide/LongTermArchive>`_ and should become available within 24 hours.
 Copernicus Open Access Hub's quota currently permits users to request an offline product every 30 minutes.
-When trying to download an offline product, both :meth:`~SentinelAPI.download` and :meth:`~SentinelAPI.download_all` try to trigger its retrieval from the LTA.
 
+A product's availability can be checked with a regular OData query by evaluating the ``Online`` property value.
+
+.. code-block:: python
+
+    product_info = api.get_product_odata(<product_id>)
+
+    if product_info['Online']:
+        print('Product {} is online. Starting download.'.format(<product_id>))
+        api.download(<product_id>)
+    else:
+        print('Product {} is not onnline.'.format(<product_id>))
+
+When trying to download an offline product with :meth:`~SentinelAPI.download` or :meth:`~SentinelAPI.download_all`, these methods will instead attempt to trigger its retrieval from the LTA.
 
 Logging
 -------
