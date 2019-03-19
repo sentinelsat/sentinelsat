@@ -271,7 +271,7 @@ A product's availability can be checked with a regular OData query by evaluating
         print('Product {} is online. Starting download.'.format(<product_id>))
         api.download(<product_id>)
     else:
-        print('Product {} is not onnline.'.format(<product_id>))
+        print('Product {} is not online.'.format(<product_id>))
 
 When trying to download an offline product with :meth:`~SentinelAPI.download` or :meth:`~SentinelAPI.download_all`, these methods will instead attempt to trigger its retrieval from the LTA.
 
