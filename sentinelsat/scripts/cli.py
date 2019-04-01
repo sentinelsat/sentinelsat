@@ -58,7 +58,7 @@ class CommaSeparatedString(click.ParamType):
     '--name', type=CommaSeparatedString(), default=None,
     help='Select specific product(s) by filename. Supports wildcards.')
 @click.option(
-    '--sentinel', type=click.Choice(['1', '2', '3']),
+    '--sentinel', type=click.Choice(['1', '2', '3', '5']),
     help='Limit search to a Sentinel satellite (constellation)')
 @click.option(
     '--instrument', type=click.Choice(['MSI', 'SAR-C SAR', 'SLSTR', 'OLCI', 'SRAL']),
