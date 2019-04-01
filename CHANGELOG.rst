@@ -20,6 +20,7 @@ Added
 * Parsing the ``Online``, ``CreationDate`` and ``IngestionDate`` fields of an OData response
 * Trying to download an offline product from the Copernicus Open Access Hub triggers its retrieval from the long term archive.
   Downloading of the product is **not** scheduled.
+* Added support for downloading Sentinel 5P data in the CLI via the '--sentinel 5' flag
 
 Changed
 ~~~~~~~
