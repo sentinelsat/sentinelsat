@@ -3,7 +3,7 @@ Change Log
 
 All notable changes to ``sentinelsat`` will be listed here.
 
-[master] – YYYY-MM-DD
+[0.13] – 2019-04-05
 ---------------------
 
 Added
@@ -25,10 +25,6 @@ Added
 Changed
 ~~~~~~~
 * Add support in the CLI for reading credentials from `~/.netrc` and document existing functionality in the API (#90)
-
-Deprecated
-~~~~~~~~~~
-* 
 
 Fixed
 ~~~~~
