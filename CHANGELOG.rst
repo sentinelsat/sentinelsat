@@ -3,6 +3,21 @@ Change Log
 
 All notable changes to ``sentinelsat`` will be listed here.
 
+[master] – YYYY-MM-DD
+---------------------
+
+Added
+~~~~~
+
+Changed
+~~~~~~~
+
+Deprecated
+~~~~~~~~~~
+
+Fixed
+~~~~~
+
 [0.13] – 2019-04-05
 ---------------------
 

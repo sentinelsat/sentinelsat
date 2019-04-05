@@ -123,8 +123,9 @@ A new package is release on PyPi with the following commands.
 .. code-block:: console
 
   pip install rstcheck twine
-  rstcheck README.rst CONTRIBUTE.rst
+  rstcheck README.rst CONTRIBUTE.rst AUTHORS.rst
   python setup.py sdist bdist_wheel --universal
+  twine upload --repository-url https://test.pypi.org/legacy/ dist/*
   twine upload dist/*
 
 
