@@ -873,6 +873,40 @@ class SentinelAPILTAError(SentinelAPIError):
         self.response = response
 
 
+class UnauthorizedError(Exception):
+    """ Error when attempting to retrieve a product with incorrect credentials
+
+    Attributes
+    ----------
+    msg: str
+    The error message.
+
+    response: requests.Response
+    The response from the server as a `requests.Response` object.
+    """
+
+    def __init__(self, msg=None, response=None):
+        self.msg = msg
+        self.response = response
+
+
+class ServerError(Exception):
+    """ Error raised on any status code 5xx
+
+    Attributes
+    ----------
+    msg: str
+    The error message.
+
+    response: requests.Response
+    The response from the server as a `requests.Response` object.
+    """
+
+    def __init__(self, msg=None, response=None):
+        self.msg = msg
+        self.response = response
+
+
 class InvalidChecksumError(Exception):
     """MD5 checksum of a local file does not match the one from the server.
     """
@@ -1020,6 +1054,14 @@ def _check_scihub_response(response, test_json=True):
                         msg = h.handle(response.text).strip()
                     except:
                         pass
+
+        if response.status_code == 401:
+            raise UnauthorizedError(msg, response)
+
+        if 500 <= response.status_code < 600:
+            # 5xx: Server Error
+            raise ServerError(msg, response)
+
         api_error = SentinelAPIError(msg, response)
         # Suppress "During handling of the above exception..." message
         # See PEP 409

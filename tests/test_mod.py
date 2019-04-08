@@ -10,7 +10,7 @@ import requests
 import requests_mock
 
 from sentinelsat import InvalidChecksumError, SentinelAPI, SentinelAPIError, SentinelAPILTAError, \
-    format_query_date, geojson_to_wkt, read_geojson
+    format_query_date, geojson_to_wkt, read_geojson, UnauthorizedError, ServerError
 from sentinelsat.sentinel import _format_order_by, _parse_odata_timestamp, _parse_opensearch_response
 
 _small_query = dict(
@@ -97,19 +97,19 @@ def test_SentinelAPI_wrong_credentials():
         "wrong_user",
         "wrong_password"
     )
-    with pytest.raises(SentinelAPIError) as excinfo:
+    with pytest.raises(UnauthorizedError) as excinfo:
         api.query(**_small_query)
     assert excinfo.value.response.status_code == 401
 
-    with pytest.raises(SentinelAPIError) as excinfo:
+    with pytest.raises(UnauthorizedError) as excinfo:
         api.get_product_odata('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')
     assert excinfo.value.response.status_code == 401
 
-    with pytest.raises(SentinelAPIError) as excinfo:
+    with pytest.raises(UnauthorizedError) as excinfo:
         api.download('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')
     assert excinfo.value.response.status_code == 401
 
-    with pytest.raises(SentinelAPIError) as excinfo:
+    with pytest.raises(UnauthorizedError) as excinfo:
         api.download_all(['8df46c9e-a20c-43db-a19a-4240c2ed3b8b'])
     assert excinfo.value.response.status_code == 401
 
@@ -374,7 +374,7 @@ def test_too_long_query(api):
     # Expect HTTP status 500 Internal Server Error
     q = create_query(164)
     assert 0.999 <= SentinelAPI.check_query_length(q) < 1.01
-    with pytest.raises(SentinelAPIError) as excinfo:
+    with pytest.raises(ServerError) as excinfo:
         api.count(raw=q)
     assert excinfo.value.response.status_code == 500
     assert ("Request Entity Too Large" in excinfo.value.msg or
@@ -488,7 +488,7 @@ def test_get_product_odata_scihub_down(read_fixture_file):
             request_url,
             text="Mock SciHub is Down", status_code=503
         )
-        with pytest.raises(SentinelAPIError) as excinfo:
+        with pytest.raises(ServerError) as excinfo:
             api.get_product_odata('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')
         assert excinfo.value.msg == "Mock SciHub is Down"
 
@@ -498,7 +498,7 @@ def test_get_product_odata_scihub_down(read_fixture_file):
                  '"No Products found with key \'8df46c9e-a20c-43db-a19a-4240c2ed3b8b\' "}}}',
             status_code=500
         )
-        with pytest.raises(SentinelAPIError) as excinfo:
+        with pytest.raises(ServerError) as excinfo:
             api.get_product_odata('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')
         assert excinfo.value.msg == "No Products found with key \'8df46c9e-a20c-43db-a19a-4240c2ed3b8b\' "
 
@@ -515,7 +515,7 @@ def test_get_product_odata_scihub_down(read_fixture_file):
             request_url,
             text=read_fixture_file('server_maintenance.html'),
             status_code=502)
-        with pytest.raises(SentinelAPIError) as excinfo:
+        with pytest.raises(ServerError) as excinfo:
             api.get_product_odata('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')
         assert "The Sentinels Scientific Data Hub will be back soon!" in excinfo.value.msg
 
