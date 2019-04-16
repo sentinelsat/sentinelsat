@@ -501,6 +501,7 @@ def test_get_product_odata_short():
         for k in ret:
             assert ret[k] == expected[k]
 
+
 def scrub_string(string, replacement=''):
     '''Scrub a string from a VCR response body string
     '''
@@ -523,7 +524,7 @@ def test_get_product_odata_short_with_missing_online_key():
         'footprint': 'POLYGON((-63.852531 -5.880887,-67.495872 -5.075419,-67.066071 -3.084356,-63.430576 -3.880541,'
                      '-63.852531 -5.880887))',
         'title': 'S1A_EW_GRDM_1SDV_20151121T100356_20151121T100429_008701_00C622_A0EC',
-        'Online': None,
+        'Online': True,
         'Creation Date': datetime(2015, 11, 21, 13, 22, 1, 652000),
         'Ingestion Date': datetime(2015, 11, 21, 13, 22, 4, 992000),
     }
@@ -651,6 +652,7 @@ def test_get_product_odata_full():
         assert set(ret) == set(expected)
         for k in ret:
             assert ret[k] == expected[k]
+
 
 @my_vcr.use_cassette
 @pytest.mark.scihub
