@@ -1125,7 +1125,7 @@ def _parse_odata_response(product):
         'date': _parse_odata_timestamp(product['ContentDate']['Start']),
         'footprint': _parse_gml_footprint(product["ContentGeometry"]),
         'url': product['__metadata']['media_src'],
-        'Online': product['Online'],
+        'Online': product.get('Online'),
         'Creation Date': _parse_odata_timestamp(product['CreationDate']),
         'Ingestion Date': _parse_odata_timestamp(product['IngestionDate']),
     }
