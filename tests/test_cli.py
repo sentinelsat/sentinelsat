@@ -17,11 +17,11 @@ def run_cli(credentials):
     runner = CliRunner()
     credential_args = ['--user', credentials[0] or '', '--password', credentials[1] or '']
 
-    def run(*args, with_credentials=True, catch_exceptions=False, **kwargs):
+    def run(*args, **kwargs):
+        with_credentials = kwargs.pop('with_credentials', True)
         return runner.invoke(
             cli,
             credential_args + list(args) if with_credentials else args,
-            catch_exceptions=catch_exceptions,
             **kwargs
         )
 
@@ -54,7 +54,8 @@ def no_netrc():
 @pytest.fixture
 def netrc_from_environ(no_netrc, credentials):
     netrcpath = os.path.expanduser('~/.netrc')
-    with open(netrcpath, 'x') as f:
+    assert not os.path.exists(netrcpath)
+    with open(netrcpath, 'w') as f:
         f.write('\n'.join([
             'machine scihub.copernicus.eu',
             'login {}'.format(credentials[0]),
