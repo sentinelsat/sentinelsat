@@ -364,8 +364,8 @@ def test_footprints_cli(run_cli, tmpdir, geojson_path):
 
 @pytest.mark.vcr
 @pytest.mark.scihub
-def test_download_single(run_cli, api, tmpdir):
-    product_id = '5618ce1b-923b-4df2-81d9-50b53e5aded9'
+def test_download_single(run_cli, api, tmpdir, smallest_online_products):
+    product_id = smallest_online_products[0]['id']
     command = [
         '--uuid', product_id,
         '--download',
@@ -403,10 +403,11 @@ def test_download_single(run_cli, api, tmpdir):
 
 @pytest.mark.vcr
 @pytest.mark.scihub
-def test_download_many(run_cli, api, tmpdir):
+def test_download_many(run_cli, api, tmpdir, smallest_online_products):
+    ids = [product['id'] for product in smallest_online_products]
     command = [
         '--uuid',
-        '1f62a176-c980-41dc-b3a1-c735d660c910,5618ce1b-923b-4df2-81d9-50b53e5aded9,d8340134-878f-4891-ba4f-4df54f1e3ab4',
+        ','.join(ids),
         '--download',
         '--path', str(tmpdir)
     ]
@@ -424,7 +425,7 @@ def test_download_many(run_cli, api, tmpdir):
         f.remove()
 
     # Prepare a response with an invalid checksum
-    product_id = 'd8340134-878f-4891-ba4f-4df54f1e3ab4'
+    product_id = ids[0]
     url = "https://scihub.copernicus.eu/apihub/odata/v1/Products('%s')?$format=json" % product_id
     json = api.session.get(url).json()
     json["d"]["Checksum"]["Value"] = "00000000000000000000000000000000"
@@ -447,7 +448,7 @@ def test_download_many(run_cli, api, tmpdir):
 
 @pytest.mark.vcr
 @pytest.mark.scihub
-def test_download_invalid_id(run_cli, tmpdir):
+def test_download_invalid_id_cli(run_cli, tmpdir):
     product_id = 'f30b2a6a-b0c1-49f1-INVALID-e10c3cf06101'
     result = run_cli(
         '--uuid', product_id,

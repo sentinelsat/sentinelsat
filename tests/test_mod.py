@@ -22,29 +22,6 @@ _large_query = dict(
     date=(datetime(2015, 12, 1), datetime(2015, 12, 31)))
 
 
-@pytest.fixture(scope='module')
-def products(api_kwargs, vcr, test_wkt):
-    """A fixture for tests that need some non-specific set of products as input."""
-    with vcr.use_cassette('products_fixture', decode_compressed_response=False):
-        api = SentinelAPI(**api_kwargs)
-        products = api.query(
-            test_wkt,
-            ("20151219", "20151228")
-        )
-    return products
-
-
-@pytest.fixture(scope='module')
-def raw_products(api_kwargs, vcr, test_wkt):
-    """A fixture for tests that need some non-specific set of products in the form of a raw response as input."""
-    with vcr.use_cassette('products_fixture', decode_compressed_response=False):
-        api = SentinelAPI(**api_kwargs)
-        raw_products = api._load_query(
-            api.format_query(test_wkt, ("20151219", "20151228"))
-        )[0]
-    return raw_products
-
-
 def test_boundaries_latitude_more(fixture_path):
     with pytest.raises(ValueError):
         geojson_to_wkt(read_geojson(fixture_path('map_boundaries_lat.geojson')))
@@ -806,9 +783,9 @@ def test_to_geopandas_empty(products):
 
 @pytest.mark.vcr
 @pytest.mark.scihub
-def test_download(api, tmpdir):
-    uuid = "1f62a176-c980-41dc-b3a1-c735d660c910"
-    filename = "S1A_WV_OCN__2SSH_20150603T092625_20150603T093332_006207_008194_521E"
+def test_download(api, tmpdir, smallest_online_products):
+    uuid = smallest_online_products[0]['id']
+    filename = smallest_online_products[0]['title']
     expected_path = tmpdir.join(filename + ".zip")
     tempfile_path = tmpdir.join(filename + ".zip.incomplete")
 
@@ -872,18 +849,8 @@ def test_download(api, tmpdir):
 
 @pytest.mark.vcr
 @pytest.mark.scihub
-def test_download_all(api, tmpdir):
-    # From https://scihub.copernicus.eu/apihub/odata/v1/Products?$top=5&$orderby=ContentLength
-    # filenames = ["S1A_WV_OCN__2SSH_20150603T092625_20150603T093332_006207_008194_521E",
-    #              "S1A_WV_OCN__2SSV_20150526T211029_20150526T211737_006097_007E78_134A",
-    #              "S1A_WV_OCN__2SSV_20150526T081641_20150526T082418_006090_007E3E_104C"]
-
-    # Corresponding IDs
-    ids = [
-        "5618ce1b-923b-4df2-81d9-50b53e5aded9",
-        "d8340134-878f-4891-ba4f-4df54f1e3ab4",
-        "1f62a176-c980-41dc-b3a1-c735d660c910"
-    ]
+def test_download_all(api, tmpdir, smallest_online_products):
+    ids = [product['id'] for product in smallest_online_products]
 
     # Download normally
     product_infos, triggered, failed_downloads = api.download_all(ids, str(tmpdir))
@@ -916,19 +883,14 @@ def test_download_all(api, tmpdir):
 
 @pytest.mark.vcr
 @pytest.mark.scihub
-def test_download_all_lta(api, tmpdir):
-    # Corresponding IDs, same products as in test_download_all.
-    # But the Online flag of the first id is set to False in the unit test's vcr cassette
-    ids = [
-        "5618ce1b-923b-4df2-81d9-50b53e5aded9",
-        "d8340134-878f-4891-ba4f-4df54f1e3ab4",
-        "1f62a176-c980-41dc-b3a1-c735d660c910"
-    ]
+def test_download_all_lta(api, tmpdir, smallest_archived_products):
+    ids = [product['id'] for product in smallest_archived_products]
 
     product_infos, triggered, failed_downloads = api.download_all(ids, str(tmpdir))
     assert len(failed_downloads) == 0
-    assert len(triggered) == 1
+    assert len(triggered) == 3
     assert len(product_infos) == len(ids) - len(failed_downloads) - len(triggered)
+    assert all(x['Online'] is False for x in triggered.values())
 
     # test downloaded products
     for product_id, product_info in product_infos.items():
@@ -936,9 +898,6 @@ def test_download_all_lta(api, tmpdir):
         assert pypath.check(exists=1, file=1)
         assert pypath.purebasename in product_info['title']
         assert pypath.size() == product_info["size"]
-
-    # test triggered product 5618ce1b-923b-4df2-81d9-50b53e5aded9
-    assert triggered['5618ce1b-923b-4df2-81d9-50b53e5aded9']['Online'] == False
 
     tmpdir.remove()
 
@@ -971,16 +930,10 @@ def test_query_by_names(api):
 
 @pytest.mark.vcr
 @pytest.mark.scihub
-def test_check_existing(api, tmpdir):
-    ids = [
-        "5618ce1b-923b-4df2-81d9-50b53e5aded9",
-        "d8340134-878f-4891-ba4f-4df54f1e3ab4",
-        "1f62a176-c980-41dc-b3a1-c735d660c910"
-    ]
-    names = ["S1A_WV_OCN__2SSV_20150526T081641_20150526T082418_006090_007E3E_104C",
-             "S1A_WV_OCN__2SSV_20150526T211029_20150526T211737_006097_007E78_134A",
-             "S1A_WV_OCN__2SSH_20150603T092625_20150603T093332_006207_008194_521E"]
-    paths = [tmpdir.join(fn + ".zip") for fn in names]
+def test_check_existing(api, tmpdir, smallest_online_products, smallest_archived_products):
+    ids = [product['id'] for product in smallest_online_products]
+    names = [product['title'] for product in smallest_online_products]
+    paths = [tmpdir.join(fn + '.zip') for fn in names]
     path_strings = list(map(str, paths))
 
     # Init files used for testing
@@ -1001,35 +954,25 @@ def test_check_existing(api, tmpdir):
     # Test
     expected = {str(paths[1]), str(paths[2])}
 
+    def check_result(result, expected_existing):
+        assert set(result) == expected
+        assert result[paths[1]][0]['id'] == ids[1]
+        assert result[paths[2]][0]['id'] == ids[2]
+        assert [p.check(exists=1, file=1) for p in paths] == expected_existing
+
     result = api.check_files(ids=ids, directory=str(tmpdir))
-    assert set(result) == expected
-    assert result[paths[1]][0]['id'] == ids[1]
-    assert result[paths[2]][0]['id'] == ids[2]
-    assert paths[0].check(exists=1, file=1)
-    assert paths[1].check(exists=1, file=1)
-    assert paths[2].check(exists=1, file=1)
+    check_result(result, [True, True, True])
 
     result = api.check_files(paths=path_strings)
-    assert set(result) == expected
-    assert result[paths[1]][0]['id'] == ids[1]
-    assert result[paths[2]][0]['id'] == ids[2]
-    assert paths[0].check(exists=1, file=1)
-    assert paths[1].check(exists=1, file=1)
-    assert paths[2].check(exists=1, file=1)
+    check_result(result, [True, True, True])
 
     result = api.check_files(paths=path_strings, delete=True)
-    assert set(result) == expected
-    assert result[paths[1]][0]['id'] == ids[1]
-    assert result[paths[2]][0]['id'] == ids[2]
-    assert paths[0].check(exists=1, file=1)
-    assert not paths[1].check(exists=1, file=1)
-    assert not paths[2].check(exists=1, file=1)
+    check_result(result, [True, False, False])
 
-    missing_file = str(tmpdir.join(
-        "S1A_EW_GRDH_1SDH_20141003T003840_20141003T003920_002658_002F54_4DD1.zip"))
+    missing_file = str(tmpdir.join(smallest_archived_products[0]['title'] + '.zip'))
     result = api.check_files(paths=[missing_file])
     assert set(result) == {missing_file}
-    assert result[missing_file][0]['id']
+    assert result[missing_file][0]['id'] == smallest_archived_products[0]['id']
 
     with pytest.raises(ValueError):
         api.check_files(ids=ids)
