@@ -3,7 +3,7 @@ Change Log
 
 All notable changes to ``sentinelsat`` will be listed here.
 
-[master] – YYYY-MM-DD
+[master] – 2019-MM-DD
 ---------------------
 
 Added
@@ -17,6 +17,7 @@ Deprecated
 
 Fixed
 ~~~~~
+* Missing ``Online`` field in OData response defaults to ``Online: True`` instead of raising a ``KeyError`` (#281 @viktorbahr)
 
 [0.13] – 2019-04-05
 ---------------------
