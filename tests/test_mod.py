@@ -439,12 +439,9 @@ def test_get_coordinates(fixture_path):
 @pytest.mark.scihub
 def test_get_product_odata_short(api, read_yaml):
     expected_short = read_yaml('odata_response_short.yml')
-
     for id, expected in expected_short.items():
-        ret = api.get_product_odata(id)
-        assert set(ret) == set(expected)
-        for k in ret:
-            assert ret[k] == expected[k]
+        response = api.get_product_odata(id)
+        assert response == expected
 
 
 def scrub_string(string, replacement=''):
@@ -478,22 +475,17 @@ def test_get_product_odata_short_with_missing_online_key(api, vcr):
     # scrub 'Online' key from response
     with vcr.use_cassette("test_get_product_odata_short",
                           before_record_response=scrub_string(b'"Online":false,', b'')):
-        ret = api.get_product_odata(uuid)
-        assert set(ret) == set(expected_short)
-        for k in ret:
-            assert ret[k] == expected_short[k]
+        response = api.get_product_odata(uuid)
+        assert response == expected_short
 
 
 @pytest.mark.vcr
 @pytest.mark.scihub
 def test_get_product_odata_full(api, read_yaml):
     expected_full = read_yaml('odata_response_full.yml')
-
     for id, expected in expected_full.items():
-        ret = api.get_product_odata(id, full=True)
-        assert set(ret) == set(expected)
-        for k in ret:
-            assert ret[k] == expected[k]
+        response = api.get_product_odata(id, full=True)
+        assert response == expected
 
 
 @pytest.mark.vcr
