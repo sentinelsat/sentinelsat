@@ -1,38 +1,43 @@
+import json
 import os
 import re
-import json
 import shutil
-import contextlib
+from test.support import EnvironmentVarGuard
 
 import pytest
 import requests_mock
 from click.testing import CliRunner
 
-from sentinelsat import InvalidChecksumError, SentinelAPIError, SentinelAPI
+from sentinelsat import InvalidChecksumError, SentinelAPIError
 from sentinelsat.scripts.cli import cli
-from .shared import my_vcr
-
-# local tests require environment variables `DHUS_USER` and `DHUS_PASSWORD`
-# for Travis CI they are set as encrypted environment variables and stored
-AUTH_VARS = ['DHUS_USER', 'DHUS_PASSWORD']
-API_AUTH = [os.environ.get(name, name) for name in AUTH_VARS]
-
-# TODO: change test fixtures from subcommands to unified commands
 
 
-@contextlib.contextmanager
-def no_auth_environ():
-    old_environ = {name: os.environ.pop(name, None) for name in AUTH_VARS}
-    try:
+@pytest.fixture(scope='session')
+def run_cli(credentials):
+    runner = CliRunner()
+    credential_args = ['--user', credentials[0] or '', '--password', credentials[1] or '']
+
+    def run(*args, with_credentials=True, catch_exceptions=False, **kwargs):
+        return runner.invoke(
+            cli,
+            credential_args + list(args) if with_credentials else args,
+            catch_exceptions=catch_exceptions,
+            **kwargs
+        )
+
+    return run
+
+
+@pytest.fixture
+def no_auth_environ(credentials):
+    with EnvironmentVarGuard() as guard:
+        # Temporarily unset credential environment variables
+        guard.unset('DHUS_USER')
+        guard.unset('DHUS_PASSWORD')
         yield
-    finally:
-        # restore old values
-        for name, value in old_environ.items():
-            if value is not None:
-                os.environ[name] = value
 
 
-@contextlib.contextmanager
+@pytest.fixture
 def no_netrc():
     netrcpath = os.path.expanduser('~/.netrc')
     netrcpath_bak = netrcpath + '.bak'
@@ -46,136 +51,97 @@ def no_netrc():
         yield
 
 
-@contextlib.contextmanager
-def netrc_from_environ():
+@pytest.fixture
+def netrc_from_environ(no_netrc, credentials):
     netrcpath = os.path.expanduser('~/.netrc')
-    with no_netrc():
-        with open(netrcpath, 'w') as f:
-            f.write('\n'.join([
-                'machine scihub.copernicus.eu',
-                'login {}'.format(API_AUTH[0]),
-                'password {}'.format(API_AUTH[1])
-            ]))
+    with open(netrcpath, 'x') as f:
+        f.write('\n'.join([
+            'machine scihub.copernicus.eu',
+            'login {}'.format(credentials[0]),
+            'password {}'.format(credentials[1])
+        ]))
+    try:
         yield
+    finally:
         os.remove(netrcpath)
 
 
-@my_vcr.use_cassette
+@pytest.mark.vcr
 @pytest.mark.scihub
-def test_cli(geojson_path):
-    runner = CliRunner()
-    result = runner.invoke(
-        cli,
-        ['--user', API_AUTH[0],
-         '--password', API_AUTH[1],
-         '--geometry', geojson_path],
-        catch_exceptions=False
-    )
-
+def test_cli(run_cli, geojson_path):
+    result = run_cli('--geometry', geojson_path)
     assert result.exit_code == 0
 
-    result = runner.invoke(
-        cli,
-        ['--user', API_AUTH[0],
-         '--password', API_AUTH[1],
-         '--geometry', geojson_path,
-         '--url', 'https://scihub.copernicus.eu/dhus/'],
-        catch_exceptions=False
+    result = run_cli(
+        '--geometry', geojson_path,
+        '--url', 'https://scihub.copernicus.eu/dhus/'
     )
     assert result.exit_code == 0
 
-    result = runner.invoke(
-        cli,
-        ['--user', API_AUTH[0],
-         '--password', API_AUTH[1],
-         '--geometry', geojson_path,
-         '-q', 'producttype=GRD,polarisationmode=HH'],
-        catch_exceptions=False
+    result = run_cli(
+        '--geometry', geojson_path,
+        '-q', 'producttype=GRD,polarisationmode=HH'
     )
     assert result.exit_code == 0
 
 
-def test_no_auth_fail(geojson_path):
-    with no_netrc():
-        with no_auth_environ():
-            runner = CliRunner()
-            result = runner.invoke(
-                cli,
-                ['--geometry', geojson_path,
-                 '--url', 'https://scihub.copernicus.eu/dhus/'],
-                catch_exceptions=False
-            )
-            assert result.exit_code != 0
-            assert '--user' in result.output
+def test_no_auth_fail(run_cli, no_netrc, no_auth_environ, geojson_path):
+    result = run_cli(
+        '--geometry', geojson_path,
+        '--url', 'https://scihub.copernicus.eu/dhus/',
+        with_credentials=False
+    )
+    assert result.exit_code != 0
+    assert '--user' in result.output
 
 
-@my_vcr.use_cassette
+@pytest.mark.vcr
 @pytest.mark.scihub
-def test_no_auth_netrc(geojson_path):
-    with netrc_from_environ():
-        with no_auth_environ():
-            runner = CliRunner()
-            result = runner.invoke(
-                cli,
-                ['--geometry', geojson_path,
-                 '--url', 'https://scihub.copernicus.eu/dhus/'],
-                catch_exceptions=False
-            )
-            print(result.output)
-            assert result.exit_code == 0
+def test_no_auth_netrc(run_cli, netrc_from_environ, no_auth_environ, geojson_path):
+    result = run_cli(
+        '--geometry', geojson_path,
+        '--url', 'https://scihub.copernicus.eu/dhus/',
+        with_credentials=False
+    )
+    assert result.exit_code == 0
 
 
-@my_vcr.use_cassette
+@pytest.mark.vcr
 @pytest.mark.scihub
-def test_returned_filesize(geojson_path):
-    runner = CliRunner()
-
-    result = runner.invoke(
-        cli,
-        ['--user', API_AUTH[0],
-         '--password', API_AUTH[1],
-         '--geometry', geojson_path,
-         '-s', '20141205',
-         '-e', '20141208',
-         '-q', 'producttype=GRD'],
-        catch_exceptions=False
+def test_returned_filesize(run_cli, geojson_path):
+    result = run_cli(
+        '--geometry', geojson_path,
+        '-s', '20141205',
+        '-e', '20141208',
+        '-q', 'producttype=GRD'
     )
     assert result.exit_code == 0
     expected = "1 scenes found with a total size of 0.50 GB"
     assert result.output.split("\n")[-2] == expected
 
-    result = runner.invoke(
-        cli,
-        ['--user', API_AUTH[0],
-         '--password', API_AUTH[1],
-         '--geometry', geojson_path,
-         '-s', '20170101',
-         '-e', '20170105',
-         '-q', 'producttype=GRD'],
-        catch_exceptions=False
+    result = run_cli(
+        '--geometry', geojson_path,
+        '-s', '20170101',
+        '-e', '20170105',
+        '-q', 'producttype=GRD'
     )
     assert result.exit_code == 0
     expected = "18 scenes found with a total size of 27.81 GB"
     assert result.output.split("\n")[-2] == expected
 
 
-@my_vcr.use_cassette
+@pytest.mark.vcr
 @pytest.mark.scihub
-def test_cloud_flag_url(geojson_path):
-    command = ['--user', API_AUTH[0],
-               '--password', API_AUTH[1],
-               '--geometry', geojson_path,
-               '--url', 'https://scihub.copernicus.eu/apihub/',
-               '-s', '20151219',
-               '-e', '20151228',
-               '-c', '10']
+def test_cloud_flag_url(run_cli, geojson_path):
+    command = [
+        '--geometry', geojson_path,
+        '--url', 'https://scihub.copernicus.eu/apihub/',
+        '-s', '20151219',
+        '-e', '20151228',
+        '-c', '10'
+    ]
 
-    runner = CliRunner()
-    result = runner.invoke(
-        cli,
-        command + ['--sentinel', '2'],
-        catch_exceptions=False
-    )
+    result = run_cli('--sentinel', '2', *command)
     assert result.exit_code == 0
 
     expected = "Product 6ed0b7de-3435-43df-98bf-ad63c8d077ef - Date: 2015-12-27T14:22:29Z, Instrument: MSI, Mode: , Satellite: Sentinel-2, Size: 5.47 GB"
@@ -183,49 +149,35 @@ def test_cloud_flag_url(geojson_path):
     # For order-by test
     assert '0848f6b8-5730-4759-850e-fc9945d42296' not in re.findall("^Product .+$", result.output, re.M)[1]
 
-    result = runner.invoke(
-        cli,
-        command + ['--sentinel', '1'],
-        catch_exceptions=False
-    )
+    result = run_cli('--sentinel', '1', *command)
     assert result.exit_code != 0
 
 
-@my_vcr.use_cassette
+@pytest.mark.vcr
 @pytest.mark.scihub
-def test_order_by_flag(geojson_path):
-    runner = CliRunner()
-    result = runner.invoke(
-        cli,
-        ['--user', API_AUTH[0],
-         '--password', API_AUTH[1],
-         '--geometry', geojson_path,
-         '--url', 'https://scihub.copernicus.eu/apihub/',
-         '-s', '20151219',
-         '-e', '20151228',
-         '-c', '10',
-         '--sentinel', '2',
-         '--order-by', 'cloudcoverpercentage,-beginposition'],
-        catch_exceptions=False
+def test_order_by_flag(run_cli, geojson_path):
+    result = run_cli(
+        '--geometry', geojson_path,
+        '--url', 'https://scihub.copernicus.eu/apihub/',
+        '-s', '20151219',
+        '-e', '20151228',
+        '-c', '10',
+        '--sentinel', '2',
+        '--order-by', 'cloudcoverpercentage,-beginposition'
     )
     assert result.exit_code == 0
     assert '0848f6b8-5730-4759-850e-fc9945d42296' in re.findall("^Product .+$", result.output, re.M)[1]
 
 
-@my_vcr.use_cassette
+@pytest.mark.vcr
 @pytest.mark.scihub
-def test_sentinel1_flag(geojson_path):
-    runner = CliRunner()
-    result = runner.invoke(
-        cli,
-        ['--user', API_AUTH[0],
-         '--password', API_AUTH[1],
-         '--geometry', geojson_path,
-         '--url', 'https://scihub.copernicus.eu/apihub/',
-         '-s', '20151219',
-         '-e', '20151228',
-         '--sentinel', '1'],
-        catch_exceptions=False
+def test_sentinel1_flag(run_cli, geojson_path):
+    result = run_cli(
+        '--geometry', geojson_path,
+        '--url', 'https://scihub.copernicus.eu/apihub/',
+        '-s', '20151219',
+        '-e', '20151228',
+        '--sentinel', '1'
     )
     assert result.exit_code == 0
 
@@ -233,20 +185,15 @@ def test_sentinel1_flag(geojson_path):
     assert expected in re.findall("^Product .+$", result.output, re.M)
 
 
-@my_vcr.use_cassette
+@pytest.mark.vcr
 @pytest.mark.scihub
-def test_sentinel2_flag(geojson_path):
-    runner = CliRunner()
-    result = runner.invoke(
-        cli,
-        ['--user', API_AUTH[0],
-         '--password', API_AUTH[1],
-         '--geometry', geojson_path,
-         '--url', 'https://scihub.copernicus.eu/apihub/',
-         '-s', '20151219',
-         '-e', '20151228',
-         '--sentinel', '2'],
-        catch_exceptions=False
+def test_sentinel2_flag(run_cli, geojson_path):
+    result = run_cli(
+        '--geometry', geojson_path,
+        '--url', 'https://scihub.copernicus.eu/apihub/',
+        '-s', '20151219',
+        '-e', '20151228',
+        '--sentinel', '2'
     )
     assert result.exit_code == 0
 
@@ -254,19 +201,14 @@ def test_sentinel2_flag(geojson_path):
     assert expected in re.findall("^Product .+$", result.output, re.M)
 
 
-@my_vcr.use_cassette
+@pytest.mark.vcr
 @pytest.mark.scihub
-def test_sentinel3_flag(geojson_path):
-    runner = CliRunner()
-    result = runner.invoke(
-        cli,
-        ['--user', API_AUTH[0],
-         '--password', API_AUTH[1],
-         '--geometry', geojson_path,
-         '-s', '20161201',
-         '-e', '20161202',
-         '--sentinel', '3'],
-        catch_exceptions=False
+def test_sentinel3_flag(run_cli, geojson_path):
+    result = run_cli(
+        '--geometry', geojson_path,
+        '-s', '20161201',
+        '-e', '20161202',
+        '--sentinel', '3'
     )
     assert result.exit_code == 0
 
@@ -274,20 +216,15 @@ def test_sentinel3_flag(geojson_path):
     assert expected in re.findall("^Product .+$", result.output, re.M)
 
 
-@my_vcr.use_cassette
+@pytest.mark.vcr
 @pytest.mark.scihub
-def test_product_flag(geojson_path):
-    runner = CliRunner()
-    result = runner.invoke(
-        cli,
-        ['--user', API_AUTH[0],
-         '--password', API_AUTH[1],
-         '--geometry', geojson_path,
-         '--url', 'https://scihub.copernicus.eu/apihub/',
-         '-s', '20161201',
-         '-e', '20161202',
-         '--producttype', 'SLC'],
-        catch_exceptions=False
+def test_product_flag(run_cli, geojson_path):
+    result = run_cli(
+        '--geometry', geojson_path,
+        '--url', 'https://scihub.copernicus.eu/apihub/',
+        '-s', '20161201',
+        '-e', '20161202',
+        '--producttype', 'SLC'
     )
     assert result.exit_code == 0
 
@@ -295,19 +232,14 @@ def test_product_flag(geojson_path):
     assert re.findall("^Product .+$", result.output, re.M)[3] == expected
 
 
-@my_vcr.use_cassette
+@pytest.mark.vcr
 @pytest.mark.scihub
-def test_instrument_flag(geojson_path):
-    runner = CliRunner()
-    result = runner.invoke(
-        cli,
-        ['--user', API_AUTH[0],
-         '--password', API_AUTH[1],
-         '--geometry', geojson_path,
-         '-s', '20161201',
-         '-e', '20161202',
-         '--instrument', 'SRAL'],
-        catch_exceptions=False
+def test_instrument_flag(run_cli, geojson_path):
+    result = run_cli(
+        '--geometry', geojson_path,
+        '-s', '20161201',
+        '-e', '20161202',
+        '--instrument', 'SRAL'
     )
     assert result.exit_code == 0
 
@@ -315,21 +247,16 @@ def test_instrument_flag(geojson_path):
     assert expected in re.findall("^Product .+$", result.output, re.M)
 
 
-@my_vcr.use_cassette
+@pytest.mark.vcr
 @pytest.mark.scihub
-def test_limit_flag(geojson_path):
-    runner = CliRunner()
+def test_limit_flag(run_cli, geojson_path):
     limit = 15
-    result = runner.invoke(
-        cli,
-        ['--user', API_AUTH[0],
-         '--password', API_AUTH[1],
-         '--geometry', geojson_path,
-         '--url', 'https://scihub.copernicus.eu/apihub/',
-         '-s', '20161201',
-         '-e', '20161230',
-         '--limit', str(limit)],
-        catch_exceptions=False
+    result = run_cli(
+        '--geometry', geojson_path,
+        '--url', 'https://scihub.copernicus.eu/apihub/',
+        '-s', '20161201',
+        '-e', '20161230',
+        '--limit', str(limit)
     )
     assert result.exit_code == 0
 
@@ -337,16 +264,11 @@ def test_limit_flag(geojson_path):
     assert num_products == limit
 
 
-@my_vcr.use_cassette
+@pytest.mark.vcr
 @pytest.mark.scihub
-def test_uuid_search():
-    runner = CliRunner()
-    result = runner.invoke(
-        cli,
-        ['--user', API_AUTH[0],
-         '--password', API_AUTH[1],
-         '--uuid', 'd8340134-878f-4891-ba4f-4df54f1e3ab4'],
-        catch_exceptions=False
+def test_uuid_search(run_cli):
+    result = run_cli(
+        '--uuid', 'd8340134-878f-4891-ba4f-4df54f1e3ab4'
     )
     assert result.exit_code == 0
 
@@ -354,16 +276,11 @@ def test_uuid_search():
     assert re.findall("^Product .+$", result.output, re.M)[0] == expected
 
 
-@my_vcr.use_cassette
+@pytest.mark.vcr
 @pytest.mark.scihub
-def test_name_search():
-    runner = CliRunner()
-    result = runner.invoke(
-        cli,
-        ['--user', API_AUTH[0],
-         '--password', API_AUTH[1],
-         '--name', 'S1A_WV_OCN__2SSV_20150526T211029_20150526T211737_006097_007E78_134A'],
-        catch_exceptions=False
+def test_name_search(run_cli):
+    result = run_cli(
+        '--name', 'S1A_WV_OCN__2SSV_20150526T211029_20150526T211737_006097_007E78_134A'
     )
     assert result.exit_code == 0
 
@@ -371,16 +288,12 @@ def test_name_search():
     assert re.findall("^Product .+$", result.output, re.M)[0] == expected
 
 
-@my_vcr.use_cassette
+@pytest.mark.vcr
 @pytest.mark.scihub
-def test_name_search_multiple():
-    runner = CliRunner()
-    result = runner.invoke(
-        cli,
-        ['--user', API_AUTH[0],
-         '--password', API_AUTH[1],
-         '--name', 'S1B_IW_GRDH_1SDV_20181007T164414_20181007T164439_013049_0181B7_345E,S1B_IW_GRDH_1SDV_20181007T164349_20181007T164414_013049_0181B7_A8E3'],
-        catch_exceptions=False
+def test_name_search_multiple(run_cli):
+    result = run_cli(
+        '--name',
+        'S1B_IW_GRDH_1SDV_20181007T164414_20181007T164439_013049_0181B7_345E,S1B_IW_GRDH_1SDV_20181007T164349_20181007T164414_013049_0181B7_A8E3'
     )
     assert result.exit_code == 0
 
@@ -391,39 +304,30 @@ def test_name_search_multiple():
     assert re.findall("^Product .+$", result.output, re.M) == expected
 
 
-@my_vcr.use_cassette
+@pytest.mark.vcr
 @pytest.mark.scihub
-def test_name_search_empty():
-    runner = CliRunner()
+def test_name_search_empty(run_cli):
     with pytest.raises(SentinelAPIError):
-        result = runner.invoke(
-            cli,
-            ['--user', API_AUTH[0],
-             '--password', API_AUTH[1],
-             '--name', ''],
+        result = run_cli(
+            '--name', '',
             catch_exceptions=True
         )
         assert result.exit_code != 0
         raise result.exception
 
 
-@my_vcr.use_cassette
+@pytest.mark.vcr
 @pytest.mark.scihub
-def test_option_hierarchy(geojson_path):
+def test_option_hierarchy(run_cli, geojson_path):
     # expected hierarchy is producttype > instrument > platform from most to least specific
-    runner = CliRunner()
-    result = runner.invoke(
-        cli,
-        ['--user', API_AUTH[0],
-         '--password', API_AUTH[1],
-         '--geometry', geojson_path,
-         '--url', 'https://scihub.copernicus.eu/apihub/',
-         '-s', '20161201',
-         '-e', '20161202',
-         '--sentinel', '1',
-         '--instrument', 'SAR-C SAR',
-         '--producttype', 'S2MSI1C'],
-        catch_exceptions=False
+    result = run_cli(
+        '--geometry', geojson_path,
+        '--url', 'https://scihub.copernicus.eu/apihub/',
+        '-s', '20161201',
+        '-e', '20161202',
+        '--sentinel', '1',
+        '--instrument', 'SAR-C SAR',
+        '--producttype', 'S2MSI1C'
     )
     assert result.exit_code == 0
 
@@ -433,21 +337,16 @@ def test_option_hierarchy(geojson_path):
     assert all("Instrument: MSI, Mode: , Satellite: Sentinel-2" in p for p in products)
 
 
-@my_vcr.use_cassette
+@pytest.mark.vcr
 @pytest.mark.scihub
-def test_footprints_cli(tmpdir, geojson_path):
-    runner = CliRunner()
-    result = runner.invoke(
-        cli,
-        ['--user', API_AUTH[0],
-         '--password', API_AUTH[1],
-         '--geometry', geojson_path,
-         '-s', '20151219',
-         '-e', '20151228',
-         '--sentinel', '2',
-         '--path', str(tmpdir),
-         '--footprints'],
-        catch_exceptions=False
+def test_footprints_cli(run_cli, tmpdir, geojson_path):
+    result = run_cli(
+        '--geometry', geojson_path,
+        '-s', '20151219',
+        '-e', '20151228',
+        '--sentinel', '2',
+        '--path', str(tmpdir),
+        '--footprints'
     )
     assert result.exit_code == 0
 
@@ -462,30 +361,20 @@ def test_footprints_cli(tmpdir, geojson_path):
     tmpdir.remove()
 
 
-@my_vcr.use_cassette
+@pytest.mark.vcr
 @pytest.mark.scihub
-def test_download_single(tmpdir):
-    runner = CliRunner()
-
+def test_download_single(run_cli, api, tmpdir):
     product_id = '5618ce1b-923b-4df2-81d9-50b53e5aded9'
-    command = ['--user', API_AUTH[0],
-               '--password', API_AUTH[1],
-               '--uuid', product_id,
-               '--download',
-               '--path', str(tmpdir)]
-    result = runner.invoke(
-        cli,
-        command,
-        catch_exceptions=False
-    )
+    command = [
+        '--uuid', product_id,
+        '--download',
+        '--path', str(tmpdir)
+    ]
+    result = run_cli(*command)
     assert result.exit_code == 0
 
     # The file already exists, should not be re-downloaded
-    result = runner.invoke(
-        cli,
-        command,
-        catch_exceptions=False
-    )
+    result = run_cli(*command)
     assert result.exit_code == 0
 
     # clean up
@@ -494,7 +383,6 @@ def test_download_single(tmpdir):
 
     # Prepare a response with an invalid checksum
     url = "https://scihub.copernicus.eu/apihub/odata/v1/Products('%s')?$format=json" % product_id
-    api = SentinelAPI(*API_AUTH)
     json = api.session.get(url).json()
     json["d"]["Checksum"]["Value"] = "00000000000000000000000000000000"
 
@@ -504,11 +392,7 @@ def test_download_single(tmpdir):
 
         # md5 flag set (implicitly), should raise an exception
         with pytest.raises(InvalidChecksumError):
-            result = runner.invoke(
-                cli,
-                command,
-                catch_exceptions=True
-            )
+            result = run_cli(*command, catch_exceptions=True)
             assert result.exit_code != 0
             raise result.exception
 
@@ -516,32 +400,22 @@ def test_download_single(tmpdir):
     tmpdir.remove()
 
 
-@my_vcr.use_cassette
+@pytest.mark.vcr
 @pytest.mark.scihub
-def test_download_many(tmpdir):
-    runner = CliRunner()
-
-    command = ['--user', API_AUTH[0],
-               '--password', API_AUTH[1],
-               '--uuid',
-               '1f62a176-c980-41dc-b3a1-c735d660c910,5618ce1b-923b-4df2-81d9-50b53e5aded9,d8340134-878f-4891-ba4f-4df54f1e3ab4',
-               '--download',
-               '--path', str(tmpdir)]
+def test_download_many(run_cli, api, tmpdir):
+    command = [
+        '--uuid',
+        '1f62a176-c980-41dc-b3a1-c735d660c910,5618ce1b-923b-4df2-81d9-50b53e5aded9,d8340134-878f-4891-ba4f-4df54f1e3ab4',
+        '--download',
+        '--path', str(tmpdir)
+    ]
 
     # Download 3 tiny products
-    result = runner.invoke(
-        cli,
-        command,
-        catch_exceptions=False
-    )
+    result = run_cli(*command)
     assert result.exit_code == 0
 
     # Should not re-download
-    result = runner.invoke(
-        cli,
-        command,
-        catch_exceptions=False
-    )
+    result = run_cli(*command)
     assert result.exit_code == 0
 
     # clean up
@@ -551,21 +425,14 @@ def test_download_many(tmpdir):
     # Prepare a response with an invalid checksum
     product_id = 'd8340134-878f-4891-ba4f-4df54f1e3ab4'
     url = "https://scihub.copernicus.eu/apihub/odata/v1/Products('%s')?$format=json" % product_id
-    api = SentinelAPI(*API_AUTH)
     json = api.session.get(url).json()
     json["d"]["Checksum"]["Value"] = "00000000000000000000000000000000"
 
     # Force one download to fail
     with requests_mock.mock(real_http=True) as rqst:
         rqst.get(url, json=json)
-
-        rqst.get(url, json=json)
         # md5 flag set (implicitly), should raise an exception
-        result = runner.invoke(
-            cli,
-            command,
-            catch_exceptions=False
-        )
+        result = run_cli(*command)
         assert result.exit_code == 0
         assert 'is corrupted' in result.output
 
@@ -577,21 +444,14 @@ def test_download_many(tmpdir):
     tmpdir.remove()
 
 
-@my_vcr.use_cassette
+@pytest.mark.vcr
 @pytest.mark.scihub
-def test_download_invalid_id(tmpdir):
-    runner = CliRunner()
+def test_download_invalid_id(run_cli, tmpdir):
     product_id = 'f30b2a6a-b0c1-49f1-INVALID-e10c3cf06101'
-    command = ['--user', API_AUTH[0],
-               '--password', API_AUTH[1],
-               '--uuid', product_id,
-               '--download',
-               '--path', str(tmpdir)]
-
-    result = runner.invoke(
-        cli,
-        command,
-        catch_exceptions=False
+    result = run_cli(
+        '--uuid', product_id,
+        '--download',
+        '--path', str(tmpdir)
     )
     assert result.exit_code != 0
     assert 'No product with' in result.output

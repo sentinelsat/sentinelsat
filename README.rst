@@ -203,7 +203,7 @@ To run the tests on ``sentinelsat``:
     git clone https://github.com/sentinelsat/sentinelsat.git
     cd sentinelsat
     pip install -e .[dev]
-    py.test -v
+    pytest -v
 
 By default, prerecorded responses to Copernicus Open Access Hub queries are used to not be affected by its downtime.
 To allow the tests to run actual queries against the Copernicus Open Access Hub set the environment variables
@@ -213,8 +213,9 @@ To allow the tests to run actual queries against the Copernicus Open Access Hub 
     export DHUS_USER=<username>
     export DHUS_PASSWORD=<password>
 
-and add ``--vcr disable`` to ``py.test`` arguments.
-To update the recordings use either ``--vcr record_new`` or ``--vcr reset``.
+and add ``--disable-vcr`` to ``pytest`` arguments.
+To update the recordings use ``--vcr-record`` with ``once``, ``new_episodes`` or ``all``. See `vcrpy docs <https://vcrpy.readthedocs.io/en/latest/usage.html#record-modes>`_ for details.
+
 
 Documentation
 =============

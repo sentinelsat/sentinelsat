@@ -26,7 +26,7 @@ install:
 # skip Pandas on Python <3.4
 - if [[ $TRAVIS_PYTHON_VERSION == 3.4 ]]; then pip install -e .[dev34]; else pip install -e .[dev]; fi
 script:
-- coverage run --source=sentinelsat -m py.test -v
+- coverage run --source=sentinelsat -m pytest -v
 after_success:
 - codecov
 # RTD API v2 is triggered via Github Webhook, below is the syntax for fallback to API v1
