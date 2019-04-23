@@ -365,15 +365,15 @@ def test_too_long_query(api):
         return " a_-.*:,?+~!" * n
 
     # Expect no error
-    q = create_query(164)
+    q = create_query(163)
     assert 0.99 < SentinelAPI.check_query_length(q) < 1.0
     with pytest.raises(SentinelAPIError) as excinfo:
         api.count(raw=q)
     assert "Invalid query string" in excinfo.value.msg
 
     # Expect HTTP status 500 Internal Server Error
-    q = create_query(165)
-    assert 1.0 <= SentinelAPI.check_query_length(q) < 1.01
+    q = create_query(164)
+    assert 0.999 <= SentinelAPI.check_query_length(q) < 1.01
     with pytest.raises(SentinelAPIError) as excinfo:
         api.count(raw=q)
     assert excinfo.value.response.status_code == 500
@@ -384,11 +384,11 @@ def test_too_long_query(api):
 @pytest.mark.vcr
 @pytest.mark.scihub
 def test_date_arithmetic(api):
-    products = api.query('ENVELOPE(0, 10, 10, 0)',
+    products = api.query('ENVELOPE(0, 1, 1, 0)',
                          ('2016-12-01T00:00:00Z-1DAY',
                           '2016-12-01T00:00:00Z+1DAY-1HOUR'))
     assert api._last_response.status_code == 200
-    assert len(products) > 0
+    assert 0 < len(products) < 30
 
 
 @pytest.mark.vcr
@@ -414,11 +414,13 @@ def test_get_coordinates(fixture_path):
 
 @pytest.mark.vcr
 @pytest.mark.scihub
-def test_get_product_odata_short(api, read_yaml):
-    expected_short = read_yaml('odata_response_short.yml')
-    for id, expected in expected_short.items():
-        response = api.get_product_odata(id)
-        assert response == expected
+def test_get_product_odata_short(api, smallest_online_products, read_yaml):
+    responses = {}
+    for prod in smallest_online_products:
+        id = prod['id']
+        responses[id] = api.get_product_odata(id)
+    expected = read_yaml('odata_response_short.yml', responses)
+    assert responses == expected
 
 
 def scrub_string(string, replacement=''):
@@ -450,7 +452,7 @@ def test_get_product_odata_short_with_missing_online_key(api, vcr):
     }
 
     # scrub 'Online' key from response
-    with vcr.use_cassette("test_get_product_odata_short",
+    with vcr.use_cassette("test_get_product_odata_short_with_missing_online_key",
                           before_record_response=scrub_string(b'"Online":false,', b'')):
         response = api.get_product_odata(uuid)
         assert response == expected_short
@@ -458,11 +460,13 @@ def test_get_product_odata_short_with_missing_online_key(api, vcr):
 
 @pytest.mark.vcr
 @pytest.mark.scihub
-def test_get_product_odata_full(api, read_yaml):
-    expected_full = read_yaml('odata_response_full.yml')
-    for id, expected in expected_full.items():
-        response = api.get_product_odata(id, full=True)
-        assert response == expected
+def test_get_product_odata_full(api, smallest_online_products, read_yaml):
+    responses = {}
+    for prod in smallest_online_products:
+        id = prod['id']
+        responses[id] = api.get_product_odata(id, full=True)
+    expected = read_yaml('odata_response_full.yml', responses)
+    assert responses == expected
 
 
 @pytest.mark.vcr
@@ -636,20 +640,24 @@ def test_footprints_s2(products, fixture_path):
 def test_s2_cloudcover(api, test_wkt):
     products = api.query(
         test_wkt,
-        ("20151219", "20151228"),
+        ("20181212", "20181228"),
         platformname="Sentinel-2",
         cloudcoverpercentage=(0, 10)
     )
-    assert len(products) == 3
 
     product_ids = list(products)
-    assert product_ids[0] == "6ed0b7de-3435-43df-98bf-ad63c8d077ef"
-    assert product_ids[1] == "37ecee60-23d8-4ec2-a65f-2de24f51d30e"
-    assert product_ids[2] == "0848f6b8-5730-4759-850e-fc9945d42296"
+    assert product_ids == [
+        'bf652bc4-299c-4c39-9238-ee5a3fdc0d3e',
+        'b508a8cd-c7d6-4a4d-9286-6d9463926554',
+        'c9b0a744-c0e5-41f9-af6c-f0af83681e58',
+        '2e69293b-591f-41d4-99e5-89ec087ae487',
+        'dcd0849f-f43a-46f4-9267-da8069b74dd8'
+    ]
 
     # For order-by test
     vals = [x["cloudcoverpercentage"] for x in products.values()]
     assert sorted(vals) != vals
+    assert all(0 <= x <= 10 for x in vals)
 
 
 @pytest.mark.vcr
@@ -657,18 +665,19 @@ def test_s2_cloudcover(api, test_wkt):
 def test_order_by(api, test_wkt):
     kwargs = dict(
         area=test_wkt,
-        date=("20151219", "20161019"),
+        date=("20151219", "20160519"),
         platformname="Sentinel-2",
         cloudcoverpercentage=(0, 10),
         order_by="cloudcoverpercentage, -beginposition"
     )
     # Check that order_by works correctly also in cases where pagination is required
     expected_count = api.count(**kwargs)
-    assert expected_count > 100
+    assert 100 < expected_count < 250
     products = api.query(**kwargs)
     assert len(products) == expected_count
     vals = [x["cloudcoverpercentage"] for x in products.values()]
     assert sorted(vals) == vals
+    assert all(0 <= x <= 10 for x in vals)
 
 
 @pytest.mark.vcr
@@ -696,7 +705,7 @@ def test_area_relation(api):
 
 @pytest.mark.scihub
 def test_get_products_size(api, vcr, products):
-    assert SentinelAPI.get_products_size(products) == 90.94
+    assert SentinelAPI.get_products_size(products) == 75.4
 
     # load a new very small query
     with vcr.use_cassette('test_get_products_size'):
@@ -713,9 +722,9 @@ def test_response_to_dict(raw_products):
     # check the type
     assert isinstance(dictionary, dict)
     # check if dictionary has id key
-    assert '44517f66-9845-4792-a988-b5ae6e81fd3e' in dictionary
-    props = dictionary['44517f66-9845-4792-a988-b5ae6e81fd3e']
-    expected_title = 'S2A_OPER_PRD_MSIL1C_PDMC_20151228T112523_R110_V20151227T142229_20151227T142229'
+    assert 'bd1204f7-71ba-4b67-a5f4-df16fbb10138' in dictionary
+    props = dictionary['bd1204f7-71ba-4b67-a5f4-df16fbb10138']
+    expected_title = 'S2A_MSIL1C_20151223T142942_N0201_R053_T20MNC_20151223T143132'
     assert props['title'] == expected_title
 
 
@@ -743,8 +752,8 @@ def test_missing_dependency_dataframe(monkeypatch):
 def test_to_pandas(products):
     df = SentinelAPI.to_dataframe(products)
     assert type(df).__name__ == 'DataFrame'
-    assert '44517f66-9845-4792-a988-b5ae6e81fd3e' in df.index
     assert len(products) == len(df)
+    assert set(products) == set(df.index)
 
 
 @pytest.mark.pandas
@@ -765,7 +774,8 @@ def test_to_pandas_empty(products):
 def test_to_geopandas(products):
     gdf = SentinelAPI.to_geodataframe(products)
     assert type(gdf).__name__ == 'GeoDataFrame'
-    assert abs(gdf.unary_union.area - 132.16) < 0.01
+    print(gdf.unary_union.area)
+    assert gdf.unary_union.area == pytest.approx(89.6, abs=0.1)
     assert len(gdf) == len(products)
     assert gdf.crs == {'init': 'epsg:4326'}
 
@@ -913,11 +923,9 @@ def test_download_invalid_id(api):
 
 @pytest.mark.vcr
 @pytest.mark.scihub
-def test_query_by_names(api):
-    names = ["S2A_MSIL1C_20170205T105221_N0204_R051_T31TCF_20170205T105426",
-             "S1A_EW_GRDH_1SDH_20141003T003840_20141003T003920_002658_002F54_4DD1"]
-    expected = {names[0]: {"2f379a52-3041-4b92-a8a8-92bddc495594"},
-                names[1]: {"2d116e6a-536e-49b3-a587-5cd6b5baa3c9"}}
+def test_query_by_names(api, smallest_online_products):
+    names = [product['title'] for product in smallest_online_products]
+    expected = {product['title']: {product['id']} for product in smallest_online_products}
 
     result = api._query_names(names)
     assert list(result) == names

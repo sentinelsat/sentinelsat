@@ -19,11 +19,13 @@ def run_cli(credentials):
 
     def run(*args, **kwargs):
         with_credentials = kwargs.pop('with_credentials', True)
-        return runner.invoke(
+        result = runner.invoke(
             cli,
             credential_args + list(args) if with_credentials else args,
             **kwargs
         )
+        result.products = re.findall("^Product .+$", result.output, re.M)
+        return result
 
     return run
 
@@ -146,9 +148,9 @@ def test_cloud_flag_url(run_cli, geojson_path):
     assert result.exit_code == 0
 
     expected = "Product 6ed0b7de-3435-43df-98bf-ad63c8d077ef - Date: 2015-12-27T14:22:29Z, Instrument: MSI, Mode: , Satellite: Sentinel-2, Size: 5.47 GB"
-    assert re.findall("^Product .+$", result.output, re.M)[0] == expected
+    assert result.products[0] == expected
     # For order-by test
-    assert '0848f6b8-5730-4759-850e-fc9945d42296' not in re.findall("^Product .+$", result.output, re.M)[1]
+    assert '0848f6b8-5730-4759-850e-fc9945d42296' not in result.products[1]
 
     result = run_cli('--sentinel', '1', *command)
     assert result.exit_code != 0
@@ -167,7 +169,7 @@ def test_order_by_flag(run_cli, geojson_path):
         '--order-by', 'cloudcoverpercentage,-beginposition'
     )
     assert result.exit_code == 0
-    assert '0848f6b8-5730-4759-850e-fc9945d42296' in re.findall("^Product .+$", result.output, re.M)[1]
+    assert '0848f6b8-5730-4759-850e-fc9945d42296' in result.products[1]
 
 
 @pytest.mark.vcr
@@ -183,7 +185,7 @@ def test_sentinel1_flag(run_cli, geojson_path):
     assert result.exit_code == 0
 
     expected = "Product 6a62313b-3d6f-489e-bfab-71ce8d7f57db - Date: 2015-12-24T09:40:34.129Z, Instrument: SAR-C SAR, Mode: VV VH, Satellite: Sentinel-1, Size: 7.7 GB"
-    assert expected in re.findall("^Product .+$", result.output, re.M)
+    assert expected in result.products
 
 
 @pytest.mark.vcr
@@ -199,7 +201,7 @@ def test_sentinel2_flag(run_cli, geojson_path):
     assert result.exit_code == 0
 
     expected = "Product 91c2503c-3c58-4a8c-a70b-207b128e6833 - Date: 2015-12-27T14:22:29Z, Instrument: MSI, Mode: , Satellite: Sentinel-2, Size: 5.73 GB"
-    assert expected in re.findall("^Product .+$", result.output, re.M)
+    assert expected in result.products
 
 
 @pytest.mark.vcr
@@ -214,7 +216,7 @@ def test_sentinel3_flag(run_cli, geojson_path):
     assert result.exit_code == 0
 
     expected = "Product 1d16f909-de53-44b0-88ad-841b0cae5cbe - Date: 2016-12-01T13:12:45.561Z, Instrument: SRAL, Mode: , Satellite: Sentinel-3, Size: 2.34 GB"
-    assert expected in re.findall("^Product .+$", result.output, re.M)
+    assert expected in result.products
 
 
 @pytest.mark.vcr
@@ -230,7 +232,7 @@ def test_product_flag(run_cli, geojson_path):
     assert result.exit_code == 0
 
     expected = "Product 2223103a-3754-473d-9a29-24ef8efa2880 - Date: 2016-12-01T09:30:22.149Z, Instrument: SAR-C SAR, Mode: VV VH, Satellite: Sentinel-1, Size: 7.98 GB"
-    assert re.findall("^Product .+$", result.output, re.M)[3] == expected
+    assert result.products[3] == expected
 
 
 @pytest.mark.vcr
@@ -245,7 +247,7 @@ def test_instrument_flag(run_cli, geojson_path):
     assert result.exit_code == 0
 
     expected = "Product 1d16f909-de53-44b0-88ad-841b0cae5cbe - Date: 2016-12-01T13:12:45.561Z, Instrument: SRAL, Mode: , Satellite: Sentinel-3, Size: 2.34 GB"
-    assert expected in re.findall("^Product .+$", result.output, re.M)
+    assert expected in result.products
 
 
 @pytest.mark.vcr
@@ -261,8 +263,7 @@ def test_limit_flag(run_cli, geojson_path):
     )
     assert result.exit_code == 0
 
-    num_products = len(re.findall("^Product ", result.output, re.MULTILINE))
-    assert num_products == limit
+    assert len(result.products) == limit
 
 
 @pytest.mark.vcr
@@ -274,7 +275,7 @@ def test_uuid_search(run_cli):
     assert result.exit_code == 0
 
     expected = "Product d8340134-878f-4891-ba4f-4df54f1e3ab4 - S1A_WV_OCN__2SSV_20150526T211029_20150526T211737_006097_007E78_134A - 0.12 MB"
-    assert re.findall("^Product .+$", result.output, re.M)[0] == expected
+    assert result.products[0] == expected
 
 
 @pytest.mark.vcr
@@ -286,7 +287,7 @@ def test_name_search(run_cli):
     assert result.exit_code == 0
 
     expected = "Product d8340134-878f-4891-ba4f-4df54f1e3ab4 - Date: 2015-05-26T21:10:28.984Z, Instrument: SAR-C SAR, Mode: VV, Satellite: Sentinel-1, Size: 10.65 KB"
-    assert re.findall("^Product .+$", result.output, re.M)[0] == expected
+    assert result.products[0] == expected
 
 
 @pytest.mark.vcr
@@ -302,7 +303,7 @@ def test_name_search_multiple(run_cli):
         'Product b2ab53c9-abc4-4481-a9bf-1129f54c9707 - Date: 2018-10-07T16:43:49.773Z, Instrument: SAR-C SAR, Mode: VV VH, Satellite: Sentinel-1, Size: 1.65 GB',
         'Product 9e99eaa6-711e-40c3-aae5-83ea2048949d - Date: 2018-10-07T16:44:14.774Z, Instrument: SAR-C SAR, Mode: VV VH, Satellite: Sentinel-1, Size: 1.65 GB'
     ]
-    assert re.findall("^Product .+$", result.output, re.M) == expected
+    assert result.products == expected
 
 
 @pytest.mark.vcr
@@ -332,7 +333,7 @@ def test_option_hierarchy(run_cli, geojson_path):
     )
     assert result.exit_code == 0
 
-    products = re.findall("^Product .+$", result.output, re.M)
+    products = result.products
     # Check that all returned products are of type 'S2MSI1C'
     assert len(products) > 0
     assert all("Instrument: MSI, Mode: , Satellite: Sentinel-2" in p for p in products)
@@ -351,14 +352,15 @@ def test_footprints_cli(run_cli, tmpdir, geojson_path):
     )
     assert result.exit_code == 0
 
-    assert '11 scenes found' in result.output
+    assert '89 scenes found' in result.output
     gj_file = tmpdir / 'search_footprints.geojson'
     assert gj_file.check()
     content = json.loads(gj_file.read_text(encoding='utf-8'))
-    assert len(content['features']) == 11
+    assert len(content['features']) == 89
     for feature in content['features']:
         assert len(feature['properties']) >= 28
-        assert len(feature['geometry']['coordinates'][0]) > 3
+        coords = feature['geometry']['coordinates']
+        assert len(coords[0]) > 3 or len(coords[0][0]) > 3
     tmpdir.remove()
 
 

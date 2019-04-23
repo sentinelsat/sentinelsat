@@ -2,20 +2,27 @@ interactions:
 - request:
     body: q=beginPosition%3A%5B2016-12-01T00%3A00%3A00Z+TO+2016-12-02T00%3A00%3A00Z%5D+producttype%3AS2MSI1C+footprint%3A%22Intersects%28POLYGON%28%28-66.2695+-8.0592%2C-66.2695+0.7031%2C-57.3047+0.7031%2C-57.3047+-8.0592%2C-66.2695+-8.0592%29%29%29%22
     headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      Content-Length: ['242']
-      Content-Type: [application/x-www-form-urlencoded; charset=UTF-8]
-      User-Agent: [sentinelsat/0.12.2]
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '242'
+      Content-Type:
+      - application/x-www-form-urlencoded; charset=UTF-8
+      User-Agent:
+      - sentinelsat/0.13
     method: POST
     uri: https://scihub.copernicus.eu/apihub/search?format=json&rows=100&start=0
   response:
-    body: {string: '{"feed":{"xmlns:opensearch":"http://a9.com/-/spec/opensearch/1.1/","xmlns":"http://www.w3.org/2005/Atom","title":"Sentinels
+    body:
+      string: '{"feed":{"xmlns:opensearch":"http://a9.com/-/spec/opensearch/1.1/","xmlns":"http://www.w3.org/2005/Atom","title":"Sentinels
         Scientific Data Hub search results for: beginPosition:[2016-12-01T00:00:00Z
         TO 2016-12-02T00:00:00Z] producttype:S2MSI1C footprint:\"Intersects(POLYGON((-66.2695
         -8.0592,-66.2695 0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\"","subtitle":"Displaying
-        13 results. Request done in 0.055 seconds.","updated":"2018-09-06T13:22:43.746Z","author":{"name":"Sentinels
+        13 results. Request done in 0.55 seconds.","updated":"2019-04-22T23:16:07.336Z","author":{"name":"Sentinels
         Scientific Data Hub"},"id":"https://scihub.copernicus.eu/apihub/search?q=beginPosition:[2016-12-01T00:00:00Z
         TO 2016-12-02T00:00:00Z] producttype:S2MSI1C footprint:\"Intersects(POLYGON((-66.2695
         -8.0592,-66.2695 0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\"","opensearch:totalResults":"13","opensearch:startIndex":"0","opensearch:itemsPerPage":"100","opensearch:Query":{"role":"request","searchTerms":"beginPosition:[2016-12-01T00:00:00Z
@@ -208,12 +215,19 @@ interactions:
         Instrument"},{"name":"footprint","content":"POLYGON ((-57.90178676662203 -4.522819979734341,-56.9120171589007
         -4.523376301802926,-56.91188395837315 -5.516693539799448,-57.903151791669515
         -5.516014389089381,-57.90178676662203 -4.522819979734341))"},{"name":"s2datatakeid","content":"GS2A_20161201T141042_007543_N02.04"},{"name":"platformidentifier","content":"2015-028A"},{"name":"orbitdirection","content":"DESCENDING"},{"name":"platformserialidentifier","content":"Sentinel-2A"},{"name":"processingbaseline","content":"02.04"},{"name":"processinglevel","content":"Level-1C"},{"name":"producttype","content":"S2MSI1C"},{"name":"platformname","content":"Sentinel-2"},{"name":"size","content":"683.07
-        MB"},{"name":"tileid","content":"21MVQ"},{"name":"hv_order_tileid","content":"MQ21V"},{"name":"uuid","content":"66654505-6b94-434e-a80d-0d987f7771f0"}]}]}}'}
+        MB"},{"name":"tileid","content":"21MVQ"},{"name":"hv_order_tileid","content":"MQ21V"},{"name":"uuid","content":"66654505-6b94-434e-a80d-0d987f7771f0"}]}]}}'
     headers:
-      Content-Type: [application/json]
-      Pragma: [no-cache]
-      Server: [Apache-Coyote/1.1]
-      Vary: [Accept-Encoding]
-      content-length: ['42840']
-    status: {code: 200, message: OK}
+      Content-Type:
+      - application/json
+      Pragma:
+      - no-cache
+      Server:
+      - Apache-Coyote/1.1
+      Vary:
+      - Accept-Encoding
+      content-length:
+      - '42839'
+    status:
+      code: 200
+      message: OK
 version: 1

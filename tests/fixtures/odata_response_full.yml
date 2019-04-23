@@ -1,91 +1,15 @@
-44517f66-9845-4792-a988-b5ae6e81fd3e:
-  Cloud cover percentage: 18.153846153846153
-  Creation Date: 2015-12-28 10:50:00.090000
-  Date: 2015-12-27 14:22:29
-  Degraded MSI data percentage: 0
-  Degraded ancillary data percentage: 0
-  Filename: S2A_OPER_PRD_MSIL1C_PDMC_20151228T112523_R110_V20151227T142229_20151227T142229.SAFE
-  Footprint: <gml:Polygon srsName="http://www.opengis.net/gml/srs/epsg.xml#4326" xmlns:gml="http://www.opengis.net/gml">   <gml:outerBoundaryIs>      <gml:LinearRing>         <gml:coordinates>-4.565257232533263,-58.80274769505742
-    -5.513960396525286,-58.80535376268811 -5.515947033626909,-57.90315169909761 -5.516014389089381,-57.903151791669515
-    -5.516044812342758,-57.85874693129081 -5.516142631941845,-57.814323596961835 -5.516075248310466,-57.81432351345917
-    -5.516633044843839,-57.00018056571297 -5.516700066819259,-57.000180565731384 -5.51666329264377,-56.95603179187787
-    -5.516693539799448,-56.91188395837315 -5.51662651925904,-56.91188396736038 -5.515947927683427,-56.097209386295305
-    -5.516014937246069,-56.09720929423562 -5.5159111504805916,-56.053056977999596
-    -5.515874390220655,-56.00892491028779 -5.515807411549814,-56.00892501130261 -5.513685455771881,-55.10621586418906
-    -4.6092845892233,-55.108821882251775 -4.606372862374043,-54.20840287327946 -3.658594390979672,-54.21169990975238
-    -2.710949551849636,-54.214267703869346 -2.7127451087194463,-55.15704255065496
-    -2.71378646425769,-56.0563616875051 -2.7141556791285275,-56.9561852630143 -2.713837142510183,-57.8999998009875
-    -3.6180222056692726,-57.90079161941062 -3.616721351843382,-58.800616247288836
-    -4.565257232533263,-58.80274769505742</gml:coordinates>      </gml:LinearRing>   </gml:outerBoundaryIs></gml:Polygon>
-  Format: SAFE
-  Format correctness: PASSED
-  General quality: PASSED
-  Generation time: 2015-12-28 11:25:23.000357
-  Geometric quality: PASSED
-  Identifier: S2A_OPER_PRD_MSIL1C_PDMC_20151228T112523_R110_V20151227T142229_20151227T142229
-  Ingestion Date: 2015-12-28 10:57:13.725000
-  Instrument: MSI
-  Instrument abbreviation: MSI
-  Instrument mode: INS-NOBS
-  Instrument name: Multi-Spectral Instrument
-  JTS footprint: POLYGON ((-58.80274769505742 -4.565257232533263,-58.80535376268811
-    -5.513960396525286,-57.90315169909761 -5.515947033626909,-57.903151791669515 -5.516014389089381,-57.85874693129081
-    -5.516044812342758,-57.814323596961835 -5.516142631941845,-57.81432351345917 -5.516075248310466,-57.00018056571297
-    -5.516633044843839,-57.000180565731384 -5.516700066819259,-56.95603179187787 -5.51666329264377,-56.91188395837315
-    -5.516693539799448,-56.91188396736038 -5.51662651925904,-56.097209386295305 -5.515947927683427,-56.09720929423562
-    -5.516014937246069,-56.053056977999596 -5.5159111504805916,-56.00892491028779
-    -5.515874390220655,-56.00892501130261 -5.515807411549814,-55.10621586418906 -5.513685455771881,-55.108821882251775
-    -4.6092845892233,-54.20840287327946 -4.606372862374043,-54.21169990975238 -3.658594390979672,-54.214267703869346
-    -2.710949551849636,-55.15704255065496 -2.7127451087194463,-56.0563616875051 -2.71378646425769,-56.9561852630143
-    -2.7141556791285275,-57.8999998009875 -2.713837142510183,-57.90079161941062 -3.6180222056692726,-58.800616247288836
-    -3.616721351843382,-58.80274769505742 -4.565257232533263))
-  Mission datatake id: GS2A_20151227T140932_002681_N02.01
-  NSSDC identifier: 2015-000A
-  Online: true
-  Orbit number (start): 2681
-  Pass direction: DESCENDING
-  Platform serial identifier: Sentinel-2A
-  Processing baseline: 2.01
-  Processing level: Level-1C
-  Product type: S2MSI1C
-  Radiometric quality: PASSED
-  Relative orbit (start): 110
-  Satellite: Sentinel-2
-  Satellite name: Sentinel-2
-  Satellite number: A
-  Sensing start: 2015-12-27 14:22:29
-  Sensing stop: 2015-12-27 14:22:29
-  Sensor quality: PASSED
-  Size: 5.50 GB
-  date: 2015-12-27 14:22:29
-  footprint: POLYGON((-58.80274769505742 -4.565257232533263,-58.80535376268811 -5.513960396525286,-57.90315169909761
-    -5.515947033626909,-57.903151791669515 -5.516014389089381,-57.85874693129081 -5.516044812342758,-57.814323596961835
-    -5.516142631941845,-57.81432351345917 -5.516075248310466,-57.00018056571297 -5.516633044843839,-57.000180565731384
-    -5.516700066819259,-56.95603179187787 -5.51666329264377,-56.91188395837315 -5.516693539799448,-56.91188396736038
-    -5.51662651925904,-56.097209386295305 -5.515947927683427,-56.09720929423562 -5.516014937246069,-56.053056977999596
-    -5.5159111504805916,-56.00892491028779 -5.515874390220655,-56.00892501130261 -5.515807411549814,-55.10621586418906
-    -5.513685455771881,-55.108821882251775 -4.6092845892233,-54.20840287327946 -4.606372862374043,-54.21169990975238
-    -3.658594390979672,-54.214267703869346 -2.710949551849636,-55.15704255065496 -2.7127451087194463,-56.0563616875051
-    -2.71378646425769,-56.9561852630143 -2.7141556791285275,-57.8999998009875 -2.713837142510183,-57.90079161941062
-    -3.6180222056692726,-58.800616247288836 -3.616721351843382,-58.80274769505742
-    -4.565257232533263))
-  id: 44517f66-9845-4792-a988-b5ae6e81fd3e
-  md5: 48C5648C2644CE07207B3C943DEDEB44
-  size: 5854429622
-  title: S2A_OPER_PRD_MSIL1C_PDMC_20151228T112523_R110_V20151227T142229_20151227T142229
-  url: https://scihub.copernicus.eu/apihub/odata/v1/Products('44517f66-9845-4792-a988-b5ae6e81fd3e')/$value
-8df46c9e-a20c-43db-a19a-4240c2ed3b8b:
+1f62a176-c980-41dc-b3a1-c735d660c910:
   Acquisition Type: NOMINAL
   Carrier rocket: Soyuz
-  Creation Date: 2015-11-21 13:22:01.652000
-  Cycle number: 64
-  Date: 2015-11-21 10:03:56.675000
-  Filename: S1A_EW_GRDM_1SDV_20151121T100356_20151121T100429_008701_00C622_A0EC.SAFE
-  Footprint: <gml:Polygon srsName="http://www.opengis.net/gml/srs/epsg.xml#4326" xmlns:gml="http://www.opengis.net/gml">   <gml:outerBoundaryIs>      <gml:LinearRing>         <gml:coordinates>-5.880887,-63.852531
-    -5.075419,-67.495872 -3.084356,-67.066071 -3.880541,-63.430576 -5.880887,-63.852531</gml:coordinates>      </gml:LinearRing>   </gml:outerBoundaryIs></gml:Polygon>
+  Creation Date: 2019-04-22 17:13:25.951000
+  Cycle number: 50
+  Date: 2015-06-03 09:26:24.921000
+  Filename: S1A_WV_OCN__2SSH_20150603T092625_20150603T093332_006207_008194_521E.SAFE
+  Footprint: <gml:Polygon srsName="http://www.opengis.net/gml/srs/epsg.xml#4326" xmlns:gml="http://www.opengis.net/gml">   <gml:outerBoundaryIs>      <gml:LinearRing>         <gml:coordinates>42.260288,-47.310867
+    42.298096,-47.558411 42.476940,-47.508129 42.439095,-47.259823 42.260288,-47.310867</gml:coordinates>      </gml:LinearRing>   </gml:outerBoundaryIs></gml:Polygon>
   Format: SAFE
-  Identifier: S1A_EW_GRDM_1SDV_20151121T100356_20151121T100429_008701_00C622_A0EC
-  Ingestion Date: 2015-11-21 13:22:04.992000
+  Identifier: S1A_WV_OCN__2SSH_20150603T092625_20150603T093332_006207_008194_521E
+  Ingestion Date: 2015-11-17 16:56:01.826000
   Instrument: SAR-C
   Instrument abbreviation: SAR-C SAR
   Instrument description: <a target="_blank" href="https://sentinel.esa.int/web/sentinel/missions/sentinel-1">https://sentinel.esa.int/web/sentinel/missions/sentinel-1</a>
@@ -104,48 +28,192 @@
     of the Flexible Dynamic BlockAdaptive Quantisation (FD-BAQ) data compression concept,
     whichallows an efficient use of on-board storage resources and minimisesdownlink
     times.
-  Instrument mode: EW
+  Instrument mode: WV
   Instrument name: Synthetic Aperture Radar (C-band)
-  Instrument swath: EW
-  JTS footprint: POLYGON ((-63.852531 -5.880887,-67.495872 -5.075419,-67.066071 -3.084356,-63.430576
-    -3.880541,-63.852531 -5.880887))
+  Instrument swath: WV1 WV2
+  JTS footprint: POLYGON ((-47.310867 42.260288,-47.558411 42.298096,-47.508129 42.476940,-47.259823
+    42.439095,-47.310867 42.260288))
   Launch date: April 3rd, 2014
-  Mission datatake id: 50722
+  Mission datatake id: 33172
   Mission type: Earth observation
-  Mode: EW
+  Mode: WV
   NSSDC identifier: 0000-000A
-  Online: false
+  Online: true
   Operator: European Space Agency
-  Orbit number (start): 8701
-  Orbit number (stop): 8701
+  Orbit number (start): 6207
+  Orbit number (stop): 6207
   Pass direction: DESCENDING
   Phase identifier: 1
-  Polarisation: VV VH
+  Polarisation: HH
   Product class: S
-  Product class description: SAR Standard L1 Product
-  Product composition: Slice
-  Product level: L1
-  Product type: GRD
-  Relative orbit (start): 54
-  Relative orbit (stop): 54
-  Resolution: Medium
+  Product class description: SAR Standard L2 Product
+  Product composition: Individual
+  Product level: L2
+  Product type: OCN
+  Relative orbit (start): 10
+  Relative orbit (stop): 10
   Satellite: Sentinel-1
   Satellite description: <a target="_blank" href="https://sentinel.esa.int/web/sentinel/missions/sentinel-1">https://sentinel.esa.int/web/sentinel/missions/sentinel-1</a>
   Satellite name: Sentinel-1
   Satellite number: A
-  Sensing start: 2015-11-21 10:03:56.675000
-  Sensing stop: 2015-11-21 10:04:29.714000
-  Size: 223.88 MB
-  Slice number: 1
-  Start relative orbit number: 54
+  Sensing start: 2015-06-03 09:26:24.921000
+  Sensing stop: 2015-06-03 09:33:33.345000
+  Size: 10.54 KB
+  Start relative orbit number: 10
   Status: ARCHIVED
-  Stop relative orbit number: 54
+  Stop relative orbit number: 10
   Timeliness Category: Fast-24h
-  date: 2015-11-21 10:03:56.675000
-  footprint: POLYGON((-63.852531 -5.880887,-67.495872 -5.075419,-67.066071 -3.084356,-63.430576
-    -3.880541,-63.852531 -5.880887))
-  id: 8df46c9e-a20c-43db-a19a-4240c2ed3b8b
-  md5: D5E4DF5C38C6E97BF7E7BD540AB21C05
-  size: 143549851
-  title: S1A_EW_GRDM_1SDV_20151121T100356_20151121T100429_008701_00C622_A0EC
-  url: https://scihub.copernicus.eu/apihub/odata/v1/Products('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')/$value
+  date: 2015-06-03 09:26:24.921000
+  footprint: POLYGON((-47.310867 42.260288,-47.558411 42.298096,-47.508129 42.476940,-47.259823
+    42.439095,-47.310867 42.260288))
+  id: 1f62a176-c980-41dc-b3a1-c735d660c910
+  md5: EAE42F27C917E1B6C9154A5BE44A4EB6
+  size: 130006
+  title: S1A_WV_OCN__2SSH_20150603T092625_20150603T093332_006207_008194_521E
+  url: https://scihub.copernicus.eu/apihub/odata/v1/Products('1f62a176-c980-41dc-b3a1-c735d660c910')/$value
+5618ce1b-923b-4df2-81d9-50b53e5aded9:
+  Acquisition Type: NOMINAL
+  Carrier rocket: Soyuz
+  Creation Date: 2019-04-22 17:13:26.870000
+  Cycle number: 49
+  Date: 2015-05-26 08:16:40.873000
+  Filename: S1A_WV_OCN__2SSV_20150526T081641_20150526T082418_006090_007E3E_104C.SAFE
+  Footprint: <gml:Polygon srsName="http://www.opengis.net/gml/srs/epsg.xml#4326" xmlns:gml="http://www.opengis.net/gml">   <gml:outerBoundaryIs>      <gml:LinearRing>         <gml:coordinates>3.979146,147.846664
+    4.018075,148.030945 3.837322,148.068436 3.798364,147.884155 3.979146,147.846664</gml:coordinates>      </gml:LinearRing>   </gml:outerBoundaryIs></gml:Polygon>
+  Format: SAFE
+  Identifier: S1A_WV_OCN__2SSV_20150526T081641_20150526T082418_006090_007E3E_104C
+  Ingestion Date: 2015-11-18 08:53:00.497000
+  Instrument: SAR-C
+  Instrument abbreviation: SAR-C SAR
+  Instrument description: <a target="_blank" href="https://sentinel.esa.int/web/sentinel/missions/sentinel-1">https://sentinel.esa.int/web/sentinel/missions/sentinel-1</a>
+  Instrument description text: The SAR Antenna Subsystem (SAS) is developed and build
+    by AstriumGmbH. It is a large foldable planar phased array antenna, which isformed
+    by a centre panel and two antenna side wings. In deployedconfiguration the antenna
+    has an overall aperture of 12.3 x 0.84 m.The antenna provides a fast electronic
+    scanning capability inazimuth and elevation and is based on low loss and highly
+    stablewaveguide radiators build in carbon fibre technology, which arealready successfully
+    used by the TerraSAR-X radar imaging mission.The SAR Electronic Subsystem (SES)
+    is developed and build byAstrium Ltd. It provides all radar control, IF/ RF signalgeneration
+    and receive data handling functions for the SARInstrument. The fully redundant
+    SES is based on a channelisedarchitecture with one transmit and two receive chains,
+    providing amodular approach to the generation and reception of wide-bandsignals
+    and the handling of multi-polarisation modes. One keyfeature is the implementation
+    of the Flexible Dynamic BlockAdaptive Quantisation (FD-BAQ) data compression concept,
+    whichallows an efficient use of on-board storage resources and minimisesdownlink
+    times.
+  Instrument mode: WV
+  Instrument name: Synthetic Aperture Radar (C-band)
+  Instrument swath: WV1 WV2
+  JTS footprint: POLYGON ((147.846664 3.979146,148.030945 4.018075,148.068436 3.837322,147.884155
+    3.798364,147.846664 3.979146))
+  Launch date: April 3rd, 2014
+  Mission datatake id: 32318
+  Mission type: Earth observation
+  Mode: WV
+  NSSDC identifier: 0000-000A
+  Online: true
+  Operator: European Space Agency
+  Orbit number (start): 6090
+  Orbit number (stop): 6090
+  Pass direction: ASCENDING
+  Phase identifier: 1
+  Polarisation: VV
+  Product class: S
+  Product class description: SAR Standard L2 Product
+  Product composition: Individual
+  Product level: L2
+  Product type: OCN
+  Relative orbit (start): 68
+  Relative orbit (stop): 68
+  Satellite: Sentinel-1
+  Satellite description: <a target="_blank" href="https://sentinel.esa.int/web/sentinel/missions/sentinel-1">https://sentinel.esa.int/web/sentinel/missions/sentinel-1</a>
+  Satellite name: Sentinel-1
+  Satellite number: A
+  Sensing start: 2015-05-26 08:16:40.873000
+  Sensing stop: 2015-05-26 08:24:18.591000
+  Size: 11.09 KB
+  Start relative orbit number: 68
+  Status: ARCHIVED
+  Stop relative orbit number: 68
+  Timeliness Category: Fast-24h
+  date: 2015-05-26 08:16:40.873000
+  footprint: POLYGON((147.846664 3.979146,148.030945 4.018075,148.068436 3.837322,147.884155
+    3.798364,147.846664 3.979146))
+  id: 5618ce1b-923b-4df2-81d9-50b53e5aded9
+  md5: 001E1F3E1978AF61E4E3E011DE31599C
+  size: 130222
+  title: S1A_WV_OCN__2SSV_20150526T081641_20150526T082418_006090_007E3E_104C
+  url: https://scihub.copernicus.eu/apihub/odata/v1/Products('5618ce1b-923b-4df2-81d9-50b53e5aded9')/$value
+d8340134-878f-4891-ba4f-4df54f1e3ab4:
+  Acquisition Type: NOMINAL
+  Carrier rocket: Soyuz
+  Creation Date: 2019-04-22 17:43:54.887000
+  Cycle number: 49
+  Date: 2015-05-26 21:10:28.984000
+  Filename: S1A_WV_OCN__2SSV_20150526T211029_20150526T211737_006097_007E78_134A.SAFE
+  Footprint: <gml:Polygon srsName="http://www.opengis.net/gml/srs/epsg.xml#4326" xmlns:gml="http://www.opengis.net/gml">   <gml:outerBoundaryIs>      <gml:LinearRing>         <gml:coordinates>-53.931976,-32.055458
+    -53.867435,-31.748390 -54.039661,-31.646017 -54.104462,-31.954405 -53.931976,-32.055458</gml:coordinates>      </gml:LinearRing>   </gml:outerBoundaryIs></gml:Polygon>
+  Format: SAFE
+  Identifier: S1A_WV_OCN__2SSV_20150526T211029_20150526T211737_006097_007E78_134A
+  Ingestion Date: 2015-11-17 23:28:01.852000
+  Instrument: SAR-C
+  Instrument abbreviation: SAR-C SAR
+  Instrument description: <a target="_blank" href="https://sentinel.esa.int/web/sentinel/missions/sentinel-1">https://sentinel.esa.int/web/sentinel/missions/sentinel-1</a>
+  Instrument description text: The SAR Antenna Subsystem (SAS) is developed and build
+    by AstriumGmbH. It is a large foldable planar phased array antenna, which isformed
+    by a centre panel and two antenna side wings. In deployedconfiguration the antenna
+    has an overall aperture of 12.3 x 0.84 m.The antenna provides a fast electronic
+    scanning capability inazimuth and elevation and is based on low loss and highly
+    stablewaveguide radiators build in carbon fibre technology, which arealready successfully
+    used by the TerraSAR-X radar imaging mission.The SAR Electronic Subsystem (SES)
+    is developed and build byAstrium Ltd. It provides all radar control, IF/ RF signalgeneration
+    and receive data handling functions for the SARInstrument. The fully redundant
+    SES is based on a channelisedarchitecture with one transmit and two receive chains,
+    providing amodular approach to the generation and reception of wide-bandsignals
+    and the handling of multi-polarisation modes. One keyfeature is the implementation
+    of the Flexible Dynamic BlockAdaptive Quantisation (FD-BAQ) data compression concept,
+    whichallows an efficient use of on-board storage resources and minimisesdownlink
+    times.
+  Instrument mode: WV
+  Instrument name: Synthetic Aperture Radar (C-band)
+  Instrument swath: WV1 WV2
+  JTS footprint: POLYGON ((-32.055458 -53.931976,-31.748390 -53.867435,-31.646017
+    -54.039661,-31.954405 -54.104462,-32.055458 -53.931976))
+  Launch date: April 3rd, 2014
+  Mission datatake id: 32376
+  Mission type: Earth observation
+  Mode: WV
+  NSSDC identifier: 0000-000A
+  Online: true
+  Operator: European Space Agency
+  Orbit number (start): 6097
+  Orbit number (stop): 6097
+  Pass direction: ASCENDING
+  Phase identifier: 1
+  Polarisation: VV
+  Product class: S
+  Product class description: SAR Standard L2 Product
+  Product composition: Individual
+  Product level: L2
+  Product type: OCN
+  Relative orbit (start): 75
+  Relative orbit (stop): 75
+  Satellite: Sentinel-1
+  Satellite description: <a target="_blank" href="https://sentinel.esa.int/web/sentinel/missions/sentinel-1">https://sentinel.esa.int/web/sentinel/missions/sentinel-1</a>
+  Satellite name: Sentinel-1
+  Satellite number: A
+  Sensing start: 2015-05-26 21:10:28.984000
+  Sensing stop: 2015-05-26 21:17:37.408000
+  Size: 10.65 KB
+  Start relative orbit number: 75
+  Status: ARCHIVED
+  Stop relative orbit number: 75
+  Timeliness Category: Fast-24h
+  date: 2015-05-26 21:10:28.984000
+  footprint: POLYGON((-32.055458 -53.931976,-31.748390 -53.867435,-31.646017 -54.039661,-31.954405
+    -54.104462,-32.055458 -53.931976))
+  id: d8340134-878f-4891-ba4f-4df54f1e3ab4
+  md5: B1D1440F27BF5EB09F2F27A6E49025CB
+  size: 130102
+  title: S1A_WV_OCN__2SSV_20150526T211029_20150526T211737_006097_007E78_134A
+  url: https://scihub.copernicus.eu/apihub/odata/v1/Products('d8340134-878f-4891-ba4f-4df54f1e3ab4')/$value

@@ -1,5 +1,5 @@
 from os import environ
-from os.path import join, isfile, dirname, abspath
+from os.path import join, isfile, dirname, abspath, exists
 
 import pytest
 import yaml
@@ -89,8 +89,16 @@ def read_fixture_file(fixture_path):
 
 
 @pytest.fixture(scope='session')
-def read_yaml(read_fixture_file):
-    return lambda filename: yaml.safe_load(read_fixture_file(filename))
+def read_yaml(fixture_path, read_fixture_file):
+    def read_or_store(filename, result):
+        path = fixture_path(filename)
+        if not exists(path):
+            # Store the expected result for future if the fixture file is missing
+            with open(path, 'w') as f:
+                yaml.safe_dump(result, f)
+        return yaml.safe_load(read_fixture_file(filename))
+
+    return read_or_store
 
 
 @pytest.fixture(scope='session')
@@ -114,6 +122,7 @@ def products(api_kwargs, vcr, test_wkt):
             test_wkt,
             ("20151219", "20151228")
         )
+    assert len(products) > 20
     return products
 
 
