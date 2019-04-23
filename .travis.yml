@@ -1,21 +1,14 @@
+dist: xenial
 language: python
 cache: pip
-addons:
-  apt:
-    packages:
-    # Required for building fiona from source,
-    # since the wheel is not yet provided in Python 3.7
-    - gdal-bin
-    - libgdal-dev
 jobs:
     include:
       - python: '2.7'
       - python: '3.4'
+        dist: trusty  # Python 3.4 is not available in xenial
       - python: '3.5'
       - python: '3.6'
-      - python: '3.7'  # Python 3.7 requires xenial, instead of Travis default trusty
-        dist: xenial
-        sudo: true
+      - python: '3.7'
 branches:
   only:
   - master
