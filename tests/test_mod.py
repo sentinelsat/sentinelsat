@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import hashlib
 import sys
+from contextlib import contextmanager
 from datetime import date, datetime, timedelta
 
 import geojson
@@ -8,9 +9,9 @@ import py.path
 import pytest
 import requests
 import requests_mock
+from requests.exceptions import *
 
-from sentinelsat import InvalidChecksumError, SentinelAPI, SentinelAPIError, SentinelAPILTAError, \
-    format_query_date, geojson_to_wkt, read_geojson, UnauthorizedError, ServerError
+from sentinelsat import *
 from sentinelsat.sentinel import _format_order_by, _parse_odata_timestamp, _parse_opensearch_response
 
 _small_query = dict(
@@ -52,7 +53,7 @@ def test_format_date(api):
     for date_str in ("NOW - 1HOUR", "NOW -   1HOURS", "NOW-1 HOURS", "NOW-1", "NOW-", "**", "+", "-"):
         with pytest.raises(ValueError):
             format_query_date(date_str)
-        with pytest.raises(SentinelAPIError):
+        with pytest.raises(QuerySyntaxError):
             api.query(raw='ingestiondate:[{} TO *]'.format(date_str), limit=0)
 
 
@@ -97,21 +98,50 @@ def test_SentinelAPI_wrong_credentials():
         "wrong_user",
         "wrong_password"
     )
-    with pytest.raises(UnauthorizedError) as excinfo:
+
+    @contextmanager
+    def assert_exception():
+        with pytest.raises(UnauthorizedError) as excinfo:
+            yield
+        assert excinfo.value.response.status_code == 401
+        assert 'Invalid user name or password' in excinfo.value.msg
+
+    with assert_exception():
         api.query(**_small_query)
-    assert excinfo.value.response.status_code == 401
-
-    with pytest.raises(UnauthorizedError) as excinfo:
+    with assert_exception():
         api.get_product_odata('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')
-    assert excinfo.value.response.status_code == 401
-
-    with pytest.raises(UnauthorizedError) as excinfo:
+    with assert_exception():
         api.download('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')
-    assert excinfo.value.response.status_code == 401
-
-    with pytest.raises(UnauthorizedError) as excinfo:
+    with assert_exception():
         api.download_all(['8df46c9e-a20c-43db-a19a-4240c2ed3b8b'])
-    assert excinfo.value.response.status_code == 401
+
+
+@pytest.mark.vcr
+@pytest.mark.scihub
+@pytest.mark.parametrize('exception', [
+    StreamConsumedError,
+    ContentDecodingError,
+    InvalidProxyURL,
+    InvalidHeader,
+    TooManyRedirects,
+    ReadTimeout,
+    SSLError
+])
+def test_requests_error(exception, api):
+    """non-HTTP errors originating from requests should be raised directly without translating them"""
+    with requests_mock.mock() as rqst:
+        rqst.register_uri(requests_mock.ANY, requests_mock.ANY, exc=exception)
+        with pytest.raises(exception):
+            api.query(**_small_query)
+
+        with pytest.raises(exception):
+            api.get_product_odata('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')
+
+        with pytest.raises(exception):
+            api.download('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')
+
+        with pytest.raises(exception):
+            api.download_all(['8df46c9e-a20c-43db-a19a-4240c2ed3b8b'])
 
 
 @pytest.mark.fast
@@ -254,7 +284,7 @@ def test_api_query_format_escape_spaces(api):
 @pytest.mark.vcr
 @pytest.mark.scihub
 def test_invalid_query(api):
-    with pytest.raises(SentinelAPIError):
+    with pytest.raises(QuerySyntaxError):
         api.query(raw="xxx:yyy")
 
 
@@ -346,11 +376,11 @@ def test_count(api):
 def test_unicode_support(api):
     test_str = u'٩(●̮̮̃•̃)۶:'
 
-    with pytest.raises(SentinelAPIError) as excinfo:
+    with pytest.raises(QuerySyntaxError) as excinfo:
         api.count(raw=test_str)
     assert test_str == excinfo.value.response.json()['feed']['opensearch:Query']['searchTerms']
 
-    with pytest.raises(SentinelAPIError) as excinfo:
+    with pytest.raises(InvalidKeyException) as excinfo:
         api.get_product_odata(test_str)
     assert test_str in excinfo.value.response.json()['error']['message']['value']
 
@@ -367,18 +397,15 @@ def test_too_long_query(api):
     # Expect no error
     q = create_query(163)
     assert 0.99 < SentinelAPI.check_query_length(q) < 1.0
-    with pytest.raises(SentinelAPIError) as excinfo:
+    with pytest.raises(QuerySyntaxError) as excinfo:
         api.count(raw=q)
     assert "Invalid query string" in excinfo.value.msg
 
-    # Expect HTTP status 500 Internal Server Error
     q = create_query(164)
     assert 0.999 <= SentinelAPI.check_query_length(q) < 1.01
-    with pytest.raises(ServerError) as excinfo:
+    with pytest.raises(QueryLengthError) as excinfo:
         api.count(raw=q)
-    assert excinfo.value.response.status_code == 500
-    assert ("Request Entity Too Large" in excinfo.value.msg or
-            "Request-URI Too Long" in excinfo.value.msg)
+    assert "x times the maximum allowed" in excinfo.value.msg
 
 
 @pytest.mark.vcr
@@ -472,9 +499,9 @@ def test_get_product_odata_full(api, smallest_online_products, read_yaml):
 @pytest.mark.vcr
 @pytest.mark.scihub
 def test_get_product_info_bad_key(api):
-    with pytest.raises(SentinelAPIError) as excinfo:
+    with pytest.raises(InvalidKeyException) as excinfo:
         api.get_product_odata('invalid-xyz')
-    assert excinfo.value.msg == "InvalidKeyException : Invalid key (invalid-xyz) to access Products"
+    assert excinfo.value.msg == "Invalid key (invalid-xyz) to access Products"
 
 
 @pytest.mark.mock_api
@@ -506,7 +533,7 @@ def test_get_product_odata_scihub_down(read_fixture_file):
             request_url,
             text="Mock SciHub is Down", status_code=200
         )
-        with pytest.raises(SentinelAPIError) as excinfo:
+        with pytest.raises(ServerError) as excinfo:
             api.get_product_odata('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')
         assert excinfo.value.msg == "Mock SciHub is Down"
 
@@ -596,13 +623,13 @@ def test_get_products_invalid_json(test_wkt):
             'https://scihub.copernicus.eu/apihub/search?format=json',
             text="{Invalid JSON response", status_code=200
         )
-        with pytest.raises(SentinelAPIError) as excinfo:
+        with pytest.raises(ServerError) as excinfo:
             api.query(
                 area=test_wkt,
                 date=("20151219", "20151228"),
                 platformname="Sentinel-2"
             )
-        assert excinfo.value.msg == "Invalid API response."
+        assert excinfo.value.msg == "Invalid API response"
 
 
 @pytest.mark.vcr
@@ -916,7 +943,7 @@ def test_download_all_lta(api, tmpdir, smallest_archived_products):
 @pytest.mark.scihub
 def test_download_invalid_id(api):
     uuid = "1f62a176-c980-41dc-xxxx-c735d660c910"
-    with pytest.raises(SentinelAPIError) as excinfo:
+    with pytest.raises(InvalidKeyException) as excinfo:
         api.download(uuid)
     assert 'Invalid key' in excinfo.value.msg
 
