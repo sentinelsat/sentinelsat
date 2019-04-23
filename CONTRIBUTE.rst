@@ -83,27 +83,22 @@ To run the tests
 
 .. code-block:: console
 
-  py.test -v
+  pytest -v
 
 
 By default, prerecorded responses to Copernicus Open Access Hub queries are used to not be affected by its downtime.
 Furthermore, any network accesses are blocked as well (by raising a ``pytest_socket.SocketBlockedError: A test tried to use socket.socket`` exception) to guarantee that all tests are indeed correctly covered by recorded queries.
 
-To allow the tests to run actual queries against the Copernicus Open Access Hub set the environment variables and add ``--vcr disable`` to ``py.test`` arguments.
+To allow the tests to run actual queries against the Copernicus Open Access Hub set the environment variables and add ``--disable-vcr`` to ``pytest`` arguments.
 
 .. code-block:: console
 
   export DHUS_USER=<username>
   export DHUS_PASSWORD=<password>
-  py.test -v --vcr disable
+  pytest -v --disable-vcr
 
 
-To update the recordings use:
-
-.. code-block:: console
-
-  py.test -v --vcr record_new
-
+To update the recordings use ``--vcr-record`` with ``once``, ``new_episodes`` or ``all``. See `vcrpy docs <https://vcrpy.readthedocs.io/en/latest/usage.html#record-modes>`_ for details.
 
 When you create a pull requests the tests will automatically run on `Travis <https://travis-ci.org/sentinelsat/sentinelsat>`_ and a coverage report will be created from `Codecov <https://codecov.io/gh/sentinelsat/sentinelsat>`_.
 

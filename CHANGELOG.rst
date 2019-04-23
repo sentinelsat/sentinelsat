@@ -19,6 +19,15 @@ Fixed
 ~~~~~
 * Missing ``Online`` field in OData response defaults to ``Online: True`` instead of raising a ``KeyError`` (#281 @viktorbahr)
 
+Development Changes
+~~~~~~~~~~~~~~~~~~~
+* Replaced direct ``vcrpy`` usage in unit tests with ``pytest-vcr``.
+  The ``pytest`` command line options changed from ``--vcr disable`` to ``--disable-vcr`` and
+  ``--vcr [use|record_new|reset]`` to ``--vcr-record [once|record_new|all``.
+  See `vcrpy docs <https://vcrpy.readthedocs.io/en/latest/usage.html#record-modes>`_ for details.
+* Reduced code duplication in unit tests by making greater use of pytest fixtures.
+
+
 [0.13] – 2019-04-05
 ---------------------
 
