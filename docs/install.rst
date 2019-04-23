@@ -29,7 +29,7 @@ To allow the tests to run actual queries against Copernicus Open Access Hub set 
     export DHUS_USER=<your scihub username>
     export DHUS_PASSWORD=<your scihub password>
 
-and add ``--disable-vcr`` to ``py.test`` arguments.
+and add ``--disable-vcr`` to ``pytest`` arguments.
 To update the recordings use ``--vcr-record`` with ``once``, ``new_episodes`` or ``all``. See `vcrpy docs <https://vcrpy.readthedocs.io/en/latest/usage.html#record-modes>`_ for details.
 
 Supported Python versions
