@@ -1,3 +1,4 @@
+from datetime import datetime
 from os import environ
 from os.path import join, isfile, dirname, abspath, exists
 
@@ -32,7 +33,7 @@ def pytest_runtest_setup(item):
     markers = {mark.name for mark in item.iter_markers()}
     if 'pandas' in markers and not pandas_available:
         pytest.skip("pandas is not installed")
-    if 'geopandas' in markers and not pandas_available:
+    if 'geopandas' in markers and not geopandas_available:
         pytest.skip("geopandas is not installed")
 
     if not markers.intersection({'scihub', 'fast', 'mock_api'}):
@@ -181,3 +182,17 @@ def smallest_online_products(api_kwargs, vcr):
 @pytest.fixture(scope='module')
 def smallest_archived_products(api_kwargs, vcr):
     return _get_smallest(api_kwargs, vcr.use_cassette('smallest_archived_products'), online=False)
+
+
+@pytest.fixture(scope='session')
+def small_query():
+    return dict(
+        area='POLYGON((0 0,1 1,0 1,0 0))',
+        date=(datetime(2015, 1, 1), datetime(2015, 1, 2)))
+
+
+@pytest.fixture(scope='session')
+def large_query():
+    return dict(
+        area='POLYGON((0 0,0 10,10 10,10 0,0 0))',
+        date=(datetime(2015, 12, 1), datetime(2015, 12, 31)))
