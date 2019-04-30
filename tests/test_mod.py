@@ -22,11 +22,13 @@ _large_query = dict(
     date=(datetime(2015, 12, 1), datetime(2015, 12, 31)))
 
 
+@pytest.mark.fast
 def test_boundaries_latitude_more(fixture_path):
     with pytest.raises(ValueError):
         geojson_to_wkt(read_geojson(fixture_path('map_boundaries_lat.geojson')))
 
 
+@pytest.mark.fast
 def test_boundaries_longitude_less(fixture_path):
     with pytest.raises(ValueError):
         geojson_to_wkt(read_geojson(fixture_path('map_boundaries_lon.geojson')))
@@ -340,7 +342,7 @@ def test_count(api):
     assert count > 100000
 
 
-# @pytest.mark.vcr
+@pytest.mark.vcr
 @pytest.mark.skip(reason="Cannot mock since VCR.py has issues with Unicode request bodies.")
 @pytest.mark.scihub
 def test_unicode_support(api):
@@ -557,6 +559,7 @@ def test_scihub_unresponsive():
             api.download_all(['8df46c9e-a20c-43db-a19a-4240c2ed3b8b'])
 
 
+@pytest.mark.mock_api
 def test_trigger_lta_accepted():
     api = SentinelAPI("mock_user", "mock_password")
 
@@ -570,6 +573,7 @@ def test_trigger_lta_accepted():
         assert api._trigger_offline_retrieval(request_url) == 202
 
 
+@pytest.mark.mock_api
 @pytest.mark.parametrize("http_status_code", [
     503,  # service unavailable
     403,  # user quota exceeded
@@ -731,8 +735,6 @@ def test_response_to_dict(raw_products):
 @pytest.mark.fast
 @pytest.mark.pandas
 @pytest.mark.geopandas
-@pytest.mark.skipif(sys.version_info <= (3, 4),
-                    reason="Pandas requires Python 2.7 or >=3.5")
 def test_missing_dependency_dataframe(monkeypatch):
     api = SentinelAPI("mock_user", "mock_password")
 
@@ -747,8 +749,6 @@ def test_missing_dependency_dataframe(monkeypatch):
 
 @pytest.mark.pandas
 @pytest.mark.scihub
-@pytest.mark.skipif(sys.version_info < (3, 5),
-                    reason="Pandas requires Python 2.7 or >=3.5")
 def test_to_pandas(products):
     df = SentinelAPI.to_dataframe(products)
     assert type(df).__name__ == 'DataFrame'
@@ -757,10 +757,8 @@ def test_to_pandas(products):
 
 
 @pytest.mark.pandas
-@pytest.mark.scihub
-@pytest.mark.skipif(sys.version_info < (3, 5),
-                    reason="Pandas requires Python 2.7 or >=3.5")
-def test_to_pandas_empty(products):
+@pytest.mark.fast
+def test_to_pandas_empty():
     df = SentinelAPI.to_dataframe({})
     assert type(df).__name__ == 'DataFrame'
     assert len(df) == 0
@@ -769,8 +767,6 @@ def test_to_pandas_empty(products):
 @pytest.mark.pandas
 @pytest.mark.geopandas
 @pytest.mark.scihub
-@pytest.mark.skipif(sys.version_info < (3, 5),
-                    reason="Pandas requires Python 2.7 or >=3.5")
 def test_to_geopandas(products):
     gdf = SentinelAPI.to_geodataframe(products)
     assert type(gdf).__name__ == 'GeoDataFrame'
@@ -782,10 +778,8 @@ def test_to_geopandas(products):
 
 @pytest.mark.pandas
 @pytest.mark.geopandas
-@pytest.mark.scihub
-@pytest.mark.skipif(sys.version_info < (3, 5),
-                    reason="Pandas requires Python 2.7 or >=3.5")
-def test_to_geopandas_empty(products):
+@pytest.mark.fast
+def test_to_geopandas_empty():
     gdf = SentinelAPI.to_geodataframe({})
     assert type(gdf).__name__ == 'GeoDataFrame'
     assert len(gdf) == 0
