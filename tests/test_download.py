@@ -24,9 +24,10 @@ def test_trigger_lta_accepted():
 
 @pytest.mark.mock_api
 @pytest.mark.parametrize("http_status_code", [
-    503,  # service unavailable
-    403,  # user quota exceeded
-    500,  # internal server error
+    # Note: the HTTP status codes have slightly more specific meanings in the LTA API.
+    503,  # Service Unavailable - request refused since the service is busy handling other requests.
+    403,  # Forbidden - user has exceeded their offline product retrieval quota.
+    500,  # Internal Server Error - attempted to download a sub-element of an offline product.
 ])
 def test_trigger_lta_failed(http_status_code):
     api = SentinelAPI("mock_user", "mock_password")
