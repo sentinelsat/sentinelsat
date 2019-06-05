@@ -1,3 +1,6 @@
+"""
+Product downloading related tests.
+"""
 import py.path
 import pytest
 import requests_mock

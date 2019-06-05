@@ -1,3 +1,6 @@
+"""
+Tests for functionality related to the OpenSearch API of SciHub (https://scihub.copernicus.eu/apihub/search?...)
+"""
 from datetime import datetime, date, timedelta
 
 import pytest
