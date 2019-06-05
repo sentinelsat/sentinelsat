@@ -15,26 +15,13 @@ TESTS_DIR = dirname(abspath(__file__))
 FIXTURES_DIR = join(TESTS_DIR, 'fixtures')
 CASSETTE_DIR = join(FIXTURES_DIR, 'vcr_cassettes')
 
-try:
-    import pandas
-
-    pandas_available = True
-except ImportError:
-    pandas_available = False
-try:
-    import geopandas
-
-    geopandas_available = True
-except ImportError:
-    geopandas_available = False
-
 
 def pytest_runtest_setup(item):
     markers = {mark.name for mark in item.iter_markers()}
-    if 'pandas' in markers and not pandas_available:
-        pytest.skip("pandas is not installed")
-    if 'geopandas' in markers and not geopandas_available:
-        pytest.skip("geopandas is not installed")
+    if 'pandas' in markers:
+        pytest.importorskip('pandas')
+    if 'geopandas' in markers:
+        pytest.importorskip('geopandas')
 
     if not markers.intersection({'scihub', 'fast', 'mock_api'}):
         pytest.fail("The test is missing a 'scihub', 'fast' or 'mock_api' marker")

@@ -8,19 +8,20 @@ import pytest
 from sentinelsat import SentinelAPI
 
 
-@pytest.mark.fast
 @pytest.mark.pandas
-@pytest.mark.geopandas
+@pytest.mark.fast
 def test_missing_dependency_dataframe(monkeypatch):
-    api = SentinelAPI("mock_user", "mock_password")
-
     with pytest.raises(ImportError):
         monkeypatch.setitem(sys.modules, "pandas", None)
-        api.to_dataframe({"test": "test"})
+        SentinelAPI.to_dataframe({"test": "test"})
 
+
+@pytest.mark.geopandas
+@pytest.mark.fast
+def test_missing_dependency_geodataframe(monkeypatch):
     with pytest.raises(ImportError):
         monkeypatch.setitem(sys.modules, "geopandas", None)
-        api.to_geodataframe({"test": "tst"})
+        SentinelAPI.to_geodataframe({"test": "tst"})
 
 
 @pytest.mark.pandas
