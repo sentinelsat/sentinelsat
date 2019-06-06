@@ -733,7 +733,7 @@ class SentinelAPI:
                 dl_queue.put(product_info)
                 return product_info
             elif status_code == 403:
-                self.logger.debug("Request for %s exceeded user quota. Retrying in %d seconds",
+                self.logger.info("Request for %s exceeded user quota. Retrying in %d seconds",
                         product_info['id'], retry_delay)
                 time.sleep(retry_delay)
             else:
