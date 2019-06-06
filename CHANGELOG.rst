@@ -8,9 +8,12 @@ All notable changes to ``sentinelsat`` will be listed here.
 
 Added
 ~~~~~
+* force unit tests to include on of the markers 'fast', 'scihub' or 'mock_api' (#287 @valgur)
+* automatic return code checking of CLI tests (#287) 
 
 Changed
 ~~~~~~~
+* reorganize unit tests into small groups with their own files (#287)
 
 Deprecated
 ~~~~~~~~~~
