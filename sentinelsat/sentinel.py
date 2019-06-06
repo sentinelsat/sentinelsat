@@ -618,7 +618,7 @@ class SentinelAPI:
             self.logger.info("%s/%s products downloaded", i + 1, len(product_ids))
         failed = set(products) - set(return_values)
 
-        # split up sucessfully processed products into downloaded and only triggered retrieval from the LTA
+        # split up successfully processed products into downloaded and only triggered retrieval from the LTA
         triggered = OrderedDict([(k, v) for k, v in return_values.items() if v['Online'] is False])
         downloaded = OrderedDict([(k, v) for k, v in return_values.items() if v['Online'] is True])
 

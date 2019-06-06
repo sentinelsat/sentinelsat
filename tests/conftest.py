@@ -1,3 +1,4 @@
+from datetime import datetime
 from os import environ
 from os.path import join, isfile, dirname, abspath, exists
 
@@ -13,6 +14,17 @@ from .custom_serializer import BinaryContentSerializer
 TESTS_DIR = dirname(abspath(__file__))
 FIXTURES_DIR = join(TESTS_DIR, 'fixtures')
 CASSETTE_DIR = join(FIXTURES_DIR, 'vcr_cassettes')
+
+
+def pytest_runtest_setup(item):
+    markers = {mark.name for mark in item.iter_markers()}
+    if 'pandas' in markers:
+        pytest.importorskip('pandas')
+    if 'geopandas' in markers:
+        pytest.importorskip('geopandas')
+
+    if not markers.intersection({'scihub', 'fast', 'mock_api'}):
+        pytest.fail("The test is missing a 'scihub', 'fast' or 'mock_api' marker")
 
 
 # Configure pytest-vcr
@@ -157,3 +169,17 @@ def smallest_online_products(api_kwargs, vcr):
 @pytest.fixture(scope='module')
 def smallest_archived_products(api_kwargs, vcr):
     return _get_smallest(api_kwargs, vcr.use_cassette('smallest_archived_products'), online=False)
+
+
+@pytest.fixture(scope='session')
+def small_query():
+    return dict(
+        area='POLYGON((0 0,1 1,0 1,0 0))',
+        date=(datetime(2015, 1, 1), datetime(2015, 1, 2)))
+
+
+@pytest.fixture(scope='session')
+def large_query():
+    return dict(
+        area='POLYGON((0 0,0 10,10 10,10 0,0 0))',
+        date=(datetime(2015, 12, 1), datetime(2015, 12, 31)))
