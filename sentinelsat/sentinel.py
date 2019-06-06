@@ -569,7 +569,7 @@ class SentinelAPI:
                 raise SentinelAPILTAError("Unexpected response from SciHub", r)
             return r.status_code
 
-    def download_all(self, products, directory_path='.', max_attempts=10, checksum=True, retry_delay=300, n_concurrent_dl=2, max_workers=4):
+    def download_all(self, products, directory_path='.', max_attempts=10, checksum=True, retry_delay=300, n_concurrent_dl=2):
         """Download a list of products.
 
         Takes a list of product IDs as input. This means that the return value of query() can be
@@ -598,8 +598,6 @@ class SentinelAPI:
             How long to wait after a failed download or unsucessful LTA retrieval
         n_concurrent_dl : integer
             number of concurrent downloads
-        max_workers : integer
-            number of concurrent threads triggering LTA retrieval
 
         Raises
         ------
@@ -633,7 +631,7 @@ class SentinelAPI:
         # Two separate threadpools for downloading and triggering retrieval. Otherwise triggering
         # might take up all threads and nothing is downloaded.
         with concurrent.futures.ThreadPoolExecutor(max_workers=n_concurrent_dl) as dl_exec:
-            with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as trig_exec:
+            with concurrent.futures.ThreadPoolExecutor(max_workers=1) as trig_exec:
                 for product_info in product_infos.values():
                     # Skip already downloaded files.
                     # Although the download method also checks, we do not need to retrieve such
