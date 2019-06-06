@@ -622,6 +622,7 @@ class SentinelAPI:
         dl_queue = Queue() # waiting for download
 
         product_infos = {pid: self.get_product_odata(pid) for pid in product_ids}
+        already_dl = {}
 
         trig_tasks = []
         dl_tasks = []
@@ -634,7 +635,17 @@ class SentinelAPI:
         with concurrent.futures.ThreadPoolExecutor(max_workers=n_concurrent_dl) as dl_exec:
             with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as trig_exec:
                 for product_info in product_infos.values():
-                    if not product_info['Online']:
+                    # Skip already downloaded files.
+                    # Although the download method also checks, we do not need to retrieve such
+                    # products from the LTA and use up our quota.
+                    path = join(directory_path, product_info['title'] + '.zip')
+                    if exists(path):
+                        self.logger.info('Product %s is already downloaded. Nothing to do.', product_info['id'])
+                        already_dl[product_info['id']] = product_info
+                        continue
+
+                    elif not product_info['Online']:
+                        self.logger.info('Product %s is in LTA. Putting on retrieval queue.', product_info['id'])
                         trig_tasks.append(
                             trig_exec.submit(
                                 self._async_trigger_offline_retrieval,
@@ -645,7 +656,7 @@ class SentinelAPI:
                         self.logger.info('Product %s is online. Scheduling download', product_info['id'])
                         dl_queue.put(product_info)
 
-                for _ in range(len(product_ids)):
+                for _ in range(len(product_infos) - len(already_dl)):
                     dl_tasks.append(
                         dl_exec.submit(
                             self._async_download,
@@ -687,7 +698,7 @@ class SentinelAPI:
         failed_products = {pid: info for pid, info in product_infos.items()
                            if pid not in downloaded_products if pid not in retrieval_scheduled}
 
-        if len(failed_products) == len(product_ids):
+        if (len(failed_products) + len(already_dl)) == len(product_ids):
             raise next(iter(x.exception() for x in dl_tasks if x.exception()))
 
         return downloaded_products, retrieval_scheduled, failed_products

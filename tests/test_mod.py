@@ -1069,7 +1069,6 @@ def test_download_all_online(tmpdir, monkeypatch):
         'sentinelsat.SentinelAPI.download_all',
         partialmethod(
             SentinelAPI.download_all,
-            max_workers=1,
             n_concurrent_dl=1,
             retry_delay=0.5,
             max_attempts=2))
@@ -1108,7 +1107,6 @@ def test_download_all_online_fail(tmpdir, monkeypatch):
         'sentinelsat.SentinelAPI.download_all',
         partialmethod(
             SentinelAPI.download_all,
-            max_workers=1,
             n_concurrent_dl=1,
             retry_delay=0.5,
             max_attempts=2))
@@ -1150,7 +1148,6 @@ def test_download_all_lta(tmpdir, monkeypatch):
         'sentinelsat.SentinelAPI.download_all',
         partialmethod(
             SentinelAPI.download_all,
-            max_workers=1,
             n_concurrent_dl=1,
             retry_delay=0.5,
             max_attempts=2))
