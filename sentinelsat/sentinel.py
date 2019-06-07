@@ -620,7 +620,7 @@ class SentinelAPI:
         dl_queue = Queue() # waiting for download
 
         product_infos = {pid: self.get_product_odata(pid) for pid in product_ids}
-        already_dl = {}
+        downloaded_products = {}
 
         trig_tasks = []
         dl_tasks = []
@@ -639,7 +639,7 @@ class SentinelAPI:
                     path = join(directory_path, product_info['title'] + '.zip')
                     if exists(path):
                         self.logger.info('Product %s is already downloaded. Nothing to do.', product_info['id'])
-                        already_dl[product_info['id']] = product_info
+                        downloaded_products[product_info['id']] = product_info
                         continue
 
                     elif not product_info['Online']:
@@ -654,7 +654,7 @@ class SentinelAPI:
                         self.logger.info('Product %s is online. Scheduling download', product_info['id'])
                         dl_queue.put(product_info)
 
-                for _ in range(len(product_infos) - len(already_dl)):
+                for _ in range(len(product_infos) - len(downloaded_products)):
                     dl_tasks.append(
                         dl_exec.submit(
                             self._async_download,
@@ -681,7 +681,6 @@ class SentinelAPI:
         trig_results = [x.result() for x in trig_tasks if not x.exception() if x.result()]
         down_results = [x.result() for x in dl_tasks if not x.exception() if x.result()]
 
-        downloaded_products = {}
         for dr in down_results:
             downloaded_products[dr['id']] = dr
 
@@ -696,7 +695,7 @@ class SentinelAPI:
         failed_products = {pid: info for pid, info in product_infos.items()
                            if pid not in downloaded_products if pid not in retrieval_scheduled}
 
-        if (len(failed_products) + len(already_dl)) == len(product_ids):
+        if len(failed_products) == len(product_ids):
             raise next(iter(x.exception() for x in dl_tasks if x.exception()))
 
         return downloaded_products, retrieval_scheduled, failed_products
