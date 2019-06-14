@@ -57,25 +57,40 @@ class SentinelAPI:
         How long to wait for DataHub response (in seconds).
     """
 
-    logger = logging.getLogger('sentinelsat.SentinelAPI')
+    logger = logging.getLogger("sentinelsat.SentinelAPI")
 
-    def __init__(self, user, password, api_url='https://scihub.copernicus.eu/apihub/',
-                 show_progressbars=True, timeout=None):
+    def __init__(
+        self,
+        user,
+        password,
+        api_url="https://scihub.copernicus.eu/apihub/",
+        show_progressbars=True,
+        timeout=None,
+    ):
         self.session = requests.Session()
         if user and password:
             self.session.auth = (user, password)
-        self.api_url = api_url if api_url.endswith('/') else api_url + '/'
+        self.api_url = api_url if api_url.endswith("/") else api_url + "/"
         self.page_size = 100
-        self.user_agent = 'sentinelsat/' + sentinelsat_version
-        self.session.headers['User-Agent'] = self.user_agent
+        self.user_agent = "sentinelsat/" + sentinelsat_version
+        self.session.headers["User-Agent"] = self.user_agent
         self.show_progressbars = show_progressbars
         self.timeout = timeout
         # For unit tests
         self._last_query = None
         self._last_response = None
 
-    def query(self, area=None, date=None, raw=None, area_relation='Intersects',
-              order_by=None, limit=None, offset=0, **keywords):
+    def query(
+        self,
+        area=None,
+        date=None,
+        raw=None,
+        area_relation="Intersects",
+        order_by=None,
+        limit=None,
+        offset=0,
+        **keywords,
+    ):
         """Query the OpenSearch API with the coordinates of an area, a date interval
         and any other search keywords accepted by the API.
 
@@ -141,16 +156,20 @@ class SentinelAPI:
         """
         query = self.format_query(area, date, raw, area_relation, **keywords)
 
-        self.logger.debug("Running query: order_by=%s, limit=%s, offset=%s, query=%s",
-                          order_by, limit, offset, query)
+        self.logger.debug(
+            "Running query: order_by=%s, limit=%s, offset=%s, query=%s",
+            order_by,
+            limit,
+            offset,
+            query,
+        )
         formatted_order_by = _format_order_by(order_by)
         response, count = self._load_query(query, formatted_order_by, limit, offset)
         self.logger.info("Found %s products", count)
         return _parse_opensearch_response(response)
 
     @staticmethod
-    def format_query(area=None, date=None, raw=None, area_relation='Intersects',
-                     **keywords):
+    def format_query(area=None, date=None, raw=None, area_relation="Intersects", **keywords):
         """Create a OpenSearch API query string.
         """
         if area_relation.lower() not in {"intersects", "contains", "iswithin"}:
@@ -158,52 +177,63 @@ class SentinelAPI:
 
         # Check for duplicate keywords
         kw_lower = set(x.lower() for x in keywords)
-        if (len(kw_lower) != len(keywords) or
-                (date is not None and 'beginposition' in kw_lower) or
-                (area is not None and 'footprint' in kw_lower)):
-            raise ValueError("Query contains duplicate keywords. Note that query keywords are case-insensitive.")
+        if (
+            len(kw_lower) != len(keywords)
+            or (date is not None and "beginposition" in kw_lower)
+            or (area is not None and "footprint" in kw_lower)
+        ):
+            raise ValueError(
+                "Query contains duplicate keywords. Note that query keywords are case-insensitive."
+            )
 
         query_parts = []
 
         if date is not None:
-            keywords['beginPosition'] = date
+            keywords["beginPosition"] = date
 
         for attr, value in sorted(keywords.items()):
             # Escape spaces, where appropriate
             if isinstance(value, string_types):
                 value = value.strip()
-                if not any(value.startswith(s[0]) and value.endswith(s[1]) for s in ['[]', '{}', '//', '()']):
-                    value = re.sub(r'\s', r'\ ', value, re.M)
+                if not any(
+                    value.startswith(s[0]) and value.endswith(s[1])
+                    for s in ["[]", "{}", "//", "()"]
+                ):
+                    value = re.sub(r"\s", r"\ ", value, re.M)
 
             # Handle date keywords
             # Keywords from https://github.com/SentinelDataHub/DataHubSystem/search?q=text/date+iso8601
-            date_attrs = ['beginposition', 'endposition', 'date', 'creationdate', 'ingestiondate']
+            date_attrs = ["beginposition", "endposition", "date", "creationdate", "ingestiondate"]
             if attr.lower() in date_attrs:
                 # Automatically format date-type attributes
-                if isinstance(value, string_types) and ' TO ' in value:
+                if isinstance(value, string_types) and " TO " in value:
                     # This is a string already formatted as a date interval,
                     # e.g. '[NOW-1DAY TO NOW]'
                     pass
                 elif not isinstance(value, string_types) and len(value) == 2:
                     value = (format_query_date(value[0]), format_query_date(value[1]))
                 else:
-                    raise ValueError("Date-type query parameter '{}' expects a two-element tuple "
-                                     "of str or datetime objects. Received {}".format(attr, value))
+                    raise ValueError(
+                        "Date-type query parameter '{}' expects a two-element tuple "
+                        "of str or datetime objects. Received {}".format(attr, value)
+                    )
 
             # Handle ranged values
             if isinstance(value, (list, tuple)):
                 # Handle value ranges
                 if len(value) == 2:
                     # Allow None to be used as a unlimited bound
-                    value = ['*' if x is None else x for x in value]
-                    if all(x == '*' for x in value):
+                    value = ["*" if x is None else x for x in value]
+                    if all(x == "*" for x in value):
                         continue
-                    value = '[{} TO {}]'.format(*value)
+                    value = "[{} TO {}]".format(*value)
                 else:
-                    raise ValueError("Invalid number of elements in list. Expected 2, received "
-                                     "{}".format(len(value)))
+                    raise ValueError(
+                        "Invalid number of elements in list. Expected 2, received "
+                        "{}".format(len(value))
+                    )
 
-            query_parts.append('{}:{}'.format(attr, value))
+            query_parts.append("{}:{}".format(attr, value))
 
         if raw:
             query_parts.append(raw)
@@ -211,7 +241,7 @@ class SentinelAPI:
         if area is not None:
             query_parts.append('footprint:"{}({})"'.format(area_relation, area))
 
-        return ' '.join(query_parts)
+        return " ".join(query_parts)
 
     def query_raw(self, query, order_by=None, limit=None, offset=0):
         """
@@ -242,11 +272,11 @@ class SentinelAPI:
         """
         warnings.warn(
             "query_raw() has been merged with query(). use query(raw=...) instead.",
-            PendingDeprecationWarning
+            PendingDeprecationWarning,
         )
         return self.query(raw=query, order_by=order_by, limit=limit, offset=offset)
 
-    def count(self, area=None, date=None, raw=None, area_relation='Intersects', **keywords):
+    def count(self, area=None, date=None, raw=None, area_relation="Intersects", **keywords):
         """Get the number of products matching a query.
 
         Accepted parameters are identical to :meth:`SentinelAPI.query()`.
@@ -259,7 +289,7 @@ class SentinelAPI:
         int
             The number of products matching a query.
         """
-        for kw in ['order_by', 'limit', 'offset']:
+        for kw in ["order_by", "limit", "offset"]:
             # Allow these function arguments to be included for compatibility with query(),
             # but ignore them.
             if kw in keywords:
@@ -276,10 +306,12 @@ class SentinelAPI:
         if limit is not None:
             max_offset = min(count, offset + limit)
         if max_offset > offset + self.page_size:
-            progress = self._tqdm(desc="Querying products",
-                                  initial=self.page_size,
-                                  total=max_offset - offset,
-                                  unit=' products')
+            progress = self._tqdm(
+                desc="Querying products",
+                initial=self.page_size,
+                total=max_offset - offset,
+                unit=" products",
+            )
             for new_offset in range(offset + self.page_size, max_offset, self.page_size):
                 new_limit = limit
                 if limit is not None:
@@ -298,9 +330,13 @@ class SentinelAPI:
 
         # load query results
         url = self._format_url(order_by, limit, offset)
-        response = self.session.post(url, {'q': query}, auth=self.session.auth,
-                                     headers={'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},
-                                     timeout=self.timeout)
+        response = self.session.post(
+            url,
+            {"q": query},
+            auth=self.session.auth,
+            headers={"Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"},
+            timeout=self.timeout,
+        )
         _check_scihub_response(response)
 
         # store last status code (for testing)
@@ -308,17 +344,18 @@ class SentinelAPI:
 
         # parse response content
         try:
-            json_feed = response.json()['feed']
-            if json_feed['opensearch:totalResults'] is None:
+            json_feed = response.json()["feed"]
+            if json_feed["opensearch:totalResults"] is None:
                 # We are using some unintended behavior of the server that a null is
                 # returned as the total results value when the query string was incorrect.
                 raise SentinelAPIError(
-                    'Invalid query string. Check the parameters and format.', response)
-            total_results = int(json_feed['opensearch:totalResults'])
+                    "Invalid query string. Check the parameters and format.", response
+                )
+            total_results = int(json_feed["opensearch:totalResults"])
         except (ValueError, KeyError):
-            raise SentinelAPIError('API response not valid. JSON decoding failed.', response)
+            raise SentinelAPIError("API response not valid. JSON decoding failed.", response)
 
-        products = json_feed.get('entry', [])
+        products = json_feed.get("entry", [])
         # this verification is necessary because if the query returns only
         # one product, self.products will be a dict not a list
         if isinstance(products, dict):
@@ -330,10 +367,10 @@ class SentinelAPI:
         if limit is None:
             limit = self.page_size
         limit = min(limit, self.page_size)
-        url = 'search?format=json&rows={}'.format(limit)
-        url += '&start={}'.format(offset)
+        url = "search?format=json&rows={}".format(limit)
+        url += "&start={}".format(offset)
         if order_by:
-            url += '&orderby={}'.format(order_by)
+            url += "&orderby={}".format(order_by)
         return urljoin(self.api_url, url)
 
     @staticmethod
@@ -344,17 +381,15 @@ class SentinelAPI:
         feature_list = []
         for i, (product_id, props) in enumerate(products.items()):
             props = props.copy()
-            props['id'] = product_id
-            poly = geomet.wkt.loads(props['footprint'])
-            del props['footprint']
-            del props['gmlfootprint']
+            props["id"] = product_id
+            poly = geomet.wkt.loads(props["footprint"])
+            del props["footprint"]
+            del props["gmlfootprint"]
             # Fix "'datetime' is not JSON serializable"
             for k, v in props.items():
                 if isinstance(v, (date, datetime)):
-                    props[k] = v.strftime('%Y-%m-%dT%H:%M:%S.%fZ')
-            feature_list.append(
-                geojson.Feature(geometry=poly, id=i, properties=props)
-            )
+                    props[k] = v.strftime("%Y-%m-%dT%H:%M:%S.%fZ")
+            feature_list.append(geojson.Feature(geometry=poly, id=i, properties=props))
         return geojson.FeatureCollection(feature_list)
 
     @staticmethod
@@ -367,7 +402,7 @@ class SentinelAPI:
         except ImportError:
             raise ImportError("to_dataframe requires the optional dependency Pandas.")
 
-        return pd.DataFrame.from_dict(products, orient='index')
+        return pd.DataFrame.from_dict(products, orient="index")
 
     @staticmethod
     def to_geodataframe(products):
@@ -378,16 +413,18 @@ class SentinelAPI:
             import geopandas as gpd
             import shapely.wkt
         except ImportError:
-            raise ImportError("to_geodataframe requires the optional dependencies GeoPandas and Shapely.")
+            raise ImportError(
+                "to_geodataframe requires the optional dependencies GeoPandas and Shapely."
+            )
 
-        crs = {'init': 'epsg:4326'}  # WGS84
+        crs = {"init": "epsg:4326"}  # WGS84
         if len(products) == 0:
             return gpd.GeoDataFrame(crs=crs)
 
         df = SentinelAPI.to_dataframe(products)
-        geometry = [shapely.wkt.loads(fp) for fp in df['footprint']]
+        geometry = [shapely.wkt.loads(fp) for fp in df["footprint"]]
         # remove useless columns
-        df.drop(['footprint', 'gmlfootprint'], axis=1, inplace=True)
+        df.drop(["footprint", "gmlfootprint"], axis=1, inplace=True)
         return gpd.GeoDataFrame(df, crs=crs, geometry=geometry)
 
     def get_product_odata(self, id, full=False):
@@ -419,13 +456,12 @@ class SentinelAPI:
         https://github.com/SentinelDataHub/DataHubSystem/blob/master/addon/sentinel-2/src/main/resources/META-INF/sentinel-2.owl
         https://github.com/SentinelDataHub/DataHubSystem/blob/master/addon/sentinel-3/src/main/resources/META-INF/sentinel-3.owl
         """
-        url = urljoin(self.api_url, u"odata/v1/Products('{}')?$format=json".format(id))
+        url = urljoin(self.api_url, "odata/v1/Products('{}')?$format=json".format(id))
         if full:
-            url += '&$expand=Attributes'
-        response = self.session.get(url, auth=self.session.auth,
-                                    timeout=self.timeout)
+            url += "&$expand=Attributes"
+        response = self.session.get(url, auth=self.session.auth, timeout=self.timeout)
         _check_scihub_response(response)
-        values = _parse_odata_response(response.json()['d'])
+        values = _parse_odata_response(response.json()["d"])
         return values
 
     def _trigger_offline_retrieval(self, url):
@@ -450,17 +486,17 @@ class SentinelAPI:
                 self.logger.info("Accepted for retrieval")
             elif r.status_code == 503:
                 self.logger.error("Request not accepted")
-                raise SentinelAPILTAError('Request for retrieval from LTA not accepted', r)
+                raise SentinelAPILTAError("Request for retrieval from LTA not accepted", r)
             elif r.status_code == 403:
                 self.logger.error("Requests exceed user quota")
-                raise SentinelAPILTAError('Requests for retrieval from LTA exceed user quota', r)
+                raise SentinelAPILTAError("Requests for retrieval from LTA exceed user quota", r)
             elif r.status_code == 500:
                 # should not happen
                 self.logger.error("Trying to download an offline product")
-                raise SentinelAPILTAError('Trying to download an offline product', r)
+                raise SentinelAPILTAError("Trying to download an offline product", r)
             return r.status_code
 
-    def download(self, id, directory_path='.', checksum=True):
+    def download(self, id, directory_path=".", checksum=True):
         """Download a product.
 
         Uses the filename on the server for the downloaded file, e.g.
@@ -491,67 +527,74 @@ class SentinelAPI:
             If the MD5 checksum does not match the checksum on the server.
         """
         product_info = self.get_product_odata(id)
-        path = join(directory_path, product_info['title'] + '.zip')
-        product_info['path'] = path
-        product_info['downloaded_bytes'] = 0
+        path = join(directory_path, product_info["title"] + ".zip")
+        product_info["path"] = path
+        product_info["downloaded_bytes"] = 0
 
-        self.logger.info('Downloading %s to %s', id, path)
+        self.logger.info("Downloading %s to %s", id, path)
 
         if exists(path):
             # We assume that the product has been downloaded and is complete
             return product_info
 
         # An incomplete download triggers the retrieval from the LTA if the product is not online
-        if not product_info['Online']:
+        if not product_info["Online"]:
             self.logger.warning(
-                'Product %s is not online. Triggering retrieval from long term archive.',
-                product_info['id'])
-            self._trigger_offline_retrieval(product_info['url'])
+                "Product %s is not online. Triggering retrieval from long term archive.",
+                product_info["id"],
+            )
+            self._trigger_offline_retrieval(product_info["url"])
             return product_info
 
         # Use a temporary file for downloading
-        temp_path = path + '.incomplete'
+        temp_path = path + ".incomplete"
 
         skip_download = False
         if exists(temp_path):
-            if getsize(temp_path) > product_info['size']:
+            if getsize(temp_path) > product_info["size"]:
                 self.logger.warning(
                     "Existing incomplete file %s is larger than the expected final size"
                     " (%s vs %s bytes). Deleting it.",
-                    str(temp_path), getsize(temp_path), product_info['size'])
+                    str(temp_path),
+                    getsize(temp_path),
+                    product_info["size"],
+                )
                 remove(temp_path)
-            elif getsize(temp_path) == product_info['size']:
-                if self._md5_compare(temp_path, product_info['md5']):
+            elif getsize(temp_path) == product_info["size"]:
+                if self._md5_compare(temp_path, product_info["md5"]):
                     skip_download = True
                 else:
                     # Log a warning since this should never happen
                     self.logger.warning(
                         "Existing incomplete file %s appears to be fully downloaded but "
                         "its checksum is incorrect. Deleting it.",
-                        str(temp_path))
+                        str(temp_path),
+                    )
                     remove(temp_path)
             else:
                 # continue downloading
                 self.logger.info(
-                    "Download will resume from existing incomplete file %s.", temp_path)
+                    "Download will resume from existing incomplete file %s.", temp_path
+                )
                 pass
 
         if not skip_download:
             # Store the number of downloaded bytes for unit tests
-            product_info['downloaded_bytes'] = self._download(
-                product_info['url'], temp_path, self.session, product_info['size'])
+            product_info["downloaded_bytes"] = self._download(
+                product_info["url"], temp_path, self.session, product_info["size"]
+            )
 
         # Check integrity with MD5 checksum
         if checksum is True:
-            if not self._md5_compare(temp_path, product_info['md5']):
+            if not self._md5_compare(temp_path, product_info["md5"]):
                 remove(temp_path)
-                raise InvalidChecksumError('File corrupt: checksums do not match')
+                raise InvalidChecksumError("File corrupt: checksums do not match")
 
         # Download successful, rename the temporary file to its proper name
         shutil.move(temp_path, path)
         return product_info
 
-    def download_all(self, products, directory_path='.', max_attempts=10, checksum=True):
+    def download_all(self, products, directory_path=".", max_attempts=10, checksum=True):
         """Download a list of products.
 
         Takes a list of product IDs as input. This means that the return value of query() can be
@@ -607,10 +650,13 @@ class SentinelAPI:
                 except InvalidChecksumError as e:
                     last_exception = e
                     self.logger.warning(
-                        "Invalid checksum. The downloaded file for '%s' is corrupted.", product_id)
+                        "Invalid checksum. The downloaded file for '%s' is corrupted.", product_id
+                    )
                 except SentinelAPILTAError as e:
                     last_exception = e
-                    self.logger.exception("There was an error retrieving %s from the LTA", product_id)
+                    self.logger.exception(
+                        "There was an error retrieving %s from the LTA", product_id
+                    )
                     break
                 except Exception as e:
                     last_exception = e
@@ -619,8 +665,8 @@ class SentinelAPI:
         failed = set(products) - set(return_values)
 
         # split up successfully processed products into downloaded and only triggered retrieval from the LTA
-        triggered = OrderedDict([(k, v) for k, v in return_values.items() if v['Online'] is False])
-        downloaded = OrderedDict([(k, v) for k, v in return_values.items() if v['Online'] is True])
+        triggered = OrderedDict([(k, v) for k, v in return_values.items() if v["Online"] is False])
+        downloaded = OrderedDict([(k, v) for k, v in return_values.items() if v["Online"] is True])
 
         if len(failed) == len(product_ids) and last_exception is not None:
             raise last_exception
@@ -635,9 +681,9 @@ class SentinelAPI:
             size_value = float(size_product.split(" ")[0])
             size_unit = str(size_product.split(" ")[1])
             if size_unit == "MB":
-                size_value /= 1024.
+                size_value /= 1024.0
             if size_unit == "KB":
-                size_value /= 1024. * 1024.
+                size_value /= 1024.0 * 1024.0
             size_total += size_value
         return round(size_total, 2)
 
@@ -659,7 +705,7 @@ class SentinelAPI:
             Ratio of the query length to the maximum length
         """
         # The server uses the Java's URLEncoder implementation internally, which we are replicating here
-        effective_length = len(quote_plus(query, safe="-_.*").replace('~', '%7E'))
+        effective_length = len(quote_plus(query, safe="-_.*").replace("~", "%7E"))
         return effective_length / 3938
 
     def _query_names(self, names):
@@ -683,7 +729,7 @@ class SentinelAPI:
         def chunks(l, n):
             """Yield successive n-sized chunks from l."""
             for i in range(0, len(l), n):
-                yield l[i:i + n]
+                yield l[i : i + n]
 
         products = {}
         # 40 names per query fits reasonably well inside the query limit
@@ -694,7 +740,7 @@ class SentinelAPI:
         # Group the products
         output = OrderedDict((name, dict()) for name in names)
         for id, metadata in products.items():
-            name = metadata['identifier']
+            name = metadata["identifier"]
             output[name][id] = metadata
 
         return output
@@ -757,12 +803,12 @@ class SentinelAPI:
         product_infos = defaultdict(list)
         for id in ids:
             odata = self.get_product_odata(id)
-            name = odata['title']
+            name = odata["title"]
             product_infos[name].append(odata)
 
             # Collect
             if name not in names_from_paths:
-                paths.append(join(directory, name + '.zip'))
+                paths.append(join(directory, name + ".zip"))
 
         # Now go over the list of products and check them
         corrupt = {}
@@ -780,8 +826,9 @@ class SentinelAPI:
 
             is_fine = False
             for product_info in product_infos[name]:
-                if (getsize(path) == product_info['size'] and
-                        self._md5_compare(path, product_info['md5'])):
+                if getsize(path) == product_info["size"] and self._md5_compare(
+                    path, product_info["md5"]
+                ):
                     is_fine = True
                     break
             if not is_fine:
@@ -794,8 +841,9 @@ class SentinelAPI:
 
     def _md5_compare(self, file_path, checksum, block_size=2 ** 13):
         """Compare a given MD5 checksum with one calculated from a file."""
-        with closing(self._tqdm(desc="MD5 checksumming", total=getsize(file_path), unit="B",
-                                unit_scale=True)) as progress:
+        with closing(
+            self._tqdm(desc="MD5 checksumming", total=getsize(file_path), unit="B", unit_scale=True)
+        ) as progress:
             md5 = hashlib.md5()
             with open(file_path, "rb") as f:
                 while True:
@@ -811,17 +859,24 @@ class SentinelAPI:
         continuing = exists(path)
         if continuing:
             already_downloaded_bytes = getsize(path)
-            headers = {'Range': 'bytes={}-'.format(already_downloaded_bytes)}
+            headers = {"Range": "bytes={}-".format(already_downloaded_bytes)}
         else:
             already_downloaded_bytes = 0
         downloaded_bytes = 0
-        with closing(session.get(url, stream=True, auth=session.auth,
-                                 headers=headers, timeout=self.timeout)) as r, \
-                closing(self._tqdm(desc="Downloading", total=file_size, unit="B",
-                                   unit_scale=True, initial=already_downloaded_bytes)) as progress:
+        with closing(
+            session.get(url, stream=True, auth=session.auth, headers=headers, timeout=self.timeout)
+        ) as r, closing(
+            self._tqdm(
+                desc="Downloading",
+                total=file_size,
+                unit="B",
+                unit_scale=True,
+                initial=already_downloaded_bytes,
+            )
+        ) as progress:
             _check_scihub_response(r, test_json=False)
             chunk_size = 2 ** 20  # download in 1 MB chunks
-            mode = 'ab' if continuing else 'wb'
+            mode = "ab" if continuing else "wb"
             with open(path, mode) as f:
                 for chunk in r.iter_content(chunk_size=chunk_size):
                     if chunk:  # filter out keep-alive new chunks
@@ -833,7 +888,7 @@ class SentinelAPI:
 
     def _tqdm(self, **kwargs):
         """tqdm progressbar wrapper. May be overridden to customize progressbar behavior"""
-        kwargs.update({'disable': not self.show_progressbars})
+        kwargs.update({"disable": not self.show_progressbars})
         return tqdm(**kwargs)
 
 
@@ -853,9 +908,12 @@ class SentinelAPIError(Exception):
         self.response = response
 
     def __str__(self):
-        return 'HTTP status {0} {1}: {2}'.format(
-            self.response.status_code, self.response.reason,
-            ('\n' if '\n' in self.msg else '') + self.msg)
+        return "HTTP status {0} {1}: {2}".format(
+            self.response.status_code,
+            self.response.reason,
+            ("\n" if "\n" in self.msg else "") + self.msg,
+        )
+
 
 class SentinelAPILTAError(SentinelAPIError):
     """ Error when retrieving a product from the Long Term Archive
@@ -876,6 +934,7 @@ class SentinelAPILTAError(SentinelAPIError):
 class InvalidChecksumError(Exception):
     """MD5 checksum of a local file does not match the one from the server.
     """
+
     pass
 
 
@@ -908,12 +967,12 @@ def geojson_to_wkt(geojson_obj, feature_number=0, decimals=4):
     polygon coordinates
         string of comma separated coordinate tuples (lon, lat) to be used by SentinelAPI
     """
-    if 'coordinates' in geojson_obj:
+    if "coordinates" in geojson_obj:
         geometry = geojson_obj
-    elif 'geometry' in geojson_obj:
-        geometry = geojson_obj['geometry']
+    elif "geometry" in geojson_obj:
+        geometry = geojson_obj["geometry"]
     else:
-        geometry = geojson_obj['features'][feature_number]['geometry']
+        geometry = geojson_obj["features"][feature_number]["geometry"]
 
     def ensure_2d(geometry):
         if isinstance(geometry[0], (list, tuple)):
@@ -926,17 +985,17 @@ def geojson_to_wkt(geojson_obj, feature_number=0, decimals=4):
             return list(map(check_bounds, geometry))
         else:
             if geometry[0] > 180 or geometry[0] < -180:
-                raise ValueError('Longitude is out of bounds, check your JSON format or data')
+                raise ValueError("Longitude is out of bounds, check your JSON format or data")
             if geometry[1] > 90 or geometry[1] < -90:
-                raise ValueError('Latitude is out of bounds, check your JSON format or data')
+                raise ValueError("Latitude is out of bounds, check your JSON format or data")
 
     # Discard z-coordinate, if it exists
-    geometry['coordinates'] = ensure_2d(geometry['coordinates'])
-    check_bounds(geometry['coordinates'])
+    geometry["coordinates"] = ensure_2d(geometry["coordinates"])
+    check_bounds(geometry["coordinates"])
 
     wkt = geomet.wkt.dumps(geometry, decimals=decimals)
     # Strip unnecessary spaces
-    wkt = re.sub(r'(?<!\d) ', '', wkt)
+    wkt = re.sub(r"(?<!\d) ", "", wkt)
     return wkt
 
 
@@ -963,35 +1022,35 @@ def format_query_date(in_date):
         If the input date type is incorrect or passed date string is invalid
     """
     if in_date is None:
-        return '*'
+        return "*"
     if isinstance(in_date, (datetime, date)):
-        return in_date.strftime('%Y-%m-%dT%H:%M:%SZ')
+        return in_date.strftime("%Y-%m-%dT%H:%M:%SZ")
     elif not isinstance(in_date, string_types):
-        raise ValueError('Expected a string or a datetime object. Received {}.'.format(in_date))
+        raise ValueError("Expected a string or a datetime object. Received {}.".format(in_date))
 
     in_date = in_date.strip()
-    if in_date == '*':
+    if in_date == "*":
         # '*' can be used for one-sided range queries e.g. ingestiondate:[* TO NOW-1YEAR]
         return in_date
 
     # Reference: https://cwiki.apache.org/confluence/display/solr/Working+with+Dates
 
     # ISO-8601 date or NOW
-    valid_date_pattern = r'^(?:\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(?:\.\d+)?Z|NOW)'
+    valid_date_pattern = r"^(?:\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(?:\.\d+)?Z|NOW)"
     # date arithmetic suffix is allowed
-    units = r'(?:YEAR|MONTH|DAY|HOUR|MINUTE|SECOND)'
-    valid_date_pattern += r'(?:[-+]\d+{}S?)*'.format(units)
+    units = r"(?:YEAR|MONTH|DAY|HOUR|MINUTE|SECOND)"
+    valid_date_pattern += r"(?:[-+]\d+{}S?)*".format(units)
     # dates can be rounded to a unit of time
     # e.g. "NOW/DAY" for dates since 00:00 today
-    valid_date_pattern += r'(?:/{}S?)*$'.format(units)
+    valid_date_pattern += r"(?:/{}S?)*$".format(units)
     in_date = in_date.strip()
     if re.match(valid_date_pattern, in_date):
         return in_date
 
     try:
-        return datetime.strptime(in_date, '%Y%m%d').strftime('%Y-%m-%dT%H:%M:%SZ')
+        return datetime.strptime(in_date, "%Y%m%d").strftime("%Y-%m-%dT%H:%M:%SZ")
     except ValueError:
-        raise ValueError('Unsupported date value {}'.format(in_date))
+        raise ValueError("Unsupported date value {}".format(in_date))
 
 
 def _check_scihub_response(response, test_json=True):
@@ -999,7 +1058,7 @@ def _check_scihub_response(response, test_json=True):
     """
     # Prevent requests from needing to guess the encoding
     # SciHub appears to be using UTF-8 in all of their responses
-    response.encoding = 'utf-8'
+    response.encoding = "utf-8"
     try:
         response.raise_for_status()
         if test_json:
@@ -1007,12 +1066,12 @@ def _check_scihub_response(response, test_json=True):
     except (requests.HTTPError, ValueError):
         msg = "Invalid API response."
         try:
-            msg = response.headers['cause-message']
+            msg = response.headers["cause-message"]
         except:
             try:
-                msg = response.json()['error']['message']['value']
+                msg = response.json()["error"]["message"]["value"]
             except:
-                if not response.text.strip().startswith('{'):
+                if not response.text.strip().startswith("{"):
                     try:
                         h = html2text.HTML2Text()
                         h.ignore_images = True
@@ -1031,12 +1090,12 @@ def _format_order_by(order_by):
     if not order_by or not order_by.strip():
         return None
     output = []
-    for part in order_by.split(','):
+    for part in order_by.split(","):
         part = part.strip()
         dir = " asc"
-        if part[0] == '+':
+        if part[0] == "+":
             part = part[1:]
-        elif part[0] == '-':
+        elif part[0] == "-":
             dir = " desc"
             part = part[1:]
         if not part or not part.isalnum():
@@ -1047,26 +1106,27 @@ def _format_order_by(order_by):
 
 def _parse_gml_footprint(geometry_str):
     geometry_xml = ET.fromstring(geometry_str)
-    poly_coords_str = geometry_xml \
-        .find('{http://www.opengis.net/gml}outerBoundaryIs') \
-        .find('{http://www.opengis.net/gml}LinearRing') \
-        .findtext('{http://www.opengis.net/gml}coordinates')
+    poly_coords_str = (
+        geometry_xml.find("{http://www.opengis.net/gml}outerBoundaryIs")
+        .find("{http://www.opengis.net/gml}LinearRing")
+        .findtext("{http://www.opengis.net/gml}coordinates")
+    )
     poly_coords = (coord.split(",")[::-1] for coord in poly_coords_str.split(" "))
     coord_string = ",".join(" ".join(coord) for coord in poly_coords)
     return "POLYGON(({}))".format(coord_string)
 
 
 def _parse_iso_date(content):
-    if '.' in content:
-        return datetime.strptime(content, '%Y-%m-%dT%H:%M:%S.%fZ')
+    if "." in content:
+        return datetime.strptime(content, "%Y-%m-%dT%H:%M:%S.%fZ")
     else:
-        return datetime.strptime(content, '%Y-%m-%dT%H:%M:%SZ')
+        return datetime.strptime(content, "%Y-%m-%dT%H:%M:%SZ")
 
 
 def _parse_odata_timestamp(in_date):
     """Convert the timestamp received from OData JSON API to a datetime object.
     """
-    timestamp = int(in_date.replace('/Date(', '').replace(')/', ''))
+    timestamp = int(in_date.replace("/Date(", "").replace(")/", ""))
     seconds = timestamp // 1000
     ms = timestamp % 1000
     return datetime.utcfromtimestamp(seconds) + timedelta(milliseconds=ms)
@@ -1080,17 +1140,17 @@ def _parse_opensearch_response(products):
     is set to `False`.
     """
 
-    converters = {'date': _parse_iso_date, 'int': int, 'long': int, 'float': float, 'double': float}
+    converters = {"date": _parse_iso_date, "int": int, "long": int, "float": float, "double": float}
     # Keep the string type by default
     default_converter = lambda x: x
 
     output = OrderedDict()
     for prod in products:
         product_dict = {}
-        prod_id = prod['id']
+        prod_id = prod["id"]
         output[prod_id] = product_dict
         for key in prod:
-            if key == 'id':
+            if key == "id":
                 continue
             if isinstance(prod[key], string_types):
                 product_dict[key] = prod[key]
@@ -1098,46 +1158,46 @@ def _parse_opensearch_response(products):
                 properties = prod[key]
                 if isinstance(properties, dict):
                     properties = [properties]
-                if key == 'link':
+                if key == "link":
                     for p in properties:
-                        name = 'link'
-                        if 'rel' in p:
-                            name = 'link_' + p['rel']
-                        product_dict[name] = p['href']
+                        name = "link"
+                        if "rel" in p:
+                            name = "link_" + p["rel"]
+                        product_dict[name] = p["href"]
                 else:
                     f = converters.get(key, default_converter)
                     for p in properties:
                         try:
-                            product_dict[p['name']] = f(p['content'])
+                            product_dict[p["name"]] = f(p["content"])
                         except KeyError:
                             # Sentinel-3 has one element 'arr'
                             # which violates the name:content convention
-                            product_dict[p['name']] = f(p['str'])
+                            product_dict[p["name"]] = f(p["str"])
     return output
 
 
 def _parse_odata_response(product):
     output = {
-        'id': product['Id'],
-        'title': product['Name'],
-        'size': int(product['ContentLength']),
-        product['Checksum']['Algorithm'].lower(): product['Checksum']['Value'],
-        'date': _parse_odata_timestamp(product['ContentDate']['Start']),
-        'footprint': _parse_gml_footprint(product["ContentGeometry"]),
-        'url': product['__metadata']['media_src'],
-        'Online': product.get('Online', True),
-        'Creation Date': _parse_odata_timestamp(product['CreationDate']),
-        'Ingestion Date': _parse_odata_timestamp(product['IngestionDate']),
+        "id": product["Id"],
+        "title": product["Name"],
+        "size": int(product["ContentLength"]),
+        product["Checksum"]["Algorithm"].lower(): product["Checksum"]["Value"],
+        "date": _parse_odata_timestamp(product["ContentDate"]["Start"]),
+        "footprint": _parse_gml_footprint(product["ContentGeometry"]),
+        "url": product["__metadata"]["media_src"],
+        "Online": product.get("Online", True),
+        "Creation Date": _parse_odata_timestamp(product["CreationDate"]),
+        "Ingestion Date": _parse_odata_timestamp(product["IngestionDate"]),
     }
     # Parse the extended metadata, if provided
     converters = [int, float, _parse_iso_date]
-    for attr in product['Attributes'].get('results', []):
-        value = attr['Value']
+    for attr in product["Attributes"].get("results", []):
+        value = attr["Value"]
         for f in converters:
             try:
-                value = f(attr['Value'])
+                value = f(attr["Value"])
                 break
             except ValueError:
                 pass
-        output[attr['Name']] = value
+        output[attr["Name"]] = value
     return output
