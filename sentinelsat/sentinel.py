@@ -89,7 +89,7 @@ class SentinelAPI:
         order_by=None,
         limit=None,
         offset=0,
-        **keywords,
+        **keywords
     ):
         """Query the OpenSearch API with the coordinates of an area, a date interval
         and any other search keywords accepted by the API.
