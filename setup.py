@@ -45,7 +45,8 @@ setup(name='sentinelsat',
               'pyyaml',
               'rstcheck',
               'sphinx >= 1.3',
-              'sphinx_rtd_theme'
+              'sphinx_rtd_theme',
+              'black'
           ],
           # Pandas and its dependencies are not available for Python <= 3.4
           'dev34': [
