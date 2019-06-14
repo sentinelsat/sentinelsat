@@ -8,7 +8,7 @@ with open("README.rst", encoding="utf-8") as f:
     long_description = f.read()
 
 with open("sentinelsat/__init__.py", encoding="utf-8") as f:
-    version = re.search(r"__version__\s*=\s*'(\S+)'", f.read()).group(1)
+    version = re.search(r'__version__\s*=\s*"(\S+)"', f.read()).group(1)
 
 setup(
     name="sentinelsat",
@@ -46,7 +46,7 @@ setup(
             "pyyaml",
             "rstcheck",
             "sphinx >= 1.3",
-            "sphinx_rtd_theme"
+            "sphinx_rtd_theme",
         ],
         # Pandas and its dependencies are not available for Python <= 3.4
         "dev34": [
