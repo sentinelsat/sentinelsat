@@ -10,8 +10,6 @@ exclude = '''
     \.git
     \.sentinelsat.egg-info
     _build
-    buck-out
-    build
     docs
   )/
 )
