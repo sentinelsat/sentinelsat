@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, division, print_function
 
-import itertools
+import concurrent.futures
 import hashlib
 import logging
+import queue
 import re
 import shutil
 import time
@@ -11,12 +12,9 @@ import warnings
 import xml.etree.ElementTree as ET
 from collections import OrderedDict, defaultdict
 from contextlib import closing
-import concurrent.futures
 from datetime import date, datetime, timedelta
 from os import remove
 from os.path import basename, exists, getsize, join, splitext
-from threading import BoundedSemaphore
-from queue import Queue
 
 import geojson
 import geomet.wkt
@@ -621,7 +619,7 @@ class SentinelAPI:
 
         # download_all will stop as soon as dl_queue is empty.
         # It will not wait for products that were requested from the LTA to become available.
-        dl_queue = Queue() # waiting for download
+        dl_queue = queue.Queue() # waiting for download
 
         product_infos = {pid: self.get_product_odata(pid) for pid in product_ids}
         downloaded_products = {}
