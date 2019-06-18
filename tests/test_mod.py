@@ -1070,7 +1070,6 @@ def test_download_all_online(tmpdir, monkeypatch):
         partialmethod(
             SentinelAPI.download_all,
             n_concurrent_dl=1,
-            retry_delay=0.5,
             max_attempts=2))
     
     api = SentinelAPI(**_api_auth)
@@ -1108,7 +1107,6 @@ def test_download_all_online_fail(tmpdir, monkeypatch):
         partialmethod(
             SentinelAPI.download_all,
             n_concurrent_dl=1,
-            retry_delay=0.5,
             max_attempts=2))
 
     api = SentinelAPI(**_api_auth)
@@ -1149,7 +1147,6 @@ def test_download_all_lta(tmpdir, monkeypatch):
         partialmethod(
             SentinelAPI.download_all,
             n_concurrent_dl=1,
-            retry_delay=0.5,
             max_attempts=2))
 
     api = SentinelAPI(**_api_auth)

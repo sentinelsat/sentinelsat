@@ -473,7 +473,6 @@ def test_download_single(tmpdir, monkeypatch):
         partialmethod(
             SentinelAPI.download_all,
             n_concurrent_dl=1,
-            retry_delay=0.5,
             max_attempts=2))
 
     runner = CliRunner()
@@ -536,7 +535,6 @@ def test_download_many(tmpdir, monkeypatch):
         'sentinelsat.SentinelAPI.download_all',
         partialmethod(
             SentinelAPI.download_all,
-            retry_delay=1,
             max_attempts=2))
 
     runner = CliRunner()

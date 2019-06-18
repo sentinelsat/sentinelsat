@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, division, print_function
 
+import itertools
 import hashlib
 import logging
 import re
@@ -569,7 +570,7 @@ class SentinelAPI:
                 raise SentinelAPILTAError("Unexpected response from SciHub", r)
             return r.status_code
 
-    def download_all(self, products, directory_path='.', max_attempts=10, checksum=True, retry_delay=300, n_concurrent_dl=2):
+    def download_all(self, products, directory_path='.', max_attempts=10, checksum=True, n_concurrent_dl=2):
         """Download a list of products.
 
         Takes a list of product IDs as input. This means that the return value of query() can be
@@ -594,8 +595,6 @@ class SentinelAPI:
             If True, verify the downloaded files' integrity by checking its MD5 checksum.
             Throws InvalidChecksumError if the checksum does not match.
             Defaults to True.
-        retry_delay : integer or float
-            How long to wait after a failed download or unsucessful LTA retrieval
         n_concurrent_dl : integer
             number of concurrent downloads
 
@@ -614,9 +613,14 @@ class SentinelAPI:
         dict[string, dict]
             A dictionary containing the product information of failed downloads.
         """
+
+        lta_retry_delay = 600 # try to request a new product from the LTA every 600 seconds
+
         product_ids = list(products)
         self.logger.info("Will download %d products", len(product_ids))
 
+        # download_all will stop as soon as dl_queue is empty.
+        # It will not wait for products that were requested from the LTA to become available.
         dl_queue = Queue() # waiting for download
 
         product_infos = {pid: self.get_product_odata(pid) for pid in product_ids}
@@ -625,49 +629,44 @@ class SentinelAPI:
         trig_tasks = []
         dl_tasks = []
 
-        # limit the number of concurrent downloads
-        sem = BoundedSemaphore(n_concurrent_dl)
+        online_prods = {pid: info for pid, info in product_infos.items() if info['Online']}
+        offline_prods = {pid: info for pid, info in product_infos.items() if not info['Online']}
 
-        # Two separate threadpools for downloading and triggering retrieval. Otherwise triggering
-        # might take up all threads and nothing is downloaded.
+        # The order of adding online and offline products to the queue matters.
+        # First all online products are downloaded. Subsequently, offline products that might
+        # have become available in the meantime are requested.
+        for product_info in online_prods.values():
+            dl_queue.put(product_info)
+
+        # Two separate threadpools for downloading and triggering retrieval.
+        # Otherwise triggering might take up all threads and nothing is downloaded.
         with concurrent.futures.ThreadPoolExecutor(max_workers=n_concurrent_dl) as dl_exec:
+            for _ in range(len(product_infos)):
+                # start a download task for all online and offline products
+                dl_tasks.append(
+                    dl_exec.submit(
+                        self._async_download,
+                        dl_queue,
+                        directory_path,
+                        checksum,
+                        max_attempts=max_attempts))
+
             with concurrent.futures.ThreadPoolExecutor(max_workers=1) as trig_exec:
-                for product_info in product_infos.values():
+                for product_info in offline_prods.values():
                     # Skip already downloaded files.
                     # Although the download method also checks, we do not need to retrieve such
                     # products from the LTA and use up our quota.
                     path = join(directory_path, product_info['title'] + '.zip')
                     if exists(path):
-                        self.logger.info('Product %s is already downloaded. Nothing to do.', product_info['id'])
-                        downloaded_products[product_info['id']] = product_info
                         continue
 
-                    elif not product_info['Online']:
-                        self.logger.info('Product %s is in LTA. Putting on retrieval queue.', product_info['id'])
-                        trig_tasks.append(
-                            trig_exec.submit(
-                                self._async_trigger_offline_retrieval,
-                                product_info,
-                                dl_queue,
-                                retry_delay=retry_delay))
-                    else:
-                        self.logger.info('Product %s is online. Scheduling download', product_info['id'])
-                        dl_queue.put(product_info)
-
-                for _ in range(len(product_infos) - len(downloaded_products)):
-                    dl_tasks.append(
-                        dl_exec.submit(
-                            self._async_download,
+                    self.logger.info('Product %s is in LTA. Putting on retrieval queue.', product_info['id'])
+                    trig_tasks.append(
+                        trig_exec.submit(
+                            self._async_trigger_offline_retrieval,
+                            product_info,
                             dl_queue,
-                            sem,
-                            directory_path,
-                            checksum,
-                            retry_delay=retry_delay,
-                            max_attempts=max_attempts))
-
-                # Wait for the first trigger tasks to finish. This way at least one product is in the download queue
-                if trig_tasks:
-                    concurrent.futures.wait(trig_tasks, return_when=concurrent.futures.FIRST_COMPLETED)
+                            retry_delay=lta_retry_delay))
 
                 # Block until download queue is empty. Not all products might have been retrieved
                 # from the LTA by then. The results of each queue are analyzed later
@@ -675,7 +674,6 @@ class SentinelAPI:
 
                 for task in trig_tasks + dl_tasks:
                     task.cancel()
-
 
         # Filter exceptions and unsucessful (None) tasks
         trig_results = [x.result() for x in trig_tasks if not x.exception() if x.result()]
@@ -688,7 +686,7 @@ class SentinelAPI:
         for rr in trig_results:
             pid = rr['id']
             # Check that products that were retrieved from LTA were not downloaded
-            # while the this function was running
+            # while 'download_all' was running
             if pid not in downloaded_products:
                 retrieval_scheduled[pid] = rr
 
@@ -741,16 +739,17 @@ class SentinelAPI:
                 raise SentinelAPILTAError("Unexpected response from SciHub")
 
 
-    def _async_download(self, dl_queue, semaphore, directory_path='.', checksum=True, retry_delay=300, max_attempts=10):
-        product_info = dl_queue.get()
+    def _async_download(self, dl_queue, directory_path='.', checksum=True, max_attempts=10):
+        # Do not wait for all products from the LTA to become online
+        product_info = dl_queue.get(block=False)
 
         last_exception = None
-        for cnt in range(max_attempts):
-            if self.is_online(product_info['id']):
+
+        if self.is_online(product_info['id']):
+            self.logger.info('%s is online. Starting download', product_info['id'])
+            for cnt in range(max_attempts):
                 try:
-                    with semaphore:
-                        self.logger.info('%s is online. Starting download', product_info['id'])
-                        ret_val = self.download(product_info['id'], directory_path, checksum)
+                    ret_val = self.download(product_info['id'], directory_path, checksum)
                     dl_queue.task_done()
                     return ret_val
                 except InvalidChecksumError as e:
@@ -760,18 +759,17 @@ class SentinelAPI:
 
                 except Exception as e:
                     self.logger.exception("There was an error downloading %s", product_info['id'])
+                    self.logger.info("%d retries left", max_attempts - cnt - 1)
                     last_exception = e
             else:
-                self.logger.info("%s is not yet online.", product_info['id'])
-
-            self.logger.info("Retrying download in %d seconds. %d retries left", retry_delay, max_attempts - cnt - 1)
-            time.sleep(retry_delay)
+                self.logger.info("No retries left for %s. Terminating.", product_info['id'])
         else:
-            self.logger.info("No retries left for %s. Terminating.", product_info['id'])
-            dl_queue.task_done()
-            if last_exception:
-                raise last_exception
-            return None
+            self.logger.info("%s is not online.", product_info['id'])
+
+        dl_queue.task_done()
+        if last_exception:
+            raise last_exception
+        return None
 
     @staticmethod
     def get_products_size(products):
