@@ -1,21 +1,14 @@
+dist: xenial
 language: python
 cache: pip
-addons:
-  apt:
-    packages:
-    # Required for building fiona from source,
-    # since the wheel is not yet provided in Python 3.7
-    - gdal-bin
-    - libgdal-dev
 jobs:
     include:
-      - python: 2.7
-      - python: 3.4
-      - python: 3.5
-      - python: 3.6
-      - python: 3.7  # Python 3.7 requires xenial, instead of Travis default trusty
-        dist: xenial
-        sudo: true
+      - python: '2.7'
+      - python: '3.4'
+        dist: trusty  # Python 3.4 is not available in xenial
+      - python: '3.5'
+      - python: '3.6'
+      - python: '3.7'
 branches:
   only:
   - master
@@ -26,12 +19,9 @@ install:
 # skip Pandas on Python <3.4
 - if [[ $TRAVIS_PYTHON_VERSION == 3.4 ]]; then pip install -e .[dev34]; else pip install -e .[dev]; fi
 script:
-- coverage run --source=sentinelsat -m py.test -v
+- coverage run --source=sentinelsat -m pytest -v
 after_success:
 - codecov
-# RTD API v2 is triggered via Github Webhook, below is the syntax for fallback to API v1
-# - if [[ $TRAVIS_PYTHON_VERSION = 3.6 && $TRAVIS_PULL_REQUEST = false ]]; then curl -X POST http://readthedocs.org/build/sentinelsat; fi
-sudo: false
 notifications:
   email: false
   webhooks:

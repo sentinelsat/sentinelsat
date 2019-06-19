@@ -8,6 +8,34 @@ All notable changes to ``sentinelsat`` will be listed here.
 
 Added
 ~~~~~
+* force unit tests to include on of the markers 'fast', 'scihub' or 'mock_api' (#287 @valgur)
+* automatic return code checking of CLI tests (#287) 
+
+Changed
+~~~~~~~
+* reorganize unit tests into small groups with their own files (#287)
+
+Deprecated
+~~~~~~~~~~
+
+Fixed
+~~~~~
+* Missing ``Online`` field in OData response defaults to ``Online: True`` instead of raising a ``KeyError`` (#281 @viktorbahr)
+
+Development Changes
+~~~~~~~~~~~~~~~~~~~
+* Replaced direct ``vcrpy`` usage in unit tests with ``pytest-vcr``.
+  The ``pytest`` command line options changed from ``--vcr disable`` to ``--disable-vcr`` and
+  ``--vcr [use|record_new|reset]`` to ``--vcr-record [once|record_new|all``.
+  See `vcrpy docs <https://vcrpy.readthedocs.io/en/latest/usage.html#record-modes>`_ for details.
+* Reduced code duplication in unit tests by making greater use of pytest fixtures.
+
+
+[0.13] – 2019-04-05
+---------------------
+
+Added
+~~~~~
 * Query keywords with interval ranges now also support single-sided ranges by using ``None`` or ``'*'`` to denote no bound,
   for example ``query(date=(None, 'NOW-1YEAR'))``. If both bounds are set to unlimited, the keyword will be removed
   from the query. (#210)
@@ -20,14 +48,11 @@ Added
 * Parsing the ``Online``, ``CreationDate`` and ``IngestionDate`` fields of an OData response
 * Trying to download an offline product from the Copernicus Open Access Hub triggers its retrieval from the long term archive.
   Downloading of the product is **not** scheduled.
+* Added support for downloading Sentinel 5P data in the CLI via the '--sentinel 5' flag
 
 Changed
 ~~~~~~~
 * Add support in the CLI for reading credentials from `~/.netrc` and document existing functionality in the API (#90)
-
-Deprecated
-~~~~~~~~~~
-* 
 
 Fixed
 ~~~~~

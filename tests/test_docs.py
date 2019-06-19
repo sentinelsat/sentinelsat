@@ -1,16 +1,19 @@
+import os.path
 import re
 from glob import glob
+from os.path import dirname, abspath
 
-import os.path
 import pytest
 import rstcheck
 
-from .shared import PROJECT_ROOT_DIR
+TESTS_DIR = dirname(abspath(__file__))
+PROJECT_ROOT_DIR = dirname(TESTS_DIR)
 
 rst_files = list(glob(os.path.join(PROJECT_ROOT_DIR, '*.rst')))
 rst_files += list(glob(os.path.join(PROJECT_ROOT_DIR, 'docs', '*.rst')))
 
 
+@pytest.mark.fast
 @pytest.mark.parametrize('rst_file', rst_files)
 def test_rst(rst_file):
     with open(rst_file) as input_file:

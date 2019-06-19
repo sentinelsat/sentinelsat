@@ -447,6 +447,8 @@ class SentinelAPI:
         """
         url = urljoin(self.api_url, u"odata/v1/Products('{}')/Online/$value".format(id))
         with self.session.get(url, auth=self.session.auth, timeout=self.timeout) as r:
+            self.logger.info('respnse')
+            self.logger.info(r)
             if r.status_code == 200:
                 return r.text == 'true'
             else:
@@ -606,16 +608,17 @@ class SentinelAPI:
             A dictionary containing the return value from download() for each successfully
             downloaded product.
         dict[string, dict]
-            A dictionary containing the product information for product that was successfully
-            triggered for retrieval from the long term archive.
+            A dictionary containing the product information for products successfully
+            triggered for retrieval from the long term archive but not downloaded.
         dict[string, dict]
-            A dictionary containing the product information of failed downloads.
+            A dictionary containing the product information of products where either
+            downloading or triggering failed
         """
 
         lta_retry_delay = 600 # try to request a new product from the LTA every 600 seconds
 
         product_ids = list(products)
-        self.logger.info("Will download %d products", len(product_ids))
+        self.logger.info("Will download %d products using %d workers", len(product_ids), n_concurrent_dl)
 
 
         product_infos = {pid: self.get_product_odata(pid) for pid in product_ids}
@@ -648,6 +651,8 @@ class SentinelAPI:
         for product_info in online_prods.values():
             dl_queue.put(product_info)
 
+        self.logger.info('primed queue %d', dl_queue.qsize())
+
         retrieval_scheduled = {}
 
         # Two separate threadpools for downloading and triggering retrieval.
@@ -671,7 +676,9 @@ class SentinelAPI:
 
             # Block until download queue is empty. Not all products might have been retrieved
             # from the LTA by then. The results of all tasks are analyzed later.
+            self.logger.info('waiting for joining %d', dl_queue.qsize())
             dl_queue.join()
+            self.logger.info('waiting for joining done %d', dl_queue.qsize())
             stop_event.set()
 
             for task in dl_tasks:
@@ -1267,7 +1274,7 @@ def _parse_odata_response(product):
         'date': _parse_odata_timestamp(product['ContentDate']['Start']),
         'footprint': _parse_gml_footprint(product["ContentGeometry"]),
         'url': product['__metadata']['media_src'],
-        'Online': product['Online'],
+        'Online': product.get('Online', True),
         'Creation Date': _parse_odata_timestamp(product['CreationDate']),
         'Ingestion Date': _parse_odata_timestamp(product['IngestionDate']),
     }

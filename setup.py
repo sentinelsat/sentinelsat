@@ -39,9 +39,10 @@ setup(name='sentinelsat',
               'geopandas',
               'shapely',
               'pytest >= 3.6.3',
+              'pytest-vcr',
               'pytest-socket',
               'requests-mock',
-              'vcrpy',
+              'pyyaml',
               'rstcheck',
               'sphinx >= 1.3',
               'sphinx_rtd_theme'
@@ -49,9 +50,10 @@ setup(name='sentinelsat',
           # Pandas and its dependencies are not available for Python <= 3.4
           'dev34': [
               'pytest >= 3.6.3',
+              'pytest-vcr',
               'pytest-socket',
               'requests-mock',
-              'vcrpy',
+              'pyyaml',
               'rstcheck',
               'sphinx >= 1.3',
               'sphinx_rtd_theme'

@@ -2,20 +2,27 @@ interactions:
 - request:
     body: q=beginPosition%3A%5B2016-12-01T00%3A00%3A00Z+TO+2016-12-02T00%3A00%3A00Z%5D+producttype%3ASLC+footprint%3A%22Intersects%28POLYGON%28%28-66.2695+-8.0592%2C-66.2695+0.7031%2C-57.3047+0.7031%2C-57.3047+-8.0592%2C-66.2695+-8.0592%29%29%29%22
     headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      Content-Length: ['238']
-      Content-Type: [application/x-www-form-urlencoded; charset=UTF-8]
-      User-Agent: [sentinelsat/0.12.2]
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '238'
+      Content-Type:
+      - application/x-www-form-urlencoded; charset=UTF-8
+      User-Agent:
+      - sentinelsat/0.13
     method: POST
     uri: https://scihub.copernicus.eu/apihub/search?format=json&rows=100&start=0
   response:
-    body: {string: '{"feed":{"xmlns:opensearch":"http://a9.com/-/spec/opensearch/1.1/","xmlns":"http://www.w3.org/2005/Atom","title":"Sentinels
+    body:
+      string: '{"feed":{"xmlns:opensearch":"http://a9.com/-/spec/opensearch/1.1/","xmlns":"http://www.w3.org/2005/Atom","title":"Sentinels
         Scientific Data Hub search results for: beginPosition:[2016-12-01T00:00:00Z
         TO 2016-12-02T00:00:00Z] producttype:SLC footprint:\"Intersects(POLYGON((-66.2695
         -8.0592,-66.2695 0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\"","subtitle":"Displaying
-        6 results. Request done in 0.031 seconds.","updated":"2018-09-06T13:22:39.939Z","author":{"name":"Sentinels
+        6 results. Request done in 0.473 seconds.","updated":"2019-04-22T23:15:52.519Z","author":{"name":"Sentinels
         Scientific Data Hub"},"id":"https://scihub.copernicus.eu/apihub/search?q=beginPosition:[2016-12-01T00:00:00Z
         TO 2016-12-02T00:00:00Z] producttype:SLC footprint:\"Intersects(POLYGON((-66.2695
         -8.0592,-66.2695 0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\"","opensearch:totalResults":"6","opensearch:startIndex":"0","opensearch:itemsPerPage":"100","opensearch:Query":{"role":"request","searchTerms":"beginPosition:[2016-12-01T00:00:00Z
@@ -86,12 +93,19 @@ interactions:
         ((-56.893204 -5.682570,-59.134144 -5.184722,-58.777950 -3.561967,-56.542965
         -4.054071,-56.893204 -5.682570))"},{"name":"platformidentifier","content":"2014-016A"},{"name":"orbitdirection","content":"DESCENDING"},{"name":"polarisationmode","content":"VV
         VH"},{"name":"productclass","content":"S"},{"name":"producttype","content":"SLC"},{"name":"platformname","content":"Sentinel-1"},{"name":"size","content":"7.18
-        GB"},{"name":"status","content":"ARCHIVED"},{"name":"processed","content":"F"}]}]}}'}
+        GB"},{"name":"status","content":"ARCHIVED"},{"name":"processed","content":"F"}]}]}}'
     headers:
-      Content-Type: [application/json]
-      Pragma: [no-cache]
-      Server: [Apache-Coyote/1.1]
-      Vary: [Accept-Encoding]
-      content-length: ['18005']
-    status: {code: 200, message: OK}
+      Content-Type:
+      - application/json
+      Pragma:
+      - no-cache
+      Server:
+      - Apache-Coyote/1.1
+      Vary:
+      - Accept-Encoding
+      content-length:
+      - '18005'
+    status:
+      code: 200
+      message: OK
 version: 1

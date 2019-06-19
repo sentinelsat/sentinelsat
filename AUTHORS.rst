@@ -26,3 +26,4 @@ Contributors
 * Andrey Raspopov `@Andrey-Raspopov <https://github.com/Andrey-Raspopov>`_
 * Patrick Salembier `@psal93 <https://github.com/psal93>`_
 * Viktor Bahr `@viktorbahr <https://github.com/viktorbahr>`_
+* `@dwlsalmeida <https://github.com/dwlsalmeida>`_
