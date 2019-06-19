@@ -23,7 +23,7 @@ def test_get_product_odata_short(api, smallest_online_products, read_yaml):
         id = prod['id']
         responses[id] = api.get_product_odata(id)
     expected = read_yaml('odata_response_short.yml', responses)
-    assert responses == expected
+    assert sorted(responses) == sorted(expected)
 
 
 def scrub_string(string, replacement=''):
@@ -69,7 +69,7 @@ def test_get_product_odata_full(api, smallest_online_products, read_yaml):
         id = prod['id']
         responses[id] = api.get_product_odata(id, full=True)
     expected = read_yaml('odata_response_full.yml', responses)
-    assert responses == expected
+    assert sorted(responses) == sorted(expected)
 
 
 @pytest.mark.vcr

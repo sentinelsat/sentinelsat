@@ -447,8 +447,6 @@ class SentinelAPI:
         """
         url = urljoin(self.api_url, u"odata/v1/Products('{}')/Online/$value".format(id))
         with self.session.get(url, auth=self.session.auth, timeout=self.timeout) as r:
-            self.logger.info('respnse')
-            self.logger.info(r)
             if r.status_code == 200:
                 return r.text == 'true'
             else:
@@ -493,6 +491,14 @@ class SentinelAPI:
 
         if exists(path):
             # We assume that the product has been downloaded and is complete
+            return product_info
+
+        # An incomplete download triggers the retrieval from the LTA if the product is not online
+        if not product_info['Online']:
+            self.logger.warning(
+                'Product %s is not online. Triggering retrieval from long term archive.',
+                product_info['id'])
+            self._trigger_offline_retrieval(product_info['url'])
             return product_info
 
         # Use a temporary file for downloading
@@ -676,9 +682,7 @@ class SentinelAPI:
 
             # Block until download queue is empty. Not all products might have been retrieved
             # from the LTA by then. The results of all tasks are analyzed later.
-            self.logger.info('waiting for joining %d', dl_queue.qsize())
             dl_queue.join()
-            self.logger.info('waiting for joining done %d', dl_queue.qsize())
             stop_event.set()
 
             for task in dl_tasks:

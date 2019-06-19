@@ -117,7 +117,7 @@ def test_download_all(api, tmpdir, smallest_online_products):
     ids = [product['id'] for product in smallest_online_products]
 
     # Download normally
-    product_infos, triggered, failed_downloads = api.download_all(ids, str(tmpdir), n_concurrent_dl=1)
+    product_infos, triggered, failed_downloads = api.download_all(ids, str(tmpdir), n_concurrent_dl=1, max_attempts=1)
     assert len(failed_downloads) == 0
     assert len(triggered) == 0
     assert len(product_infos) == len(ids)
@@ -127,10 +127,14 @@ def test_download_all(api, tmpdir, smallest_online_products):
         assert pypath.purebasename in product_info['title']
         assert pypath.size() == product_info["size"]
 
+
+@pytest.mark.vcr
+@pytest.mark.scihub
+def test_download_all_one_fail(api, tmpdir, smallest_online_products):
+    ids = [product['id'] for product in smallest_online_products]
+
     # Force one download to fail
-    id, product_info = list(product_infos.items())[0]
-    path = product_info['path']
-    py.path.local(path).remove()
+    id = ids[0]
     with requests_mock.mock(real_http=True) as rqst:
         url = "https://scihub.copernicus.eu/apihub/odata/v1/Products('%s')?$format=json" % id
         json = api.session.get(url).json()
@@ -139,6 +143,7 @@ def test_download_all(api, tmpdir, smallest_online_products):
         product_infos, triggered, failed_downloads = api.download_all(
             ids, str(tmpdir), max_attempts=1, checksum=True)
         assert len(failed_downloads) == 1
+        assert len(triggered) == 0
         assert len(product_infos) + len(failed_downloads) == len(ids)
         assert id in failed_downloads
 
