@@ -628,9 +628,6 @@ class SentinelAPI:
 
 
         product_infos = {pid: self.get_product_odata(pid) for pid in product_ids}
-
-        dl_tasks = []
-
         online_prods = {pid: info for pid, info in product_infos.items() if info['Online']}
         offline_prods = {pid: info for pid, info in product_infos.items() if not info['Online']}
 
@@ -646,7 +643,7 @@ class SentinelAPI:
                 self.logger.info('Product %s is in LTA.', product_info['id'])
         offline_prods = {pid: info for pid, info in offline_prods.items() if pid not in downloaded_prods.keys()}
 
-
+        dl_tasks = []
         retrieval_scheduled = {}
 
         # Two separate threadpools for downloading and triggering retrieval.
@@ -657,7 +654,7 @@ class SentinelAPI:
             for product_info in itertools.chain(online_prods.values(), offline_prods.values()):
                 dl_tasks.append(
                     dl_exec.submit(
-                        self._async_download,
+                        self._download_online_retry,
                         product_info,
                         directory_path,
                         checksum,
@@ -665,7 +662,7 @@ class SentinelAPI:
 
             stop_event = threading.Event()
             trigger_thread = threading.Thread(target=self._trigger_offline_retrieval_until_stop,
-                    args=(offline_prods, stop_event, retrieval_scheduled, lta_retry_delay))
+                                              args=(offline_prods, stop_event, retrieval_scheduled, lta_retry_delay))
             trigger_thread.run()
 
             for dl_task in concurrent.futures.as_completed(dl_tasks):
@@ -677,16 +674,16 @@ class SentinelAPI:
                     for task in dl_tasks:
                         task.cancel()
 
-        retrieval_scheduled = {pid: info for pid, info in retrieval_scheduled.items() if pid not in downloaded_prods.keys()}
+        retrieval_scheduled = {pid: info for pid, info in retrieval_scheduled.items()
+                               if pid not in downloaded_prods.keys()}
 
         failed_prods = {pid: info for pid, info in product_infos.items()
-                           if pid not in downloaded_prods if pid not in retrieval_scheduled}
+                        if pid not in downloaded_prods if pid not in retrieval_scheduled}
 
         if len(failed_prods) == len(product_ids):
             raise next(iter(x.exception() for x in dl_tasks if x.exception()))
 
         return downloaded_prods, retrieval_scheduled, failed_prods
-
 
 
     def _trigger_offline_retrieval_until_stop(self, product_infos, stop_event, retrieval_scheduled, retry_delay=600):
@@ -729,7 +726,29 @@ class SentinelAPI:
                     raise SentinelAPILTAError("Unexpected response from SciHub")
 
 
-    def _async_download(self, product_info, directory_path='.', checksum=True, max_attempts=10):
+    def _download_online_retry(self, product_info, directory_path='.', checksum=True, max_attempts=10):
+        """ Thin wrapper around download with retrying and checking whether a product is online
+
+        Parameters
+        ----------
+
+        product_info : dict
+            Contains the product's info as returned by get_product_info()
+        directory_path : string, optional
+            Where the file will be downloaded
+        checksum : bool, optional
+            If True, verify the downloaded file's integrity by checking its MD5 checksum.
+            Throws InvalidChecksumError if the checksum does not match.
+            Defaults to True.
+        max_attempts : int, optional
+            Number of allowed retries before giving up downloading a product. Defaults to 10.
+
+        Returns
+        -------
+        dict or None:
+            Either dictionary containing the product's info or if the product is not online just None
+
+        """
 
         last_exception = None
 
@@ -738,7 +757,7 @@ class SentinelAPI:
             for cnt in range(max_attempts):
                 try:
                     ret_val = self.download(product_info['id'], directory_path, checksum)
-                    return ret_val
+                    break
                 except InvalidChecksumError as e:
                     self.logger.warning("Invalid checksum. The downloaded file for '%s' is corrupted.",
                             product_info['id'])
@@ -750,13 +769,13 @@ class SentinelAPI:
                     last_exception = e
             else:
                 self.logger.info("No retries left for %s. Terminating.", product_info['id'])
+                raise last_exception
+
         else:
             self.logger.info("%s is not online.", product_info['id'])
+            ret_val = None
 
-        if last_exception:
-            raise last_exception
-
-        return None
+        return ret_val
 
     @staticmethod
     def get_products_size(products):
