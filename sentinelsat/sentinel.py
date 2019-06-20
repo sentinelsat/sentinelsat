@@ -3,8 +3,8 @@ from __future__ import absolute_import, division, print_function
 
 import concurrent.futures
 import hashlib
+import itertools
 import logging
-import queue
 import re
 import shutil
 import threading
@@ -629,10 +629,6 @@ class SentinelAPI:
 
         product_infos = {pid: self.get_product_odata(pid) for pid in product_ids}
 
-        # download_all will stop as soon as dl_queue is empty.
-        # It will not wait for products that were requested from the LTA to become available.
-        dl_queue = queue.Queue() # waiting for download
-
         dl_tasks = []
 
         online_prods = {pid: info for pid, info in product_infos.items() if info['Online']}
@@ -651,46 +647,35 @@ class SentinelAPI:
         offline_prods = {pid: info for pid, info in offline_prods.items() if pid not in downloaded_prods.keys()}
 
 
-        # The order of adding online and offline products to the queue matters.
-        # First all online products are downloaded. Subsequently, offline products that might
-        # have become available in the meantime are requested.
-        for product_info in online_prods.values():
-            dl_queue.put(product_info)
-
-        self.logger.info('primed queue %d', dl_queue.qsize())
-
         retrieval_scheduled = {}
 
         # Two separate threadpools for downloading and triggering retrieval.
         # Otherwise triggering might take up all threads and nothing is downloaded.
         with concurrent.futures.ThreadPoolExecutor(max_workers=n_concurrent_dl) as dl_exec:
-            for _ in range(len(product_infos)):
-                # start a download task for all online and offline products
+            # First all online products are downloaded. Subsequently, offline products that might
+            # have become available in the meantime are requested.
+            for product_info in itertools.chain(online_prods.values(), offline_prods.values()):
                 dl_tasks.append(
                     dl_exec.submit(
                         self._async_download,
-                        dl_queue,
+                        product_info,
                         directory_path,
                         checksum,
                         max_attempts=max_attempts))
 
             stop_event = threading.Event()
             trigger_thread = threading.Thread(target=self._async_trigger_offline_retrieval,
-                    args=(offline_prods, dl_queue, stop_event, retrieval_scheduled, lta_retry_delay))
+                    args=(offline_prods, stop_event, retrieval_scheduled, lta_retry_delay))
             trigger_thread.run()
 
-
-            # Block until download queue is empty. Not all products might have been retrieved
-            # from the LTA by then. The results of all tasks are analyzed later.
-            dl_queue.join()
-            stop_event.set()
-
-            for task in dl_tasks:
-                task.cancel()
-
-        # Filter exceptions, cancelled and unsucessful (None) tasks
-        for dr in [x.result() for x in dl_tasks if not x.exception() if not x.cancelled() if x.result()]:
-            downloaded_prods[dr['id']] = dr
+            for dl_task in concurrent.futures.as_completed(dl_tasks):
+                if not dl_task.exception() and dl_task.result():
+                    product_info = dl_task.result()
+                    downloaded_prods[product_info['id']] = product_info
+                elif not dl_task.exception() and dl_task.result() is None:
+                    stop_event.set()
+                    for task in dl_tasks:
+                        task.cancel()
 
         retrieval_scheduled = {pid: info for pid, info in retrieval_scheduled.items() if pid not in downloaded_prods.keys()}
 
@@ -703,7 +688,8 @@ class SentinelAPI:
         return downloaded_prods, retrieval_scheduled, failed_prods
 
 
-    def _async_trigger_offline_retrieval(self, product_infos, dl_queue, stop_event, retrieval_scheduled, retry_delay=60):
+
+    def _async_trigger_offline_retrieval(self, product_infos, stop_event, retrieval_scheduled, retry_delay=60):
         """ Triggers retrieval of an offline product
 
         Trying to download an offline product triggers its retrieval from the long term archive.
@@ -733,7 +719,6 @@ class SentinelAPI:
                 if status_code == 202:
                     self.logger.info("%s accepted for retrieval", product_info['id'])
                     retrieval_scheduled[product_info['id']] = product_info
-                    dl_queue.put(product_info)
                     break
                 elif status_code == 403:
                     self.logger.info("Request for %s exceeded user quota. Retrying in %d seconds",
@@ -745,10 +730,7 @@ class SentinelAPI:
                     raise SentinelAPILTAError("Unexpected response from SciHub")
 
 
-    def _async_download(self, dl_queue, directory_path='.', checksum=True, max_attempts=10):
-        # Wait for an item in the queue.
-        # If the queue is empty dl_queue.join in download_all will stop blocking and all tasks cancelled.
-        product_info = dl_queue.get()
+    def _async_download(self, product_info, directory_path='.', checksum=True, max_attempts=10):
 
         last_exception = None
 
@@ -757,7 +739,6 @@ class SentinelAPI:
             for cnt in range(max_attempts):
                 try:
                     ret_val = self.download(product_info['id'], directory_path, checksum)
-                    dl_queue.task_done()
                     return ret_val
                 except InvalidChecksumError as e:
                     self.logger.warning("Invalid checksum. The downloaded file for '%s' is corrupted.",
@@ -773,9 +754,9 @@ class SentinelAPI:
         else:
             self.logger.info("%s is not online.", product_info['id'])
 
-        dl_queue.task_done()
         if last_exception:
             raise last_exception
+
         return None
 
     @staticmethod
