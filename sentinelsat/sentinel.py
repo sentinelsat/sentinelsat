@@ -664,7 +664,7 @@ class SentinelAPI:
                         max_attempts=max_attempts))
 
             stop_event = threading.Event()
-            trigger_thread = threading.Thread(target=self._async_trigger_offline_retrieval,
+            trigger_thread = threading.Thread(target=self._trigger_offline_retrieval_until_stop,
                     args=(offline_prods, stop_event, retrieval_scheduled, lta_retry_delay))
             trigger_thread.run()
 
@@ -689,22 +689,21 @@ class SentinelAPI:
 
 
 
-    def _async_trigger_offline_retrieval(self, product_infos, stop_event, retrieval_scheduled, retry_delay=60):
-        """ Triggers retrieval of an offline product
+    def _trigger_offline_retrieval_until_stop(self, product_infos, stop_event, retrieval_scheduled, retry_delay=600):
+        """ Countinuously triggers retrieval of offline products
 
-        Trying to download an offline product triggers its retrieval from the long term archive.
-        The returned HTTP status code conveys whether this was successful. ESA currently limits
-        each user to requesting one retrieval every 30 minutes, resulting in an unsucessful
-        retrieval if the user quota is exceeded. By retrying after a certain delay this can issue
-        can be circumvented.
+        This function is supposed to be called in a separate thread. By setting stop_event it can be stopped.
 
         Parameters
         ----------
-        url : string
-            URL for downloading the product
-        retry_delay: int or float
-            delay in seconds before retrying
-
+        product_infos : dictionary
+            Contains uuid of offline products as keys and their product information as values.
+        stop_event: threading.Event
+            If this event is set from another thread triggering from the LTA will stop
+        retrieval_scheduled: dictionary
+            Stores product information of triggered products. This can be accessed by other threads.
+        retry_delay: integer
+            After an unsuccessful triggering operation. Try again after this delay
 
         Notes
         -----
