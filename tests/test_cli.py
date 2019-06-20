@@ -402,20 +402,13 @@ def test_download_single(run_cli, api, tmpdir, smallest_online_products, monkeyp
             n_concurrent_dl=1,
             max_attempts=2))
 
-    runner = CliRunner()
-
     product_id = smallest_online_products[0]['id']
     command = [
         '--uuid', product_id,
         '--download',
         '--path', str(tmpdir)
     ]
-    result = runner.invoke(
-        cli,
-        command,
-        catch_exceptions=False
-    )
-    assert result.exit_code == 0
+    run_cli(*command)
 
     # The file already exists, should not be re-downloaded
     run_cli(*command)
@@ -452,7 +445,6 @@ def test_download_many(run_cli, api, tmpdir, smallest_online_products, monkeypat
             n_concurrent_dl=1,
             max_attempts=2))
 
-    runner = CliRunner()
     ids = [product['id'] for product in smallest_online_products]
 
     command = [
