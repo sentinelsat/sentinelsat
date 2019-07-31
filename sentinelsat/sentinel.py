@@ -23,6 +23,8 @@ from tqdm import tqdm
 
 from . import __version__ as sentinelsat_version
 
+from multiprocessing.pool import ThreadPool
+from multiprocessing import Queue
 
 class SentinelAPI:
     """Class to connect to Copernicus Open Access Hub, search and download imagery.
@@ -73,6 +75,11 @@ class SentinelAPI:
         # For unit tests
         self._last_query = None
         self._last_response = None
+        # keep track of failed downloads
+        self.failed_list_id = list()
+        self.failed_list_title = list()
+        # Keep track of the products downloaded successfully
+        self.successful_list_title = list()
 
     def query(self, area=None, date=None, raw=None, area_relation='Intersects',
               order_by=None, limit=None, offset=0, **keywords):
@@ -499,7 +506,9 @@ class SentinelAPI:
 
         if exists(path):
             # We assume that the product has been downloaded and is complete
+            self.successful_list_title.append(product_info['title'])
             return product_info
+
 
         # An incomplete download triggers the retrieval from the LTA if the product is not online
         if not product_info['Online']:
@@ -539,16 +548,29 @@ class SentinelAPI:
         if not skip_download:
             # Store the number of downloaded bytes for unit tests
             product_info['downloaded_bytes'] = self._download(
-                product_info['url'], temp_path, self.session, product_info['size'])
+                product_info['url'], temp_path, self.session, product_info['size'], product_info=product_info)
 
         # Check integrity with MD5 checksum
         if checksum is True:
-            if not self._md5_compare(temp_path, product_info['md5']):
-                remove(temp_path)
-                raise InvalidChecksumError('File corrupt: checksums do not match')
+            try:
+                if not self._md5_compare(temp_path, product_info['md5']):
+                    remove(temp_path)
+                    if product_info['title'] not in self.failed_list_title:
+                        self.failed_list_title.append(product_info['title'])
+                        self.failed_list_id.append(product_info['id'])
+                    raise InvalidChecksumError('File corrupt: checksums do not match')
+            except Exception as e:
+                # prevents crashing when internal server error occurs, causing no files are created for checking sum
+                self.logger.critical(e)
+
+        # keep track of failed downloads
+        if skip_download is True and product_info['id'] not in self.failed_list_id:
+            self.failed_list_id.append(product_info['id'])
+            self.failed_list_title.append(product_info['title'])
 
         # Download successful, rename the temporary file to its proper name
-        shutil.move(temp_path, path)
+        if len(self.successful_list_title) > 0:
+            shutil.move(temp_path, path)
         return product_info
 
     def download_all(self, products, directory_path='.', max_attempts=10, checksum=True):
@@ -625,6 +647,63 @@ class SentinelAPI:
         if len(failed) == len(product_ids) and last_exception is not None:
             raise last_exception
         return downloaded, triggered, failed
+
+    @staticmethod
+    def handle_args(products, args):
+        """ reshape arguments to be eligible for parallel downloads"""
+        ls = []
+        for p in products:
+            sub = list()
+            sub.append(p)
+            for arg in args:
+                sub.append(arg)
+            ls.append(sub)
+        return ls
+
+
+    def download_in_parallel(self, products, directory_path='.', max_attempts=10, checksum=True, processors=2):
+        """ Downloads products in parallel manner.
+
+        Takes a list of product IDs as input. This means that the return value of query() can be
+        passed directly to this method.
+
+         products: list
+                  list of products IDs
+         directory_path: string, optional
+                  where to save downloaded products
+         max_attempts: int, optional
+                  Number of allowed retries before giving up downloading a product. Defaults to 10.
+                  default is current directory
+         checksum: boolean, optional
+                 If True, verify the downloaded files' integrity by checking its MD5 checksum.
+                 Throws InvalidChecksumError if the checksum does not match.
+                 Defaults to True.
+         processors: int, optional
+                 number of processors or workers
+                 default is 2 workers since ESA does not allow for more downloads at a time, this can be increased for
+                 other servers that does no limit the services such as Fin-Hub!
+         return: Two lists containing titles of successful and failed products
+        """
+
+        arguments = SentinelAPI.handle_args(products, [directory_path, checksum])
+        with ThreadPool(processes=processors) as pool:
+            pool.starmap(self.download, arguments)
+            pool.close()
+            pool.join()
+            failed_products = len(self.failed_list_id)
+            if failed_products > 0:
+                self.logger.warning('Attempting for downloading {} failed products'.format(failed_products))
+                argus = SentinelAPI.handle_args(self.failed_list_id, [directory_path, checksum])
+                attempts = 0
+                with ThreadPool(processes=processors) as second_pool:
+                    while attempts < max_attempts and failed_products > 0:
+                        second_pool.starmap(self.download, argus)
+                        self.logger.warning('attempt {}'.format(attempts))
+                        pool.join()
+                        attempts += 1
+                    second_pool.close()
+        return self.successful_list_title, self.failed_list_title
+
 
     @staticmethod
     def get_products_size(products):
@@ -806,30 +885,43 @@ class SentinelAPI:
                     progress.update(len(block_data))
             return md5.hexdigest().lower() == checksum.lower()
 
-    def _download(self, url, path, session, file_size):
-        headers = {}
-        continuing = exists(path)
-        if continuing:
-            already_downloaded_bytes = getsize(path)
-            headers = {'Range': 'bytes={}-'.format(already_downloaded_bytes)}
-        else:
-            already_downloaded_bytes = 0
-        downloaded_bytes = 0
-        with closing(session.get(url, stream=True, auth=session.auth,
-                                 headers=headers, timeout=self.timeout)) as r, \
-                closing(self._tqdm(desc="Downloading", total=file_size, unit="B",
-                                   unit_scale=True, initial=already_downloaded_bytes)) as progress:
-            _check_scihub_response(r, test_json=False)
-            chunk_size = 2 ** 20  # download in 1 MB chunks
-            mode = 'ab' if continuing else 'wb'
-            with open(path, mode) as f:
-                for chunk in r.iter_content(chunk_size=chunk_size):
-                    if chunk:  # filter out keep-alive new chunks
-                        f.write(chunk)
-                        progress.update(len(chunk))
-                        downloaded_bytes += len(chunk)
-            # Return the number of bytes downloaded
-            return downloaded_bytes
+    def _download(self, url, path, session, file_size, product_info=None):
+        try:
+            headers = {}
+            continuing = exists(path)
+            if continuing:
+                already_downloaded_bytes = getsize(path)
+                headers = {'Range': 'bytes={}-'.format(already_downloaded_bytes)}
+            else:
+                already_downloaded_bytes = 0
+            downloaded_bytes = 0
+            with closing(session.get(url, stream=True, auth=session.auth,
+                                     headers=headers, timeout=self.timeout)) as r, \
+                    closing(self._tqdm(desc="Downloading", total=file_size, unit="B",
+                                       unit_scale=True, initial=already_downloaded_bytes)) as progress:
+                _check_scihub_response(r, test_json=False)
+                chunk_size = 2 ** 20  # download in 1 MB chunks
+                mode = 'ab' if continuing else 'wb'
+                with open(path, mode) as f:
+                    for chunk in r.iter_content(chunk_size=chunk_size):
+                        if chunk:  # filter out keep-alive new chunks
+                            f.write(chunk)
+                            progress.update(len(chunk))
+                            downloaded_bytes += len(chunk)
+                if product_info is not None and product_info['title'] in self.failed_list_title:
+                    self.failed_list_title.remove(product_info['title'])
+                    self.failed_list_id.remove(product_info['id'])
+
+                # Return the number of bytes downloaded
+                return downloaded_bytes
+        # meant for catching other types of exceptions such as 500 internal server side errors
+        except Exception as ex:
+            self.logger.critical(ex)
+            if product_info is not None and product_info['title'] not in self.failed_list_title:
+                self.failed_list_title.append(product_info['title'])
+                self.failed_list_id.append(product_info['id'])
+
+
 
     def _tqdm(self, **kwargs):
         """tqdm progressbar wrapper. May be overridden to customize progressbar behavior"""
@@ -856,6 +948,7 @@ class SentinelAPIError(Exception):
         return 'HTTP status {0} {1}: {2}'.format(
             self.response.status_code, self.response.reason,
             ('\n' if '\n' in self.msg else '') + self.msg)
+
 
 class SentinelAPILTAError(SentinelAPIError):
     """ Error when retrieving a product from the Long Term Archive
@@ -1141,3 +1234,4 @@ def _parse_odata_response(product):
                 pass
         output[attr['Name']] = value
     return output
+
