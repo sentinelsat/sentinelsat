@@ -1,0 +1,3 @@
+while api.check_query_length(query) != 1.0:
+    pass
+print("Query is complex and may cause a bad SciHub response.")
