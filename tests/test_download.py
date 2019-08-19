@@ -1,5 +1,11 @@
 """
 Product downloading related tests.
+
+There are two minor issues to keep in mind when recording unit tests VCRs.
+
+1. Between calls a formerly offline product can become available, if the previous call triggered its LTA retrieval.
+2. dhus and apihub have different md5 hashes for products with the same UUID.
+
 """
 import py.path
 import pytest
