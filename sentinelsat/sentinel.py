@@ -432,7 +432,7 @@ class SentinelAPI:
 
 
     def is_online(self, id):
-        """Return whether a product is online
+        """Returns whether a product is online
 
         Parameters
         ----------
@@ -445,10 +445,14 @@ class SentinelAPI:
             True if online, False if in LTA
 
         """
+        # Check https://scihub.copernicus.eu/userguide/ODataAPI#Products_entity for more information
+
         url = urljoin(self.api_url, u"odata/v1/Products('{}')/Online/$value".format(id))
         with self.session.get(url, auth=self.session.auth, timeout=self.timeout) as r:
-            if r.status_code == 200:
-                return r.text == 'true'
+            if r.status_code == 200 and r.text == 'true':
+                return True
+            elif r.status_code == 200 and r.text == 'false':
+                return False
             else:
                 raise SentinelAPIError('Could not verify whether product {} is online'.format(id), r)
 
@@ -576,7 +580,7 @@ class SentinelAPI:
                 raise SentinelAPILTAError("Unexpected response from SciHub", r)
             return r.status_code
 
-    def download_all(self, products, directory_path='.', max_attempts=10, checksum=True, n_concurrent_dl=2):
+    def download_all(self, products, directory_path='.', max_attempts=10, checksum=True, n_concurrent_dl=2, lta_retry_delay=600):
         """Download a list of products.
 
         Takes a list of product IDs as input. This means that the return value of query() can be
@@ -603,6 +607,8 @@ class SentinelAPI:
             Defaults to True.
         n_concurrent_dl : integer
             number of concurrent downloads
+        lta_retry_delay : integer
+            how long to wait between requests to the long term archive. Default is 600 seconds.
 
         Raises
         ------
@@ -620,8 +626,6 @@ class SentinelAPI:
             A dictionary containing the product information of products where either
             downloading or triggering failed
         """
-
-        lta_retry_delay = 600 # try to request a new product from the LTA every 600 seconds
 
         product_ids = list(products)
         self.logger.info("Will download %d products using %d workers", len(product_ids), n_concurrent_dl)

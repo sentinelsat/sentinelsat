@@ -3,7 +3,6 @@ import os
 import re
 import shutil
 from contextlib import contextmanager
-from functools import partialmethod
 from test.support import EnvironmentVarGuard
 
 import pytest
@@ -13,6 +12,19 @@ from click.testing import CliRunner
 from sentinelsat import InvalidChecksumError, SentinelAPIError, SentinelAPI
 from sentinelsat.scripts.cli import cli
 
+try: # Python 3.4 and greater import
+    from functools import partialmethod
+except ImportError: # Older versions of Python, including 2.7
+    # solution taken from https://gist.github.com/carymrobbins/8940382
+
+    from functools import partial
+
+    class partialmethod(partial):
+        def __get__(self, instance, owner):
+            if instance is None:
+                return self
+            return partial(self.func, instance,
+                           *(self.args or ()), **(self.keywords or {}))
 
 @pytest.fixture(scope='session')
 def run_cli(credentials):
