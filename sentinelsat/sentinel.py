@@ -667,7 +667,9 @@ class SentinelAPI:
             stop_event = threading.Event()
             trigger_thread = threading.Thread(target=self._trigger_offline_retrieval_until_stop,
                                               args=(offline_prods, stop_event, retrieval_scheduled, lta_retry_delay))
-            trigger_thread.run()
+
+            # launch in separate thread so that the as_completed loop is entered
+            trigger_thread.start()
 
             for dl_task in concurrent.futures.as_completed(dl_tasks):
                 if not dl_task.exception() and dl_task.result():
