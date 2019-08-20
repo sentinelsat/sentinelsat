@@ -27,3 +27,4 @@ Contributors
 * Patrick Salembier `@psal93 <https://github.com/psal93>`_
 * Viktor Bahr `@viktorbahr <https://github.com/viktorbahr>`_
 * `@dwlsalmeida <https://github.com/dwlsalmeida>`_
+* Gerald Baier `@gbaier <https://github.com/gbaier>`_
