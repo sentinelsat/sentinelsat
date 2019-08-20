@@ -34,6 +34,7 @@ setup(name='sentinelsat',
       zip_safe=False,
       install_requires=open('requirements.txt').read().splitlines(),
       extras_require={
+          ':python_version == "2.7"': ['futures'],
           'dev': [
               'pandas',
               'geopandas',
