@@ -1,0 +1,35 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - sentinelsat/0.13
+    method: GET
+    uri: https://scihub.copernicus.eu/apihub/odata/v1/Products('invalid-xyz')?$format=json
+  response:
+    body:
+      string: '{"error":{"code":null,"message":{"lang":"en","value":"Invalid key (invalid-xyz)
+        to access Products"}}}'
+    headers:
+      Content-Length:
+      - '102'
+      Content-Type:
+      - application/json
+      DataServiceVersion:
+      - '1.0'
+      Pragma:
+      - no-cache
+      Server:
+      - Apache-Coyote/1.1
+      cause-message:
+      - 'InvalidKeyException : Invalid key (invalid-xyz) to access Products'
+    status:
+      code: 404
+      message: Not Found
+version: 1

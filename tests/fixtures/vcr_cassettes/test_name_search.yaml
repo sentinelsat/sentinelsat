@@ -1,0 +1,48 @@
+interactions:
+- request:
+    body: q=identifier%3AS1A_WV_OCN__2SSV_20150526T211029_20150526T211737_006097_007E78_134A
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '82'
+      Content-Type:
+      - application/x-www-form-urlencoded; charset=UTF-8
+      User-Agent:
+      - sentinelsat/0.13
+    method: POST
+    uri: https://scihub.copernicus.eu/apihub/search?format=json&rows=100&start=0
+  response:
+    body:
+      string: '{"feed":{"xmlns:opensearch":"http://a9.com/-/spec/opensearch/1.1/","xmlns":"http://www.w3.org/2005/Atom","title":"Sentinels
+        Scientific Data Hub search results for: identifier:S1A_WV_OCN__2SSV_20150526T211029_20150526T211737_006097_007E78_134A","subtitle":"Displaying
+        1 results. Request done in 0.234 seconds.","updated":"2019-04-22T23:15:58.162Z","author":{"name":"Sentinels
+        Scientific Data Hub"},"id":"https://scihub.copernicus.eu/apihub/search?q=identifier:S1A_WV_OCN__2SSV_20150526T211029_20150526T211737_006097_007E78_134A","opensearch:totalResults":"1","opensearch:startIndex":"0","opensearch:itemsPerPage":"100","opensearch:Query":{"role":"request","searchTerms":"identifier:S1A_WV_OCN__2SSV_20150526T211029_20150526T211737_006097_007E78_134A","startPage":"1"},"link":[{"rel":"self","type":"application/atom+xml","href":"https://scihub.copernicus.eu/apihub/search?q=identifier:S1A_WV_OCN__2SSV_20150526T211029_20150526T211737_006097_007E78_134A&start=0&rows=100"},{"rel":"first","type":"application/atom+xml","href":"https://scihub.copernicus.eu/apihub/search?q=identifier:S1A_WV_OCN__2SSV_20150526T211029_20150526T211737_006097_007E78_134A&start=0&rows=100"},{"rel":"last","type":"application/atom+xml","href":"https://scihub.copernicus.eu/apihub/search?q=identifier:S1A_WV_OCN__2SSV_20150526T211029_20150526T211737_006097_007E78_134A&start=0&rows=100"},{"rel":"search","type":"application/opensearchdescription+xml","href":"opensearch_description.xml"}],"entry":{"title":"S1A_WV_OCN__2SSV_20150526T211029_20150526T211737_006097_007E78_134A","link":[{"href":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''d8340134-878f-4891-ba4f-4df54f1e3ab4'')/$value"},{"rel":"alternative","href":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''d8340134-878f-4891-ba4f-4df54f1e3ab4'')/"},{"rel":"icon","href":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''d8340134-878f-4891-ba4f-4df54f1e3ab4'')/Products(''Quicklook'')/$value"}],"id":"d8340134-878f-4891-ba4f-4df54f1e3ab4","summary":"Date:
+        2015-05-26T21:10:28.984Z, Instrument: SAR-C SAR, Mode: VV, Satellite: Sentinel-1,
+        Size: 10.65 KB","date":[{"name":"ingestiondate","content":"2015-11-17T23:28:01.852Z"},{"name":"beginposition","content":"2015-05-26T21:10:28.984Z"},{"name":"endposition","content":"2015-05-26T21:17:37.408Z"}],"int":[{"name":"missiondatatakeid","content":"32376"},{"name":"orbitnumber","content":"6097"},{"name":"lastorbitnumber","content":"6097"},{"name":"relativeorbitnumber","content":"75"},{"name":"lastrelativeorbitnumber","content":"75"}],"str":[{"name":"acquisitiontype","content":"NOMINAL"},{"name":"filename","content":"S1A_WV_OCN__2SSV_20150526T211029_20150526T211737_006097_007E78_134A.SAFE"},{"name":"gmlfootprint","content":"<gml:Polygon
+        srsName=\"http://www.opengis.net/gml/srs/epsg.xml#4326\" xmlns:gml=\"http://www.opengis.net/gml\">\n   <gml:outerBoundaryIs>\n      <gml:LinearRing>\n         <gml:coordinates>-53.931976,-32.055458
+        -53.867435,-31.748390 -54.039661,-31.646017 -54.104462,-31.954405 -53.931976,-32.055458</gml:coordinates>\n      </gml:LinearRing>\n   </gml:outerBoundaryIs>\n</gml:Polygon>"},{"name":"format","content":"SAFE"},{"name":"identifier","content":"S1A_WV_OCN__2SSV_20150526T211029_20150526T211737_006097_007E78_134A"},{"name":"instrumentshortname","content":"SAR-C
+        SAR"},{"name":"sensoroperationalmode","content":"WV"},{"name":"instrumentname","content":"Synthetic
+        Aperture Radar (C-band)"},{"name":"swathidentifier","content":"WV1 WV2"},{"name":"footprint","content":"POLYGON
+        ((-32.055458 -53.931976,-31.748390 -53.867435,-31.646017 -54.039661,-31.954405
+        -54.104462,-32.055458 -53.931976))"},{"name":"platformidentifier","content":"0000-000A"},{"name":"orbitdirection","content":"ASCENDING"},{"name":"polarisationmode","content":"VV"},{"name":"productclass","content":"S"},{"name":"producttype","content":"OCN"},{"name":"platformname","content":"Sentinel-1"},{"name":"size","content":"10.65
+        KB"},{"name":"status","content":"ARCHIVED"},{"name":"uuid","content":"d8340134-878f-4891-ba4f-4df54f1e3ab4"}]}}}'
+    headers:
+      Content-Type:
+      - application/json
+      Pragma:
+      - no-cache
+      Server:
+      - Apache-Coyote/1.1
+      Vary:
+      - Accept-Encoding
+      content-length:
+      - '4033'
+    status:
+      code: 200
+      message: OK
+version: 1

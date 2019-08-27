@@ -1,0 +1,32 @@
+dist: xenial
+language: python
+cache: pip
+jobs:
+    include:
+      - python: '2.7'
+      - python: '3.4'
+        dist: trusty  # Python 3.4 is not available in xenial
+      - python: '3.5'
+      - python: '3.6'
+      - python: '3.7'
+branches:
+  only:
+  - master
+before_install:
+- pip install -U pip
+install:
+- pip install codecov
+# skip Pandas on Python <3.4
+- if [[ $TRAVIS_PYTHON_VERSION == 3.4 ]]; then pip install -e .[dev34]; else pip install -e .[dev]; fi
+script:
+- coverage run --source=sentinelsat -m pytest -v
+after_success:
+- codecov
+notifications:
+  email: false
+  webhooks:
+    urls:
+      - https://webhooks.gitter.im/e/6a12d55b44cdadee9314
+    on_success: always
+    on_failure: always
+    on_start: never

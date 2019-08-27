@@ -1,0 +1,36 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - sentinelsat/0.13
+    method: GET
+    uri: https://scihub.copernicus.eu/apihub/odata/v1/Products('f30b2a6a-b0c1-49f1-INVALID-e10c3cf06101')?$format=json
+  response:
+    body:
+      string: '{"error":{"code":null,"message":{"lang":"en","value":"Invalid key (f30b2a6a-b0c1-49f1-INVALID-e10c3cf06101)
+        to access Products"}}}'
+    headers:
+      Content-Length:
+      - '130'
+      Content-Type:
+      - application/json
+      DataServiceVersion:
+      - '1.0'
+      Pragma:
+      - no-cache
+      Server:
+      - Apache-Coyote/1.1
+      cause-message:
+      - 'InvalidKeyException : Invalid key (f30b2a6a-b0c1-49f1-INVALID-e10c3cf06101)
+        to access Products'
+    status:
+      code: 404
+      message: Not Found
+version: 1

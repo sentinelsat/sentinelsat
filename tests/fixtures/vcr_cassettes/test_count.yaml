@@ -1,0 +1,46 @@
+interactions:
+- request:
+    body: q=beginPosition%3A%5B2015-01-01T00%3A00%3A00Z+TO+2015-12-31T00%3A00%3A00Z%5D
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '76'
+      Content-Type:
+      - application/x-www-form-urlencoded; charset=UTF-8
+      User-Agent:
+      - sentinelsat/0.13
+    method: POST
+    uri: https://scihub.copernicus.eu/apihub/search?format=json&rows=0&start=0
+  response:
+    body:
+      string: '{"feed":{"xmlns:opensearch":"http://a9.com/-/spec/opensearch/1.1/","xmlns":"http://www.w3.org/2005/Atom","title":"Sentinels
+        Scientific Data Hub search results for: beginPosition:[2015-01-01T00:00:00Z
+        TO 2015-12-31T00:00:00Z]","subtitle":"Displaying 0 to -1 of 518064 total results.
+        Request done in 0.137 seconds.","updated":"2019-04-22T23:18:26.486Z","author":{"name":"Sentinels
+        Scientific Data Hub"},"id":"https://scihub.copernicus.eu/apihub/search?q=beginPosition:[2015-01-01T00:00:00Z
+        TO 2015-12-31T00:00:00Z]","opensearch:totalResults":"518064","opensearch:startIndex":"0","opensearch:itemsPerPage":"0","opensearch:Query":{"role":"request","searchTerms":"beginPosition:[2015-01-01T00:00:00Z
+        TO 2015-12-31T00:00:00Z]","startPage":"1"},"link":[{"rel":"self","type":"application/atom+xml","href":"https://scihub.copernicus.eu/apihub/search?q=beginPosition:[2015-01-01T00:00:00Z
+        TO 2015-12-31T00:00:00Z]&start=0&rows=0"},{"rel":"first","type":"application/atom+xml","href":"https://scihub.copernicus.eu/apihub/search?q=beginPosition:[2015-01-01T00:00:00Z
+        TO 2015-12-31T00:00:00Z]&start=0&rows=0"},{"rel":"next","type":"application/atom+xml","href":"https://scihub.copernicus.eu/apihub/search?q=beginPosition:[2015-01-01T00:00:00Z
+        TO 2015-12-31T00:00:00Z]&start=NaN&rows=0"},{"rel":"last","type":"application/atom+xml","href":"https://scihub.copernicus.eu/apihub/search?q=beginPosition:[2015-01-01T00:00:00Z
+        TO 2015-12-31T00:00:00Z]&start=518063&rows=0"},{"rel":"search","type":"application/opensearchdescription+xml","href":"opensearch_description.xml"}]}}'
+    headers:
+      Content-Type:
+      - application/json
+      Pragma:
+      - no-cache
+      Server:
+      - Apache-Coyote/1.1
+      Vary:
+      - Accept-Encoding
+      content-length:
+      - '1556'
+    status:
+      code: 200
+      message: OK
+version: 1

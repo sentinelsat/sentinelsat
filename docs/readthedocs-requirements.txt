@@ -1,0 +1,2 @@
+-r ../requirements.txt
+sphinx >= 1.3
