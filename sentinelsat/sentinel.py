@@ -1097,6 +1097,44 @@ def geojson_to_wkt(geojson_obj, feature_number=0, decimals=4):
     wkt = re.sub(r'(?<!\d) ', '', wkt)
     return wkt
 
+def placename_to_wkt(placename):
+    """Maps the placename to rectangular bounding extents using Nominatim API and converts to Well-Known-Text.
+   
+    Parameters
+    ----------
+    placename : str
+        the query to geocode
+    
+    Returns
+    -------
+    polygon coordinates
+        string of comma separated coordinate tuples (lon, lat) to be used by SentinelAPI
+    """
+
+    rqst = requests.post('https://nominatim.openstreetmap.org/search', \
+                         params = { 'q':placename,'format':'geojson'})
+    #Check that the response from Openstreetmapserver has status code 2xx 
+    #and that the response is valid JSON.
+    _check_scihub_response(rqst)
+    jsonlist=rqst.json()
+    try:
+        #Get the First result's bounding box.
+        bbox= jsonlist['features'][0]['bbox']
+    except IndexError:
+        #bbox is empty
+        raise Exception("No match found for entered Placename query!")
+    except:       
+        #unknown error
+        raise Exception("Unexpected error")
+    else:
+        #the bbox follows the pattern:
+        #[longitude lowerleft corner,latitude lowerleft corner,longitude upperright corner,latitude upperright corner]
+        footprint="POLYGON(({} {},{} {},{} {},{} {},{} {}))"
+        footprint=footprint.format(bbox[0],bbox[3],bbox[2],bbox[3], \
+                                   bbox[2],bbox[1],bbox[0],bbox[1], \
+                                   bbox[0],bbox[3])
+        return footprint
+
 
 def format_query_date(in_date):
     """
