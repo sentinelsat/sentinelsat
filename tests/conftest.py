@@ -184,6 +184,7 @@ def large_query():
         area='POLYGON((0 0,0 10,10 10,10 0,0 0))',
         date=(datetime(2015, 12, 1), datetime(2015, 12, 31)))
 
+
 @pytest.fixture(scope='session')
 def place_kwargs():
-    return ['florida','POLYGON((-87.634896 31.000968,-79.974306 31.000968,-79.974306 24.396308,-87.634896 24.396308,-87.634896 31.000968))']
+    return ['florida','ENVELOPE(-87.634896, -79.974306, 31.000968, 24.396308)']
