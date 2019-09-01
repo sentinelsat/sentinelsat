@@ -1098,7 +1098,8 @@ def geojson_to_wkt(geojson_obj, feature_number=0, decimals=4):
     return wkt
 
 def placename_to_wkt(placename):
-    """Maps the placename to rectangular bounding extents using Nominatim API and converts to Well-Known-Text.
+    """Geocodes the placename to rectangular bounding extents using Nominatim API and 
+       returns the corresponding 'ENVELOPE' form Well-Known-Text.
    
     Parameters
     ----------
@@ -1107,8 +1108,8 @@ def placename_to_wkt(placename):
     
     Returns
     -------
-    polygon coordinates
-        string of comma separated coordinate tuples (lon, lat) to be used by SentinelAPI
+    ENVELOPE coordinates 
+        wkt string in form 'ENVELOPE(minX, maxX, maxY, minY)'
     """
 
     rqst = requests.post('https://nominatim.openstreetmap.org/search', \
@@ -1127,12 +1128,9 @@ def placename_to_wkt(placename):
         #unknown error
         raise Exception("Unexpected error")
     else:
-        #the bbox follows the pattern:
-        #[longitude lowerleft corner,latitude lowerleft corner,longitude upperright corner,latitude upperright corner]
-        footprint = "POLYGON(({} {},{} {},{} {},{} {},{} {}))"
-        footprint = footprint.format(bbox[0],bbox[3],bbox[2],bbox[3], \
-                                     bbox[2],bbox[1],bbox[0],bbox[1], \
-                                     bbox[0],bbox[3])
+        #the bbox follows the pattern:[minX, minY, maxX ,maxY]
+        minX, minY, maxX, maxY = bbox
+        footprint = "ENVELOPE({}, {}, {}, {})".format(minX, maxX, maxY, minY)
         return footprint
 
 
