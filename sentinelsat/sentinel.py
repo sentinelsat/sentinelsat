@@ -1123,16 +1123,16 @@ def placename_to_wkt(placename):
         bbox = jsonlist['features'][0]['bbox']
     except IndexError:
         #bbox is empty
-        raise Exception("No match found for entered Placename query!")
-    except:       
+        raise IndexError("Empty results for entered Placename query!")
+    except Exception as e:       
         #unknown error
-        raise Exception("Unexpected error")
+        raise Exception(e)
     else:
         #the bbox follows the pattern:[minX, minY, maxX ,maxY]
         minX, minY, maxX, maxY = bbox
         footprint = "ENVELOPE({}, {}, {}, {})".format(minX, maxX, maxY, minY)
         return footprint
-
+    
 
 def format_query_date(in_date):
     """
