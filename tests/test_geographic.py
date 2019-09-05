@@ -6,7 +6,7 @@ from datetime import datetime
 import geojson
 import pytest
 
-from sentinelsat import geojson_to_wkt, read_geojson, SentinelAPI, placename_to_wkt
+from sentinelsat import geojson_to_wkt, placename_to_wkt, read_geojson, SentinelAPI
 
 
 @pytest.mark.fast
