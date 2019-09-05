@@ -65,7 +65,9 @@ def test_placename_to_wkt(place_kwargs):
     #tests wkt response
     assert placename_to_wkt(place_kwargs[0])==place_kwargs[1]
     #tests empty bbox exception in response to bad query
-    with pytest.raises(Exception) as excinfo:
-        wkt = placename_to_wkt("!@#$%^")
-    assert "No match found" in str(excinfo.value)
+    with pytest.raises(IndexError) as excinfo:
+        wkt=placename_to_wkt("!@#$%^")
+    assert "Empty results for entered Placename query!" in str(excinfo.value)
+
+
 
