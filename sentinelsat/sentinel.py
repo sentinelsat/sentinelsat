@@ -525,9 +525,17 @@ class SentinelAPI:
             If the MD5 checksum does not match the checksum on the server.
         """
         product_info = self.get_product_odata(id)
-        path = join(directory_path, product_info["title"] + ".zip")
-        product_info["path"] = path
-        product_info["downloaded_bytes"] = 0
+
+        # determine filename
+        req = self.session.head(product_info['url'], auth=self.session.auth)
+        filename = req.headers.get('Content-Disposition')
+        if filename:
+            filename = filename.split('=', 1)[1].strip('"')
+        else:
+            filename = product_info['title'] + '.zip'
+        path = join(directory_path, filename)
+        product_info['path'] = path
+        product_info['downloaded_bytes'] = 0
 
         self.logger.info("Downloading %s to %s", id, path)
 
