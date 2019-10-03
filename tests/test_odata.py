@@ -125,32 +125,25 @@ def test_get_product_odata_scihub_down(read_fixture_file):
 def test_is_online():
     api = SentinelAPI("mock_user", "mock_password")
 
-    uuid = '98ca202b-2155-4181-be88-4358b2cbaaa0'
-    invalid_uuid = '98ca202b-2155-4181-be88-xxxxxxxxxxxx'
+    uuid = "98ca202b-2155-4181-be88-4358b2cbaaa0"
+    invalid_uuid = "98ca202b-2155-4181-be88-xxxxxxxxxxxx"
 
     request_url = "https://scihub.copernicus.eu/apihub/odata/v1/Products('{}')/Online/$value"
 
     with requests_mock.mock() as rqst:
-        rqst.get(
-            request_url.format(uuid),
-            text="true", status_code=200
-        )
+        rqst.get(request_url.format(uuid), text="true", status_code=200)
         assert api.is_online(uuid) == True
 
     with requests_mock.mock() as rqst:
-        rqst.get(
-            request_url.format(uuid),
-            text="false", status_code=200
-        )
+        rqst.get(request_url.format(uuid), text="false", status_code=200)
         assert api.is_online(uuid) == False
-
 
     with requests_mock.mock() as rqst:
         rqst.get(
             request_url.format(invalid_uuid),
             text='{{"error":{{"code":null,"message":{{"lang":"en","value":'
-                 'Invalid key ({}) to access Products}}}}}}'.format(invalid_uuid),
-            status_code=200
+            "Invalid key ({}) to access Products}}}}}}".format(invalid_uuid),
+            status_code=200,
         )
         with pytest.raises(SentinelAPIError) as excinfo:
             api.is_online(invalid_uuid)

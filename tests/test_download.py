@@ -16,7 +16,8 @@ from sentinelsat import SentinelAPI, SentinelAPILTAError, InvalidChecksumError, 
 
 @pytest.mark.mock_api
 @pytest.mark.parametrize(
-    "http_status_code", [
+    "http_status_code",
+    [
         # Note: the HTTP status codes have slightly more specific meanings in the LTA API.
         202,  # Accepted for retrieval - the product offline product will be retrieved from the LTA.
         403,  # Forbidden - user has exceeded their offline product retrieval quota.
@@ -122,7 +123,9 @@ def test_download_all(api, tmpdir, smallest_online_products):
     ids = [product["id"] for product in smallest_online_products]
 
     # Download normally
-    product_infos, triggered, failed_downloads = api.download_all(ids, str(tmpdir), n_concurrent_dl=1, max_attempts=1)
+    product_infos, triggered, failed_downloads = api.download_all(
+        ids, str(tmpdir), n_concurrent_dl=1, max_attempts=1
+    )
     assert len(failed_downloads) == 0
     assert len(triggered) == 0
     assert len(product_infos) == len(ids)
@@ -136,7 +139,7 @@ def test_download_all(api, tmpdir, smallest_online_products):
 @pytest.mark.vcr
 @pytest.mark.scihub
 def test_download_all_one_fail(api, tmpdir, smallest_online_products):
-    ids = [product['id'] for product in smallest_online_products]
+    ids = [product["id"] for product in smallest_online_products]
 
     # Force one download to fail
     id = ids[0]
@@ -165,7 +168,9 @@ def test_download_all_lta(api, tmpdir):
         "f46cbca6-6e5e-45b0-80cd-382683a8aea5",  # online
         "e00af686-2e20-43a6-8b8f-f9e411255cee",  # online
     ]
-    product_infos, triggered, failed_downloads = api.download_all(ids, str(tmpdir), n_concurrent_dl=1)
+    product_infos, triggered, failed_downloads = api.download_all(
+        ids, str(tmpdir), n_concurrent_dl=1
+    )
     assert len(failed_downloads) == 0
     assert len(triggered) == 1
     assert len(product_infos) == len(ids) - len(failed_downloads) - len(triggered)
