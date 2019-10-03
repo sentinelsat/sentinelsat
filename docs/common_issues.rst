@@ -30,6 +30,9 @@ Standard GeoJSON specification contains only WGS84 format, check if your data co
 Maybe there are no images for the specified time period, by default
 ``sentinelsat`` will query the last 24 hours only.
 
+.. rubric:: The query fails with 'Query request is too large, reduce query datapoints'
+
+There are too complex polygons in the query. Please reduce your .geojson file to less than 200 points.
 
 .. rubric:: Anything else?
 
