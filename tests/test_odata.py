@@ -25,7 +25,7 @@ def test_get_product_odata_short(api, smallest_online_products, read_yaml):
         id = prod["id"]
         responses[id] = api.get_product_odata(id)
     expected = read_yaml("odata_response_short.yml", responses)
-    assert responses == expected
+    assert sorted(responses) == sorted(expected)
 
 
 def scrub_string(string, replacement=""):
@@ -73,7 +73,7 @@ def test_get_product_odata_full(api, smallest_online_products, read_yaml):
         id = prod["id"]
         responses[id] = api.get_product_odata(id, full=True)
     expected = read_yaml("odata_response_full.yml", responses)
-    assert responses == expected
+    assert sorted(responses) == sorted(expected)
 
 
 @pytest.mark.vcr
@@ -119,3 +119,38 @@ def test_get_product_odata_scihub_down(read_fixture_file):
         with pytest.raises(SentinelAPIError) as excinfo:
             api.get_product_odata("8df46c9e-a20c-43db-a19a-4240c2ed3b8b")
         assert "The Sentinels Scientific Data Hub will be back soon!" in excinfo.value.msg
+
+
+@pytest.mark.mock_api
+def test_is_online():
+    api = SentinelAPI("mock_user", "mock_password")
+
+    uuid = '98ca202b-2155-4181-be88-4358b2cbaaa0'
+    invalid_uuid = '98ca202b-2155-4181-be88-xxxxxxxxxxxx'
+
+    request_url = "https://scihub.copernicus.eu/apihub/odata/v1/Products('{}')/Online/$value"
+
+    with requests_mock.mock() as rqst:
+        rqst.get(
+            request_url.format(uuid),
+            text="true", status_code=200
+        )
+        assert api.is_online(uuid) == True
+
+    with requests_mock.mock() as rqst:
+        rqst.get(
+            request_url.format(uuid),
+            text="false", status_code=200
+        )
+        assert api.is_online(uuid) == False
+
+
+    with requests_mock.mock() as rqst:
+        rqst.get(
+            request_url.format(invalid_uuid),
+            text='{{"error":{{"code":null,"message":{{"lang":"en","value":'
+                 'Invalid key ({}) to access Products}}}}}}'.format(invalid_uuid),
+            status_code=200
+        )
+        with pytest.raises(SentinelAPIError) as excinfo:
+            api.is_online(invalid_uuid)

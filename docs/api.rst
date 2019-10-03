@@ -273,7 +273,28 @@ A product's availability can be checked with a regular OData query by evaluating
     else:
         print('Product {} is not online.'.format(<product_id>))
 
-When trying to download an offline product with :meth:`~SentinelAPI.download` or :meth:`~SentinelAPI.download_all`, these methods will instead attempt to trigger its retrieval from the LTA.
+When trying to download an offline product with :meth:`~SentinelAPI.download` it will trigger its retrieval from the LTA.
+
+Given a list of offline and online products, :meth:`~SentinelAPI.download_all` will download online products, while concurrently triggering the retrieval of offline products from the LTA.
+Offline products that become online while downloading will be added to the download queue.
+:meth:`~SentinelAPI.download_all` terminates when the download queue is empty, even if not all products were retrieved from the LTA.
+We suggest repeatedly calling :meth:`~SentinelAPI.download_all` to download all products, either manually or using a third-party library, e.g. `tenacity <https://github.com/jd/tenacity>`_.
+
+
+.. code-block:: python
+
+    from sentinelsat import SentinelAPI
+    import tenacity
+
+    api = SentinelAPI('user', 'password')
+
+    @tenacity.retry(stop=tenacity.stop_after_attempt(3), wait=tenacity.wait_fixed(3600))
+    def download_all(*args, **kwargs):
+        return api.download_all(*args, **kwargs)
+
+    downloaded, triggered, failed = download_all(<product_ids>)
+
+
 
 Logging
 -------

@@ -35,6 +35,7 @@ setup(
     zip_safe=False,
     install_requires=open("requirements.txt").read().splitlines(),
     extras_require={
+        ":python_version == '2.7'": ["futures"],
         "dev": [
             "pandas",
             "geopandas",
@@ -61,7 +62,7 @@ setup(
         ],
     },
     entry_points="""
-      [console_scripts]
-      sentinelsat=sentinelsat.scripts.cli:cli
-      """,
+    [console_scripts]
+    sentinelsat=sentinelsat.scripts.cli:cli
+    """,
 )

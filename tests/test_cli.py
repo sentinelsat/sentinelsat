@@ -9,9 +9,22 @@ import pytest
 import requests_mock
 from click.testing import CliRunner
 
-from sentinelsat import InvalidChecksumError, SentinelAPIError
+from sentinelsat import InvalidChecksumError, SentinelAPIError, SentinelAPI
 from sentinelsat.scripts.cli import cli
 
+try: # Python 3.4 and greater import
+    from functools import partialmethod
+except ImportError: # Older versions of Python, including 2.7
+    # solution taken from https://gist.github.com/carymrobbins/8940382
+
+    from functools import partial
+
+    class partialmethod(partial):
+        def __get__(self, instance, owner):
+            if instance is None:
+                return self
+            return partial(self.func, instance,
+                           *(self.args or ()), **(self.keywords or {}))
 
 @pytest.fixture(scope="session")
 def run_cli(credentials):
@@ -413,9 +426,23 @@ def test_footprints_cli(run_cli, tmpdir, geojson_path):
 
 @pytest.mark.vcr
 @pytest.mark.scihub
-def test_download_single(run_cli, api, tmpdir, smallest_online_products):
-    product_id = smallest_online_products[0]["id"]
-    command = ["--uuid", product_id, "--download", "--path", str(tmpdir)]
+def test_download_single(run_cli, api, tmpdir, smallest_online_products, monkeypatch):
+    # Change default arguments for quicker test.
+    # Also, vcrpy is not threadsafe, so only one worker is used.
+    monkeypatch.setattr(
+        'sentinelsat.SentinelAPI.download_all',
+        partialmethod(
+            SentinelAPI.download_all,
+            n_concurrent_dl=1,
+            max_attempts=2))
+
+    product_id = smallest_online_products[0]['id']
+    command = [
+        '--uuid', product_id,
+        '--download',
+        '--path', str(tmpdir)
+    ]
+
     run_cli(*command)
 
     # The file already exists, should not be re-downloaded
@@ -443,9 +470,26 @@ def test_download_single(run_cli, api, tmpdir, smallest_online_products):
 
 @pytest.mark.vcr
 @pytest.mark.scihub
-def test_download_many(run_cli, api, tmpdir, smallest_online_products):
-    ids = [product["id"] for product in smallest_online_products]
-    command = ["--uuid", ",".join(ids), "--download", "--path", str(tmpdir)]
+def test_download_many(run_cli, api, tmpdir, smallest_online_products, monkeypatch):
+    # Change default arguments for quicker test.
+    # Also, vcrpy is not threadsafe, so only one worker is used.
+    monkeypatch.setattr(
+        "sentinelsat.SentinelAPI.download_all",
+        partialmethod(
+            SentinelAPI.download_all,
+            n_concurrent_dl=1,
+            max_attempts=2
+        )
+    )
+
+    ids = [product['id'] for product in smallest_online_products]
+
+    command = [
+        "--uuid",
+        ",".join(ids),
+        "--download",
+        "--path", str(tmpdir)
+    ]
 
     # Download 3 tiny products
     run_cli(*command)

@@ -11,6 +11,7 @@ Added
 * force unit tests to include on of the markers 'fast', 'scihub' or 'mock_api' (#287 @valgur)
 * automatic return code checking of CLI tests (#287) 
 * code formatting with `black` checked by Travis-CI
+* trigger retrieval of offline products from LTA, while downloading online products (#297 @gbaier)
 
 Changed
 ~~~~~~~
