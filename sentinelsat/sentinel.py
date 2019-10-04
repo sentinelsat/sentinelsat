@@ -182,7 +182,9 @@ class SentinelAPI:
             date_attrs = ['beginposition', 'endposition', 'date', 'creationdate', 'ingestiondate']
             if attr.lower() in date_attrs:
                 # Automatically format date-type attributes
-                if isinstance(value, string_types) and ' TO ' in value:
+                if isinstance(value, set):
+                    value = '({})'.format(' OR '.join(sorted(map(format_query_date, value))))
+                elif isinstance(value, string_types) and ' TO ' in value:
                     # This is a string already formatted as a date interval,
                     # e.g. '[NOW-1DAY TO NOW]'
                     pass
@@ -191,6 +193,10 @@ class SentinelAPI:
                 else:
                     raise ValueError("Date-type query parameter '{}' expects a two-element tuple "
                                      "of str or datetime objects. Received {}".format(attr, value))
+
+            # Handle value as a set
+            if isinstance(value, set):
+                value = '({})'.format(' OR '.join(map(str, sorted(value))))
 
             # Handle ranged values
             if isinstance(value, (list, tuple)):
