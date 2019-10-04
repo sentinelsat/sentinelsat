@@ -172,15 +172,11 @@ class SentinelAPI:
         return _parse_opensearch_response(response)
 
     @staticmethod
-    def format_query(
-        area=None, date=None, raw=None, area_relation="Intersects", **keywords
-    ):
+    def format_query(area=None, date=None, raw=None, area_relation="Intersects", **keywords):
         """Create a OpenSearch API query string.
         """
         if area_relation.lower() not in {"intersects", "contains", "iswithin"}:
-            raise ValueError(
-                "Incorrect AOI relation provided ({})".format(area_relation)
-            )
+            raise ValueError("Incorrect AOI relation provided ({})".format(area_relation))
 
         # Check for duplicate keywords
         kw_lower = set(x.lower() for x in keywords)
@@ -210,20 +206,10 @@ class SentinelAPI:
 
             # Handle date keywords
             # Keywords from https://github.com/SentinelDataHub/DataHubSystem/search?q=text/date+iso8601
-            date_attrs = [
-                "beginposition",
-                "endposition",
-                "date",
-                "creationdate",
-                "ingestiondate",
-            ]
+            date_attrs = ["beginposition", "endposition", "date", "creationdate", "ingestiondate"]
             if attr.lower() in date_attrs:
                 # Automatically format date-type attributes
-                if isinstance(value, set):
-                    value = "({})".format(
-                        " OR ".join(sorted(map(format_query_date, value)))
-                    )
-                elif isinstance(value, string_types) and " TO " in value:
+                if isinstance(value, string_types) and " TO " in value:
                     # This is a string already formatted as a date interval,
                     # e.g. '[NOW-1DAY TO NOW]'
                     pass
@@ -234,10 +220,6 @@ class SentinelAPI:
                         "Date-type query parameter '{}' expects a two-element tuple "
                         "of str or datetime objects. Received {}".format(attr, value)
                     )
-
-            # Handle value as a set
-            if isinstance(value, set):
-                value = "({})".format(" OR ".join(map(str, sorted(value))))
 
             # Handle ranged values
             if isinstance(value, (list, tuple)):
@@ -297,9 +279,7 @@ class SentinelAPI:
         )
         return self.query(raw=query, order_by=order_by, limit=limit, offset=offset)
 
-    def count(
-        self, area=None, date=None, raw=None, area_relation="Intersects", **keywords
-    ):
+    def count(self, area=None, date=None, raw=None, area_relation="Intersects", **keywords):
         """Get the number of products matching a query.
 
         Accepted parameters are identical to :meth:`SentinelAPI.query()`.
@@ -335,9 +315,7 @@ class SentinelAPI:
                 total=max_offset - offset,
                 unit=" products",
             )
-            for new_offset in range(
-                offset + self.page_size, max_offset, self.page_size
-            ):
+            for new_offset in range(offset + self.page_size, max_offset, self.page_size):
                 new_limit = limit
                 if limit is not None:
                     new_limit = limit - new_offset + offset
@@ -359,9 +337,7 @@ class SentinelAPI:
             url,
             {"q": query},
             auth=self.session.auth,
-            headers={
-                "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
-            },
+            headers={"Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"},
             timeout=self.timeout,
         )
         _check_scihub_response(response)
@@ -380,9 +356,7 @@ class SentinelAPI:
                 )
             total_results = int(json_feed["opensearch:totalResults"])
         except (ValueError, KeyError):
-            raise SentinelAPIError(
-                "API response not valid. JSON decoding failed.", response
-            )
+            raise SentinelAPIError("API response not valid. JSON decoding failed.", response)
 
         products = json_feed.get("entry", [])
         # this verification is necessary because if the query returns only
@@ -485,7 +459,7 @@ class SentinelAPI:
         https://github.com/SentinelDataHub/DataHubSystem/blob/master/addon/sentinel-2/src/main/resources/META-INF/sentinel-2.owl
         https://github.com/SentinelDataHub/DataHubSystem/blob/master/addon/sentinel-3/src/main/resources/META-INF/sentinel-3.owl
         """
-        url = urljoin(self.api_url, u"odata/v1/Products('{}')?$format=json".format(id))
+        url = urljoin(self.api_url, "odata/v1/Products('{}')?$format=json".format(id))
         if full:
             url += "&$expand=Attributes"
         response = self.session.get(url, auth=self.session.auth, timeout=self.timeout)
@@ -509,7 +483,7 @@ class SentinelAPI:
         """
         # Check https://scihub.copernicus.eu/userguide/ODataAPI#Products_entity for more information
 
-        url = urljoin(self.api_url, u"odata/v1/Products('{}')/Online/$value".format(id))
+        url = urljoin(self.api_url, "odata/v1/Products('{}')/Online/$value".format(id))
         with self.session.get(url, auth=self.session.auth, timeout=self.timeout) as r:
             if r.status_code == 200 and r.text == "true":
                 return True
@@ -641,9 +615,7 @@ class SentinelAPI:
                 self.logger.debug("Requests exceed user quota")
             elif r.status_code == 503:
                 self.logger.error("Request not accepted")
-                raise SentinelAPILTAError(
-                    "Request for retrieval from LTA not accepted", r
-                )
+                raise SentinelAPILTAError("Request for retrieval from LTA not accepted", r)
             elif r.status_code == 500:
                 # should not happen
                 self.logger.error("Trying to download an offline product")
@@ -710,18 +682,12 @@ class SentinelAPI:
 
         product_ids = list(products)
         self.logger.info(
-            "Will download %d products using %d workers",
-            len(product_ids),
-            n_concurrent_dl,
+            "Will download %d products using %d workers", len(product_ids), n_concurrent_dl
         )
 
         product_infos = {pid: self.get_product_odata(pid) for pid in product_ids}
-        online_prods = {
-            pid: info for pid, info in product_infos.items() if info["Online"]
-        }
-        offline_prods = {
-            pid: info for pid, info in product_infos.items() if not info["Online"]
-        }
+        online_prods = {pid: info for pid, info in product_infos.items() if info["Online"]}
+        offline_prods = {pid: info for pid, info in product_infos.items() if not info["Online"]}
 
         # Skip already downloaded files.
         # Although the download method also checks, we do not need to retrieve such
@@ -734,9 +700,7 @@ class SentinelAPI:
             else:
                 self.logger.info("Product %s is in LTA.", product_info["id"])
         offline_prods = {
-            pid: info
-            for pid, info in offline_prods.items()
-            if pid not in downloaded_prods.keys()
+            pid: info for pid, info in offline_prods.items() if pid not in downloaded_prods.keys()
         }
 
         dl_tasks = []
@@ -744,14 +708,10 @@ class SentinelAPI:
 
         # Two separate threadpools for downloading and triggering retrieval.
         # Otherwise triggering might take up all threads and nothing is downloaded.
-        with concurrent.futures.ThreadPoolExecutor(
-            max_workers=n_concurrent_dl
-        ) as dl_exec:
+        with concurrent.futures.ThreadPoolExecutor(max_workers=n_concurrent_dl) as dl_exec:
             # First all online products are downloaded. Subsequently, offline products that might
             # have become available in the meantime are requested.
-            for product_info in itertools.chain(
-                online_prods.values(), offline_prods.values()
-            ):
+            for product_info in itertools.chain(online_prods.values(), offline_prods.values()):
                 dl_tasks.append(
                     dl_exec.submit(
                         self._download_online_retry,
@@ -874,9 +834,7 @@ class SentinelAPI:
             self.logger.info("%s is online. Starting download", product_info["id"])
             for cnt in range(max_attempts):
                 try:
-                    ret_val = self.download(
-                        product_info["id"], directory_path, checksum
-                    )
+                    ret_val = self.download(product_info["id"], directory_path, checksum)
                     break
                 except InvalidChecksumError as e:
                     self.logger.warning(
@@ -884,19 +842,13 @@ class SentinelAPI:
                         product_info["id"],
                     )
                     last_exception = e
-
                 except Exception as e:
-                    self.logger.exception(
-                        "There was an error downloading %s", product_info["id"]
-                    )
+                    self.logger.exception("There was an error downloading %s", product_info["id"])
                     self.logger.info("%d retries left", max_attempts - cnt - 1)
                     last_exception = e
             else:
-                self.logger.info(
-                    "No retries left for %s. Terminating.", product_info["id"]
-                )
+                self.logger.info("No retries left for %s. Terminating.", product_info["id"])
                 raise last_exception
-
         else:
             self.logger.info("%s is not online.", product_info["id"])
             ret_val = None
@@ -1010,9 +962,7 @@ class SentinelAPI:
             returned by :meth:`SentinelAPI.get_product_odata()`).
         """
         if not ids and not paths:
-            raise ValueError(
-                "Must provide either file paths or product IDs and a directory"
-            )
+            raise ValueError("Must provide either file paths or product IDs and a directory")
         if ids and not directory:
             raise ValueError("Directory value missing")
         paths = paths or []
@@ -1049,9 +999,7 @@ class SentinelAPI:
             name = name_from_path(path)
 
             if len(product_infos[name]) > 1:
-                self.logger.warning(
-                    "{} matches multiple products on server".format(path)
-                )
+                self.logger.warning("{} matches multiple products on server".format(path))
 
             if not exists(path):
                 # We will consider missing files as corrupt also
@@ -1077,12 +1025,7 @@ class SentinelAPI:
     def _md5_compare(self, file_path, checksum, block_size=2 ** 13):
         """Compare a given MD5 checksum with one calculated from a file."""
         with closing(
-            self._tqdm(
-                desc="MD5 checksumming",
-                total=getsize(file_path),
-                unit="B",
-                unit_scale=True,
-            )
+            self._tqdm(desc="MD5 checksumming", total=getsize(file_path), unit="B", unit_scale=True)
         ) as progress:
             md5 = hashlib.md5()
             with open(file_path, "rb") as f:
@@ -1104,13 +1047,7 @@ class SentinelAPI:
             already_downloaded_bytes = 0
         downloaded_bytes = 0
         with closing(
-            session.get(
-                url,
-                stream=True,
-                auth=session.auth,
-                headers=headers,
-                timeout=self.timeout,
-            )
+            session.get(url, stream=True, auth=session.auth, headers=headers, timeout=self.timeout)
         ) as r, closing(
             self._tqdm(
                 desc="Downloading",
@@ -1231,13 +1168,9 @@ def geojson_to_wkt(geojson_obj, feature_number=0, decimals=4):
             return list(map(check_bounds, geometry))
         else:
             if geometry[0] > 180 or geometry[0] < -180:
-                raise ValueError(
-                    "Longitude is out of bounds, check your JSON format or data"
-                )
+                raise ValueError("Longitude is out of bounds, check your JSON format or data")
             if geometry[1] > 90 or geometry[1] < -90:
-                raise ValueError(
-                    "Latitude is out of bounds, check your JSON format or data"
-                )
+                raise ValueError("Latitude is out of bounds, check your JSON format or data")
 
     # Discard z-coordinate, if it exists
     geometry["coordinates"] = ensure_2d(geometry["coordinates"])
@@ -1276,9 +1209,7 @@ def format_query_date(in_date):
     if isinstance(in_date, (datetime, date)):
         return in_date.strftime("%Y-%m-%dT%H:%M:%SZ")
     elif not isinstance(in_date, string_types):
-        raise ValueError(
-            "Expected a string or a datetime object. Received {}.".format(in_date)
-        )
+        raise ValueError("Expected a string or a datetime object. Received {}.".format(in_date))
 
     in_date = in_date.strip()
     if in_date == "*":
@@ -1392,13 +1323,7 @@ def _parse_opensearch_response(products):
     is set to `False`.
     """
 
-    converters = {
-        "date": _parse_iso_date,
-        "int": int,
-        "long": int,
-        "float": float,
-        "double": float,
-    }
+    converters = {"date": _parse_iso_date, "int": int, "long": int, "float": float, "double": float}
     # Keep the string type by default
     default_converter = lambda x: x
 

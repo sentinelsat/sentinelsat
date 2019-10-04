@@ -98,9 +98,7 @@ def test_api_query_format():
         + 'footprint:"Intersects(POLYGON((0 0,1 1,0 1,0 0)))"'
     )
 
-    query = SentinelAPI.format_query(
-        wkt, date=(last_24h, "NOW"), producttype="SLC", raw="IW"
-    )
+    query = SentinelAPI.format_query(wkt, date=(last_24h, "NOW"), producttype="SLC", raw="IW")
     assert (
         query
         == "beginPosition:[%s TO NOW] " % (format_query_date(last_24h))
@@ -108,9 +106,7 @@ def test_api_query_format():
     )
 
     query = SentinelAPI.format_query(wkt, producttype="SLC", raw="IW")
-    assert (
-        query == 'producttype:SLC IW footprint:"Intersects(POLYGON((0 0,1 1,0 1,0 0)))"'
-    )
+    assert query == 'producttype:SLC IW footprint:"Intersects(POLYGON((0 0,1 1,0 1,0 0)))"'
 
     query = SentinelAPI.format_query(area=None, date=None)
     assert query == ""
@@ -125,9 +121,7 @@ def test_api_query_format():
 @pytest.mark.fast
 def test_api_query_format_with_duplicates():
     with pytest.raises(ValueError) as excinfo:
-        SentinelAPI.format_query(
-            date=("NOW-1DAY", "NOW"), beginPosition=("NOW-3DAY", "NOW")
-        )
+        SentinelAPI.format_query(date=("NOW-1DAY", "NOW"), beginPosition=("NOW-3DAY", "NOW"))
     assert "duplicate" in str(excinfo.value)
 
     with pytest.raises(ValueError) as excinfo:
@@ -170,15 +164,6 @@ def test_api_query_format_ranges():
 
     with pytest.raises(ValueError):
         SentinelAPI.format_query(cloudcoverpercentage=[0, 1, 2])
-
-
-@pytest.mark.fast
-def test_api_query_format_sets():
-    query = SentinelAPI.format_query(orbitnumber={16301, 16302, 16303})
-    assert query == "orbitnumber:(16301 OR 16302 OR 16303)"
-
-    query = SentinelAPI.format_query(ingestiondate={date(2017, 1, 1), "20170203"})
-    assert query == "ingestiondate:(2017-01-01T00:00:00Z OR 2017-02-03T00:00:00Z)"
 
 
 @pytest.mark.fast
@@ -277,15 +262,10 @@ def test_format_url(api):
             rows=api.page_size, start=start_row
         )
     )
-    url = api._format_url(
-        order_by="beginposition desc", limit=api.page_size + 50, offset=10
-    )
+    url = api._format_url(order_by="beginposition desc", limit=api.page_size + 50, offset=10)
     assert (
-        url
-        == "https://scihub.copernicus.eu/apihub/search?format=json&rows={rows}&start={start}"
-        "&orderby={orderby}".format(
-            rows=api.page_size, start=10, orderby="beginposition desc"
-        )
+        url == "https://scihub.copernicus.eu/apihub/search?format=json&rows={rows}&start={start}"
+        "&orderby={orderby}".format(rows=api.page_size, start=10, orderby="beginposition desc")
     )
 
 
@@ -386,8 +366,7 @@ def test_too_long_query(api):
 @pytest.mark.scihub
 def test_date_arithmetic(api):
     products = api.query(
-        "ENVELOPE(0, 1, 1, 0)",
-        ("2016-12-01T00:00:00Z-1DAY", "2016-12-01T00:00:00Z+1DAY-1HOUR"),
+        "ENVELOPE(0, 1, 1, 0)", ("2016-12-01T00:00:00Z-1DAY", "2016-12-01T00:00:00Z+1DAY-1HOUR")
     )
     assert api._last_response.status_code == 200
     assert 0 < len(products) < 30
@@ -409,10 +388,7 @@ def test_quote_symbol_bug(api):
 @pytest.mark.scihub
 def test_s2_cloudcover(api, test_wkt):
     products = api.query(
-        test_wkt,
-        ("20181212", "20181228"),
-        platformname="Sentinel-2",
-        cloudcoverpercentage=(0, 10),
+        test_wkt, ("20181212", "20181228"), platformname="Sentinel-2", cloudcoverpercentage=(0, 10)
     )
 
     product_ids = list(products)
@@ -477,9 +453,7 @@ def test_area_relation(api):
 @pytest.mark.scihub
 def test_query_by_names(api, smallest_online_products):
     names = [product["title"] for product in smallest_online_products]
-    expected = {
-        product["title"]: {product["id"]} for product in smallest_online_products
-    }
+    expected = {product["title"]: {product["id"]} for product in smallest_online_products}
 
     result = api._query_names(names)
     assert list(result) == names

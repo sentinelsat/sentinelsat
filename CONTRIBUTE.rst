@@ -34,7 +34,7 @@ Code Conventions
 
 ``sentinelsat`` supports Python 2 and Python 3 in the same code base.
 
-We strongly prefer code adhering to `PEP8 <https://www.python.org/dev/peps/pep-0008/>`_.
+We strongly prefer code adhering to `PEP8 <https://www.python.org/dev/peps/pep-0008/>`_. We use a line-length of 100 and `black <https://github.com/python/black>`_ to format our code.
 
 Tests are mandatory for new features. We use `pytest <https://pytest.org>`_ and `Travis-CI <https://travis-ci.org/>`_.
 All unit tests must use prerecorded responses to Copernicus Open Access Hub. We use `VCR.py <https://github.com/kevin1024/vcrpy>`_ to record the responses.
@@ -101,6 +101,18 @@ To allow the tests to run actual queries against the Copernicus Open Access Hub 
 To update the recordings use ``--vcr-record`` with ``once``, ``new_episodes`` or ``all``. See `vcrpy docs <https://vcrpy.readthedocs.io/en/latest/usage.html#record-modes>`_ for details.
 
 When you create a pull requests the tests will automatically run on `Travis <https://travis-ci.org/sentinelsat/sentinelsat>`_ and a coverage report will be created from `Codecov <https://codecov.io/gh/sentinelsat/sentinelsat>`_.
+
+
+Formatting the code
+-------------------
+
+The easiest way to follow ``sentinsat``'s code formatting conventions is to use the <https://github.com/python/black>`_ code formatter before creating a pull request.
+
+.. code-block:: console
+
+  pip install black
+  black .
+
 
 Versioning and Release
 ======================
