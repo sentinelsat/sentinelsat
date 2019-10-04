@@ -28,7 +28,7 @@ def test_missing_dependency_geodataframe(monkeypatch):
 @pytest.mark.scihub
 def test_to_pandas(products):
     df = SentinelAPI.to_dataframe(products)
-    assert type(df).__name__ == 'DataFrame'
+    assert type(df).__name__ == "DataFrame"
     assert len(products) == len(df)
     assert set(products) == set(df.index)
 
@@ -37,7 +37,7 @@ def test_to_pandas(products):
 @pytest.mark.fast
 def test_to_pandas_empty():
     df = SentinelAPI.to_dataframe({})
-    assert type(df).__name__ == 'DataFrame'
+    assert type(df).__name__ == "DataFrame"
     assert len(df) == 0
 
 
@@ -46,11 +46,11 @@ def test_to_pandas_empty():
 @pytest.mark.scihub
 def test_to_geopandas(products):
     gdf = SentinelAPI.to_geodataframe(products)
-    assert type(gdf).__name__ == 'GeoDataFrame'
+    assert type(gdf).__name__ == "GeoDataFrame"
     print(gdf.unary_union.area)
     assert gdf.unary_union.area == pytest.approx(89.6, abs=0.1)
     assert len(gdf) == len(products)
-    assert gdf.crs == {'init': 'epsg:4326'}
+    assert gdf.crs == {"init": "epsg:4326"}
 
 
 @pytest.mark.pandas
@@ -58,5 +58,5 @@ def test_to_geopandas(products):
 @pytest.mark.fast
 def test_to_geopandas_empty():
     gdf = SentinelAPI.to_geodataframe({})
-    assert type(gdf).__name__ == 'GeoDataFrame'
+    assert type(gdf).__name__ == "GeoDataFrame"
     assert len(gdf) == 0

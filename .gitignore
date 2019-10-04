@@ -58,6 +58,7 @@ target/
 
 #editors
 *~
+.vscode
 
 #exclude sphinx built directories
 _build
