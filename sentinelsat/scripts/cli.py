@@ -138,7 +138,7 @@ def cli(user, password, geometry, start, end, uuid, name, download, sentinel, pr
     if geometry is not None:
         search_kwargs['area'] = geojson_to_wkt(read_geojson(geometry))
         if api.check_query_length(search_kwargs['area']) >= 1:
-            logger.warning('Query is too complex. Consider using a simpler geometry.')
+            raise ValueError('Query is too complex. Consider using a simpler geometry.')
 
     if uuid is not None:
         uuid_list = [x.strip() for x in uuid]
