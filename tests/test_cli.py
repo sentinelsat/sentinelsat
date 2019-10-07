@@ -138,6 +138,14 @@ def test_cli(run_cli, geojson_path):
         '-q', 'producttype=GRD,polarisationmode=HH'
     )
 
+@pytest.mark.fast
+def test_complex_geometry(run_cli, fixture_path):
+    with pytest.raises(ValueError):
+        run_cli(
+                '--geometry', fixture_path('map_complex_geometry.geojson'),
+                '--url', 'https://scihub.copernicus.eu/dhus/',
+                must_return_nonzero=True
+        )
 
 @pytest.mark.fast
 def test_no_auth_fail(run_cli, no_netrc, no_auth_environ, geojson_path):
