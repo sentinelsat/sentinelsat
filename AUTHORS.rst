@@ -28,3 +28,4 @@ Contributors
 * Viktor Bahr `@viktorbahr <https://github.com/viktorbahr>`_
 * `@dwlsalmeida <https://github.com/dwlsalmeida>`_
 * Gerald Baier `@gbaier <https://github.com/gbaier>`_
+* Olga Chebotaryova `@OlgaCh <https://github.com/OlgaCh>`_

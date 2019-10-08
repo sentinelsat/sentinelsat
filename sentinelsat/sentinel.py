@@ -147,6 +147,9 @@ class SentinelAPI:
         `None` can be used in range values for one-sided ranges, e.g. `orbitnumber=(16302, None)`.
         Ranges with no bounds (`orbitnumber=(None, None)`) will not be included in the query.
 
+        Multiple values for the same query parameter can be provided as sets and will be handled as
+        logical OR, e.g. `orbitnumber={16302, 1206}`. 
+
         The time interval formats accepted by the `date` parameter can also be used with
         any other parameters that expect time intervals (that is: 'beginposition', 'endposition',
         'date', 'creationdate', and 'ingestiondate').
@@ -223,7 +226,7 @@ class SentinelAPI:
                         "of str or datetime objects. Received {}".format(attr, value)
                     )
 
-            # Handle value as a set
+            # Handle sets as logical OR
             if isinstance(value, set):
                 value = "({})".format(" OR ".join(map(str, sorted(value))))
 
