@@ -7,7 +7,7 @@ import pytest
 import requests_mock
 
 from sentinelsat import SentinelAPIError, SentinelAPI
-from sentinelsat.sentinel import _parse_odata_timestamp
+from sentinelsat.sentinel import _parse_odata_timestamp, _parse_odata_response
 
 
 @pytest.mark.fast
@@ -147,3 +147,34 @@ def test_is_online():
         )
         with pytest.raises(SentinelAPIError) as excinfo:
             api.is_online(invalid_uuid)
+
+def test_parse_odata_missing_content_geometry():
+    # response from:
+    # https://s5phub.copernicus.eu/dhus/odata/v1/Products('e2cc856f-f9e0-4f20-bf04-dd4d890b43c0')?$format=json
+
+    json = {'Id': 'e2cc856f-f9e0-4f20-bf04-dd4d890b43c0',
+            'Name': 'S5P_OFFL_L1B_IR_SIR_20191001T030531_20191001T044700_10183_01_010000_20191001T063421',
+            'ContentType': 'application/octet-stream',
+            'ContentLength': '6539819',
+            'ChildrenNumber': '0',
+            'Value': None,
+            'CreationDate': '/Date(1569922561035)/',
+            'IngestionDate': '/Date(1569922501588)/',
+            'EvictionDate': '/Date(1632994561035)/',
+            'Online': True,
+            'ContentDate': {'Start': '/Date(1569903600000)/',
+                            'End': '/Date(1569903790000)/'},
+            'Checksum': {'Algorithm': 'MD5', 'Value': '56B3F059BB1517343703729068D83DD8'},
+            'ContentGeometry': None,
+            'Products': {'__deferred': {
+                'uri': "https://s5phub.copernicus.eu/dhus/odata/v1/Products('e2cc856f-f9e0-4f20-bf04-dd4d890b43c0')/Products"}},
+            'Nodes': {'__deferred': {
+                'uri': "https://s5phub.copernicus.eu/dhus/odata/v1/Products('e2cc856f-f9e0-4f20-bf04-dd4d890b43c0')/Nodes"}},
+            'Attributes': {'__deferred': {
+                'uri': "https://s5phub.copernicus.eu/dhus/odata/v1/Products('e2cc856f-f9e0-4f20-bf04-dd4d890b43c0')/Attributes"}},
+            'Class': {'__deferred': {
+                'uri': "https://s5phub.copernicus.eu/dhus/odata/v1/Products('e2cc856f-f9e0-4f20-bf04-dd4d890b43c0')/Class"}}
+            }
+
+    odata = _parse_odata_response(json)
+    assert odata["footprint"] is None

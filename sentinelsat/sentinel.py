@@ -1296,6 +1296,13 @@ def _format_order_by(order_by):
     return ",".join(output)
 
 
+def _safe_parse_gml_footprint(geometry_str):
+    # workaround for https://github.com/sentinelsat/sentinelsat/issues/286
+    if geometry_str is None:
+        return None
+    return _parse_gml_footprint(geometry_str)
+
+
 def _parse_gml_footprint(geometry_str):
     geometry_xml = ET.fromstring(geometry_str)
     poly_coords_str = (
@@ -1375,7 +1382,7 @@ def _parse_odata_response(product):
         "size": int(product["ContentLength"]),
         product["Checksum"]["Algorithm"].lower(): product["Checksum"]["Value"],
         "date": _parse_odata_timestamp(product["ContentDate"]["Start"]),
-        "footprint": _parse_gml_footprint(product["ContentGeometry"]),
+        "footprint": _safe_parse_gml_footprint(product["ContentGeometry"]),
         "url": product["__metadata"]["media_src"],
         "Online": product.get("Online", True),
         "Creation Date": _parse_odata_timestamp(product["CreationDate"]),
