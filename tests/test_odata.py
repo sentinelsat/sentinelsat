@@ -148,6 +148,8 @@ def test_is_online():
         with pytest.raises(SentinelAPIError) as excinfo:
             api.is_online(invalid_uuid)
 
+
+@pytest.mark.fast
 def test_parse_odata_missing_content_geometry():
     # response from:
     # https://s5phub.copernicus.eu/dhus/odata/v1/Products('e2cc856f-f9e0-4f20-bf04-dd4d890b43c0')?$format=json
