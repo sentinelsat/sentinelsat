@@ -1,0 +1,57 @@
+{
+  "d": {
+    "__metadata": {
+      "id": "https://s5phub.copernicus.eu/dhus/odata/v1/Products('e2cc856f-f9e0-4f20-bf04-dd4d890b43c0')",
+      "uri": "https://s5phub.copernicus.eu/dhus/odata/v1/Products('e2cc856f-f9e0-4f20-bf04-dd4d890b43c0')",
+      "type": "DHuS.Product",
+      "content_type": "application/octet-stream",
+      "media_src": "https://s5phub.copernicus.eu/dhus/odata/v1/Products('e2cc856f-f9e0-4f20-bf04-dd4d890b43c0')/$value",
+      "edit_media": "https://s5phub.copernicus.eu/dhus/odata/v1/Products('e2cc856f-f9e0-4f20-bf04-dd4d890b43c0')/$value"
+    },
+    "Id": "e2cc856f-f9e0-4f20-bf04-dd4d890b43c0",
+    "Name": "S5P_OFFL_L1B_IR_SIR_20191001T030531_20191001T044700_10183_01_010000_20191001T063421",
+    "ContentType": "application/octet-stream",
+    "ContentLength": "6539819",
+    "ChildrenNumber": "0",
+    "Value": null,
+    "CreationDate": "/Date(1569922561035)/",
+    "IngestionDate": "/Date(1569922501588)/",
+    "EvictionDate": "/Date(1632994561035)/",
+    "Online": true,
+    "ContentDate": {
+      "__metadata": {
+        "type": "DHuS.TimeRange"
+      },
+      "Start": "/Date(1569903600000)/",
+      "End": "/Date(1569903790000)/"
+    },
+    "Checksum": {
+      "__metadata": {
+        "type": "DHuS.Checksum"
+      },
+      "Algorithm": "MD5",
+      "Value": "56B3F059BB1517343703729068D83DD8"
+    },
+    "ContentGeometry": null,
+    "Products": {
+      "__deferred": {
+        "uri": "https://s5phub.copernicus.eu/dhus/odata/v1/Products('e2cc856f-f9e0-4f20-bf04-dd4d890b43c0')/Products"
+      }
+    },
+    "Nodes": {
+      "__deferred": {
+        "uri": "https://s5phub.copernicus.eu/dhus/odata/v1/Products('e2cc856f-f9e0-4f20-bf04-dd4d890b43c0')/Nodes"
+      }
+    },
+    "Attributes": {
+      "__deferred": {
+        "uri": "https://s5phub.copernicus.eu/dhus/odata/v1/Products('e2cc856f-f9e0-4f20-bf04-dd4d890b43c0')/Attributes"
+      }
+    },
+    "Class": {
+      "__deferred": {
+        "uri": "https://s5phub.copernicus.eu/dhus/odata/v1/Products('e2cc856f-f9e0-4f20-bf04-dd4d890b43c0')/Class"
+      }
+    }
+  }
+}
