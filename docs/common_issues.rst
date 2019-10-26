@@ -30,6 +30,10 @@ Standard GeoJSON specification contains only WGS84 format, check if your data co
 Maybe there are no images for the specified time period, by default
 ``sentinelsat`` will query the last 24 hours only.
 
+.. rubric:: My search just quits or I got a warning describing my query complexity.  
+
+Have you checked your query length? It might be that your query is too complex or specific, causing the library
+to behave poorly. A suggestion in this case would be to create a query with fewer parameters. 
 
 .. rubric:: Anything else?
 
