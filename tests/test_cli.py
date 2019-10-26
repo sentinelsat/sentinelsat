@@ -516,3 +516,4 @@ def test_download_invalid_id_cli(run_cli, tmpdir):
     )
     assert "No product with" in result.output
     tmpdir.remove()
+    
