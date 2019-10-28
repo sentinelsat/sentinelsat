@@ -2,13 +2,12 @@
 Tests for functionality related to the OData API of SciHub (https://scihub.copernicus.eu/apihub/odata/v1/...)
 """
 from datetime import datetime
-import json
 
 import pytest
 import requests_mock
 
 from sentinelsat import SentinelAPIError, SentinelAPI
-from sentinelsat.sentinel import _parse_odata_timestamp, _parse_odata_response
+from sentinelsat.sentinel import _parse_odata_timestamp
 
 
 @pytest.mark.fast
@@ -148,14 +147,3 @@ def test_is_online():
         )
         with pytest.raises(SentinelAPIError) as excinfo:
             api.is_online(invalid_uuid)
-
-
-@pytest.mark.fast
-def test_parse_odata_missing_content_geometry(fixture_path):
-    # response from:
-    # https://s5phub.copernicus.eu/dhus/odata/v1/Products('e2cc856f-f9e0-4f20-bf04-dd4d890b43c0')?$format=json
-    with open(fixture_path("odata_response_missing_content_geometry.json")) as file:
-        response = json.load(file)
-
-    odata = _parse_odata_response(response["d"])
-    assert odata["footprint"] is None
