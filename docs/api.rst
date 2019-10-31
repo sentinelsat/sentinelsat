@@ -351,19 +351,21 @@ To search for recent Sentinel 2 imagery by MGRS tile, use the `tileid` parameter
   products = OrderedDict()
   for tile in tiles:
       kw = query_kwargs.copy()
-      kw['tileid'] = tile  # products after 2017-03-31
+      kw['tileid'] = tile
       pp = api.query(**kw)
       products.update(pp)
 
   api.download_all(products)
 
-NB: The `tileid` parameter only works for products from April 2017 onward due to
-missing metadata in SciHub's DHuS catalogue. Before that, but only from
-December 2016 onward (i.e. for single-tile products), you can use a `filename` pattern instead:
+NB: The `tileid` parameter may be missing from the metadata in SciHub's DHuS catalogue,
+in particular for older products. To be on the safe side, combine the `tileid` search
+with a `filename` pattern search:
 
 .. code-block:: python
 
-  kw['filename'] = '*_T{}_*'.format(tile)  # products after 2016-12-01
+  kw = query_kwargs.copy()
+  kw['raw'] = 'tileid:{tileid} OR filename:*_T{tileid}_*'.format(tileid=tile)
+  pp = api.query(**kw)
 
 API Reference
 -------------
