@@ -34,7 +34,6 @@ class CommaSeparatedString(click.ParamType):
 @click.option(
     "--user",
     "-u",
-    type=str,
     envvar="DHUS_USER",
     default=None,
     help="Username (or environment variable DHUS_USER is set)",
@@ -42,14 +41,12 @@ class CommaSeparatedString(click.ParamType):
 @click.option(
     "--password",
     "-p",
-    type=str,
     envvar="DHUS_PASSWORD",
     default=None,
     help="Password (or environment variable DHUS_PASSWORD is set)",
 )
 @click.option(
     "--url",
-    type=str,
     default="https://scihub.copernicus.eu/apihub/",
     envvar="DHUS_URL",
     help="""Define API URL. Default URL is
@@ -59,12 +56,15 @@ class CommaSeparatedString(click.ParamType):
 @click.option(
     "--start",
     "-s",
-    type=str,
     default="NOW-1DAY",
+    show_default=True,
     help="Start date of the query in the format YYYYMMDD.",
 )
 @click.option(
-    "--end", "-e", type=str, default="NOW", help="End date of the query in the format YYYYMMDD."
+    "--end", "-e",
+    default="NOW",
+    show_default=True,
+    help="End date of the query in the format YYYYMMDD."
 )
 @click.option(
     "--geometry", "-g", type=click.Path(exists=True), help="Search area geometry as GeoJSON file."
@@ -103,7 +103,6 @@ class CommaSeparatedString(click.ParamType):
 @click.option(
     "-o",
     "--order-by",
-    type=str,
     help="Comma-separated list of keywords to order the result by. "
     "Prefix keywords with '-' for descending order.",
 )
