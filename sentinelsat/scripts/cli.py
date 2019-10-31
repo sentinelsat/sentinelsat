@@ -61,10 +61,11 @@ class CommaSeparatedString(click.ParamType):
     help="Start date of the query in the format YYYYMMDD.",
 )
 @click.option(
-    "--end", "-e",
+    "--end",
+    "-e",
     default="NOW",
     show_default=True,
-    help="End date of the query in the format YYYYMMDD."
+    help="End date of the query in the format YYYYMMDD.",
 )
 @click.option(
     "--geometry", "-g", type=click.Path(exists=True), help="Search area geometry as GeoJSON file."
