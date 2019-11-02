@@ -1297,6 +1297,9 @@ def _format_order_by(order_by):
 
 
 def _parse_gml_footprint(geometry_str):
+    # workaround for https://github.com/sentinelsat/sentinelsat/issues/286
+    if geometry_str is None:  # pragma: no cover
+        return None
     geometry_xml = ET.fromstring(geometry_str)
     poly_coords_str = (
         geometry_xml.find("{http://www.opengis.net/gml}outerBoundaryIs")
