@@ -24,6 +24,7 @@ Deprecated
 Fixed
 ~~~~~
 * Missing ``Online`` field in OData response defaults to ``Online: True`` instead of raising a ``KeyError`` (#281 @viktorbahr)
+* Missing ``ContentGeometry`` field in OData response defaults to ``footprint: None`` instead of raising a ``TypeError`` (#286 #325 @lukasbindreiter)
 
 Development Changes
 ~~~~~~~~~~~~~~~~~~~
