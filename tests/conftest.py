@@ -4,7 +4,6 @@ from os.path import join, isfile, dirname, abspath, exists
 
 import pytest
 import yaml
-import warnings
 from pytest_socket import disable_socket
 from vcr import VCR
 
@@ -194,21 +193,20 @@ def large_query():
 @pytest.fixture(scope="session")
 def test_check_query_length(**api_kwargs):
     api = SentinelAPI(**api_kwargs)
-    # short query to make sure it does not show the warning
+    # query length is determined by number of parameters and polygon compleyity
     query = api.format_query(
-        date=("20170801", "20170830"), platformname="Sentinel-2", cloudcoverpercentage=(0, 100)
-    )
-
-    # super long query to make sure it does show the warning
-    query1 = api.format_query(
         date=("20170801", "20170830"),
         platformname="Sentinel-3",
-        producttype="Sentinel-3: SR_1_SRA___, SR_1_SRA_A, SR_1_SRA_BS, SR_2_LAN___, OL_1_EFR___, OL_1_ERR___, OL_2_LFR___, OL_2_LRR___, SL_1_RBT___, SL_2_LST___, SY_2_SYN___, SY_2_V10___, SY_2_VG1___, SY_2_VGP___.",
+        producttype="Sentinel-3: SR_1_SRA___, SR_1_SRA_A, SR_1_SRA_BS, SR_2_LAN___, OL_1_EFR___, OL_1_ERR___, \\
+            OL_2_LFR___, OL_2_LRR___, SL_1_RBT___, SL_2_LST___, SY_2_SYN___, SY_2_V10___, SY_2_VG1___, SY_2_VGP___.",
         area_relation="intersects",
-        footprint="Intersects(POLYGON((-4.53 29.85, 26.75 29.85, 26.75 46.80,-4.53 46.80,-4.53 29.85)))",
+        footprint="Intersects(POLYGON((-4.530000 29.8500000, 26.75000000 29.8500000, 26.7000005 46.8000000, \\
+            -4.5300000 46.80000000,-4.530000000 29.850000000)))",
         cloudcoverpercentage=(0, 100),
         timeliness="Near Real Time",
     )
+
+    
 
     with warnings.catch_warnings(record=True) as w:
         # Cause all warnings to always be triggered.
