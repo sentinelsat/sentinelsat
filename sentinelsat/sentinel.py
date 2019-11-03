@@ -898,6 +898,10 @@ class SentinelAPI:
         """
         # The server uses the Java's URLEncoder implementation internally, which we are replicating here
         effective_length = len(quote_plus(query, safe="-_.*").replace("~", "%7E"))
+        if effective_length / 3938 > 1.0:
+            warnings.warn(
+                "Your query, {}, is complex and may cause a bad SciHub response.".format(query)
+            )
         return effective_length / 3938
 
     def _query_names(self, names):
