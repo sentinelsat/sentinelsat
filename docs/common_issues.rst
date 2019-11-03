@@ -30,6 +30,11 @@ Standard GeoJSON specification contains only WGS84 format, check if your data co
 Maybe there are no images for the specified time period, by default
 ``sentinelsat`` will query the last 24 hours only.
 
+.. rubric:: I get the warning 'The query string is too long and will likely cause a bad DHuS response'.  
+
+The query sent to the DHuS server is too complex and will likely fail. You can counter this by decreasing the query 
+length by removing parameters or simplifying your polygon, i.e. remove vertices or decrease coordinate precision after
+the decimal point.
 
 .. rubric:: Anything else?
 

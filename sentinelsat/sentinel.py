@@ -162,6 +162,12 @@ class SentinelAPI:
         """
         query = self.format_query(area, date, raw, area_relation, **keywords)
 
+        # check query length - often caused by complex polygons
+        if self.check_query_length(query) > 1.0:
+            self.logger.warning(
+                "The query string is too long and will likely cause a bad DHuS response."
+            )
+
         self.logger.debug(
             "Running query: order_by=%s, limit=%s, offset=%s, query=%s",
             order_by,
@@ -898,6 +904,7 @@ class SentinelAPI:
         """
         # The server uses the Java's URLEncoder implementation internally, which we are replicating here
         effective_length = len(quote_plus(query, safe="-_.*").replace("~", "%7E"))
+
         return effective_length / 3938
 
     def _query_names(self, names):

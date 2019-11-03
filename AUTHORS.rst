@@ -30,3 +30,6 @@ Contributors
 * Gerald Baier `@gbaier <https://github.com/gbaier>`_
 * Olga Chebotaryova `@OlgaCh <https://github.com/OlgaCh>`_
 * Lukas Bindreiter `@lukasbindreiter <https://github.com/lukasbindreiter>`_
+* `@yepremyana <https://github.com/yepremyana>`_
+* Sarah Floris `@sdf94 <https://github.com/sdf94>`_
+

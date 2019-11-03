@@ -17,6 +17,7 @@ Added
 Changed
 ~~~~~~~
 * reorganize unit tests into small groups with their own files (#287)
+* warn users about complex queries (#290)
 
 Deprecated
 ~~~~~~~~~~
