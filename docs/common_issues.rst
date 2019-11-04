@@ -35,6 +35,12 @@ CODA does not allow the following special characters in passwords: ``~ ! @ # $ %
 
 __ https://github.com/sentinelsat/sentinelsat/issues/315
 
+.. rubric:: I get the warning 'The query string is too long and will likely cause a bad DHuS response'.  
+
+The query sent to the DHuS server is too complex and will likely fail. You can counter this by decreasing the query 
+length by removing parameters or simplifying your polygon, i.e. remove vertices or decrease coordinate precision after
+the decimal point.
+
 .. rubric:: Anything else?
 
 Make sure to check the `issues on GitHub`__ too.
