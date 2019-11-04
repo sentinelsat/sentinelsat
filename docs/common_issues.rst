@@ -29,7 +29,7 @@ Standard GeoJSON specification contains only WGS84 format, check if your data co
 Maybe there are no images for the specified time period, by default
 ``sentinelsat`` will query the last 24 hours only.
 
-.. rubcric:: A query to Eumetsat CODA fails with *HTTP 401 - Full authentication is required* even with the correct password.
+.. rubric:: A query to Eumetsat CODA fails with *HTTP 401 - Full authentication is required* even with the correct password.
 
 CODA does not allow the following special characters in passwords: ``~ ! @ # $ % ^ & * _ - + = ` | \ ( ) { } [ ] : ; " ' < > , . ? /``. See `issue #315`__ .
 
