@@ -92,10 +92,10 @@ class SentinelAPI:
     def dhus_version(self):
         if self._dhus_version is None:
             dhus_url = self._api2dhus_url(self.api_url)
-            resp = self.session.get(dhus_url + "api/stub/version",
-                                    auth=self.session.auth,
-                                    timeout=self.timeout)
-            self._dhus_version = resp.json()['value']
+            resp = self.session.get(
+                dhus_url + "api/stub/version", auth=self.session.auth, timeout=self.timeout
+            )
+            self._dhus_version = resp.json()["value"]
         return self._dhus_version
 
     def query(
