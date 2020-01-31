@@ -79,9 +79,24 @@ class SentinelAPI:
         self.session.headers["User-Agent"] = self.user_agent
         self.show_progressbars = show_progressbars
         self.timeout = timeout
+        self._dhus_version = None
         # For unit tests
         self._last_query = None
         self._last_response = None
+
+    @staticmethod
+    def _api2dhus_url(api_url):
+        return api_url.replace("apihub", "dhus")
+
+    @property
+    def dhus_version(self):
+        if self._dhus_version is None:
+            dhus_url = self._api2dhus_url(self.api_url)
+            resp = self.session.get(dhus_url + "api/stub/version",
+                                    auth=self.session.auth,
+                                    timeout=self.timeout)
+            self._dhus_version = resp.json()['value']
+        return self._dhus_version
 
     def query(
         self,
