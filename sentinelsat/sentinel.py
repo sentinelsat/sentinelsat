@@ -88,14 +88,28 @@ class SentinelAPI:
     def _api2dhus_url(api_url):
         return api_url.replace("apihub", "dhus")
 
+    def _req_dhus_stub(self):
+        try:
+            resp = self.session.get(
+                self.api_url + "api/stub/version", auth=self.session.auth, timeout=self.timeout
+            )
+            resp.raise_for_status()
+        except requests.exceptions.HTTPError as err:
+            self.logger.error("HTTPError: ", err)
+            self.logger.error("Are you trying to get the DHuS version of APIHub?")
+            self.logger.error("Trying again after conversion to DHuS URL")
+            resp = self.session.get(
+                self._dhus2api_url(self.api_url) + "api/stub/version",
+                auth=self.session.auth,
+                timeout=self.timeout,
+            )
+            resp.raise_for_status()
+        return resp.json()["value"]
+
     @property
     def dhus_version(self):
         if self._dhus_version is None:
-            dhus_url = self._api2dhus_url(self.api_url)
-            resp = self.session.get(
-                dhus_url + "api/stub/version", auth=self.session.auth, timeout=self.timeout
-            )
-            self._dhus_version = resp.json()["value"]
+            self._dhus_version = self._req_dhus_stub()
         return self._dhus_version
 
     def query(
