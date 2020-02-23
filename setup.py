@@ -47,7 +47,7 @@ setup(
             "rstcheck",
             "sphinx >= 1.3",
             "sphinx_rtd_theme",
-        ]
+        ],
     },
     entry_points="""
     [console_scripts]

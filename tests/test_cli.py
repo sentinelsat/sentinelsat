@@ -70,7 +70,7 @@ def run_cli(credentials):
                 cli,
                 credential_args + list(args) if with_credentials else args,
                 catch_exceptions=must_raise,
-                **kwargs
+                **kwargs,
             )
             if must_raise:
                 raise result.exception
