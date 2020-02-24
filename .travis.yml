@@ -4,8 +4,6 @@ cache: pip
 jobs:
     include:
       - python: '2.7'
-      - python: '3.4'
-        dist: trusty  # Python 3.4 is not available in xenial
       - python: '3.5'
       - python: '3.6'
       - python: '3.7'
@@ -16,8 +14,7 @@ before_install:
 - pip install -U pip
 install:
 - pip install codecov
-# skip Pandas on Python <3.4
-- if [[ $TRAVIS_PYTHON_VERSION == 3.4 ]]; then pip install -e .[dev34]; else pip install -e .[dev]; fi
+- pip install -e .[dev]
 # install black on 3.7
 - if [[ $TRAVIS_PYTHON_VERSION == 3.7 ]]; then pip install black; fi
 script:

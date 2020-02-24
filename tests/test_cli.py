@@ -12,7 +12,7 @@ from click.testing import CliRunner
 from sentinelsat import InvalidChecksumError, SentinelAPIError, SentinelAPI
 from sentinelsat.scripts.cli import cli
 
-try:  # Python 3.4 and greater import
+try:  # Python 3.5 and greater import
     from functools import partialmethod
 except ImportError:  # Older versions of Python, including 2.7
     # solution taken from https://gist.github.com/carymrobbins/8940382

@@ -22,6 +22,7 @@ Changed
 
 Deprecated
 ~~~~~~~~~~
+* discontinued support for Python <=3.4
 
 Fixed
 ~~~~~
