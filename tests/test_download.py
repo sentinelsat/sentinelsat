@@ -13,6 +13,7 @@ import requests_mock
 
 from sentinelsat import SentinelAPI, SentinelAPILTAError, InvalidChecksumError, SentinelAPIError
 
+
 @pytest.mark.fast
 @pytest.mark.parametrize(
     "api_url, dhus_url",
@@ -20,7 +21,7 @@ from sentinelsat import SentinelAPI, SentinelAPILTAError, InvalidChecksumError, 
         ("https://scihub.copernicus.eu/apihub/", "https://scihub.copernicus.eu/dhus/"),
         ("https://colhub.met.no/", "https://colhub.met.no/"),
         ("https://finhub.nsdc.fmi.fi/", "https://finhub.nsdc.fmi.fi/"),
-    ]
+    ],
 )
 def test_api2dhus_url(api_url, dhus_url):
     api = SentinelAPI("mock_user", "mock_password")
@@ -43,6 +44,7 @@ def test_dhus_version(dhus_url, version):
     with requests_mock.mock() as rqst:
         rqst.get(request_url, json={"value": version})
         assert api.dhus_version == version
+
 
 @pytest.mark.mock_api
 @pytest.mark.parametrize(
