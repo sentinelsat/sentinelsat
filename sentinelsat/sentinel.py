@@ -27,6 +27,8 @@ from tqdm import tqdm
 from . import __version__ as sentinelsat_version
 
 
+
+
 class SentinelAPI:
     """Class to connect to Copernicus Open Access Hub, search and download imagery.
 
@@ -177,7 +179,7 @@ class SentinelAPI:
         Ranges with no bounds (`orbitnumber=(None, None)`) will not be included in the query.
 
         Multiple values for the same query parameter can be provided as sets and will be handled as
-        logical OR, e.g. `orbitnumber={16302, 1206}`. 
+        logical OR, e.g. `orbitnumber={16302, 1206}`.
 
         The time interval formats accepted by the `date` parameter can also be used with
         any other parameters that expect time intervals (that is: 'beginposition', 'endposition',
