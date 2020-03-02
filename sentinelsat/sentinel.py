@@ -27,8 +27,6 @@ from tqdm import tqdm
 from . import __version__ as sentinelsat_version
 
 
-
-
 class SentinelAPI:
     """Class to connect to Copernicus Open Access Hub, search and download imagery.
 
