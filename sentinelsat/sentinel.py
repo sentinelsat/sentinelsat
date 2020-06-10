@@ -99,7 +99,7 @@ class SentinelAPI:
             self.logger.error("Are you trying to get the DHuS version of APIHub?")
             self.logger.error("Trying again after conversion to DHuS URL")
             resp = self.session.get(
-                self._dhus2api_url(self.api_url) + "api/stub/version",
+                self._api2dhus_url(self.api_url) + "api/stub/version",
                 auth=self.session.auth,
                 timeout=self.timeout,
             )
@@ -110,6 +110,7 @@ class SentinelAPI:
     def dhus_version(self):
         if self._dhus_version is None:
             self._dhus_version = self._req_dhus_stub()
+            print(self._dhus_version)
         return self._dhus_version
 
     def query(
