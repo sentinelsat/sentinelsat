@@ -30,6 +30,16 @@ class CommaSeparatedString(click.ParamType):
             return value
 
 
+def print_dhus_version(ctx, value):
+    if not value or ctx.resilient_parsing:
+        return
+    API = SentinelAPI("tyoungaudet", "Fu85N8TcVCWi")
+    click.echo(API.dhus_version)
+    click.echo(API.dhus_version)
+    click.echo(str(type(API.dhus_version)))
+    ctx.exit()
+
+
 @click.command(context_settings=dict(help_option_names=["-h", "--help"]))
 @click.option(
     "--user",
@@ -93,7 +103,10 @@ class CommaSeparatedString(click.ParamType):
     help="Limit search to a specific instrument on a Sentinel satellite.",
 )
 @click.option(
-    "--producttype", type=str, default=None, help="Limit search to a Sentinel product type."
+    "--producttype",
+    type=str,
+    default=None,
+    help="Limit search to a Sentinel product type."
 )
 @click.option(
     "-c",
@@ -133,7 +146,17 @@ class CommaSeparatedString(click.ParamType):
     and metadata of the returned products.
     """,
 )
+@click.option(
+    "--dhus-version",
+    is_flag=True,
+    callback=print_dhus_version,
+    expose_value=False,
+    is_eager=True,
+    help="displays the DHuS version used"
+)
 @click.version_option(version=sentinelsat_version, prog_name="sentinelsat")
+
+
 def cli(
     user,
     password,
@@ -153,6 +176,7 @@ def cli(
     url,
     order_by,
     limit,
+
 ):
     """Search for Sentinel products and, optionally, download all the results
     and/or create a geojson file with the search result footprints.
