@@ -93,10 +93,7 @@ class CommaSeparatedString(click.ParamType):
     help="Limit search to a specific instrument on a Sentinel satellite.",
 )
 @click.option(
-    "--producttype",
-    type=str,
-    default=None,
-    help="Limit search to a Sentinel product type."
+    "--producttype", type=str, default=None, help="Limit search to a Sentinel product type."
 )
 @click.option(
     "-c",
@@ -136,13 +133,7 @@ class CommaSeparatedString(click.ParamType):
     and metadata of the returned products.
     """,
 )
-
-@click.option(
-    "--dhusversion",
-    is_flag=True,
-    is_eager=True,
-    help="displays the DHuS version used"
-)
+@click.option("--dhusversion", is_flag=True, is_eager=True, help="displays the DHuS version used")
 @click.version_option(version=sentinelsat_version, prog_name="sentinelsat")
 def cli(
     user,
@@ -170,6 +161,7 @@ def cli(
     Beyond your Copernicus Open Access Hub user and password, you must pass a geojson file
     containing the geometry of the area you want to search for or the UUIDs of the products. If you
     don't specify the start and end dates, it will search in the last 24 hours.
+    Can also provide the Copernicus Open Access Hub (DHuS) version.
     """
 
     _set_logger_handler()
