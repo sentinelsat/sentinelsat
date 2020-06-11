@@ -91,7 +91,7 @@ class SentinelAPI:
     def _req_dhus_stub(self):
         try:
             resp = self.session.get(
-                self.api_url + "api/stub/version", auth=self.session.auth, timeout=self.timeout
+                self._api2dhus_url(self.api_url) + "api/stub/version", auth=self.session.auth, timeout=self.timeout
             )
             resp.raise_for_status()
         except requests.exceptions.HTTPError as err:
@@ -110,7 +110,6 @@ class SentinelAPI:
     def dhus_version(self):
         if self._dhus_version is None:
             self._dhus_version = self._req_dhus_stub()
-            print(self._dhus_version)
         return self._dhus_version
 
     def query(
