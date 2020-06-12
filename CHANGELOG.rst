@@ -27,7 +27,7 @@ Fixed
 
 Development Changes
 ~~~~~~~~~~~~~~~~~~~
-* code formatting with `black` checked by Travis-CI (#296)
+* code formatting with `black` checked by Travis-CI (#352)
 * reorganize unit tests into small groups with their own files (#287)
 * reduced code duplication in unit tests by making greater use of pytest fixtures. (#287)
 * force unit tests to include on of the markers 'fast', 'scihub' or 'mock_api' (#287)
