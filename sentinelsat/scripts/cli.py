@@ -133,7 +133,11 @@ class CommaSeparatedString(click.ParamType):
     and metadata of the returned products.
     """,
 )
-@click.option("--dhusversion", is_flag=True, is_eager=True, help="displays the DHuS version used")
+@click.option(
+    "--info",
+    is_flag=True,
+    is_eager=True,
+    help="Displays the DHuS version used")
 @click.version_option(version=sentinelsat_version, prog_name="sentinelsat")
 def cli(
     user,
@@ -154,14 +158,13 @@ def cli(
     url,
     order_by,
     limit,
-    dhusversion,
+    info,
 ):
     """Search for Sentinel products and, optionally, download all the results
     and/or create a geojson file with the search result footprints.
     Beyond your Copernicus Open Access Hub user and password, you must pass a geojson file
     containing the geometry of the area you want to search for or the UUIDs of the products. If you
     don't specify the start and end dates, it will search in the last 24 hours.
-    Can also provide the Copernicus Open Access Hub (DHuS) version.
     """
 
     _set_logger_handler()
@@ -180,9 +183,9 @@ def cli(
 
     api = SentinelAPI(user, password, url)
 
-    if dhusversion:
+    if info:
         ctx = click.get_current_context()
-        click.echo(api.dhus_version)
+        click.echo("DHuS version: " + api.dhus_version)
         ctx.exit()
 
     search_kwargs = {}

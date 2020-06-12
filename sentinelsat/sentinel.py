@@ -97,7 +97,6 @@ class SentinelAPI:
             )
             resp.raise_for_status()
         except requests.exceptions.HTTPError as err:
-            # is this part of the code useful?
             self.logger.error("HTTPError: ", err)
             self.logger.error("Are you trying to get the DHuS version of APIHub?")
             self.logger.error("Trying again after conversion to DHuS URL")
