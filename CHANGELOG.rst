@@ -14,7 +14,6 @@ Added
 
 Changed
 ~~~~~~~
-* reorganize unit tests into small groups with their own files (#287)
 * warn users about complex queries (#290)
 
 Deprecated
@@ -28,14 +27,15 @@ Fixed
 
 Development Changes
 ~~~~~~~~~~~~~~~~~~~
+* code formatting with `black` checked by Travis-CI (#296)
+* reorganize unit tests into small groups with their own files (#287)
+* reduced code duplication in unit tests by making greater use of pytest fixtures. (#287)
+* force unit tests to include on of the markers 'fast', 'scihub' or 'mock_api' (#287)
+* automatic return code checking of CLI tests (#287)
 * Replaced direct ``vcrpy`` usage in unit tests with ``pytest-vcr``.
   The ``pytest`` command line options changed from ``--vcr disable`` to ``--disable-vcr`` and
   ``--vcr [use|record_new|reset]`` to ``--vcr-record [once|record_new|all``.
-  See `vcrpy docs <https://vcrpy.readthedocs.io/en/latest/usage.html#record-modes>`_ for details.
-* Reduced code duplication in unit tests by making greater use of pytest fixtures.
-* force unit tests to include on of the markers 'fast', 'scihub' or 'mock_api' (#287 @valgur)
-* automatic return code checking of CLI tests (#287) 
-* code formatting with `black` checked by Travis-CI
+  See `vcrpy docs <https://vcrpy.readthedocs.io/en/latest/usage.html#record-modes>`_ for details. (#283)
 
 
 [0.13] – 2019-04-05
