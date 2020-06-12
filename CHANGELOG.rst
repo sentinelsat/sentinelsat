@@ -30,7 +30,7 @@ Development Changes
 * code formatting with `black` checked by Travis-CI (#352)
 * reorganize unit tests into small groups with their own files (#287)
 * reduced code duplication in unit tests by making greater use of pytest fixtures. (#287)
-* force unit tests to include on of the markers 'fast', 'scihub' or 'mock_api' (#287)
+* force unit tests to include one of the markers 'fast', 'scihub' or 'mock_api' (#287)
 * automatic return code checking of CLI tests (#287)
 * Replaced direct ``vcrpy`` usage in unit tests with ``pytest-vcr``.
   The ``pytest`` command line options changed from ``--vcr disable`` to ``--disable-vcr`` and
