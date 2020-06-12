@@ -8,16 +8,12 @@ All notable changes to ``sentinelsat`` will be listed here.
 
 Added
 ~~~~~
-* force unit tests to include on of the markers 'fast', 'scihub' or 'mock_api' (#287 @valgur)
-* automatic return code checking of CLI tests (#287) 
-* code formatting with `black` checked by Travis-CI
 * trigger retrieval of offline products from LTA, while downloading online products (#297 @gbaier)
 * allow input of multiple values per query parameter as logical OR (#321 @OlgaCh)
 * document CODA password limitations (#315 @nishadhka)
 
 Changed
 ~~~~~~~
-* reorganize unit tests into small groups with their own files (#287)
 * warn users about complex queries (#290)
 
 Deprecated
@@ -31,11 +27,15 @@ Fixed
 
 Development Changes
 ~~~~~~~~~~~~~~~~~~~
+* code formatting with `black` checked by Travis-CI (#352)
+* reorganize unit tests into small groups with their own files (#287)
+* reduced code duplication in unit tests by making greater use of pytest fixtures. (#287)
+* force unit tests to include one of the markers 'fast', 'scihub' or 'mock_api' (#287)
+* automatic return code checking of CLI tests (#287)
 * Replaced direct ``vcrpy`` usage in unit tests with ``pytest-vcr``.
   The ``pytest`` command line options changed from ``--vcr disable`` to ``--disable-vcr`` and
   ``--vcr [use|record_new|reset]`` to ``--vcr-record [once|record_new|all``.
-  See `vcrpy docs <https://vcrpy.readthedocs.io/en/latest/usage.html#record-modes>`_ for details.
-* Reduced code duplication in unit tests by making greater use of pytest fixtures.
+  See `vcrpy docs <https://vcrpy.readthedocs.io/en/latest/usage.html#record-modes>`_ for details. (#283)
 
 
 [0.13] – 2019-04-05
