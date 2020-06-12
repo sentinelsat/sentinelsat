@@ -54,7 +54,7 @@ copyright = "2016, Marcel Wille, Kersten Clauss"
 #
 # The short X.Y version.
 with open(os.path.join("..", "sentinelsat", "__init__.py"), "rt") as fp:
-    version = re.search(r"__version__\s*=\s*'(\S+)'", fp.read()).group(1)
+    version = re.search(r'__version__\s*=\s*"(\S+)"', fp.read()).group(1)
 
 # The full version, including alpha/beta/rc tags.
 release = version
@@ -253,7 +253,7 @@ texinfo_documents = [
         "Sentinelsat Documentation",
         "Marcel Wille, Kersten Clauss",
         "Sentinelsat",
-        "Copernicus Sentinel satellite image downloader.",
+        "Copernicus Sentinel satellite image search and download.",
         "Miscellaneous",
     )
 ]
