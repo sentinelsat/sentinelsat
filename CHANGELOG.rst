@@ -3,7 +3,7 @@ Change Log
 
 All notable changes to ``sentinelsat`` will be listed here.
 
-[master] – YYYY-MM-DD
+[0.14] – 2020-06-12
 ---------------------
 
 Added
