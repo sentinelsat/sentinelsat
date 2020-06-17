@@ -516,3 +516,12 @@ def test_download_invalid_id_cli(run_cli, tmpdir):
     )
     assert "No product with" in result.output
     tmpdir.remove()
+
+@pytest.mark.vcr
+@pytest.mark.scihub
+def test_info_cli(run_cli, tmpdir):
+    result = run_cli(
+        "--info"
+    )
+    assert "2.4.1" in result.output
+    tmpdir.remove()
