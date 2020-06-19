@@ -91,13 +91,13 @@ class SentinelAPI:
     def _req_dhus_stub(self):
         try:
             resp = self.session.get(
-                self._api2dhus_url(self.api_url) + "api/stub/version",
+                self.api_url + "api/stub/version",
                 auth=self.session.auth,
                 timeout=self.timeout,
             )
             resp.raise_for_status()
         except requests.exceptions.HTTPError as err:
-            self.logger.error("HTTPError: ", err)
+            self.logger.error("HTTPError: %s", err)
             self.logger.error("Are you trying to get the DHuS version of APIHub?")
             self.logger.error("Trying again after conversion to DHuS URL")
             resp = self.session.get(
