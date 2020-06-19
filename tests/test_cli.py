@@ -523,5 +523,7 @@ def test_info_cli(run_cli, tmpdir):
     result = run_cli(
         "--info"
     )
-    assert "2.4.1" in result.output
+    assert "HTTPError: 404 Client Error: Not Found for url: https://scihub.copernicus.eu/apihub/api/stub/version\n" \
+           "Are you trying to get the DHuS version of APIHub?\nTrying again after conversion to DHuS URL\n" \
+           "DHuS version: 2.4.1\n" in result.output
     tmpdir.remove()

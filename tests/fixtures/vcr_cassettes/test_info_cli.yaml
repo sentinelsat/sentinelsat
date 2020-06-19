@@ -11,6 +11,40 @@ interactions:
       User-Agent:
       - sentinelsat/0.13
     method: GET
+    uri: https://scihub.copernicus.eu/apihub/api/stub/version
+  response:
+    body:
+      string: 'PAGE NOT FOUND
+
+               Oops, something went wrong. The page you were trying to access is (temporarily) unavailable.'
+    headers:
+      Content-Type:
+      - text/html; charset=UTF-8
+      DataServiceVersion:
+      - '2.0'
+      Pragma:
+      - no-cache
+      Server:
+      - Apache-Coyote/1.1
+      Vary:
+      - Accept-Encoding
+      content-length:
+      - '764'
+    status:
+      code: 404
+      message: Not Found
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - sentinelsat/0.13
+    method: GET
     uri: https://scihub.copernicus.eu/dhus/api/stub/version
   response:
     body:
