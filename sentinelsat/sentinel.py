@@ -86,7 +86,7 @@ class SentinelAPI:
 
     @staticmethod
     def _api2dhus_url(api_url):
-        return api_url.replace("apihub", "dhus")
+        return re.sub("apihub/$", "dhus/", api_url)
 
     def _req_dhus_stub(self):
         try:
