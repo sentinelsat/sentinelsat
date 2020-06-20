@@ -8,7 +8,7 @@ All notable changes to ``sentinelsat`` will be listed here.
 
 Added
 ~~~~~
-* 
+* display DHuS server version with CLI flag --info (#367 @thomasyoung-audet)
 
 Changed
 ~~~~~~~
