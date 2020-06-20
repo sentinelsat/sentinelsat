@@ -133,11 +133,7 @@ class CommaSeparatedString(click.ParamType):
     and metadata of the returned products.
     """,
 )
-@click.option(
-    "--info",
-    is_flag=True,
-    is_eager=True,
-    help="Displays the DHuS version used")
+@click.option("--info", is_flag=True, is_eager=True, help="Displays the DHuS version used")
 @click.version_option(version=sentinelsat_version, prog_name="sentinelsat")
 def cli(
     user,
