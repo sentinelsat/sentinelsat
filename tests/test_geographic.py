@@ -6,7 +6,7 @@ from datetime import datetime
 import geojson
 import pytest
 
-from sentinelsat import geojson_to_wkt, read_geojson, SentinelAPI
+from sentinelsat import geojson_to_wkt, read_geojson, SentinelAPI, placename_to_wkt
 
 
 @pytest.mark.fast
@@ -58,3 +58,20 @@ def test_footprints_s2(products, fixture_path):
         expected_footprints = geojson.loads(geojson_file.read())
     # to compare unordered lists (JSON objects) they need to be sorted or changed to sets
     assert set(footprints) == set(expected_footprints)
+
+
+@pytest.mark.vcr
+@pytest.mark.fast
+def test_placename_to_wkt_valid(place_kwargs):
+    # tests wkt response
+    assert placename_to_wkt(place_kwargs[0])[0] == place_kwargs[1]
+
+
+@pytest.mark.vcr
+@pytest.mark.fast
+def test_placename_to_wkt_invalid():
+    # tests empty bbox exception in response to bad query
+    with pytest.raises(ValueError) as e:
+        wkt = placename_to_wkt("!@#$%^")
+    assert 'Unable to find a location for "!@#$%^"' in str(e.value)
+
