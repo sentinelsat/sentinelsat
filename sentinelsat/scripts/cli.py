@@ -6,7 +6,7 @@ import geojson as gj
 import requests.utils
 
 from sentinelsat import __version__ as sentinelsat_version
-from sentinelsat.sentinel import SentinelAPI, SentinelAPIError, geojson_to_wkt, read_geojson
+from sentinelsat.sentinel import SentinelAPI, SentinelAPIError, geojson_to_wkt, read_geojson, placename_to_wkt
 
 logger = logging.getLogger("sentinelsat")
 
@@ -133,6 +133,10 @@ class CommaSeparatedString(click.ParamType):
     and metadata of the returned products.
     """,
 )
+@click.option(
+    '--location', type=str,
+    help='Returns result based of of plaintext place name.'
+)
 @click.version_option(version=sentinelsat_version, prog_name="sentinelsat")
 def cli(
     user,
@@ -152,6 +156,7 @@ def cli(
     query,
     url,
     order_by,
+    location,
     limit,
 ):
     """Search for Sentinel products and, optionally, download all the results
@@ -223,6 +228,11 @@ def cli(
         footprints_geojson = api.to_geojson(products)
         with open(os.path.join(path, "search_footprints.geojson"), "w") as outfile:
             outfile.write(gj.dumps(footprints_geojson))
+
+    if location is not None:
+        query_answers = placename_to_wkt(location)
+        click.echo("The location we are querying is: '{}'".format(query_answers[1]))
+        search_kwargs['area'] = (query_answers[0])
 
     if download is True:
         product_infos, triggered, failed_downloads = api.download_all(products, path)
