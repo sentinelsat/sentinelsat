@@ -137,6 +137,7 @@ class CommaSeparatedString(click.ParamType):
     '--location', type=str,
     help='Returns result based of of plaintext place name.'
 )
+@click.option("--info", is_flag=True, is_eager=True, help="Displays the DHuS version used")
 @click.version_option(version=sentinelsat_version, prog_name="sentinelsat")
 def cli(
     user,
@@ -158,6 +159,7 @@ def cli(
     order_by,
     location,
     limit,
+    info,
 ):
     """Search for Sentinel products and, optionally, download all the results
     and/or create a geojson file with the search result footprints.
@@ -181,6 +183,11 @@ def cli(
         )
 
     api = SentinelAPI(user, password, url)
+
+    if info:
+        ctx = click.get_current_context()
+        click.echo("DHuS version: " + api.dhus_version)
+        ctx.exit()
 
     search_kwargs = {}
     if sentinel and not (producttype or instrument):

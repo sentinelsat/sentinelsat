@@ -86,20 +86,20 @@ class SentinelAPI:
 
     @staticmethod
     def _api2dhus_url(api_url):
-        return api_url.replace("apihub", "dhus")
+        return re.sub("apihub/$", "dhus/", api_url)
 
     def _req_dhus_stub(self):
         try:
             resp = self.session.get(
-                self.api_url + "api/stub/version", auth=self.session.auth, timeout=self.timeout
+                self.api_url + "api/stub/version", auth=self.session.auth, timeout=self.timeout,
             )
             resp.raise_for_status()
         except requests.exceptions.HTTPError as err:
-            self.logger.error("HTTPError: ", err)
+            self.logger.error("HTTPError: %s", err)
             self.logger.error("Are you trying to get the DHuS version of APIHub?")
             self.logger.error("Trying again after conversion to DHuS URL")
             resp = self.session.get(
-                self._dhus2api_url(self.api_url) + "api/stub/version",
+                self._api2dhus_url(self.api_url) + "api/stub/version",
                 auth=self.session.auth,
                 timeout=self.timeout,
             )
