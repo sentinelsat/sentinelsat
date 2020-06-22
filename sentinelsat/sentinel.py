@@ -1438,3 +1438,39 @@ def _parse_odata_response(product):
                 pass
         output[attr["Name"]] = value
     return output
+
+
+def placename_to_wkt(placename):
+    """Geocodes the placename to rectangular bounding extents using Nominatim API and
+       returns the corresponding 'ENVELOPE' form Well-Known-Text.
+
+    Parameters
+    ----------
+    placename : str
+        the query to geocode
+
+    Returns
+    -------
+    ENVELOPE coordinates
+        wkt string in form 'ENVELOPE(minX, maxX, maxY, minY)'
+    """
+
+    rqst = requests.post('https://nominatim.openstreetmap.org/search',
+                         params={'q': placename, 'format': 'geojson'})
+    # Check that the response from Openstreetmapserver has status code 2xx
+    # and that the response is valid JSON.
+    _check_scihub_response(rqst)
+    jsonlist = rqst.json()
+    try:
+        # Get the First result's bounding box and description.
+        placeinfo = jsonlist['features'][0]['properties']['display_name']
+        bbox = jsonlist['features'][0]['bbox']
+
+    except IndexError:
+        # bbox or placeInfo is empty
+        raise ValueError('Unable to find a location for "{}"'.format(placename))
+    else:
+        # the bbox follows the pattern:[minX, minY, maxX ,maxY]
+        minX, minY, maxX, maxY = bbox
+        footprint = "ENVELOPE({}, {}, {}, {})".format(minX, maxX, maxY, minY)
+        return [footprint, placeinfo]
