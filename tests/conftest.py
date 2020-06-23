@@ -38,12 +38,12 @@ def vcr(vcr):
 
     def scrub_response(response):
         for header in (
-            "Authorization",
-            "Set-Cookie",
-            "Cookie",
-            "Date",
-            "Expires",
-            "Transfer-Encoding",
+                "Authorization",
+                "Set-Cookie",
+                "Cookie",
+                "Date",
+                "Expires",
+                "Transfer-Encoding",
         ):
             if header in response["headers"]:
                 del response["headers"][header]
@@ -188,3 +188,8 @@ def large_query():
         area="POLYGON((0 0,0 10,10 10,10 0,0 0))",
         date=(datetime(2015, 12, 1), datetime(2015, 12, 31)),
     )
+
+
+@pytest.fixture(scope='session')
+def place_kwargs():
+    return ['florida', 'ENVELOPE(-87.634896, -79.974306, 31.000968, 24.396308)']
