@@ -13,7 +13,7 @@ interactions:
       User-Agent:
       - python-requests/2.22.0
     method: POST
-    uri: https://nominatim.openstreetmap.org/search?format=geojson&q=florida
+    uri: https://nominatim.openstreetmap.org/search?q=florida&format=geojson
   response:
     body:
       string: "{\"type\":\"FeatureCollection\",\"licence\":\"Data \xA9 OpenStreetMap
