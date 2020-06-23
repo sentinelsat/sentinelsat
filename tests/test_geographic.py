@@ -74,4 +74,3 @@ def test_placename_to_wkt_invalid():
     with pytest.raises(ValueError) as e:
         wkt = placename_to_wkt("!@#$%^")
     assert 'Unable to find a location for "!@#$%^"' in str(e.value)
-

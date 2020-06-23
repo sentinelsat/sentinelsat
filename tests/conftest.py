@@ -38,12 +38,12 @@ def vcr(vcr):
 
     def scrub_response(response):
         for header in (
-                "Authorization",
-                "Set-Cookie",
-                "Cookie",
-                "Date",
-                "Expires",
-                "Transfer-Encoding",
+            "Authorization",
+            "Set-Cookie",
+            "Cookie",
+            "Date",
+            "Expires",
+            "Transfer-Encoding",
         ):
             if header in response["headers"]:
                 del response["headers"][header]
@@ -190,6 +190,6 @@ def large_query():
     )
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope="session")
 def place_kwargs():
-    return ['florida', 'ENVELOPE(-87.634896, -79.974306, 31.000968, 24.396308)']
+    return ["florida", "ENVELOPE(-87.634896, -79.974306, 31.000968, 24.396308)"]
