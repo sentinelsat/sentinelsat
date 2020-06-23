@@ -1,0 +1,362 @@
+interactions:
+- request:
+    body: q=beginPosition%3A%5BNOW-1DAY+TO+NOW%5D
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '39'
+      Content-Type:
+      - application/x-www-form-urlencoded; charset=UTF-8
+      User-Agent:
+      - sentinelsat/0.14
+    method: POST
+    uri: https://scihub.copernicus.eu/apihub/search?format=json&rows=5&start=0
+  response:
+    body:
+      string: '{"feed":{"xmlns:opensearch":"http://a9.com/-/spec/opensearch/1.1/","xmlns":"http://www.w3.org/2005/Atom","title":"Sentinels
+        Scientific Data Hub search results for: beginPosition:[NOW-1DAY TO NOW]","subtitle":"Displaying
+        0 to 4 of 23106 total results. Request done in 0.005 seconds.","updated":"2020-06-23T16:32:27.472Z","author":{"name":"Sentinels
+        Scientific Data Hub"},"id":"https://scihub.copernicus.eu/dhus/search?q=beginPosition:[NOW-1DAY
+        TO NOW]","opensearch:totalResults":"23106","opensearch:startIndex":"0","opensearch:itemsPerPage":"5","opensearch:Query":{"role":"request","searchTerms":"beginPosition:[NOW-1DAY
+        TO NOW]","startPage":"1"},"link":[{"rel":"self","type":"application/atom+xml","href":"https://scihub.copernicus.eu/dhus/search?q=beginPosition:[NOW-1DAY
+        TO NOW]&start=0&rows=5"},{"rel":"first","type":"application/atom+xml","href":"https://scihub.copernicus.eu/dhus/search?q=beginPosition:[NOW-1DAY
+        TO NOW]&start=0&rows=5"},{"rel":"next","type":"application/atom+xml","href":"https://scihub.copernicus.eu/dhus/search?q=beginPosition:[NOW-1DAY
+        TO NOW]&start=5&rows=5"},{"rel":"last","type":"application/atom+xml","href":"https://scihub.copernicus.eu/dhus/search?q=beginPosition:[NOW-1DAY
+        TO NOW]&start=23105&rows=5"},{"rel":"search","type":"application/opensearchdescription+xml","href":"opensearch_description.xml"}],"entry":[{"title":"S2B_MSIL2A_20200623T111629_N0214_R037_T41XML_20200623T130334","link":[{"href":"https://scihub.copernicus.eu/dhus/odata/v1/Products(''85e66bc0-3d28-4191-b0c6-cbaccb5df654'')/$value"},{"rel":"alternative","href":"https://scihub.copernicus.eu/dhus/odata/v1/Products(''85e66bc0-3d28-4191-b0c6-cbaccb5df654'')/"},{"rel":"icon","href":"https://scihub.copernicus.eu/dhus/odata/v1/Products(''85e66bc0-3d28-4191-b0c6-cbaccb5df654'')/Products(''Quicklook'')/$value"}],"id":"85e66bc0-3d28-4191-b0c6-cbaccb5df654","summary":"Date:
+        2020-06-23T11:16:29.024Z, Instrument: MSI, Mode: , Satellite: Sentinel-2,
+        Size: 860.34 MB","date":[{"name":"beginposition","content":"2020-06-23T11:16:29.024Z"},{"name":"endposition","content":"2020-06-23T11:16:29.024Z"},{"name":"ingestiondate","content":"2020-06-23T16:31:23.549Z"}],"int":[{"name":"orbitnumber","content":"17223"},{"name":"relativeorbitnumber","content":"37"}],"double":[{"name":"vegetationpercentage","content":"1.23E-4"},{"name":"notvegetatedpercentage","content":"3.7200000000000004E-4"},{"name":"waterpercentage","content":"6.450569"},{"name":"unclassifiedpercentage","content":"0.002674"},{"name":"mediumprobacloudspercentage","content":"0.601046"},{"name":"highprobacloudspercentage","content":"55.052352"},{"name":"snowicepercentage","content":"36.988425"},{"name":"cloudcoverpercentage","content":"56.176578"}],"str":[{"name":"level1cpdiidentifier","content":"S2B_OPER_MSI_L1C_TL_EPAE_20200623T122748_A017223_T41XML_N02.09"},{"name":"gmlfootprint","content":"<gml:Polygon
+        srsName=\"http://www.opengis.net/gml/srs/epsg.xml#4326\" xmlns:gml=\"http://www.opengis.net/gml\">\n   <gml:outerBoundaryIs>\n      <gml:LinearRing>\n         <gml:coordinates>81.90748103627195,56.62188393530005
+        81.95644737476664,63.62478835890375 80.97284377382584,63.55719378094982 80.92925761838922,57.30716094300509
+        81.90748103627195,56.62188393530005</gml:coordinates>\n      </gml:LinearRing>\n   </gml:outerBoundaryIs>\n</gml:Polygon>"},{"name":"footprint","content":"MULTIPOLYGON
+        (((57.30716094300509 80.92925761838922, 63.55719378094982 80.97284377382584,
+        63.62478835890375 81.95644737476664, 56.62188393530005 81.90748103627195,
+        57.30716094300509 80.92925761838922)))"},{"name":"format","content":"SAFE"},{"name":"processingbaseline","content":"02.14"},{"name":"platformname","content":"Sentinel-2"},{"name":"filename","content":"S2B_MSIL2A_20200623T111629_N0214_R037_T41XML_20200623T130334.SAFE"},{"name":"instrumentname","content":"Multi-Spectral
+        Instrument"},{"name":"instrumentshortname","content":"MSI"},{"name":"size","content":"860.34
+        MB"},{"name":"s2datatakeid","content":"GS2B_20200623T111629_017223_N02.14"},{"name":"producttype","content":"S2MSI2A"},{"name":"platformidentifier","content":"2017-013A"},{"name":"orbitdirection","content":"ASCENDING"},{"name":"platformserialidentifier","content":"Sentinel-2B"},{"name":"processinglevel","content":"Level-2A"},{"name":"identifier","content":"S2B_MSIL2A_20200623T111629_N0214_R037_T41XML_20200623T130334"},{"name":"uuid","content":"85e66bc0-3d28-4191-b0c6-cbaccb5df654"}]},{"title":"S2B_MSIL2A_20200623T112119_N0214_R037_T30UWG_20200623T130356","link":[{"href":"https://scihub.copernicus.eu/dhus/odata/v1/Products(''d51bc799-7f45-4e13-a956-afa600510c98'')/$value"},{"rel":"alternative","href":"https://scihub.copernicus.eu/dhus/odata/v1/Products(''d51bc799-7f45-4e13-a956-afa600510c98'')/"},{"rel":"icon","href":"https://scihub.copernicus.eu/dhus/odata/v1/Products(''d51bc799-7f45-4e13-a956-afa600510c98'')/Products(''Quicklook'')/$value"}],"id":"d51bc799-7f45-4e13-a956-afa600510c98","summary":"Date:
+        2020-06-23T11:21:19.024Z, Instrument: MSI, Mode: , Satellite: Sentinel-2,
+        Size: 918.33 MB","date":[{"name":"beginposition","content":"2020-06-23T11:21:19.024Z"},{"name":"endposition","content":"2020-06-23T11:21:19.024Z"},{"name":"ingestiondate","content":"2020-06-23T16:31:23.38Z"}],"int":[{"name":"orbitnumber","content":"17223"},{"name":"relativeorbitnumber","content":"37"}],"double":[{"name":"vegetationpercentage","content":"5.675207"},{"name":"notvegetatedpercentage","content":"1.471272"},{"name":"waterpercentage","content":"8.648524"},{"name":"unclassifiedpercentage","content":"3.76879"},{"name":"mediumprobacloudspercentage","content":"7.843614"},{"name":"highprobacloudspercentage","content":"68.229151"},{"name":"snowicepercentage","content":"1.000438"},{"name":"cloudcoverpercentage","content":"79.074795"}],"str":[{"name":"level1cpdiidentifier","content":"S2B_OPER_MSI_L1C_TL_EPAE_20200623T122847_A017223_T30UWG_N02.09"},{"name":"gmlfootprint","content":"<gml:Polygon
+        srsName=\"http://www.opengis.net/gml/srs/epsg.xml#4326\" xmlns:gml=\"http://www.opengis.net/gml\">\n   <gml:outerBoundaryIs>\n      <gml:LinearRing>\n         <gml:coordinates>55.94573440279175,-3.000320229664234
+        55.93320247103479,-1.242724305102424 54.947017819877004,-1.286014515386122
+        54.959098874363285,-3.000312336088999 55.94573440279175,-3.000320229664234</gml:coordinates>\n      </gml:LinearRing>\n   </gml:outerBoundaryIs>\n</gml:Polygon>"},{"name":"footprint","content":"MULTIPOLYGON
+        (((-1.286014515386122 54.947017819877004, -1.242724305102424 55.93320247103479,
+        -3.000320229664234 55.94573440279175, -3.000312336088999 54.959098874363285,
+        -1.286014515386122 54.947017819877004)))"},{"name":"format","content":"SAFE"},{"name":"processingbaseline","content":"02.14"},{"name":"platformname","content":"Sentinel-2"},{"name":"filename","content":"S2B_MSIL2A_20200623T112119_N0214_R037_T30UWG_20200623T130356.SAFE"},{"name":"instrumentname","content":"Multi-Spectral
+        Instrument"},{"name":"instrumentshortname","content":"MSI"},{"name":"size","content":"918.33
+        MB"},{"name":"s2datatakeid","content":"GS2B_20200623T112119_017223_N02.14"},{"name":"producttype","content":"S2MSI2A"},{"name":"platformidentifier","content":"2017-013A"},{"name":"orbitdirection","content":"DESCENDING"},{"name":"platformserialidentifier","content":"Sentinel-2B"},{"name":"processinglevel","content":"Level-2A"},{"name":"identifier","content":"S2B_MSIL2A_20200623T112119_N0214_R037_T30UWG_20200623T130356"},{"name":"uuid","content":"d51bc799-7f45-4e13-a956-afa600510c98"}]},{"title":"S2B_MSIL2A_20200623T111629_N0214_R037_T43XEM_20200623T130334","link":[{"href":"https://scihub.copernicus.eu/dhus/odata/v1/Products(''154a9d9a-aa51-4504-a944-40e4b8545cf5'')/$value"},{"rel":"alternative","href":"https://scihub.copernicus.eu/dhus/odata/v1/Products(''154a9d9a-aa51-4504-a944-40e4b8545cf5'')/"},{"rel":"icon","href":"https://scihub.copernicus.eu/dhus/odata/v1/Products(''154a9d9a-aa51-4504-a944-40e4b8545cf5'')/Products(''Quicklook'')/$value"}],"id":"154a9d9a-aa51-4504-a944-40e4b8545cf5","summary":"Date:
+        2020-06-23T11:16:29.024Z, Instrument: MSI, Mode: , Satellite: Sentinel-2,
+        Size: 325.49 MB","date":[{"name":"beginposition","content":"2020-06-23T11:16:29.024Z"},{"name":"endposition","content":"2020-06-23T11:16:29.024Z"},{"name":"ingestiondate","content":"2020-06-23T16:31:15.135Z"}],"int":[{"name":"orbitnumber","content":"17223"},{"name":"relativeorbitnumber","content":"37"}],"double":[{"name":"vegetationpercentage","content":"4.13E-4"},{"name":"notvegetatedpercentage","content":"5.86E-4"},{"name":"waterpercentage","content":"0.359434"},{"name":"unclassifiedpercentage","content":"0.0"},{"name":"mediumprobacloudspercentage","content":"2.514756"},{"name":"highprobacloudspercentage","content":"97.120273"},{"name":"snowicepercentage","content":"0.0"},{"name":"cloudcoverpercentage","content":"99.639567"}],"str":[{"name":"level1cpdiidentifier","content":"S2B_OPER_MSI_L1C_TL_EPAE_20200623T122748_A017223_T43XEM_N02.09"},{"name":"gmlfootprint","content":"<gml:Polygon
+        srsName=\"http://www.opengis.net/gml/srs/epsg.xml#4326\" xmlns:gml=\"http://www.opengis.net/gml\">\n   <gml:outerBoundaryIs>\n      <gml:LinearRing>\n         <gml:coordinates>82.79705096013912,74.99856998697413
+        82.80031016028849,75.43352770779394 82.80636180717849,76.62762191543875 82.80931353293198,77.80790859413203
+        82.6425587205415,77.8780028597579 82.56772805595595,77.908734763383 82.56771223385442,77.90237346332216
+        82.56751166197736,77.90244658562979 82.56750677666804,77.90048222028327 82.56750369309437,77.90048335722038
+        82.56749329965281,77.89604259244084 82.56747253857881,77.89605046221902 82.56744433013607,77.88440025097373
+        82.35668425994261,77.96915629207464 82.35668819423901,77.97090170429405 82.35652747813988,77.97096700783901
+        82.35653722699212,77.97543754774757 82.35623883375632,77.97555618222732 82.35624387831251,77.9778832253045
+        82.35624126436643,77.9778842378668 82.35626186920317,77.98724568005001 82.2199425468344,78.02211594215875
+        82.12295367579473,78.04636429512713 82.12290662098204,78.02456347737512 82.12277016676099,78.02459428614468
+        82.12276636258761,78.02276990496499 81.91771214964886,78.06961941881326 81.9177245679038,78.07577587598544
+        81.91748712965891,78.07582870937065 81.91749118117771,78.07787677813332 81.9174348091927,78.07788901006585
+        81.91745471234843,78.08769541712259 81.84296096757132,78.09672259488626 81.86930616823444,74.9987333492778
+        82.79705096013912,74.99856998697413</gml:coordinates>\n      </gml:LinearRing>\n   </gml:outerBoundaryIs>\n</gml:Polygon>"},{"name":"footprint","content":"MULTIPOLYGON
+        (((78.09672259488626 81.84296096757132, 78.08769541712259 81.91745471234843,
+        78.07788901006585 81.9174348091927, 78.07787677813332 81.91749118117771, 78.07582870937065
+        81.91748712965891, 78.07577587598544 81.9177245679038, 78.06961941881326 81.91771214964886,
+        78.02276990496499 82.12276636258761, 78.02459428614468 82.12277016676099,
+        78.02456347737512 82.12290662098204, 78.04636429512713 82.12295367579473,
+        78.02211594215875 82.2199425468344, 77.98724568005001 82.35626186920317, 77.9778842378668
+        82.35624126436643, 77.9778832253045 82.35624387831251, 77.97555618222732 82.35623883375632,
+        77.97543754774757 82.35653722699212, 77.97096700783901 82.35652747813988,
+        77.97090170429405 82.35668819423901, 77.96915629207464 82.35668425994261,
+        77.88440025097373 82.56744433013607, 77.89605046221902 82.56747253857881,
+        77.89604259244084 82.56749329965281, 77.90048335722038 82.56750369309437,
+        77.90048222028327 82.56750677666804, 77.90244658562979 82.56751166197736,
+        77.90237346332216 82.56771223385442, 77.908734763383 82.56772805595595, 77.8780028597579
+        82.6425587205415, 77.80790859413203 82.80931353293198, 76.62762191543875 82.80636180717849,
+        75.43352770779394 82.80031016028849, 74.99856998697413 82.79705096013912,
+        74.9987333492778 81.86930616823444, 78.09672259488626 81.84296096757132)))"},{"name":"format","content":"SAFE"},{"name":"processingbaseline","content":"02.14"},{"name":"platformname","content":"Sentinel-2"},{"name":"filename","content":"S2B_MSIL2A_20200623T111629_N0214_R037_T43XEM_20200623T130334.SAFE"},{"name":"instrumentname","content":"Multi-Spectral
+        Instrument"},{"name":"instrumentshortname","content":"MSI"},{"name":"size","content":"325.49
+        MB"},{"name":"s2datatakeid","content":"GS2B_20200623T111629_017223_N02.14"},{"name":"producttype","content":"S2MSI2A"},{"name":"platformidentifier","content":"2017-013A"},{"name":"orbitdirection","content":"ASCENDING"},{"name":"platformserialidentifier","content":"Sentinel-2B"},{"name":"processinglevel","content":"Level-2A"},{"name":"identifier","content":"S2B_MSIL2A_20200623T111629_N0214_R037_T43XEM_20200623T130334"},{"name":"uuid","content":"154a9d9a-aa51-4504-a944-40e4b8545cf5"}]},{"title":"S2B_MSIL2A_20200623T112119_N0214_R037_T30UVF_20200623T130356","link":[{"href":"https://scihub.copernicus.eu/dhus/odata/v1/Products(''65351a7e-1f55-46c5-957a-f9cce8381185'')/$value"},{"rel":"alternative","href":"https://scihub.copernicus.eu/dhus/odata/v1/Products(''65351a7e-1f55-46c5-957a-f9cce8381185'')/"},{"rel":"icon","href":"https://scihub.copernicus.eu/dhus/odata/v1/Products(''65351a7e-1f55-46c5-957a-f9cce8381185'')/Products(''Quicklook'')/$value"}],"id":"65351a7e-1f55-46c5-957a-f9cce8381185","summary":"Date:
+        2020-06-23T11:21:19.024Z, Instrument: MSI, Mode: , Satellite: Sentinel-2,
+        Size: 643.70 MB","date":[{"name":"beginposition","content":"2020-06-23T11:21:19.024Z"},{"name":"endposition","content":"2020-06-23T11:21:19.024Z"},{"name":"ingestiondate","content":"2020-06-23T16:31:14.717Z"}],"int":[{"name":"orbitnumber","content":"17223"},{"name":"relativeorbitnumber","content":"37"}],"double":[{"name":"vegetationpercentage","content":"0.085287"},{"name":"notvegetatedpercentage","content":"0.035734"},{"name":"waterpercentage","content":"0.397655"},{"name":"unclassifiedpercentage","content":"0.370837"},{"name":"mediumprobacloudspercentage","content":"2.02826"},{"name":"highprobacloudspercentage","content":"94.562089"},{"name":"snowicepercentage","content":"1.792642"},{"name":"cloudcoverpercentage","content":"97.315694"}],"str":[{"name":"level1cpdiidentifier","content":"S2B_OPER_MSI_L1C_TL_EPAE_20200623T122847_A017223_T30UVF_N02.09"},{"name":"gmlfootprint","content":"<gml:Polygon
+        srsName=\"http://www.opengis.net/gml/srs/epsg.xml#4326\" xmlns:gml=\"http://www.opengis.net/gml\">\n   <gml:outerBoundaryIs>\n      <gml:LinearRing>\n         <gml:coordinates>54.05088791686647,-4.459792731565205
+        54.14097789171248,-4.41869117421203 54.28617949260549,-4.351711983566177 54.43154133888163,-4.284941528770857
+        54.576796980924,-4.217287939004886 54.72202832134068,-4.149189857035911 54.86718826995877,-4.080554960047126
+        55.01236030428032,-4.011634766434948 55.040211270400235,-3.99828093142259
+        55.04689020612033,-2.847246726272533 54.06011138907911,-2.850890036308066
+        54.05088791686647,-4.459792731565205</gml:coordinates>\n      </gml:LinearRing>\n   </gml:outerBoundaryIs>\n</gml:Polygon>"},{"name":"footprint","content":"MULTIPOLYGON
+        (((-4.459792731565205 54.05088791686647, -2.850890036308066 54.06011138907911,
+        -2.847246726272533 55.04689020612033, -3.99828093142259 55.040211270400235,
+        -4.011634766434948 55.01236030428032, -4.080554960047126 54.86718826995877,
+        -4.149189857035911 54.72202832134068, -4.217287939004886 54.576796980924,
+        -4.284941528770857 54.43154133888163, -4.351711983566177 54.28617949260549,
+        -4.41869117421203 54.14097789171248, -4.459792731565205 54.05088791686647)))"},{"name":"format","content":"SAFE"},{"name":"processingbaseline","content":"02.14"},{"name":"platformname","content":"Sentinel-2"},{"name":"filename","content":"S2B_MSIL2A_20200623T112119_N0214_R037_T30UVF_20200623T130356.SAFE"},{"name":"instrumentname","content":"Multi-Spectral
+        Instrument"},{"name":"instrumentshortname","content":"MSI"},{"name":"size","content":"643.70
+        MB"},{"name":"s2datatakeid","content":"GS2B_20200623T112119_017223_N02.14"},{"name":"producttype","content":"S2MSI2A"},{"name":"platformidentifier","content":"2017-013A"},{"name":"orbitdirection","content":"DESCENDING"},{"name":"platformserialidentifier","content":"Sentinel-2B"},{"name":"processinglevel","content":"Level-2A"},{"name":"identifier","content":"S2B_MSIL2A_20200623T112119_N0214_R037_T30UVF_20200623T130356"},{"name":"uuid","content":"65351a7e-1f55-46c5-957a-f9cce8381185"}]},{"title":"S2B_MSIL2A_20200623T111629_N0214_R037_T43XDL_20200623T130334","link":[{"href":"https://scihub.copernicus.eu/dhus/odata/v1/Products(''cb3d6b7d-6938-4eb8-862e-1b592d1381a5'')/$value"},{"rel":"alternative","href":"https://scihub.copernicus.eu/dhus/odata/v1/Products(''cb3d6b7d-6938-4eb8-862e-1b592d1381a5'')/"},{"rel":"icon","href":"https://scihub.copernicus.eu/dhus/odata/v1/Products(''cb3d6b7d-6938-4eb8-862e-1b592d1381a5'')/Products(''Quicklook'')/$value"}],"id":"cb3d6b7d-6938-4eb8-862e-1b592d1381a5","summary":"Date:
+        2020-06-23T11:16:29.024Z, Instrument: MSI, Mode: , Satellite: Sentinel-2,
+        Size: 762.70 MB","date":[{"name":"beginposition","content":"2020-06-23T11:16:29.024Z"},{"name":"endposition","content":"2020-06-23T11:16:29.024Z"},{"name":"ingestiondate","content":"2020-06-23T16:31:14.492Z"}],"int":[{"name":"orbitnumber","content":"17223"},{"name":"relativeorbitnumber","content":"37"}],"double":[{"name":"vegetationpercentage","content":"0.0"},{"name":"notvegetatedpercentage","content":"0.0"},{"name":"waterpercentage","content":"0.054217"},{"name":"unclassifiedpercentage","content":"0.0"},{"name":"mediumprobacloudspercentage","content":"2.075225"},{"name":"highprobacloudspercentage","content":"97.856355"},{"name":"snowicepercentage","content":"0.0"},{"name":"cloudcoverpercentage","content":"99.945777"}],"str":[{"name":"level1cpdiidentifier","content":"S2B_OPER_MSI_L1C_TL_EPAE_20200623T122748_A017223_T43XDL_N02.09"},{"name":"gmlfootprint","content":"<gml:Polygon
+        srsName=\"http://www.opengis.net/gml/srs/epsg.xml#4326\" xmlns:gml=\"http://www.opengis.net/gml\">\n   <gml:outerBoundaryIs>\n      <gml:LinearRing>\n         <gml:coordinates>81.90748103627195,68.62188393530005
+        81.95644737476664,75.62478835890376 80.97284377382584,75.55719378094982 80.92925761838922,69.30716094300509
+        81.90748103627195,68.62188393530005</gml:coordinates>\n      </gml:LinearRing>\n   </gml:outerBoundaryIs>\n</gml:Polygon>"},{"name":"footprint","content":"MULTIPOLYGON
+        (((69.30716094300509 80.92925761838922, 75.55719378094982 80.97284377382584,
+        75.62478835890376 81.95644737476664, 68.62188393530005 81.90748103627195,
+        69.30716094300509 80.92925761838922)))"},{"name":"format","content":"SAFE"},{"name":"processingbaseline","content":"02.14"},{"name":"platformname","content":"Sentinel-2"},{"name":"filename","content":"S2B_MSIL2A_20200623T111629_N0214_R037_T43XDL_20200623T130334.SAFE"},{"name":"instrumentname","content":"Multi-Spectral
+        Instrument"},{"name":"instrumentshortname","content":"MSI"},{"name":"size","content":"762.70
+        MB"},{"name":"s2datatakeid","content":"GS2B_20200623T111629_017223_N02.14"},{"name":"producttype","content":"S2MSI2A"},{"name":"platformidentifier","content":"2017-013A"},{"name":"orbitdirection","content":"ASCENDING"},{"name":"platformserialidentifier","content":"Sentinel-2B"},{"name":"processinglevel","content":"Level-2A"},{"name":"identifier","content":"S2B_MSIL2A_20200623T111629_N0214_R037_T43XDL_20200623T130334"},{"name":"uuid","content":"cb3d6b7d-6938-4eb8-862e-1b592d1381a5"}]}]}}'
+    headers:
+      access-control-allow-credentials:
+      - 'true'
+      access-control-allow-origin:
+      - ''
+      content-length:
+      - '19276'
+      content-type:
+      - application/json
+      date:
+      - Tue, 23 Jun 2020 16:32:27 GMT
+      pragma:
+      - no-cache
+      server:
+      - Apache-Coyote/1.1
+      set-cookie:
+      - dhusAuth=ea1a3b69907ce71cfb5090a665dfccf1; Path=/; HttpOnly
+      - dhusIntegrity=0b74759a8fe713f5e7b28bc2ddd71975269dc3e6; Path=/; HttpOnly
+      - JSESSIONID=5F6B9F9DF5B8C796F6AEFA7BC358EA9A; Path=/; HttpOnly
+      transfer-encoding:
+      - chunked
+      vary:
+      - Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '0'
+      User-Agent:
+      - python-requests/2.22.0
+    method: POST
+    uri: https://nominatim.openstreetmap.org/search?q=Metz&format=geojson
+  response:
+    body:
+      string: "{\"type\":\"FeatureCollection\",\"licence\":\"Data \xA9 OpenStreetMap
+        contributors, ODbL 1.0. https://osm.org/copyright\",\"features\":[{\"type\":\"Feature\",\"properties\":{\"place_id\":235535315,\"osm_type\":\"relation\",\"osm_id\":450381,\"display_name\":\"Metz,
+        Moselle, Grand Est, France m\xE9tropolitaine, France\",\"place_rank\":16,\"category\":\"boundary\",\"type\":\"administrative\",\"importance\":0.7519914762865919,\"icon\":\"https://nominatim.openstreetmap.org/images/mapicons/poi_boundary_administrative.p.20.png\"},\"bbox\":[6.1360042,49.0608244,6.256451,49.1487955],\"geometry\":{\"type\":\"Point\",\"coordinates\":[6.1763552,49.1196964]}},{\"type\":\"Feature\",\"properties\":{\"place_id\":236135487,\"osm_type\":\"relation\",\"osm_id\":5524891,\"display_name\":\"Metz,
+        Moselle, Grand Est, France m\xE9tropolitaine, France\",\"place_rank\":14,\"category\":\"boundary\",\"type\":\"administrative\",\"importance\":0.5802836358825189,\"icon\":\"https://nominatim.openstreetmap.org/images/mapicons/poi_boundary_administrative.p.20.png\"},\"bbox\":[5.9245677,48.9047808,6.5006806,49.2727216],\"geometry\":{\"type\":\"Point\",\"coordinates\":[6.212870635074653,49.088735099999994]}},{\"type\":\"Feature\",\"properties\":{\"place_id\":443004,\"osm_type\":\"node\",\"osm_id\":153859791,\"display_name\":\"Metz,
+        Metz Township, Presque Isle County, Michigan, United States of America\",\"place_rank\":19,\"category\":\"place\",\"type\":\"village\",\"importance\":0.5511484119678924,\"icon\":\"https://nominatim.openstreetmap.org/images/mapicons/poi_place_village.p.20.png\"},\"bbox\":[-83.821383,45.269735,-83.781383,45.309735],\"geometry\":{\"type\":\"Point\",\"coordinates\":[-83.801383,45.289735]}},{\"type\":\"Feature\",\"properties\":{\"place_id\":234942829,\"osm_type\":\"relation\",\"osm_id\":141496,\"display_name\":\"Metz,
+        Vernon County, Missouri, 64765, United States of America\",\"place_rank\":16,\"category\":\"boundary\",\"type\":\"administrative\",\"importance\":0.4752906718837796,\"icon\":\"https://nominatim.openstreetmap.org/images/mapicons/poi_boundary_administrative.p.20.png\"},\"bbox\":[-94.447665,37.994531,-94.4383,37.998437],\"geometry\":{\"type\":\"Point\",\"coordinates\":[-94.44295146659815,37.9969785]}},{\"type\":\"Feature\",\"properties\":{\"place_id\":461326,\"osm_type\":\"node\",\"osm_id\":154379562,\"display_name\":\"Metz,
+        Marion County, West Virginia, 26585, United States of America\",\"place_rank\":20,\"category\":\"place\",\"type\":\"hamlet\",\"importance\":0.38308187049262343,\"icon\":\"https://nominatim.openstreetmap.org/images/mapicons/poi_place_village.p.20.png\"},\"bbox\":[-80.3899634,39.5602748,-80.3499634,39.6002748],\"geometry\":{\"type\":\"Point\",\"coordinates\":[-80.3699634,39.5802748]}},{\"type\":\"Feature\",\"properties\":{\"place_id\":473283,\"osm_type\":\"node\",\"osm_id\":154381412,\"display_name\":\"Metz,
+        Steuben County, Indiana, United States of America\",\"place_rank\":20,\"category\":\"place\",\"type\":\"hamlet\",\"importance\":0.37526985874952823,\"icon\":\"https://nominatim.openstreetmap.org/images/mapicons/poi_place_village.p.20.png\"},\"bbox\":[-84.8594033,41.5961614,-84.8194033,41.6361614],\"geometry\":{\"type\":\"Point\",\"coordinates\":[-84.8394033,41.6161614]}},{\"type\":\"Feature\",\"properties\":{\"place_id\":70695328,\"osm_type\":\"node\",\"osm_id\":6187932136,\"display_name\":\"Metz,
+        Heiligenstein, S\xE9lestat-Erstein, Bas-Rhin, Grand Est, France m\xE9tropolitaine,
+        67140, France\",\"place_rank\":20,\"category\":\"place\",\"type\":\"locality\",\"importance\":0.36,\"icon\":\"https://nominatim.openstreetmap.org/images/mapicons/poi_place_village.p.20.png\"},\"bbox\":[7.4195112,48.4102973,7.4395112,48.4302973],\"geometry\":{\"type\":\"Point\",\"coordinates\":[7.4295112,48.4202973]}},{\"type\":\"Feature\",\"properties\":{\"place_id\":19081255,\"osm_type\":\"node\",\"osm_id\":1907896278,\"display_name\":\"Metz,
+        Ector County, Texas, United States of America\",\"place_rank\":20,\"category\":\"place\",\"type\":\"locality\",\"importance\":0.36,\"icon\":\"https://nominatim.openstreetmap.org/images/mapicons/poi_place_village.p.20.png\"},\"bbox\":[-102.667092,31.693462,-102.647092,31.713462],\"geometry\":{\"type\":\"Point\",\"coordinates\":[-102.657092,31.703462]}},{\"type\":\"Feature\",\"properties\":{\"place_id\":19302878,\"osm_type\":\"node\",\"osm_id\":1943369786,\"display_name\":\"Metz,
+        Sarre, Valle d'Aosta/Vall\xE9e d'Aoste, Italia\",\"place_rank\":20,\"category\":\"place\",\"type\":\"hamlet\",\"importance\":0.36,\"icon\":\"https://nominatim.openstreetmap.org/images/mapicons/poi_place_village.p.20.png\"},\"bbox\":[7.2443646,45.731577,7.2843646,45.771577],\"geometry\":{\"type\":\"Point\",\"coordinates\":[7.2643646,45.751577]}},{\"type\":\"Feature\",\"properties\":{\"place_id\":354198,\"osm_type\":\"node\",\"osm_id\":150940565,\"display_name\":\"Metz,
+        Monterey County, California, 93927, United States of America\",\"place_rank\":20,\"category\":\"place\",\"type\":\"hamlet\",\"importance\":0.36,\"icon\":\"https://nominatim.openstreetmap.org/images/mapicons/poi_place_village.p.20.png\"},\"bbox\":[-121.2315899,36.334966,-121.1915899,36.374966],\"geometry\":{\"type\":\"Point\",\"coordinates\":[-121.2115899,36.354966]}}]}"
+    headers:
+      Access-Control-Allow-Methods:
+      - OPTIONS,GET
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Type:
+      - application/json; charset=UTF-8
+      Keep-Alive:
+      - timeout=20
+      Server:
+      - nginx
+    status:
+      code: 200
+      message: OK
+- request:
+    body: q=beginPosition%3A%5BNOW-1DAY+TO+NOW%5D
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '39'
+      Content-Type:
+      - application/x-www-form-urlencoded; charset=UTF-8
+      User-Agent:
+      - sentinelsat/0.14
+    method: POST
+    uri: https://scihub.copernicus.eu/dhus/search?format=json&rows=5&start=0
+  response:
+    body:
+      string: '{"feed":{"xmlns:opensearch":"http://a9.com/-/spec/opensearch/1.1/","xmlns":"http://www.w3.org/2005/Atom","title":"Sentinels
+        Scientific Data Hub search results for: beginPosition:[NOW-1DAY TO NOW]","subtitle":"Displaying
+        0 to 4 of 23106 total results. Request done in 0.005 seconds.","updated":"2020-06-23T16:32:27.472Z","author":{"name":"Sentinels
+        Scientific Data Hub"},"id":"https://scihub.copernicus.eu/dhus/search?q=beginPosition:[NOW-1DAY
+        TO NOW]","opensearch:totalResults":"23106","opensearch:startIndex":"0","opensearch:itemsPerPage":"5","opensearch:Query":{"role":"request","searchTerms":"beginPosition:[NOW-1DAY
+        TO NOW]","startPage":"1"},"link":[{"rel":"self","type":"application/atom+xml","href":"https://scihub.copernicus.eu/dhus/search?q=beginPosition:[NOW-1DAY
+        TO NOW]&start=0&rows=5"},{"rel":"first","type":"application/atom+xml","href":"https://scihub.copernicus.eu/dhus/search?q=beginPosition:[NOW-1DAY
+        TO NOW]&start=0&rows=5"},{"rel":"next","type":"application/atom+xml","href":"https://scihub.copernicus.eu/dhus/search?q=beginPosition:[NOW-1DAY
+        TO NOW]&start=5&rows=5"},{"rel":"last","type":"application/atom+xml","href":"https://scihub.copernicus.eu/dhus/search?q=beginPosition:[NOW-1DAY
+        TO NOW]&start=23105&rows=5"},{"rel":"search","type":"application/opensearchdescription+xml","href":"opensearch_description.xml"}],"entry":[{"title":"S2B_MSIL2A_20200623T111629_N0214_R037_T41XML_20200623T130334","link":[{"href":"https://scihub.copernicus.eu/dhus/odata/v1/Products(''85e66bc0-3d28-4191-b0c6-cbaccb5df654'')/$value"},{"rel":"alternative","href":"https://scihub.copernicus.eu/dhus/odata/v1/Products(''85e66bc0-3d28-4191-b0c6-cbaccb5df654'')/"},{"rel":"icon","href":"https://scihub.copernicus.eu/dhus/odata/v1/Products(''85e66bc0-3d28-4191-b0c6-cbaccb5df654'')/Products(''Quicklook'')/$value"}],"id":"85e66bc0-3d28-4191-b0c6-cbaccb5df654","summary":"Date:
+        2020-06-23T11:16:29.024Z, Instrument: MSI, Mode: , Satellite: Sentinel-2,
+        Size: 860.34 MB","date":[{"name":"beginposition","content":"2020-06-23T11:16:29.024Z"},{"name":"endposition","content":"2020-06-23T11:16:29.024Z"},{"name":"ingestiondate","content":"2020-06-23T16:31:23.549Z"}],"int":[{"name":"orbitnumber","content":"17223"},{"name":"relativeorbitnumber","content":"37"}],"double":[{"name":"vegetationpercentage","content":"1.23E-4"},{"name":"notvegetatedpercentage","content":"3.7200000000000004E-4"},{"name":"waterpercentage","content":"6.450569"},{"name":"unclassifiedpercentage","content":"0.002674"},{"name":"mediumprobacloudspercentage","content":"0.601046"},{"name":"highprobacloudspercentage","content":"55.052352"},{"name":"snowicepercentage","content":"36.988425"},{"name":"cloudcoverpercentage","content":"56.176578"}],"str":[{"name":"level1cpdiidentifier","content":"S2B_OPER_MSI_L1C_TL_EPAE_20200623T122748_A017223_T41XML_N02.09"},{"name":"gmlfootprint","content":"<gml:Polygon
+        srsName=\"http://www.opengis.net/gml/srs/epsg.xml#4326\" xmlns:gml=\"http://www.opengis.net/gml\">\n   <gml:outerBoundaryIs>\n      <gml:LinearRing>\n         <gml:coordinates>81.90748103627195,56.62188393530005
+        81.95644737476664,63.62478835890375 80.97284377382584,63.55719378094982 80.92925761838922,57.30716094300509
+        81.90748103627195,56.62188393530005</gml:coordinates>\n      </gml:LinearRing>\n   </gml:outerBoundaryIs>\n</gml:Polygon>"},{"name":"footprint","content":"MULTIPOLYGON
+        (((57.30716094300509 80.92925761838922, 63.55719378094982 80.97284377382584,
+        63.62478835890375 81.95644737476664, 56.62188393530005 81.90748103627195,
+        57.30716094300509 80.92925761838922)))"},{"name":"format","content":"SAFE"},{"name":"processingbaseline","content":"02.14"},{"name":"platformname","content":"Sentinel-2"},{"name":"filename","content":"S2B_MSIL2A_20200623T111629_N0214_R037_T41XML_20200623T130334.SAFE"},{"name":"instrumentname","content":"Multi-Spectral
+        Instrument"},{"name":"instrumentshortname","content":"MSI"},{"name":"size","content":"860.34
+        MB"},{"name":"s2datatakeid","content":"GS2B_20200623T111629_017223_N02.14"},{"name":"producttype","content":"S2MSI2A"},{"name":"platformidentifier","content":"2017-013A"},{"name":"orbitdirection","content":"ASCENDING"},{"name":"platformserialidentifier","content":"Sentinel-2B"},{"name":"processinglevel","content":"Level-2A"},{"name":"identifier","content":"S2B_MSIL2A_20200623T111629_N0214_R037_T41XML_20200623T130334"},{"name":"uuid","content":"85e66bc0-3d28-4191-b0c6-cbaccb5df654"}]},{"title":"S2B_MSIL2A_20200623T112119_N0214_R037_T30UWG_20200623T130356","link":[{"href":"https://scihub.copernicus.eu/dhus/odata/v1/Products(''d51bc799-7f45-4e13-a956-afa600510c98'')/$value"},{"rel":"alternative","href":"https://scihub.copernicus.eu/dhus/odata/v1/Products(''d51bc799-7f45-4e13-a956-afa600510c98'')/"},{"rel":"icon","href":"https://scihub.copernicus.eu/dhus/odata/v1/Products(''d51bc799-7f45-4e13-a956-afa600510c98'')/Products(''Quicklook'')/$value"}],"id":"d51bc799-7f45-4e13-a956-afa600510c98","summary":"Date:
+        2020-06-23T11:21:19.024Z, Instrument: MSI, Mode: , Satellite: Sentinel-2,
+        Size: 918.33 MB","date":[{"name":"beginposition","content":"2020-06-23T11:21:19.024Z"},{"name":"endposition","content":"2020-06-23T11:21:19.024Z"},{"name":"ingestiondate","content":"2020-06-23T16:31:23.38Z"}],"int":[{"name":"orbitnumber","content":"17223"},{"name":"relativeorbitnumber","content":"37"}],"double":[{"name":"vegetationpercentage","content":"5.675207"},{"name":"notvegetatedpercentage","content":"1.471272"},{"name":"waterpercentage","content":"8.648524"},{"name":"unclassifiedpercentage","content":"3.76879"},{"name":"mediumprobacloudspercentage","content":"7.843614"},{"name":"highprobacloudspercentage","content":"68.229151"},{"name":"snowicepercentage","content":"1.000438"},{"name":"cloudcoverpercentage","content":"79.074795"}],"str":[{"name":"level1cpdiidentifier","content":"S2B_OPER_MSI_L1C_TL_EPAE_20200623T122847_A017223_T30UWG_N02.09"},{"name":"gmlfootprint","content":"<gml:Polygon
+        srsName=\"http://www.opengis.net/gml/srs/epsg.xml#4326\" xmlns:gml=\"http://www.opengis.net/gml\">\n   <gml:outerBoundaryIs>\n      <gml:LinearRing>\n         <gml:coordinates>55.94573440279175,-3.000320229664234
+        55.93320247103479,-1.242724305102424 54.947017819877004,-1.286014515386122
+        54.959098874363285,-3.000312336088999 55.94573440279175,-3.000320229664234</gml:coordinates>\n      </gml:LinearRing>\n   </gml:outerBoundaryIs>\n</gml:Polygon>"},{"name":"footprint","content":"MULTIPOLYGON
+        (((-1.286014515386122 54.947017819877004, -1.242724305102424 55.93320247103479,
+        -3.000320229664234 55.94573440279175, -3.000312336088999 54.959098874363285,
+        -1.286014515386122 54.947017819877004)))"},{"name":"format","content":"SAFE"},{"name":"processingbaseline","content":"02.14"},{"name":"platformname","content":"Sentinel-2"},{"name":"filename","content":"S2B_MSIL2A_20200623T112119_N0214_R037_T30UWG_20200623T130356.SAFE"},{"name":"instrumentname","content":"Multi-Spectral
+        Instrument"},{"name":"instrumentshortname","content":"MSI"},{"name":"size","content":"918.33
+        MB"},{"name":"s2datatakeid","content":"GS2B_20200623T112119_017223_N02.14"},{"name":"producttype","content":"S2MSI2A"},{"name":"platformidentifier","content":"2017-013A"},{"name":"orbitdirection","content":"DESCENDING"},{"name":"platformserialidentifier","content":"Sentinel-2B"},{"name":"processinglevel","content":"Level-2A"},{"name":"identifier","content":"S2B_MSIL2A_20200623T112119_N0214_R037_T30UWG_20200623T130356"},{"name":"uuid","content":"d51bc799-7f45-4e13-a956-afa600510c98"}]},{"title":"S2B_MSIL2A_20200623T111629_N0214_R037_T43XEM_20200623T130334","link":[{"href":"https://scihub.copernicus.eu/dhus/odata/v1/Products(''154a9d9a-aa51-4504-a944-40e4b8545cf5'')/$value"},{"rel":"alternative","href":"https://scihub.copernicus.eu/dhus/odata/v1/Products(''154a9d9a-aa51-4504-a944-40e4b8545cf5'')/"},{"rel":"icon","href":"https://scihub.copernicus.eu/dhus/odata/v1/Products(''154a9d9a-aa51-4504-a944-40e4b8545cf5'')/Products(''Quicklook'')/$value"}],"id":"154a9d9a-aa51-4504-a944-40e4b8545cf5","summary":"Date:
+        2020-06-23T11:16:29.024Z, Instrument: MSI, Mode: , Satellite: Sentinel-2,
+        Size: 325.49 MB","date":[{"name":"beginposition","content":"2020-06-23T11:16:29.024Z"},{"name":"endposition","content":"2020-06-23T11:16:29.024Z"},{"name":"ingestiondate","content":"2020-06-23T16:31:15.135Z"}],"int":[{"name":"orbitnumber","content":"17223"},{"name":"relativeorbitnumber","content":"37"}],"double":[{"name":"vegetationpercentage","content":"4.13E-4"},{"name":"notvegetatedpercentage","content":"5.86E-4"},{"name":"waterpercentage","content":"0.359434"},{"name":"unclassifiedpercentage","content":"0.0"},{"name":"mediumprobacloudspercentage","content":"2.514756"},{"name":"highprobacloudspercentage","content":"97.120273"},{"name":"snowicepercentage","content":"0.0"},{"name":"cloudcoverpercentage","content":"99.639567"}],"str":[{"name":"level1cpdiidentifier","content":"S2B_OPER_MSI_L1C_TL_EPAE_20200623T122748_A017223_T43XEM_N02.09"},{"name":"gmlfootprint","content":"<gml:Polygon
+        srsName=\"http://www.opengis.net/gml/srs/epsg.xml#4326\" xmlns:gml=\"http://www.opengis.net/gml\">\n   <gml:outerBoundaryIs>\n      <gml:LinearRing>\n         <gml:coordinates>82.79705096013912,74.99856998697413
+        82.80031016028849,75.43352770779394 82.80636180717849,76.62762191543875 82.80931353293198,77.80790859413203
+        82.6425587205415,77.8780028597579 82.56772805595595,77.908734763383 82.56771223385442,77.90237346332216
+        82.56751166197736,77.90244658562979 82.56750677666804,77.90048222028327 82.56750369309437,77.90048335722038
+        82.56749329965281,77.89604259244084 82.56747253857881,77.89605046221902 82.56744433013607,77.88440025097373
+        82.35668425994261,77.96915629207464 82.35668819423901,77.97090170429405 82.35652747813988,77.97096700783901
+        82.35653722699212,77.97543754774757 82.35623883375632,77.97555618222732 82.35624387831251,77.9778832253045
+        82.35624126436643,77.9778842378668 82.35626186920317,77.98724568005001 82.2199425468344,78.02211594215875
+        82.12295367579473,78.04636429512713 82.12290662098204,78.02456347737512 82.12277016676099,78.02459428614468
+        82.12276636258761,78.02276990496499 81.91771214964886,78.06961941881326 81.9177245679038,78.07577587598544
+        81.91748712965891,78.07582870937065 81.91749118117771,78.07787677813332 81.9174348091927,78.07788901006585
+        81.91745471234843,78.08769541712259 81.84296096757132,78.09672259488626 81.86930616823444,74.9987333492778
+        82.79705096013912,74.99856998697413</gml:coordinates>\n      </gml:LinearRing>\n   </gml:outerBoundaryIs>\n</gml:Polygon>"},{"name":"footprint","content":"MULTIPOLYGON
+        (((78.09672259488626 81.84296096757132, 78.08769541712259 81.91745471234843,
+        78.07788901006585 81.9174348091927, 78.07787677813332 81.91749118117771, 78.07582870937065
+        81.91748712965891, 78.07577587598544 81.9177245679038, 78.06961941881326 81.91771214964886,
+        78.02276990496499 82.12276636258761, 78.02459428614468 82.12277016676099,
+        78.02456347737512 82.12290662098204, 78.04636429512713 82.12295367579473,
+        78.02211594215875 82.2199425468344, 77.98724568005001 82.35626186920317, 77.9778842378668
+        82.35624126436643, 77.9778832253045 82.35624387831251, 77.97555618222732 82.35623883375632,
+        77.97543754774757 82.35653722699212, 77.97096700783901 82.35652747813988,
+        77.97090170429405 82.35668819423901, 77.96915629207464 82.35668425994261,
+        77.88440025097373 82.56744433013607, 77.89605046221902 82.56747253857881,
+        77.89604259244084 82.56749329965281, 77.90048335722038 82.56750369309437,
+        77.90048222028327 82.56750677666804, 77.90244658562979 82.56751166197736,
+        77.90237346332216 82.56771223385442, 77.908734763383 82.56772805595595, 77.8780028597579
+        82.6425587205415, 77.80790859413203 82.80931353293198, 76.62762191543875 82.80636180717849,
+        75.43352770779394 82.80031016028849, 74.99856998697413 82.79705096013912,
+        74.9987333492778 81.86930616823444, 78.09672259488626 81.84296096757132)))"},{"name":"format","content":"SAFE"},{"name":"processingbaseline","content":"02.14"},{"name":"platformname","content":"Sentinel-2"},{"name":"filename","content":"S2B_MSIL2A_20200623T111629_N0214_R037_T43XEM_20200623T130334.SAFE"},{"name":"instrumentname","content":"Multi-Spectral
+        Instrument"},{"name":"instrumentshortname","content":"MSI"},{"name":"size","content":"325.49
+        MB"},{"name":"s2datatakeid","content":"GS2B_20200623T111629_017223_N02.14"},{"name":"producttype","content":"S2MSI2A"},{"name":"platformidentifier","content":"2017-013A"},{"name":"orbitdirection","content":"ASCENDING"},{"name":"platformserialidentifier","content":"Sentinel-2B"},{"name":"processinglevel","content":"Level-2A"},{"name":"identifier","content":"S2B_MSIL2A_20200623T111629_N0214_R037_T43XEM_20200623T130334"},{"name":"uuid","content":"154a9d9a-aa51-4504-a944-40e4b8545cf5"}]},{"title":"S2B_MSIL2A_20200623T112119_N0214_R037_T30UVF_20200623T130356","link":[{"href":"https://scihub.copernicus.eu/dhus/odata/v1/Products(''65351a7e-1f55-46c5-957a-f9cce8381185'')/$value"},{"rel":"alternative","href":"https://scihub.copernicus.eu/dhus/odata/v1/Products(''65351a7e-1f55-46c5-957a-f9cce8381185'')/"},{"rel":"icon","href":"https://scihub.copernicus.eu/dhus/odata/v1/Products(''65351a7e-1f55-46c5-957a-f9cce8381185'')/Products(''Quicklook'')/$value"}],"id":"65351a7e-1f55-46c5-957a-f9cce8381185","summary":"Date:
+        2020-06-23T11:21:19.024Z, Instrument: MSI, Mode: , Satellite: Sentinel-2,
+        Size: 643.70 MB","date":[{"name":"beginposition","content":"2020-06-23T11:21:19.024Z"},{"name":"endposition","content":"2020-06-23T11:21:19.024Z"},{"name":"ingestiondate","content":"2020-06-23T16:31:14.717Z"}],"int":[{"name":"orbitnumber","content":"17223"},{"name":"relativeorbitnumber","content":"37"}],"double":[{"name":"vegetationpercentage","content":"0.085287"},{"name":"notvegetatedpercentage","content":"0.035734"},{"name":"waterpercentage","content":"0.397655"},{"name":"unclassifiedpercentage","content":"0.370837"},{"name":"mediumprobacloudspercentage","content":"2.02826"},{"name":"highprobacloudspercentage","content":"94.562089"},{"name":"snowicepercentage","content":"1.792642"},{"name":"cloudcoverpercentage","content":"97.315694"}],"str":[{"name":"level1cpdiidentifier","content":"S2B_OPER_MSI_L1C_TL_EPAE_20200623T122847_A017223_T30UVF_N02.09"},{"name":"gmlfootprint","content":"<gml:Polygon
+        srsName=\"http://www.opengis.net/gml/srs/epsg.xml#4326\" xmlns:gml=\"http://www.opengis.net/gml\">\n   <gml:outerBoundaryIs>\n      <gml:LinearRing>\n         <gml:coordinates>54.05088791686647,-4.459792731565205
+        54.14097789171248,-4.41869117421203 54.28617949260549,-4.351711983566177 54.43154133888163,-4.284941528770857
+        54.576796980924,-4.217287939004886 54.72202832134068,-4.149189857035911 54.86718826995877,-4.080554960047126
+        55.01236030428032,-4.011634766434948 55.040211270400235,-3.99828093142259
+        55.04689020612033,-2.847246726272533 54.06011138907911,-2.850890036308066
+        54.05088791686647,-4.459792731565205</gml:coordinates>\n      </gml:LinearRing>\n   </gml:outerBoundaryIs>\n</gml:Polygon>"},{"name":"footprint","content":"MULTIPOLYGON
+        (((-4.459792731565205 54.05088791686647, -2.850890036308066 54.06011138907911,
+        -2.847246726272533 55.04689020612033, -3.99828093142259 55.040211270400235,
+        -4.011634766434948 55.01236030428032, -4.080554960047126 54.86718826995877,
+        -4.149189857035911 54.72202832134068, -4.217287939004886 54.576796980924,
+        -4.284941528770857 54.43154133888163, -4.351711983566177 54.28617949260549,
+        -4.41869117421203 54.14097789171248, -4.459792731565205 54.05088791686647)))"},{"name":"format","content":"SAFE"},{"name":"processingbaseline","content":"02.14"},{"name":"platformname","content":"Sentinel-2"},{"name":"filename","content":"S2B_MSIL2A_20200623T112119_N0214_R037_T30UVF_20200623T130356.SAFE"},{"name":"instrumentname","content":"Multi-Spectral
+        Instrument"},{"name":"instrumentshortname","content":"MSI"},{"name":"size","content":"643.70
+        MB"},{"name":"s2datatakeid","content":"GS2B_20200623T112119_017223_N02.14"},{"name":"producttype","content":"S2MSI2A"},{"name":"platformidentifier","content":"2017-013A"},{"name":"orbitdirection","content":"DESCENDING"},{"name":"platformserialidentifier","content":"Sentinel-2B"},{"name":"processinglevel","content":"Level-2A"},{"name":"identifier","content":"S2B_MSIL2A_20200623T112119_N0214_R037_T30UVF_20200623T130356"},{"name":"uuid","content":"65351a7e-1f55-46c5-957a-f9cce8381185"}]},{"title":"S2B_MSIL2A_20200623T111629_N0214_R037_T43XDL_20200623T130334","link":[{"href":"https://scihub.copernicus.eu/dhus/odata/v1/Products(''cb3d6b7d-6938-4eb8-862e-1b592d1381a5'')/$value"},{"rel":"alternative","href":"https://scihub.copernicus.eu/dhus/odata/v1/Products(''cb3d6b7d-6938-4eb8-862e-1b592d1381a5'')/"},{"rel":"icon","href":"https://scihub.copernicus.eu/dhus/odata/v1/Products(''cb3d6b7d-6938-4eb8-862e-1b592d1381a5'')/Products(''Quicklook'')/$value"}],"id":"cb3d6b7d-6938-4eb8-862e-1b592d1381a5","summary":"Date:
+        2020-06-23T11:16:29.024Z, Instrument: MSI, Mode: , Satellite: Sentinel-2,
+        Size: 762.70 MB","date":[{"name":"beginposition","content":"2020-06-23T11:16:29.024Z"},{"name":"endposition","content":"2020-06-23T11:16:29.024Z"},{"name":"ingestiondate","content":"2020-06-23T16:31:14.492Z"}],"int":[{"name":"orbitnumber","content":"17223"},{"name":"relativeorbitnumber","content":"37"}],"double":[{"name":"vegetationpercentage","content":"0.0"},{"name":"notvegetatedpercentage","content":"0.0"},{"name":"waterpercentage","content":"0.054217"},{"name":"unclassifiedpercentage","content":"0.0"},{"name":"mediumprobacloudspercentage","content":"2.075225"},{"name":"highprobacloudspercentage","content":"97.856355"},{"name":"snowicepercentage","content":"0.0"},{"name":"cloudcoverpercentage","content":"99.945777"}],"str":[{"name":"level1cpdiidentifier","content":"S2B_OPER_MSI_L1C_TL_EPAE_20200623T122748_A017223_T43XDL_N02.09"},{"name":"gmlfootprint","content":"<gml:Polygon
+        srsName=\"http://www.opengis.net/gml/srs/epsg.xml#4326\" xmlns:gml=\"http://www.opengis.net/gml\">\n   <gml:outerBoundaryIs>\n      <gml:LinearRing>\n         <gml:coordinates>81.90748103627195,68.62188393530005
+        81.95644737476664,75.62478835890376 80.97284377382584,75.55719378094982 80.92925761838922,69.30716094300509
+        81.90748103627195,68.62188393530005</gml:coordinates>\n      </gml:LinearRing>\n   </gml:outerBoundaryIs>\n</gml:Polygon>"},{"name":"footprint","content":"MULTIPOLYGON
+        (((69.30716094300509 80.92925761838922, 75.55719378094982 80.97284377382584,
+        75.62478835890376 81.95644737476664, 68.62188393530005 81.90748103627195,
+        69.30716094300509 80.92925761838922)))"},{"name":"format","content":"SAFE"},{"name":"processingbaseline","content":"02.14"},{"name":"platformname","content":"Sentinel-2"},{"name":"filename","content":"S2B_MSIL2A_20200623T111629_N0214_R037_T43XDL_20200623T130334.SAFE"},{"name":"instrumentname","content":"Multi-Spectral
+        Instrument"},{"name":"instrumentshortname","content":"MSI"},{"name":"size","content":"762.70
+        MB"},{"name":"s2datatakeid","content":"GS2B_20200623T111629_017223_N02.14"},{"name":"producttype","content":"S2MSI2A"},{"name":"platformidentifier","content":"2017-013A"},{"name":"orbitdirection","content":"ASCENDING"},{"name":"platformserialidentifier","content":"Sentinel-2B"},{"name":"processinglevel","content":"Level-2A"},{"name":"identifier","content":"S2B_MSIL2A_20200623T111629_N0214_R037_T43XDL_20200623T130334"},{"name":"uuid","content":"cb3d6b7d-6938-4eb8-862e-1b592d1381a5"}]}]}}'
+    headers:
+      access-control-allow-credentials:
+      - 'true'
+      access-control-allow-origin:
+      - ''
+      content-length:
+      - '19276'
+      content-type:
+      - application/json
+      date:
+      - Tue, 23 Jun 2020 16:32:27 GMT
+      pragma:
+      - no-cache
+      server:
+      - Apache-Coyote/1.1
+      set-cookie:
+      - dhusAuth=ea1a3b69907ce71cfb5090a665dfccf1; Path=/; HttpOnly
+      - dhusIntegrity=0b74759a8fe713f5e7b28bc2ddd71975269dc3e6; Path=/; HttpOnly
+      - JSESSIONID=5F6B9F9DF5B8C796F6AEFA7BC358EA9A; Path=/; HttpOnly
+      transfer-encoding:
+      - chunked
+      vary:
+      - Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '0'
+      User-Agent:
+      - python-requests/2.22.0
+    method: POST
+    uri: https://nominatim.openstreetmap.org/search?q=Metz&format=geojson
+  response:
+    body:
+      string: "{\"type\":\"FeatureCollection\",\"licence\":\"Data \xA9 OpenStreetMap
+        contributors, ODbL 1.0. https://osm.org/copyright\",\"features\":[{\"type\":\"Feature\",\"properties\":{\"place_id\":235535315,\"osm_type\":\"relation\",\"osm_id\":450381,\"display_name\":\"Metz,
+        Moselle, Grand Est, France m\xE9tropolitaine, France\",\"place_rank\":16,\"category\":\"boundary\",\"type\":\"administrative\",\"importance\":0.7519914762865919,\"icon\":\"https://nominatim.openstreetmap.org/images/mapicons/poi_boundary_administrative.p.20.png\"},\"bbox\":[6.1360042,49.0608244,6.256451,49.1487955],\"geometry\":{\"type\":\"Point\",\"coordinates\":[6.1763552,49.1196964]}},{\"type\":\"Feature\",\"properties\":{\"place_id\":236135487,\"osm_type\":\"relation\",\"osm_id\":5524891,\"display_name\":\"Metz,
+        Moselle, Grand Est, France m\xE9tropolitaine, France\",\"place_rank\":14,\"category\":\"boundary\",\"type\":\"administrative\",\"importance\":0.5802836358825189,\"icon\":\"https://nominatim.openstreetmap.org/images/mapicons/poi_boundary_administrative.p.20.png\"},\"bbox\":[5.9245677,48.9047808,6.5006806,49.2727216],\"geometry\":{\"type\":\"Point\",\"coordinates\":[6.212870635074653,49.088735099999994]}},{\"type\":\"Feature\",\"properties\":{\"place_id\":443004,\"osm_type\":\"node\",\"osm_id\":153859791,\"display_name\":\"Metz,
+        Metz Township, Presque Isle County, Michigan, United States of America\",\"place_rank\":19,\"category\":\"place\",\"type\":\"village\",\"importance\":0.5511484119678924,\"icon\":\"https://nominatim.openstreetmap.org/images/mapicons/poi_place_village.p.20.png\"},\"bbox\":[-83.821383,45.269735,-83.781383,45.309735],\"geometry\":{\"type\":\"Point\",\"coordinates\":[-83.801383,45.289735]}},{\"type\":\"Feature\",\"properties\":{\"place_id\":234942829,\"osm_type\":\"relation\",\"osm_id\":141496,\"display_name\":\"Metz,
+        Vernon County, Missouri, 64765, United States of America\",\"place_rank\":16,\"category\":\"boundary\",\"type\":\"administrative\",\"importance\":0.4752906718837796,\"icon\":\"https://nominatim.openstreetmap.org/images/mapicons/poi_boundary_administrative.p.20.png\"},\"bbox\":[-94.447665,37.994531,-94.4383,37.998437],\"geometry\":{\"type\":\"Point\",\"coordinates\":[-94.44295146659815,37.9969785]}},{\"type\":\"Feature\",\"properties\":{\"place_id\":461326,\"osm_type\":\"node\",\"osm_id\":154379562,\"display_name\":\"Metz,
+        Marion County, West Virginia, 26585, United States of America\",\"place_rank\":20,\"category\":\"place\",\"type\":\"hamlet\",\"importance\":0.38308187049262343,\"icon\":\"https://nominatim.openstreetmap.org/images/mapicons/poi_place_village.p.20.png\"},\"bbox\":[-80.3899634,39.5602748,-80.3499634,39.6002748],\"geometry\":{\"type\":\"Point\",\"coordinates\":[-80.3699634,39.5802748]}},{\"type\":\"Feature\",\"properties\":{\"place_id\":473283,\"osm_type\":\"node\",\"osm_id\":154381412,\"display_name\":\"Metz,
+        Steuben County, Indiana, United States of America\",\"place_rank\":20,\"category\":\"place\",\"type\":\"hamlet\",\"importance\":0.37526985874952823,\"icon\":\"https://nominatim.openstreetmap.org/images/mapicons/poi_place_village.p.20.png\"},\"bbox\":[-84.8594033,41.5961614,-84.8194033,41.6361614],\"geometry\":{\"type\":\"Point\",\"coordinates\":[-84.8394033,41.6161614]}},{\"type\":\"Feature\",\"properties\":{\"place_id\":70695328,\"osm_type\":\"node\",\"osm_id\":6187932136,\"display_name\":\"Metz,
+        Heiligenstein, S\xE9lestat-Erstein, Bas-Rhin, Grand Est, France m\xE9tropolitaine,
+        67140, France\",\"place_rank\":20,\"category\":\"place\",\"type\":\"locality\",\"importance\":0.36,\"icon\":\"https://nominatim.openstreetmap.org/images/mapicons/poi_place_village.p.20.png\"},\"bbox\":[7.4195112,48.4102973,7.4395112,48.4302973],\"geometry\":{\"type\":\"Point\",\"coordinates\":[7.4295112,48.4202973]}},{\"type\":\"Feature\",\"properties\":{\"place_id\":19081255,\"osm_type\":\"node\",\"osm_id\":1907896278,\"display_name\":\"Metz,
+        Ector County, Texas, United States of America\",\"place_rank\":20,\"category\":\"place\",\"type\":\"locality\",\"importance\":0.36,\"icon\":\"https://nominatim.openstreetmap.org/images/mapicons/poi_place_village.p.20.png\"},\"bbox\":[-102.667092,31.693462,-102.647092,31.713462],\"geometry\":{\"type\":\"Point\",\"coordinates\":[-102.657092,31.703462]}},{\"type\":\"Feature\",\"properties\":{\"place_id\":19302878,\"osm_type\":\"node\",\"osm_id\":1943369786,\"display_name\":\"Metz,
+        Sarre, Valle d'Aosta/Vall\xE9e d'Aoste, Italia\",\"place_rank\":20,\"category\":\"place\",\"type\":\"hamlet\",\"importance\":0.36,\"icon\":\"https://nominatim.openstreetmap.org/images/mapicons/poi_place_village.p.20.png\"},\"bbox\":[7.2443646,45.731577,7.2843646,45.771577],\"geometry\":{\"type\":\"Point\",\"coordinates\":[7.2643646,45.751577]}},{\"type\":\"Feature\",\"properties\":{\"place_id\":354198,\"osm_type\":\"node\",\"osm_id\":150940565,\"display_name\":\"Metz,
+        Monterey County, California, 93927, United States of America\",\"place_rank\":20,\"category\":\"place\",\"type\":\"hamlet\",\"importance\":0.36,\"icon\":\"https://nominatim.openstreetmap.org/images/mapicons/poi_place_village.p.20.png\"},\"bbox\":[-121.2315899,36.334966,-121.1915899,36.374966],\"geometry\":{\"type\":\"Point\",\"coordinates\":[-121.2115899,36.354966]}}]}"
+    headers:
+      Access-Control-Allow-Methods:
+      - OPTIONS,GET
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Type:
+      - application/json; charset=UTF-8
+      Keep-Alive:
+      - timeout=20
+      Server:
+      - nginx
+    status:
+      code: 200
+      message: OK
+version: 1

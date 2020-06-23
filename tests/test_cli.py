@@ -528,3 +528,15 @@ def test_info_cli(run_cli, tmpdir):
         "DHuS version: 2.4.1\n" in result.output
     )
     tmpdir.remove()
+
+
+@pytest.mark.vcr
+@pytest.mark.scihub
+def test_location_cli(run_cli, tmpdir):
+    result = run_cli("--location", "Metz", "-l", "5")
+    assert (
+        "Found 23106 products\nThe location we are querying is: 'Metz, Moselle, Grand Est, France métropolitaine, "
+        "France'\nPro...Z, Instrument: MSI, Mode: , Satellite: Sentinel-2, Size: 762.70 MB\n---\n5 scenes found with "
+        "a total size of 3.43 GB\n" in result.output
+    )
+    tmpdir.remove()
