@@ -188,6 +188,8 @@ Options
 +----+---------------+------+--------------------------------------------------------------------------------------------+
 | -f | -\-footprints |      | Create geojson file search_footprints.geojson with footprints of the query result.         |
 +----+---------------+------+--------------------------------------------------------------------------------------------+
+|    | -\-info       |      | Display DHuS server information.                                                           |
++----+---------------+------+--------------------------------------------------------------------------------------------+
 |    | -\-version    |      | Show version number and exit.                                                              |
 +----+---------------+------+--------------------------------------------------------------------------------------------+
 | -h | -\-help       |      | Show help message and exit.                                                                |
@@ -236,7 +238,7 @@ The full documentation is also published at http://sentinelsat.readthedocs.io/.
 Changelog
 =========
 
-See `CHANGELOG <CHANGELOG.rst>`_. You can also use GitHub's compare view to see the `changes in the master branch since last release <https://github.com/sentinelsat/sentinelsat/compare/v0.13...master>`_.
+See `CHANGELOG <CHANGELOG.rst>`_. You can also use GitHub's compare view to see the `changes in the master branch since last release <https://github.com/sentinelsat/sentinelsat/compare/v0.14...master>`_.
 
 Contributors
 ============
