@@ -534,7 +534,5 @@ def test_info_cli(run_cli, tmpdir):
 @pytest.mark.scihub
 def test_location_cli(run_cli, tmpdir):
     result = run_cli("--location", "Metz", "-l", "5")
-    assert (
-        "Found" in result.output
-    )
+    assert "Found" in result.output
     tmpdir.remove()
