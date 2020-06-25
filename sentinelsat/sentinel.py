@@ -1451,8 +1451,8 @@ def placename_to_wkt(placename):
 
     Returns
     -------
-    ENVELOPE coordinates
-        wkt string in form 'ENVELOPE(minX, maxX, maxY, minY)'
+    full name and coordinates of the queried placename
+        list in the form [string placeinfo, wkt string in form 'ENVELOPE(minX, maxX, maxY, minY)']
     """
 
     rqst = requests.post(
@@ -1464,13 +1464,7 @@ def placename_to_wkt(placename):
     jsonlist = rqst.json()
     try:
         # Get the First result's bounding box and description.
-        placeinfo = (
-            jsonlist["features"][0]["properties"]["display_name"]
-            + ". Coordinates: "
-            + str(jsonlist["features"][0]["geometry"]["coordinates"][0])
-            + ", "
-            + str(jsonlist["features"][0]["geometry"]["coordinates"][1])
-        )
+        placeinfo = jsonlist["features"][0]["properties"]["display_name"]
         bbox = jsonlist["features"][0]["bbox"]
 
     except IndexError:
