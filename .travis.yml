@@ -16,9 +16,9 @@ jobs:
         os: windows
         language: shell
         before_install:
-          - choco install miniconda3 -y
-          - /c/tools/miniconda3/Scripts/conda install geopandas pyyaml nomkl -y
-        env: PATH=/c/tools/miniconda3:/c/tools/miniconda3/Scripts:$PATH
+          - wget https://raw.githubusercontent.com/trichter/conda4travis/latest/conda4travis.sh -O conda4travis.sh
+          - source conda4travis.sh
+          - conda install geopandas pyyaml nomkl -y
 branches:
   only:
   - master
