@@ -149,8 +149,8 @@ def test_check_existing(api, tmpdir, smallest_online_products, smallest_archived
 
     def check_result(result, expected_existing):
         assert set(result) == expected
-        assert result[paths[1]][0]["id"] == ids[1]
-        assert result[paths[2]][0]["id"] == ids[2]
+        assert result[str(paths[1])][0]["id"] == ids[1]
+        assert result[str(paths[2])][0]["id"] == ids[2]
         assert [p.check(exists=1, file=1) for p in paths] == expected_existing
 
     result = api.check_files(ids=ids, directory=str(tmpdir))
