@@ -18,7 +18,8 @@ jobs:
         before_install:
           - wget https://raw.githubusercontent.com/trichter/conda4travis/latest/conda4travis.sh -O conda4travis.sh
           - source conda4travis.sh
-          - conda install geopandas pyyaml nomkl -y
+          - conda create -n sentinelsat python=3.8 geopandas pyyaml nomkl -y
+          - conda activate sentinelsat
 branches:
   only:
   - master
