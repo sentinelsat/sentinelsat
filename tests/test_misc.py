@@ -29,8 +29,6 @@ def test_checksumming_progressbars(capsys, fixture_path):
 
 
 @pytest.mark.vcr
-# Relevant pull request: https://github.com/kevin1024/vcrpy/pull/386
-@pytest.mark.skip(reason="Cannot mock since VCR.py has issues with Unicode request bodies.")
 @pytest.mark.scihub
 def test_unicode_support(api):
     test_str = "٩(●̮̮̃•̃)۶:"
