@@ -61,7 +61,7 @@ def vcr(vcr):
     vcr.register_serializer("custom", BinaryContentSerializer(CASSETTE_DIR))
     vcr.serializer = "custom"
     vcr.register_matcher("range_header", range_header_matcher)
-    vcr.match_on = ["uri", "method", "body", "range_header"]
+    vcr.match_on = ["method", "range_header", "host", "port", "path", "query", "body"]
     return vcr
 
 
