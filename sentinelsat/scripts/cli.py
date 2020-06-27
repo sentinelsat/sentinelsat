@@ -213,7 +213,7 @@ def cli(
         for productid in uuid_list:
             try:
                 products[productid] = api.get_product_odata(productid)
-            except InvalidKeyException:
+            except InvalidKeyError:
                 logger.error("No product with ID '%s' exists on server", productid)
                 exit(1)
     elif name is not None:

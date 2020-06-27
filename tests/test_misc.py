@@ -40,7 +40,7 @@ def test_unicode_support(api):
         api.count(raw=test_str)
     assert test_str == excinfo.value.response.json()["feed"]["opensearch:Query"]["searchTerms"]
 
-    with pytest.raises(InvalidKeyException) as excinfo:
+    with pytest.raises(InvalidKeyError) as excinfo:
         api.get_product_odata(test_str)
     assert test_str in excinfo.value.response.json()["error"]["message"]["value"]
 

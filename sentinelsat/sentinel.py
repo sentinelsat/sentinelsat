@@ -1286,7 +1286,7 @@ def _check_scihub_response(response, test_json=True, query_string=None):
             error = QueryLengthError(msg, response)
         elif "InvalidKeyException" in msg:
             msg = msg.split(" : ", 1)[-1]
-            error = InvalidKeyException(msg, response)
+            error = InvalidKeyError(msg, response)
         elif 500 <= response.status_code < 600 or msg:
             # 5xx: Server Error
             error = ServerError(msg, response)

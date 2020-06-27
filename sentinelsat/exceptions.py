@@ -1,5 +1,5 @@
 class SentinelAPIError(Exception):
-    """Invalid responses from DataHub.
+    """Invalid response from DataHub. Base class for more specific exceptions.
 
     Attributes
     ----------
@@ -63,7 +63,7 @@ class QueryLengthError(SentinelAPIError):
         return self.msg
 
 
-class InvalidKeyException(SentinelAPIError, KeyError):
+class InvalidKeyError(SentinelAPIError, KeyError):
     """Error raised when product with given key was not found on the server
     """
 

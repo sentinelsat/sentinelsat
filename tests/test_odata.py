@@ -80,7 +80,7 @@ def test_get_product_odata_full(api, smallest_online_products, read_yaml):
 @pytest.mark.vcr
 @pytest.mark.scihub
 def test_get_product_info_bad_key(api):
-    with pytest.raises(InvalidKeyException) as excinfo:
+    with pytest.raises(InvalidKeyError) as excinfo:
         api.get_product_odata("invalid-xyz")
     assert excinfo.value.msg == "Invalid key (invalid-xyz) to access Products"
 
@@ -139,5 +139,5 @@ def test_is_online(api):
         rqst.get(request_url.format(uuid), text="false", status_code=200)
         assert api.is_online(uuid) == False
 
-    with pytest.raises(InvalidKeyException) as excinfo:
+    with pytest.raises(InvalidKeyError) as excinfo:
         api.is_online(invalid_uuid)
