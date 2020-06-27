@@ -529,15 +529,9 @@ class SentinelAPI:
         # Check https://scihub.copernicus.eu/userguide/ODataAPI#Products_entity for more information
 
         url = urljoin(self.api_url, "odata/v1/Products('{}')/Online/$value".format(id))
-        with self.session.get(url, auth=self.session.auth, timeout=self.timeout) as r:
-            if r.status_code == 200 and r.text == "true":
-                return True
-            elif r.status_code == 200 and r.text == "false":
-                return False
-            else:
-                raise SentinelAPIError(
-                    "Could not verify whether product {} is online".format(id), r
-                )
+        r = self.session.get(url, auth=self.session.auth, timeout=self.timeout)
+        _check_scihub_response(r)
+        return r.json()
 
     def download(self, id, directory_path=".", checksum=True):
         """Download a product.
