@@ -1,4 +1,5 @@
 .. _installation:
+.. currentmodule:: sentinelsat
 
 Installation
 ============
@@ -45,5 +46,5 @@ expected to work as well, as long as the dependencies are fulfilled.
 Optional dependencies
 ---------------------
 
-The convenience functions ``to_dataframe()`` and ``to_geodataframe()`` require ``pandas`` and/or
+The convenience functions :meth:`~sentinel.SentinelAPI.to_dataframe` and :meth:`~sentinel.SentinelAPI.to_geodataframe` require ``pandas`` and/or
 ``geopandas`` to be present.
