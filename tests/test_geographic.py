@@ -61,7 +61,7 @@ def test_footprints_s2(products, fixture_path):
 
 
 @pytest.mark.vcr
-@pytest.mark.fast
+@pytest.mark.scihub
 def test_placename_to_wkt_valid(place_kwargs):
     # tests wkt response
     assert placename_to_wkt(place_kwargs[0])[0] == place_kwargs[1]

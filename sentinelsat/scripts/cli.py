@@ -139,7 +139,8 @@ class CommaSeparatedString(click.ParamType):
     and metadata of the returned products.
     """,
 )
-@click.option("--location", type=str, help="Returns result based of of plaintext place name.")
+@click.option("--location", type=str, help="Return only products overlapping with the bounding box of given location, "
+                                           "e.g. 'Berlin', 'Germany' or '52.393974, 13.066955'.")
 @click.option("--info", is_flag=True, is_eager=True, help="Displays the DHuS version used")
 @click.version_option(version=sentinelsat_version, prog_name="sentinelsat")
 def cli(
@@ -240,9 +241,9 @@ def cli(
             outfile.write(gj.dumps(footprints_geojson))
 
     if location is not None:
-        query_answers = placename_to_wkt(location)
-        click.echo("The location we are querying is: '{}'".format(query_answers[1]))
-        search_kwargs["area"] = query_answers[0]
+        wkt, place_name = placename_to_wkt(location)
+        click.echo("The location we are querying is: '{}'".format(place_name))
+        search_kwargs["area"] = wkt
 
     if download is True:
         product_infos, triggered, failed_downloads = api.download_all(products, path)

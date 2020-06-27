@@ -1452,7 +1452,7 @@ def placename_to_wkt(placename):
     Returns
     -------
     full name and coordinates of the queried placename
-        list in the form [string placeinfo, wkt string in form 'ENVELOPE(minX, maxX, maxY, minY)']
+        list in the form [wkt string in form 'ENVELOPE(minX, maxX, maxY, minY)', string placeinfo]
     """
 
     rqst = requests.post(
@@ -1460,18 +1460,13 @@ def placename_to_wkt(placename):
     )
     # Check that the response from Openstreetmapserver has status code 2xx
     # and that the response is valid JSON.
-    _check_scihub_response(rqst)
+    rqst.raise_for_status()
     jsonlist = rqst.json()
-    try:
-        # Get the First result's bounding box and description.
-        placeinfo = jsonlist["features"][0]["properties"]["display_name"]
-        bbox = jsonlist["features"][0]["bbox"]
-
-    except IndexError:
-        # bbox or placeInfo is empty
-        raise ValueError('Unable to find a location for "{}"'.format(placename))
-    else:
-        # the bbox follows the pattern:[minX, minY, maxX ,maxY]
-        minX, minY, maxX, maxY = bbox
-        footprint = "ENVELOPE({}, {}, {}, {})".format(minX, maxX, maxY, minY)
-        return [footprint, placeinfo]
+    if len(jsonlist["features"]) == 0:
+        raise ValueError('Unable to find a matching location for "{}"'.format(placename))
+    # Get the First result's bounding box and description.
+    feature = jsonlist["features"][0]
+    minX, minY, maxX, maxY = feature["bbox"]
+    footprint = "ENVELOPE({}, {}, {}, {})".format(minX, maxX, maxY, minY)
+    placeinfo = feature["properties"]["display_name"] + ", " + footprint
+    return footprint, placeinfo
