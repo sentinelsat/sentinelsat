@@ -1,3 +1,5 @@
+.. currentmodule:: sentinelsat
+
 Change Log
 ==========
 
@@ -8,11 +10,23 @@ All notable changes to ``sentinelsat`` will be listed here.
 
 Added
 ~~~~~
-* display DHuS server version with CLI flag --info (#367 @thomasyoung-audet)
+* display DHuS server version with CLI flag ``--info`` (#367 @thomasyoung-audet)
 
 Changed
 ~~~~~~~
-* 
+* Replaced :class:`~exceptions.SentinelAPIError` exceptions with more specific exception types:
+
+    * :class:`~exceptions.SentinelAPIError` -- the parent, catch-all exception. Only used when no other more specific exception can be applied.
+    * :class:`~exceptions.SentinelAPILTAError` -- raised when retrieving a product from the Long Term Archive.
+    * :class:`~exceptions.ServerError` -- raised when the server responded in an unexpected manner, typically due to undergoing maintenance.
+    * :class:`~exceptions.UnauthorizedError` -- raised when attempting to retrieve a product with incorrect credentials.
+    * :class:`~exceptions.QuerySyntaxError` -- raised when the query string could not be parsed on the server side.
+    * :class:`~exceptions.QueryLengthError` -- raised when the query string length was excessively long.
+    * :class:`~exceptions.InvalidKeyError` -- raised when product with given key was not found on the server.
+    * :class:`~exceptions.InvalidChecksumError` -- MD5 checksum of a local file does not match the one from the server.
+
+  The new exceptions are still subclasses of :class:`~exceptions.SentinelAPIError` for backwards compatibility.
+  (#285 @valgur, @dwlsalmeida)
 
 Deprecated
 ~~~~~~~~~~
@@ -20,11 +34,11 @@ Deprecated
 
 Fixed
 ~~~~~
-* fixed failing Read The Docs builds (#370)
+* 
 
 Development Changes
 ~~~~~~~~~~~~~~~~~~~
-* 
+* fixed failing Read The Docs builds (#370)
 
 
 [0.14] – 2020-06-12
