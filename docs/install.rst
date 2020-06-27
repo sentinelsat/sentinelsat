@@ -31,12 +31,16 @@ To allow the tests to run actual queries against Copernicus Open Access Hub set 
 
 and add ``--disable-vcr`` to ``pytest`` arguments.
 To update the recordings use ``--vcr-record`` with ``once``, ``new_episodes`` or ``all``. See `vcrpy docs <https://vcrpy.readthedocs.io/en/latest/usage.html#record-modes>`_ for details.
+There are two minor issues to keep in mind when recording unit tests VCRs.
+
+1. Between calls a formerly offline product can become available, if the previous call triggered its LTA retrieval.
+2. dhus and apihub have different md5 hashes for products with the same UUID.
 
 Supported Python versions
 -------------------------
 
-Sentinelsat has been tested with Python versions 2.7 and 3.4+. Earlier Python 3 versions are
-expected to work as well as long as the dependencies are fulfilled.
+Sentinelsat has been tested with Python versions 2.7 and 3.5+. Earlier Python 3 versions are
+expected to work as well, as long as the dependencies are fulfilled.
 
 Optional dependencies
 ---------------------

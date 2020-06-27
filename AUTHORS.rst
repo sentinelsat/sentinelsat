@@ -27,3 +27,9 @@ Contributors
 * Patrick Salembier `@psal93 <https://github.com/psal93>`_
 * Viktor Bahr `@viktorbahr <https://github.com/viktorbahr>`_
 * `@dwlsalmeida <https://github.com/dwlsalmeida>`_
+* Gerald Baier `@gbaier <https://github.com/gbaier>`_
+* Olga Chebotaryova `@OlgaCh <https://github.com/OlgaCh>`_
+* Lukas Bindreiter `@lukasbindreiter <https://github.com/lukasbindreiter>`_
+* `@yepremyana <https://github.com/yepremyana>`_
+* Sarah Floris `@sdf94 <https://github.com/sdf94>`_
+
