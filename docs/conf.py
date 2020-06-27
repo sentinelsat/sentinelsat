@@ -286,7 +286,7 @@ autodoc_member_order = "bysource"
 # and environment variables
 suppress_warnings = ["ref.option", "ref.envvar"]
 
-# Avoid adding unnecessary "sentinelsat.sentinel." prefix in API reference 
+# Avoid adding unnecessary "sentinelsat.sentinel." prefix in API reference
 add_module_names = False
 
 autodoc_default_options = {
