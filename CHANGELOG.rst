@@ -24,7 +24,7 @@ Fixed
 
 Development Changes
 ~~~~~~~~~~~~~~~~~~~
-* 
+* add Windows, macOS, Python 3.8 to Travis tests #374
 
 
 [0.14] – 2020-06-12
