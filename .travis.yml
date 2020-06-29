@@ -1,4 +1,4 @@
-dist: xenial
+dist: focal
 language: python
 cache: pip
 jobs:
@@ -7,20 +7,32 @@ jobs:
       - python: '3.5'
       - python: '3.6'
       - python: '3.7'
+      - python: '3.8'
+      - name: "macOS 10.15"
+        os: osx
+        osx_image: xcode11.6
+        language: shell
+      - name: "Windows"
+        os: windows
+        language: shell
+        before_install:
+          - wget https://raw.githubusercontent.com/trichter/conda4travis/latest/conda4travis.sh -O conda4travis.sh
+          - source conda4travis.sh
+          - conda create -n sentinelsat python=3.8 geopandas pyyaml -y
+          - conda activate sentinelsat
 branches:
   only:
   - master
 before_install:
-- pip install -U pip
+- python -m pip install -U pip
 install:
 - pip install codecov
 - pip install -e .[dev]
-# install black on 3.7
-- if [[ $TRAVIS_PYTHON_VERSION == 3.7 ]]; then pip install black; fi
+- if [[ $TRAVIS_OS_NAME == linux && $TRAVIS_PYTHON_VERSION == 3.8 ]]; then pip install black; fi
 script:
 - coverage run --source=sentinelsat -m pytest -v
 # check black code formatting
-- if [[ $TRAVIS_PYTHON_VERSION == 3.7 ]]; then black --check .; fi
+- if [[ $TRAVIS_OS_NAME == linux && $TRAVIS_PYTHON_VERSION == 3.8 ]]; then black --check .; fi
 after_success:
 - codecov
 notifications:

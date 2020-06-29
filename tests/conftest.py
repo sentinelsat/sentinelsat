@@ -37,15 +37,12 @@ def vcr(vcr):
         return request
 
     def scrub_response(response):
-        for header in (
-            "Authorization",
-            "Set-Cookie",
-            "Cookie",
-            "Date",
-            "Expires",
-            "Transfer-Encoding",
-        ):
-            if header in response["headers"]:
+        ignore = set(
+            x.lower() for x in ["Authorization", "Set-Cookie", "Cookie", "Date", "Expires",]
+        )
+        for header in list(response["headers"]):
+            header = header.lower()
+            if header in ignore or header.startswith("access-control"):
                 del response["headers"][header]
         return response
 
@@ -61,7 +58,7 @@ def vcr(vcr):
     vcr.register_serializer("custom", BinaryContentSerializer(CASSETTE_DIR))
     vcr.serializer = "custom"
     vcr.register_matcher("range_header", range_header_matcher)
-    vcr.match_on = ["uri", "method", "body", "range_header"]
+    vcr.match_on = ["method", "range_header", "host", "port", "path", "query", "body"]
     return vcr
 
 

@@ -50,7 +50,7 @@ def test_to_geopandas(products):
     print(gdf.unary_union.area)
     assert gdf.unary_union.area == pytest.approx(89.6, abs=0.1)
     assert len(gdf) == len(products)
-    assert gdf.crs == {"init": "epsg:4326"}
+    assert gdf.crs == "EPSG:4326"
 
 
 @pytest.mark.pandas
