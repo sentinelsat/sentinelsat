@@ -1468,5 +1468,5 @@ def placename_to_wkt(placename):
     feature = jsonlist["features"][0]
     minX, minY, maxX, maxY = feature["bbox"]
     footprint = "ENVELOPE({}, {}, {}, {})".format(minX, maxX, maxY, minY)
-    placeinfo = feature["properties"]["display_name"] + ", " + footprint
+    placeinfo = feature["properties"]["display_name"]
     return footprint, placeinfo

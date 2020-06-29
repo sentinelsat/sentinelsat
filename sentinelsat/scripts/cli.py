@@ -242,7 +242,7 @@ def cli(
 
     if location is not None:
         wkt, place_name = placename_to_wkt(location)
-        click.echo("The location we are querying is: '{}'".format(place_name))
+        click.echo("The location we are querying is: '{}', '{}'".format(place_name, wkt))
         search_kwargs["area"] = wkt
 
     if download is True:
