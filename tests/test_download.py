@@ -193,13 +193,11 @@ def test_download_all_one_fail(api, tmpdir, smallest_online_products):
 
 @pytest.mark.vcr
 @pytest.mark.scihub
-def test_download_all_lta(api, tmpdir):
+def test_download_all_lta(api, tmpdir, smallest_online_products, smallest_archived_products):
     # Corresponding IDs, same products as in test_download_all.
-    ids = [
-        "5618ce1b-923b-4df2-81d9-50b53e5aded9",  # offline
-        "f46cbca6-6e5e-45b0-80cd-382683a8aea5",  # online
-        "e00af686-2e20-43a6-8b8f-f9e411255cee",  # online
-    ]
+    archived_ids = [x["id"] for x in smallest_archived_products]
+    online_ids = [x["id"] for x in smallest_online_products]
+    ids = archived_ids[:1] + online_ids[:2]
     product_infos, triggered, failed_downloads = api.download_all(
         ids, str(tmpdir), n_concurrent_dl=1
     )

@@ -1,153 +1,74 @@
-1f62a176-c980-41dc-b3a1-c735d660c910:
-  Acquisition Type: NOMINAL
-  Carrier rocket: Soyuz
-  Creation Date: 2015-11-17 16:56:01.826000
-  Cycle number: 50
-  Date: 2015-06-03 09:26:24.921000
-  Filename: S1A_WV_OCN__2SSH_20150603T092625_20150603T093332_006207_008194_521E.SAFE
-  Footprint: <gml:Polygon srsName="http://www.opengis.net/gml/srs/epsg.xml#4326" xmlns:gml="http://www.opengis.net/gml">   <gml:outerBoundaryIs>      <gml:LinearRing>         <gml:coordinates>42.260288,-47.310867
-    42.298096,-47.558411 42.476940,-47.508129 42.439095,-47.259823 42.260288,-47.310867</gml:coordinates>      </gml:LinearRing>   </gml:outerBoundaryIs></gml:Polygon>
+791810f5-034b-4f0c-96b2-70865a3fcbac:
+  Baseline Collection: 3
+  Creation Date: 2018-12-18 18:29:01
+  Cycle number: 18
+  Date: 2018-11-23 03:44:48.484728
+  Filename: S3B_SR_1_SRA_BS_20181123T034448_20181123T034708_20181218T182901_0139_018_047______LN3_O_NT_003.SEN3
+  Footprint: "<gml:Polygon srsName=\"http://www.opengis.net/gml/srs/epsg.xml#4326\"\
+    \ xmlns:gml=\"http://www.opengis.net/gml\">\n   <gml:outerBoundaryIs>\n      <gml:LinearRing>\n\
+    \         <gml:coordinates>70.485,-111.427 72.3134,-114.614 74.0844,-118.464 75.7768,-123.19\
+    \ 77.3592,-129.079 77.358,-129.085 75.7757,-123.196 74.0834,-118.469 72.3125,-114.619\
+    \ 70.4842,-111.432 70.485,-111.427</gml:coordinates>\n      </gml:LinearRing>\n\
+    \   </gml:outerBoundaryIs>\n</gml:Polygon>"
   Format: SAFE
-  Identifier: S1A_WV_OCN__2SSH_20150603T092625_20150603T093332_006207_008194_521E
-  Ingestion Date: 2015-11-17 16:56:01.826000
-  Instrument: SAR-C
-  Instrument abbreviation: SAR-C SAR
-  Instrument description: <a target="_blank" href="https://sentinel.esa.int/web/sentinel/missions/sentinel-1">https://sentinel.esa.int/web/sentinel/missions/sentinel-1</a>
-  Instrument description text: The SAR Antenna Subsystem (SAS) is developed and build
-    by AstriumGmbH. It is a large foldable planar phased array antenna, which isformed
-    by a centre panel and two antenna side wings. In deployedconfiguration the antenna
-    has an overall aperture of 12.3 x 0.84 m.The antenna provides a fast electronic
-    scanning capability inazimuth and elevation and is based on low loss and highly
-    stablewaveguide radiators build in carbon fibre technology, which arealready successfully
-    used by the TerraSAR-X radar imaging mission.The SAR Electronic Subsystem (SES)
-    is developed and build byAstrium Ltd. It provides all radar control, IF/ RF signalgeneration
-    and receive data handling functions for the SARInstrument. The fully redundant
-    SES is based on a channelisedarchitecture with one transmit and two receive chains,
-    providing amodular approach to the generation and reception of wide-bandsignals
-    and the handling of multi-polarisation modes. One keyfeature is the implementation
-    of the Flexible Dynamic BlockAdaptive Quantisation (FD-BAQ) data compression concept,
-    whichallows an efficient use of on-board storage resources and minimisesdownlink
-    times.
-  Instrument mode: WV
-  Instrument name: Synthetic Aperture Radar (C-band)
-  Instrument swath: WV1 WV2
-  JTS footprint: POLYGON ((-47.310867 42.260288,-47.558411 42.298096,-47.508129 42.476940,-47.259823
-    42.439095,-47.310867 42.260288))
-  Launch date: April 3rd, 2014
-  Mission datatake id: 33172
+  Identifier: S3B_SR_1_SRA_BS_20181123T034448_20181123T034708_20181218T182901_0139_018_047______LN3_O_NT_003
+  Ingestion Date: 2018-12-18 18:50:30.551000
+  Instrument: SRAL
+  Instrument abbreviation: SRAL
+  Instrument mode: Earth Observation
+  Instrument name: Sar Radar ALtimeter
+  JTS footprint: MULTIPOLYGON (((-111.432 70.4842, -111.427 70.485, -114.614 72.3134,
+    -118.464 74.0844, -123.19 75.7768, -129.079 77.3592, -129.085 77.358, -123.196
+    75.7757, -118.469 74.0834, -114.619 72.3125, -111.432 70.4842)))
+  Measurement Records in LRM Mode (%): 0
+  Measurement Records in SAR Mode (%): 100
+  Measurement Records on Closed Sea (%): 0
+  Measurement Records on Continental Ice (%): 0
+  Measurement Records on Land (%): 66
+  Measurement Records on Open Ocean (%): 33
   Mission type: Earth observation
-  Mode: WV
-  NSSDC identifier: 0000-000A
-  Online: false
+  Mode: EO
+  NSSDC identifier: 0000-000B
+  Online: true
+  Online Quality Check: PASSED
   Operator: European Space Agency
-  Orbit number (start): 6207
-  Orbit number (stop): 6207
-  Pass direction: DESCENDING
-  Phase identifier: 1
-  Polarisation: HH
-  Product class: S
-  Product class description: SAR Standard L2 Product
-  Product composition: Individual
-  Product level: L2
-  Product type: OCN
-  Relative orbit (start): 10
-  Relative orbit (stop): 10
-  Satellite: Sentinel-1
-  Satellite description: <a target="_blank" href="https://sentinel.esa.int/web/sentinel/missions/sentinel-1">https://sentinel.esa.int/web/sentinel/missions/sentinel-1</a>
-  Satellite name: Sentinel-1
-  Satellite number: A
-  Sensing start: 2015-06-03 09:26:24.921000
-  Sensing stop: 2015-06-03 09:33:33.345000
-  Size: 10.54 KB
-  Start relative orbit number: 10
-  Status: ARCHIVED
-  Stop relative orbit number: 10
-  Timeliness Category: Fast-24h
-  date: 2015-06-03 09:26:24.921000
-  footprint: POLYGON((-47.310867 42.260288,-47.558411 42.298096,-47.508129 42.476940,-47.259823
-    42.439095,-47.310867 42.260288))
-  id: 1f62a176-c980-41dc-b3a1-c735d660c910
-  md5: B3935469F6F643C123B11CD6C58954A1
-  size: 130006
-  title: S1A_WV_OCN__2SSH_20150603T092625_20150603T093332_006207_008194_521E
-  url: https://scihub.copernicus.eu/dhus/odata/v1/Products('1f62a176-c980-41dc-b3a1-c735d660c910')/$value
-5618ce1b-923b-4df2-81d9-50b53e5aded9:
-  Acquisition Type: NOMINAL
-  Carrier rocket: Soyuz
-  Creation Date: 2019-02-22 17:58:24.039000
-  Cycle number: 49
-  Date: 2015-05-26 08:16:40.873000
-  Filename: S1A_WV_OCN__2SSV_20150526T081641_20150526T082418_006090_007E3E_104C.SAFE
-  Footprint: <gml:Polygon srsName="http://www.opengis.net/gml/srs/epsg.xml#4326" xmlns:gml="http://www.opengis.net/gml">   <gml:outerBoundaryIs>      <gml:LinearRing>         <gml:coordinates>3.979146,147.846664
-    4.018075,148.030945 3.837322,148.068436 3.798364,147.884155 3.979146,147.846664</gml:coordinates>      </gml:LinearRing>   </gml:outerBoundaryIs></gml:Polygon>
-  Format: SAFE
-  Identifier: S1A_WV_OCN__2SSV_20150526T081641_20150526T082418_006090_007E3E_104C
-  Ingestion Date: 2015-11-18 08:53:00.497000
-  Instrument: SAR-C
-  Instrument abbreviation: SAR-C SAR
-  Instrument description: <a target="_blank" href="https://sentinel.esa.int/web/sentinel/missions/sentinel-1">https://sentinel.esa.int/web/sentinel/missions/sentinel-1</a>
-  Instrument description text: The SAR Antenna Subsystem (SAS) is developed and build
-    by AstriumGmbH. It is a large foldable planar phased array antenna, which isformed
-    by a centre panel and two antenna side wings. In deployedconfiguration the antenna
-    has an overall aperture of 12.3 x 0.84 m.The antenna provides a fast electronic
-    scanning capability inazimuth and elevation and is based on low loss and highly
-    stablewaveguide radiators build in carbon fibre technology, which arealready successfully
-    used by the TerraSAR-X radar imaging mission.The SAR Electronic Subsystem (SES)
-    is developed and build byAstrium Ltd. It provides all radar control, IF/ RF signalgeneration
-    and receive data handling functions for the SARInstrument. The fully redundant
-    SES is based on a channelisedarchitecture with one transmit and two receive chains,
-    providing amodular approach to the generation and reception of wide-bandsignals
-    and the handling of multi-polarisation modes. One keyfeature is the implementation
-    of the Flexible Dynamic BlockAdaptive Quantisation (FD-BAQ) data compression concept,
-    whichallows an efficient use of on-board storage resources and minimisesdownlink
-    times.
-  Instrument mode: WV
-  Instrument name: Synthetic Aperture Radar (C-band)
-  Instrument swath: WV1 WV2
-  JTS footprint: POLYGON ((147.846664 3.979146,148.030945 4.018075,148.068436 3.837322,147.884155
-    3.798364,147.846664 3.979146))
-  Launch date: April 3rd, 2014
-  Mission datatake id: 32318
-  Mission type: Earth observation
-  Mode: WV
-  NSSDC identifier: 0000-000A
-  Online: false
-  Operator: European Space Agency
-  Orbit number (start): 6090
-  Orbit number (stop): 6090
-  Pass direction: ASCENDING
-  Phase identifier: 1
-  Polarisation: VV
-  Product class: S
-  Product class description: SAR Standard L2 Product
-  Product composition: Individual
-  Product level: L2
-  Product type: OCN
-  Relative orbit (start): 68
-  Relative orbit (stop): 68
-  Satellite: Sentinel-1
-  Satellite description: <a target="_blank" href="https://sentinel.esa.int/web/sentinel/missions/sentinel-1">https://sentinel.esa.int/web/sentinel/missions/sentinel-1</a>
-  Satellite name: Sentinel-1
-  Satellite number: A
-  Sensing start: 2015-05-26 08:16:40.873000
-  Sensing stop: 2015-05-26 08:24:18.591000
-  Size: 11.09 KB
-  Start relative orbit number: 68
-  Status: ARCHIVED
-  Stop relative orbit number: 68
-  Timeliness Category: Fast-24h
-  date: 2015-05-26 08:16:40.873000
-  footprint: POLYGON((147.846664 3.979146,148.030945 4.018075,148.068436 3.837322,147.884155
-    3.798364,147.846664 3.979146))
-  id: 5618ce1b-923b-4df2-81d9-50b53e5aded9
-  md5: 1803272DBB9E120D73DF958274DD3D07
-  size: 130222
-  title: S1A_WV_OCN__2SSV_20150526T081641_20150526T082418_006090_007E3E_104C
-  url: https://scihub.copernicus.eu/dhus/odata/v1/Products('5618ce1b-923b-4df2-81d9-50b53e5aded9')/$value
+  Orbit Direction (start): ascending
+  Orbit number (start): 3014
+  PDU Duration (s): 139
+  Pass (start): 6027
+  Pass direction (start): ascending
+  Processing Facility Name: Land Surface Topography Mission Processing and Archiving
+    Centre [LN3]
+  Processing Facility Organization: European Space Agency
+  Processing level: 1
+  Processing name: Data Processing
+  Product level: L1
+  Product type: SR_1_SRA_BS
+  Relative Orbit Direction (start): ascending
+  Relative orbit (start): 47
+  Relative pass (start): 93
+  Relative pass direction (start): ascending
+  Satellite: Sentinel-3
+  Satellite description: <a target="_blank" href="https://sentinel.esa.int/web/sentinel/missions/sentinel-3">https://sentinel.esa.int/web/sentinel/missions/sentinel-3</a>
+  Satellite name: Sentinel-3
+  Satellite number: B
+  Sensing start: 2018-11-23 03:44:48.484728
+  Sensing stop: 2018-11-23 03:47:08.134281
+  Size: 289.21 KB
+  Timeliness Category: Non Time Critical
+  date: 2018-11-23 03:44:48.484000
+  footprint: POLYGON((-111.427 70.485,-114.614 72.3134,-118.464 74.0844,-123.19 75.7768,-129.079
+    77.3592,-129.085 77.358,-123.196 75.7757,-118.469 74.0834,-114.619 72.3125,-111.432
+    70.4842,-111.427 70.485))
+  id: 791810f5-034b-4f0c-96b2-70865a3fcbac
+  md5: 78BE0E00C606FFDA6C0BB392F4BEAD0C
+  size: 297224
+  title: S3B_SR_1_SRA_BS_20181123T034448_20181123T034708_20181218T182901_0139_018_047______LN3_O_NT_003
+  url: https://scihub.copernicus.eu/apihub/odata/v1/Products('791810f5-034b-4f0c-96b2-70865a3fcbac')/$value
 d8340134-878f-4891-ba4f-4df54f1e3ab4:
   Acquisition Type: NOMINAL
   Carrier rocket: Soyuz
-  Creation Date: 2015-11-17 23:28:01.852000
+  Creation Date: 2019-06-19 06:21:13.569000
   Cycle number: 49
   Date: 2015-05-26 21:10:28.984000
   Filename: S1A_WV_OCN__2SSV_20150526T211029_20150526T211737_006097_007E78_134A.SAFE
@@ -184,7 +105,7 @@ d8340134-878f-4891-ba4f-4df54f1e3ab4:
   Mission type: Earth observation
   Mode: WV
   NSSDC identifier: 0000-000A
-  Online: false
+  Online: true
   Operator: European Space Agency
   Orbit number (start): 6097
   Orbit number (stop): 6097
@@ -213,7 +134,71 @@ d8340134-878f-4891-ba4f-4df54f1e3ab4:
   footprint: POLYGON((-32.055458 -53.931976,-31.748390 -53.867435,-31.646017 -54.039661,-31.954405
     -54.104462,-32.055458 -53.931976))
   id: d8340134-878f-4891-ba4f-4df54f1e3ab4
-  md5: 170834E488F889E538F50EEADB763B29
-  size: 130102
+  md5: a52ff03603400fbbe14727af518b425b
+  size: 213393
   title: S1A_WV_OCN__2SSV_20150526T211029_20150526T211737_006097_007E78_134A
-  url: https://scihub.copernicus.eu/dhus/odata/v1/Products('d8340134-878f-4891-ba4f-4df54f1e3ab4')/$value
+  url: https://scihub.copernicus.eu/apihub/odata/v1/Products('d8340134-878f-4891-ba4f-4df54f1e3ab4')/$value
+fb30069b-1081-44b9-8e65-314b989dc7fb:
+  Baseline Collection: 3
+  Creation Date: 2018-12-18 18:29:02
+  Cycle number: 18
+  Date: 2018-11-23 03:44:06.870423
+  Filename: S3B_SR_1_SRA_BS_20181123T034407_20181123T034411_20181218T182902_0003_018_047______LN3_O_NT_003.SEN3
+  Footprint: "<gml:Polygon srsName=\"http://www.opengis.net/gml/srs/epsg.xml#4326\"\
+    \ xmlns:gml=\"http://www.opengis.net/gml\">\n   <gml:outerBoundaryIs>\n      <gml:LinearRing>\n\
+    \         <gml:coordinates>68.2514,-108.283 68.3574,-108.417 68.4633,-108.553\
+    \ 68.4625,-108.557 68.3566,-108.422 68.2506,-108.287 68.2514,-108.283</gml:coordinates>\n\
+    \      </gml:LinearRing>\n   </gml:outerBoundaryIs>\n</gml:Polygon>"
+  Format: SAFE
+  Identifier: S3B_SR_1_SRA_BS_20181123T034407_20181123T034411_20181218T182902_0003_018_047______LN3_O_NT_003
+  Ingestion Date: 2018-12-18 18:58:31.440000
+  Instrument: SRAL
+  Instrument abbreviation: SRAL
+  Instrument mode: Earth Observation
+  Instrument name: Sar Radar ALtimeter
+  JTS footprint: MULTIPOLYGON (((-108.287 68.2506, -108.283 68.2514, -108.417 68.3574,
+    -108.553 68.4633, -108.557 68.4625, -108.422 68.3566, -108.287 68.2506)))
+  Measurement Records in LRM Mode (%): 0
+  Measurement Records in SAR Mode (%): 100
+  Measurement Records on Closed Sea (%): 0
+  Measurement Records on Continental Ice (%): 0
+  Measurement Records on Land (%): 50
+  Measurement Records on Open Ocean (%): 50
+  Mission type: Earth observation
+  Mode: EO
+  NSSDC identifier: 0000-000B
+  Online: true
+  Online Quality Check: PASSED
+  Operator: European Space Agency
+  Orbit Direction (start): ascending
+  Orbit number (start): 3014
+  PDU Duration (s): 3
+  Pass (start): 6027
+  Pass direction (start): ascending
+  Processing Facility Name: Land Surface Topography Mission Processing and Archiving
+    Centre [LN3]
+  Processing Facility Organization: European Space Agency
+  Processing level: 1
+  Processing name: Data Processing
+  Product level: L1
+  Product type: SR_1_SRA_BS
+  Relative Orbit Direction (start): ascending
+  Relative orbit (start): 47
+  Relative pass (start): 93
+  Relative pass direction (start): ascending
+  Satellite: Sentinel-3
+  Satellite description: <a target="_blank" href="https://sentinel.esa.int/web/sentinel/missions/sentinel-3">https://sentinel.esa.int/web/sentinel/missions/sentinel-3</a>
+  Satellite name: Sentinel-3
+  Satellite number: B
+  Sensing start: 2018-11-23 03:44:06.870423
+  Sensing stop: 2018-11-23 03:44:10.741521
+  Size: 286.20 KB
+  Timeliness Category: Non Time Critical
+  date: 2018-11-23 03:44:06.870000
+  footprint: POLYGON((-108.283 68.2514,-108.417 68.3574,-108.553 68.4633,-108.557
+    68.4625,-108.422 68.3566,-108.287 68.2506,-108.283 68.2514))
+  id: fb30069b-1081-44b9-8e65-314b989dc7fb
+  md5: 2C48A9E7D54D056423A630D5EAA11EA2
+  size: 294143
+  title: S3B_SR_1_SRA_BS_20181123T034407_20181123T034411_20181218T182902_0003_018_047______LN3_O_NT_003
+  url: https://scihub.copernicus.eu/apihub/odata/v1/Products('fb30069b-1081-44b9-8e65-314b989dc7fb')/$value

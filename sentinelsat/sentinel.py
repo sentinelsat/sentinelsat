@@ -571,12 +571,7 @@ class SentinelAPI:
         product_info = self.get_product_odata(id)
 
         # determine filename
-        req = self.session.head(product_info["url"], auth=self.session.auth)
-        filename = req.headers.get("Content-Disposition")
-        if filename:
-            filename = filename.split("=", 1)[1].strip('"')
-        else:
-            filename = product_info["title"] + ".zip"
+        filename = self._get_filename(product_info)
         path = join(directory_path, filename)
         product_info["path"] = path
         product_info["downloaded_bytes"] = 0
@@ -643,6 +638,20 @@ class SentinelAPI:
         # Download successful, rename the temporary file to its proper name
         shutil.move(temp_path, path)
         return product_info
+
+    def _get_filename(self, product_info):
+        # Default guess, mostly for archived products
+        filename = product_info["title"] + (
+            ".nc" if product_info["title"].startswith("S5P") else ".zip"
+        )
+        if not product_info["Online"]:
+            return filename
+        req = self.session.head(product_info["url"], auth=self.session.auth)
+        _check_scihub_response(req, test_json=False)
+        cd = req.headers.get("Content-Disposition")
+        if cd and "=" in cd:
+            filename = cd.split("=", 1)[1].strip('"')
+        return filename
 
     def _trigger_offline_retrieval(self, url):
         """ Triggers retrieval of an offline product
@@ -766,13 +775,13 @@ class SentinelAPI:
             for product_info in itertools.chain(online_prods.values(), offline_prods.values()):
                 dl_tasks.append(
                     dl_exec.submit(
-                        self._download_online_retry,
-                        product_info,
-                        directory_path,
-                        checksum,
-                        max_attempts=max_attempts,
-                    )
+                    self._download_online_retry,
+                    product_info,
+                    directory_path,
+                    checksum,
+                    max_attempts=max_attempts,
                 )
+            )
 
             stop_event = threading.Event()
             trigger_thread = threading.Thread(
@@ -883,7 +892,6 @@ class SentinelAPI:
         -------
         dict or None:
             Either dictionary containing the product's info or if the product is not online just None
-
         """
 
         last_exception = None
