@@ -41,8 +41,7 @@ def vcr(vcr):
             x.lower() for x in ["Authorization", "Set-Cookie", "Cookie", "Date", "Expires",]
         )
         for header in list(response["headers"]):
-            header = header.lower()
-            if header in ignore or header.startswith("access-control"):
+            if header.lower() in ignore or header.lower().startswith("access-control"):
                 del response["headers"][header]
         return response
 
