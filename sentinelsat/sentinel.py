@@ -738,7 +738,8 @@ class SentinelAPI:
             triggered for retrieval from the long term archive but not downloaded.
         dict[string, dict]
             A dictionary containing the product information of products where either
-            downloading or triggering failed
+            downloading or triggering failed. "exception" field with the exception info
+            is included to the product info dict.
         """
 
         product_ids = list(products)
@@ -764,7 +765,7 @@ class SentinelAPI:
             pid: info for pid, info in offline_prods.items() if pid not in downloaded_prods.keys()
         }
 
-        dl_tasks = []
+        dl_tasks = {}
         retrieval_scheduled = {}
 
         # Two separate threadpools for downloading and triggering retrieval.
@@ -773,15 +774,13 @@ class SentinelAPI:
             # First all online products are downloaded. Subsequently, offline products that might
             # have become available in the meantime are requested.
             for product_info in itertools.chain(online_prods.values(), offline_prods.values()):
-                dl_tasks.append(
-                    dl_exec.submit(
+                dl_tasks[product_info["id"]] = dl_exec.submit(
                     self._download_online_retry,
                     product_info,
                     directory_path,
                     checksum,
                     max_attempts=max_attempts,
                 )
-            )
 
             stop_event = threading.Event()
             trigger_thread = threading.Thread(
@@ -792,7 +791,7 @@ class SentinelAPI:
             # launch in separate thread so that the as_completed loop is entered
             trigger_thread.start()
 
-            for dl_task in concurrent.futures.as_completed(dl_tasks):
+            for dl_task in concurrent.futures.as_completed(dl_tasks.values()):
                 if not dl_task.exception() and dl_task.result():
                     product_info = dl_task.result()
                     downloaded_prods[product_info["id"]] = product_info
@@ -800,7 +799,7 @@ class SentinelAPI:
                 # the product was not online and _download_online_retry returned None
                 elif not dl_task.exception() and dl_task.result() is None:
                     stop_event.set()
-                    for task in dl_tasks:
+                    for task in dl_tasks.values():
                         task.cancel()
 
             # Wait for trigger_thread to finish. This could still place a product on the
@@ -813,15 +812,17 @@ class SentinelAPI:
             if pid not in downloaded_prods.keys()
         }
 
-        failed_prods = {
-            pid: info
-            for pid, info in product_infos.items()
-            if pid not in downloaded_prods
-            if pid not in retrieval_scheduled
-        }
+        failed_prods = {}
+        for pid, info in product_infos.items():
+            if pid not in downloaded_prods and pid not in retrieval_scheduled:
+                info["exception"] = dl_tasks[pid].exception()
+                failed_prods[pid] = info
 
-        if len(failed_prods) == len(product_ids):
-            raise next(iter(x.exception() for x in dl_tasks if x.exception()))
+        if len(failed_prods) == len(product_ids) and len(product_ids) > 0:
+            exception = list(failed_prods.values())[0]["exception"]
+            if exception is None:
+                raise SentinelAPIError("Downloading all products failed for unknown reason")
+            raise exception
 
         return downloaded_prods, retrieval_scheduled, failed_prods
 
