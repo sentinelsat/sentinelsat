@@ -894,33 +894,34 @@ class SentinelAPI:
         dict or None:
             Either dictionary containing the product's info or if the product is not online just None
         """
+        if max_attempts <= 0:
+            return
 
+        id = product_info["id"]
+        title = product_info["title"]
+        is_online = product_info.get("Online")
+        if is_online is None:
+            is_online = self.is_online(id)
+        if not is_online:
+            self.logger.info("%s is not online.", id)
+            return
+
+        self.logger.info("%s is online. Starting download", id)
         last_exception = None
-
-        if self.is_online(product_info["id"]):
-            self.logger.info("%s is online. Starting download", product_info["id"])
-            for cnt in range(max_attempts):
-                try:
-                    ret_val = self.download(product_info["id"], directory_path, checksum)
-                    break
-                except InvalidChecksumError as e:
+        for cnt in range(max_attempts):
+            try:
+                return self.download(id, directory_path, checksum)
+            except Exception as e:
+                if isinstance(e, InvalidChecksumError):
                     self.logger.warning(
-                        "Invalid checksum. The downloaded file for '%s' is corrupted.",
-                        product_info["id"],
+                        "Invalid checksum. The downloaded file for '%s' is corrupted.", title,
                     )
-                    last_exception = e
-                except Exception as e:
-                    self.logger.exception("There was an error downloading %s", product_info["id"])
-                    self.logger.info("%d retries left", max_attempts - cnt - 1)
-                    last_exception = e
-            else:
-                self.logger.info("No retries left for %s. Terminating.", product_info["id"])
-                raise last_exception
-        else:
-            self.logger.info("%s is not online.", product_info["id"])
-            ret_val = None
-
-        return ret_val
+                else:
+                    self.logger.exception("There was an error downloading %s", title)
+                self.logger.info("%d retries left", max_attempts - cnt - 1)
+                last_exception = e
+        self.logger.info("No retries left for %s. Terminating.", title)
+        raise last_exception
 
     @staticmethod
     def get_products_size(products):
