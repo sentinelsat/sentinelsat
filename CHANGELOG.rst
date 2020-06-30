@@ -36,6 +36,7 @@ Fixed
 
 Development Changes
 ~~~~~~~~~~~~~~~~~~~
+* add Windows, macOS, Python 3.8 to Travis tests #374
 * fixed failing Read The Docs builds (#370)
 
 

@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import hashlib
+import sys
 
 import pytest
 import requests
@@ -30,9 +31,8 @@ def test_checksumming_progressbars(capsys, fixture_path):
 
 
 @pytest.mark.vcr
-# Relevant pull request: https://github.com/kevin1024/vcrpy/pull/386
-@pytest.mark.skip(reason="Cannot mock since VCR.py has issues with Unicode request bodies.")
 @pytest.mark.scihub
+@pytest.mark.skipif(sys.version_info[0] < 3, reason="ignored for Python 2.7")
 def test_unicode_support(api):
     test_str = "٩(●̮̮̃•̃)۶:"
 
@@ -150,8 +150,8 @@ def test_check_existing(api, tmpdir, smallest_online_products, smallest_archived
 
     def check_result(result, expected_existing):
         assert set(result) == expected
-        assert result[paths[1]][0]["id"] == ids[1]
-        assert result[paths[2]][0]["id"] == ids[2]
+        assert result[str(paths[1])][0]["id"] == ids[1]
+        assert result[str(paths[2])][0]["id"] == ids[2]
         assert [p.check(exists=1, file=1) for p in paths] == expected_existing
 
     result = api.check_files(ids=ids, directory=str(tmpdir))

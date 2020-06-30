@@ -465,9 +465,9 @@ class SentinelAPI:
                 "to_geodataframe requires the optional dependencies GeoPandas and Shapely."
             )
 
-        crs = {"init": "epsg:4326"}  # WGS84
+        crs = "EPSG:4326"  # WGS84
         if len(products) == 0:
-            return gpd.GeoDataFrame(crs=crs)
+            return gpd.GeoDataFrame(crs=crs, geometry=[])
 
         df = SentinelAPI.to_dataframe(products)
         geometry = [shapely.wkt.loads(fp) for fp in df["footprint"]]
