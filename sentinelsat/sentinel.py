@@ -755,15 +755,14 @@ class SentinelAPI:
         # Although the download method also checks, we do not need to retrieve such
         # products from the LTA and use up our quota.
         downloaded_prods = {}
-        for product_info in offline_prods.values():
-            path = join(directory_path, product_info["title"] + ".zip")
+        for product_info in list(offline_prods.values()):
+            filename = self._get_filename(product_info)
+            path = join(directory_path, filename)
             if exists(path):
                 downloaded_prods[product_info["id"]] = product_info
+                del offline_prods[product_info["id"]]
             else:
                 self.logger.info("Product %s is in LTA.", product_info["id"])
-        offline_prods = {
-            pid: info for pid, info in offline_prods.items() if pid not in downloaded_prods.keys()
-        }
 
         dl_tasks = {}
         retrieval_scheduled = {}
