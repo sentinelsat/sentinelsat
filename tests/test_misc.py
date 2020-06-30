@@ -7,7 +7,7 @@ import requests
 import requests_mock
 
 from sentinelsat import SentinelAPI
-from sentinelsat.exceptions import *
+from sentinelsat.exceptions import SentinelAPIError, QuerySyntaxError, InvalidKeyError
 from sentinelsat.sentinel import _parse_opensearch_response
 
 

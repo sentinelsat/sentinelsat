@@ -24,7 +24,16 @@ from six import string_types, raise_from
 from six.moves.urllib.parse import urljoin, quote_plus
 from tqdm import tqdm
 
-from sentinelsat.exceptions import *
+from sentinelsat.exceptions import (
+    SentinelAPIError,
+    QuerySyntaxError,
+    ServerError,
+    SentinelAPILTAError,
+    InvalidKeyError,
+    QueryLengthError,
+    InvalidChecksumError,
+    UnauthorizedError,
+)
 from . import __version__ as sentinelsat_version
 
 

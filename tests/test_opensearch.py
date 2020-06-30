@@ -6,10 +6,18 @@ from datetime import datetime, date, timedelta
 
 import pytest
 import requests_mock
-from requests.exceptions import *
+from requests.exceptions import (
+    StreamConsumedError,
+    ContentDecodingError,
+    InvalidProxyURL,
+    InvalidHeader,
+    TooManyRedirects,
+    ReadTimeout,
+    SSLError,
+)
 
 from sentinelsat import format_query_date, SentinelAPI
-from sentinelsat.exceptions import *
+from sentinelsat.exceptions import QuerySyntaxError, QueryLengthError, UnauthorizedError
 from sentinelsat.sentinel import _format_order_by
 
 

@@ -12,7 +12,7 @@ import pytest
 import requests_mock
 
 from sentinelsat import SentinelAPI
-from sentinelsat.exceptions import *
+from sentinelsat.exceptions import SentinelAPIError, SentinelAPILTAError, InvalidChecksumError
 
 
 @pytest.mark.fast

@@ -7,7 +7,7 @@ import pytest
 import requests_mock
 
 from sentinelsat import SentinelAPI
-from sentinelsat.exceptions import *
+from sentinelsat.exceptions import InvalidKeyError, ServerError
 from sentinelsat.sentinel import _parse_odata_timestamp
 
 

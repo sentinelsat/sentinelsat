@@ -6,7 +6,7 @@ import geojson as gj
 import requests.utils
 
 from sentinelsat import __version__ as sentinelsat_version
-from sentinelsat.exceptions import *
+from sentinelsat.exceptions import InvalidKeyError
 from sentinelsat.sentinel import SentinelAPI, geojson_to_wkt, read_geojson
 
 logger = logging.getLogger("sentinelsat")
