@@ -62,7 +62,8 @@ def test_footprints_s2(products, fixture_path):
 
 @pytest.mark.vcr
 @pytest.mark.scihub
-def test_placename_to_wkt_valid(place_kwargs):
+def test_placename_to_wkt_valid():
+    place_kwargs = ["florida", "ENVELOPE(-87.634896, -79.974306, 31.000968, 24.396308)"]
     # tests wkt response
     assert placename_to_wkt(place_kwargs[0])[0] == place_kwargs[1]
 
