@@ -32,4 +32,5 @@ Contributors
 * Lukas Bindreiter `@lukasbindreiter <https://github.com/lukasbindreiter>`_
 * `@yepremyana <https://github.com/yepremyana>`_
 * Sarah Floris `@sdf94 <https://github.com/sdf94>`_
+* Thomas Young-Audet `@thomas-youngaudet <https://github.com/thomasyoung-audet>`_
 

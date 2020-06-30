@@ -8,7 +8,8 @@ All notable changes to ``sentinelsat`` will be listed here.
 
 Added
 ~~~~~
-* display DHuS server version with CLI flag --info (#367 @thomasyoung-audet)
+* Display DHuS server version with CLI flag ``--info`` (#367 @thomasyoung-audet)
+* Added seraching by placenames with the CLI flag ``--location`` (#372 @thomasyoung-audet)
 
 Changed
 ~~~~~~~
