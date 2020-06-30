@@ -747,9 +747,16 @@ class SentinelAPI:
             "Will download %d products using %d workers", len(product_ids), n_concurrent_dl
         )
 
-        product_infos = {pid: self.get_product_odata(pid) for pid in product_ids}
-        online_prods = {pid: info for pid, info in product_infos.items() if info["Online"]}
-        offline_prods = {pid: info for pid, info in product_infos.items() if not info["Online"]}
+        product_infos = {}
+        online_prods = {}
+        offline_prods = {}
+        for pid in self._tqdm(iterable=product_ids, desc="Fetching archival status", unit=" products"):
+            info = self.get_product_odata(pid)
+            product_infos[pid] = info
+            if info["Online"]:
+                online_prods[pid] = info
+            else:
+                offline_prods[pid] = info
 
         # Skip already downloaded files.
         # Although the download method also checks, we do not need to retrieve such
