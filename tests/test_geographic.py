@@ -74,4 +74,4 @@ def test_placename_to_wkt_invalid():
     # tests empty bbox exception in response to bad query
     with pytest.raises(ValueError) as e:
         wkt = placename_to_wkt("!@#$%^")
-    assert 'Unable to find a location for "!@#$%^"' in str(e.value)
+    assert 'Unable to find a matching location for "!@#$%^"' in str(e.value)
