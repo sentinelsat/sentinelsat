@@ -759,6 +759,7 @@ class SentinelAPI:
             filename = self._get_filename(product_info)
             path = join(directory_path, filename)
             if exists(path):
+                product_info["path"] = path
                 downloaded_prods[product_info["id"]] = product_info
                 del offline_prods[product_info["id"]]
             else:
