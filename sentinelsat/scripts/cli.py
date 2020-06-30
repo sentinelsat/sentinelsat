@@ -111,7 +111,7 @@ class CommaSeparatedString(click.ParamType):
     "-o",
     "--order-by",
     help="Comma-separated list of keywords to order the result by. "
-    "Prefix keywords with '-' for descending order.",
+         "Prefix keywords with '-' for descending order.",
 )
 @click.option(
     "-l", "--limit", type=int, help="Maximum number of results to return. Defaults to no limit."
@@ -133,37 +133,46 @@ class CommaSeparatedString(click.ParamType):
         """,
 )
 @click.option(
+    "--location",
+    type=str,
+    help="Return only products overlapping with the bounding box of given location, "
+         "e.g. 'Berlin', 'Germany' or '52.393974, 13.066955'."
+)
+@click.option(
     "--footprints",
     is_flag=True,
     help="""Create a geojson file search_footprints.geojson with footprints
     and metadata of the returned products.
     """,
 )
-@click.option("--location", type=str, help="Return only products overlapping with the bounding box of given location, "
-                                           "e.g. 'Berlin', 'Germany' or '52.393974, 13.066955'.")
-@click.option("--info", is_flag=True, is_eager=True, help="Displays the DHuS version used")
+@click.option(
+    "--info",
+    is_flag=True,
+    is_eager=True,
+    help="Displays the DHuS version used"
+)
 @click.version_option(version=sentinelsat_version, prog_name="sentinelsat")
 def cli(
-    user,
-    password,
-    geometry,
-    start,
-    end,
-    uuid,
-    name,
-    download,
-    sentinel,
-    producttype,
-    instrument,
-    cloud,
-    footprints,
-    path,
-    query,
-    url,
-    order_by,
-    location,
-    limit,
-    info,
+        user,
+        password,
+        geometry,
+        start,
+        end,
+        uuid,
+        name,
+        download,
+        sentinel,
+        producttype,
+        instrument,
+        cloud,
+        footprints,
+        path,
+        query,
+        url,
+        order_by,
+        location,
+        limit,
+        info,
 ):
     """Search for Sentinel products and, optionally, download all the results
     and/or create a geojson file with the search result footprints.
