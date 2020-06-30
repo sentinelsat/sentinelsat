@@ -900,7 +900,8 @@ class SentinelAPI:
         id = product_info["id"]
         title = product_info["title"]
         is_online = product_info.get("Online")
-        if is_online is None:
+        if not is_online:
+            # Re-check if the product's online status has changed
             is_online = self.is_online(id)
         if not is_online:
             self.logger.info("%s is not online.", id)
