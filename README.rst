@@ -73,7 +73,7 @@ Python Library
 
 .. code-block:: python
 
-  from sentinelsat.sentinel import SentinelAPI, read_geojson, geojson_to_wkt
+  from sentinelsat import SentinelAPI, read_geojson, geojson_to_wkt
   from datetime import date
 
   # connect to the API
@@ -219,7 +219,8 @@ Options
    * - -q
      - --query
      - TEXT
-     - Extra search keywords you want to use in the query. Separate keywords with comma. Example: 'producttype=GRD,polarisationmode=HH'.
+     - Extra search keywords you want to use in the query. Separate keywords with comma.
+       Example: 'producttype=GRD,polarisationmode=HH'.
    * - -f
      - --footprints
      -  

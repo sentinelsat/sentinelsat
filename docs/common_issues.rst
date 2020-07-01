@@ -31,7 +31,9 @@ Maybe there are no images for the specified time period, by default
 
 .. rubric:: A query to Eumetsat CODA fails with *HTTP 401 - Full authentication is required* even with the correct password.
 
-CODA does not allow the following special characters in passwords: ``~ ! @ # $ % ^ & * _ - + = ` | \ ( ) { } [ ] : ; " ' < > , . ? /``. See `issue #315`__ .
+| CODA does not allow the following special characters in passwords:
+| ``~ ! @ # $ % ^ & * _ - + = ` | \ ( ) { } [ ] : ; " ' < > , . ? /``
+| See also `issue #315`__.
 
 __ https://github.com/sentinelsat/sentinelsat/issues/315
 

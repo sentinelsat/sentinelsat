@@ -88,68 +88,109 @@ Download all Sentinel-2 scenes published in the last 24 hours.
 
   sentinelsat -u <user> -p <password> -g <search_polygon.geojson> --sentinel 2 -d
 
-sentinelsat
----------------
+Options
+-------
 
 .. program:: sentinelsat
 
-.. code-block:: console
+.. option:: -u <username>, --user <username>
 
-    sentinelsat -u <user> -p <password> [OPTIONS]
+    Username. Required.
 
-Options:
+    Can also be set via the :envvar:`DHUS_USER` environment variable or with a `.netrc file <#quickstart>`_.
 
-+----+---------------+------+--------------------------------------------------------------------------------------------+
-| -u | -\-user       | TEXT | Username [required] (or environment variable :envvar:`DHUS_USER`)                          |
-+----+---------------+------+--------------------------------------------------------------------------------------------+
-| -p | -\-password   | TEXT | Password [required] (or environment variable :envvar:`DHUS_PASSWORD`)                      |
-+----+---------------+------+--------------------------------------------------------------------------------------------+
-|    | -\-url        | TEXT | Define another API URL. Default URL is 'https://scihub.copernicus.eu/apihub/'.             |
-+----+---------------+------+--------------------------------------------------------------------------------------------+
-| -s | -\-start      | TEXT | Start date of the query in the format YYYYMMDD.                                            |
-+----+---------------+------+--------------------------------------------------------------------------------------------+
-| -e | -\-end        | TEXT | End date of the query in the format YYYYMMDD.                                              |
-+----+---------------+------+--------------------------------------------------------------------------------------------+
-| -g | -\-geometry   | PATH | Search area geometry as GeoJSON file.                                                      |
-+----+---------------+------+--------------------------------------------------------------------------------------------+
-|    | -\-uuid       | TEXT | Select a specific product UUID instead of a query. Multiple UUIDs can separated by commas. |
-+----+---------------+------+--------------------------------------------------------------------------------------------+
-|    | -\-name       | TEXT | Select specific product(s) by filename. Supports wildcards.                                |
-+----+---------------+------+--------------------------------------------------------------------------------------------+
-|    | -\-sentinel   | INT  | Limit search to a Sentinel satellite (constellation).                                      |
-+----+---------------+------+--------------------------------------------------------------------------------------------+
-|    | -\-instrument | TEXT | Limit search to a specific instrument on a Sentinel satellite.                             |
-+----+---------------+------+--------------------------------------------------------------------------------------------+
-|    | -\-producttype| TEXT | Limit search to a Sentinel product type. List of valid product types can be found under    |
-|    |               |      | `producttype` `here <https://scihub.copernicus.eu/userguide/3FullTextSearch>`_.            |
-+----+---------------+------+--------------------------------------------------------------------------------------------+
-| -c | -\-cloud      | INT  | Maximum cloud cover in percent. (requires :option:`--sentinel` to be 2 or 3)               |
-+----+---------------+------+--------------------------------------------------------------------------------------------+
-| -o | -\-order-by   | TEXT | Comma-separated list of keywords to order the result by. Prefix '-' for descending order.  |
-+----+---------------+------+--------------------------------------------------------------------------------------------+
-| -l | -\-limit      | INT  |  Maximum number of results to return. Defaults to no limit.                                |
-+----+---------------+------+--------------------------------------------------------------------------------------------+
-| -d | -\-download   |      | Download all results of the query.                                                         |
-+----+---------------+------+--------------------------------------------------------------------------------------------+
-|    | -\-path       | PATH | Set the path where the files will be saved.                                                |
-+----+---------------+------+--------------------------------------------------------------------------------------------+
-| -q | -\-query      | TEXT | Extra search keywords you want to use in the query. Separate keywords with comma.          |
-|    |               |      | Example: 'producttype=GRD,polarisationmode=HH'.                                            |
-+----+---------------+------+--------------------------------------------------------------------------------------------+
-| -f | -\-footprints |      | Create geojson file search_footprints.geojson with footprints of the query result.         |
-+----+---------------+------+--------------------------------------------------------------------------------------------+
-|    | -\-info       |      | Display DHuS server information.                                                           |
-+----+---------------+------+--------------------------------------------------------------------------------------------+
-|    | -\-version    |      | Show version number and exit.                                                              |
-+----+---------------+------+--------------------------------------------------------------------------------------------+
-| -h | -\-help       |      | Show help message and exit.                                                                |
-+----+---------------+------+--------------------------------------------------------------------------------------------+
+.. option:: -p <password>, --password <password>
 
-ESA maintains a `list of valid search keywords <https://scihub.copernicus.eu/userguide/3FullTextSearch>`_ that can be used with :option:`--query`.
+    Password. Required.
+
+    Can also be set with the :envvar:`DHUS_PASSWORD` environment variable or with a `.netrc file <#quickstart>`_.
+
+.. option:: --url <api_url>
+
+    Define another API URL. Default is 'https://scihub.copernicus.eu/apihub/'.
+
+    Can also be set with the :envvar:`DHUS_URL` environment variable.
+
+.. option:: -s <date>, --start <date>
+
+    Start date of the query in the format YYYYMMDD or one of the other formats listed `here <api_reference.html#sentinelsat.sentinel.SentinelAPI.query>`_.
+
+.. option:: -e <date>, --end <date>
+
+    End date of the query in the format YYYYMMDD or one of the other formats listed `here <api_reference.html#sentinelsat.sentinel.SentinelAPI.query>`_.
+
+.. option:: -g <file>, --geometry <file>
+
+    Search area geometry as GeoJSON file.
+
+.. option:: --uuid
+
+    Select a specific product UUID instead of a query. Multiple UUIDs can separated by commas.
+
+.. option:: --name <name>
+
+    Select specific product(s) by filename. Supports wildcards, such as ``S1A_IW*20151224*`` to find all Sentinel-1A
+    scenes from 24th of December 2015 without restricting the result to a search area.
+
+.. option:: --sentinel <number>
+
+    Limit search to a Sentinel satellite (constellation).
+
+.. option:: --instrument <instrument name>
+
+    Limit search to a specific instrument on a Sentinel satellite.
+
+.. option:: --producttype <product type>
+
+    Limit search to a Sentinel product type.
+    List of valid product types can be found under `producttype` `here <https://scihub.copernicus.eu/userguide/3FullTextSearch>`_.
+
+.. option:: -c <percent>, --cloud <percent>
+
+    Maximum cloud cover in percent. (requires :option:`--sentinel` to be 2 or 3)
+
+.. option:: -o <keywords>, --order-by <keywords>
+
+    Comma-separated list of keywords to order the result by. Prefix with '-' for descending order.
+
+.. option:: -l <number>, --limit <number>
+
+    Maximum number of results to return. Defaults to no limit.
+
+.. option:: -d, --download
+
+    Download all results of the query.
+
+.. option:: --path <directory>
+
+    Set the directory where the files will be saved.
+
+.. option:: -q <query>, --query <query>
+
+    Extra search keywords you want to use in the query. Separate keywords with comma.
+
+    ESA maintains a `list of valid search keywords <https://scihub.copernicus.eu/userguide/3FullTextSearch>`_ that can be used.
+
+    Example: `producttype=GRD,polarisationmode=HH`.
+
+.. option:: -f, --footprints
+
+    Create geojson file search_footprints.geojson with footprints of the query result.
+
+.. option:: --info
+
+    Display DHuS server information.
+
+.. option:: --version
+
+    Show version number and exit.
+
+.. option:: -h, --help
+
+    Show help message and exit.
+
 
 The options :option:`--sentinel`, :option:`--instrument` and :option:`--producttype` are mutually exclusive and follow a hierarchy from
 most specific to least specific, i.e. :option:`--producttype` > :option:`--instrument` > :option:`--sentinel`. Only the most specific
 option will be included in the search when multiple ones are given.
 
-Searching by name supports wildcards, such as ``S1A_IW*20151224*`` to find all Sentinel-1 A scenes from 24th of December 2015 without
-restricting the result to a search area.

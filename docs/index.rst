@@ -33,7 +33,8 @@ and a powerful Python API.
 
    install
    cli
-   api
+   api_overview
+   api_reference
    common_issues
 
 .. toctree::
