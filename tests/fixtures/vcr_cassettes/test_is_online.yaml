@@ -1,0 +1,37 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - sentinelsat/0.14
+    method: GET
+    uri: https://scihub.copernicus.eu/apihub/odata/v1/Products('98ca202b-2155-4181-be88-xxxxxxxxxxxx')/Online/$value
+  response:
+    body:
+      string: <?xml version='1.0' encoding='UTF-8'?><error xmlns="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"><code/><message
+        xml:lang="en">Invalid key (98ca202b-2155-4181-be88-xxxxxxxxxxxx) to access
+        Products</message></error>
+    headers:
+      cause-message:
+      - 'InvalidKeyException : Invalid key (98ca202b-2155-4181-be88-xxxxxxxxxxxx)
+        to access Products'
+      content-length:
+      - '233'
+      content-type:
+      - application/xml
+      dataserviceversion:
+      - '1.0'
+      pragma:
+      - no-cache
+      server:
+      - Apache-Coyote/1.1
+    status:
+      code: 404
+      message: Not Found
+version: 1

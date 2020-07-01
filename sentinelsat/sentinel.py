@@ -20,10 +20,20 @@ import geojson
 import geomet.wkt
 import html2text
 import requests
-from six import string_types
+from six import string_types, raise_from
 from six.moves.urllib.parse import urljoin, quote_plus
 from tqdm import tqdm
 
+from sentinelsat.exceptions import (
+    SentinelAPIError,
+    QuerySyntaxError,
+    ServerError,
+    SentinelAPILTAError,
+    InvalidKeyError,
+    QueryLengthError,
+    InvalidChecksumError,
+    UnauthorizedError,
+)
 from . import __version__ as sentinelsat_version
 
 
@@ -384,7 +394,7 @@ class SentinelAPI:
             headers={"Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"},
             timeout=self.timeout,
         )
-        _check_scihub_response(response)
+        _check_scihub_response(response, query_string=query)
 
         # store last status code (for testing)
         self._last_response = response
@@ -395,12 +405,12 @@ class SentinelAPI:
             if json_feed["opensearch:totalResults"] is None:
                 # We are using some unintended behavior of the server that a null is
                 # returned as the total results value when the query string was incorrect.
-                raise SentinelAPIError(
+                raise QuerySyntaxError(
                     "Invalid query string. Check the parameters and format.", response
                 )
             total_results = int(json_feed["opensearch:totalResults"])
         except (ValueError, KeyError):
-            raise SentinelAPIError("API response not valid. JSON decoding failed.", response)
+            raise ServerError("API response not valid. JSON decoding failed.", response)
 
         products = json_feed.get("entry", [])
         # this verification is necessary because if the query returns only
@@ -528,15 +538,9 @@ class SentinelAPI:
         # Check https://scihub.copernicus.eu/userguide/ODataAPI#Products_entity for more information
 
         url = urljoin(self.api_url, "odata/v1/Products('{}')/Online/$value".format(id))
-        with self.session.get(url, auth=self.session.auth, timeout=self.timeout) as r:
-            if r.status_code == 200 and r.text == "true":
-                return True
-            elif r.status_code == 200 and r.text == "false":
-                return False
-            else:
-                raise SentinelAPIError(
-                    "Could not verify whether product {} is online".format(id), r
-                )
+        r = self.session.get(url, auth=self.session.auth, timeout=self.timeout)
+        _check_scihub_response(r)
+        return r.json()
 
     def download(self, id, directory_path=".", checksum=True):
         """Download a product.
@@ -1126,52 +1130,6 @@ class SentinelAPI:
         return tqdm(**kwargs)
 
 
-class SentinelAPIError(Exception):
-    """Invalid responses from DataHub.
-
-    Attributes
-    ----------
-    msg: str
-        The error message.
-    response: requests.Response
-        The response from the server as a `requests.Response` object.
-    """
-
-    def __init__(self, msg=None, response=None):
-        self.msg = msg
-        self.response = response
-
-    def __str__(self):
-        return "HTTP status {0} {1}: {2}".format(
-            self.response.status_code,
-            self.response.reason,
-            ("\n" if "\n" in self.msg else "") + self.msg,
-        )
-
-
-class SentinelAPILTAError(SentinelAPIError):
-    """ Error when retrieving a product from the Long Term Archive
-
-    Attributes
-    ----------
-    msg: str
-        The error message.
-    response: requests.Response
-        The response from the server as a `requests.Response` object.
-    """
-
-    def __init__(self, msg=None, response=None):
-        self.msg = msg
-        self.response = response
-
-
-class InvalidChecksumError(Exception):
-    """MD5 checksum of a local file does not match the one from the server.
-    """
-
-    pass
-
-
 def read_geojson(geojson_file):
     """Read a GeoJSON file into a GeoJSON object.
     """
@@ -1287,7 +1245,7 @@ def format_query_date(in_date):
         raise ValueError("Unsupported date value {}".format(in_date))
 
 
-def _check_scihub_response(response, test_json=True):
+def _check_scihub_response(response, test_json=True, query_string=None):
     """Check that the response from server has status code 2xx and that the response is valid JSON.
     """
     # Prevent requests from needing to guess the encoding
@@ -1298,7 +1256,7 @@ def _check_scihub_response(response, test_json=True):
         if test_json:
             response.json()
     except (requests.HTTPError, ValueError):
-        msg = "Invalid API response."
+        msg = None
         try:
             msg = response.headers["cause-message"]
         except:
@@ -1313,11 +1271,40 @@ def _check_scihub_response(response, test_json=True):
                         msg = h.handle(response.text).strip()
                     except:
                         pass
-        api_error = SentinelAPIError(msg, response)
+
+        if msg is None:
+            error = ServerError("Invalid API response", response)
+        elif response.status_code == 401:
+            msg = "Invalid user name or password"
+            if "scihub.copernicus.eu/apihub" in response.url:
+                msg += (
+                    ". Note that account creation and password changes may take up to a week "
+                    "to propagate to the 'https://scihub.copernicus.eu/apihub/' API URL you are using. "
+                    "Consider switching to 'https://scihub.copernicus.eu/dhus/' instead in the mean time."
+                )
+            error = UnauthorizedError(msg, response)
+        elif "Request Entity Too Large" in msg or "Request-URI Too Long" in msg:
+            msg = "Server was unable to process the query due to its excessive length"
+            if query_string is not None:
+                length = SentinelAPI.check_query_length(query_string)
+                msg += (
+                    " (approximately {:.3}x times the maximum allowed). "
+                    "Consider using SentinelAPI.check_query_length() for "
+                    "client-side validation of the query string length.".format(length)
+                )
+            error = QueryLengthError(msg, response)
+        elif "InvalidKeyException" in msg:
+            msg = msg.split(" : ", 1)[-1]
+            error = InvalidKeyError(msg, response)
+        elif 500 <= response.status_code < 600 or msg:
+            # 5xx: Server Error
+            error = ServerError(msg, response)
+        else:
+            error = SentinelAPIError(msg, response)
+
         # Suppress "During handling of the above exception..." message
-        # See PEP 409
-        api_error.__cause__ = None
-        raise api_error
+        # 'raise error from None' with Python 2 compatibility
+        raise_from(error, None)
 
 
 def _format_order_by(order_by):

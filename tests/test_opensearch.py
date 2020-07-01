@@ -1,11 +1,23 @@
 """
 Tests for functionality related to the OpenSearch API of SciHub (https://scihub.copernicus.eu/apihub/search?...)
 """
+from contextlib import contextmanager
 from datetime import datetime, date, timedelta
 
 import pytest
+import requests_mock
+from requests.exceptions import (
+    StreamConsumedError,
+    ContentDecodingError,
+    InvalidProxyURL,
+    InvalidHeader,
+    TooManyRedirects,
+    ReadTimeout,
+    SSLError,
+)
 
-from sentinelsat import format_query_date, SentinelAPIError, SentinelAPI
+from sentinelsat import format_query_date, SentinelAPI
+from sentinelsat.exceptions import QuerySyntaxError, QueryLengthError, UnauthorizedError
 from sentinelsat.sentinel import _format_order_by
 
 
@@ -49,7 +61,7 @@ def test_format_date(api):
     ):
         with pytest.raises(ValueError):
             format_query_date(date_str)
-        with pytest.raises(SentinelAPIError):
+        with pytest.raises(QuerySyntaxError):
             api.query(raw="ingestiondate:[{} TO *]".format(date_str), limit=0)
 
 
@@ -68,21 +80,53 @@ def test_SentinelAPI_connection(api, small_query):
 @pytest.mark.scihub
 def test_SentinelAPI_wrong_credentials(small_query):
     api = SentinelAPI("wrong_user", "wrong_password")
-    with pytest.raises(SentinelAPIError) as excinfo:
+
+    @contextmanager
+    def assert_exception():
+        with pytest.raises(UnauthorizedError) as excinfo:
+            yield
+        assert excinfo.value.response.status_code == 401
+        assert "Invalid user name or password" in excinfo.value.msg
+
+    with assert_exception():
         api.query(**small_query)
-    assert excinfo.value.response.status_code == 401
-
-    with pytest.raises(SentinelAPIError) as excinfo:
+    with assert_exception():
         api.get_product_odata("8df46c9e-a20c-43db-a19a-4240c2ed3b8b")
-    assert excinfo.value.response.status_code == 401
-
-    with pytest.raises(SentinelAPIError) as excinfo:
+    with assert_exception():
         api.download("8df46c9e-a20c-43db-a19a-4240c2ed3b8b")
-    assert excinfo.value.response.status_code == 401
-
-    with pytest.raises(SentinelAPIError) as excinfo:
+    with assert_exception():
         api.download_all(["8df46c9e-a20c-43db-a19a-4240c2ed3b8b"])
-    assert excinfo.value.response.status_code == 401
+
+
+@pytest.mark.vcr
+@pytest.mark.scihub
+@pytest.mark.parametrize(
+    "exception",
+    [
+        StreamConsumedError,
+        ContentDecodingError,
+        InvalidProxyURL,
+        InvalidHeader,
+        TooManyRedirects,
+        ReadTimeout,
+        SSLError,
+    ],
+)
+def test_requests_error(exception, api, small_query):
+    """non-HTTP errors originating from requests should be raised directly without translating them"""
+    with requests_mock.mock() as rqst:
+        rqst.register_uri(requests_mock.ANY, requests_mock.ANY, exc=exception)
+        with pytest.raises(exception):
+            api.query(**small_query)
+
+        with pytest.raises(exception):
+            api.get_product_odata("8df46c9e-a20c-43db-a19a-4240c2ed3b8b")
+
+        with pytest.raises(exception):
+            api.download("8df46c9e-a20c-43db-a19a-4240c2ed3b8b")
+
+        with pytest.raises(exception):
+            api.download_all(["8df46c9e-a20c-43db-a19a-4240c2ed3b8b"])
 
 
 @pytest.mark.fast
@@ -242,7 +286,7 @@ def test_api_query_format_escape_spaces(api):
 @pytest.mark.vcr
 @pytest.mark.scihub
 def test_invalid_query(api):
-    with pytest.raises(SentinelAPIError):
+    with pytest.raises(QuerySyntaxError):
         api.query(raw="xxx:yyy")
 
 
@@ -355,20 +399,16 @@ def test_too_long_query(api):
     # Expect no error
     q = create_query(163)
     assert 0.99 < SentinelAPI.check_query_length(q) < 1.0
-    with pytest.raises(SentinelAPIError) as excinfo:
+    with pytest.raises(QuerySyntaxError) as excinfo:
         api.count(raw=q)
     assert "Invalid query string" in excinfo.value.msg
 
     # Expect HTTP status 500 Internal Server Error
     q = create_query(164)
     assert 0.999 <= SentinelAPI.check_query_length(q) < 1.01
-    with pytest.raises(SentinelAPIError) as excinfo:
+    with pytest.raises(QueryLengthError) as excinfo:
         api.count(raw=q)
-    assert excinfo.value.response.status_code == 500
-    assert (
-        "Request Entity Too Large" in excinfo.value.msg
-        or "Request-URI Too Long" in excinfo.value.msg
-    )
+    assert "x times the maximum allowed" in excinfo.value.msg
 
 
 @pytest.mark.vcr
