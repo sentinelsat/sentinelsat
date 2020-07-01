@@ -216,6 +216,11 @@ def cli(
     if query is not None:
         search_kwargs.update((x.split("=") for x in query))
 
+    if location is not None:
+        wkt, place_name = placename_to_wkt(location)
+        logger.info("The location we are querying is: '%s', '%s'".format(place_name, wkt))
+        search_kwargs["area"] = wkt
+
     if geometry is not None:
         search_kwargs["area"] = geojson_to_wkt(read_geojson(geometry))
 
@@ -243,11 +248,6 @@ def cli(
         footprints_geojson = api.to_geojson(products)
         with open(os.path.join(path, "search_footprints.geojson"), "w") as outfile:
             outfile.write(gj.dumps(footprints_geojson))
-
-    if location is not None:
-        wkt, place_name = placename_to_wkt(location)
-        click.echo("The location we are querying is: '{}', '{}'".format(place_name, wkt))
-        search_kwargs["area"] = wkt
 
     if download is True:
         product_infos, triggered, failed_downloads = api.download_all(products, path)
