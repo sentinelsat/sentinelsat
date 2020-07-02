@@ -6,8 +6,8 @@ import geojson as gj
 import requests.utils
 
 from sentinelsat import __version__ as sentinelsat_version
+from sentinelsat.sentinel import SentinelAPI, geojson_to_wkt, read_geojson, placename_to_wkt
 from sentinelsat.exceptions import InvalidKeyError
-from sentinelsat.sentinel import SentinelAPI, geojson_to_wkt, read_geojson
 
 logger = logging.getLogger("sentinelsat")
 
@@ -128,6 +128,12 @@ class CommaSeparatedString(click.ParamType):
         """,
 )
 @click.option(
+    "--location",
+    type=str,
+    help="Return only products overlapping with the bounding box of given location, "
+    "e.g. 'Berlin', 'Germany' or '52.393974, 13.066955'.",
+)
+@click.option(
     "--footprints",
     is_flag=True,
     help="""Create a geojson file search_footprints.geojson with footprints
@@ -154,6 +160,7 @@ def cli(
     query,
     url,
     order_by,
+    location,
     limit,
     info,
 ):
@@ -203,6 +210,11 @@ def cli(
 
     if query is not None:
         search_kwargs.update((x.split("=") for x in query))
+
+    if location is not None:
+        wkt, place_name = placename_to_wkt(location)
+        logger.info("The location we are querying is: '%s', '%s'".format(place_name, wkt))
+        search_kwargs["area"] = wkt
 
     if geometry is not None:
         search_kwargs["area"] = geojson_to_wkt(read_geojson(geometry))

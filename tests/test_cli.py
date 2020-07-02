@@ -528,3 +528,10 @@ def test_info_cli(run_cli, tmpdir):
         "DHuS version: 2.4.1\n" in result.output
     )
     tmpdir.remove()
+
+
+@pytest.mark.vcr
+@pytest.mark.scihub
+def test_location_cli(run_cli):
+    result = run_cli("--location", "Metz", "-l", "5")
+    assert "Found" in result.output

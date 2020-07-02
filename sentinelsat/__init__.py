@@ -17,4 +17,5 @@ from .sentinel import (
     format_query_date,
     geojson_to_wkt,
     read_geojson,
+    placename_to_wkt,
 )
