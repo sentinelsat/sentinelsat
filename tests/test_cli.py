@@ -9,7 +9,7 @@ import pytest
 import requests_mock
 from click.testing import CliRunner
 
-from sentinelsat import InvalidChecksumError, SentinelAPIError, SentinelAPI
+from sentinelsat import SentinelAPI, InvalidChecksumError, QuerySyntaxError
 from sentinelsat.scripts.cli import cli
 
 try:  # Python 3.5 and greater import
@@ -384,7 +384,7 @@ def test_name_search_multiple(run_cli):
 @pytest.mark.vcr
 @pytest.mark.scihub
 def test_name_search_empty(run_cli):
-    run_cli("--name", "", must_raise=SentinelAPIError)
+    run_cli("--name", "", must_raise=QuerySyntaxError)
 
 
 @pytest.mark.vcr

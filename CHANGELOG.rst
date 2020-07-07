@@ -13,7 +13,19 @@ Added
 
 Changed
 ~~~~~~~
-* 
+* Replaced ``SentinelAPIError`` exceptions with more specific types:
+
+  * ``SentinelAPIError`` -- the parent, catch-all exception. Only used when no other more specific exception can be applied.
+  * ``SentinelAPILTAError`` -- raised when retrieving a product from the Long Term Archive.
+  * ``ServerError`` -- raised when the server responded in an unexpected manner, typically due to undergoing maintenance.
+  * ``UnauthorizedError`` -- raised when attempting to retrieve a product with incorrect credentials.
+  * ``QuerySyntaxError`` -- raised when the query string could not be parsed on the server side.
+  * ``QueryLengthError`` -- raised when the query string length was excessively long.
+  * ``InvalidKeyError`` -- raised when product with given key was not found on the server.
+  * ``InvalidChecksumError`` -- MD5 checksum of a local file does not match the one from the server.
+
+  The new exceptions are still subclasses of ``SentinelAPIError`` for backwards compatibility.
+  (#285 @valgur, @dwlsalmeida)
 
 Deprecated
 ~~~~~~~~~~
@@ -21,11 +33,12 @@ Deprecated
 
 Fixed
 ~~~~~
-* fixed failing Read The Docs builds (#370)
+* 
 
 Development Changes
 ~~~~~~~~~~~~~~~~~~~
 * add Windows, macOS, Python 3.8 to Travis tests #374
+* fixed failing Read The Docs builds (#370)
 
 
 [0.14] – 2020-06-12
