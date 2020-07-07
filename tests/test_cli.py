@@ -129,12 +129,27 @@ def netrc_from_environ(no_netrc, credentials):
 
 @pytest.mark.vcr
 @pytest.mark.scihub
-def test_cli(run_cli, geojson_path):
+def test_cli(run_cli, geojson_path, ):
     run_cli("--geometry", geojson_path)
 
     run_cli("--geometry", geojson_path, "--url", "https://scihub.copernicus.eu/dhus/")
 
     run_cli("--geometry", geojson_path, "-q", "producttype=GRD,polarisationmode=HH")
+
+
+@pytest.mark.vcr
+@pytest.mark.scihub
+def test_cli_geometry_alternatives(run_cli, geojson_string, wkt_string):
+    run_cli("--geometry", geojson_string, "-l", "1")
+
+    run_cli("--geometry", wkt_string, "-l", "1")
+
+
+@pytest.mark.fast
+def test_cli_geometry_alternatives_fail(run_cli):
+    result = run_cli("--geometry", "POLYGO((-87.27 41.64,-81.56 37.857,-82.617 44.52,-87.2 41.64))",
+                     must_return_nonzero=True)
+    assert "neither a GeoJSON file, GeoJSON String or a WKT string" in result.output
 
 
 @pytest.mark.fast

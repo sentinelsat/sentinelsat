@@ -12,6 +12,7 @@ from sentinelsat.sentinel import (
     geojson_to_wkt,
     read_geojson,
     placename_to_wkt,
+    is_wkt
 )
 
 logger = logging.getLogger("sentinelsat")
@@ -74,7 +75,10 @@ class CommaSeparatedString(click.ParamType):
     help="End date of the query in the format YYYYMMDD.",
 )
 @click.option(
-    "--geometry", "-g", type=click.Path(exists=True), help="Search area geometry as GeoJSON file."
+    "--geometry",
+    "-g",
+    type=str,
+    help="Search area geometry as GeoJSON file."
 )
 @click.option(
     "--uuid",
@@ -222,7 +226,22 @@ def cli(
         search_kwargs["area"] = wkt
 
     if geometry is not None:
-        search_kwargs["area"] = geojson_to_wkt(read_geojson(geometry))
+        # check if the value is an existing path
+        if os.path.exists(geometry):
+            search_kwargs["area"] = geojson_to_wkt(read_geojson(geometry))
+        # check if the value is a GeoJSON
+        else:
+            try:
+                geometry = eval(geometry)
+                search_kwargs["area"] = geojson_to_wkt(geometry)
+            except SyntaxError:
+                logger.info("test")
+                # check if the value is a WKT
+                if is_wkt(geometry):
+                    search_kwargs["area"] = geometry
+                else:
+                    logger.error("The geometry input is neither a GeoJSON file, GeoJSON String or a WKT string.")
+                    exit(1)
 
     if uuid is not None:
         uuid_list = [x.strip() for x in uuid]

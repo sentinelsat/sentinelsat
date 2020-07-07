@@ -38,7 +38,7 @@ def vcr(vcr):
 
     def scrub_response(response):
         ignore = set(
-            x.lower() for x in ["Authorization", "Set-Cookie", "Cookie", "Date", "Expires",]
+            x.lower() for x in ["Authorization", "Set-Cookie", "Cookie", "Date", "Expires", ]
         )
         for header in list(response["headers"]):
             if header.lower() in ignore or header.lower().startswith("access-control"):
@@ -123,6 +123,54 @@ def geojson_path():
     path = join(FIXTURES_DIR, "map.geojson")
     assert isfile(path)
     return path
+
+
+@pytest.fixture(scope="session")
+def geojson_string():
+    string = '''{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {},
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -66.26953125,
+              -8.05922962720018
+            ],
+            [
+              -66.26953125,
+              0.7031073524364909
+            ],
+            [
+              -57.30468749999999,
+              0.7031073524364909
+            ],
+            [
+              -57.30468749999999,
+              -8.05922962720018
+            ],
+            [
+              -66.26953125,
+              -8.05922962720018
+            ]
+          ]
+        ]
+      }
+    }
+  ]
+}'''
+    return string
+
+
+@pytest.fixture(scope="session")
+def wkt_string():
+    string = 'POLYGON((-78.046875 46.377254205100286,-75.76171874999999 43.32517767999295,-71.279296875 ' \
+             '46.55886030311717,-78.046875 46.377254205100286))'
+    return string
 
 
 @pytest.fixture(scope="session")
