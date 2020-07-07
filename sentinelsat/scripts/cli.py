@@ -235,7 +235,8 @@ def cli(
                     search_kwargs["area"] = geometry
                 else:
                     logger.error(
-                        "The geometry input is neither a GeoJSON file, GeoJSON String or a WKT string."
+                        "The geometry input is neither a GeoJSON file with a valid path, "
+                        "a GeoJSON String or a WKT string."
                     )
                     exit(1)
 

@@ -129,9 +129,7 @@ def netrc_from_environ(no_netrc, credentials):
 
 @pytest.mark.vcr
 @pytest.mark.scihub
-def test_cli(
-    run_cli, geojson_path,
-):
+def test_cli(run_cli, geojson_path):
     run_cli("--geometry", geojson_path)
 
     run_cli("--geometry", geojson_path, "--url", "https://scihub.copernicus.eu/dhus/")
