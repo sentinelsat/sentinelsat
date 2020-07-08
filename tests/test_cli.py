@@ -535,4 +535,6 @@ def test_info_cli(run_cli, tmpdir):
 def test_location_cli(run_cli):
     result = run_cli("--location", "Metz", "-l", "1")
     assert "Found" in result.output
-    assert int(re.search(r"Found (\d+) products", result.output)[1]) < 100
+    m = re.search(r"Found (\d+) products", result.output)
+    assert m, result.output
+    assert int(m.group(1)) < 100
