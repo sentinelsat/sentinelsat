@@ -85,6 +85,13 @@ To run the tests
 
   pytest -v
 
+You can run individual tests with the syntax:
+
+.. code-block:: console
+
+  pytest -v /tests/test_file.py::test_you_want_to_run
+
+This can be useful for recording or modifying individual vcr cassettes.
 
 By default, prerecorded responses to Copernicus Open Access Hub queries are used to not be affected by its downtime.
 Furthermore, any network accesses are blocked as well (by raising a ``pytest_socket.SocketBlockedError: A test tried to use socket.socket`` exception) to guarantee that all tests are indeed correctly covered by recorded queries.
