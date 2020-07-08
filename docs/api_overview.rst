@@ -51,8 +51,8 @@ Authentication
 --------------
 
 The Copernicus Open Access Hub and probably most Data Hubs require authentication.
-You can provide your credentials with :meth:`SentinelAPI(<your username>, <your password>)`. 
-Alternatively, you can use :meth:`SentinelAPI(None, None)` and enter your credentials in a 
+You can provide your credentials with :class:`SentinelAPI(\<your username\>, \<your password\>) <sentinel.SentinelAPI>`. 
+Alternatively, you can use :class:`SentinelAPI(None, None) <sentinel.SentinelAPI>` and enter your credentials in a 
 file `.netrc` in your user home directory in the following form:
 
 .. code-block:: text
@@ -69,10 +69,10 @@ Sorting & Filtering
 
 In addition to the `search query keywords <https://scihub.copernicus.eu/userguide/3FullTextSearch>`_
 sentinelsat allows filtering and sorting of search results before download. To simplify these
-operations sentinelsat offers the convenience functions :meth:`~SentinelAPI.to_geojson()`,
-:meth:`~SentinelAPI.to_dataframe()` and :meth:`~SentinelAPI.to_geodataframe()` which return the
+operations sentinelsat offers the convenience functions :meth:`~sentinel.SentinelAPI.to_geojson()`,
+:meth:`~sentinel.sentinel.SentinelAPI.to_dataframe()` and :meth:`~sentinel.SentinelAPI.to_geodataframe()` which return the
 search results as a GeoJSON object, Pandas DataFrame or a GeoPandas GeoDataFrame, respectively.
-:meth:`~SentinelAPI.to_dataframe()` and :meth:`~SentinelAPI.to_geodataframe()` require `pandas
+:meth:`~sentinel.SentinelAPI.to_dataframe()` and :meth:`~sentinel.SentinelAPI.to_geodataframe()` require `pandas
 <https://pandas.pydata.org/>`_ and `geopandas <http://geopandas.org/>`_ to be installed,
 respectively.
 
@@ -112,15 +112,15 @@ Getting Product Metadata
 Sentinelsat provides two methods for retrieving product metadata from the server, one for each
 API offered by the Copernicus Open Access Hub:
 
-- :meth:`~SentinelAPI.query()` for `OpenSearch (Solr) <https://scihub.copernicus.eu/userguide/5APIsAndBatchScripting#Open_Search>`_,
+- :meth:`~sentinel.SentinelAPI.query()` for `OpenSearch (Solr) <https://scihub.copernicus.eu/userguide/5APIsAndBatchScripting#Open_Search>`_,
   which supports filtering products by their attributes and returns metadata for all matched
   products at once.
-- :meth:`~SentinelAPI.get_product_odata()` for `OData <https://scihub.copernicus.eu/userguide/5APIsAndBatchScripting#Open_Data_Protocol_OData>`_,
+- :meth:`~sentinel.SentinelAPI.get_product_odata()` for `OData <https://scihub.copernicus.eu/userguide/5APIsAndBatchScripting#Open_Data_Protocol_OData>`_,
   which can be queried one product at a time but provides the full metadata available for each
   product, as well as information about the product file such as the file size and checksum, which
   are not available from OpenSearch.
 
-Both methods return a dictionary containing the metadata items. More specifically, :meth:`~SentinelAPI.query()`
+Both methods return a dictionary containing the metadata items. More specifically, :meth:`~sentinel.SentinelAPI.query()`
 returns a dictionary with an entry for each returned product with its ID as the key and the
 attributes' dictionary as the value.
 
@@ -261,24 +261,28 @@ Copernicus Open Access Hub no longer stores all products online for immediate re
 Offline products can be requested from the `Long Term Archive (LTA) <https://scihub.copernicus.eu/userguide/LongTermArchive>`_ and should become available within 24 hours.
 Copernicus Open Access Hub's quota currently permits users to request an offline product every 30 minutes.
 
-A product's availability can be checked with a regular OData query by evaluating the ``Online`` property value.
+A product's availability can be checked with a regular OData query by evaluating the ``Online`` property value
+or by using the :meth:`~sentinel.SentinelAPI.is_online()` convenience method.
 
 .. code-block:: python
 
     product_info = api.get_product_odata(<product_id>)
+    is_online = product_info['Online']
+    # or
+    is_online = api.is_online(<product_id>)
 
-    if product_info['Online']:
+    if is_online:
         print('Product {} is online. Starting download.'.format(<product_id>))
         api.download(<product_id>)
     else:
         print('Product {} is not online.'.format(<product_id>))
 
-When trying to download an offline product with :meth:`~SentinelAPI.download` it will trigger its retrieval from the LTA.
+When trying to download an offline product with :meth:`~sentinel.SentinelAPI.download` it will trigger its retrieval from the LTA.
 
-Given a list of offline and online products, :meth:`~SentinelAPI.download_all` will download online products, while concurrently triggering the retrieval of offline products from the LTA.
+Given a list of offline and online products, :meth:`~sentinel.SentinelAPI.download_all` will download online products, while concurrently triggering the retrieval of offline products from the LTA.
 Offline products that become online while downloading will be added to the download queue.
-:meth:`~SentinelAPI.download_all` terminates when the download queue is empty, even if not all products were retrieved from the LTA.
-We suggest repeatedly calling :meth:`~SentinelAPI.download_all` to download all products, either manually or using a third-party library, e.g. `tenacity <https://github.com/jd/tenacity>`_.
+:meth:`~sentinel.SentinelAPI.download_all` terminates when the download queue is empty, even if not all products were retrieved from the LTA.
+We suggest repeatedly calling :meth:`~sentinel.SentinelAPI.download_all` to download all products, either manually or using a third-party library, e.g. `tenacity <https://github.com/jd/tenacity>`_.
 
 
 .. code-block:: python
@@ -366,22 +370,3 @@ with a `filename` pattern search:
   kw = query_kwargs.copy()
   kw['raw'] = 'tileid:{tileid} OR filename:*_T{tileid}_*'.format(tileid=tile)
   pp = api.query(**kw)
-
-API Reference
--------------
-
-.. automodule:: sentinelsat
-
-.. autoclass:: SentinelAPI
-    :members:
-
-.. autofunction:: read_geojson
-
-.. autofunction:: geojson_to_wkt
-
-Exceptions
-^^^^^^^^^^
-
-.. autoexception:: SentinelAPIError
-
-.. autoexception:: InvalidChecksumError

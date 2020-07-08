@@ -30,7 +30,13 @@ needs_sphinx = "1.3"
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-extensions = ["sphinx.ext.autodoc", "sphinx.ext.autosummary", "sphinx.ext.napoleon"]
+extensions = [
+    "sphinx.ext.autodoc",
+    "sphinx.ext.autosummary",
+    "sphinx.ext.napoleon",
+    "sphinx.ext.viewcode",
+    "sphinx.ext.coverage",
+]
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["_templates"]
@@ -280,6 +286,36 @@ autodoc_member_order = "bysource"
 # and environment variables
 suppress_warnings = ["ref.option", "ref.envvar"]
 
-# Improve quote and ellipsis symbols but not dashes
-# Avoid converting long program options to dashes in CLI docs
-smartquotes_action = "qe"
+# Avoid adding unnecessary "sentinelsat.sentinel." prefix in API reference
+add_module_names = False
+
+autodoc_default_options = {
+    "undoc-members": True,
+    "show-inheritance": True,
+}
+
+# https://stackoverflow.com/a/46284013/2997179
+# Avoid listing "object" as base class
+from sphinx.ext.autodoc import ClassDocumenter, _
+
+add_line = ClassDocumenter.add_line
+line_to_delete = _("Bases: %s") % ":class:`object`"
+
+
+def add_line_no_object_base(self, text, *args, **kwargs):
+    if text.strip() == line_to_delete:
+        return
+    add_line(self, text, *args, **kwargs)
+
+
+add_directive_header = ClassDocumenter.add_directive_header
+
+
+def add_directive_header_no_object_base(self, *args, **kwargs):
+    self.add_line = add_line_no_object_base.__get__(self)
+    result = add_directive_header(self, *args, **kwargs)
+    del self.add_line
+    return result
+
+
+ClassDocumenter.add_directive_header = add_directive_header_no_object_base

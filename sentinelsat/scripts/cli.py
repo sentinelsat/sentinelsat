@@ -6,6 +6,7 @@ import geojson as gj
 import requests.utils
 
 from sentinelsat import __version__ as sentinelsat_version
+
 from sentinelsat.sentinel import (
     SentinelAPI,
     SentinelAPIError,
@@ -14,6 +15,9 @@ from sentinelsat.sentinel import (
     placename_to_wkt,
     is_wkt,
 )
+
+from sentinelsat.exceptions import InvalidKeyError
+
 
 logger = logging.getLogger("sentinelsat")
 
@@ -246,12 +250,9 @@ def cli(
         for productid in uuid_list:
             try:
                 products[productid] = api.get_product_odata(productid)
-            except SentinelAPIError as e:
-                if "Invalid key" in e.msg:
-                    logger.error("No product with ID '%s' exists on server", productid)
-                    exit(1)
-                else:
-                    raise
+            except InvalidKeyError:
+                logger.error("No product with ID '%s' exists on server", productid)
+                exit(1)
     elif name is not None:
         search_kwargs["identifier"] = name[0] if len(name) == 1 else "(" + " OR ".join(name) + ")"
         products = api.query(order_by=order_by, limit=limit, **search_kwargs)
