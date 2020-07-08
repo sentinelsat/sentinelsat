@@ -8,11 +8,9 @@ interactions:
       - gzip, deflate
       Connection:
       - keep-alive
-      Content-Length:
-      - '0'
       User-Agent:
-      - python-requests/2.22.0
-    method: POST
+      - sentinelsat/0.14
+    method: GET
     uri: https://nominatim.openstreetmap.org/search?q=florida&format=geojson
   response:
     body:
@@ -31,10 +29,6 @@ interactions:
         of America\",\"place_rank\":30,\"category\":\"place\",\"type\":\"peninsula\",\"importance\":0.4741541321378574},\"bbox\":[-81.25005,27.24995,-81.24995,27.25005],\"geometry\":{\"type\":\"Point\",\"coordinates\":[-81.25,27.25]}},{\"type\":\"Feature\",\"properties\":{\"place_id\":235596325,\"osm_type\":\"relation\",\"osm_id\":1319503,\"display_name\":\"Florida,
         Valle del Cauca, Colombia\",\"place_rank\":12,\"category\":\"boundary\",\"type\":\"administrative\",\"importance\":0.47048881922758246,\"icon\":\"https://nominatim.openstreetmap.org/images/mapicons/poi_boundary_administrative.p.20.png\"},\"bbox\":[-76.3483323,3.2112461,-76.0391011,3.3891582],\"geometry\":{\"type\":\"Point\",\"coordinates\":[-76.1905432829982,3.30080485]}}]}"
     headers:
-      Access-Control-Allow-Methods:
-      - OPTIONS,GET
-      Access-Control-Allow-Origin:
-      - '*'
       Connection:
       - keep-alive
       Content-Type:

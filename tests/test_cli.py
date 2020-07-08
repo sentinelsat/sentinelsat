@@ -533,5 +533,6 @@ def test_info_cli(run_cli, tmpdir):
 @pytest.mark.vcr
 @pytest.mark.scihub
 def test_location_cli(run_cli):
-    result = run_cli("--location", "Metz", "-l", "5")
+    result = run_cli("--location", "Metz", "-l", "1")
     assert "Found" in result.output
+    assert int(re.search(r"Found (\d+) products", result.output)[1]) < 100
