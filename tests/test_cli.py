@@ -152,7 +152,10 @@ def test_cli_geometry_alternatives_fail(run_cli):
         "POLYGO((-87.27 41.64,-81.56 37.857,-82.617 44.52,-87.2 41.64))",
         must_return_nonzero=True,
     )
-    assert "neither a GeoJSON file with a valid path, a GeoJSON String or a WKT string." in result.output
+    assert (
+        "neither a GeoJSON file with a valid path, a GeoJSON String or a WKT string."
+        in result.output
+    )
 
 
 @pytest.mark.fast
