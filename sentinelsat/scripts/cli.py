@@ -78,7 +78,11 @@ class CommaSeparatedString(click.ParamType):
     show_default=True,
     help="End date of the query in the format YYYYMMDD.",
 )
-@click.option("--geometry", "-g", type=str, help="Search area geometry as GeoJSON file.")
+@click.option(
+    "--geometry",
+    "-g", type=str,
+    help="Search area geometry as GeoJSON file, a GeoJSON string, or a WKT string."
+)
 @click.option(
     "--uuid",
     type=CommaSeparatedString(),
@@ -240,7 +244,7 @@ def cli(
                 else:
                     logger.error(
                         "The geometry input is neither a GeoJSON file with a valid path, "
-                        "a GeoJSON String or a WKT string."
+                        "a GeoJSON String or a WKT string. Only Polygon and point are accepted as WKT."
                     )
                     exit(1)
 

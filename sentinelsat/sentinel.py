@@ -1460,7 +1460,7 @@ def placename_to_wkt(placename):
 
 
 def is_wkt(possible_wkt):
-    SET_OF_ACCEPTABLE_SHAPES = "POLYGON((", "MULTIPOLYGON(((", "ENVELOPE("
+    SET_OF_ACCEPTABLE_SHAPES = "POLYGON((", "("
     for shape in SET_OF_ACCEPTABLE_SHAPES:
         if shape in possible_wkt:
             return True
