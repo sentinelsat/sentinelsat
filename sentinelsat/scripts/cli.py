@@ -81,9 +81,10 @@ class CommaSeparatedString(click.ParamType):
 )
 @click.option(
     "--geometry",
-    "-g", type=str,
+    "-g",
+    type=str,
     help="Search area geometry as GeoJSON file, a GeoJSON string, or a WKT string. "
-         "Valid WKT objects are Polygon and Point."
+    "Valid WKT objects are Polygon and Point.",
 )
 @click.option(
     "--uuid",
