@@ -244,15 +244,14 @@ def cli(
                 except SyntaxError:
                     logger.debug("geometry string starts with '{' but is not a valid GeoJson.")
             # check if the value is a WKT
+            if is_wkt(geometry) is not None:
+                search_kwargs["area"] = geometry
             else:
-                if is_wkt(geometry) is not None:
-                    search_kwargs["area"] = geometry
-                else:
-                    logger.error(
-                        "The geometry input is neither a GeoJSON file with a valid path, "
-                        "a GeoJSON String or a WKT string."
-                    )
-                    exit(1)
+                logger.error(
+                    "The geometry input is neither a GeoJSON file with a valid path, "
+                    "a GeoJSON String or a WKT string."
+                )
+                exit(1)
 
     if uuid is not None:
         uuid_list = [x.strip() for x in uuid]
