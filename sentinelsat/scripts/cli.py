@@ -242,7 +242,7 @@ def cli(
                     geometry = json.loads(geometry)
                     search_kwargs["area"] = geojson_to_wkt(geometry)
                 except SyntaxError:
-                    logger.debug("geometry string starts with '{' but is not a valid GeoJson.")
+                    logger.info("geometry string starts with '{' but is not a valid GeoJson.")
             # check if the value is a WKT
             if is_wkt(geometry) is not None:
                 search_kwargs["area"] = geometry
