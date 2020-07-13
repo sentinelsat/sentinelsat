@@ -244,7 +244,7 @@ def cli(
                 except SyntaxError:
                     logger.info("geometry string starts with '{' but is not a valid GeoJson.")
             # check if the value is a WKT
-            if is_wkt(geometry) is not None:
+            elif is_wkt(geometry):
                 search_kwargs["area"] = geometry
             else:
                 logger.error(

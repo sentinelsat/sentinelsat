@@ -73,12 +73,12 @@ class SentinelAPI:
     logger = logging.getLogger("sentinelsat.SentinelAPI")
 
     def __init__(
-        self,
-        user,
-        password,
-        api_url="https://scihub.copernicus.eu/apihub/",
-        show_progressbars=True,
-        timeout=None,
+            self,
+            user,
+            password,
+            api_url="https://scihub.copernicus.eu/apihub/",
+            show_progressbars=True,
+            timeout=None,
     ):
         self.session = requests.Session()
         if user and password:
@@ -123,15 +123,15 @@ class SentinelAPI:
         return self._dhus_version
 
     def query(
-        self,
-        area=None,
-        date=None,
-        raw=None,
-        area_relation="Intersects",
-        order_by=None,
-        limit=None,
-        offset=0,
-        **keywords
+            self,
+            area=None,
+            date=None,
+            raw=None,
+            area_relation="Intersects",
+            order_by=None,
+            limit=None,
+            offset=0,
+            **keywords
     ):
         """Query the OpenSearch API with the coordinates of an area, a date interval
         and any other search keywords accepted by the API.
@@ -229,9 +229,9 @@ class SentinelAPI:
         # Check for duplicate keywords
         kw_lower = set(x.lower() for x in keywords)
         if (
-            len(kw_lower) != len(keywords)
-            or (date is not None and "beginposition" in kw_lower)
-            or (area is not None and "footprint" in kw_lower)
+                len(kw_lower) != len(keywords)
+                or (date is not None and "beginposition" in kw_lower)
+                or (area is not None and "footprint" in kw_lower)
         ):
             raise ValueError(
                 "Query contains duplicate keywords. Note that query keywords are case-insensitive."
@@ -247,8 +247,8 @@ class SentinelAPI:
             if isinstance(value, string_types):
                 value = value.strip()
                 if not any(
-                    value.startswith(s[0]) and value.endswith(s[1])
-                    for s in ["[]", "{}", "//", "()"]
+                        value.startswith(s[0]) and value.endswith(s[1])
+                        for s in ["[]", "{}", "//", "()"]
                 ):
                     value = re.sub(r"\s", r"\ ", value, re.M)
 
@@ -674,13 +674,13 @@ class SentinelAPI:
             return r.status_code
 
     def download_all(
-        self,
-        products,
-        directory_path=".",
-        max_attempts=10,
-        checksum=True,
-        n_concurrent_dl=2,
-        lta_retry_delay=600,
+            self,
+            products,
+            directory_path=".",
+            max_attempts=10,
+            checksum=True,
+            n_concurrent_dl=2,
+            lta_retry_delay=600,
     ):
         """Download a list of products.
 
@@ -813,7 +813,7 @@ class SentinelAPI:
         return downloaded_prods, retrieval_scheduled, failed_prods
 
     def _trigger_offline_retrieval_until_stop(
-        self, product_infos, stop_event, retrieval_scheduled, retry_delay=600
+            self, product_infos, stop_event, retrieval_scheduled, retry_delay=600
     ):
         """ Countinuously triggers retrieval of offline products
 
@@ -857,7 +857,7 @@ class SentinelAPI:
                     raise SentinelAPILTAError("Unexpected response from SciHub")
 
     def _download_online_retry(
-        self, product_info, directory_path=".", checksum=True, max_attempts=10
+            self, product_info, directory_path=".", checksum=True, max_attempts=10
     ):
         """ Thin wrapper around download with retrying and checking whether a product is online
 
@@ -967,7 +967,7 @@ class SentinelAPI:
         def chunks(l, n):
             """Yield successive n-sized chunks from l."""
             for i in range(0, len(l), n):
-                yield l[i : i + n]
+                yield l[i: i + n]
 
         products = {}
         # 40 names per query fits reasonably well inside the query limit
@@ -1065,7 +1065,7 @@ class SentinelAPI:
             is_fine = False
             for product_info in product_infos[name]:
                 if getsize(path) == product_info["size"] and self._md5_compare(
-                    path, product_info["md5"]
+                        path, product_info["md5"]
                 ):
                     is_fine = True
                     break
@@ -1080,7 +1080,7 @@ class SentinelAPI:
     def _md5_compare(self, file_path, checksum, block_size=2 ** 13):
         """Compare a given MD5 checksum with one calculated from a file."""
         with closing(
-            self._tqdm(desc="MD5 checksumming", total=getsize(file_path), unit="B", unit_scale=True)
+                self._tqdm(desc="MD5 checksumming", total=getsize(file_path), unit="B", unit_scale=True)
         ) as progress:
             md5 = hashlib.md5()
             with open(file_path, "rb") as f:
@@ -1102,7 +1102,7 @@ class SentinelAPI:
             already_downloaded_bytes = 0
         downloaded_bytes = 0
         with closing(
-            session.get(url, stream=True, auth=session.auth, headers=headers, timeout=self.timeout)
+                session.get(url, stream=True, auth=session.auth, headers=headers, timeout=self.timeout)
         ) as r, closing(
             self._tqdm(
                 desc="Downloading",
@@ -1332,8 +1332,8 @@ def _parse_gml_footprint(geometry_str):
     geometry_xml = ET.fromstring(geometry_str)
     poly_coords_str = (
         geometry_xml.find("{http://www.opengis.net/gml}outerBoundaryIs")
-        .find("{http://www.opengis.net/gml}LinearRing")
-        .findtext("{http://www.opengis.net/gml}coordinates")
+            .find("{http://www.opengis.net/gml}LinearRing")
+            .findtext("{http://www.opengis.net/gml}coordinates")
     )
     poly_coords = (coord.split(",")[::-1] for coord in poly_coords_str.split(" "))
     coord_string = ",".join(" ".join(coord) for coord in poly_coords)
@@ -1460,5 +1460,9 @@ def placename_to_wkt(placename):
 
 
 def is_wkt(possible_wkt):
-    regex = "\s*[A-Za-z]*\s*\(.+\)\s*"
-    return re.search(regex, possible_wkt)
+    regex = "\s*(POLYGON)?\s*\(.+\)\s*"
+    x = re.search(regex, possible_wkt)
+    if x is None:
+        return False
+    start, stop = x.span()
+    return stop - start == len(possible_wkt)
