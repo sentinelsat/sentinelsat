@@ -70,7 +70,7 @@ def test_format_date(api):
 def test_SentinelAPI_connection(api, small_query):
     api.query(**small_query)
     assert api._last_query == (
-        "beginPosition:[2015-01-01T00:00:00Z TO 2015-01-02T00:00:00Z] "
+        'beginPosition:["2015-01-01T00:00:00Z" TO "2015-01-02T00:00:00Z"] '
         'footprint:"Intersects(POLYGON((0 0,1 1,0 1,0 0)))"'
     )
     assert api._last_response.status_code == 200
@@ -138,19 +138,19 @@ def test_api_query_format():
     query = SentinelAPI.format_query(wkt, (last_24h, now))
     assert (
         query
-        == "beginPosition:[{} TO {}] ".format(last_24h, format_query_date(now))
+        == 'beginPosition:["{}" TO "{}"] '.format(last_24h, format_query_date(now))
         + 'footprint:"Intersects(POLYGON((0 0,1 1,0 1,0 0)))"'
     )
 
     query = SentinelAPI.format_query(wkt, date=(last_24h, "NOW"), producttype="SLC", raw="IW")
     assert (
         query
-        == "beginPosition:[%s TO NOW] " % (format_query_date(last_24h))
-        + 'producttype:SLC IW footprint:"Intersects(POLYGON((0 0,1 1,0 1,0 0)))"'
+        == 'beginPosition:["{}" TO "NOW"] '.format(format_query_date(last_24h))
+        + 'producttype:"SLC" IW footprint:"Intersects(POLYGON((0 0,1 1,0 1,0 0)))"'
     )
 
     query = SentinelAPI.format_query(wkt, producttype="SLC", raw="IW")
-    assert query == 'producttype:SLC IW footprint:"Intersects(POLYGON((0 0,1 1,0 1,0 0)))"'
+    assert query == 'producttype:"SLC" IW footprint:"Intersects(POLYGON((0 0,1 1,0 1,0 0)))"'
 
     query = SentinelAPI.format_query(area=None, date=None)
     assert query == ""
@@ -182,19 +182,19 @@ def test_api_query_format_with_duplicates():
 @pytest.mark.fast
 def test_api_query_format_ranges():
     query = SentinelAPI.format_query(cloudcoverpercentage=(0, 30))
-    assert query == "cloudcoverpercentage:[0 TO 30]"
+    assert query == 'cloudcoverpercentage:["0" TO "30"]'
 
     query = SentinelAPI.format_query(cloudcoverpercentage=[0, 30])
-    assert query == "cloudcoverpercentage:[0 TO 30]"
+    assert query == 'cloudcoverpercentage:["0" TO "30"]'
 
     query = SentinelAPI.format_query(cloudcoverpercentage=[None, 30])
-    assert query == "cloudcoverpercentage:[* TO 30]"
+    assert query == 'cloudcoverpercentage:[* TO "30"]'
 
     query = SentinelAPI.format_query(orbitnumber=(16302, None))
-    assert query == "orbitnumber:[16302 TO *]"
+    assert query == 'orbitnumber:["16302" TO *]'
 
     query = SentinelAPI.format_query(orbitnumber=(16302, "*"))
-    assert query == "orbitnumber:[16302 TO *]"
+    assert query == 'orbitnumber:["16302" TO *]'
 
     for value in [(None, None), ("*", None), (None, "*"), ("*", "*")]:
         query = SentinelAPI.format_query(orbitnumber=value)
@@ -209,29 +209,39 @@ def test_api_query_format_ranges():
     with pytest.raises(ValueError):
         SentinelAPI.format_query(cloudcoverpercentage=[0, 1, 2])
 
+    with pytest.raises(ValueError):
+        SentinelAPI.format_query(cloudcoverpercentage=[0, ""])
+
 
 @pytest.mark.fast
 def test_api_query_format_sets():
     query = SentinelAPI.format_query(orbitnumber={16301, 16302, 16303})
-    assert query == "orbitnumber:(16301 OR 16302 OR 16303)"
+    assert query == "(orbitnumber:16301 OR orbitnumber:16302 OR orbitnumber:16303)"
 
-    query = SentinelAPI.format_query(ingestiondate={date(2017, 1, 1), "20170203"})
-    assert query == "ingestiondate:(2017-01-01T00:00:00Z OR 2017-02-03T00:00:00Z)"
+    query = SentinelAPI.format_query(ingestiondate={(date(2017, 1, 1), "20170203")})
+    assert query == '(ingestiondate:["2017-01-01T00:00:00Z" TO "2017-02-03T00:00:00Z"])'
+
+    with pytest.raises(ValueError):
+        SentinelAPI.format_query(ingestiondate={})
+    with pytest.raises(ValueError):
+        SentinelAPI.format_query(ingestiondate={""})
+    with pytest.raises(ValueError):
+        SentinelAPI.format_query(ingestiondate={date(2017, 1, 1), "20170203"})
 
 
 @pytest.mark.fast
 def test_api_query_format_dates():
     query = SentinelAPI.format_query(ingestiondate=("NOW-1DAY", "NOW"))
-    assert query == "ingestiondate:[NOW-1DAY TO NOW]"
+    assert query == 'ingestiondate:["NOW-1DAY" TO "NOW"]'
 
     query = SentinelAPI.format_query(ingestiondate=(date(2017, 1, 1), "20170203"))
-    assert query == "ingestiondate:[2017-01-01T00:00:00Z TO 2017-02-03T00:00:00Z]"
+    assert query == 'ingestiondate:["2017-01-01T00:00:00Z" TO "2017-02-03T00:00:00Z"]'
 
     query = SentinelAPI.format_query(ingestiondate="[NOW-1DAY TO NOW]")
     assert query == "ingestiondate:[NOW-1DAY TO NOW]"
 
     query = SentinelAPI.format_query(ingestiondate=[None, "NOW"])
-    assert query == "ingestiondate:[* TO NOW]"
+    assert query == 'ingestiondate:[* TO "NOW"]'
 
     for value in [(None, None), ("*", None), (None, "*"), ("*", "*")]:
         query = SentinelAPI.format_query(ingestiondate=value)
@@ -251,7 +261,12 @@ def test_api_query_format_dates():
 @pytest.mark.scihub
 def test_api_query_format_escape_spaces(api):
     query = SentinelAPI.format_query(ingestiondate=("NOW-1DAY", "NOW"))
-    assert query == "ingestiondate:[NOW-1DAY TO NOW]"
+    assert query == 'ingestiondate:["NOW-1DAY" TO "NOW"]'
+    assert api.count(ingestiondate=("NOW-1DAY", "NOW")) > 0
+
+    query = SentinelAPI.format_query(ingestiondate=("NOW-1DAY", None))
+    assert query == 'ingestiondate:["NOW-1DAY" TO *]'
+    assert api.count(ingestiondate=("NOW-1DAY", None)) > 0
 
     query = SentinelAPI.format_query(ingestiondate="[NOW-1DAY TO NOW]")
     assert query == "ingestiondate:[NOW-1DAY TO NOW]"
@@ -259,28 +274,40 @@ def test_api_query_format_escape_spaces(api):
     query = SentinelAPI.format_query(ingestiondate=" [NOW-1DAY TO NOW] ")
     assert query == "ingestiondate:[NOW-1DAY TO NOW]"
 
-    query = SentinelAPI.format_query(relativeorbitnumber=" {101 TO 103} ")
+    query = SentinelAPI.format_query(relativeorbitnumber="{101 TO 103}")
     assert query == "relativeorbitnumber:{101 TO 103}"
+    assert api.count(relativeorbitnumber="{101 TO 103}") > 0
 
     query = SentinelAPI.format_query(filename="S3A_OL_2* ")
     assert query == "filename:S3A_OL_2*"
 
+    query = SentinelAPI.format_query(filename="S3A_OL_2?2")
+    assert query == "filename:S3A_OL_2?2"
+
     query = SentinelAPI.format_query(timeliness="Non Time Critical")
-    assert query == r"timeliness:Non\ Time\ Critical"
+    assert query == r'timeliness:"Non Time Critical"'
+
+    query = SentinelAPI.format_query(timeliness='"Non Time Critical"')
+    assert query == r'timeliness:"Non Time Critical"'
 
     query = SentinelAPI.format_query(timeliness="Non\tTime\tCritical")
-    assert query == r"timeliness:Non\ Time\ Critical"
+    assert query == r'timeliness:"Non Time Critical"'
 
-    assert api.count(timeliness="Non Time Critical") > 0
+    assert api.count(timeliness="Near Real Time") > 0
 
     # Allow for regex weirdness
     query = SentinelAPI.format_query(timeliness=".+ Critical")
-    assert query == r"timeliness:.+\ Critical"
+    assert query == r'timeliness:".+ Critical"'
     assert api.count(timeliness=".+ Critical") > 0
 
     query = SentinelAPI.format_query(identifier="/S[123 ]A.*/")
     assert query == r"identifier:/S[123 ]A.*/"
-    assert api.count(identifier="/S[123 ]A.*/") > 0
+    regex_count = api.count(identifier="/S[12 ]A.*/", beginposition=("NOW/MONTH", "*"))
+    assert regex_count > 0
+    assert regex_count == (
+        api.count(identifier="S1A*", beginposition=("NOW/MONTH", "*"))
+        + api.count(identifier="S2A*", beginposition=("NOW/MONTH", "*"))
+    )
 
 
 @pytest.mark.vcr
@@ -353,7 +380,7 @@ def test_format_order_by():
 def test_small_query(api, small_query):
     api.query(**small_query)
     assert api._last_query == (
-        "beginPosition:[2015-01-01T00:00:00Z TO 2015-01-02T00:00:00Z] "
+        'beginPosition:["2015-01-01T00:00:00Z" TO "2015-01-02T00:00:00Z"] '
         'footprint:"Intersects(POLYGON((0 0,1 1,0 1,0 0)))"'
     )
     assert api._last_response.status_code == 200
@@ -364,7 +391,7 @@ def test_small_query(api, small_query):
 def test_large_query(api, large_query):
     full_products = list(api.query(**large_query))
     assert api._last_query == (
-        "beginPosition:[2015-12-01T00:00:00Z TO 2015-12-31T00:00:00Z] "
+        'beginPosition:["2015-12-01T00:00:00Z" TO "2015-12-31T00:00:00Z"] '
         'footprint:"Intersects(POLYGON((0 0,0 10,10 10,10 0,0 0)))"'
     )
     assert api._last_response.status_code == 200
@@ -508,7 +535,7 @@ def test_query_by_names(api, smallest_online_products):
     for name in names:
         assert set(result[name]) == expected[name]
 
-    result2 = api._query_names(names * 100)
+    result2 = api._query_names(names * 3)
     assert result == result2
 
 

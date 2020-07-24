@@ -57,13 +57,14 @@ def test_get_product_odata_short_with_missing_online_key(api, vcr):
         "Ingestion Date": datetime(2015, 11, 21, 13, 22, 4, 992000),
     }
 
-    # scrub 'Online' key from response
-    with vcr.use_cassette(
-        "test_get_product_odata_short_with_missing_online_key",
-        before_record_response=scrub_string(b'"Online":false,', b""),
-    ):
-        response = api.get_product_odata(uuid)
-        assert response == expected_short
+    for _ in range(2):
+        # scrub 'Online' key from response
+        with vcr.use_cassette(
+            "test_get_product_odata_short_with_missing_online_key",
+            before_record_response=scrub_string(b'"Online":false,', b""),
+        ):
+            response = api.get_product_odata(uuid)
+    assert response == expected_short
 
 
 @pytest.mark.vcr
