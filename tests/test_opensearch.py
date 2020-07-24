@@ -510,3 +510,9 @@ def test_query_by_names(api, smallest_online_products):
 
     result2 = api._query_names(names * 100)
     assert result == result2
+
+
+@pytest.mark.fast
+def test_empty_query(api):
+    with pytest.raises(ValueError):
+        api.query()

@@ -201,6 +201,11 @@ class SentinelAPI:
         """
         query = self.format_query(area, date, raw, area_relation, **keywords)
 
+        if query.strip() == "":
+            # An empty query should return the full set of products on the server, which is a bit unreasonable.
+            # The server actually raises an error instead and it's better to fail early in the client.
+            raise ValueError("Empty query.")
+
         # check query length - often caused by complex polygons
         if self.check_query_length(query) > 1.0:
             self.logger.warning(
