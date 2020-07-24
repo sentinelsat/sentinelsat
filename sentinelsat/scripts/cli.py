@@ -38,10 +38,9 @@ class CommaSeparatedString(click.ParamType):
     name = "comma-string"
 
     def convert(self, value, param, ctx):
-        if value:
-            return value.split(",")
-        else:
-            return value
+        if value is None:
+            return
+        return value.split(",")
 
 
 @click.command(context_settings=dict(help_option_names=["-h", "--help"]))
@@ -263,6 +262,12 @@ def cli(
             exit(1)
         search_kwargs["cloudcoverpercentage"] = (0, cloud)
 
+    if name is not None:
+        search_kwargs["identifier"] = set(name)
+
+    if uuid is not None:
+        search_kwargs["uuid"] = set(uuid)
+
     if query is not None:
         search_kwargs.update(x.split("=") for x in query)
 
@@ -307,22 +312,7 @@ def cli(
                     "a GeoJSON String nor a WKT string."
                 )
 
-    if uuid is not None:
-        uuid_list = [x.strip() for x in uuid]
-        products = {}
-        for productid in uuid_list:
-            try:
-                products[productid] = api.get_product_odata(productid)
-            except InvalidKeyError:
-                logger.error("No product with ID '%s' exists on server", productid)
-                exit(1)
-    elif name is not None:
-        search_kwargs["identifier"] = name[0] if len(name) == 1 else "(" + " OR ".join(name) + ")"
-        products = api.query(order_by=order_by, limit=limit, **search_kwargs)
-    else:
-        start = start or "19000101"
-        end = end or "NOW"
-        products = api.query(date=(start, end), order_by=order_by, limit=limit, **search_kwargs)
+    products = api.query(date=(start, end), order_by=order_by, limit=limit, **search_kwargs)
 
     if footprints is True:
         footprints_geojson = api.to_geojson(products)
@@ -346,19 +336,10 @@ def cli(
                     outfile.write("{} : {}\n".format(failed_id, products[failed_id]["title"]))
     else:
         for product_id, props in products.items():
-            if uuid is None:
-                logger.info("Product %s - %s", product_id, props["summary"])
-            else:  # querying uuids has no summary key
-                logger.info(
-                    "Product %s - %s - %s MB",
-                    product_id,
-                    props["title"],
-                    round(int(props["size"]) / (1024.0 * 1024.0), 2),
-                )
-        if uuid is None:
-            logger.info("---")
-            logger.info(
-                "%s scenes found with a total size of %.2f GB",
-                len(products),
-                api.get_products_size(products),
-            )
+            logger.info("Product %s - %s", product_id, props["summary"])
+        logger.info("---")
+        logger.info(
+            "%s scenes found with a total size of %.2f GB",
+            len(products),
+            api.get_products_size(products),
+        )
