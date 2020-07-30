@@ -1,6 +1,7 @@
 import json
 import logging
 import os
+from json import JSONDecodeError
 
 import click
 import geojson as gj
@@ -83,8 +84,7 @@ class CommaSeparatedString(click.ParamType):
     "--geometry",
     "-g",
     type=str,
-    help="Search area geometry as GeoJSON file, a GeoJSON string, or a WKT string. "
-    "Valid WKT objects are Polygon and Point.",
+    help="Search area geometry as GeoJSON file, a GeoJSON string, or a WKT string. ",
 )
 @click.option(
     "--uuid",
@@ -237,13 +237,13 @@ def cli(
             search_kwargs["area"] = geojson_to_wkt(read_geojson(geometry))
         # check if the value is a GeoJSON
         else:
-            geometry = geometry.strip()
-            if geometry[0] == "{":
+            if geometry.startswith("{"):
                 try:
                     geometry = json.loads(geometry)
                     search_kwargs["area"] = geojson_to_wkt(geometry)
-                except SyntaxError:
-                    logger.info("geometry string starts with '{' but is not a valid GeoJson.")
+                except JSONDecodeError:
+                    logger.error("geometry string starts with '{' but is not a valid GeoJSON.")
+                    exit(1)
             # check if the value is a WKT
             elif is_wkt(geometry):
                 search_kwargs["area"] = geometry

@@ -1460,9 +1460,5 @@ def placename_to_wkt(placename):
 
 
 def is_wkt(possible_wkt):
-    regex = "\s*(POLYGON)?\s*\(.+\)\s*"
-    x = re.search(regex, possible_wkt)
-    if x is None:
-        return False
-    start, stop = x.span()
-    return stop - start == len(possible_wkt)
+    pattern = r"^((MULTI)?(POINT|LINESTRING|POLYGON)|GEOMETRYCOLLECTION|ENVELOPE)\s*\(.+\)$"
+    return re.match(pattern, possible_wkt.strip().upper()) is not None
