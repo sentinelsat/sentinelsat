@@ -165,10 +165,8 @@ def test_cli_geometry_JSON_alternative_fail(run_cli):
         '{"type": "A bad JSON", "features" :[nothing], ([{ ',
         must_return_nonzero=True,
     )
-    assert (
-        "geometry string starts with '{' but is not a valid GeoJSON."
-        in result.output
-    )
+    assert "geometry string starts with '{' but is not a valid GeoJSON." in result.output
+
 
 @pytest.mark.fast
 def test_no_auth_fail(run_cli, no_netrc, no_auth_environ, geojson_path):

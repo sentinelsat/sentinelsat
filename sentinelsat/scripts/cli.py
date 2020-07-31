@@ -20,7 +20,6 @@ from sentinelsat.sentinel import (
 
 from sentinelsat.exceptions import InvalidKeyError
 
-
 logger = logging.getLogger("sentinelsat")
 
 
@@ -242,17 +241,17 @@ def cli(
                     geometry = json.loads(geometry)
                     search_kwargs["area"] = geojson_to_wkt(geometry)
                 except JSONDecodeError:
-                    logger.error("geometry string starts with '{' but is not a valid GeoJSON.")
-                    exit(1)
+                    raise click.UsageError(
+                        "geometry string starts with '{' but is not a valid GeoJSON."
+                    )
             # check if the value is a WKT
             elif is_wkt(geometry):
                 search_kwargs["area"] = geometry
             else:
-                logger.error(
+                raise click.UsageError(
                     "The geometry input is neither a GeoJSON file with a valid path, "
-                    "a GeoJSON String or a WKT string."
+                    "a GeoJSON String nor a WKT string."
                 )
-                exit(1)
 
     if uuid is not None:
         uuid_list = [x.strip() for x in uuid]
