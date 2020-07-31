@@ -153,7 +153,7 @@ def test_cli_geometry_WKT_alternative_fail(run_cli):
         must_return_nonzero=True,
     )
     assert (
-        "neither a GeoJSON file with a valid path, a GeoJSON String or a WKT string."
+        "neither a GeoJSON file with a valid path, a GeoJSON String nor a WKT string."
         in result.output
     )
 
