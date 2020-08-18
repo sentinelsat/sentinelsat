@@ -8,21 +8,15 @@ interactions:
       - gzip, deflate
       Connection:
       - keep-alive
-      Content-Length:
-      - '0'
       User-Agent:
-      - python-requests/2.22.0
-    method: POST
+      - sentinelsat/0.14
+    method: GET
     uri: https://nominatim.openstreetmap.org/search?q=%21%40%23%24%25%5E&format=geojson
   response:
     body:
       string: "{\"type\":\"FeatureCollection\",\"licence\":\"Data \xA9 OpenStreetMap
         contributors, ODbL 1.0. https://osm.org/copyright\",\"features\":[]}"
     headers:
-      Access-Control-Allow-Methods:
-      - OPTIONS,GET
-      Access-Control-Allow-Origin:
-      - '*'
       Connection:
       - keep-alive
       Content-Type:

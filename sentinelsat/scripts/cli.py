@@ -1,5 +1,6 @@
 import json
 import logging
+import math
 import os
 
 try:
@@ -232,8 +233,21 @@ def cli(
         search_kwargs.update((x.split("=") for x in query))
 
     if location is not None:
-        wkt, place_name = placename_to_wkt(location)
-        logger.info("The location we are querying is: '%s', '%s'".format(place_name, wkt))
+        wkt, info = placename_to_wkt(location)
+        minX, minY, maxX, maxY = info["bbox"]
+        r = 6371  # average radius, km
+        extent_east = r * math.radians(maxX - minX) * math.cos(math.radians((minY + maxY) / 2))
+        extent_north = r * math.radians(maxY - minY)
+        logger.info(
+            "Querying location: '%s' with %.1f x %.1f km, %f, %f to %f, %f bounding box",
+            info["display_name"],
+            extent_north,
+            extent_east,
+            minY,
+            minX,
+            maxY,
+            maxX,
+        )
         search_kwargs["area"] = wkt
 
     if geometry is not None:
