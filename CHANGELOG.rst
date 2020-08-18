@@ -33,7 +33,7 @@ Deprecated
 
 Fixed
 ~~~~~
-* 
+* fix location information for Nominatim bounding box queries (#384)
 
 Development Changes
 ~~~~~~~~~~~~~~~~~~~

@@ -1149,15 +1149,15 @@ def geojson_to_wkt(geojson_obj, feature_number=0, decimals=4):
         a GeoJSON object
     feature_number : int, optional
         Feature to extract polygon from (in case of MultiPolygon
-        FeatureCollection), defaults to first Feature
+        FeatureCollection), defaults to first feature
     decimals : int, optional
         Number of decimal figures after point to round coordinate to. Defaults to 4 (about 10
         meters).
 
     Returns
     -------
-    polygon coordinates
-        string of comma separated coordinate tuples (lon, lat) to be used by SentinelAPI
+    str
+        Well-Known Text string representation of the geometry
     """
     if "coordinates" in geojson_obj:
         geometry = geojson_obj
@@ -1427,33 +1427,42 @@ def _parse_odata_response(product):
     return output
 
 
-def placename_to_wkt(placename):
-    """Geocodes the placename to rectangular bounding extents using Nominatim API and
+def placename_to_wkt(place_name):
+    """Geocodes the place name to rectangular bounding extents using Nominatim API and
        returns the corresponding 'ENVELOPE' form Well-Known-Text.
 
     Parameters
     ----------
-    placename : str
+    place_name : str
         the query to geocode
+
+    Raises
+    ------
+    ValueError
+        If no matches to the place name were found.
 
     Returns
     -------
-    full name and coordinates of the queried placename
-        list in the form [wkt string in form 'ENVELOPE(minX, maxX, maxY, minY)', string placeinfo]
+    wkt_envelope : str
+        Bounding box of the location as an 'ENVELOPE(minX, maxX, maxY, minY)' WKT string.
+    info : Dict[str, any]
+        Matched location's metadata returned by Nominatim.
     """
-
-    rqst = requests.post(
-        "https://nominatim.openstreetmap.org/search", params={"q": placename, "format": "geojson"}
+    rqst = requests.get(
+        "https://nominatim.openstreetmap.org/search",
+        params={"q": place_name, "format": "geojson"},
+        headers={"User-Agent": "sentinelsat/" + sentinelsat_version},
     )
-    # Check that the response from Openstreetmapserver has status code 2xx
-    # and that the response is valid JSON.
     rqst.raise_for_status()
-    jsonlist = rqst.json()
-    if len(jsonlist["features"]) == 0:
-        raise ValueError('Unable to find a matching location for "{}"'.format(placename))
+    features = rqst.json()["features"]
+    if len(features) == 0:
+        raise ValueError('Unable to find a matching location for "{}"'.format(place_name))
     # Get the First result's bounding box and description.
-    feature = jsonlist["features"][0]
+    feature = features[0]
     minX, minY, maxX, maxY = feature["bbox"]
-    footprint = "ENVELOPE({}, {}, {}, {})".format(minX, maxX, maxY, minY)
-    placeinfo = feature["properties"]["display_name"]
-    return footprint, placeinfo
+    # ENVELOPE is a non-standard WKT format supported by Solr
+    # https://lucene.apache.org/solr/guide/6_6/spatial-search.html#SpatialSearch-BBoxField
+    wkt_envelope = "ENVELOPE({}, {}, {}, {})".format(minX, maxX, maxY, minY)
+    info = feature["properties"]
+    info["bbox"] = feature["bbox"]
+    return wkt_envelope, info
