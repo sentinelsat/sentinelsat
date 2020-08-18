@@ -1,8 +1,10 @@
 import json
 import logging
 import os
+
 try:
     from json import JSONDecodeError
+
     json_parse_exception = json.decoder.JSONDecodeError
 except ImportError:  # Python 2
     json_parse_exception = ValueError
