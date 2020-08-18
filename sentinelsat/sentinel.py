@@ -1157,7 +1157,7 @@ def geojson_to_wkt(geojson_obj, feature_number=0, decimals=4):
     Returns
     -------
     str
-        Well-Known Text string corresponding to the GeoJSON geometry.
+        Well-Known Text string representation of the geometry
     """
     if "coordinates" in geojson_obj:
         geometry = geojson_obj
