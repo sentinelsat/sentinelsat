@@ -1,7 +1,11 @@
 import json
 import logging
 import os
-from json import JSONDecodeError
+try:
+    from json import JSONDecodeError
+    json_parse_exception = json.decoder.JSONDecodeError
+except AttributeError:  # Python 2
+    json_parse_exception = ValueError
 
 import click
 import geojson as gj
@@ -240,7 +244,7 @@ def cli(
                 try:
                     geometry = json.loads(geometry)
                     search_kwargs["area"] = geojson_to_wkt(geometry)
-                except JSONDecodeError:
+                except json_parse_exception:
                     raise click.UsageError(
                         "geometry string starts with '{' but is not a valid GeoJSON."
                     )
