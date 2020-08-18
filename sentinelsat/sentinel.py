@@ -1460,9 +1460,12 @@ def placename_to_wkt(place_name):
     # Get the First result's bounding box and description.
     feature = features[0]
     minX, minY, maxX, maxY = feature["bbox"]
-    footprint = "ENVELOPE({}, {}, {}, {})".format(minX, maxX, maxY, minY)
-    placeinfo = feature["properties"]["display_name"]
-    return footprint, placeinfo
+    # ENVELOPE is a non-standard WKT format supported by Solr
+    # https://lucene.apache.org/solr/guide/6_6/spatial-search.html#SpatialSearch-BBoxField
+    wkt_envelope = "ENVELOPE({}, {}, {}, {})".format(minX, maxX, maxY, minY)
+    info = feature["properties"]
+    info["bbox"] = feature["bbox"]
+    return wkt_envelope, info
 
 
 def is_wkt(possible_wkt):
