@@ -23,6 +23,7 @@ import requests
 from six import string_types, raise_from
 from six.moves.urllib.parse import urljoin, quote_plus
 from tqdm import tqdm
+from pathlib import Path
 
 from sentinelsat.exceptions import (
     SentinelAPIError,
@@ -908,6 +909,54 @@ class SentinelAPI:
             ret_val = None
 
         return ret_val
+
+    def download_quicklooks(self, products, directory_path="."):
+        """Download quicklooks for a list of products.
+
+        Takes a dict of product IDs: product data as input. This means that the return value of
+        query() can be passed directly to this method.
+
+        File names on the server are used for the downloaded images, e.g.
+        "S2A_MSIL1C_20200924T104031_N0209_R008_T35WMV_20200926T135405.jpeg".
+
+        Parameters
+        ----------
+        products : dict
+            Dict of product IDs, product data
+        directory_path : string
+            Parent directory for quicklooks directory, where the downloaded images will be stored
+
+        Returns
+        -------
+        dict[string, dict]
+            A dictionary containing the error of products where either
+            quicklook was not available or it had an unexpected content type
+        """
+
+        self.logger.info("Will download %d quicklooks", len(products))
+
+        outdir = Path(directory_path + "/quicklooks")
+        outdir.mkdir(parents=True, exist_ok=True)
+
+        failed_quicklooks = {}
+
+        for pid, data in products.items():
+            try:
+                url = data["link_icon"]
+            except KeyError:
+                failed_quicklooks[pid] = "Quicklook not available"
+
+            r = self.session.get(url)
+            r.raise_for_status()
+            content_type = r.headers["content-type"]
+            if content_type != "image/jpeg":
+                failed_quicklooks[pid] = "Quicklook is not jpeg but {}".format(content_type)
+
+            if pid not in failed_quicklooks:
+                path = outdir / "{identifier}.jpeg".format(**data)
+                path.write_bytes(r.content)
+
+        return failed_quicklooks
 
     @staticmethod
     def get_products_size(products):
