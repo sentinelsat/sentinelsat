@@ -113,6 +113,11 @@ The easiest way to follow ``sentinsat``'s code formatting conventions is to use 
   pip install black
   black .
 
+If you have docker installed you can alternatively run
+
+.. code-block:: console
+
+  docker run -it --rm --user "$(id -u):$(id -g)" -w "$PWD" -v "$PWD:$PWD" cytopia/black .
 
 Versioning and Release
 ======================
