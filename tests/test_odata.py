@@ -30,8 +30,7 @@ def test_get_product_odata_short(api, smallest_online_products, read_yaml):
 
 
 def scrub_string(string, replacement=""):
-    """Scrub a string from a VCR response body string
-    """
+    """Scrub a string from a VCR response body string"""
 
     def before_record_response(response):
         response["body"]["string"] = response["body"]["string"].replace(string, replacement)
