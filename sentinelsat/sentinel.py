@@ -13,7 +13,7 @@ import xml.etree.ElementTree as ET
 from collections import OrderedDict, defaultdict
 from contextlib import closing
 from datetime import date, datetime, timedelta
-from os import remove
+from os import remove, mkdir
 from os.path import basename, exists, getsize, join, splitext
 
 import geojson
@@ -23,7 +23,6 @@ import requests
 from six import string_types, raise_from
 from six.moves.urllib.parse import urljoin, quote_plus
 from tqdm import tqdm
-from pathlib import Path
 
 from sentinelsat.exceptions import (
     SentinelAPIError,
@@ -912,7 +911,7 @@ class SentinelAPI:
         return ret_val
 
     def download_quicklooks(self, products, directory_path="."):
-        """Download quicklooks for a list of products.
+        """Download quicklook for a list of products.
 
         Takes a dict of product IDs: product data as input. This means that the return value of
         query() can be passed directly to this method.
@@ -936,8 +935,10 @@ class SentinelAPI:
 
         self.logger.info("Will download %d quicklooks", len(products))
 
-        outdir = Path(directory_path + "/quicklooks")
-        outdir.mkdir(parents=True, exist_ok=True)
+        outdir = join(directory_path, "quicklooks")
+
+        if not exists(outdir):
+            mkdir(outdir)
 
         failed_quicklooks = {}
 
@@ -954,8 +955,9 @@ class SentinelAPI:
                 failed_quicklooks[pid] = "Quicklook is not jpeg but {}".format(content_type)
 
             if pid not in failed_quicklooks:
-                path = outdir / "{identifier}.jpeg".format(**data)
-                path.write_bytes(r.content)
+                path = join(outdir, "{identifier}.jpeg".format(**data))
+                with open(path, "wb") as img:
+                    img.write(r.content)
 
         return failed_quicklooks
 
