@@ -102,7 +102,9 @@ class SentinelAPI:
     def _req_dhus_stub(self):
         try:
             resp = self.session.get(
-                self.api_url + "api/stub/version", auth=self.session.auth, timeout=self.timeout,
+                self.api_url + "api/stub/version",
+                auth=self.session.auth,
+                timeout=self.timeout,
             )
             resp.raise_for_status()
         except requests.exceptions.HTTPError as err:
@@ -222,8 +224,7 @@ class SentinelAPI:
 
     @staticmethod
     def format_query(area=None, date=None, raw=None, area_relation="Intersects", **keywords):
-        """Create a OpenSearch API query string.
-        """
+        """Create a OpenSearch API query string."""
         if area_relation.lower() not in {"intersects", "contains", "iswithin"}:
             raise ValueError("Incorrect AOI relation provided ({})".format(area_relation))
 
@@ -642,7 +643,7 @@ class SentinelAPI:
         return product_info
 
     def _trigger_offline_retrieval(self, url):
-        """ Triggers retrieval of an offline product
+        """Triggers retrieval of an offline product
 
         Trying to download an offline product triggers its retrieval from the long term archive.
         The returned HTTP status code conveys whether this was successful.
@@ -816,7 +817,7 @@ class SentinelAPI:
     def _trigger_offline_retrieval_until_stop(
         self, product_infos, stop_event, retrieval_scheduled, retry_delay=600
     ):
-        """ Countinuously triggers retrieval of offline products
+        """Countinuously triggers retrieval of offline products
 
         This function is supposed to be called in a separate thread. By setting stop_event it can be stopped.
 
@@ -860,7 +861,7 @@ class SentinelAPI:
     def _download_online_retry(
         self, product_info, directory_path=".", checksum=True, max_attempts=10
     ):
-        """ Thin wrapper around download with retrying and checking whether a product is online
+        """Thin wrapper around download with retrying and checking whether a product is online
 
         Parameters
         ----------
@@ -1180,8 +1181,7 @@ class SentinelAPI:
 
 
 def read_geojson(geojson_file):
-    """Read a GeoJSON file into a GeoJSON object.
-    """
+    """Read a GeoJSON file into a GeoJSON object."""
     with open(geojson_file) as f:
         return geojson.load(f)
 
@@ -1295,8 +1295,7 @@ def format_query_date(in_date):
 
 
 def _check_scihub_response(response, test_json=True, query_string=None):
-    """Check that the response from server has status code 2xx and that the response is valid JSON.
-    """
+    """Check that the response from server has status code 2xx and that the response is valid JSON."""
     # Prevent requests from needing to guess the encoding
     # SciHub appears to be using UTF-8 in all of their responses
     response.encoding = "utf-8"
@@ -1397,8 +1396,7 @@ def _parse_iso_date(content):
 
 
 def _parse_odata_timestamp(in_date):
-    """Convert the timestamp received from OData JSON API to a datetime object.
-    """
+    """Convert the timestamp received from OData JSON API to a datetime object."""
     timestamp = int(in_date.replace("/Date(", "").replace(")/", ""))
     seconds = timestamp // 1000
     ms = timestamp % 1000

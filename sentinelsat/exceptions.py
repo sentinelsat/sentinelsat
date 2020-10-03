@@ -22,30 +22,26 @@ class SentinelAPIError(Exception):
 
 
 class SentinelAPILTAError(SentinelAPIError):
-    """Error raised when retrieving a product from the Long Term Archive
-    """
+    """Error raised when retrieving a product from the Long Term Archive"""
 
     pass
 
 
 class ServerError(SentinelAPIError):
-    """Error raised when the server responded in an unexpected manner, typically due to undergoing maintenance
-    """
+    """Error raised when the server responded in an unexpected manner, typically due to undergoing maintenance"""
 
     pass
 
 
 class UnauthorizedError(SentinelAPIError):
-    """Error raised when attempting to retrieve a product with incorrect credentials
-    """
+    """Error raised when attempting to retrieve a product with incorrect credentials"""
 
     def __str__(self):
         return self.msg
 
 
 class QuerySyntaxError(SentinelAPIError, SyntaxError):
-    """Error raised when the query string could not be parsed on the server side
-    """
+    """Error raised when the query string could not be parsed on the server side"""
 
     def __init__(self, msg, response):
         SentinelAPIError.__init__(self, msg, response)
@@ -56,16 +52,14 @@ class QuerySyntaxError(SentinelAPIError, SyntaxError):
 
 
 class QueryLengthError(SentinelAPIError):
-    """Error raised when the query string length was excessively long
-    """
+    """Error raised when the query string length was excessively long"""
 
     def __str__(self):
         return self.msg
 
 
 class InvalidKeyError(SentinelAPIError, KeyError):
-    """Error raised when product with given key was not found on the server
-    """
+    """Error raised when product with given key was not found on the server"""
 
     def __init__(self, msg, response):
         SentinelAPIError.__init__(self, msg, response)
@@ -76,7 +70,6 @@ class InvalidKeyError(SentinelAPIError, KeyError):
 
 
 class InvalidChecksumError(Exception):
-    """MD5 checksum of a local file does not match the one from the server.
-    """
+    """MD5 checksum of a local file does not match the one from the server."""
 
     pass
