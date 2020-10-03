@@ -910,7 +910,7 @@ class SentinelAPI:
 
         return ret_val
 
-    def download_quicklooks(self, products, directory_path="."):
+    def download_quicklooks(self, products, directory_path=".", n_concurrent_dl=2):
         """Download quicklook for a list of products.
 
         Takes a dict of product IDs: product data as input. This means that the return value of
@@ -925,6 +925,8 @@ class SentinelAPI:
             Dict of product IDs, product data
         directory_path : string
             Parent directory for quicklooks directory, where the downloaded images will be stored
+        n_concurrent_dl : integer
+            number of concurrent downloads
 
         Returns
         -------
@@ -942,24 +944,39 @@ class SentinelAPI:
 
         failed_quicklooks = {}
 
-        for pid, data in products.items():
-            try:
-                url = data["link_icon"]
-            except KeyError:
-                failed_quicklooks[pid] = "Quicklook not available"
+        with concurrent.futures.ThreadPoolExecutor(max_workers=n_concurrent_dl) as dl_exec:
+            dl_tasks = {}
+            for pid, data in products.items():
+                try:
+                    future = dl_exec.submit(self._download_single_quicklook, pid, data, outdir)
+                    dl_tasks[future] = pid
+                except KeyError:
+                    failed_quicklooks[pid] = "Quicklook not available"
 
-            r = self.session.get(url)
-            r.raise_for_status()
-            content_type = r.headers["content-type"]
-            if content_type != "image/jpeg":
-                failed_quicklooks[pid] = "Quicklook is not jpeg but {}".format(content_type)
+            completed_tasks = concurrent.futures.as_completed(dl_tasks)
 
-            if pid not in failed_quicklooks:
-                path = join(outdir, "{identifier}.jpeg".format(**data))
-                with open(path, "wb") as img:
-                    img.write(r.content)
-
+            for future in completed_tasks:
+                pid, error_msg = future.result()
+                if error_msg != "":
+                    failed_quicklooks[pid] = error_msg
         return failed_quicklooks
+
+    def _download_single_quicklook(self, pid, product_data, outdir):
+        url = product_data["link_icon"]
+        r = self.session.get(url)
+        _check_scihub_response(r, test_json=False)
+        error_msg = ""
+
+        content_type = r.headers["content-type"]
+        if content_type != "image/jpeg":
+            error_msg = "Quicklook is not jpeg but {}".format(content_type)
+
+        if error_msg == "":
+            path = join(outdir, "{identifier}.jpeg".format(**product_data))
+            with open(path, "wb") as img:
+                img.write(r.content)
+
+        return pid, error_msg
 
     @staticmethod
     def get_products_size(products):
