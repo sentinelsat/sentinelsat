@@ -262,12 +262,11 @@ def cli(
             outfile.write(gj.dumps(footprints_geojson))
 
     if quicklook:
-        failed_quicklooks = api.download_quicklooks(products, path)
+        downloaded_quicklooks, failed_quicklooks = api.download_all_quicklooks(products, path)
         if failed_quicklooks:
-            with open(os.path.join(path, "failed_quicklooks.txt"), "w") as outfile:
-                for failed_id, error_msg in failed_quicklooks:
-                    api.logger.error("%s quicklook failed: %s" % (failed_id, error_msg))
-                    outfile.write("%s : %s\n" % (failed_id, error_msg))
+            api.logger.info(
+                "Some quicklooks failed: %s out of %s", len(failed_quicklooks, len(products))
+            )
 
     if download is True:
         product_infos, triggered, failed_downloads = api.download_all(products, path)

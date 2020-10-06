@@ -910,7 +910,7 @@ class SentinelAPI:
 
         return ret_val
 
-    def download_quicklooks(self, products, directory_path=".", n_concurrent_dl=2):
+    def download_all_quicklooks(self, products, directory_path=".", n_concurrent_dl=2):
         """Download quicklook for a list of products.
 
         Takes a dict of product IDs: product data as input. This means that the return value of
@@ -924,12 +924,15 @@ class SentinelAPI:
         products : dict
             Dict of product IDs, product data
         directory_path : string
-            Parent directory for quicklooks directory, where the downloaded images will be stored
+            Directory where the downloaded images will be downloaded
         n_concurrent_dl : integer
-            number of concurrent downloads
+            Number of concurrent downloads
 
         Returns
         -------
+        dict[string, dict]
+            A dictionary containing the return value from download_quicklook() for each
+            successfully downloaded quicklook
         dict[string, dict]
             A dictionary containing the error of products where either
             quicklook was not available or it had an unexpected content type
@@ -937,46 +940,88 @@ class SentinelAPI:
 
         self.logger.info("Will download %d quicklooks", len(products))
 
-        outdir = join(directory_path, "quicklooks")
-
-        if not exists(outdir):
-            mkdir(outdir)
-
+        downloaded_quicklooks = {}
         failed_quicklooks = {}
 
         with concurrent.futures.ThreadPoolExecutor(max_workers=n_concurrent_dl) as dl_exec:
             dl_tasks = {}
-            for pid, data in products.items():
-                try:
-                    future = dl_exec.submit(self._download_single_quicklook, pid, data, outdir)
-                    dl_tasks[future] = pid
-                except KeyError:
-                    failed_quicklooks[pid] = "Quicklook not available"
+            for pid in products:
+                future = dl_exec.submit(self.download_quicklook, pid, directory_path)
+                dl_tasks[future] = pid
 
             completed_tasks = concurrent.futures.as_completed(dl_tasks)
 
             for future in completed_tasks:
-                pid, error_msg = future.result()
-                if error_msg != "":
-                    failed_quicklooks[pid] = error_msg
-        return failed_quicklooks
+                product_info = future.result()
+                if product_info["error"] == "":
+                    downloaded_quicklooks[dl_tasks[future]] = product_info
+                else:
+                    failed_quicklooks[dl_tasks[future]] = product_info["error"]
 
-    def _download_single_quicklook(self, pid, product_data, outdir):
-        url = product_data["link_icon"]
-        r = self.session.get(url)
-        _check_scihub_response(r, test_json=False)
-        error_msg = ""
+        return downloaded_quicklooks, failed_quicklooks
 
-        content_type = r.headers["content-type"]
-        if content_type != "image/jpeg":
-            error_msg = "Quicklook is not jpeg but {}".format(content_type)
+    def download_quicklook(self, id, directory_path="."):
+        """Download a quicklook for a product.
 
-        if error_msg == "":
-            path = join(outdir, "{identifier}.jpeg".format(**product_data))
-            with open(path, "wb") as img:
-                img.write(r.content)
+        Uses the filename on the server for the downloaded image, e.g.
+        "S1A_EW_GRDH_1SDH_20141003T003840_20141003T003920_002658_002F54_4DD1.jpeg".
 
-        return pid, error_msg
+        Complete images are skipped.
+
+        Parameters
+        ----------
+        id : string
+            UUID of the product, e.g. 'a8dd0cfd-613e-45ce-868c-d79177b916ed'
+        directory_path : string, optional
+            Where the image will be downloaded
+
+        Returns
+        -------
+        product_info : dict
+            Dictionary containing the product's info from get_product_info() as well as
+            the path on disk.
+        """
+        product_info = self.get_product_odata(id)
+
+        path = join(directory_path, "{}.jpeg".format(product_info["title"]))
+        product_info["path"] = path
+        product_info["downloaded_bytes"] = 0
+        product_info["error"] = ""
+
+        if exists(path):
+            return product_info
+
+        url = product_info["quicklook_url"]
+        if not url:
+            product_info["error"] = "Quicklook not available"
+            return product_info
+
+        self.logger.info("Downloading quicklook %s to %s", product_info["title"], path)
+
+        (
+            product_info["downloaded_bytes"],
+            product_info["error"],
+        ) = self._download_quicklook(url, path, self.session)
+
+        return product_info
+
+    def _download_quicklook(self, url, path, session):
+        downloaded_bytes = 0
+        error = ""
+
+        with closing(session.get(url)) as r:
+            _check_scihub_response(r, test_json=False)
+
+            content_type = r.headers["content-type"]
+            if content_type != "image/jpeg":
+                error = "Quicklook is not jpeg but {}".format(content_type)
+
+            if error == "":
+                with open(path, "wb") as fp:
+                    fp.write(r.content)
+                    downloaded_bytes = len(r.content)
+
+            return downloaded_bytes, error
 
     @staticmethod
     def get_products_size(products):
@@ -1422,6 +1467,12 @@ def _parse_odata_timestamp(in_date):
     return datetime.utcfromtimestamp(seconds) + timedelta(milliseconds=ms)
 
 
+def _parse_odata_quicklook_url(url):
+    """Convert product uri to point to quicklook url"""
+    quicklook_url = url + "/Products('Quicklook')/$value"
+    return quicklook_url
+
+
 def _parse_opensearch_response(products):
     """Convert a query response to a dictionary.
 
@@ -1475,6 +1526,7 @@ def _parse_odata_response(product):
         "date": _parse_odata_timestamp(product["ContentDate"]["Start"]),
         "footprint": _parse_gml_footprint(product["ContentGeometry"]),
         "url": product["__metadata"]["media_src"],
+        "quicklook_url": _parse_odata_quicklook_url(product["__metadata"]["uri"]),
         "Online": product.get("Online", True),
         "Creation Date": _parse_odata_timestamp(product["CreationDate"]),
         "Ingestion Date": _parse_odata_timestamp(product["IngestionDate"]),
