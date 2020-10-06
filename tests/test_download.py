@@ -226,3 +226,58 @@ def test_download_invalid_id(api):
     with pytest.raises(SentinelAPIError) as excinfo:
         api.download(uuid)
     assert "Invalid key" in excinfo.value.msg
+
+
+@pytest.mark.vcr
+@pytest.mark.scihub
+def test_download_quicklook(api, tmpdir, smallest_online_products):
+    uuid = smallest_online_products[0]["id"]
+    filename = smallest_online_products[0]["title"]
+    expected_path = tmpdir.join(filename + ".jpeg")
+
+    # Download normally
+    product_info = api.download_quicklook(uuid, str(tmpdir))
+    assert expected_path.samefile(product_info["path"])
+    assert product_info["title"] == filename
+    assert product_info["size"] == expected_path.size()
+    assert product_info["downloaded_bytes"] == expected_path.size()
+
+    modification_time = expected_path.mtime()
+    expected_product_info = product_info
+
+    # File exists, expect nothing to happen
+    product_info = api.download_quicklook(uuid, str(tmpdir))
+    assert expected_path.mtime() == modification_time
+    expected_product_info["downloaded_bytes"] = 0
+    assert product_info == expected_product_info
+
+    tmpdir.remove()
+
+
+@pytest.mark.vcr
+@pytest.mark.scihub
+def test_download_all_quicklooks(api, tmpdir, smallest_online_products):
+    ids = [product["id"] for product in smallest_online_products]
+
+    # Download normally
+    downloaded_quicklooks, failed_quicklooks = api.download_all_quicklooks(
+        ids, str(tmpdir), n_concurrent_dl=1
+    )
+    assert len(failed_quicklooks) == 0
+    assert len(downloaded_quicklooks) == len(ids)
+    for product_id, product_info in downloaded_quicklooks.items():
+        pypath = py.path.local(product_info["path"])
+        assert pypath.check(exists=1, file=1)
+        assert pypath.purebasename in product_info["title"]
+        assert pypath.size() == product_info["size"]
+
+    tmpdir.remove()
+
+
+@pytest.mark.vcr
+@pytest.mark.scihub
+def test_download_quicklook_invalid_id(api):
+    uuid = "1f62a176-c980-41dc-xxxx-c735d660c910"
+    with pytest.raises(SentinelAPIError) as excinfo:
+        api.download_quicklook(uuid)
+    assert "Invalid key" in excinfo.value.msg
