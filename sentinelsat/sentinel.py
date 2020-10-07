@@ -977,51 +977,37 @@ class SentinelAPI:
 
         Returns
         -------
-        product_info : dict
-            Dictionary containing the product's info from get_product_info() as well as
-            the path on disk.
+        quicklook_info : dict
+            Dictionary containing the quicklooks's response headers as well as the path on disk.
         """
         product_info = self.get_product_odata(id)
+        url = product_info["quicklook_url"]
 
         path = join(directory_path, "{}.jpeg".format(product_info["title"]))
         product_info["path"] = path
         product_info["downloaded_bytes"] = 0
         product_info["error"] = ""
 
+        self.logger.info("Downloading quicklook %s to %s", product_info["title"], path)
+
+        r = self.session.get(url)
+        _check_scihub_response(r, test_json=False)
+
+        product_info["quicklook_size"] = len(r.content)
+
         if exists(path):
             return product_info
 
-        url = product_info["quicklook_url"]
-        if not url:
-            product_info["error"] = "Quicklook not available"
-            return product_info
+        content_type = r.headers["content-type"]
+        if content_type != "image/jpeg":
+            product_info["error"] = "Quicklook is not jpeg but {}".format(content_type)
 
-        self.logger.info("Downloading quicklook %s to %s", product_info["title"], path)
-
-        (
-            product_info["downloaded_bytes"],
-            product_info["error"],
-        ) = self._download_quicklook(url, path, self.session)
+        if product_info["error"] == "":
+            with open(path, "wb") as fp:
+                fp.write(r.content)
+                product_info["downloaded_bytes"] = len(r.content)
 
         return product_info
-
-    def _download_quicklook(self, url, path, session):
-        downloaded_bytes = 0
-        error = ""
-
-        with closing(session.get(url)) as r:
-            _check_scihub_response(r, test_json=False)
-
-            content_type = r.headers["content-type"]
-            if content_type != "image/jpeg":
-                error = "Quicklook is not jpeg but {}".format(content_type)
-
-            if error == "":
-                with open(path, "wb") as fp:
-                    fp.write(r.content)
-                    downloaded_bytes = len(r.content)
-
-            return downloaded_bytes, error
 
     @staticmethod
     def get_products_size(products):
@@ -1467,10 +1453,11 @@ def _parse_odata_timestamp(in_date):
     return datetime.utcfromtimestamp(seconds) + timedelta(milliseconds=ms)
 
 
-def _parse_odata_quicklook_url(url):
-    """Convert product uri to point to quicklook url"""
-    quicklook_url = url + "/Products('Quicklook')/$value"
-    return quicklook_url
+def _get_quicklook_url(id):
+    url = "https://scihub.copernicus.eu/apihub/odata/v1/Products('{id}')/Products('Quicklook')/$value".format(
+        id=id
+    )
+    return url
 
 
 def _parse_opensearch_response(products):
@@ -1526,7 +1513,7 @@ def _parse_odata_response(product):
         "date": _parse_odata_timestamp(product["ContentDate"]["Start"]),
         "footprint": _parse_gml_footprint(product["ContentGeometry"]),
         "url": product["__metadata"]["media_src"],
-        "quicklook_url": _parse_odata_quicklook_url(product["__metadata"]["uri"]),
+        "quicklook_url": _get_quicklook_url(product["Id"]),
         "Online": product.get("Online", True),
         "Creation Date": _parse_odata_timestamp(product["CreationDate"]),
         "Ingestion Date": _parse_odata_timestamp(product["IngestionDate"]),
