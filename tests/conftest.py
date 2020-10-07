@@ -169,6 +169,18 @@ def _get_smallest(api_kwargs, cassette, online, n=3):
     return odata
 
 
+def _get_quicklook(api_kwargs, cassette):
+    api = SentinelAPI(**api_kwargs)
+    ids = [
+        "6b126ea4-fe27-440c-9a5c-686f386b7291",
+        "1a9401bc-6986-4707-b38d-f6c29ca58c00",
+        "54e6c4ad-6f4e-4fbf-b163-1719f60bfaeb",
+    ]
+    with cassette:
+        odata = [api.get_product_odata(x) for x in ids]
+    return odata
+
+
 @pytest.fixture(scope="module")
 def smallest_online_products(api_kwargs, vcr):
     return _get_smallest(api_kwargs, vcr.use_cassette("smallest_online_products"), online=True)
@@ -177,6 +189,11 @@ def smallest_online_products(api_kwargs, vcr):
 @pytest.fixture(scope="module")
 def smallest_archived_products(api_kwargs, vcr):
     return _get_smallest(api_kwargs, vcr.use_cassette("smallest_archived_products"), online=False)
+
+
+@pytest.fixture(scope="module")
+def quicklook_products(api_kwargs, vcr):
+    return _get_quicklook(api_kwargs, vcr.use_cassette("quicklook_products"))
 
 
 @pytest.fixture(scope="session")
