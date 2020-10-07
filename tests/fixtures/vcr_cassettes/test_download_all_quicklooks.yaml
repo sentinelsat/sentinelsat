@@ -50,7 +50,7 @@ interactions:
       User-Agent:
       - sentinelsat/0.14
     method: GET
-    uri: https://scihub.copernicus.eu/dhus/odata/v1/Products('6b126ea4-fe27-440c-9a5c-686f386b7291')/Products('Quicklook')/$value
+    uri: https://scihub.copernicus.eu/apihub/odata/v1/Products('6b126ea4-fe27-440c-9a5c-686f386b7291')/Products('Quicklook')/$value
   response:
     body: {}
     headers:
@@ -69,7 +69,7 @@ interactions:
       etag:
       - 521D457C02CEBD24DBE45A5AEC4BAB27
       last-modified:
-      - Wed, 07 Oct 2020 11:02:09 UTC
+      - Wed, 07 Oct 2020 11:02:11 UTC
       pragma:
       - no-cache
       server:
@@ -124,7 +124,7 @@ interactions:
       User-Agent:
       - sentinelsat/0.14
     method: GET
-    uri: https://scihub.copernicus.eu/dhus/odata/v1/Products('1a9401bc-6986-4707-b38d-f6c29ca58c00')/Products('Quicklook')/$value
+    uri: https://scihub.copernicus.eu/apihub/odata/v1/Products('1a9401bc-6986-4707-b38d-f6c29ca58c00')/Products('Quicklook')/$value
   response:
     body: {}
     headers:
@@ -143,7 +143,7 @@ interactions:
       etag:
       - 4B52D76C5E3171BF034D7737BDEBD928
       last-modified:
-      - Wed, 07 Oct 2020 21:12:31 UTC
+      - Wed, 07 Oct 2020 21:12:36 UTC
       pragma:
       - no-cache
       server:
@@ -185,123 +185,6 @@ interactions:
       - Apache-Coyote/1.1
       vary:
       - Accept-Encoding
-    status:
-      code: 200
-      message: OK
-- request:
-    body: null
-    headers:
-      Accept:
-      - '*/*'
-      Accept-Encoding:
-      - gzip, deflate
-      Connection:
-      - keep-alive
-      User-Agent:
-      - sentinelsat/0.14
-    method: GET
-    uri: https://scihub.copernicus.eu/dhus/odata/v1/Products('54e6c4ad-6f4e-4fbf-b163-1719f60bfaeb')/Products('Quicklook')/$value
-  response:
-    body: {}
-    headers:
-      accept-ranges:
-      - bytes
-      content-disposition:
-      - inline;filename="S2B_MSIL2A_20201007T131939_N0214_R124_T28XEK_20201007T160755-ql.jpg"
-      content-length:
-      - '18988'
-      content-range:
-      - bytes 0-18987/18988
-      content-type:
-      - image/jpeg
-      dataserviceversion:
-      - '2.0'
-      etag:
-      - C11CBCA2EA2E64AB954FDAC2EE75E6B9
-      last-modified:
-      - Wed, 07 Oct 2020 21:12:31 UTC
-      pragma:
-      - no-cache
-      server:
-      - Apache-Coyote/1.1
-    status:
-      code: 200
-      message: OK
-- request:
-    body: null
-    headers:
-      Accept:
-      - '*/*'
-      Accept-Encoding:
-      - gzip, deflate
-      Connection:
-      - keep-alive
-      User-Agent:
-      - sentinelsat/0.14
-    method: GET
-    uri: https://scihub.copernicus.eu/apihub/odata/v1/Products('6b126ea4-fe27-440c-9a5c-686f386b7291')/Products('Quicklook')/$value
-  response:
-    body: {}
-    headers:
-      accept-ranges:
-      - bytes
-      content-disposition:
-      - inline;filename="S2A_MSIL2A_20201007T022601_N0214_R046_T49MFN_20201007T064142-ql.jpg"
-      content-length:
-      - '15006'
-      content-range:
-      - bytes 0-15005/15006
-      content-type:
-      - image/jpeg
-      dataserviceversion:
-      - '2.0'
-      etag:
-      - 521D457C02CEBD24DBE45A5AEC4BAB27
-      last-modified:
-      - Wed, 07 Oct 2020 11:02:11 UTC
-      pragma:
-      - no-cache
-      server:
-      - Apache-Coyote/1.1
-    status:
-      code: 200
-      message: OK
-- request:
-    body: null
-    headers:
-      Accept:
-      - '*/*'
-      Accept-Encoding:
-      - gzip, deflate
-      Connection:
-      - keep-alive
-      User-Agent:
-      - sentinelsat/0.14
-    method: GET
-    uri: https://scihub.copernicus.eu/apihub/odata/v1/Products('1a9401bc-6986-4707-b38d-f6c29ca58c00')/Products('Quicklook')/$value
-  response:
-    body: {}
-    headers:
-      accept-ranges:
-      - bytes
-      content-disposition:
-      - inline;filename="S2B_MSIL2A_20201007T121649_N0214_R123_T23FQB_20201007T160401-ql.jpg"
-      content-length:
-      - '6825'
-      content-range:
-      - bytes 0-6824/6825
-      content-type:
-      - image/jpeg
-      dataserviceversion:
-      - '2.0'
-      etag:
-      - 4B52D76C5E3171BF034D7737BDEBD928
-      last-modified:
-      - Wed, 07 Oct 2020 21:12:36 UTC
-      pragma:
-      - no-cache
-      server:
-      - Apache-Coyote/1.1
     status:
       code: 200
       message: OK
