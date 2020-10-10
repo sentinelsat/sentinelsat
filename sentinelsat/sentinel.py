@@ -13,7 +13,7 @@ import xml.etree.ElementTree as ET
 from collections import OrderedDict, defaultdict
 from contextlib import closing
 from datetime import date, datetime, timedelta
-from os import remove, mkdir
+from os import remove
 from os.path import basename, exists, getsize, join, splitext
 
 import geojson

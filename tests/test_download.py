@@ -277,6 +277,30 @@ def test_download_all_quicklooks(api, tmpdir, quicklook_products):
 
 @pytest.mark.vcr
 @pytest.mark.scihub
+def test_download_all_quicklooks_one_fail(api, tmpdir, quicklook_products):
+    ids = [product["id"] for product in quicklook_products]
+
+    # Force one download to fail
+    id = ids[0]
+    with requests_mock.mock(real_http=True) as rqst:
+        url = "https://scihub.copernicus.eu/apihub/odata/v1/Products('{id}')/Products('Quicklook')/$value".format(
+            id=id
+        )
+        headers = api.session.get(url).headers
+        headers["content-type"] = "image/xxxx"
+        rqst.get(url, headers=headers)
+        downloaded_quicklooks, failed_quicklooks = api.download_all_quicklooks(
+            ids, str(tmpdir), n_concurrent_dl=1
+        )
+        assert len(failed_quicklooks) == 1
+        assert len(downloaded_quicklooks) + len(failed_quicklooks) == len(ids)
+        assert id in failed_quicklooks
+
+    tmpdir.remove()
+
+
+@pytest.mark.vcr
+@pytest.mark.scihub
 def test_download_quicklook_invalid_id(api):
     uuid = "1f62a176-c980-41dc-xxxx-c735d660c910"
     with pytest.raises(SentinelAPIError) as excinfo:

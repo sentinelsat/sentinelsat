@@ -264,8 +264,8 @@ def cli(
     if quicklook:
         downloaded_quicklooks, failed_quicklooks = api.download_all_quicklooks(products, path)
         if failed_quicklooks:
-            api.logger.info(
-                "Some quicklooks failed: %s out of %s", len(failed_quicklooks, len(products))
+            api.logger.warning(
+                "Some quicklooks failed: %s out of %s", len(failed_quicklooks), len(products)
             )
 
     if download is True:
