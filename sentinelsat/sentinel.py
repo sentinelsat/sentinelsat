@@ -520,6 +520,7 @@ class SentinelAPI:
         response = self.session.get(url, auth=self.session.auth, timeout=self.timeout)
         _check_scihub_response(response)
         values = _parse_odata_response(response.json()["d"])
+        self._add_quicklook_url(values)
         return values
 
     def is_online(self, id):
@@ -1229,6 +1230,13 @@ class SentinelAPI:
         kwargs.update({"disable": not self.show_progressbars})
         return tqdm(**kwargs)
 
+    def _add_quicklook_url(self, product):
+        id = product["id"]
+        url = urljoin(
+            self.api_url, "odata/v1/Products('{}')/Products('Quicklook')/$value".format(id)
+        )
+        product["quicklook_url"] = url
+
 
 def read_geojson(geojson_file):
     """Read a GeoJSON file into a GeoJSON object."""
@@ -1453,13 +1461,6 @@ def _parse_odata_timestamp(in_date):
     return datetime.utcfromtimestamp(seconds) + timedelta(milliseconds=ms)
 
 
-def _get_quicklook_url(id):
-    url = "https://scihub.copernicus.eu/apihub/odata/v1/Products('{id}')/Products('Quicklook')/$value".format(
-        id=id
-    )
-    return url
-
-
 def _parse_opensearch_response(products):
     """Convert a query response to a dictionary.
 
@@ -1513,7 +1514,6 @@ def _parse_odata_response(product):
         "date": _parse_odata_timestamp(product["ContentDate"]["Start"]),
         "footprint": _parse_gml_footprint(product["ContentGeometry"]),
         "url": product["__metadata"]["media_src"],
-        "quicklook_url": _get_quicklook_url(product["Id"]),
         "Online": product.get("Online", True),
         "Creation Date": _parse_odata_timestamp(product["CreationDate"]),
         "Ingestion Date": _parse_odata_timestamp(product["IngestionDate"]),
