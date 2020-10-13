@@ -136,9 +136,9 @@ class CommaSeparatedString(click.ParamType):
 )
 @click.option(
     "--footprints",
-    is_flag=True,
-    help="""Create a geojson file search_footprints.geojson with footprints
-    and metadata of the returned products.
+    default=None,
+    help="""Create a geojson file with default name search_footprints.geojson with footprints
+    and metadata of the returned products, at specified path (and optional custom name).
     """,
 )
 @click.option("--info", is_flag=True, is_eager=True, help="Displays the DHuS version used")
@@ -250,9 +250,13 @@ def cli(
         end = end or "NOW"
         products = api.query(date=(start, end), order_by=order_by, limit=limit, **search_kwargs)
 
-    if footprints is True:
+    if footprints is not None:
+        if os.path.isdir(footprints) or footprints[len(footprints) - 1] == os.path.sep:
+            filename = os.path.join(footprints, "search_footprints.geojson")
+        else:
+            filename = footprints
         footprints_geojson = api.to_geojson(products)
-        with open(os.path.join(path, "search_footprints.geojson"), "w") as outfile:
+        with open(os.path.join(path, filename), "w") as outfile:
             outfile.write(gj.dumps(footprints_geojson))
 
     if download is True:
