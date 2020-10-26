@@ -177,6 +177,10 @@ Options
 
     Create geojson file search_footprints.geojson with footprints of the query result.
 
+.. option:: -d, --debug
+
+    Print debug log messages.
+
 .. option:: --info
 
     Display DHuS server information.

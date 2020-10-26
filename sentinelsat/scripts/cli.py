@@ -161,6 +161,12 @@ class CommaSeparatedString(click.ParamType):
     and metadata of the returned products.
     """,
 )
+@click.option(
+    "--debug",
+    "-d",
+    is_flag=True,
+    help="Print debug log messages.",
+)
 @click.option("--info", is_flag=True, is_eager=True, help="Displays the DHuS version used")
 @click.version_option(version=sentinelsat_version, prog_name="sentinelsat")
 def cli(
@@ -184,6 +190,7 @@ def cli(
     order_by,
     location,
     limit,
+    debug,
     info,
 ):
     """Search for Sentinel products and, optionally, download all the results
@@ -193,7 +200,7 @@ def cli(
     don't specify the start and end dates, it will search in the last 24 hours.
     """
 
-    _set_logger_handler()
+    _set_logger_handler("DEBUG" if debug else "INFO")
 
     if user is None or password is None:
         try:
