@@ -333,10 +333,10 @@ or add a custom handler for :mod:`sentinelsat` (as implemented in `cli.py`)
 More Examples
 -------------
 
-Search Sentinel 2 by tile
-^^^^^^^^^^^^^^^^^^^^^^^^^
+Search Sentinel-2 L1C by tile
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-To search for recent Sentinel 2 imagery by MGRS tile, use the `tileid` parameter:
+To search for recent Sentinel-2 L1C imagery by MGRS tile, use the `tileid` parameter:
 
 .. code-block:: python
 
@@ -361,12 +361,13 @@ To search for recent Sentinel 2 imagery by MGRS tile, use the `tileid` parameter
 
   api.download_all(products)
 
-NB: The `tileid` parameter may be missing from the metadata in SciHub's DHuS catalogue,
-in particular for older products. To be on the safe side, combine the `tileid` search
-with a `filename` pattern search:
+NB: The `tileid` parameter may not be available for all products, in which case 
+the products simply are not found. On the Copernicus Open Access Hub,
+you can use it to find Sentinel-2 L1C products from recent years (product type S2MSI1C).
+To be on the safe side, combine the `tileid` search with a `filename` pattern search:
 
 .. code-block:: python
 
   kw = query_kwargs.copy()
-  kw['raw'] = 'tileid:{tileid} OR filename:*_T{tileid}_*'.format(tileid=tile)
+  kw['raw'] = f'tileid:{tile} OR filename:*_T{tile}_*'
   pp = api.query(**kw)
