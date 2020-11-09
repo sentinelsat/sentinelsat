@@ -10,6 +10,7 @@ Added
 ~~~~~
 * Display DHuS server version with CLI flag ``--info`` (#367 @thomasyoung-audet)
 * Added seraching by placenames with the CLI flag ``--location`` (#372 @thomasyoung-audet)
+* Download quicklooks directly with the CLI flag ``--quicklook`` (#361 @mackland)
 
 Changed
 ~~~~~~~

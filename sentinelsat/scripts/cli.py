@@ -114,6 +114,11 @@ class CommaSeparatedString(click.ParamType):
 )
 @click.option("--download", "-d", is_flag=True, help="Download all results of the query.")
 @click.option(
+    "--quicklook",
+    is_flag=True,
+    help="""Download quicklook of a product.""",
+)
+@click.option(
     "--path",
     type=click.Path(exists=True),
     default=".",
@@ -152,6 +157,7 @@ def cli(
     uuid,
     name,
     download,
+    quicklook,
     sentinel,
     producttype,
     instrument,
@@ -254,6 +260,13 @@ def cli(
         footprints_geojson = api.to_geojson(products)
         with open(os.path.join(path, "search_footprints.geojson"), "w") as outfile:
             outfile.write(gj.dumps(footprints_geojson))
+
+    if quicklook:
+        downloaded_quicklooks, failed_quicklooks = api.download_all_quicklooks(products, path)
+        if failed_quicklooks:
+            api.logger.warning(
+                "Some quicklooks failed: %s out of %s", len(failed_quicklooks), len(products)
+            )
 
     if download is True:
         product_infos, triggered, failed_downloads = api.download_all(products, path)

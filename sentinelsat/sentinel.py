@@ -520,6 +520,7 @@ class SentinelAPI:
         response = self.session.get(url, auth=self.session.auth, timeout=self.timeout)
         _check_scihub_response(response)
         values = _parse_odata_response(response.json()["d"])
+        self._add_quicklook_url(values)
         return values
 
     def is_online(self, id):
@@ -910,6 +911,105 @@ class SentinelAPI:
 
         return ret_val
 
+    def download_all_quicklooks(self, products, directory_path=".", n_concurrent_dl=2):
+        """Download quicklook for a list of products.
+
+        Takes a dict of product IDs: product data as input. This means that the return value of
+        query() can be passed directly to this method.
+
+        File names on the server are used for the downloaded images, e.g.
+        "S2A_MSIL1C_20200924T104031_N0209_R008_T35WMV_20200926T135405.jpeg".
+
+        Parameters
+        ----------
+        products : dict
+            Dict of product IDs, product data
+        directory_path : string
+            Directory where the downloaded images will be downloaded
+        n_concurrent_dl : integer
+            Number of concurrent downloads
+
+        Returns
+        -------
+        dict[string, dict]
+            A dictionary containing the return value from download_quicklook() for each
+            successfully downloaded quicklook
+        dict[string, dict]
+            A dictionary containing the error of products where either
+            quicklook was not available or it had an unexpected content type
+        """
+
+        self.logger.info("Will download %d quicklooks", len(products))
+
+        downloaded_quicklooks = {}
+        failed_quicklooks = {}
+
+        with concurrent.futures.ThreadPoolExecutor(max_workers=n_concurrent_dl) as dl_exec:
+            dl_tasks = {}
+            for pid in products:
+                future = dl_exec.submit(self.download_quicklook, pid, directory_path)
+                dl_tasks[future] = pid
+
+            completed_tasks = concurrent.futures.as_completed(dl_tasks)
+
+            for future in completed_tasks:
+                product_info = future.result()
+                if product_info["error"] == "":
+                    downloaded_quicklooks[dl_tasks[future]] = product_info
+                else:
+                    failed_quicklooks[dl_tasks[future]] = product_info["error"]
+
+        return downloaded_quicklooks, failed_quicklooks
+
+    def download_quicklook(self, id, directory_path="."):
+        """Download a quicklook for a product.
+
+        Uses the filename on the server for the downloaded image, e.g.
+        "S1A_EW_GRDH_1SDH_20141003T003840_20141003T003920_002658_002F54_4DD1.jpeg".
+
+        Complete images are skipped.
+
+        Parameters
+        ----------
+        id : string
+            UUID of the product, e.g. 'a8dd0cfd-613e-45ce-868c-d79177b916ed'
+        directory_path : string, optional
+            Where the image will be downloaded
+
+        Returns
+        -------
+        quicklook_info : dict
+            Dictionary containing the quicklooks's response headers as well as the path on disk.
+        """
+        product_info = self.get_product_odata(id)
+        url = product_info["quicklook_url"]
+
+        path = join(directory_path, "{}.jpeg".format(product_info["title"]))
+        product_info["path"] = path
+        product_info["downloaded_bytes"] = 0
+        product_info["error"] = ""
+
+        self.logger.info("Downloading quicklook %s to %s", product_info["title"], path)
+
+        r = self.session.get(url)
+        _check_scihub_response(r, test_json=False)
+
+        product_info["quicklook_size"] = len(r.content)
+
+        if exists(path):
+            return product_info
+
+        content_type = r.headers["content-type"]
+        if content_type != "image/jpeg":
+            product_info["error"] = "Quicklook is not jpeg but {}".format(content_type)
+
+        if product_info["error"] == "":
+            with open(path, "wb") as fp:
+                fp.write(r.content)
+                product_info["downloaded_bytes"] = len(r.content)
+
+        return product_info
+
     @staticmethod
     def get_products_size(products):
         """Return the total file size in GB of all products in the OpenSearch response."""
@@ -1129,6 +1229,13 @@ class SentinelAPI:
         """tqdm progressbar wrapper. May be overridden to customize progressbar behavior"""
         kwargs.update({"disable": not self.show_progressbars})
         return tqdm(**kwargs)
+
+    def _add_quicklook_url(self, product):
+        id = product["id"]
+        url = urljoin(
+            self.api_url, "odata/v1/Products('{}')/Products('Quicklook')/$value".format(id)
+        )
+        product["quicklook_url"] = url
 
 
 def read_geojson(geojson_file):
