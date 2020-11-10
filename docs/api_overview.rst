@@ -336,7 +336,7 @@ More Examples
 Search Sentinel-2 L1C by tile
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-To search for recent Sentinel-2 L1C imagery by MGRS tile, use the `tileid` parameter:
+To search for recent Sentinel-2 L1C imagery by MGRS tile, you can use the `tileid` parameter:
 
 .. code-block:: python
 
@@ -361,9 +361,9 @@ To search for recent Sentinel-2 L1C imagery by MGRS tile, use the `tileid` param
 
   api.download_all(products)
 
-NB: The `tileid` parameter may not be available for all products, in which case 
-the products simply are not found. On the Copernicus Open Access Hub,
-you can use it to find Sentinel-2 L1C products from recent years (product type S2MSI1C).
+NB: Older products may not be found with the `tileid` parameter. On the Copernicus Open Access Hub,
+it seems to be available for most L1C products (product type S2MSI1C) from recent years,
+but this differs by region, too.
 To be on the safe side, combine the `tileid` search with a `filename` pattern search:
 
 .. code-block:: python
