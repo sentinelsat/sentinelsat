@@ -19,3 +19,10 @@ from .sentinel import (
     read_geojson,
     placename_to_wkt,
 )
+
+from .advanced import (
+    AdvancedSentinelAPI,
+    make_path_filter,
+    make_size_filter,
+    all_nodes_filter,
+)
