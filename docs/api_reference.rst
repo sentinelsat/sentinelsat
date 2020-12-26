@@ -7,6 +7,9 @@ API Reference
 .. automodule:: sentinelsat.sentinel
     :members:
 
+.. automodule:: sentinelsat.advanced
+    :members:
+
 Exceptions
 ----------
 
