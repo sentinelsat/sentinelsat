@@ -8,12 +8,13 @@ There are two minor issues to keep in mind when recording unit tests VCRs.
 
 """
 import shutil
+import os
 
 import py.path
 import pytest
 import requests_mock
 
-from sentinelsat import SentinelAPI
+from sentinelsat import SentinelAPI, make_path_filter
 from sentinelsat.exceptions import SentinelAPIError, SentinelAPILTAError, InvalidChecksumError
 
 
@@ -324,5 +325,33 @@ def test_get_stream(api, tmpdir, smallest_online_products):
 
     assert product_info["size"] == expected_path.size()
     assert api._md5_compare(expected_path, product_info["md5"])
+
+    tmpdir.remove()
+
+
+@pytest.mark.vcr
+@pytest.mark.scihub
+def test_download_advanced(advanced_api, tmpdir, smallest_online_products):
+    uuid = smallest_online_products[0]["id"]
+    product_dir = smallest_online_products[0]["title"] + ".SAFE"
+    expected_path = tmpdir.join(product_dir)
+
+    nodefilter = make_path_filter("*preview/*.kml")
+    advanced_api.nodefilter = nodefilter
+    product_info = advanced_api.download(uuid, str(tmpdir), checksum=True)
+
+    assert os.path.normpath(product_info["node_path"]) == product_dir
+    assert expected_path.exists()
+
+    assert len(product_info["nodes"]) == 2
+
+    assert os.path.join(".", "manifest.safe") in product_info["nodes"]
+    assert os.path.join(".", "preview", "map-overlay.kml") in product_info["nodes"]
+
+    assert os.path.exists(os.path.join(tmpdir, product_dir, "manifest.safe"))
+    assert os.path.exists(os.path.join(tmpdir, product_dir, "preview", "map-overlay.kml"))
+
+    assert not os.path.exists(os.path.join(tmpdir, product_dir, "manifest.safe" + ".incomplete"))
+    assert not os.path.exists(os.path.join(tmpdir, product_dir, "preview", "map-overlay.kml" + ".incomplete"))
 
     tmpdir.remove()
