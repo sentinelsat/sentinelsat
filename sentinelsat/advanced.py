@@ -95,9 +95,9 @@ class AdvancedSentinelAPI(sentinelsat.SentinelAPI):
 
     .. versionadded:: 0.15
     """
-    def __init__(self, *args, nodefilter=None, **kwargs):
-        super(AdvancedSentinelAPI, self).__init__(*args, **kwargs)
-        self.nodefilter = nodefilter
+    def __init__(self, *args, **kwargs):
+        self.nodefilter = kwargs.pop("nodefilter", None)
+        sentinelsat.SentinelAPI.__init__(self, *args, **kwargs)
 
     def _path_to_url(self, product_info, path, urltype=None):
         data = dict(id=product_info["id"], title=product_info["title"])
@@ -209,7 +209,7 @@ class AdvancedSentinelAPI(sentinelsat.SentinelAPI):
             If the MD5 checksum does not match the checksum on the server.
         """
         if self.nodefilter is None:
-            return super(AdvancedSentinelAPI, self).download(id, directory_path, checksum)
+            return sentinelsat.SentinelAPI.download(self, id, directory_path, checksum)
 
         product_info = self.get_product_odata(id)
         product_path = os.path.join(directory_path, product_info["title"] + ".SAFE")
