@@ -549,13 +549,13 @@ def test_advanced_download_single_with_filter(
     # The file already exists, should not be re-downloaded
     run_cli(*command)
 
-    files = list(glob.glob(os.path.join(tmpdir, "S*.SAFE", "*")))
+    files = list(glob.glob(str(tmpdir.join("S*.SAFE", "*"))))
     assert len(files) == 2
     basenames = [os.path.basename(filename) for filename in files]
     assert "manifest.safe" in basenames
     assert "preview" in basenames
 
-    files = list(glob.glob(os.path.join(tmpdir, "S*.SAFE", "preview", "*")))
+    files = list(glob.glob(str(tmpdir.join("S*.SAFE", "preview", "*"))))
     assert len(files) == 1
     basenames = [os.path.basename(filename) for filename in files]
     assert "map-overlay.kml" in basenames

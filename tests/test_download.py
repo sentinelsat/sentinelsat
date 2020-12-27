@@ -348,12 +348,10 @@ def test_download_advanced(advanced_api, tmpdir, smallest_online_products):
     assert os.path.join(".", "manifest.safe") in product_info["nodes"]
     assert os.path.join(".", "preview", "map-overlay.kml") in product_info["nodes"]
 
-    assert os.path.exists(os.path.join(tmpdir, product_dir, "manifest.safe"))
-    assert os.path.exists(os.path.join(tmpdir, product_dir, "preview", "map-overlay.kml"))
+    assert tmpdir.join(product_dir, "manifest.safe").check()
+    assert tmpdir.join(product_dir, "preview", "map-overlay.kml").check()
 
-    assert not os.path.exists(os.path.join(tmpdir, product_dir, "manifest.safe" + ".incomplete"))
-    assert not os.path.exists(
-        os.path.join(tmpdir, product_dir, "preview", "map-overlay.kml" + ".incomplete")
-    )
+    assert not tmpdir.join(product_dir, "manifest.safe" + ".incomplete").check()
+    assert not tmpdir.join(product_dir, "preview", "map-overlay.kml" + ".incomplete").check()
 
     tmpdir.remove()
