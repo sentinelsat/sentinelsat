@@ -219,7 +219,9 @@ def cli(
     _set_logger_handler("DEBUG" if debug else "INFO")
 
     if include_pattern is not None and exclude_pattern is not None:
-        raise click.UsageError("--include-pattern and --exclude-pattern cannot be specified together.")
+        raise click.UsageError(
+            "--include-pattern and --exclude-pattern cannot be specified together."
+        )
     elif include_pattern is not None:
         nodefilter = make_path_filter(include_pattern)
     elif exclude_pattern is not None:

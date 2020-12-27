@@ -352,6 +352,8 @@ def test_download_advanced(advanced_api, tmpdir, smallest_online_products):
     assert os.path.exists(os.path.join(tmpdir, product_dir, "preview", "map-overlay.kml"))
 
     assert not os.path.exists(os.path.join(tmpdir, product_dir, "manifest.safe" + ".incomplete"))
-    assert not os.path.exists(os.path.join(tmpdir, product_dir, "preview", "map-overlay.kml" + ".incomplete"))
+    assert not os.path.exists(
+        os.path.join(tmpdir, product_dir, "preview", "map-overlay.kml" + ".incomplete")
+    )
 
     tmpdir.remove()

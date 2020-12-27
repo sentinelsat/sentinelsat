@@ -34,7 +34,7 @@ class BinaryContentSerializer:
                 rg, size, filename = self._parse_headers(headers)
                 content = response["body"]["string"]
                 if hasattr(content, "encode"):
-                    content = content.encode('utf-8')
+                    content = content.encode("utf-8")
                 if rg[0] == 0 and rg[1] + 1 == size:
                     with open(join(self.directory, filename), "wb") as f:
                         f.write(content)

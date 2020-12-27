@@ -15,19 +15,19 @@ def _xml_to_dataobj_info(element):
     assert element.tag == "dataObject"
     data = dict(
         id=element.attrib["ID"],
-        rep_id=element.attrib['repID'],
+        rep_id=element.attrib["repID"],
     )
     elem = element.find("byteStream")
     # data["mime_type"] = elem.attrib['mimeType']
-    data["size"] = int(elem.attrib['size'])
+    data["size"] = int(elem.attrib["size"])
     elem = element.find("byteStream/fileLocation")
-    data['href'] = elem.attrib["href"]
+    data["href"] = elem.attrib["href"]
     # data['locator_type'] = elem.attrib["locatorType"]
     # assert data['locator_type'] == "URL"
 
     elem = element.find("byteStream/checksum")
     assert elem.attrib["checksumName"].upper() == "MD5"
-    data['md5'] = elem.text
+    data["md5"] = elem.text
 
     return data
 
@@ -95,6 +95,7 @@ class AdvancedSentinelAPI(sentinelsat.SentinelAPI):
 
     .. versionadded:: 0.15
     """
+
     def __init__(self, *args, **kwargs):
         self.nodefilter = kwargs.pop("nodefilter", None)
         sentinelsat.SentinelAPI.__init__(self, *args, **kwargs)
@@ -103,20 +104,22 @@ class AdvancedSentinelAPI(sentinelsat.SentinelAPI):
         data = dict(id=product_info["id"], title=product_info["title"])
         data["api_url"] = self.api_url
         data["path"] = "/".join(["Nodes('{}')".format(item) for item in path.split("/")])
-        if urltype == 'value':
+        if urltype == "value":
             data["urltype"] = "/$value"
-        elif urltype == 'json':
+        elif urltype == "json":
             data["urltype"] = "?$format=json"
-        elif urltype == 'full':
+        elif urltype == "full":
             data["urltype"] = "?$format=json&$expand=Attributes"
         elif urltype is None:
-            data["urltype"] = ''
+            data["urltype"] = ""
         else:
             data["urltype"] = urltype
-        return "{api_url}odata/v1/Products('{id}')/Nodes('{title}.SAFE')/{path}{urltype}".format(**data)
+        return "{api_url}odata/v1/Products('{id}')/Nodes('{title}.SAFE')/{path}{urltype}".format(
+            **data
+        )
 
     def _get_manifest(self, product_info, path=None):
-        url = self._path_to_url(product_info, "manifest.safe", 'value')
+        url = self._path_to_url(product_info, "manifest.safe", "value")
         node_info = product_info.copy()
         node_info["url"] = url
         node_info["node_path"] = os.path.join(".", "manifest.safe")
@@ -128,7 +131,7 @@ class AdvancedSentinelAPI(sentinelsat.SentinelAPI):
                 data = fd.read()
             node_info["size"] = len(data)
         else:
-            url = self._path_to_url(product_info, "manifest.safe", 'json')
+            url = self._path_to_url(product_info, "manifest.safe", "json")
             response = self.session.get(url, auth=self.session.auth)
             _check_scihub_response(response)
             info = response.json()["d"]
@@ -150,11 +153,11 @@ class AdvancedSentinelAPI(sentinelsat.SentinelAPI):
 
     def _dataobj_to_node_info(self, dataobj_info, product_info):
         path = dataobj_info["href"]
-        if path.startswith('./'):
+        if path.startswith("./"):
             path = path[2:]
 
         node_info = product_info.copy()
-        node_info["url"] = self._path_to_url(product_info, path, 'value')
+        node_info["url"] = self._path_to_url(product_info, path, "value")
         node_info["size"] = dataobj_info["size"]
         node_info["md5"] = dataobj_info["md5"]
         node_info["node_path"] = dataobj_info["href"]
@@ -300,11 +303,13 @@ def make_size_filter(max_size):
 
     .. versionadded:: 0.15
     """
+
     def node_filter(node_info, size=max_size):
         if node_info["size"] <= size:
             return True
         else:
             return False
+
     return node_filter
 
 
@@ -321,15 +326,20 @@ def make_path_filter(pattern, exclude=False):
     .. versionadded:: 0.15
     """
     if exclude:
+
         def node_filter(node_info, exclude_pattern=pattern):
             import fnmatch
+
             if not fnmatch.fnmatch(node_info["node_path"].lower(), exclude_pattern):
                 return True
             else:
                 return False
+
     else:
+
         def node_filter(node_info, include_pattern=pattern):
             import fnmatch
+
             if fnmatch.fnmatch(node_info["node_path"].lower(), include_pattern):
                 return True
             else:

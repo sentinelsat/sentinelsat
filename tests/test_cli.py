@@ -523,7 +523,9 @@ def test_advanced_download_single(run_cli, api, tmpdir, smallest_online_products
 
 @pytest.mark.vcr
 @pytest.mark.scihub
-def test_advanced_download_single_with_filter(run_cli, api, tmpdir, smallest_online_products, monkeypatch):
+def test_advanced_download_single_with_filter(
+    run_cli, api, tmpdir, smallest_online_products, monkeypatch
+):
     # Change default arguments for quicker test.
     # Also, vcrpy is not threadsafe, so only one worker is used.
     monkeypatch.setattr(
@@ -532,7 +534,15 @@ def test_advanced_download_single_with_filter(run_cli, api, tmpdir, smallest_onl
     )
 
     product_id = smallest_online_products[0]["id"]
-    command = ["--uuid", product_id, "--download", "--path", str(tmpdir), "--include-pattern", "*.kml"]
+    command = [
+        "--uuid",
+        product_id,
+        "--download",
+        "--path",
+        str(tmpdir),
+        "--include-pattern",
+        "*.kml",
+    ]
 
     run_cli(*command)
 
