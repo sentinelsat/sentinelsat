@@ -331,23 +331,23 @@ or add a custom handler for :mod:`sentinelsat` (as implemented in `cli.py`)
   logger.addHandler(h)
 
 
-Advanced API
-------------
+Product node API
+----------------
 
-The advanced API is implemented in the :mod:`sentinelsat.advanced` module and,
-in addition to all the features provided by the standard API, allows to
-download only some of the files included in a Sentinel product exploiting
-the `node selection feature`_ provided by the OData_ Web API.
+The product node API is implemented in the :mod:`sentinelsat.products`
+module and, in addition to all the features provided by the standard API,
+allows to download only some of the files included in a Sentinel product
+exploiting the `node selection feature`_ provided by the OData_ Web API.
 
 .. code-block:: python
 
-  from sentinelsat import AdvancedSentinelAPI, make_path_filter
+  from sentinelsat import SentinelProductsAPI, make_path_filter
 
   # define the filter function to select files (to be excluded in this case)
   nodefilter = make_path_filter("*measurement/*", exclude=True)
 
   # connect to the API
-  api = AdvancedSentinelAPI("user", "password")
+  api = SentinelProductAPI("user", "password")
 
   # download a single product excluding measurement files
   api.download(<product_id>, nodefilter=nodefilter)
@@ -390,9 +390,9 @@ keys:
     the file md5 checksum
 
 In the example above it has been used an helper function
-(:func:`sentinelsat.advanced.make_path_filter`) provided by :mod:`sentinelsat`
-that generates *nodefilter* functions based on glob expressions applied
-to the *node_path* value.
+(:func:`sentinelsat.products.make_path_filter`), provided by the
+:mod:`sentinelsat.products` module, that generates *nodefilter* functions
+based on glob expressions applied to the *node_path* value.
 
 The following code:
 
@@ -412,11 +412,11 @@ is more or less equivalent to:
     else:
       return False
 
-The :mod:`sentinelsat` advanced API also provides:
+The :mod:`sentinelsat` product node API also provides:
 
-* the :func:`sentinelsat.advanced.make_size_filter` helper to build filters
+* the :func:`sentinelsat.products.make_size_filter` helper to build filters
   based on the file size and
-* the pre-build :func:`sentinelsat.advanced.all_nodes_filter` *nodefilter*
+* the pre-build :func:`sentinelsat.products.all_nodes_filter` *nodefilter*
   function to download all files.
   This function can be used to download the entire Sentinel product as a
   directory instead of downloading a single zip archive.
@@ -488,5 +488,9 @@ allows to reduce consistently the amount of data to be downloaded
 (form 10 to 2 TIFF files approx 700MB each).
 
 Of course the *nodefilter* function have to be used to initialize the
-advanced API :class:`sentinelsat.advanced.AdvancedSentinelAPI` as explained
-above.
+product node API :class:`sentinelsat.products.SentinelProductsAPI` as
+explained above.
+
+.. code-block:: python
+
+    api.download_all(<products>, nodefilter=nodefilter)

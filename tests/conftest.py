@@ -7,7 +7,7 @@ import yaml
 from pytest_socket import disable_socket
 from vcr import VCR
 
-from sentinelsat import SentinelAPI, geojson_to_wkt, read_geojson, AdvancedSentinelAPI
+from sentinelsat import SentinelAPI, geojson_to_wkt, read_geojson, SentinelProductsAPI
 from sentinelsat.sentinel import _parse_odata_response
 from .custom_serializer import BinaryContentSerializer
 
@@ -100,8 +100,8 @@ def api(api_kwargs):
 
 
 @pytest.fixture
-def advanced_api(api_kwargs):
-    return AdvancedSentinelAPI(**api_kwargs)
+def products_api(api_kwargs):
+    return SentinelProductsAPI(**api_kwargs)
 
 
 @pytest.fixture(scope="session")

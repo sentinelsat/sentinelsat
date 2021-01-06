@@ -12,7 +12,7 @@ import requests_mock
 from click.testing import CliRunner
 
 from sentinelsat import SentinelAPI, InvalidChecksumError, QuerySyntaxError
-from sentinelsat import AdvancedSentinelAPI
+from sentinelsat import SentinelProductsAPI
 from sentinelsat.scripts.cli import cli
 
 
@@ -485,12 +485,12 @@ def test_download_single(run_cli, api, tmpdir, smallest_online_products, monkeyp
 
 @pytest.mark.vcr
 @pytest.mark.scihub
-def test_advanced_download_single(run_cli, api, tmpdir, smallest_online_products, monkeypatch):
+def test_product_node_download_single(run_cli, api, tmpdir, smallest_online_products, monkeypatch):
     # Change default arguments for quicker test.
     # Also, vcrpy is not threadsafe, so only one worker is used.
     monkeypatch.setattr(
-        "sentinelsat.AdvancedSentinelAPI.download_all",
-        partialmethod(AdvancedSentinelAPI.download_all, n_concurrent_dl=1, max_attempts=2),
+        "sentinelsat.SentinelProductsAPI.download_all",
+        partialmethod(SentinelProductsAPI.download_all, n_concurrent_dl=1, max_attempts=2),
     )
 
     product_id = smallest_online_products[0]["id"]
@@ -523,13 +523,13 @@ def test_advanced_download_single(run_cli, api, tmpdir, smallest_online_products
 
 @pytest.mark.vcr
 @pytest.mark.scihub
-def test_advanced_download_single_with_filter(
+def test_product_node_download_single_with_filter(
     run_cli, api, tmpdir, smallest_online_products, monkeypatch
 ):
     # Change default arguments for quicker test.
     # Also, vcrpy is not threadsafe, so only one worker is used.
     monkeypatch.setattr(
-        "sentinelsat.AdvancedSentinelAPI.download_all",
+        "sentinelsat.SentinelProductsAPI.download_all",
         partialmethod(SentinelAPI.download_all, n_concurrent_dl=1, max_attempts=2),
     )
 

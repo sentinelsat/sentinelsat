@@ -20,8 +20,8 @@ from .sentinel import (
     placename_to_wkt,
 )
 
-from .advanced import (
-    AdvancedSentinelAPI,
+from .products import (
+    SentinelProductsAPI,
     make_path_filter,
     make_size_filter,
     all_nodes_filter,

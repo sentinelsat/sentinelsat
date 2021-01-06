@@ -32,11 +32,11 @@ def _xml_to_dataobj_info(element):
     return data
 
 
-class AdvancedSentinelAPI(sentinelsat.SentinelAPI):
+class SentinelProductsAPI(sentinelsat.SentinelAPI):
     """Class to connect to Copernicus Open Access Hub, search and download imagery.
 
-    The advanced interface allows to filter and download individual product files
-    by means of a (optional) *nodefilter* callable function.
+    The products node interface allows to filter and download individual product
+    files by means of a (optional) *nodefilter* callable function.
     For each file in the product (only excluding the manifest) the *nodefilter* function
     is called to decide if the corresponding file must be downloaded or not.
 
@@ -191,7 +191,7 @@ class AdvancedSentinelAPI(sentinelsat.SentinelAPI):
             The *nodefilter* callable used to select which file of each product have to
             be downloaded.
             If *nodefilter* is None then no file filtering is performed and the class
-            behaves exactly as :class:`SentinelAPI`.
+            behaves exactly as :class:`sentinelsat.sentinel.SentinelAPI`.
 
 
         Returns

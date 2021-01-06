@@ -15,7 +15,7 @@ Added
 * Download quicklooks directly with the CLI flag ``--quicklook`` (#361 @mackland)
 * Added ``setinelsat/__main__.py`` (#412 @avalentino)
 * Added ``get_stream()`` (#430 @fwfichtner)
-* New ``sentinelsat/advanced.py`` module providing an "advanced" API that
+* New ``sentinelsat/products.py`` module providing a "product nodes" API that
   allows to filter and download only selected files of the requested products
   (#414 @avalentino)
 
