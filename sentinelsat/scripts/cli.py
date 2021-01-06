@@ -241,7 +241,7 @@ def cli(
             "for environment variables and .netrc support."
         )
 
-    api = AdvancedSentinelAPI(user, password, url, nodefilter=nodefilter)
+    api = AdvancedSentinelAPI(user, password, url)
 
     if info:
         ctx = click.get_current_context()
@@ -338,7 +338,9 @@ def cli(
             )
 
     if download is True:
-        product_infos, triggered, failed_downloads = api.download_all(products, path)
+        product_infos, triggered, failed_downloads = api.download_all(
+            products, path, nodefilter=nodefilter
+        )
         if len(failed_downloads) > 0:
             with open(os.path.join(path, "corrupt_scenes.txt"), "w") as outfile:
                 for failed_id in failed_downloads:

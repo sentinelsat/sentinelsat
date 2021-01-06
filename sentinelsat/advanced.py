@@ -71,9 +71,6 @@ class AdvancedSentinelAPI(sentinelsat.SentinelAPI):
     timeout : float or tuple, optional
         How long to wait for DataHub response (in seconds).
         Tuple (connect, read) allowed.
-    nodefilter : callable, optional
-        The *nodefilter* callable that is used to select which file of each product
-        have to be downloaded.
 
     Attributes
     ----------
@@ -86,19 +83,10 @@ class AdvancedSentinelAPI(sentinelsat.SentinelAPI):
         Current value: 100 (maximum allowed on ApiHub)
     timeout : float or tuple
         How long to wait for DataHub response (in seconds).
-    nodefilter : callable ot None
-        If *nodefilter* is None no file filtering is performed and the class behaves
-        exactly as :class:`SentinelAPI`.
-        Otherwise the *nodefilter* callable is used to select which file of each product
-        have to be downloaded.
 
 
     .. versionadded:: 0.15
     """
-
-    def __init__(self, *args, **kwargs):
-        self.nodefilter = kwargs.pop("nodefilter", None)
-        sentinelsat.SentinelAPI.__init__(self, *args, **kwargs)
 
     def _path_to_url(self, product_info, path, urltype=None):
         data = dict(id=product_info["id"], title=product_info["title"])
@@ -181,7 +169,7 @@ class AdvancedSentinelAPI(sentinelsat.SentinelAPI):
             nodes[node_path] = node_info
         return nodes
 
-    def download(self, id, directory_path=".", checksum=True):
+    def download(self, id, directory_path=".", checksum=True, nodefilter=None, **kwargs):
         """Download a product.
 
         Uses the filename on the server for the downloaded files, e.g.
@@ -199,6 +187,12 @@ class AdvancedSentinelAPI(sentinelsat.SentinelAPI):
             If True, verify the downloaded file's integrity by checking its MD5 checksum.
             Throws InvalidChecksumError if the checksum does not match.
             Defaults to True.
+        nodefilter : callable, optional
+            The *nodefilter* callable used to select which file of each product have to
+            be downloaded.
+            If *nodefilter* is None then no file filtering is performed and the class
+            behaves exactly as :class:`SentinelAPI`.
+
 
         Returns
         -------
@@ -211,7 +205,7 @@ class AdvancedSentinelAPI(sentinelsat.SentinelAPI):
         InvalidChecksumError
             If the MD5 checksum does not match the checksum on the server.
         """
-        if self.nodefilter is None:
+        if nodefilter is None:
             return sentinelsat.SentinelAPI.download(self, id, directory_path, checksum)
 
         product_info = self.get_product_odata(id)
@@ -231,7 +225,7 @@ class AdvancedSentinelAPI(sentinelsat.SentinelAPI):
             manifest_info["node_path"]: manifest_info,
         }
 
-        node_infos = self._filter_nodes(manifest_path, product_info, self.nodefilter)
+        node_infos = self._filter_nodes(manifest_path, product_info, nodefilter)
         product_info["nodes"].update(node_infos)
 
         for node_info in node_infos.values():

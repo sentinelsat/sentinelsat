@@ -337,8 +337,7 @@ def test_download_advanced(advanced_api, tmpdir, smallest_online_products):
     expected_path = tmpdir.join(product_dir)
 
     nodefilter = make_path_filter("*preview/*.kml")
-    advanced_api.nodefilter = nodefilter
-    product_info = advanced_api.download(uuid, str(tmpdir), checksum=True)
+    product_info = advanced_api.download(uuid, str(tmpdir), checksum=True, nodefilter=nodefilter)
 
     assert os.path.normpath(product_info["node_path"]) == product_dir
     assert expected_path.exists()

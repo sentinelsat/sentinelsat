@@ -330,6 +330,7 @@ or add a custom handler for :mod:`sentinelsat` (as implemented in `cli.py`)
   h.setFormatter(fmt)
   logger.addHandler(h)
 
+
 Advanced API
 ------------
 
@@ -346,17 +347,17 @@ the `node selection feature`_ provided by the OData_ Web API.
   nodefilter = make_path_filter("*measurement/*", exclude=True)
 
   # connect to the API
-  api = AdvancedSentinelAPI("user", "password", nodefilter=nodefilter)
+  api = AdvancedSentinelAPI("user", "password")
 
   # download a single product excluding measurement files
-  api.download(<product_id>)
+  api.download(<product_id>, nodefilter=nodefilter)
 
 Of course it also works for multiple products:
 
 .. code-block:: python
 
   # download a multiple products excluding measurement files
-  api.download_all(<products>)
+  api.download_all(<products>, nodefilter=nodefilter)
 
 The example above downloads all files in each of the requested products only
 *excluding* (large) measurements files.
@@ -468,8 +469,8 @@ To be on the safe side, combine the `tileid` search with a `filename` pattern se
   pp = api.query(**kw)
 
 
-Download only only some of the channels of a Sentinel-1 product
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Download only some of the channels of a Sentinel-1 product
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 In some cases the user may be interested only to a specific sub-swath and/or
 polarization of Sentinel1 SLC products (e.g. for an interferometric analysis).
