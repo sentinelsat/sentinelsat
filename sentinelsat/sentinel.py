@@ -683,7 +683,7 @@ class SentinelAPI:
         checksum=True,
         n_concurrent_dl=2,
         lta_retry_delay=600,
-        **kwargs,
+        **kwargs
     ):
         """Download a list of products.
 
