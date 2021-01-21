@@ -657,7 +657,7 @@ class SentinelAPI:
         -----
         https://scihub.copernicus.eu/userguide/LongTermArchive
         """
-        with self.session.get(url, auth=self.session.auth, timeout=self.timeout) as r:
+        with self.session.head(url, auth=self.session.auth, timeout=self.timeout) as r:
             # check https://scihub.copernicus.eu/userguide/LongTermArchive#HTTP_Status_codes
             if r.status_code == 202:
                 self.logger.debug("Accepted for retrieval")
