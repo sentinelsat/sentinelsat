@@ -8,6 +8,7 @@ jobs:
       - python: '3.6'
       - python: '3.7'
       - python: '3.8'
+      - python: '3.9'
       - name: "macOS 10.15"
         os: osx
         osx_image: xcode11.6
