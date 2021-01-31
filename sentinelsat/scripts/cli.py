@@ -1,13 +1,30 @@
+import json
 import logging
 import math
 import os
+
+try:
+    from json import JSONDecodeError
+
+    json_parse_exception = json.decoder.JSONDecodeError
+except ImportError:  # Python 2
+    json_parse_exception = ValueError
 
 import click
 import geojson as gj
 import requests.utils
 
 from sentinelsat import __version__ as sentinelsat_version
-from sentinelsat.sentinel import SentinelAPI, geojson_to_wkt, read_geojson, placename_to_wkt
+
+from sentinelsat.sentinel import (
+    SentinelAPI,
+    SentinelAPIError,
+    geojson_to_wkt,
+    read_geojson,
+    placename_to_wkt,
+    is_wkt,
+)
+
 from sentinelsat.exceptions import InvalidKeyError
 
 logger = logging.getLogger("sentinelsat")
@@ -70,7 +87,10 @@ class CommaSeparatedString(click.ParamType):
     help="End date of the query in the format YYYYMMDD.",
 )
 @click.option(
-    "--geometry", "-g", type=click.Path(exists=True), help="Search area geometry as GeoJSON file."
+    "--geometry",
+    "-g",
+    type=str,
+    help="Search area geometry as GeoJSON file, a GeoJSON string, or a WKT string. ",
 )
 @click.option(
     "--uuid",
@@ -237,7 +257,27 @@ def cli(
         search_kwargs["area"] = wkt
 
     if geometry is not None:
-        search_kwargs["area"] = geojson_to_wkt(read_geojson(geometry))
+        # check if the value is an existing path
+        if os.path.exists(geometry):
+            search_kwargs["area"] = geojson_to_wkt(read_geojson(geometry))
+        # check if the value is a GeoJSON
+        else:
+            if geometry.startswith("{"):
+                try:
+                    geometry = json.loads(geometry)
+                    search_kwargs["area"] = geojson_to_wkt(geometry)
+                except json_parse_exception:
+                    raise click.UsageError(
+                        "geometry string starts with '{' but is not a valid GeoJSON."
+                    )
+            # check if the value is a WKT
+            elif is_wkt(geometry):
+                search_kwargs["area"] = geometry
+            else:
+                raise click.UsageError(
+                    "The geometry input is neither a GeoJSON file with a valid path, "
+                    "a GeoJSON String nor a WKT string."
+                )
 
     if uuid is not None:
         uuid_list = [x.strip() for x in uuid]

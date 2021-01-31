@@ -1571,3 +1571,8 @@ def placename_to_wkt(place_name):
     info = feature["properties"]
     info["bbox"] = feature["bbox"]
     return wkt_envelope, info
+
+
+def is_wkt(possible_wkt):
+    pattern = r"^((MULTI)?(POINT|LINESTRING|POLYGON)|GEOMETRYCOLLECTION|ENVELOPE)\s*\(.+\)$"
+    return re.match(pattern, possible_wkt.strip().upper()) is not None

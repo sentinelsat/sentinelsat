@@ -134,6 +134,56 @@ def geojson_path():
 
 
 @pytest.fixture(scope="session")
+def geojson_string():
+    string = """{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {},
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -66.26953125,
+              -8.05922962720018
+            ],
+            [
+              -66.26953125,
+              0.7031073524364909
+            ],
+            [
+              -57.30468749999999,
+              0.7031073524364909
+            ],
+            [
+              -57.30468749999999,
+              -8.05922962720018
+            ],
+            [
+              -66.26953125,
+              -8.05922962720018
+            ]
+          ]
+        ]
+      }
+    }
+  ]
+}"""
+    return string
+
+
+@pytest.fixture(scope="session")
+def wkt_string():
+    string = (
+        "POLYGON((-78.046875 46.377254205100286,-75.76171874999999 43.32517767999295,-71.279296875 "
+        "46.55886030311717,-78.046875 46.377254205100286))"
+    )
+    return string
+
+
+@pytest.fixture(scope="session")
 def test_wkt(geojson_path):
     return geojson_to_wkt(read_geojson(geojson_path))
 

@@ -137,6 +137,37 @@ def test_cli(run_cli, geojson_path):
     run_cli("--geometry", geojson_path, "-q", "producttype=GRD,polarisationmode=HH")
 
 
+@pytest.mark.vcr
+@pytest.mark.scihub
+def test_cli_geometry_alternatives(run_cli, geojson_string, wkt_string):
+    run_cli("--geometry", geojson_string, "-l", "1")
+
+    run_cli("--geometry", wkt_string, "-l", "1")
+
+
+@pytest.mark.fast
+def test_cli_geometry_WKT_alternative_fail(run_cli):
+    result = run_cli(
+        "--geometry",
+        "POLYGO((-87.27 41.64,-81.56 37.857,-82.617 44.52,-87.2 41.64))",
+        must_return_nonzero=True,
+    )
+    assert (
+        "neither a GeoJSON file with a valid path, a GeoJSON String nor a WKT string."
+        in result.output
+    )
+
+
+@pytest.mark.fast
+def test_cli_geometry_JSON_alternative_fail(run_cli):
+    result = run_cli(
+        "--geometry",
+        '{"type": "A bad JSON", "features" :[nothing], ([{ ',
+        must_return_nonzero=True,
+    )
+    assert "geometry string starts with '{' but is not a valid GeoJSON." in result.output
+
+
 @pytest.mark.fast
 def test_no_auth_fail(run_cli, no_netrc, no_auth_environ, geojson_path):
     result = run_cli(
