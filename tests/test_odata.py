@@ -30,8 +30,7 @@ def test_get_product_odata_short(api, smallest_online_products, read_yaml):
 
 
 def scrub_string(string, replacement=""):
-    """Scrub a string from a VCR response body string
-    """
+    """Scrub a string from a VCR response body string"""
 
     def before_record_response(response):
         response["body"]["string"] = response["body"]["string"].replace(string, replacement)
@@ -48,6 +47,7 @@ def test_get_product_odata_short_with_missing_online_key(api, vcr):
         "size": 143549851,
         "md5": "D5E4DF5C38C6E97BF7E7BD540AB21C05",
         "url": "https://scihub.copernicus.eu/apihub/odata/v1/Products('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')/$value",
+        "quicklook_url": "https://scihub.copernicus.eu/apihub/odata/v1/Products('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')/Products('Quicklook')/$value",
         "date": datetime(2015, 11, 21, 10, 3, 56, 675000),
         "footprint": "POLYGON((-63.852531 -5.880887,-67.495872 -5.075419,-67.066071 -3.084356,-63.430576 -3.880541,"
         "-63.852531 -5.880887))",

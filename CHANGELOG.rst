@@ -11,6 +11,9 @@ Added
 * Display DHuS server version with CLI flag ``--info`` (#367 @thomasyoung-audet)
 * Added searching by placenames with the CLI flag ``--location`` (#372 @thomasyoung-audet)
 * Added CLI support for ``--geometry`` input as a string (#381 @thomasyoung-audet)
+* Download quicklooks directly with the CLI flag ``--quicklook`` (#361 @mackland)
+* Added ``setinelsat/__main__.py`` (#412 @avalentino)
+
 
 Changed
 ~~~~~~~

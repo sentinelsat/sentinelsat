@@ -551,6 +551,47 @@ def test_download_invalid_id_cli(run_cli, tmpdir):
 
 @pytest.mark.vcr
 @pytest.mark.scihub
+def test_download_single_quicklook(run_cli, api, tmpdir, quicklook_products, monkeypatch):
+    # Change default arguments for quicker test.
+    # Also, vcrpy is not threadsafe, so only one worker is used.
+    monkeypatch.setattr(
+        "sentinelsat.SentinelAPI.download_all_quicklooks",
+        partialmethod(SentinelAPI.download_all_quicklooks, n_concurrent_dl=1),
+    )
+
+    id = quicklook_products[0]["id"]
+    command = ["--uuid", id, "--quicklook", "--path", str(tmpdir)]
+
+    run_cli(*command)
+
+    # The file already exists, should not be re-downloaded
+    run_cli(*command)
+
+    # clean up
+    for f in tmpdir.listdir():
+        f.remove()
+
+    # Prepare a response with an invalid checksum
+    url = "https://scihub.copernicus.eu/apihub/odata/v1/Products('{id}')/Products('Quicklook')/$value".format(
+        id=id
+    )
+    headers = api.session.get(url).headers
+    headers["content-type"] = "image/xxxx"
+
+    # Force the download to fail by providing an incorrect content type
+    with requests_mock.mock(real_http=True) as rqst:
+        rqst.get(url, headers=headers)
+
+        # incorrect content-type, should fail
+        result = run_cli(*command)
+        assert "Some quicklooks failed: 1" in result.output
+
+    # clean up
+    tmpdir.remove()
+
+
+@pytest.mark.vcr
+@pytest.mark.scihub
 def test_info_cli(run_cli, tmpdir):
     result = run_cli("--info")
     assert (
