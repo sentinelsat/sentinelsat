@@ -24,11 +24,11 @@ branches:
   only:
   - master
 before_install:
-- python -m pip install -U pip
+- pip3 install -U pip
 install:
-- pip install codecov
-- pip install -e .[dev]
-- if [[ $TRAVIS_OS_NAME == linux && $TRAVIS_PYTHON_VERSION == 3.8 ]]; then pip install black; fi
+- pip3 install codecov
+- pip3 install -e .[dev]
+- if [[ $TRAVIS_OS_NAME == linux && $TRAVIS_PYTHON_VERSION == 3.8 ]]; then pip3 install black; fi
 script:
 - coverage run --source=sentinelsat -m pytest -v
 # check black code formatting
