@@ -48,7 +48,7 @@ All public functions should have docstrings. We use the `numpy docstring standar
 Development Environment
 =======================
 
-We prefer developing with the most recent version of Python. ``sentinelsat`` currently supports Python 2.7 and all versions after 3.5 (inclusive).
+We prefer developing with the most recent version of Python. ``sentinelsat`` currently supports Python >= 3.5.
 
 Initial Setup
 -------------

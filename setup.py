@@ -17,10 +17,12 @@ setup(
     long_description=long_description,
     classifiers=[
         "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
-        "Programming Language :: Python :: 2.7",
+        "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.5",
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
         "Topic :: Scientific/Engineering :: GIS",
         "Topic :: Utilities",
     ],
@@ -34,7 +36,6 @@ setup(
     zip_safe=False,
     install_requires=open("requirements.txt").read().splitlines(),
     extras_require={
-        ":python_version == '2.7'": ["futures"],
         "dev": [
             "pandas",
             "geopandas",
