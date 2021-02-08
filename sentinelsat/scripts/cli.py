@@ -3,13 +3,6 @@ import logging
 import math
 import os
 
-try:
-    from json import JSONDecodeError
-
-    json_parse_exception = json.decoder.JSONDecodeError
-except ImportError:  # Python 2
-    json_parse_exception = ValueError
-
 import click
 import geojson as gj
 import requests.utils
@@ -18,7 +11,6 @@ from sentinelsat import __version__ as sentinelsat_version
 
 from sentinelsat.sentinel import (
     SentinelAPI,
-    SentinelAPIError,
     geojson_to_wkt,
     read_geojson,
     placename_to_wkt,
@@ -26,6 +18,9 @@ from sentinelsat.sentinel import (
 )
 
 from sentinelsat.exceptions import InvalidKeyError
+
+
+json_parse_exception = json.decoder.JSONDecodeError
 
 logger = logging.getLogger("sentinelsat")
 
