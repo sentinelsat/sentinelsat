@@ -231,7 +231,7 @@ def cli(
         search_kwargs["cloudcoverpercentage"] = (0, cloud)
 
     if query is not None:
-        search_kwargs.update((x.split("=") for x in query))
+        search_kwargs.update(x.split("=") for x in query)
 
     if location is not None:
         wkt, info = placename_to_wkt(location)
@@ -308,7 +308,7 @@ def cli(
         if len(failed_downloads) > 0:
             with open(os.path.join(path, "corrupt_scenes.txt"), "w") as outfile:
                 for failed_id in failed_downloads:
-                    outfile.write("%s : %s\n" % (failed_id, products[failed_id]["title"]))
+                    outfile.write("{} : {}\n".format(failed_id, products[failed_id]["title"]))
     else:
         for product_id, props in products.items():
             if uuid is None:

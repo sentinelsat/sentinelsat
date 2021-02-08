@@ -1,6 +1,4 @@
-# -*- coding: utf-8 -*-
 import hashlib
-import sys
 
 import pytest
 import requests

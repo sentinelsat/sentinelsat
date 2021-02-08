@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import absolute_import, division, print_function
-
 import concurrent.futures
 import hashlib
 import itertools
@@ -227,7 +224,7 @@ class SentinelAPI:
             raise ValueError("Incorrect AOI relation provided ({})".format(area_relation))
 
         # Check for duplicate keywords
-        kw_lower = set(x.lower() for x in keywords)
+        kw_lower = {x.lower() for x in keywords}
         if (
             len(kw_lower) != len(keywords)
             or (date is not None and "beginposition" in kw_lower)
@@ -1298,7 +1295,7 @@ def geojson_to_wkt(geojson_obj, feature_number=0, decimals=4):
 
 
 def format_query_date(in_date):
-    """
+    r"""
     Format a date, datetime or a YYYYMMDD string input as YYYY-MM-DDThh:mm:ssZ
     or validate a date string as suitable for the full text search interface and return it.
 
@@ -1364,17 +1361,17 @@ def _check_scihub_response(response, test_json=True, query_string=None):
         msg = None
         try:
             msg = response.headers["cause-message"]
-        except:
+        except Exception:
             try:
                 msg = response.json()["error"]["message"]["value"]
-            except:
+            except Exception:
                 if not response.text.strip().startswith("{"):
                     try:
                         h = html2text.HTML2Text()
                         h.ignore_images = True
                         h.ignore_anchors = True
                         msg = h.handle(response.text).strip()
-                    except:
+                    except Exception:
                         pass
 
         if msg is None:
@@ -1469,8 +1466,10 @@ def _parse_opensearch_response(products):
     """
 
     converters = {"date": _parse_iso_date, "int": int, "long": int, "float": float, "double": float}
+
     # Keep the string type by default
-    default_converter = lambda x: x
+    def default_converter(x):
+        return x
 
     output = OrderedDict()
     for prod in products:

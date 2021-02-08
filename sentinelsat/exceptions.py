@@ -14,7 +14,7 @@ class SentinelAPIError(Exception):
         self.response = response
 
     def __str__(self):
-        return "HTTP status {0} {1}: {2}".format(
+        return "HTTP status {} {}: {}".format(
             self.response.status_code,
             self.response.reason,
             ("\n" if "\n" in self.msg else "") + self.msg,
