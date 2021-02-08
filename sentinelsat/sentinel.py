@@ -20,8 +20,7 @@ import geojson
 import geomet.wkt
 import html2text
 import requests
-from six import string_types, raise_from
-from six.moves.urllib.parse import urljoin, quote_plus
+from urllib.parse import urljoin, quote_plus
 from tqdm import tqdm
 
 from sentinelsat.exceptions import (
@@ -245,7 +244,7 @@ class SentinelAPI:
 
         for attr, value in sorted(keywords.items()):
             # Escape spaces, where appropriate
-            if isinstance(value, string_types):
+            if isinstance(value, str):
                 value = value.strip()
                 if not any(
                     value.startswith(s[0]) and value.endswith(s[1])
@@ -260,11 +259,11 @@ class SentinelAPI:
                 # Automatically format date-type attributes
                 if isinstance(value, set):
                     value = "({})".format(" OR ".join(sorted(map(format_query_date, value))))
-                elif isinstance(value, string_types) and " TO " in value:
+                elif isinstance(value, str) and " TO " in value:
                     # This is a string already formatted as a date interval,
                     # e.g. '[NOW-1DAY TO NOW]'
                     pass
-                elif not isinstance(value, string_types) and len(value) == 2:
+                elif not isinstance(value, str) and len(value) == 2:
                     value = (format_query_date(value[0]), format_query_date(value[1]))
                 else:
                     raise ValueError(
@@ -1324,7 +1323,7 @@ def format_query_date(in_date):
         return "*"
     if isinstance(in_date, (datetime, date)):
         return in_date.strftime("%Y-%m-%dT%H:%M:%SZ")
-    elif not isinstance(in_date, string_types):
+    elif not isinstance(in_date, str):
         raise ValueError("Expected a string or a datetime object. Received {}.".format(in_date))
 
     in_date = in_date.strip()
@@ -1410,7 +1409,7 @@ def _check_scihub_response(response, test_json=True, query_string=None):
 
         # Suppress "During handling of the above exception..." message
         # 'raise error from None' with Python 2 compatibility
-        raise_from(error, None)
+        raise error from None
 
 
 def _format_order_by(order_by):
@@ -1481,7 +1480,7 @@ def _parse_opensearch_response(products):
         for key in prod:
             if key == "id":
                 continue
-            if isinstance(prod[key], string_types):
+            if isinstance(prod[key], str):
                 product_dict[key] = prod[key]
             else:
                 properties = prod[key]
