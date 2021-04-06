@@ -1253,7 +1253,7 @@ class SentinelAPI:
         product_info = self.get_product_odata(id)
         if not product_info["Online"]:
             raise NotImplementedError("Product is offline, no retrieval implemented.")
-        r = requests.get(
+        r = self.session.get(
             product_info["url"],
             stream=True,
             auth=self.session.auth,
