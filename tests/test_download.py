@@ -306,3 +306,20 @@ def test_download_quicklook_invalid_id(api):
     with pytest.raises(SentinelAPIError) as excinfo:
         api.download_quicklook(uuid)
     assert "Invalid key" in excinfo.value.msg
+
+
+@pytest.mark.vcr
+@pytest.mark.scihub
+def test_get_stream(api, tmpdir, smallest_online_products):
+    uuid = smallest_online_products[0]["id"]
+    filename = smallest_online_products[0]["title"]
+    expected_path = tmpdir.join(filename + ".zip")
+
+    raw, product_info = api.get_stream(uuid)
+    assert product_info["title"] == filename
+    with open(expected_path, "wb") as f:
+        f.write(raw.data)
+    assert product_info["size"] == expected_path.size()
+    assert product_info["md5"].lower() == expected_path.computehash("md5")
+
+    tmpdir.remove()
