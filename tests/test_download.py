@@ -7,6 +7,8 @@ There are two minor issues to keep in mind when recording unit tests VCRs.
 2. dhus and apihub have different md5 hashes for products with the same UUID.
 
 """
+import shutil
+
 import py.path
 import pytest
 import requests_mock
@@ -318,8 +320,9 @@ def test_get_stream(api, tmpdir, smallest_online_products):
     raw, product_info = api.get_stream(uuid)
     assert product_info["title"] == filename
     with open(expected_path, "wb") as f:
-        f.write(raw.data)
+        shutil.copyfileobj(raw, f)
+
     assert product_info["size"] == expected_path.size()
-    assert product_info["md5"].lower() == expected_path.computehash("md5")
+    assert api._md5_compare(expected_path, product_info["md5"])
 
     tmpdir.remove()
