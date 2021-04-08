@@ -1237,6 +1237,29 @@ class SentinelAPI:
         )
         product["quicklook_url"] = url
 
+    def get_stream(self, id):
+        """Exposes requests response ready to stream product to e.g. S3.
+
+        Parameters
+        ----------
+        id : string
+            UUID of the product, e.g. 'a8dd0cfd-613e-45ce-868c-d79177b916ed'
+
+        Returns
+        -------
+        tuple:
+            raw socket response from server, contains product's info as returned by get_product_info()
+        """
+        product_info = self.get_product_odata(id)
+        if not product_info["Online"]:
+            raise NotImplementedError("Product is offline, no retrieval implemented.")
+        r = self.session.get(
+            product_info["url"],
+            stream=True,
+            auth=self.session.auth,
+        )
+        return r.raw, product_info
+
 
 def read_geojson(geojson_file):
     """Read a GeoJSON file into a GeoJSON object."""

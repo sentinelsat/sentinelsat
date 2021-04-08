@@ -13,6 +13,7 @@ Added
 * Added CLI support for ``--geometry`` input as a string (#381 @thomasyoung-audet)
 * Download quicklooks directly with the CLI flag ``--quicklook`` (#361 @mackland)
 * Added ``setinelsat/__main__.py`` (#412 @avalentino)
+* Added ``get_stream()`` (#430 @fwfichtner)
 
 
 Changed

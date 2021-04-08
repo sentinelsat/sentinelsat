@@ -7,6 +7,8 @@ There are two minor issues to keep in mind when recording unit tests VCRs.
 2. dhus and apihub have different md5 hashes for products with the same UUID.
 
 """
+import shutil
+
 import py.path
 import pytest
 import requests_mock
@@ -306,3 +308,21 @@ def test_download_quicklook_invalid_id(api):
     with pytest.raises(SentinelAPIError) as excinfo:
         api.download_quicklook(uuid)
     assert "Invalid key" in excinfo.value.msg
+
+
+@pytest.mark.vcr
+@pytest.mark.scihub
+def test_get_stream(api, tmpdir, smallest_online_products):
+    uuid = smallest_online_products[0]["id"]
+    filename = smallest_online_products[0]["title"]
+    expected_path = tmpdir.join(filename + ".zip")
+
+    raw, product_info = api.get_stream(uuid)
+    assert product_info["title"] == filename
+    with open(expected_path, "wb") as f:
+        shutil.copyfileobj(raw, f)
+
+    assert product_info["size"] == expected_path.size()
+    assert api._md5_compare(expected_path, product_info["md5"])
+
+    tmpdir.remove()
