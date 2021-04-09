@@ -40,7 +40,7 @@ There are two minor issues to keep in mind when recording unit tests VCRs.
 Supported Python versions
 -------------------------
 
-Sentinelsat has been tested with Python versions 2.7 and 3.5+. Earlier Python 3 versions are
+Sentinelsat has been tested with Python versions 3.5+. Earlier Python 3 versions are
 expected to work as well, as long as the dependencies are fulfilled.
 
 Optional dependencies

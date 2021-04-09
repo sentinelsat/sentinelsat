@@ -138,7 +138,7 @@ def test_api_query_format():
     query = SentinelAPI.format_query(wkt, (last_24h, now))
     assert (
         query
-        == "beginPosition:[%s TO %s] " % (last_24h, format_query_date(now))
+        == "beginPosition:[{} TO {}] ".format(last_24h, format_query_date(now))
         + 'footprint:"Intersects(POLYGON((0 0,1 1,0 1,0 0)))"'
     )
 

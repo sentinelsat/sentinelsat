@@ -37,7 +37,7 @@ def vcr(vcr):
         return request
 
     def scrub_response(response):
-        ignore = set(
+        ignore = {
             x.lower()
             for x in [
                 "Authorization",
@@ -47,7 +47,7 @@ def vcr(vcr):
                 "Expires",
                 "Transfer-Encoding",
             ]
-        )
+        }
         for header in list(response["headers"]):
             if header.lower() in ignore or header.lower().startswith("access-control"):
                 del response["headers"][header]
