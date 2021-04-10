@@ -57,7 +57,7 @@ orbit for the year 2015.
 
   sentinelsat -u <user> -p <password> -g <search_polygon.geojson> -s 20150101 -e 20151231 -d \
   --producttype SLC -q "orbitdirection=Descending" \
-  --url "https://scihub.copernicus.eu/dhus"
+  --url "https://scihub.copernicus.eu/apihub"
 
 Download a single Sentinel-1 GRDH scene covering Santa Claus Village in Finland
 on Christmas Eve 2015.
