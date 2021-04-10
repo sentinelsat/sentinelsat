@@ -77,7 +77,7 @@ Python Library
   from datetime import date
 
   # connect to the API
-  api = SentinelAPI('user', 'password', 'https://scihub.copernicus.eu/dhus')
+  api = SentinelAPI('user', 'password', 'https://scihub.copernicus.eu/apihub')
 
   # download single scene by known product id
   api.download(<product_id>)
@@ -133,7 +133,7 @@ orbit, for the year 2015.
 
   sentinelsat -u <user> -p <password> -g <search_polygon.geojson> -s 20150101 -e 20151231 -d \
   --producttype SLC -q "orbitdirection=Descending" \
-  --url "https://scihub.copernicus.eu/dhus"
+  --url "https://scihub.copernicus.eu/apihub"
 
 Username, password and DHuS URL can also be set via environment variables for convenience.
 
@@ -142,7 +142,7 @@ Username, password and DHuS URL can also be set via environment variables for co
   # same result as query above
   export DHUS_USER="<user>"
   export DHUS_PASSWORD="<password>"
-  export DHUS_URL="https://scihub.copernicus.eu/dhus"
+  export DHUS_URL="https://scihub.copernicus.eu/apihub"
 
   sentinelsat -g <search_polygon.geojson> -s 20150101 -e 20151231 -d \
   --producttype SLC -q "orbitdirection=Descending"
