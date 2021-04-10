@@ -572,10 +572,11 @@ class SentinelAPI:
 
 
         .. versionchanged:: 0.15
-           Added ``**kwargs`` parameter to allow easier specialization of the :class:`SentinelAPI` lcass.
+           Added ``**kwargs`` parameter to allow easier specialization of the :class:`SentinelAPI` cass.
         """
         product_info = self.get_product_odata(id)
-        path = join(directory_path, product_info["title"] + ".zip")
+        ext = kwargs.get("file_ext", ".zip")
+        path = join(directory_path, product_info["title"] + ext)
         product_info["path"] = path
         product_info["downloaded_bytes"] = 0
 

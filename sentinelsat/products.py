@@ -203,7 +203,7 @@ class SentinelProductsAPI(sentinelsat.SentinelAPI):
             If the MD5 checksum does not match the checksum on the server.
         """
         if nodefilter is None:
-            return sentinelsat.SentinelAPI.download(self, id, directory_path, checksum)
+            return sentinelsat.SentinelAPI.download(self, id, directory_path, checksum, **kwargs)
 
         product_info = self.get_product_odata(id)
         product_path = os.path.join(directory_path, product_info["title"] + ".SAFE")
