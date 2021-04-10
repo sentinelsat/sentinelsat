@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import absolute_import, division
-
 import os
 import shutil
 from xml.etree import ElementTree as etree
