@@ -10,7 +10,6 @@ import requests.utils
 from sentinelsat import __version__ as sentinelsat_version
 
 from sentinelsat.sentinel import (
-    SentinelAPI,
     geojson_to_wkt,
     read_geojson,
     placename_to_wkt,
@@ -18,6 +17,7 @@ from sentinelsat.sentinel import (
 )
 
 from sentinelsat.exceptions import InvalidKeyError
+from sentinelsat.products import SentinelProductsAPI, make_path_filter
 
 
 json_parse_exception = json.decoder.JSONDecodeError
@@ -161,6 +161,25 @@ class CommaSeparatedString(click.ParamType):
     and metadata of the returned products.
     """,
 )
+@click.option(
+    "--debug",
+    "-d",
+    is_flag=True,
+    help="Print debug log messages.",
+)
+@click.option(
+    "--include-pattern",
+    default=None,
+    help="""Glob pattern to filter files (within each product) to be downloaded.
+    """,
+)
+@click.option(
+    "--exclude-pattern",
+    default=None,
+    help="""Glob pattern to filter files (within each product) to be excluded
+    from the downloaded.
+    """,
+)
 @click.option("--info", is_flag=True, is_eager=True, help="Displays the DHuS version used")
 @click.version_option(version=sentinelsat_version, prog_name="sentinelsat")
 def cli(
@@ -184,6 +203,9 @@ def cli(
     order_by,
     location,
     limit,
+    debug,
+    include_pattern,
+    exclude_pattern,
     info,
 ):
     """Search for Sentinel products and, optionally, download all the results
@@ -193,7 +215,18 @@ def cli(
     don't specify the start and end dates, it will search in the last 24 hours.
     """
 
-    _set_logger_handler()
+    _set_logger_handler("DEBUG" if debug else "INFO")
+
+    if include_pattern is not None and exclude_pattern is not None:
+        raise click.UsageError(
+            "--include-pattern and --exclude-pattern cannot be specified together."
+        )
+    elif include_pattern is not None:
+        nodefilter = make_path_filter(include_pattern)
+    elif exclude_pattern is not None:
+        nodefilter = make_path_filter(exclude_pattern, exclude=True)
+    else:
+        nodefilter = None
 
     if user is None or password is None:
         try:
@@ -207,7 +240,7 @@ def cli(
             "for environment variables and .netrc support."
         )
 
-    api = SentinelAPI(user, password, url)
+    api = SentinelProductsAPI(user, password, url)
 
     if info:
         ctx = click.get_current_context()
@@ -304,7 +337,9 @@ def cli(
             )
 
     if download is True:
-        product_infos, triggered, failed_downloads = api.download_all(products, path)
+        product_infos, triggered, failed_downloads = api.download_all(
+            products, path, nodefilter=nodefilter
+        )
         if len(failed_downloads) > 0:
             with open(os.path.join(path, "corrupt_scenes.txt"), "w") as outfile:
                 for failed_id in failed_downloads:

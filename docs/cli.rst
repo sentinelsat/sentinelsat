@@ -177,6 +177,19 @@ Options
 
     Create geojson file search_footprints.geojson with footprints of the query result.
 
+.. option:: -d, --debug
+
+    Print debug log messages.
+
+.. option:: --include-pattern
+
+    Glob pattern to filter files (within each product) to be downloaded.
+
+.. option:: --exclude-pattern
+
+    Glob pattern to filter files (within each product) to be excluded
+    from the downloaded.
+
 .. option:: --info
 
     Display DHuS server information.
@@ -194,3 +207,5 @@ The options :option:`--sentinel`, :option:`--instrument` and :option:`--productt
 most specific to least specific, i.e. :option:`--producttype` > :option:`--instrument` > :option:`--sentinel`. Only the most specific
 option will be included in the search when multiple ones are given.
 
+Also the :option:`--include-pattern` and :option:`--exclude-patter` options are mutually exclusive.
+If used together the CLI program exists with an error.

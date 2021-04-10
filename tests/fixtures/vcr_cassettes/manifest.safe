@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xfdu:XFDU xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:gml="http://www.opengis.net/gml" xmlns:xfdu="urn:ccsds:schema:xfdu:1" xmlns:safe="http://www.esa.int/safe/sentinel-1.0" xmlns:s1="http://www.esa.int/safe/sentinel-1.0/sentinel-1" xmlns:s1sar="http://www.esa.int/safe/sentinel-1.0/sentinel-1/sar" xmlns:s1sarl1="http://www.esa.int/safe/sentinel-1.0/sentinel-1/sar/level-1" xmlns:s1sarl2="http://www.esa.int/safe/sentinel-1.0/sentinel-1/sar/level-2" xmlns:gx="http://www.google.com/kml/ext/2.2" version="esa/safe/sentinel-1.0/sentinel-1/sar/level-2/ocn/standard/smsp">
+  <informationPackageMap>
+    <xfdu:contentUnit unitType="SAFE Archive Information Package" textInfo="Sentinel-1 SM Level-2 OCN Product" dmdID="acquisitionPeriod platform generalProductInformation measurementOrbitReference measurementFrameSet" pdiID="processing">
+      <xfdu:contentUnit unitType="Metadata Unit" repID="s1Level1MapOverlaySchema">
+        <dataObjectPointer dataObjectID="mapoverlay"/>
+      </xfdu:contentUnit>
+      <xfdu:contentUnit unitType="Metadata Unit" repID="s1Level1ProductPreviewSchema">
+        <dataObjectPointer dataObjectID="productpreview"/>
+      </xfdu:contentUnit>
+    </xfdu:contentUnit>
+  </informationPackageMap>
+  <metadataSection>
+    <metadataObject ID="mapoverlayAnnotation" classification="DESCRIPTION" category="DMD">
+      <dataObjectPointer dataObjectID="mapoverlay"/>
+    </metadataObject>
+    <metadataObject ID="productpreviewAnnotation" classification="DESCRIPTION" category="DMD">
+      <dataObjectPointer dataObjectID="productpreview"/>
+    </metadataObject>
+    <metadataObject ID="processing" classification="PROVENANCE" category="PDI">
+      <metadataWrap mimeType="text/xml" vocabularyName="SAFE" textInfo="Processing">
+        <xmlData>
+          <safe:processing name="OCN Processing" start="2015-06-03T11:29:13.000000" stop="2015-06-03T11:32:31.000000">
+            <safe:facility country="United Kingdom" name="UPA_" organisation="Airbus DS" site="Farnborough">
+              <safe:software name="Sentinel-1 IPF" version="002.43"/>
+            </safe:facility>
+            <safe:resource name="S1A_AUX_PP2_V20140915T100000_G20150119T145621.SAFE" role="AUX_PP2"/>
+            <safe:resource name="S1__AUX_WND_V20150603T060000_G20150603T055245.SAFE" role="AUX_WND"/>
+            <safe:resource name="S1__AUX_ICE_V20150602T120000_G20150603T043022.SAFE" role="AUX_ICE"/>
+            <safe:resource name="S1__AUX_WAV_V20150602T150000_G20150528T160506.SAFE" role="AUX_WAV"/>
+            <safe:resource name="S1A_OPER_AMH_ERRMAT_MPC__20150603T065407_V20000101T000000_20150602T234403.EOF" role="AUX_ECE"/>
+            <safe:resource name="S1A_WV_SL2__1_SH_20150603T092625_20150603T093332_006207_008194_3900.SAFE" role="Level-1 Intermediate SLC Product">
+              <processing name="SLC Processing" start="2015-06-03T11:29:13.000000" stop="2015-06-03T11:32:31.000000" xmlns="http://www.esa.int/safe/sentinel-1.0">
+                <facility country="United Kingdom" name="UPA_" organisation="Airbus DS" site="Farnborough">
+                  <software name="Sentinel-1 IPF" version="002.43"/>
+                </facility>
+                <resource name="S1A_AUX_PP1_V20140915T100000_G20150512T085624.SAFE" role="AUX_PP1"/>
+                <resource name="S1A_AUX_CAL_V20140915T100000_G20150504T152619.SAFE" role="AUX_CAL"/>
+                <resource name="S1A_AUX_INS_V20140915T100000_G20150511T155419.SAFE" role="AUX_INS"/>
+                <resource name="S1A_OPER_AUX_RESORB_OPOD_20150603T111654_V20150603T070952_20150603T102722.EOF" role="AUX_RES"/>
+                <resource name="S1A_WV_RAW__0SSH_20150603T092624_20150603T093344_006207_008194_E86D.SAFE" role="Level-0 Product">
+                  <processing xmlns="http://www.esa.int/safe/sentinel-1.0" name="Generation of Sentinel-1 SAR Standard L0 product" start="2015-06-03T11:12:14.339734" stop="2015-06-03T11:12:38.504963">
+                    <facility country="United Kingdom" name="UPA_" organisation="Airbus DS" site="Farnborough">
+                      <software name="" version=""/>
+                    </facility>
+                    <resource name="S-1 Core PDGS S-1 Level-0 Product Format Specifications S1PD.SP.00110.ASTR" role="Applicable Document"/>
+                    <resource name="Sentinel-1 SAR Space Packet Protocol Data Unit S1-IF-ASD-PL-0007" role="Applicable Document" version="10"/>
+                    <resource name="Downlinked Stream" role="Raw Data">
+                      <processing xmlns="http://www.esa.int/safe/sentinel-1.0" name="Raw Data Downlink Channel2" start="2015-06-03T10:51:02.378017" stop="2015-06-03T10:51:35.010892">
+                        </processing>
+                    </resource>
+                  </processing>
+                </resource>
+                <resource name="Sentinel-1 Product Definition (S1-RS-MDA-52-7440) release 2/5" role="product definition"/>
+                <resource name="Sentinel-1 Product Specification (S1-RS-MDA-52-7441) release 2/9" role="product specification"/>
+              </processing>
+            </safe:resource>
+          </safe:processing>
+        </xmlData>
+      </metadataWrap>
+    </metadataObject>
+    <metadataObject ID="platform" classification="DESCRIPTION" category="DMD">
+      <metadataWrap mimeType="text/xml" vocabularyName="SAFE" textInfo="Platform Description">
+        <xmlData>
+          <safe:platform>
+            <safe:nssdcIdentifier>0000-000A</safe:nssdcIdentifier>
+            <safe:familyName>SENTINEL-1</safe:familyName>
+            <safe:number>A</safe:number>
+            <safe:instrument>
+              <safe:familyName abbreviation="SAR">Synthetic Aperture Radar</safe:familyName>
+              <safe:extension>
+                <s1sarl2:instrumentMode>
+                  <s1sarl2:mode>WV</s1sarl2:mode>
+                  <s1sarl2:swath>WV1</s1sarl2:swath>
+                  <s1sarl2:swath>WV2</s1sarl2:swath>
+                </s1sarl2:instrumentMode>
+              </safe:extension>
+            </safe:instrument>
+          </safe:platform>
+        </xmlData>
+      </metadataWrap>
+    </metadataObject>
+    <metadataObject ID="measurementOrbitReference" classification="DESCRIPTION" category="DMD">
+      <metadataWrap mimeType="text/xml" vocabularyName="SAFE" textInfo="Orbit Reference">
+        <xmlData>
+          <safe:orbitReference>
+            <safe:orbitNumber type="start">6207</safe:orbitNumber>
+            <safe:orbitNumber type="stop">6207</safe:orbitNumber>
+            <safe:relativeOrbitNumber type="start">10</safe:relativeOrbitNumber>
+            <safe:relativeOrbitNumber type="stop">10</safe:relativeOrbitNumber>
+            <safe:cycleNumber>50</safe:cycleNumber>
+            <safe:phaseIdentifier>1</safe:phaseIdentifier>
+            <safe:extension>
+              <s1:orbitProperties>
+                <s1:pass>DESCENDING</s1:pass>
+                <s1:ascendingNodeTime>2015-06-03T08:48:42.051374</s1:ascendingNodeTime>
+              </s1:orbitProperties>
+            </safe:extension>
+          </safe:orbitReference>
+        </xmlData>
+      </metadataWrap>
+    </metadataObject>
+    <metadataObject ID="generalProductInformation" classification="DESCRIPTION" category="DMD">
+      <metadataWrap mimeType="text/xml" vocabularyName="SAFE" textInfo="General Product Information">
+        <xmlData>
+          <s1sarl2:standAloneProductInformation>
+            <s1sarl2:instrumentConfigurationID>3</s1sarl2:instrumentConfigurationID>
+            <s1sarl2:missionDataTakeID>33172</s1sarl2:missionDataTakeID>
+            <s1sarl2:transmitterReceiverPolarisation>HH</s1sarl2:transmitterReceiverPolarisation>
+            <s1sarl2:productClass>S</s1sarl2:productClass>
+            <s1sarl2:productClassDescription>SAR Standard L2 Product</s1sarl2:productClassDescription>
+            <s1sarl2:productComposition>Individual</s1sarl2:productComposition>
+            <s1sarl2:productType>OCN</s1sarl2:productType>
+            <s1sarl2:productTimelinessCategory>Fast-24h</s1sarl2:productTimelinessCategory>
+            <s1sarl2:sliceProductFlag>false</s1sarl2:sliceProductFlag>
+          </s1sarl2:standAloneProductInformation>
+        </xmlData>
+      </metadataWrap>
+    </metadataObject>
+    <metadataObject ID="acquisitionPeriod" classification="DESCRIPTION" category="DMD">
+      <metadataWrap mimeType="text/xml" vocabularyName="SAFE" textInfo="Acquisition Period">
+        <xmlData>
+          <safe:acquisitionPeriod>
+            <safe:startTime>2015-06-03T09:26:24.921958</safe:startTime>
+            <safe:stopTime>2015-06-03T09:33:33.345603</safe:stopTime>
+            <safe:extension>
+              <s1:timeANX>
+                <s1:startTimeANX>2.262870e+06</s1:startTimeANX>
+                <s1:stopTimeANX>2.691294e+06</s1:stopTimeANX>
+              </s1:timeANX>
+            </safe:extension>
+          </safe:acquisitionPeriod>
+        </xmlData>
+      </metadataWrap>
+    </metadataObject>
+    <metadataObject ID="measurementFrameSet" classification="DESCRIPTION" category="DMD">
+      <metadataWrap mimeType="text/xml" vocabularyName="SAFE" textInfo="Frame Set">
+        <xmlData>
+          <safe:frameSet>
+            <safe:frame>
+              <safe:footPrint srsName="http://www.opengis.net/gml/srs/epsg.xml#4326">
+                <gml:coordinates>42.260288,-47.310867 42.298096,-47.558411 42.476940,-47.508129 42.439095,-47.259823</gml:coordinates>
+              </safe:footPrint>
+            </safe:frame>
+            <safe:frame>
+              <safe:footPrint srsName="http://www.opengis.net/gml/srs/epsg.xml#4326">
+                <gml:coordinates>41.702393,-49.746914 41.734787,-49.988934 41.908398,-49.947235 41.876003,-49.704536</gml:coordinates>
+              </safe:footPrint>
+            </safe:frame>
+            <safe:frame>
+              <safe:footPrint srsName="http://www.opengis.net/gml/srs/epsg.xml#4326">
+                <gml:coordinates>40.500904,-47.796432 40.538418,-48.037163 40.717312,-47.988583 40.679764,-47.747147</gml:coordinates>
+              </safe:footPrint>
+            </safe:frame>
+            <safe:frame>
+              <safe:footPrint srsName="http://www.opengis.net/gml/srs/epsg.xml#4326">
+                <gml:coordinates>39.940746,-50.163525 39.973198,-50.399174 40.146770,-50.358517 40.114319,-50.122246</gml:coordinates>
+              </safe:footPrint>
+            </safe:frame>
+            <safe:frame>
+              <safe:footPrint srsName="http://www.opengis.net/gml/srs/epsg.xml#4326">
+                <gml:coordinates>38.740955,-48.266205 38.778229,-48.500690 38.957485,-48.453533 38.920181,-48.218399</gml:coordinates>
+              </safe:footPrint>
+            </safe:frame>
+            <safe:frame>
+              <safe:footPrint srsName="http://www.opengis.net/gml/srs/epsg.xml#4326">
+                <gml:coordinates>38.179783,-50.573425 38.212307,-50.803139 38.386158,-50.763332 38.353642,-50.533047</gml:coordinates>
+              </safe:footPrint>
+            </safe:frame>
+            <safe:frame>
+              <safe:footPrint srsName="http://www.opengis.net/gml/srs/epsg.xml#4326">
+                <gml:coordinates>36.978939,-48.716320 37.016083,-48.945415 37.195332,-48.899605 37.158157,-48.669910</gml:coordinates>
+              </safe:footPrint>
+            </safe:frame>
+            <safe:frame>
+              <safe:footPrint srsName="http://www.opengis.net/gml/srs/epsg.xml#4326">
+                <gml:coordinates>36.418030,-50.974583 36.450657,-51.198853 36.624752,-51.159798 36.592136,-50.935001</gml:coordinates>
+              </safe:footPrint>
+            </safe:frame>
+            <safe:frame>
+              <safe:footPrint srsName="http://www.opengis.net/gml/srs/epsg.xml#4326">
+                <gml:coordinates>35.216805,-49.160084 35.253796,-49.383900 35.433315,-49.339230 35.396305,-49.114864</gml:coordinates>
+              </safe:footPrint>
+            </safe:frame>
+            <safe:frame>
+              <safe:footPrint srsName="http://www.opengis.net/gml/srs/epsg.xml#4326">
+                <gml:coordinates>34.654953,-51.368134 34.687691,-51.587307 34.861916,-51.548931 34.829189,-51.329273</gml:coordinates>
+              </safe:footPrint>
+            </safe:frame>
+            <safe:frame>
+              <safe:footPrint srsName="http://www.opengis.net/gml/srs/epsg.xml#4326">
+                <gml:coordinates>33.453491,-49.592857 33.490326,-49.811607 33.669930,-49.767994 33.633080,-49.548740</gml:coordinates>
+              </safe:footPrint>
+            </safe:frame>
+            <safe:frame>
+              <safe:footPrint srsName="http://www.opengis.net/gml/srs/epsg.xml#4326">
+                <gml:coordinates>32.890923,-51.752266 32.923828,-51.966930 33.098175,-51.929138 33.065281,-51.714031</gml:coordinates>
+              </safe:footPrint>
+            </safe:frame>
+            <safe:frame>
+              <safe:footPrint srsName="http://www.opengis.net/gml/srs/epsg.xml#4326">
+                <gml:coordinates>31.688889,-50.015873 31.725639,-50.230186 31.905430,-50.187492 31.868666,-49.972717</gml:coordinates>
+              </safe:footPrint>
+            </safe:frame>
+            <safe:frame>
+              <safe:footPrint srsName="http://www.opengis.net/gml/srs/epsg.xml#4326">
+                <gml:coordinates>31.126169,-52.133453 31.159248,-52.343910 31.333530,-52.306671 31.300468,-52.095810</gml:coordinates>
+              </safe:footPrint>
+            </safe:frame>
+            <safe:frame>
+              <safe:footPrint srsName="http://www.opengis.net/gml/srs/epsg.xml#4326">
+                <gml:coordinates>29.922829,-50.430359 29.959530,-50.640614 30.139462,-50.598743 30.102753,-50.388069</gml:coordinates>
+              </safe:footPrint>
+            </safe:frame>
+            <safe:frame>
+              <safe:footPrint srsName="http://www.opengis.net/gml/srs/epsg.xml#4326">
+                <gml:coordinates>29.360468,-52.509644 29.393738,-52.716240 29.568171,-52.679436 29.534918,-52.472466</gml:coordinates>
+              </safe:footPrint>
+            </safe:frame>
+            <safe:frame>
+              <safe:footPrint srsName="http://www.opengis.net/gml/srs/epsg.xml#4326">
+                <gml:coordinates>28.155415,-50.833408 28.192038,-51.039600 28.372070,-50.998466 28.335442,-50.791885</gml:coordinates>
+              </safe:footPrint>
+            </safe:frame>
+            <safe:frame>
+              <safe:footPrint srsName="http://www.opengis.net/gml/srs/epsg.xml#4326">
+                <gml:coordinates>27.593904,-52.881535 27.627357,-53.084423 27.801825,-53.048004 27.768393,-52.844776</gml:coordinates>
+              </safe:footPrint>
+            </safe:frame>
+            <safe:frame>
+              <safe:footPrint srsName="http://www.opengis.net/gml/srs/epsg.xml#4326">
+                <gml:coordinates>26.387398,-51.233814 26.424021,-51.436607 26.604219,-51.396114 26.567593,-51.192970</gml:coordinates>
+              </safe:footPrint>
+            </safe:frame>
+            <safe:frame>
+              <safe:footPrint srsName="http://www.opengis.net/gml/srs/epsg.xml#4326">
+                <gml:coordinates>25.826288,-53.249893 25.859968,-53.449558 26.034649,-53.413429 26.000992,-53.213455</gml:coordinates>
+              </safe:footPrint>
+            </safe:frame>
+            <safe:frame>
+              <safe:footPrint srsName="http://www.opengis.net/gml/srs/epsg.xml#4326">
+                <gml:coordinates>24.618584,-51.628094 24.655233,-51.827801 24.835337,-51.787930 24.798685,-51.587906</gml:coordinates>
+              </safe:footPrint>
+            </safe:frame>
+            <safe:frame>
+              <safe:footPrint srsName="http://www.opengis.net/gml/srs/epsg.xml#4326">
+                <gml:coordinates>24.058157,-53.613544 24.092093,-53.810318 24.266834,-53.774456 24.232925,-53.577400</gml:coordinates>
+              </safe:footPrint>
+            </safe:frame>
+            <safe:frame>
+              <safe:footPrint srsName="http://www.opengis.net/gml/srs/epsg.xml#4326">
+                <gml:coordinates>22.849035,-52.017181 22.885561,-52.213139 23.065926,-52.173733 23.029404,-51.977489</gml:coordinates>
+              </safe:footPrint>
+            </safe:frame>
+            <safe:frame>
+              <safe:footPrint srsName="http://www.opengis.net/gml/srs/epsg.xml#4326">
+                <gml:coordinates>22.289701,-53.976460 22.323803,-54.170052 22.498714,-54.134380 22.464638,-53.940529</gml:coordinates>
+              </safe:footPrint>
+            </safe:frame>
+            <safe:frame>
+              <safe:footPrint srsName="http://www.opengis.net/gml/srs/epsg.xml#4326">
+                <gml:coordinates>21.078989,-52.401611 21.115585,-52.595055 21.295988,-52.556103 21.259396,-52.362400</gml:coordinates>
+              </safe:footPrint>
+            </safe:frame>
+            <safe:frame>
+              <safe:footPrint srsName="http://www.opengis.net/gml/srs/epsg.xml#4326">
+                <gml:coordinates>20.520760,-54.337440 20.555132,-54.528625 20.730202,-54.493095 20.695856,-54.301678</gml:coordinates>
+              </safe:footPrint>
+            </safe:frame>
+            <safe:frame>
+              <safe:footPrint srsName="http://www.opengis.net/gml/srs/epsg.xml#4326">
+                <gml:coordinates>19.307833,-52.780697 19.344542,-52.971977 19.525084,-52.933388 19.488384,-52.741879</gml:coordinates>
+              </safe:footPrint>
+            </safe:frame>
+            <safe:frame>
+              <safe:footPrint srsName="http://www.opengis.net/gml/srs/epsg.xml#4326">
+                <gml:coordinates>18.751280,-54.697014 18.785936,-54.886032 18.960978,-54.850628 18.926350,-54.661404</gml:coordinates>
+              </safe:footPrint>
+            </safe:frame>
+            <safe:frame>
+              <safe:footPrint srsName="http://www.opengis.net/gml/srs/epsg.xml#4326">
+                <gml:coordinates>17.536448,-53.158276 17.573063,-53.346489 17.753664,-53.308220 17.717060,-53.119808</gml:coordinates>
+              </safe:footPrint>
+            </safe:frame>
+            <safe:frame>
+              <safe:footPrint srsName="http://www.opengis.net/gml/srs/epsg.xml#4326">
+                <gml:coordinates>16.981575,-55.054958 17.016409,-55.241398 17.191565,-55.206051 17.156759,-55.019428</gml:coordinates>
+              </safe:footPrint>
+            </safe:frame>
+          </safe:frameSet>
+        </xmlData>
+      </metadataWrap>
+    </metadataObject>
+    <metadataObject ID="s1ObjectTypesSchema" classification="SYNTAX" category="REP">
+      <metadataReference mimeType="text/xml" vocabularyName="XML Schema" locatorType="URL" href="./support/s1-object-types.xsd"/>
+    </metadataObject>
+    <metadataObject ID="s1Level1MeasurementSchema" classification="SYNTAX" category="REP">
+      <metadataReference mimeType="text/xml" vocabularyName="SDF" locatorType="URL" href="./support/s1-level-2-measurement.xsd"/>
+    </metadataObject>
+    <metadataObject ID="s1Level1ProductPreviewSchema" classification="SYNTAX" category="REP">
+      <metadataReference mimeType="text/xml" vocabularyName="XML Schema" locatorType="URL" href="./support/s1-product-preview.xsd"/>
+    </metadataObject>
+    <metadataObject ID="s1Level1QuickLookSchema" classification="SYNTAX" category="REP">
+      <metadataReference mimeType="text/xml" vocabularyName="XML Schema" locatorType="URL" href="./support/s1-level-1-quicklook.xsd"/>
+    </metadataObject>
+    <metadataObject ID="s1Level1MapOverlaySchema" classification="SYNTAX" category="REP">
+      <metadataReference mimeType="text/xml" vocabularyName="XML Schema" locatorType="URL" href="./support/s1-map-overlay.xsd"/>
+    </metadataObject>
+  </metadataSection>
+  <dataObjectSection>
+    <dataObject ID="mapoverlay" repID="s1Level1MapOverlaySchema">
+      <byteStream mimeType="text/xml" size="9561">
+        <fileLocation locatorType="URL" href="./preview/map-overlay.kml"/>
+        <checksum checksumName="MD5">278455426228da678047482bd9fdde88</checksum>
+      </byteStream>
+    </dataObject>
+    <dataObject ID="productpreview" repID="s1Level1ProductPreviewSchema">
+      <byteStream mimeType="text/xml" size="1234">
+        <fileLocation locatorType="URL" href="./preview/product-preview.html"/>
+        <checksum checksumName="MD5">68d06955a713a816701922247a45ffa5</checksum>
+      </byteStream>
+    </dataObject>
+  </dataObjectSection>
+</xfdu:XFDU>

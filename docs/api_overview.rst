@@ -330,6 +330,102 @@ or add a custom handler for :mod:`sentinelsat` (as implemented in `cli.py`)
   h.setFormatter(fmt)
   logger.addHandler(h)
 
+
+Product node API
+----------------
+
+The product node API is implemented in the :mod:`sentinelsat.products`
+module and, in addition to all the features provided by the standard API,
+allows to download only some of the files included in a Sentinel product
+exploiting the `node selection feature`_ provided by the OData_ Web API.
+
+.. code-block:: python
+
+  from sentinelsat import SentinelProductsAPI, make_path_filter
+
+  # define the filter function to select files (to be excluded in this case)
+  nodefilter = make_path_filter("*measurement/*", exclude=True)
+
+  # connect to the API
+  api = SentinelProductAPI("user", "password")
+
+  # download a single product excluding measurement files
+  api.download(<product_id>, nodefilter=nodefilter)
+
+Of course it also works for multiple products:
+
+.. code-block:: python
+
+  # download a multiple products excluding measurement files
+  api.download_all(<products>, nodefilter=nodefilter)
+
+The example above downloads all files in each of the requested products only
+*excluding* (large) measurements files.
+This can be useful for analyses exclusively based on product annotations
+(including calibration annotations) or, e.g., to download the KML preview
+included in the product.
+
+The file selection is implemented by specifying a *nodefilter* function that
+is called for each file (only excluding the manifest which is always downloaded)
+in the requested products and returns `True` if the file have to be downloaded,
+`False` otherwise.
+
+The *nodefilter* function has the following signature:
+
+.. code-block:: python
+
+  def nodefilter(node_info: dict) -> bool:
+      ...
+
+The *node_info* parameter is a dictionary containing (at least) the following
+keys:
+
+:url:
+    the URL to download the product file node
+:node_path:
+    the file *path* within the product (e.g. "./preview/map-overlay.kml")
+:size:
+    the file size in bytes (int)
+:md5:
+    the file md5 checksum
+
+In the example above it has been used an helper function
+(:func:`sentinelsat.products.make_path_filter`), provided by the
+:mod:`sentinelsat.products` module, that generates *nodefilter* functions
+based on glob expressions applied to the *node_path* value.
+
+The following code:
+
+.. code-block:: python
+
+  nodefilter = make_path_filter("*measurement/*", exclude=True)
+
+is more or less equivalent to:
+
+.. code-block:: python
+
+  import fnmatch
+
+  def node_filter(node_info):
+    if not fnmatch.fnmatch(node_info["node_path"].lower(), pattern):
+      return True
+    else:
+      return False
+
+The :mod:`sentinelsat` product node API also provides:
+
+* the :func:`sentinelsat.products.make_size_filter` helper to build filters
+  based on the file size and
+* the pre-build :func:`sentinelsat.products.all_nodes_filter` *nodefilter*
+  function to download all files.
+  This function can be used to download the entire Sentinel product as a
+  directory instead of downloading a single zip archive.
+
+Of course the user can write its own *nodefilter* functions if necessary.
+
+
+.. _`node selection feature`: https://scihub.copernicus.eu/twiki/do/view/SciHubUserGuide/ODataAPI#Discover_Product_Nodes
+
 More Examples
 -------------
 
@@ -371,3 +467,30 @@ To be on the safe side, combine the `tileid` search with a `filename` pattern se
   kw = query_kwargs.copy()
   kw['raw'] = f'tileid:{tile} OR filename:*_T{tile}_*'
   pp = api.query(**kw)
+
+
+Download only some of the channels of a Sentinel-1 product
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+In some cases the user may be interested only to a specific sub-swath and/or
+polarization of Sentinel1 SLC products (e.g. for an interferometric analysis).
+
+The following *nodefilter* function only downloads "HH" polarization
+measurement files for sub-swaths "EW1" and "EW2":
+
+.. code-block:: python
+
+  nodefilter = make_path_filter("*s1?-ew[12]-slc-hh-*.tiff")
+
+Considering that e.g. a Dual Pol Extended Wide Swath Sentinel-1 product
+includes 2 measurement files for each of the 5 sub-swath the above filter
+allows to reduce consistently the amount of data to be downloaded
+(form 10 to 2 TIFF files approx 700MB each).
+
+Of course the *nodefilter* function have to be used to initialize the
+product node API :class:`sentinelsat.products.SentinelProductsAPI` as
+explained above.
+
+.. code-block:: python
+
+    api.download_all(<products>, nodefilter=nodefilter)

@@ -1,6 +1,7 @@
 import json
 import os
 import re
+import glob
 import shutil
 from contextlib import contextmanager
 from functools import partialmethod
@@ -11,6 +12,7 @@ import requests_mock
 from click.testing import CliRunner
 
 from sentinelsat import SentinelAPI, InvalidChecksumError, QuerySyntaxError
+from sentinelsat import SentinelProductsAPI
 from sentinelsat.scripts.cli import cli
 
 
@@ -476,6 +478,87 @@ def test_download_single(run_cli, api, tmpdir, smallest_online_products, monkeyp
 
         # md5 flag set (implicitly), should raise an exception
         run_cli(*command, must_raise=InvalidChecksumError)
+
+    # clean up
+    tmpdir.remove()
+
+
+@pytest.mark.vcr
+@pytest.mark.scihub
+def test_product_node_download_single(run_cli, api, tmpdir, smallest_online_products, monkeypatch):
+    # Change default arguments for quicker test.
+    # Also, vcrpy is not threadsafe, so only one worker is used.
+    monkeypatch.setattr(
+        "sentinelsat.SentinelProductsAPI.download_all",
+        partialmethod(SentinelProductsAPI.download_all, n_concurrent_dl=1, max_attempts=2),
+    )
+
+    product_id = smallest_online_products[0]["id"]
+    command = ["--uuid", product_id, "--download", "--path", str(tmpdir)]
+
+    run_cli(*command)
+
+    # The file already exists, should not be re-downloaded
+    run_cli(*command)
+
+    # clean up
+    for f in tmpdir.listdir():
+        f.remove()
+
+    # Prepare a response with an invalid checksum
+    url = "https://scihub.copernicus.eu/apihub/odata/v1/Products('%s')?$format=json" % product_id
+    json = api.session.get(url).json()
+    json["d"]["Checksum"]["Value"] = "00000000000000000000000000000000"
+
+    # Force the download to fail by providing an incorrect checksum
+    with requests_mock.mock(real_http=True) as rqst:
+        rqst.get(url, json=json)
+
+        # md5 flag set (implicitly), should raise an exception
+        run_cli(*command, must_raise=InvalidChecksumError)
+
+    # clean up
+    tmpdir.remove()
+
+
+@pytest.mark.vcr
+@pytest.mark.scihub
+def test_product_node_download_single_with_filter(
+    run_cli, api, tmpdir, smallest_online_products, monkeypatch
+):
+    # Change default arguments for quicker test.
+    # Also, vcrpy is not threadsafe, so only one worker is used.
+    monkeypatch.setattr(
+        "sentinelsat.SentinelProductsAPI.download_all",
+        partialmethod(SentinelAPI.download_all, n_concurrent_dl=1, max_attempts=2),
+    )
+
+    product_id = smallest_online_products[0]["id"]
+    command = [
+        "--uuid",
+        product_id,
+        "--download",
+        "--path",
+        str(tmpdir),
+        "--include-pattern",
+        "*.kml",
+    ]
+
+    run_cli(*command)
+
+    # The file already exists, should not be re-downloaded
+    run_cli(*command)
+
+    files = list(glob.glob(str(tmpdir.join("S*.SAFE", "*"))))
+    assert len(files) == 2
+    basenames = [os.path.basename(filename) for filename in files]
+    assert "manifest.safe" in basenames
+    assert "preview" in basenames
+
+    files = list(glob.glob(str(tmpdir.join("S*.SAFE", "preview", "*"))))
+    assert len(files) == 1
+    basenames = [os.path.basename(filename) for filename in files]
+    assert "map-overlay.kml" in basenames
 
     # clean up
     tmpdir.remove()
