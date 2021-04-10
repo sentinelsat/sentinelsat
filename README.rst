@@ -5,11 +5,11 @@ sentinelsat
     :target: http://badge.fury.io/py/sentinelsat
     :alt: PyPI package
 
-.. image:: https://travis-ci.com/sentinelsat/sentinelsat.svg?branch=master
+.. image:: https://travis-ci.com/sentinelsat/sentinelsat.svg?branch=main
     :target: https://travis-ci.com/sentinelsat/sentinelsat
     :alt: Travis-CI
 
-.. image:: https://codecov.io/gh/sentinelsat/sentinelsat/branch/master/graph/badge.svg
+.. image:: https://codecov.io/gh/sentinelsat/sentinelsat/branch/main/graph/badge.svg
     :target: https://codecov.io/gh/sentinelsat/sentinelsat
     :alt: codecov.io code coverage
 
@@ -281,7 +281,7 @@ The full documentation is also published at http://sentinelsat.readthedocs.io/.
 Changelog
 =========
 
-See `CHANGELOG <CHANGELOG.rst>`_. You can also use GitHub's compare view to see the `changes in the master branch since last release <https://github.com/sentinelsat/sentinelsat/compare/v0.14...master>`_.
+See `CHANGELOG <CHANGELOG.rst>`_. You can also use GitHub's compare view to see the `changes in the main branch since last release <https://github.com/sentinelsat/sentinelsat/compare/v0.14...main>`_.
 
 Contributors
 ============

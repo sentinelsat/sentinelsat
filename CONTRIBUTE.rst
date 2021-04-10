@@ -8,7 +8,7 @@ Please search existing issues, open and closed, before creating a new one.
 
 Providing a Short, Self Contained, Correct (Compilable), Example (`SSCCE <http://sscce.org/>`_) demonstrating the issue is encouraged.
 
-``sentinelsat`` is not ``v1.0``. There may be backwards incompatible changes which you can find in the changelog (`CHANGELOG.rst <https://github.com/sentinelsat/sentinelsat/blob/master/CHANGELOG.rst>`_). We invite you to propose changes and features you would like to see in ``v1.0``.
+``sentinelsat`` is not ``v1.0``. There may be backwards incompatible changes which you can find in the changelog (`CHANGELOG.rst <https://github.com/sentinelsat/sentinelsat/blob/main/CHANGELOG.rst>`_). We invite you to propose changes and features you would like to see in ``v1.0``.
 
 
 Design Principles
@@ -40,10 +40,10 @@ Tests are mandatory for new features. We use `pytest <https://pytest.org>`_ and 
 All unit tests must use prerecorded responses to Copernicus Open Access Hub. We use `VCR.py <https://github.com/kevin1024/vcrpy>`_ to record the responses.
 We aspire to 100% coverage but regard meaningful tests to be more important than reaching this goal. Test coverage is tracked with `Codecov <https://codecov.io/gh/sentinelsat/sentinelsat>`_.
 
-We keep a changelog (`CHANGELOG.rst <https://github.com/sentinelsat/sentinelsat/blob/master/CHANGELOG.rst>`_) following the `keepachangelog <http://keepachangelog.com>`_ template.
+We keep a changelog (`CHANGELOG.rst <https://github.com/sentinelsat/sentinelsat/blob/main/CHANGELOG.rst>`_) following the `keepachangelog <http://keepachangelog.com>`_ template.
 
-Good documentation is important to us. We use `Sphinx <http://www.sphinx-doc.org>`_ and host the documentation at `sentinelsat.readthedocs.io <https://sentinelsat.readthedocs.io/en/master/>`_.
-All public functions should have docstrings. We use the `numpy docstring standard <https://github.com/numpy/numpy/blob/master/doc/HOWTO_DOCUMENT.rst.txt#docstring-standard>`_.
+Good documentation is important to us. We use `Sphinx <http://www.sphinx-doc.org>`_ and host the documentation at `sentinelsat.readthedocs.io <https://sentinelsat.readthedocs.io/en/main/>`_.
+All public functions should have docstrings. We use the `numpy docstring standard <https://github.com/numpy/numpy/blob/main/doc/HOWTO_DOCUMENT.rst.txt#docstring-standard>`_.
 
 Development Environment
 =======================
@@ -133,7 +133,7 @@ Versioning and Release
 
 Version numbers need to be adapted in sentinelsat/__init__.py as well as the Github compare link in the Readme.
 
-Documentation is automatically built after each merge in the ``master`` branch using a webhook. The documentation landing page is set to ``stable``, which defaults to the latest release.
+Documentation is automatically built after each merge in the ``main`` branch using a webhook. The documentation landing page is set to ``stable``, which defaults to the latest release.
 
 A new Zenodo DOI is created automatically with every Github release using the Zenodo webhook.
 
@@ -152,4 +152,4 @@ A new package is release on PyPi with the following commands.
 License
 =======
 
-The GNU General Public License version 3 or later (GPLv3+, see `LICENSE <https://github.com/sentinelsat/sentinelsat/blob/master/LICENSE>`_) applies to all contributions.
+The GNU General Public License version 3 or later (GPLv3+, see `LICENSE <https://github.com/sentinelsat/sentinelsat/blob/main/LICENSE>`_) applies to all contributions.
