@@ -22,7 +22,7 @@ jobs:
           - conda activate sentinelsat
 branches:
   only:
-  - master
+  - main
 before_install:
 - pip3 install -U pip
 install:
