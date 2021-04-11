@@ -1,0 +1,50 @@
+name: CI Testing
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.6, 3.7, 3.8, 3.9]
+        os: [ubuntu-latest]
+        include:
+          - name: Test on MacOS-X
+            os: macos-latest
+            python: 3.9
+          - name: Test on Windows
+            os: windows-latest
+            python: 3.9
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade setuptools pip wheel
+        python -m pip install black codecov
+        if [ -f requirements.txt ]; then python -m pip install -r requirements.txt; fi
+        python -m pip install .[dev]
+    - name: Lint with black
+      run: |
+        black --check .
+    - name: Test with pytest
+      run: |
+        coverage run --source=sentinelsat -m pytest -v
+    - name: Codevov
+      run: |
+        codecov
+#    - name: Notifications
+#      uses: juztcode/gitter-github-action@v1
+#      if: ${{ failure() }}
+#      with:
+#        room-id: ${{ secrets.GITTER_ROOM_ID }}
+#        token: ${{ secrets.GITTER_TOKEN }}
+#        text: sentinelsat build failure
