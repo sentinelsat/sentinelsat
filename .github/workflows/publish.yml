@@ -16,15 +16,8 @@ jobs:
       - name: Install prereqs
         run: python -m pip install -U build wheel setuptools
 
-      - name: Test
-        run: |
-          python -m pip install .[dev]
-          pytest tests
-
       - name: Build packages
-        run: |
-          rm -rf dist/
-          python -m build
+        run: python -m build
 
       - name: Inspect
         run: ls dist/
