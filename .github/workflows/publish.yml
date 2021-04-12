@@ -1,7 +1,7 @@
 name: Publish
 on:
   release:
-    types: [ released ]
+    types: [ published, released ]
 jobs:
   publish:
     name: Publish to PyPI
@@ -30,6 +30,9 @@ jobs:
         run: ls dist/
 
       - name: Publish to PyPI
+        # Do the actual publishing only for releases, not pre-releases.
+        # This can be used to test that the previous steps work.
+        if: ${{ github.event.action == 'released' }}
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
           user: __token__
