@@ -5,9 +5,9 @@ sentinelsat
     :target: http://badge.fury.io/py/sentinelsat
     :alt: PyPI package
 
-.. image:: https://travis-ci.com/sentinelsat/sentinelsat.svg?branch=main
-    :target: https://travis-ci.com/sentinelsat/sentinelsat
-    :alt: Travis-CI
+.. image:: https://github.com/sentinelsat/sentinelsat/actions/workflows/ci.yaml/badge.svg
+    :target: https://github.com/sentinelsat/sentinelsat/actions
+    :alt: GitHub Actions
 
 .. image:: https://codecov.io/gh/sentinelsat/sentinelsat/branch/main/graph/badge.svg
     :target: https://codecov.io/gh/sentinelsat/sentinelsat
