@@ -17,7 +17,7 @@ jobs:
           - os: windows-latest
             python-version: "3.9"
           - os: macos-latest
-            python-version: "3.9"
+            python-version: "3.8"
 
     steps:
     - uses: actions/checkout@v2
