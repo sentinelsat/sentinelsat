@@ -44,10 +44,10 @@ jobs:
         # token: ${{ secrets.CODECOV_TOKEN }}  # not required for public repos
         env_vars: OS,PYTHON
         fail_ci_if_error: true
-#    - name: Notifications
-#      uses: juztcode/gitter-github-action@v1
-#      if: ${{ failure() }}
-#      with:
-#        room-id: ${{ secrets.GITTER_ROOM_ID }}
-#        token: ${{ secrets.GITTER_TOKEN }}
-#        text: sentinelsat build failure
+    - name: Notifications
+      uses: juztcode/gitter-github-action@v1
+      if: ${{ failure() }}
+      with:
+        room-id: ${{ secrets.GITTER_ROOM_ID }}
+        token: ${{ secrets.GITTER_TOKEN }}
+        text: sentinelsat build failure
