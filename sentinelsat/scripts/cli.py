@@ -15,7 +15,7 @@ from sentinelsat.sentinel import (
     placename_to_wkt,
     is_wkt,
 )
-
+from sentinelsat.gnss import GnssAPI
 from sentinelsat.exceptions import InvalidKeyError
 from sentinelsat.products import SentinelProductsAPI, make_path_filter
 
@@ -179,6 +179,13 @@ class CommaSeparatedString(click.ParamType):
     from the downloaded.
     """,
 )
+@click.option(
+    "--gnss",
+    is_flag=True,
+    help="""Use the "https://scihub.copernicus.eu/gnss" end-point
+    for orbit data query and download.
+    """,
+)
 @click.option("--info", is_flag=True, is_eager=True, help="Displays the DHuS version used")
 @click.version_option(version=sentinelsat_version, prog_name="sentinelsat")
 def cli(
@@ -205,6 +212,7 @@ def cli(
     debug,
     include_pattern,
     exclude_pattern,
+    gnss,
     info,
 ):
     """Search for Sentinel products and, optionally, download all the results
@@ -227,19 +235,32 @@ def cli(
     else:
         nodefilter = None
 
-    if user is None or password is None:
-        try:
-            user, password = requests.utils.get_netrc_auth(url)
-        except TypeError:
-            pass
-
-    if user is None or password is None:
-        raise click.UsageError(
-            "Missing --user and --password. Please see docs "
-            "for environment variables and .netrc support."
+    if gnss:
+        url = (
+            url
+            if url != "https://scihub.copernicus.eu/apihub/"
+            else "https://scihub.copernicus.eu/gnss/"
         )
+        if user is None or password is None:
+            user = "gnssguest"
+            password = "gnssguest"
 
-    api = SentinelProductsAPI(user, password, url)
+        api = GnssAPI(user, password, url)
+
+    else:
+        if user is None or password is None:
+            try:
+                user, password = requests.utils.get_netrc_auth(url)
+            except TypeError:
+                pass
+
+        if user is None or password is None:
+            raise click.UsageError(
+                "Missing --user and --password. Please see docs "
+                "for environment variables and .netrc support."
+            )
+
+        api = SentinelProductsAPI(user, password, url)
 
     if info:
         ctx = click.get_current_context()
@@ -247,7 +268,7 @@ def cli(
         ctx.exit()
 
     search_kwargs = {}
-    if sentinel and not (producttype or instrument):
+    if sentinel and (gnss or not (producttype or instrument)):
         search_kwargs["platformname"] = "Sentinel-" + sentinel
 
     if instrument and not producttype:

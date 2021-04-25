@@ -10,6 +10,9 @@ API Reference
 .. automodule:: sentinelsat.products
     :members:
 
+.. automodule:: sentinelsat.gnss
+    :members:
+
 Exceptions
 ----------
 
