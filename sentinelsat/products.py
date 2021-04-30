@@ -107,7 +107,7 @@ class SentinelProductsAPI(sentinelsat.SentinelAPI):
         url = self._path_to_url(product_info, "manifest.safe", "value")
         node_info = product_info.copy()
         node_info["url"] = url
-        node_info["node_path"] = os.path.join(".", "manifest.safe")
+        node_info["node_path"] = "./manifest.safe"
         del node_info["md5"]
 
         if path and os.path.exists(path):
@@ -207,7 +207,7 @@ class SentinelProductsAPI(sentinelsat.SentinelAPI):
 
         product_info = self.get_product_odata(id)
         product_path = os.path.join(directory_path, product_info["title"] + ".SAFE")
-        product_info["node_path"] = os.path.join(".", product_info["title"] + ".SAFE")
+        product_info["node_path"] = "./" + product_info["title"] + ".SAFE"
         manifest_path = os.path.join(product_path, "manifest.safe")
         if not os.path.exists(manifest_path) and not product_info["Online"]:
             self.logger.warning(
