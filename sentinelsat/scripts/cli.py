@@ -1,4 +1,6 @@
+import json
 import logging
+import math
 import os
 
 import click
@@ -6,7 +8,19 @@ import geojson as gj
 import requests.utils
 
 from sentinelsat import __version__ as sentinelsat_version
-from sentinelsat.sentinel import SentinelAPI, SentinelAPIError, geojson_to_wkt, read_geojson
+
+from sentinelsat.sentinel import (
+    geojson_to_wkt,
+    read_geojson,
+    placename_to_wkt,
+    is_wkt,
+)
+
+from sentinelsat.exceptions import InvalidKeyError
+from sentinelsat.products import SentinelProductsAPI, make_path_filter
+
+
+json_parse_exception = json.decoder.JSONDecodeError
 
 logger = logging.getLogger("sentinelsat")
 
@@ -68,7 +82,10 @@ class CommaSeparatedString(click.ParamType):
     help="End date of the query in the format YYYYMMDD.",
 )
 @click.option(
-    "--geometry", "-g", type=click.Path(exists=True), help="Search area geometry as GeoJSON file."
+    "--geometry",
+    "-g",
+    type=str,
+    help="Search area geometry as GeoJSON file, a GeoJSON string, or a WKT string. ",
 )
 @click.option(
     "--uuid",
@@ -112,6 +129,11 @@ class CommaSeparatedString(click.ParamType):
 )
 @click.option("--download", "-d", is_flag=True, help="Download all results of the query.")
 @click.option(
+    "--quicklook",
+    is_flag=True,
+    help="""Download quicklook of a product.""",
+)
+@click.option(
     "--path",
     type=click.Path(exists=True),
     default=".",
@@ -127,10 +149,35 @@ class CommaSeparatedString(click.ParamType):
         """,
 )
 @click.option(
+    "--location",
+    type=str,
+    help="Return only products overlapping with the bounding box of given location, "
+    "e.g. 'Berlin', 'Germany' or '52.393974, 13.066955'.",
+)
+@click.option(
     "--footprints",
     is_flag=True,
     help="""Create a geojson file search_footprints.geojson with footprints
     and metadata of the returned products.
+    """,
+)
+@click.option(
+    "--debug",
+    "-d",
+    is_flag=True,
+    help="Print debug log messages.",
+)
+@click.option(
+    "--include-pattern",
+    default=None,
+    help="""Glob pattern to filter files (within each product) to be downloaded.
+    """,
+)
+@click.option(
+    "--exclude-pattern",
+    default=None,
+    help="""Glob pattern to filter files (within each product) to be excluded
+    from the downloaded.
     """,
 )
 @click.option("--info", is_flag=True, is_eager=True, help="Displays the DHuS version used")
@@ -144,6 +191,7 @@ def cli(
     uuid,
     name,
     download,
+    quicklook,
     sentinel,
     producttype,
     instrument,
@@ -153,7 +201,11 @@ def cli(
     query,
     url,
     order_by,
+    location,
     limit,
+    debug,
+    include_pattern,
+    exclude_pattern,
     info,
 ):
     """Search for Sentinel products and, optionally, download all the results
@@ -163,7 +215,18 @@ def cli(
     don't specify the start and end dates, it will search in the last 24 hours.
     """
 
-    _set_logger_handler()
+    _set_logger_handler("DEBUG" if debug else "INFO")
+
+    if include_pattern is not None and exclude_pattern is not None:
+        raise click.UsageError(
+            "--include-pattern and --exclude-pattern cannot be specified together."
+        )
+    elif include_pattern is not None:
+        nodefilter = make_path_filter(include_pattern)
+    elif exclude_pattern is not None:
+        nodefilter = make_path_filter(exclude_pattern, exclude=True)
+    else:
+        nodefilter = None
 
     if user is None or password is None:
         try:
@@ -177,7 +240,7 @@ def cli(
             "for environment variables and .netrc support."
         )
 
-    api = SentinelAPI(user, password, url)
+    api = SentinelProductsAPI(user, password, url)
 
     if info:
         ctx = click.get_current_context()
@@ -201,10 +264,48 @@ def cli(
         search_kwargs["cloudcoverpercentage"] = (0, cloud)
 
     if query is not None:
-        search_kwargs.update((x.split("=") for x in query))
+        search_kwargs.update(x.split("=") for x in query)
+
+    if location is not None:
+        wkt, info = placename_to_wkt(location)
+        minX, minY, maxX, maxY = info["bbox"]
+        r = 6371  # average radius, km
+        extent_east = r * math.radians(maxX - minX) * math.cos(math.radians((minY + maxY) / 2))
+        extent_north = r * math.radians(maxY - minY)
+        logger.info(
+            "Querying location: '%s' with %.1f x %.1f km, %f, %f to %f, %f bounding box",
+            info["display_name"],
+            extent_north,
+            extent_east,
+            minY,
+            minX,
+            maxY,
+            maxX,
+        )
+        search_kwargs["area"] = wkt
 
     if geometry is not None:
-        search_kwargs["area"] = geojson_to_wkt(read_geojson(geometry))
+        # check if the value is an existing path
+        if os.path.exists(geometry):
+            search_kwargs["area"] = geojson_to_wkt(read_geojson(geometry))
+        # check if the value is a GeoJSON
+        else:
+            if geometry.startswith("{"):
+                try:
+                    geometry = json.loads(geometry)
+                    search_kwargs["area"] = geojson_to_wkt(geometry)
+                except json_parse_exception:
+                    raise click.UsageError(
+                        "geometry string starts with '{' but is not a valid GeoJSON."
+                    )
+            # check if the value is a WKT
+            elif is_wkt(geometry):
+                search_kwargs["area"] = geometry
+            else:
+                raise click.UsageError(
+                    "The geometry input is neither a GeoJSON file with a valid path, "
+                    "a GeoJSON String nor a WKT string."
+                )
 
     if uuid is not None:
         uuid_list = [x.strip() for x in uuid]
@@ -212,12 +313,9 @@ def cli(
         for productid in uuid_list:
             try:
                 products[productid] = api.get_product_odata(productid)
-            except SentinelAPIError as e:
-                if "Invalid key" in e.msg:
-                    logger.error("No product with ID '%s' exists on server", productid)
-                    exit(1)
-                else:
-                    raise
+            except InvalidKeyError:
+                logger.error("No product with ID '%s' exists on server", productid)
+                exit(1)
     elif name is not None:
         search_kwargs["identifier"] = name[0] if len(name) == 1 else "(" + " OR ".join(name) + ")"
         products = api.query(order_by=order_by, limit=limit, **search_kwargs)
@@ -231,12 +329,21 @@ def cli(
         with open(os.path.join(path, "search_footprints.geojson"), "w") as outfile:
             outfile.write(gj.dumps(footprints_geojson))
 
+    if quicklook:
+        downloaded_quicklooks, failed_quicklooks = api.download_all_quicklooks(products, path)
+        if failed_quicklooks:
+            api.logger.warning(
+                "Some quicklooks failed: %s out of %s", len(failed_quicklooks), len(products)
+            )
+
     if download is True:
-        product_infos, triggered, failed_downloads = api.download_all(products, path)
+        product_infos, triggered, failed_downloads = api.download_all(
+            products, path, nodefilter=nodefilter
+        )
         if len(failed_downloads) > 0:
             with open(os.path.join(path, "corrupt_scenes.txt"), "w") as outfile:
                 for failed_id in failed_downloads:
-                    outfile.write("%s : %s\n" % (failed_id, products[failed_id]["title"]))
+                    outfile.write("{} : {}\n".format(failed_id, products[failed_id]["title"]))
     else:
         for product_id, props in products.items():
             if uuid is None:

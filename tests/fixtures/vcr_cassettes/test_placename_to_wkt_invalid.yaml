@@ -1,0 +1,31 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - sentinelsat/0.14
+    method: GET
+    uri: https://nominatim.openstreetmap.org/search?q=%21%40%23%24%25%5E&format=geojson
+  response:
+    body:
+      string: "{\"type\":\"FeatureCollection\",\"licence\":\"Data \xA9 OpenStreetMap
+        contributors, ODbL 1.0. https://osm.org/copyright\",\"features\":[]}"
+    headers:
+      Connection:
+      - keep-alive
+      Content-Type:
+      - application/json; charset=UTF-8
+      Keep-Alive:
+      - timeout=20
+      Server:
+      - nginx
+    status:
+      code: 200
+      message: OK
+version: 1

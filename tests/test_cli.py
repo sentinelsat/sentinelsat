@@ -1,29 +1,19 @@
 import json
 import os
 import re
+import glob
 import shutil
 from contextlib import contextmanager
+from functools import partialmethod
 from test.support import EnvironmentVarGuard
 
 import pytest
 import requests_mock
 from click.testing import CliRunner
 
-from sentinelsat import InvalidChecksumError, SentinelAPIError, SentinelAPI
+from sentinelsat import SentinelAPI, InvalidChecksumError, QuerySyntaxError
+from sentinelsat import SentinelProductsAPI
 from sentinelsat.scripts.cli import cli
-
-try:  # Python 3.5 and greater import
-    from functools import partialmethod
-except ImportError:  # Older versions of Python, including 2.7
-    # solution taken from https://gist.github.com/carymrobbins/8940382
-
-    from functools import partial
-
-    class partialmethod(partial):
-        def __get__(self, instance, owner):
-            if instance is None:
-                return self
-            return partial(self.func, instance, *(self.args or ()), **(self.keywords or {}))
 
 
 @pytest.fixture(scope="session")
@@ -135,6 +125,37 @@ def test_cli(run_cli, geojson_path):
     run_cli("--geometry", geojson_path, "--url", "https://scihub.copernicus.eu/dhus/")
 
     run_cli("--geometry", geojson_path, "-q", "producttype=GRD,polarisationmode=HH")
+
+
+@pytest.mark.vcr
+@pytest.mark.scihub
+def test_cli_geometry_alternatives(run_cli, geojson_string, wkt_string):
+    run_cli("--geometry", geojson_string, "-l", "1")
+
+    run_cli("--geometry", wkt_string, "-l", "1")
+
+
+@pytest.mark.fast
+def test_cli_geometry_WKT_alternative_fail(run_cli):
+    result = run_cli(
+        "--geometry",
+        "POLYGO((-87.27 41.64,-81.56 37.857,-82.617 44.52,-87.2 41.64))",
+        must_return_nonzero=True,
+    )
+    assert (
+        "neither a GeoJSON file with a valid path, a GeoJSON String nor a WKT string."
+        in result.output
+    )
+
+
+@pytest.mark.fast
+def test_cli_geometry_JSON_alternative_fail(run_cli):
+    result = run_cli(
+        "--geometry",
+        '{"type": "A bad JSON", "features" :[nothing], ([{ ',
+        must_return_nonzero=True,
+    )
+    assert "geometry string starts with '{' but is not a valid GeoJSON." in result.output
 
 
 @pytest.mark.fast
@@ -366,7 +387,7 @@ def test_name_search_multiple(run_cli):
 @pytest.mark.vcr
 @pytest.mark.scihub
 def test_name_search_empty(run_cli):
-    run_cli("--name", "", must_raise=SentinelAPIError)
+    run_cli("--name", "", must_raise=QuerySyntaxError)
 
 
 @pytest.mark.vcr
@@ -464,6 +485,87 @@ def test_download_single(run_cli, api, tmpdir, smallest_online_products, monkeyp
 
 @pytest.mark.vcr
 @pytest.mark.scihub
+def test_product_node_download_single(run_cli, api, tmpdir, smallest_online_products, monkeypatch):
+    # Change default arguments for quicker test.
+    # Also, vcrpy is not threadsafe, so only one worker is used.
+    monkeypatch.setattr(
+        "sentinelsat.SentinelProductsAPI.download_all",
+        partialmethod(SentinelProductsAPI.download_all, n_concurrent_dl=1, max_attempts=2),
+    )
+
+    product_id = smallest_online_products[0]["id"]
+    command = ["--uuid", product_id, "--download", "--path", str(tmpdir)]
+
+    run_cli(*command)
+
+    # The file already exists, should not be re-downloaded
+    run_cli(*command)
+
+    # clean up
+    for f in tmpdir.listdir():
+        f.remove()
+
+    # Prepare a response with an invalid checksum
+    url = "https://scihub.copernicus.eu/apihub/odata/v1/Products('%s')?$format=json" % product_id
+    json = api.session.get(url).json()
+    json["d"]["Checksum"]["Value"] = "00000000000000000000000000000000"
+
+    # Force the download to fail by providing an incorrect checksum
+    with requests_mock.mock(real_http=True) as rqst:
+        rqst.get(url, json=json)
+
+        # md5 flag set (implicitly), should raise an exception
+        run_cli(*command, must_raise=InvalidChecksumError)
+
+    # clean up
+    tmpdir.remove()
+
+
+@pytest.mark.vcr
+@pytest.mark.scihub
+def test_product_node_download_single_with_filter(
+    run_cli, api, tmpdir, smallest_online_products, monkeypatch
+):
+    # Change default arguments for quicker test.
+    # Also, vcrpy is not threadsafe, so only one worker is used.
+    monkeypatch.setattr(
+        "sentinelsat.SentinelProductsAPI.download_all",
+        partialmethod(SentinelAPI.download_all, n_concurrent_dl=1, max_attempts=2),
+    )
+
+    product_id = smallest_online_products[0]["id"]
+    command = [
+        "--uuid",
+        product_id,
+        "--download",
+        "--path",
+        str(tmpdir),
+        "--include-pattern",
+        "*.kml",
+    ]
+
+    run_cli(*command)
+
+    # The file already exists, should not be re-downloaded
+    run_cli(*command)
+
+    files = list(glob.glob(str(tmpdir.join("S*.SAFE", "*"))))
+    assert len(files) == 2
+    basenames = [os.path.basename(filename) for filename in files]
+    assert "manifest.safe" in basenames
+    assert "preview" in basenames
+
+    files = list(glob.glob(str(tmpdir.join("S*.SAFE", "preview", "*"))))
+    assert len(files) == 1
+    basenames = [os.path.basename(filename) for filename in files]
+    assert "map-overlay.kml" in basenames
+
+    # clean up
+    tmpdir.remove()
+
+
+@pytest.mark.vcr
+@pytest.mark.scihub
 def test_download_many(run_cli, api, tmpdir, smallest_online_products, monkeypatch):
     # Change default arguments for quicker test.
     # Also, vcrpy is not threadsafe, so only one worker is used.
@@ -520,6 +622,47 @@ def test_download_invalid_id_cli(run_cli, tmpdir):
 
 @pytest.mark.vcr
 @pytest.mark.scihub
+def test_download_single_quicklook(run_cli, api, tmpdir, quicklook_products, monkeypatch):
+    # Change default arguments for quicker test.
+    # Also, vcrpy is not threadsafe, so only one worker is used.
+    monkeypatch.setattr(
+        "sentinelsat.SentinelAPI.download_all_quicklooks",
+        partialmethod(SentinelAPI.download_all_quicklooks, n_concurrent_dl=1),
+    )
+
+    id = quicklook_products[0]["id"]
+    command = ["--uuid", id, "--quicklook", "--path", str(tmpdir)]
+
+    run_cli(*command)
+
+    # The file already exists, should not be re-downloaded
+    run_cli(*command)
+
+    # clean up
+    for f in tmpdir.listdir():
+        f.remove()
+
+    # Prepare a response with an invalid checksum
+    url = "https://scihub.copernicus.eu/apihub/odata/v1/Products('{id}')/Products('Quicklook')/$value".format(
+        id=id
+    )
+    headers = api.session.get(url).headers
+    headers["content-type"] = "image/xxxx"
+
+    # Force the download to fail by providing an incorrect content type
+    with requests_mock.mock(real_http=True) as rqst:
+        rqst.get(url, headers=headers)
+
+        # incorrect content-type, should fail
+        result = run_cli(*command)
+        assert "Some quicklooks failed: 1" in result.output
+
+    # clean up
+    tmpdir.remove()
+
+
+@pytest.mark.vcr
+@pytest.mark.scihub
 def test_info_cli(run_cli, tmpdir):
     result = run_cli("--info")
     assert (
@@ -528,3 +671,13 @@ def test_info_cli(run_cli, tmpdir):
         "DHuS version: 2.4.1\n" in result.output
     )
     tmpdir.remove()
+
+
+@pytest.mark.vcr
+@pytest.mark.scihub
+def test_location_cli(run_cli):
+    result = run_cli("--location", "Metz", "-l", "1")
+    assert "Found" in result.output
+    m = re.search(r"Found (\d+) products", result.output)
+    assert m, result.output
+    assert int(m.group(1)) < 100

@@ -7,11 +7,15 @@ There are two minor issues to keep in mind when recording unit tests VCRs.
 2. dhus and apihub have different md5 hashes for products with the same UUID.
 
 """
+import shutil
+import os
+
 import py.path
 import pytest
 import requests_mock
 
-from sentinelsat import SentinelAPI, SentinelAPILTAError, InvalidChecksumError, SentinelAPIError
+from sentinelsat import SentinelAPI, make_path_filter
+from sentinelsat.exceptions import SentinelAPIError, SentinelAPILTAError, InvalidChecksumError
 
 
 @pytest.mark.fast
@@ -226,3 +230,128 @@ def test_download_invalid_id(api):
     with pytest.raises(SentinelAPIError) as excinfo:
         api.download(uuid)
     assert "Invalid key" in excinfo.value.msg
+
+
+@pytest.mark.vcr
+@pytest.mark.scihub
+def test_download_quicklook(api, tmpdir, quicklook_products):
+    uuid = quicklook_products[0]["id"]
+    filename = quicklook_products[0]["title"]
+    expected_path = tmpdir.join(filename + ".jpeg")
+    # import pdb; pdb.set_trace()
+    # Download normally
+    quicklook_info = api.download_quicklook(uuid, str(tmpdir))
+    assert expected_path.samefile(quicklook_info["path"])
+    assert quicklook_info["title"] == filename
+    assert quicklook_info["quicklook_size"] == expected_path.size()
+    assert quicklook_info["downloaded_bytes"] == expected_path.size()
+
+    modification_time = expected_path.mtime()
+    expected_quicklook_info = quicklook_info
+
+    # File exists, expect nothing to happen
+    quicklook_info = api.download_quicklook(uuid, str(tmpdir))
+    assert expected_path.mtime() == modification_time
+    expected_quicklook_info["downloaded_bytes"] = 0
+    assert quicklook_info["quicklook_size"] == expected_path.size()
+    assert quicklook_info == expected_quicklook_info
+
+    tmpdir.remove()
+
+
+@pytest.mark.vcr
+@pytest.mark.scihub
+def test_download_all_quicklooks(api, tmpdir, quicklook_products):
+    ids = [product["id"] for product in quicklook_products]
+
+    # Download normally
+    downloaded_quicklooks, failed_quicklooks = api.download_all_quicklooks(
+        ids, str(tmpdir), n_concurrent_dl=1
+    )
+    assert len(failed_quicklooks) == 0
+    assert len(downloaded_quicklooks) == len(ids)
+    for product_id, product_info in downloaded_quicklooks.items():
+        pypath = py.path.local(product_info["path"])
+        assert pypath.check(exists=1, file=1)
+        assert pypath.purebasename in product_info["title"]
+        assert pypath.size() == product_info["quicklook_size"]
+
+    tmpdir.remove()
+
+
+@pytest.mark.vcr
+@pytest.mark.scihub
+def test_download_all_quicklooks_one_fail(api, tmpdir, quicklook_products):
+    ids = [product["id"] for product in quicklook_products]
+
+    # Force one download to fail
+    id = ids[0]
+    with requests_mock.mock(real_http=True) as rqst:
+        url = "https://scihub.copernicus.eu/apihub/odata/v1/Products('{id}')/Products('Quicklook')/$value".format(
+            id=id
+        )
+        headers = api.session.get(url).headers
+        headers["content-type"] = "image/xxxx"
+        rqst.get(url, headers=headers)
+        downloaded_quicklooks, failed_quicklooks = api.download_all_quicklooks(
+            ids, str(tmpdir), n_concurrent_dl=1
+        )
+        assert len(failed_quicklooks) == 1
+        assert len(downloaded_quicklooks) + len(failed_quicklooks) == len(ids)
+        assert id in failed_quicklooks
+
+    tmpdir.remove()
+
+
+@pytest.mark.vcr
+@pytest.mark.scihub
+def test_download_quicklook_invalid_id(api):
+    uuid = "1f62a176-c980-41dc-xxxx-c735d660c910"
+    with pytest.raises(SentinelAPIError) as excinfo:
+        api.download_quicklook(uuid)
+    assert "Invalid key" in excinfo.value.msg
+
+
+@pytest.mark.vcr
+@pytest.mark.scihub
+def test_get_stream(api, tmpdir, smallest_online_products):
+    uuid = smallest_online_products[0]["id"]
+    filename = smallest_online_products[0]["title"]
+    expected_path = tmpdir.join(filename + ".zip")
+
+    raw, product_info = api.get_stream(uuid)
+    assert product_info["title"] == filename
+    with open(expected_path, "wb") as f:
+        shutil.copyfileobj(raw, f)
+
+    assert product_info["size"] == expected_path.size()
+    assert api._md5_compare(expected_path, product_info["md5"])
+
+    tmpdir.remove()
+
+
+@pytest.mark.vcr
+@pytest.mark.scihub
+def test_download_product_nodes(products_api, tmpdir, smallest_online_products):
+    uuid = smallest_online_products[0]["id"]
+    product_dir = smallest_online_products[0]["title"] + ".SAFE"
+    expected_path = tmpdir.join(product_dir)
+
+    nodefilter = make_path_filter("*preview/*.kml")
+    product_info = products_api.download(uuid, str(tmpdir), checksum=True, nodefilter=nodefilter)
+
+    assert os.path.normpath(product_info["node_path"]) == product_dir
+    assert expected_path.exists()
+
+    assert len(product_info["nodes"]) == 2
+
+    assert os.path.join(".", "manifest.safe") in product_info["nodes"]
+    assert os.path.join(".", "preview", "map-overlay.kml") in product_info["nodes"]
+
+    assert tmpdir.join(product_dir, "manifest.safe").check()
+    assert tmpdir.join(product_dir, "preview", "map-overlay.kml").check()
+
+    assert not tmpdir.join(product_dir, "manifest.safe" + ".incomplete").check()
+    assert not tmpdir.join(product_dir, "preview", "map-overlay.kml" + ".incomplete").check()
+
+    tmpdir.remove()

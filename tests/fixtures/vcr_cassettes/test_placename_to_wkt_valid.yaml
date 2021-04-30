@@ -1,0 +1,43 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - sentinelsat/0.14
+    method: GET
+    uri: https://nominatim.openstreetmap.org/search?q=florida&format=geojson
+  response:
+    body:
+      string: "{\"type\":\"FeatureCollection\",\"licence\":\"Data \xA9 OpenStreetMap
+        contributors, ODbL 1.0. https://osm.org/copyright\",\"features\":[{\"type\":\"Feature\",\"properties\":{\"place_id\":234781235,\"osm_type\":\"relation\",\"osm_id\":162050,\"display_name\":\"Florida,
+        United States of America\",\"place_rank\":8,\"category\":\"boundary\",\"type\":\"administrative\",\"importance\":0.8512139727980621,\"icon\":\"https://nominatim.openstreetmap.org/images/mapicons/poi_boundary_administrative.p.20.png\"},\"bbox\":[-87.634896,24.396308,-79.974306,31.000968],\"geometry\":{\"type\":\"Point\",\"coordinates\":[-81.4639835,27.7567667]}},{\"type\":\"Feature\",\"properties\":{\"place_id\":285326206,\"osm_type\":\"relation\",\"osm_id\":1128379,\"display_name\":\"Orlando,
+        Orange County, Florida, United States of America\",\"place_rank\":16,\"category\":\"boundary\",\"type\":\"administrative\",\"importance\":0.7305938364430198,\"icon\":\"https://nominatim.openstreetmap.org/images/mapicons/poi_boundary_administrative.p.20.png\"},\"bbox\":[-81.5075377,28.3480634,-81.2275862,28.614283],\"geometry\":{\"type\":\"Point\",\"coordinates\":[-81.3790304,28.5421109]}},{\"type\":\"Feature\",\"properties\":{\"place_id\":235573860,\"osm_type\":\"relation\",\"osm_id\":1635164,\"display_name\":\"Florida,
+        Uruguay\",\"place_rank\":8,\"category\":\"boundary\",\"type\":\"administrative\",\"importance\":0.5421010182483404,\"icon\":\"https://nominatim.openstreetmap.org/images/mapicons/poi_boundary_administrative.p.20.png\"},\"bbox\":[-56.5363447,-34.4264334,-55.098206,-33.101714],\"geometry\":{\"type\":\"Point\",\"coordinates\":[-55.916667,-33.833333]}},{\"type\":\"Feature\",\"properties\":{\"place_id\":235316419,\"osm_type\":\"relation\",\"osm_id\":224590,\"display_name\":\"La
+        Florida, Provincia de Santiago, Regi\xF3n Metropolitana de Santiago, Chile\",\"place_rank\":16,\"category\":\"boundary\",\"type\":\"administrative\",\"importance\":0.5363590208110012,\"icon\":\"https://nominatim.openstreetmap.org/images/mapicons/poi_boundary_administrative.p.20.png\"},\"bbox\":[-70.6147691,-33.5703843,-70.4369093,-33.4915576],\"geometry\":{\"type\":\"Point\",\"coordinates\":[-70.54402715938959,-33.530714450000005]}},{\"type\":\"Feature\",\"properties\":{\"place_id\":235623576,\"osm_type\":\"relation\",\"osm_id\":3228120,\"display_name\":\"Florida,
+        94000, Uruguay\",\"place_rank\":16,\"category\":\"boundary\",\"type\":\"administrative\",\"importance\":0.532173490264596,\"icon\":\"https://nominatim.openstreetmap.org/images/mapicons/poi_boundary_administrative.p.20.png\"},\"bbox\":[-56.2431392,-34.1154515,-56.2027493,-34.0763711],\"geometry\":{\"type\":\"Point\",\"coordinates\":[-56.2147854,-34.1008544]}},{\"type\":\"Feature\",\"properties\":{\"place_id\":235841316,\"osm_type\":\"relation\",\"osm_id\":4467954,\"display_name\":\"Florida,
+        Puerto Rico, 00650, United States of America\",\"place_rank\":12,\"category\":\"boundary\",\"type\":\"administrative\",\"importance\":0.5165175794938812,\"icon\":\"https://nominatim.openstreetmap.org/images/mapicons/poi_boundary_administrative.p.20.png\"},\"bbox\":[-66.5916303,18.3372496,-66.5306537,18.4139994],\"geometry\":{\"type\":\"Point\",\"coordinates\":[-66.5602467981989,18.3756231]}},{\"type\":\"Feature\",\"properties\":{\"place_id\":61901753,\"osm_type\":\"node\",\"osm_id\":5305619081,\"display_name\":\"Florida,
+        les Planes, Districte IV, l'Hospitalet de Llobregat, Barcelon\xE8s, Barcelona,
+        Catalunya, 08905, Espa\xF1a\",\"place_rank\":30,\"category\":\"railway\",\"type\":\"station\",\"importance\":0.49174216579851604,\"icon\":\"https://nominatim.openstreetmap.org/images/mapicons/transport_train_station2.p.20.png\"},\"bbox\":[2.1048369,41.3633104,2.1148369,41.3733104],\"geometry\":{\"type\":\"Point\",\"coordinates\":[2.1098369,41.3683104]}},{\"type\":\"Feature\",\"properties\":{\"place_id\":235736074,\"osm_type\":\"relation\",\"osm_id\":1622109,\"display_name\":\"Florida,
+        Provincia de Concepci\xF3n, Regi\xF3n del Biob\xEDo, Chile\",\"place_rank\":16,\"category\":\"boundary\",\"type\":\"administrative\",\"importance\":0.4830212082654317,\"icon\":\"https://nominatim.openstreetmap.org/images/mapicons/poi_boundary_administrative.p.20.png\"},\"bbox\":[-72.8710055,-36.9635911,-72.5384443,-36.6523828],\"geometry\":{\"type\":\"Point\",\"coordinates\":[-72.6614469,-36.8253041]}},{\"type\":\"Feature\",\"properties\":{\"place_id\":58133057,\"osm_type\":\"node\",\"osm_id\":4869724221,\"display_name\":\"Florida
+        Peninsula, Lonesome Island Road, Highlands County, Florida, United States
+        of America\",\"place_rank\":30,\"category\":\"place\",\"type\":\"peninsula\",\"importance\":0.4741541321378574},\"bbox\":[-81.25005,27.24995,-81.24995,27.25005],\"geometry\":{\"type\":\"Point\",\"coordinates\":[-81.25,27.25]}},{\"type\":\"Feature\",\"properties\":{\"place_id\":235596325,\"osm_type\":\"relation\",\"osm_id\":1319503,\"display_name\":\"Florida,
+        Valle del Cauca, Colombia\",\"place_rank\":12,\"category\":\"boundary\",\"type\":\"administrative\",\"importance\":0.47048881922758246,\"icon\":\"https://nominatim.openstreetmap.org/images/mapicons/poi_boundary_administrative.p.20.png\"},\"bbox\":[-76.3483323,3.2112461,-76.0391011,3.3891582],\"geometry\":{\"type\":\"Point\",\"coordinates\":[-76.1905432829982,3.30080485]}}]}"
+    headers:
+      Connection:
+      - keep-alive
+      Content-Type:
+      - application/json; charset=UTF-8
+      Keep-Alive:
+      - timeout=20
+      Server:
+      - nginx
+    status:
+      code: 200
+      message: OK
+version: 1

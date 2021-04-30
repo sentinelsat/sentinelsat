@@ -7,7 +7,7 @@ import yaml
 from pytest_socket import disable_socket
 from vcr import VCR
 
-from sentinelsat import SentinelAPI, geojson_to_wkt, read_geojson
+from sentinelsat import SentinelAPI, geojson_to_wkt, read_geojson, SentinelProductsAPI
 from sentinelsat.sentinel import _parse_odata_response
 from .custom_serializer import BinaryContentSerializer
 
@@ -37,7 +37,7 @@ def vcr(vcr):
         return request
 
     def scrub_response(response):
-        ignore = set(
+        ignore = {
             x.lower()
             for x in [
                 "Authorization",
@@ -45,12 +45,11 @@ def vcr(vcr):
                 "Cookie",
                 "Date",
                 "Expires",
-                "transfer-encoding",
+                "Transfer-Encoding",
             ]
-        )
+        }
         for header in list(response["headers"]):
-            header = header.lower()
-            if header in ignore or header.startswith("access-control"):
+            if header.lower() in ignore or header.lower().startswith("access-control"):
                 del response["headers"][header]
         return response
 
@@ -100,6 +99,11 @@ def api(api_kwargs):
     return SentinelAPI(**api_kwargs)
 
 
+@pytest.fixture
+def products_api(api_kwargs):
+    return SentinelProductsAPI(**api_kwargs)
+
+
 @pytest.fixture(scope="session")
 def fixture_path():
     return lambda filename: join(FIXTURES_DIR, filename)
@@ -132,6 +136,56 @@ def geojson_path():
     path = join(FIXTURES_DIR, "map.geojson")
     assert isfile(path)
     return path
+
+
+@pytest.fixture(scope="session")
+def geojson_string():
+    string = """{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {},
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -66.26953125,
+              -8.05922962720018
+            ],
+            [
+              -66.26953125,
+              0.7031073524364909
+            ],
+            [
+              -57.30468749999999,
+              0.7031073524364909
+            ],
+            [
+              -57.30468749999999,
+              -8.05922962720018
+            ],
+            [
+              -66.26953125,
+              -8.05922962720018
+            ]
+          ]
+        ]
+      }
+    }
+  ]
+}"""
+    return string
+
+
+@pytest.fixture(scope="session")
+def wkt_string():
+    string = (
+        "POLYGON((-78.046875 46.377254205100286,-75.76171874999999 43.32517767999295,-71.279296875 "
+        "46.55886030311717,-78.046875 46.377254205100286))"
+    )
+    return string
 
 
 @pytest.fixture(scope="session")
@@ -170,6 +224,18 @@ def _get_smallest(api_kwargs, cassette, online, n=3):
     return odata
 
 
+def _get_quicklook(api_kwargs, cassette):
+    api = SentinelAPI(**api_kwargs)
+    ids = [
+        "6b126ea4-fe27-440c-9a5c-686f386b7291",
+        "1a9401bc-6986-4707-b38d-f6c29ca58c00",
+        "54e6c4ad-6f4e-4fbf-b163-1719f60bfaeb",
+    ]
+    with cassette:
+        odata = [api.get_product_odata(x) for x in ids]
+    return odata
+
+
 @pytest.fixture(scope="module")
 def smallest_online_products(api_kwargs, vcr):
     return _get_smallest(api_kwargs, vcr.use_cassette("smallest_online_products"), online=True)
@@ -178,6 +244,11 @@ def smallest_online_products(api_kwargs, vcr):
 @pytest.fixture(scope="module")
 def smallest_archived_products(api_kwargs, vcr):
     return _get_smallest(api_kwargs, vcr.use_cassette("smallest_archived_products"), online=False)
+
+
+@pytest.fixture(scope="module")
+def quicklook_products(api_kwargs, vcr):
+    return _get_quicklook(api_kwargs, vcr.use_cassette("quicklook_products"))
 
 
 @pytest.fixture(scope="session")

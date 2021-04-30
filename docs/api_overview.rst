@@ -51,8 +51,8 @@ Authentication
 --------------
 
 The Copernicus Open Access Hub and probably most Data Hubs require authentication.
-You can provide your credentials with :meth:`SentinelAPI(<your username>, <your password>)`. 
-Alternatively, you can use :meth:`SentinelAPI(None, None)` and enter your credentials in a 
+You can provide your credentials with :class:`SentinelAPI(\<your username\>, \<your password\>) <sentinel.SentinelAPI>`. 
+Alternatively, you can use :class:`SentinelAPI(None, None) <sentinel.SentinelAPI>` and enter your credentials in a 
 file `.netrc` in your user home directory in the following form:
 
 .. code-block:: text
@@ -69,10 +69,10 @@ Sorting & Filtering
 
 In addition to the `search query keywords <https://scihub.copernicus.eu/userguide/3FullTextSearch>`_
 sentinelsat allows filtering and sorting of search results before download. To simplify these
-operations sentinelsat offers the convenience functions :meth:`~SentinelAPI.to_geojson()`,
-:meth:`~SentinelAPI.to_dataframe()` and :meth:`~SentinelAPI.to_geodataframe()` which return the
+operations sentinelsat offers the convenience functions :meth:`~sentinel.SentinelAPI.to_geojson()`,
+:meth:`~sentinel.sentinel.SentinelAPI.to_dataframe()` and :meth:`~sentinel.SentinelAPI.to_geodataframe()` which return the
 search results as a GeoJSON object, Pandas DataFrame or a GeoPandas GeoDataFrame, respectively.
-:meth:`~SentinelAPI.to_dataframe()` and :meth:`~SentinelAPI.to_geodataframe()` require `pandas
+:meth:`~sentinel.SentinelAPI.to_dataframe()` and :meth:`~sentinel.SentinelAPI.to_geodataframe()` require `pandas
 <https://pandas.pydata.org/>`_ and `geopandas <http://geopandas.org/>`_ to be installed,
 respectively.
 
@@ -112,15 +112,15 @@ Getting Product Metadata
 Sentinelsat provides two methods for retrieving product metadata from the server, one for each
 API offered by the Copernicus Open Access Hub:
 
-- :meth:`~SentinelAPI.query()` for `OpenSearch (Solr) <https://scihub.copernicus.eu/userguide/5APIsAndBatchScripting#Open_Search>`_,
+- :meth:`~sentinel.SentinelAPI.query()` for `OpenSearch (Solr) <https://scihub.copernicus.eu/userguide/5APIsAndBatchScripting#Open_Search>`_,
   which supports filtering products by their attributes and returns metadata for all matched
   products at once.
-- :meth:`~SentinelAPI.get_product_odata()` for `OData <https://scihub.copernicus.eu/userguide/5APIsAndBatchScripting#Open_Data_Protocol_OData>`_,
+- :meth:`~sentinel.SentinelAPI.get_product_odata()` for `OData <https://scihub.copernicus.eu/userguide/5APIsAndBatchScripting#Open_Data_Protocol_OData>`_,
   which can be queried one product at a time but provides the full metadata available for each
   product, as well as information about the product file such as the file size and checksum, which
   are not available from OpenSearch.
 
-Both methods return a dictionary containing the metadata items. More specifically, :meth:`~SentinelAPI.query()`
+Both methods return a dictionary containing the metadata items. More specifically, :meth:`~sentinel.SentinelAPI.query()`
 returns a dictionary with an entry for each returned product with its ID as the key and the
 attributes' dictionary as the value.
 
@@ -261,24 +261,28 @@ Copernicus Open Access Hub no longer stores all products online for immediate re
 Offline products can be requested from the `Long Term Archive (LTA) <https://scihub.copernicus.eu/userguide/LongTermArchive>`_ and should become available within 24 hours.
 Copernicus Open Access Hub's quota currently permits users to request an offline product every 30 minutes.
 
-A product's availability can be checked with a regular OData query by evaluating the ``Online`` property value.
+A product's availability can be checked with a regular OData query by evaluating the ``Online`` property value
+or by using the :meth:`~sentinel.SentinelAPI.is_online()` convenience method.
 
 .. code-block:: python
 
     product_info = api.get_product_odata(<product_id>)
+    is_online = product_info['Online']
+    # or
+    is_online = api.is_online(<product_id>)
 
-    if product_info['Online']:
+    if is_online:
         print('Product {} is online. Starting download.'.format(<product_id>))
         api.download(<product_id>)
     else:
         print('Product {} is not online.'.format(<product_id>))
 
-When trying to download an offline product with :meth:`~SentinelAPI.download` it will trigger its retrieval from the LTA.
+When trying to download an offline product with :meth:`~sentinel.SentinelAPI.download` it will trigger its retrieval from the LTA.
 
-Given a list of offline and online products, :meth:`~SentinelAPI.download_all` will download online products, while concurrently triggering the retrieval of offline products from the LTA.
+Given a list of offline and online products, :meth:`~sentinel.SentinelAPI.download_all` will download online products, while concurrently triggering the retrieval of offline products from the LTA.
 Offline products that become online while downloading will be added to the download queue.
-:meth:`~SentinelAPI.download_all` terminates when the download queue is empty, even if not all products were retrieved from the LTA.
-We suggest repeatedly calling :meth:`~SentinelAPI.download_all` to download all products, either manually or using a third-party library, e.g. `tenacity <https://github.com/jd/tenacity>`_.
+:meth:`~sentinel.SentinelAPI.download_all` terminates when the download queue is empty, even if not all products were retrieved from the LTA.
+We suggest repeatedly calling :meth:`~sentinel.SentinelAPI.download_all` to download all products, either manually or using a third-party library, e.g. `tenacity <https://github.com/jd/tenacity>`_.
 
 
 .. code-block:: python
@@ -326,13 +330,109 @@ or add a custom handler for :mod:`sentinelsat` (as implemented in `cli.py`)
   h.setFormatter(fmt)
   logger.addHandler(h)
 
+
+Product node API
+----------------
+
+The product node API is implemented in the :mod:`sentinelsat.products`
+module and, in addition to all the features provided by the standard API,
+allows to download only some of the files included in a Sentinel product
+exploiting the `node selection feature`_ provided by the OData_ Web API.
+
+.. code-block:: python
+
+  from sentinelsat import SentinelProductsAPI, make_path_filter
+
+  # define the filter function to select files (to be excluded in this case)
+  nodefilter = make_path_filter("*measurement/*", exclude=True)
+
+  # connect to the API
+  api = SentinelProductAPI("user", "password")
+
+  # download a single product excluding measurement files
+  api.download(<product_id>, nodefilter=nodefilter)
+
+Of course it also works for multiple products:
+
+.. code-block:: python
+
+  # download a multiple products excluding measurement files
+  api.download_all(<products>, nodefilter=nodefilter)
+
+The example above downloads all files in each of the requested products only
+*excluding* (large) measurements files.
+This can be useful for analyses exclusively based on product annotations
+(including calibration annotations) or, e.g., to download the KML preview
+included in the product.
+
+The file selection is implemented by specifying a *nodefilter* function that
+is called for each file (only excluding the manifest which is always downloaded)
+in the requested products and returns `True` if the file have to be downloaded,
+`False` otherwise.
+
+The *nodefilter* function has the following signature:
+
+.. code-block:: python
+
+  def nodefilter(node_info: dict) -> bool:
+      ...
+
+The *node_info* parameter is a dictionary containing (at least) the following
+keys:
+
+:url:
+    the URL to download the product file node
+:node_path:
+    the file *path* within the product (e.g. "./preview/map-overlay.kml")
+:size:
+    the file size in bytes (int)
+:md5:
+    the file md5 checksum
+
+In the example above it has been used an helper function
+(:func:`sentinelsat.products.make_path_filter`), provided by the
+:mod:`sentinelsat.products` module, that generates *nodefilter* functions
+based on glob expressions applied to the *node_path* value.
+
+The following code:
+
+.. code-block:: python
+
+  nodefilter = make_path_filter("*measurement/*", exclude=True)
+
+is more or less equivalent to:
+
+.. code-block:: python
+
+  import fnmatch
+
+  def node_filter(node_info):
+    if not fnmatch.fnmatch(node_info["node_path"].lower(), pattern):
+      return True
+    else:
+      return False
+
+The :mod:`sentinelsat` product node API also provides:
+
+* the :func:`sentinelsat.products.make_size_filter` helper to build filters
+  based on the file size and
+* the pre-build :func:`sentinelsat.products.all_nodes_filter` *nodefilter*
+  function to download all files.
+  This function can be used to download the entire Sentinel product as a
+  directory instead of downloading a single zip archive.
+
+Of course the user can write its own *nodefilter* functions if necessary.
+
+
+.. _`node selection feature`: https://scihub.copernicus.eu/twiki/do/view/SciHubUserGuide/ODataAPI#Discover_Product_Nodes
+
 More Examples
 -------------
 
-Search Sentinel 2 by tile
-^^^^^^^^^^^^^^^^^^^^^^^^^
+Search Sentinel-2 L1C by tile
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-To search for recent Sentinel 2 imagery by MGRS tile, use the `tileid` parameter:
+To search for recent Sentinel-2 L1C imagery by MGRS tile, you can use the `tileid` parameter:
 
 .. code-block:: python
 
@@ -357,31 +457,40 @@ To search for recent Sentinel 2 imagery by MGRS tile, use the `tileid` parameter
 
   api.download_all(products)
 
-NB: The `tileid` parameter may be missing from the metadata in SciHub's DHuS catalogue,
-in particular for older products. To be on the safe side, combine the `tileid` search
-with a `filename` pattern search:
+NB: Older products may not be found with the `tileid` parameter. On the Copernicus Open Access Hub,
+it seems to be available for most L1C products (product type S2MSI1C) from recent years,
+but this differs by region, too.
+To be on the safe side, combine the `tileid` search with a `filename` pattern search:
 
 .. code-block:: python
 
   kw = query_kwargs.copy()
-  kw['raw'] = 'tileid:{tileid} OR filename:*_T{tileid}_*'.format(tileid=tile)
+  kw['raw'] = f'tileid:{tile} OR filename:*_T{tile}_*'
   pp = api.query(**kw)
 
-API Reference
--------------
 
-.. automodule:: sentinelsat
+Download only some of the channels of a Sentinel-1 product
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. autoclass:: SentinelAPI
-    :members:
+In some cases the user may be interested only to a specific sub-swath and/or
+polarization of Sentinel1 SLC products (e.g. for an interferometric analysis).
 
-.. autofunction:: read_geojson
+The following *nodefilter* function only downloads "HH" polarization
+measurement files for sub-swaths "EW1" and "EW2":
 
-.. autofunction:: geojson_to_wkt
+.. code-block:: python
 
-Exceptions
-^^^^^^^^^^
+  nodefilter = make_path_filter("*s1?-ew[12]-slc-hh-*.tiff")
 
-.. autoexception:: SentinelAPIError
+Considering that e.g. a Dual Pol Extended Wide Swath Sentinel-1 product
+includes 2 measurement files for each of the 5 sub-swath the above filter
+allows to reduce consistently the amount of data to be downloaded
+(form 10 to 2 TIFF files approx 700MB each).
 
-.. autoexception:: InvalidChecksumError
+Of course the *nodefilter* function have to be used to initialize the
+product node API :class:`sentinelsat.products.SentinelProductsAPI` as
+explained above.
+
+.. code-block:: python
+
+    api.download_all(<products>, nodefilter=nodefilter)

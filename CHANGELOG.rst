@@ -3,16 +3,38 @@ Change Log
 
 All notable changes to ``sentinelsat`` will be listed here.
 
-[master] – YYYY-MM-DD
+[main] – YYYY-MM-DD
 ---------------------
+* Dropped support for Python 2.7. Now setuptools requires Python >= 3.5.
 
 Added
 ~~~~~
-* display DHuS server version with CLI flag --info (#367 @thomasyoung-audet)
+* Display DHuS server version with CLI flag ``--info`` (#367 @thomasyoung-audet)
+* Added searching by placenames with the CLI flag ``--location`` (#372 @thomasyoung-audet)
+* Added CLI support for ``--geometry`` input as a string (#381 @thomasyoung-audet)
+* Download quicklooks directly with the CLI flag ``--quicklook`` (#361 @mackland)
+* Added ``setinelsat/__main__.py`` (#412 @avalentino)
+* Added ``get_stream()`` (#430 @fwfichtner)
+* New ``sentinelsat/products.py`` module providing a "product nodes" API that
+  allows to filter and download only selected files of the requested products
+  (#414 @avalentino)
+
 
 Changed
 ~~~~~~~
-* 
+* Replaced ``SentinelAPIError`` exceptions with more specific types:
+
+  * ``SentinelAPIError`` -- the parent, catch-all exception. Only used when no other more specific exception can be applied.
+  * ``SentinelAPILTAError`` -- raised when retrieving a product from the Long Term Archive.
+  * ``ServerError`` -- raised when the server responded in an unexpected manner, typically due to undergoing maintenance.
+  * ``UnauthorizedError`` -- raised when attempting to retrieve a product with incorrect credentials.
+  * ``QuerySyntaxError`` -- raised when the query string could not be parsed on the server side.
+  * ``QueryLengthError`` -- raised when the query string length was excessively long.
+  * ``InvalidKeyError`` -- raised when product with given key was not found on the server.
+  * ``InvalidChecksumError`` -- MD5 checksum of a local file does not match the one from the server.
+
+  The new exceptions are still subclasses of ``SentinelAPIError`` for backwards compatibility.
+  (#285 @valgur, @dwlsalmeida)
 
 Deprecated
 ~~~~~~~~~~
@@ -20,11 +42,12 @@ Deprecated
 
 Fixed
 ~~~~~
-* fixed failing Read The Docs builds (#370)
+* fix location information for Nominatim bounding box queries (#384)
 
 Development Changes
 ~~~~~~~~~~~~~~~~~~~
 * add Windows, macOS, Python 3.8 to Travis tests #374
+* fixed failing Read The Docs builds (#370)
 
 
 [0.14] – 2020-06-12

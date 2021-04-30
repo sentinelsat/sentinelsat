@@ -1,12 +1,11 @@
-# -*- coding: utf-8 -*-
 import hashlib
-import sys
 
 import pytest
 import requests
 import requests_mock
 
-from sentinelsat import SentinelAPI, SentinelAPIError
+from sentinelsat import SentinelAPI
+from sentinelsat.exceptions import SentinelAPIError, QuerySyntaxError, InvalidKeyError
 from sentinelsat.sentinel import _parse_opensearch_response
 
 
@@ -31,15 +30,14 @@ def test_checksumming_progressbars(capsys, fixture_path):
 
 @pytest.mark.vcr
 @pytest.mark.scihub
-@pytest.mark.skipif(sys.version_info[0] < 3, reason="ignored for Python 2.7")
 def test_unicode_support(api):
     test_str = "٩(●̮̮̃•̃)۶:"
 
-    with pytest.raises(SentinelAPIError) as excinfo:
+    with pytest.raises(QuerySyntaxError) as excinfo:
         api.count(raw=test_str)
     assert test_str == excinfo.value.response.json()["feed"]["opensearch:Query"]["searchTerms"]
 
-    with pytest.raises(SentinelAPIError) as excinfo:
+    with pytest.raises(InvalidKeyError) as excinfo:
         api.get_product_odata(test_str)
     assert test_str in excinfo.value.response.json()["error"]["message"]["value"]
 
@@ -92,7 +90,7 @@ def test_get_products_invalid_json(test_wkt):
         )
         with pytest.raises(SentinelAPIError) as excinfo:
             api.query(area=test_wkt, date=("20151219", "20151228"), platformname="Sentinel-2")
-        assert excinfo.value.msg == "Invalid API response."
+        assert excinfo.value.msg == "Invalid API response"
 
 
 @pytest.mark.scihub

@@ -1,0 +1,197 @@
+interactions:
+- request:
+    body: q=beginPosition%3A%5BNOW-1DAY+TO+NOW%5D+footprint%3A%22Intersects%28POLYGON%28%28-66.2695+-8.0592%2C-66.2695+0.7031%2C-57.3047+0.7031%2C-57.3047+-8.0592%2C-66.2695+-8.0592%29%29%29%22
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '183'
+      Content-Type:
+      - application/x-www-form-urlencoded; charset=UTF-8
+      User-Agent:
+      - sentinelsat/0.14
+    method: POST
+    uri: https://scihub.copernicus.eu/apihub/search?format=json&rows=1&start=0
+  response:
+    body:
+      string: '{"feed":{"xmlns:opensearch":"http://a9.com/-/spec/opensearch/1.1/","xmlns":"http://www.w3.org/2005/Atom","title":"Sentinels
+        Scientific Data Hub search results for: beginPosition:[NOW-1DAY TO NOW] footprint:\"Intersects(POLYGON((-66.2695
+        -8.0592,-66.2695 0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\"","subtitle":"Displaying
+        0 to 0 of 25 total results. Request done in 0.064 seconds.","updated":"2020-07-07T15:59:41.205Z","author":{"name":"Sentinels
+        Scientific Data Hub"},"id":"https://scihub.copernicus.eu/apihub/search?q=beginPosition:[NOW-1DAY
+        TO NOW] footprint:\"Intersects(POLYGON((-66.2695 -8.0592,-66.2695 0.7031,-57.3047
+        0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\"","opensearch:totalResults":"25","opensearch:startIndex":"0","opensearch:itemsPerPage":"1","opensearch:Query":{"role":"request","searchTerms":"beginPosition:[NOW-1DAY
+        TO NOW] footprint:\"Intersects(POLYGON((-66.2695 -8.0592,-66.2695 0.7031,-57.3047
+        0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\"","startPage":"1"},"link":[{"rel":"self","type":"application/atom+xml","href":"https://scihub.copernicus.eu/apihub/search?q=beginPosition:[NOW-1DAY
+        TO NOW] footprint:\"Intersects(POLYGON((-66.2695 -8.0592,-66.2695 0.7031,-57.3047
+        0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\"&start=0&rows=1"},{"rel":"first","type":"application/atom+xml","href":"https://scihub.copernicus.eu/apihub/search?q=beginPosition:[NOW-1DAY
+        TO NOW] footprint:\"Intersects(POLYGON((-66.2695 -8.0592,-66.2695 0.7031,-57.3047
+        0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\"&start=0&rows=1"},{"rel":"next","type":"application/atom+xml","href":"https://scihub.copernicus.eu/apihub/search?q=beginPosition:[NOW-1DAY
+        TO NOW] footprint:\"Intersects(POLYGON((-66.2695 -8.0592,-66.2695 0.7031,-57.3047
+        0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\"&start=1&rows=1"},{"rel":"last","type":"application/atom+xml","href":"https://scihub.copernicus.eu/apihub/search?q=beginPosition:[NOW-1DAY
+        TO NOW] footprint:\"Intersects(POLYGON((-66.2695 -8.0592,-66.2695 0.7031,-57.3047
+        0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\"&start=24&rows=1"},{"rel":"search","type":"application/opensearchdescription+xml","href":"opensearch_description.xml"}],"entry":{"title":"S3B_SL_2_LST____20200707T133007_20200707T133307_20200707T152337_0179_041_024_2880_LN2_O_NR_004","link":[{"href":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''b721f2f4-b841-48fa-8199-9d2e789cf419'')/$value"},{"rel":"alternative","href":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''b721f2f4-b841-48fa-8199-9d2e789cf419'')/"},{"rel":"icon","href":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''b721f2f4-b841-48fa-8199-9d2e789cf419'')/Products(''Quicklook'')/$value"}],"id":"b721f2f4-b841-48fa-8199-9d2e789cf419","summary":"Date:
+        2020-07-07T13:30:07.104Z, Instrument: SLSTR, Mode: , Satellite: Sentinel-3,
+        Size: 60.92 MB","date":[{"name":"creationdate","content":"2020-07-07T15:23:37Z"},{"name":"beginposition","content":"2020-07-07T13:30:07.104Z"},{"name":"endposition","content":"2020-07-07T13:33:07.104Z"},{"name":"ingestiondate","content":"2020-07-07T15:52:58.956Z"}],"int":[{"name":"orbitnumber","content":"11461"},{"name":"relativeorbitnumber","content":"24"}],"str":[{"name":"ecmwf","content":"FORECAST"},{"name":"filename","content":"S3B_SL_2_LST____20200707T133007_20200707T133307_20200707T152337_0179_041_024_2880_LN2_O_NR_004.SEN3"},{"name":"gmlfootprint","content":"<gml:Polygon
+        srsName=\"http://www.opengis.net/gml/srs/epsg.xml#4326\" xmlns:gml=\"http://www.opengis.net/gml\">\n   <gml:outerBoundaryIs>\n      <gml:LinearRing>\n         <gml:coordinates>-0.088435,-62.3261
+        -0.190028,-61.8792 -0.2982,-61.4276 -0.401047,-60.984 -0.490561,-60.5356 -0.600319,-60.0889
+        -0.695394,-59.6458 -0.804185,-59.1971 -0.894539,-58.7511 -1.00314,-58.3043
+        -1.10486,-57.8574 -1.19841,-57.412 -1.30905,-56.9618 -1.40616,-56.5179 -1.50952,-56.0666
+        -1.60813,-55.6248 -1.71099,-55.1765 -1.80573,-54.724 -1.90709,-54.279 -2.01014,-53.8288
+        -2.11061,-53.3881 -2.21294,-52.9379 -2.31449,-52.4937 -2.4075,-52.0419 -2.50913,-51.5944
+        -2.61076,-51.1456 -2.71276,-50.6957 -2.80789,-50.2512 -2.91238,-49.8037 -3.01097,-49.3594
+        -3.04577,-49.1783 -0.429039,-48.6032 2.2314,-48.0087 4.89104,-47.4028 7.54952,-46.7836
+        7.58922,-46.9629 7.69427,-47.4085 7.79608,-47.8571 7.90287,-48.3142 8.00949,-48.7658
+        8.11529,-49.2145 8.21088,-49.668 8.31419,-50.1109 8.41776,-50.5681 8.5211,-51.0226
+        8.62154,-51.467 8.72398,-51.9225 8.81501,-52.3736 8.91712,-52.8299 9.01755,-53.2839
+        9.11658,-53.7375 9.21044,-54.1852 9.3058,-54.6387 9.40106,-55.0955 9.5002,-55.5481
+        9.59948,-56.0053 9.68628,-56.4545 9.78506,-56.9114 9.88247,-57.3742 9.97053,-57.8253
+        10.0541,-58.2823 10.153,-58.7349 10.2481,-59.1973 10.3336,-59.6511 10.423,-60.1079
+        7.78251,-60.6408 5.14294,-61.1889 2.50457,-61.7534 -0.088435,-62.3261</gml:coordinates>\n      </gml:LinearRing>\n   </gml:outerBoundaryIs>\n</gml:Polygon>"},{"name":"format","content":"SAFE"},{"name":"instrumentshortname","content":"SLSTR"},{"name":"sensoroperationalmode","content":"Earth
+        Observation"},{"name":"instrumentname","content":"Sea and Land Surface Temperature
+        Radiometer"},{"name":"footprint","content":"MULTIPOLYGON (((-49.1783 -3.04577,
+        -48.6032 -0.429039, -48.0087 2.2314, -47.4028 4.89104, -46.7836 7.54952, -46.9629
+        7.58922, -47.4085 7.69427, -47.8571 7.79608, -48.3142 7.90287, -48.7658 8.00949,
+        -49.2145 8.11529, -49.668 8.21088, -50.1109 8.31419, -50.5681 8.41776, -51.0226
+        8.5211, -51.467 8.62154, -51.9225 8.72398, -52.3736 8.81501, -52.8299 8.91712,
+        -53.2839 9.01755, -53.7375 9.11658, -54.1852 9.21044, -54.6387 9.3058, -55.0955
+        9.40106, -55.5481 9.5002, -56.0053 9.59948, -56.4545 9.68628, -56.9114 9.78506,
+        -57.3742 9.88247, -57.8253 9.97053, -58.2823 10.0541, -58.7349 10.153, -59.1973
+        10.2481, -59.6511 10.3336, -60.1079 10.423, -60.6408 7.78251, -61.1889 5.14294,
+        -61.7534 2.50457, -62.3261 -0.088435, -61.8792 -0.190028, -61.4276 -0.2982,
+        -60.984 -0.401047, -60.5356 -0.490561, -60.0889 -0.600319, -59.6458 -0.695394,
+        -59.1971 -0.804185, -58.7511 -0.894539, -58.3043 -1.00314, -57.8574 -1.10486,
+        -57.412 -1.19841, -56.9618 -1.30905, -56.5179 -1.40616, -56.0666 -1.50952,
+        -55.6248 -1.60813, -55.1765 -1.71099, -54.724 -1.80573, -54.279 -1.90709,
+        -53.8288 -2.01014, -53.3881 -2.11061, -52.9379 -2.21294, -52.4937 -2.31449,
+        -52.0419 -2.4075, -51.5944 -2.50913, -51.1456 -2.61076, -50.6957 -2.71276,
+        -50.2512 -2.80789, -49.8037 -2.91238, -49.3594 -3.01097, -49.1783 -3.04577)))"},{"name":"mode","content":"EO"},{"name":"platformidentifier","content":"2018-039A"},{"name":"onlinequalitycheck","content":"PASSED"},{"name":"orbitdirection","content":"descending"},{"name":"pduduration","content":"179"},{"name":"passnumber","content":"22922"},{"name":"passdirection","content":"descending"},{"name":"procfacilityname","content":"Land
+        SLSTR and SYN Processing and Archiving Centre [LN2]"},{"name":"procfacilityorg","content":"European
+        Space Agency"},{"name":"processinglevel","content":"2"},{"name":"processingname","content":"Data
+        Processing"},{"name":"productlevel","content":"L2"},{"name":"producttype","content":"SL_2_LST___"},{"name":"relorbitdir","content":"descending"},{"name":"relpassnumber","content":"48"},{"name":"relpassdirection","content":"descending"},{"name":"platformname","content":"Sentinel-3"},{"name":"size","content":"60.92
+        MB"},{"name":"timeliness","content":"Near Real Time"},{"name":"pdualongtrackcoord","content":"2880"},{"name":"identifier","content":"S3B_SL_2_LST____20200707T133007_20200707T133307_20200707T152337_0179_041_024_2880_LN2_O_NR_004"},{"name":"uuid","content":"b721f2f4-b841-48fa-8199-9d2e789cf419"}]}}}'
+    headers:
+      content-length:
+      - '7584'
+      content-type:
+      - application/json
+      pragma:
+      - no-cache
+      server:
+      - Apache-Coyote/1.1
+      transfer-encoding:
+      - chunked
+      vary:
+      - Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: q=beginPosition%3A%5BNOW-1DAY+TO+NOW%5D+footprint%3A%22Intersects%28POLYGON%28%28-78.046875+46.377254205100286%2C-75.76171874999999+43.32517767999295%2C-71.279296875+46.55886030311717%2C-78.046875+46.377254205100286%29%29%29%22
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '227'
+      Content-Type:
+      - application/x-www-form-urlencoded; charset=UTF-8
+      User-Agent:
+      - sentinelsat/0.14
+    method: POST
+    uri: https://scihub.copernicus.eu/apihub/search?format=json&rows=1&start=0
+  response:
+    body:
+      string: '{"feed":{"xmlns:opensearch":"http://a9.com/-/spec/opensearch/1.1/","xmlns":"http://www.w3.org/2005/Atom","title":"Sentinels
+        Scientific Data Hub search results for: beginPosition:[NOW-1DAY TO NOW] footprint:\"Intersects(POLYGON((-78.046875
+        46.377254205100286,-75.76171874999999 43.32517767999295,-71.279296875 46.55886030311717,-78.046875
+        46.377254205100286)))\"","subtitle":"Displaying 0 to 0 of 16 total results.
+        Request done in 0.164 seconds.","updated":"2020-07-07T15:59:42.166Z","author":{"name":"Sentinels
+        Scientific Data Hub"},"id":"https://scihub.copernicus.eu/apihub/search?q=beginPosition:[NOW-1DAY
+        TO NOW] footprint:\"Intersects(POLYGON((-78.046875 46.377254205100286,-75.76171874999999
+        43.32517767999295,-71.279296875 46.55886030311717,-78.046875 46.377254205100286)))\"","opensearch:totalResults":"16","opensearch:startIndex":"0","opensearch:itemsPerPage":"1","opensearch:Query":{"role":"request","searchTerms":"beginPosition:[NOW-1DAY
+        TO NOW] footprint:\"Intersects(POLYGON((-78.046875 46.377254205100286,-75.76171874999999
+        43.32517767999295,-71.279296875 46.55886030311717,-78.046875 46.377254205100286)))\"","startPage":"1"},"link":[{"rel":"self","type":"application/atom+xml","href":"https://scihub.copernicus.eu/apihub/search?q=beginPosition:[NOW-1DAY
+        TO NOW] footprint:\"Intersects(POLYGON((-78.046875 46.377254205100286,-75.76171874999999
+        43.32517767999295,-71.279296875 46.55886030311717,-78.046875 46.377254205100286)))\"&start=0&rows=1"},{"rel":"first","type":"application/atom+xml","href":"https://scihub.copernicus.eu/apihub/search?q=beginPosition:[NOW-1DAY
+        TO NOW] footprint:\"Intersects(POLYGON((-78.046875 46.377254205100286,-75.76171874999999
+        43.32517767999295,-71.279296875 46.55886030311717,-78.046875 46.377254205100286)))\"&start=0&rows=1"},{"rel":"next","type":"application/atom+xml","href":"https://scihub.copernicus.eu/apihub/search?q=beginPosition:[NOW-1DAY
+        TO NOW] footprint:\"Intersects(POLYGON((-78.046875 46.377254205100286,-75.76171874999999
+        43.32517767999295,-71.279296875 46.55886030311717,-78.046875 46.377254205100286)))\"&start=1&rows=1"},{"rel":"last","type":"application/atom+xml","href":"https://scihub.copernicus.eu/apihub/search?q=beginPosition:[NOW-1DAY
+        TO NOW] footprint:\"Intersects(POLYGON((-78.046875 46.377254205100286,-75.76171874999999
+        43.32517767999295,-71.279296875 46.55886030311717,-78.046875 46.377254205100286)))\"&start=15&rows=1"},{"rel":"search","type":"application/opensearchdescription+xml","href":"opensearch_description.xml"}],"entry":{"title":"S1B_WV_OCN__2SSV_20200707T105001_20200707T110004_022364_02A724_0EF9","link":[{"href":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''17ffcf0b-9349-42e1-a72f-d629dc3617f2'')/$value"},{"rel":"alternative","href":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''17ffcf0b-9349-42e1-a72f-d629dc3617f2'')/"},{"rel":"icon","href":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''17ffcf0b-9349-42e1-a72f-d629dc3617f2'')/Products(''Quicklook'')/$value"}],"id":"17ffcf0b-9349-42e1-a72f-d629dc3617f2","summary":"Date:
+        2020-07-07T10:50:01.2Z, Instrument: SAR-C SAR, Mode: VV, Satellite: Sentinel-1,
+        Size: 29.29 MB","date":[{"name":"beginposition","content":"2020-07-07T10:50:01.2Z"},{"name":"endposition","content":"2020-07-07T11:00:05.387Z"},{"name":"ingestiondate","content":"2020-07-07T15:18:14.042Z"}],"int":[{"name":"missiondatatakeid","content":"173860"},{"name":"orbitnumber","content":"22364"},{"name":"lastorbitnumber","content":"22364"},{"name":"relativeorbitnumber","content":"113"},{"name":"lastrelativeorbitnumber","content":"113"}],"str":[{"name":"sensoroperationalmode","content":"WV"},{"name":"swathidentifier","content":"WV2
+        WV1"},{"name":"orbitdirection","content":"DESCENDING"},{"name":"producttype","content":"OCN"},{"name":"timeliness","content":"Fast-24h"},{"name":"platformname","content":"Sentinel-1"},{"name":"platformidentifier","content":"2016-025A"},{"name":"instrumentname","content":"Synthetic
+        Aperture Radar (C-band)"},{"name":"instrumentshortname","content":"SAR-C SAR"},{"name":"filename","content":"S1B_WV_OCN__2SSV_20200707T105001_20200707T110004_022364_02A724_0EF9.SAFE"},{"name":"format","content":"SAFE"},{"name":"productclass","content":"S"},{"name":"polarisationmode","content":"VV"},{"name":"acquisitiontype","content":"NOMINAL"},{"name":"status","content":"ARCHIVED"},{"name":"size","content":"29.29
+        MB"},{"name":"gmlfootprint","content":"<gml:Polygon srsName=\"http://www.opengis.net/gml/srs/epsg.xml#4326\"
+        xmlns:gml=\"http://www.opengis.net/gml\">\n   <gml:outerBoundaryIs>\n      <gml:LinearRing>\n         <gml:coordinates>30.824785,-74.826614
+        30.857645,-75.034821 31.032049,-74.99765 32.622364,-74.658783 32.796432,-74.621155
+        34.38681,-74.277321 34.559334,-74.239433 36.149521,-73.892883 36.323265,-73.854042
+        37.912498,-73.498291 38.086334,-73.458641 39.674,-73.095795 39.847916,-73.055229
+        41.434044,-72.684776 43.194477,-72.270615 43.36816,-72.230438 44.952457,-71.83802
+        46.882702,-71.345116 48.638721,-70.884415 50.219719,-70.448555 51.973396,-69.954201
+        53.724155,-69.42588 53.896801,-69.3722 55.473843,-68.871567 55.646137,-68.81427
+        57.221062,-68.278877 57.393265,-68.219719 58.967155,-67.655556 59.138435,-67.591476
+        60.711021,-66.986168 60.882542,-66.917023 62.452286,-66.263222 62.621746,-66.189003
+        64.190529,-65.487167 64.360664,-65.393814 65.926392,-64.62191 66.096443,-64.526939
+        66.057846,-64.091545 66.378929,-60.080818 66.550934,-59.95509 66.498291,-59.505024
+        66.326569,-59.633751 64.788078,-60.709938 64.613853,-60.826149 63.068733,-61.79203
+        62.894054,-61.896828 61.342312,-62.762405 61.167137,-62.857883 59.611607,-63.658237
+        59.436649,-63.745552 57.880798,-64.505722 57.704941,-64.589622 56.141842,-65.261864
+        55.965088,-65.337379 54.400406,-65.973427 54.222515,-66.037956 52.655926,-66.639328
+        52.47834,-66.704948 50.909054,-67.269897 50.731579,-67.331818 49.157242,-67.848122
+        48.980907,-67.906181 47.407021,-68.424423 47.22908,-68.482445 45.651802,-68.956741
+        45.474243,-69.01548 43.8964,-69.473373 43.718689,-69.525276 42.139122,-69.974022
+        41.96069,-70.024635 40.381229,-70.457878 40.202236,-70.506905 38.621178,-70.926521
+        38.442215,-70.973991 36.857712,-71.375977 36.678539,-71.422134 35.096069,-71.818665
+        34.916622,-71.863663 33.330956,-72.251022 33.153793,-72.294357 31.566965,-72.673111
+        31.387167,-72.716103 30.824785,-74.826614 30.824785,-74.826614 30.824785,-74.826614</gml:coordinates>\n      </gml:LinearRing>\n   </gml:outerBoundaryIs>\n</gml:Polygon>"},{"name":"footprint","content":"MULTIPOLYGON
+        (((-74.826614 30.824785, -72.716103 31.387167, -72.673111 31.566965, -72.294357
+        33.153793, -72.251022 33.330956, -71.863663 34.916622, -71.818665 35.096069,
+        -71.422134 36.678539, -71.375977 36.857712, -70.973991 38.442215, -70.926521
+        38.621178, -70.506905 40.202236, -70.457878 40.381229, -70.024635 41.96069,
+        -69.974022 42.139122, -69.525276 43.718689, -69.473373 43.8964, -69.01548
+        45.474243, -68.956741 45.651802, -68.482445 47.22908, -68.424423 47.407021,
+        -67.906181 48.980907, -67.848122 49.157242, -67.331818 50.731579, -67.269897
+        50.909054, -66.704948 52.47834, -66.639328 52.655926, -66.037956 54.222515,
+        -65.973427 54.400406, -65.337379 55.965088, -65.261864 56.141842, -64.589622
+        57.704941, -64.505722 57.880798, -63.745552 59.436649, -63.658237 59.611607,
+        -62.857883 61.167137, -62.762405 61.342312, -61.896828 62.894054, -61.79203
+        63.068733, -60.826149 64.613853, -60.709938 64.788078, -59.633751 66.326569,
+        -59.505024 66.498291, -59.95509 66.550934, -60.080818 66.378929, -64.091545
+        66.057846, -64.526939 66.096443, -64.62191 65.926392, -65.393814 64.360664,
+        -65.487167 64.190529, -66.189003 62.621746, -66.263222 62.452286, -66.917023
+        60.882542, -66.986168 60.711021, -67.591476 59.138435, -67.655556 58.967155,
+        -68.219719 57.393265, -68.278877 57.221062, -68.81427 55.646137, -68.871567
+        55.473843, -69.3722 53.896801, -69.42588 53.724155, -69.954201 51.973396,
+        -70.448555 50.219719, -70.884415 48.638721, -71.345116 46.882702, -71.83802
+        44.952457, -72.230438 43.36816, -72.270615 43.194477, -72.684776 41.434044,
+        -73.055229 39.847916, -73.095795 39.674, -73.458641 38.086334, -73.498291
+        37.912498, -73.854042 36.323265, -73.892883 36.149521, -74.239433 34.559334,
+        -74.277321 34.38681, -74.621155 32.796432, -74.658783 32.622364, -74.99765
+        31.032049, -75.034821 30.857645, -74.826614 30.824785)))"},{"name":"identifier","content":"S1B_WV_OCN__2SSV_20200707T105001_20200707T110004_022364_02A724_0EF9"},{"name":"uuid","content":"17ffcf0b-9349-42e1-a72f-d629dc3617f2"}]}}}'
+    headers:
+      content-length:
+      - '8472'
+      content-type:
+      - application/json
+      pragma:
+      - no-cache
+      server:
+      - Apache-Coyote/1.1
+      transfer-encoding:
+      - chunked
+      vary:
+      - Accept-Encoding
+    status:
+      code: 200
+      message: OK
+version: 1

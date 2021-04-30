@@ -5,11 +5,11 @@ sentinelsat
     :target: http://badge.fury.io/py/sentinelsat
     :alt: PyPI package
 
-.. image:: https://travis-ci.com/sentinelsat/sentinelsat.svg?branch=master
+.. image:: https://travis-ci.com/sentinelsat/sentinelsat.svg?branch=main
     :target: https://travis-ci.com/sentinelsat/sentinelsat
     :alt: Travis-CI
 
-.. image:: https://codecov.io/gh/sentinelsat/sentinelsat/branch/master/graph/badge.svg
+.. image:: https://codecov.io/gh/sentinelsat/sentinelsat/branch/main/graph/badge.svg
     :target: https://codecov.io/gh/sentinelsat/sentinelsat
     :alt: codecov.io code coverage
 
@@ -73,11 +73,11 @@ Python Library
 
 .. code-block:: python
 
-  from sentinelsat.sentinel import SentinelAPI, read_geojson, geojson_to_wkt
+  from sentinelsat import SentinelAPI, read_geojson, geojson_to_wkt
   from datetime import date
 
   # connect to the API
-  api = SentinelAPI('user', 'password', 'https://scihub.copernicus.eu/dhus')
+  api = SentinelAPI('user', 'password', 'https://scihub.copernicus.eu/apihub')
 
   # download single scene by known product id
   api.download(<product_id>)
@@ -133,7 +133,7 @@ orbit, for the year 2015.
 
   sentinelsat -u <user> -p <password> -g <search_polygon.geojson> -s 20150101 -e 20151231 -d \
   --producttype SLC -q "orbitdirection=Descending" \
-  --url "https://scihub.copernicus.eu/dhus"
+  --url "https://scihub.copernicus.eu/apihub"
 
 Username, password and DHuS URL can also be set via environment variables for convenience.
 
@@ -142,7 +142,7 @@ Username, password and DHuS URL can also be set via environment variables for co
   # same result as query above
   export DHUS_USER="<user>"
   export DHUS_PASSWORD="<password>"
-  export DHUS_URL="https://scihub.copernicus.eu/dhus"
+  export DHUS_URL="https://scihub.copernicus.eu/apihub"
 
   sentinelsat -g <search_polygon.geojson> -s 20150101 -e 20151231 -d \
   --producttype SLC -q "orbitdirection=Descending"
@@ -219,7 +219,8 @@ Options
    * - -q
      - --query
      - TEXT
-     - Extra search keywords you want to use in the query. Separate keywords with comma. Example: 'producttype=GRD,polarisationmode=HH'.
+     - Extra search keywords you want to use in the query. Separate keywords with comma.
+       Example: 'producttype=GRD,polarisationmode=HH'.
    * - -f
      - --footprints
      -  
@@ -280,7 +281,7 @@ The full documentation is also published at http://sentinelsat.readthedocs.io/.
 Changelog
 =========
 
-See `CHANGELOG <CHANGELOG.rst>`_. You can also use GitHub's compare view to see the `changes in the master branch since last release <https://github.com/sentinelsat/sentinelsat/compare/v0.14...master>`_.
+See `CHANGELOG <CHANGELOG.rst>`_. You can also use GitHub's compare view to see the `changes in the main branch since last release <https://github.com/sentinelsat/sentinelsat/compare/v0.14...main>`_.
 
 Contributors
 ============
