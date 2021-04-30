@@ -750,7 +750,7 @@ class SentinelAPI:
 
 
         .. versionchanged:: 0.15
-           Added ``**kwargs`` parameter to allow easier specialization of the :class:`SentinelAPI` lcass.
+           Added ``**kwargs`` parameter to allow easier specialization of the :class:`SentinelAPI` class.
         """
 
         product_ids = list(products)
