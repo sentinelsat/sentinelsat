@@ -782,15 +782,16 @@ class SentinelAPI:
             trigger_thread.start()
 
             for dl_task in concurrent.futures.as_completed(dl_tasks.values()):
-                if not dl_task.exception() and dl_task.result():
+                if not dl_task.cancelled() and not dl_task.exception():
                     product_info = dl_task.result()
-                    downloaded_prods[product_info["id"]] = product_info
-                # This elif catches the first dl_task that did not complete because
-                # the product was not online and _download_online_retry returned None
-                elif not dl_task.exception() and dl_task.result() is None:
-                    stop_event.set()
-                    for task in dl_tasks.values():
-                        task.cancel()
+                    if product_info is not None:
+                        downloaded_prods[product_info["id"]] = product_info
+                    # This else catches the first dl_task that did not complete because
+                    # the product was not online and _download_online_retry returned None
+                    else:
+                        stop_event.set()
+                        for task in dl_tasks.values():
+                            task.cancel()
 
             # Wait for trigger_thread to finish. This could still place a product on the
             # retrieval_scheduled queue.
