@@ -86,22 +86,19 @@ class SentinelProductsAPI(sentinelsat.SentinelAPI):
     """
 
     def _path_to_url(self, product_info, path, urltype=None):
-        data = dict(id=product_info["id"], title=product_info["title"])
-        data["api_url"] = self.api_url
-        data["path"] = "/".join(["Nodes('{}')".format(item) for item in path.split("/")])
+        id = product_info["id"]
+        title = product_info["title"]
+        path = "/".join(["Nodes('{}')".format(item) for item in path.split("/")])
         if urltype == "value":
-            data["urltype"] = "/$value"
+            urltype = "/$value"
         elif urltype == "json":
-            data["urltype"] = "?$format=json"
+            urltype = "?$format=json"
         elif urltype == "full":
-            data["urltype"] = "?$format=json&$expand=Attributes"
+            urltype = "?$format=json&$expand=Attributes"
         elif urltype is None:
-            data["urltype"] = ""
-        else:
-            data["urltype"] = urltype
-        return "{api_url}odata/v1/Products('{id}')/Nodes('{title}.SAFE')/{path}{urltype}".format(
-            **data
-        )
+            urltype = ""
+        # else: pass urltype as is
+        return f"{self.api_url}odata/v1/Products('{id}')/Nodes('{title}.SAFE')/{path}{urltype}"
 
     def _get_manifest(self, product_info, path=None):
         url = self._path_to_url(product_info, "manifest.safe", "value")
