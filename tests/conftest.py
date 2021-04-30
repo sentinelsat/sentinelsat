@@ -215,11 +215,16 @@ def raw_products(api_kwargs, vcr, test_wkt):
 def _get_smallest(api_kwargs, cassette, online, n=3):
     api = SentinelAPI(**api_kwargs)
     url = "{}odata/v1/Products?$format=json&$top={}&$orderby=ContentLength&$filter=Online%20eq%20{}".format(
-        api_kwargs["api_url"], n, "true" if online else "false"
+        api_kwargs["api_url"], n + 20, "true" if online else "false"
     )
     with cassette:
         r = api.session.get(url)
     odata = [_parse_odata_response(x) for x in r.json()["d"]["results"]]
+    # Drop products that appear to be broken
+    blacklist = ["S2A_MSIL2A_20190528T113321_N0212_R080_T29UPB_20190528T142130"]
+    odata = [x for x in odata if x["title"] not in blacklist]
+    # Drop any empty products, which will cause issues
+    odata = [x for x in odata if x["size"] > 0][:n]
     assert len(odata) == n
     return odata
 

@@ -11,15 +11,18 @@ interactions:
       User-Agent:
       - sentinelsat/0.14
     method: GET
-    uri: https://scihub.copernicus.eu/apihub/odata/v1/Products('fdf6b29c-da32-4923-a543-270c89a3dd62')?$format=json
+    uri: https://scihub.copernicus.eu/apihub/odata/v1/Products('091f9a7a-73e6-4658-b559-2d5801797fd5')?$format=json
   response:
     body:
-      string: '{"d":{"__metadata":{"id":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''fdf6b29c-da32-4923-a543-270c89a3dd62'')","uri":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''fdf6b29c-da32-4923-a543-270c89a3dd62'')","type":"DHuS.Product","content_type":"application/octet-stream","media_src":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''fdf6b29c-da32-4923-a543-270c89a3dd62'')/$value","edit_media":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''fdf6b29c-da32-4923-a543-270c89a3dd62'')/$value"},"Id":"fdf6b29c-da32-4923-a543-270c89a3dd62","Name":"S1B_IW_RAW__0SSV_20170329T103209_20170329T103242_004922_0089AD_2DDD","ContentType":"application/octet-stream","ContentLength":"4828","ChildrenNumber":"0","Value":null,"CreationDate":"\/Date(1559032949166)\/","IngestionDate":"\/Date(1490792296140)\/","ModificationDate":"\/Date(1490792337187)\/","EvictionDate":null,"Online":false,"ContentDate":{"__metadata":{"type":"DHuS.TimeRange"},"Start":"\/Date(1490783529963)\/","End":"\/Date(1490783562363)\/"},"Checksum":{"__metadata":{"type":"DHuS.Checksum"},"Algorithm":"MD5","Value":"B8BD328A55FAB0946DD079164671AFD5"},"ContentGeometry":"<gml:Polygon
-        srsName=\"http://www.opengis.net/gml/srs/epsg.xml#4326\" xmlns:gml=\"http://www.opengis.net/gml\">   <gml:outerBoundaryIs>      <gml:LinearRing>         <gml:coordinates>11.1583,-71.9768
-        9.2012,-72.3679 8.9074,-70.1565 10.8685,-69.7517 11.1583,-71.9768 11.1583,-71.9768</gml:coordinates>      </gml:LinearRing>   </gml:outerBoundaryIs></gml:Polygon>","Products":{"__deferred":{"uri":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''fdf6b29c-da32-4923-a543-270c89a3dd62'')/Products"}},"Nodes":{"__deferred":{"uri":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''fdf6b29c-da32-4923-a543-270c89a3dd62'')/Nodes"}},"Attributes":{"__deferred":{"uri":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''fdf6b29c-da32-4923-a543-270c89a3dd62'')/Attributes"}},"Class":{"__deferred":{"uri":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''fdf6b29c-da32-4923-a543-270c89a3dd62'')/Class"}}}}'
+      string: '{"d":{"__metadata":{"id":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''091f9a7a-73e6-4658-b559-2d5801797fd5'')","uri":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''091f9a7a-73e6-4658-b559-2d5801797fd5'')","type":"DHuS.Product","content_type":"application/octet-stream","media_src":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''091f9a7a-73e6-4658-b559-2d5801797fd5'')/$value","edit_media":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''091f9a7a-73e6-4658-b559-2d5801797fd5'')/$value"},"Id":"091f9a7a-73e6-4658-b559-2d5801797fd5","Name":"S2A_MSIL1C_20180326T203051_N0206_R114_T09XWB_20180326T234951","ContentType":"application/octet-stream","ContentLength":"454","ChildrenNumber":"2","Value":null,"CreationDate":"\/Date(1522128730198)\/","IngestionDate":"\/Date(1522128523660)\/","ModificationDate":"\/Date(1595266331281)\/","EvictionDate":null,"Online":false,"OnDemand":false,"ContentDate":{"__metadata":{"type":"DHuS.TimeRange"},"Start":"\/Date(1522096251026)\/","End":"\/Date(1522096251026)\/"},"Checksum":{"__metadata":{"type":"DHuS.Checksum"},"Algorithm":"MD5","Value":"7d20ee03e7b749d9fea1021f3fedf0a9"},"ContentGeometry":"<gml:Polygon
+        srsName=\"http://www.opengis.net/gml/srs/epsg.xml#4326\" xmlns:gml=\"http://www.opengis.net/gml\">\n   <gml:outerBoundaryIs>\n      <gml:LinearRing>\n         <gml:coordinates>72.89250305314366,-127.10947
+        72.97069393899238,-126.97693 73.10461085419054,-126.74628 73.23827714389587,-126.51265
+        73.37173051090146,-126.27623 73.50487989600694,-126.03612 73.63783886905108,-125.79248
+        73.77050383170085,-125.54414 73.80945333531135,-125.47023 72.880581640185,-125.65718
+        72.89250305314366,-127.10947</gml:coordinates>\n      </gml:LinearRing>\n   </gml:outerBoundaryIs>\n</gml:Polygon>","Products":{"__deferred":{"uri":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''091f9a7a-73e6-4658-b559-2d5801797fd5'')/Products"}},"Nodes":{"__deferred":{"uri":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''091f9a7a-73e6-4658-b559-2d5801797fd5'')/Nodes"}},"Attributes":{"__deferred":{"uri":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''091f9a7a-73e6-4658-b559-2d5801797fd5'')/Attributes"}},"Class":{"__deferred":{"uri":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''091f9a7a-73e6-4658-b559-2d5801797fd5'')/Class"}}}}'
     headers:
       content-length:
-      - '2066'
+      - '2304'
       content-type:
       - application/json
       dataserviceversion:
@@ -30,6 +33,52 @@ interactions:
       - Apache-Coyote/1.1
       vary:
       - Accept-Encoding
+      x-content-type-options:
+      - nosniff
+      x-frame-options:
+      - DENY
+      x-xss-protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - sentinelsat/0.14
+    method: GET
+    uri: https://scihub.copernicus.eu/apihub/odata/v1/Products('1f62a176-c980-41dc-b3a1-c735d660c910')?$format=json
+  response:
+    body:
+      string: '{"d":{"__metadata":{"id":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''1f62a176-c980-41dc-b3a1-c735d660c910'')","uri":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''1f62a176-c980-41dc-b3a1-c735d660c910'')","type":"DHuS.Product","content_type":"application/octet-stream","media_src":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''1f62a176-c980-41dc-b3a1-c735d660c910'')/$value","edit_media":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''1f62a176-c980-41dc-b3a1-c735d660c910'')/$value"},"Id":"1f62a176-c980-41dc-b3a1-c735d660c910","Name":"S1A_WV_OCN__2SSH_20150603T092625_20150603T093332_006207_008194_521E","ContentType":"application/octet-stream","ContentLength":"213433","ChildrenNumber":"0","Value":null,"CreationDate":"\/Date(1447779361826)\/","IngestionDate":"\/Date(1447779361826)\/","ModificationDate":"\/Date(1619777802701)\/","EvictionDate":null,"Online":true,"OnDemand":false,"ContentDate":{"__metadata":{"type":"DHuS.TimeRange"},"Start":"\/Date(1433323584921)\/","End":"\/Date(1433324013345)\/"},"Checksum":{"__metadata":{"type":"DHuS.Checksum"},"Algorithm":"MD5","Value":"9eb46e4e31f77f108213e16bb8fbe088"},"ContentGeometry":"<gml:Polygon
+        srsName=\"http://www.opengis.net/gml/srs/epsg.xml#4326\" xmlns:gml=\"http://www.opengis.net/gml\">   <gml:outerBoundaryIs>      <gml:LinearRing>         <gml:coordinates>42.260288,-47.310867
+        42.298096,-47.558411 42.476940,-47.508129 42.439095,-47.259823 42.260288,-47.310867</gml:coordinates>      </gml:LinearRing>   </gml:outerBoundaryIs></gml:Polygon>","Products":{"__deferred":{"uri":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''1f62a176-c980-41dc-b3a1-c735d660c910'')/Products"}},"Nodes":{"__deferred":{"uri":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''1f62a176-c980-41dc-b3a1-c735d660c910'')/Nodes"}},"Attributes":{"__deferred":{"uri":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''1f62a176-c980-41dc-b3a1-c735d660c910'')/Attributes"}},"Class":{"__deferred":{"uri":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''1f62a176-c980-41dc-b3a1-c735d660c910'')/Class"}}}}'
+    headers:
+      content-length:
+      - '2089'
+      content-type:
+      - application/json
+      dataserviceversion:
+      - '2.0'
+      pragma:
+      - no-cache
+      server:
+      - Apache-Coyote/1.1
+      vary:
+      - Accept-Encoding
+      x-content-type-options:
+      - nosniff
+      x-frame-options:
+      - DENY
+      x-xss-protection:
+      - 1; mode=block
     status:
       code: 200
       message: OK
@@ -48,12 +97,12 @@ interactions:
     uri: https://scihub.copernicus.eu/apihub/odata/v1/Products('d8340134-878f-4891-ba4f-4df54f1e3ab4')?$format=json
   response:
     body:
-      string: '{"d":{"__metadata":{"id":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''d8340134-878f-4891-ba4f-4df54f1e3ab4'')","uri":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''d8340134-878f-4891-ba4f-4df54f1e3ab4'')","type":"DHuS.Product","content_type":"application/octet-stream","media_src":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''d8340134-878f-4891-ba4f-4df54f1e3ab4'')/$value","edit_media":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''d8340134-878f-4891-ba4f-4df54f1e3ab4'')/$value"},"Id":"d8340134-878f-4891-ba4f-4df54f1e3ab4","Name":"S1A_WV_OCN__2SSV_20150526T211029_20150526T211737_006097_007E78_134A","ContentType":"application/octet-stream","ContentLength":"213393","ChildrenNumber":"0","Value":null,"CreationDate":"\/Date(1560925273569)\/","IngestionDate":"\/Date(1447802881852)\/","ModificationDate":"\/Date(1593293961850)\/","EvictionDate":null,"Online":true,"ContentDate":{"__metadata":{"type":"DHuS.TimeRange"},"Start":"\/Date(1432674628984)\/","End":"\/Date(1432675057408)\/"},"Checksum":{"__metadata":{"type":"DHuS.Checksum"},"Algorithm":"MD5","Value":"a52ff03603400fbbe14727af518b425b"},"ContentGeometry":"<gml:Polygon
+      string: '{"d":{"__metadata":{"id":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''d8340134-878f-4891-ba4f-4df54f1e3ab4'')","uri":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''d8340134-878f-4891-ba4f-4df54f1e3ab4'')","type":"DHuS.Product","content_type":"application/octet-stream","media_src":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''d8340134-878f-4891-ba4f-4df54f1e3ab4'')/$value","edit_media":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''d8340134-878f-4891-ba4f-4df54f1e3ab4'')/$value"},"Id":"d8340134-878f-4891-ba4f-4df54f1e3ab4","Name":"S1A_WV_OCN__2SSV_20150526T211029_20150526T211737_006097_007E78_134A","ContentType":"application/octet-stream","ContentLength":"213691","ChildrenNumber":"0","Value":null,"CreationDate":"\/Date(1447802881852)\/","IngestionDate":"\/Date(1447802881852)\/","ModificationDate":"\/Date(1619777734462)\/","EvictionDate":null,"Online":true,"OnDemand":false,"ContentDate":{"__metadata":{"type":"DHuS.TimeRange"},"Start":"\/Date(1432674628984)\/","End":"\/Date(1432675057408)\/"},"Checksum":{"__metadata":{"type":"DHuS.Checksum"},"Algorithm":"MD5","Value":"9ae4d76b566f94af54a2ef14c8709da9"},"ContentGeometry":"<gml:Polygon
         srsName=\"http://www.opengis.net/gml/srs/epsg.xml#4326\" xmlns:gml=\"http://www.opengis.net/gml\">   <gml:outerBoundaryIs>      <gml:LinearRing>         <gml:coordinates>-53.931976,-32.055458
         -53.867435,-31.748390 -54.039661,-31.646017 -54.104462,-31.954405 -53.931976,-32.055458</gml:coordinates>      </gml:LinearRing>   </gml:outerBoundaryIs></gml:Polygon>","Products":{"__deferred":{"uri":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''d8340134-878f-4891-ba4f-4df54f1e3ab4'')/Products"}},"Nodes":{"__deferred":{"uri":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''d8340134-878f-4891-ba4f-4df54f1e3ab4'')/Nodes"}},"Attributes":{"__deferred":{"uri":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''d8340134-878f-4891-ba4f-4df54f1e3ab4'')/Attributes"}},"Class":{"__deferred":{"uri":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''d8340134-878f-4891-ba4f-4df54f1e3ab4'')/Class"}}}}'
     headers:
       content-length:
-      - '2077'
+      - '2094'
       content-type:
       - application/json
       dataserviceversion:
@@ -64,6 +113,12 @@ interactions:
       - Apache-Coyote/1.1
       vary:
       - Accept-Encoding
+      x-content-type-options:
+      - nosniff
+      x-frame-options:
+      - DENY
+      x-xss-protection:
+      - 1; mode=block
     status:
       code: 200
       message: OK
@@ -79,54 +134,27 @@ interactions:
       User-Agent:
       - sentinelsat/0.14
     method: GET
-    uri: https://scihub.copernicus.eu/apihub/odata/v1/Products('fb30069b-1081-44b9-8e65-314b989dc7fb')?$format=json
-  response:
-    body:
-      string: '{"d":{"__metadata":{"id":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''fb30069b-1081-44b9-8e65-314b989dc7fb'')","uri":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''fb30069b-1081-44b9-8e65-314b989dc7fb'')","type":"DHuS.Product","content_type":"application/octet-stream","media_src":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''fb30069b-1081-44b9-8e65-314b989dc7fb'')/$value","edit_media":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''fb30069b-1081-44b9-8e65-314b989dc7fb'')/$value"},"Id":"fb30069b-1081-44b9-8e65-314b989dc7fb","Name":"S3B_SR_1_SRA_BS_20181123T034407_20181123T034411_20181218T182902_0003_018_047______LN3_O_NT_003","ContentType":"application/octet-stream","ContentLength":"294143","ChildrenNumber":"0","Value":null,"CreationDate":"\/Date(1545160200495)\/","IngestionDate":"\/Date(1545159511440)\/","ModificationDate":"\/Date(1545159511440)\/","EvictionDate":null,"Online":true,"ContentDate":{"__metadata":{"type":"DHuS.TimeRange"},"Start":"\/Date(1542944646870)\/","End":"\/Date(1542944650741)\/"},"Checksum":{"__metadata":{"type":"DHuS.Checksum"},"Algorithm":"MD5","Value":"2C48A9E7D54D056423A630D5EAA11EA2"},"ContentGeometry":"<gml:Polygon
-        srsName=\"http://www.opengis.net/gml/srs/epsg.xml#4326\" xmlns:gml=\"http://www.opengis.net/gml\">\n   <gml:outerBoundaryIs>\n      <gml:LinearRing>\n         <gml:coordinates>68.2514,-108.283
-        68.3574,-108.417 68.4633,-108.553 68.4625,-108.557 68.3566,-108.422 68.2506,-108.287
-        68.2514,-108.283</gml:coordinates>\n      </gml:LinearRing>\n   </gml:outerBoundaryIs>\n</gml:Polygon>","Products":{"__deferred":{"uri":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''fb30069b-1081-44b9-8e65-314b989dc7fb'')/Products"}},"Nodes":{"__deferred":{"uri":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''fb30069b-1081-44b9-8e65-314b989dc7fb'')/Nodes"}},"Attributes":{"__deferred":{"uri":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''fb30069b-1081-44b9-8e65-314b989dc7fb'')/Attributes"}},"Class":{"__deferred":{"uri":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''fb30069b-1081-44b9-8e65-314b989dc7fb'')/Class"}}}}'
-    headers:
-      content-length:
-      - '2125'
-      content-type:
-      - application/json
-      dataserviceversion:
-      - '2.0'
-      pragma:
-      - no-cache
-      server:
-      - Apache-Coyote/1.1
-      vary:
-      - Accept-Encoding
-    status:
-      code: 200
-      message: OK
-- request:
-    body: null
-    headers:
-      Accept:
-      - '*/*'
-      Accept-Encoding:
-      - gzip, deflate
-      Connection:
-      - keep-alive
-      User-Agent:
-      - sentinelsat/0.14
-    method: GET
-    uri: https://scihub.copernicus.eu/apihub/odata/v1/Products('fdf6b29c-da32-4923-a543-270c89a3dd62')/$value
+    uri: https://scihub.copernicus.eu/apihub/odata/v1/Products('091f9a7a-73e6-4658-b559-2d5801797fd5')/$value
   response:
     body:
       string: ''
     headers:
       content-length:
       - '0'
+      content-type:
+      - text/plain
       dataserviceversion:
       - '2.0'
       pragma:
       - no-cache
       server:
       - Apache-Coyote/1.1
+      x-content-type-options:
+      - nosniff
+      x-frame-options:
+      - DENY
+      x-xss-protection:
+      - 1; mode=block
     status:
       code: 202
       message: Accepted
@@ -142,7 +170,7 @@ interactions:
       User-Agent:
       - sentinelsat/0.14
     method: HEAD
-    uri: https://scihub.copernicus.eu/apihub/odata/v1/Products('d8340134-878f-4891-ba4f-4df54f1e3ab4')/$value
+    uri: https://scihub.copernicus.eu/apihub/odata/v1/Products('1f62a176-c980-41dc-b3a1-c735d660c910')/$value
   response:
     body:
       string: ''
@@ -150,23 +178,29 @@ interactions:
       accept-ranges:
       - bytes
       content-disposition:
-      - inline;filename="S1A_WV_OCN__2SSV_20150526T211029_20150526T211737_006097_007E78_134A.zip"
+      - inline;filename="S1A_WV_OCN__2SSH_20150603T092625_20150603T093332_006207_008194_521E.zip"
       content-length:
-      - '213393'
+      - '213433'
       content-range:
-      - bytes 0-213392/213393
+      - bytes 0-213432/213433
       content-type:
       - application/octet-stream
       dataserviceversion:
       - '2.0'
       etag:
-      - a52ff03603400fbbe14727af518b425b
+      - 9eb46e4e31f77f108213e16bb8fbe088
       last-modified:
-      - Wed, 19 Jun 2019 06:21:13 UTC
+      - Tue, 17 Nov 2015 16:56:01 UTC
       pragma:
       - no-cache
       server:
       - Apache-Coyote/1.1
+      x-content-type-options:
+      - nosniff
+      x-frame-options:
+      - DENY
+      x-xss-protection:
+      - 1; mode=block
     status:
       code: 200
       message: OK
@@ -182,144 +216,36 @@ interactions:
       User-Agent:
       - sentinelsat/0.14
     method: GET
-    uri: https://scihub.copernicus.eu/apihub/odata/v1/Products('d8340134-878f-4891-ba4f-4df54f1e3ab4')/$value
+    uri: https://scihub.copernicus.eu/apihub/odata/v1/Products('1f62a176-c980-41dc-b3a1-c735d660c910')/$value
   response:
     body: {}
     headers:
       accept-ranges:
       - bytes
       content-disposition:
-      - inline;filename="S1A_WV_OCN__2SSV_20150526T211029_20150526T211737_006097_007E78_134A.zip"
+      - inline;filename="S1A_WV_OCN__2SSH_20150603T092625_20150603T093332_006207_008194_521E.zip"
       content-length:
-      - '213393'
+      - '213433'
       content-range:
-      - bytes 0-213392/213393
+      - bytes 0-213432/213433
       content-type:
       - application/octet-stream
       dataserviceversion:
       - '2.0'
       etag:
-      - a52ff03603400fbbe14727af518b425b
+      - 9eb46e4e31f77f108213e16bb8fbe088
       last-modified:
-      - Wed, 19 Jun 2019 06:21:13 UTC
+      - Tue, 17 Nov 2015 16:56:01 UTC
       pragma:
       - no-cache
       server:
       - Apache-Coyote/1.1
-    status:
-      code: 200
-      message: OK
-- request:
-    body: null
-    headers:
-      Accept:
-      - '*/*'
-      Accept-Encoding:
-      - gzip, deflate
-      Connection:
-      - keep-alive
-      User-Agent:
-      - sentinelsat/0.14
-    method: GET
-    uri: https://scihub.copernicus.eu/apihub/odata/v1/Products('fb30069b-1081-44b9-8e65-314b989dc7fb')?$format=json
-  response:
-    body:
-      string: '{"d":{"__metadata":{"id":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''fb30069b-1081-44b9-8e65-314b989dc7fb'')","uri":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''fb30069b-1081-44b9-8e65-314b989dc7fb'')","type":"DHuS.Product","content_type":"application/octet-stream","media_src":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''fb30069b-1081-44b9-8e65-314b989dc7fb'')/$value","edit_media":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''fb30069b-1081-44b9-8e65-314b989dc7fb'')/$value"},"Id":"fb30069b-1081-44b9-8e65-314b989dc7fb","Name":"S3B_SR_1_SRA_BS_20181123T034407_20181123T034411_20181218T182902_0003_018_047______LN3_O_NT_003","ContentType":"application/octet-stream","ContentLength":"294143","ChildrenNumber":"0","Value":null,"CreationDate":"\/Date(1545160200495)\/","IngestionDate":"\/Date(1545159511440)\/","ModificationDate":"\/Date(1545159511440)\/","EvictionDate":null,"Online":true,"ContentDate":{"__metadata":{"type":"DHuS.TimeRange"},"Start":"\/Date(1542944646870)\/","End":"\/Date(1542944650741)\/"},"Checksum":{"__metadata":{"type":"DHuS.Checksum"},"Algorithm":"MD5","Value":"2C48A9E7D54D056423A630D5EAA11EA2"},"ContentGeometry":"<gml:Polygon
-        srsName=\"http://www.opengis.net/gml/srs/epsg.xml#4326\" xmlns:gml=\"http://www.opengis.net/gml\">\n   <gml:outerBoundaryIs>\n      <gml:LinearRing>\n         <gml:coordinates>68.2514,-108.283
-        68.3574,-108.417 68.4633,-108.553 68.4625,-108.557 68.3566,-108.422 68.2506,-108.287
-        68.2514,-108.283</gml:coordinates>\n      </gml:LinearRing>\n   </gml:outerBoundaryIs>\n</gml:Polygon>","Products":{"__deferred":{"uri":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''fb30069b-1081-44b9-8e65-314b989dc7fb'')/Products"}},"Nodes":{"__deferred":{"uri":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''fb30069b-1081-44b9-8e65-314b989dc7fb'')/Nodes"}},"Attributes":{"__deferred":{"uri":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''fb30069b-1081-44b9-8e65-314b989dc7fb'')/Attributes"}},"Class":{"__deferred":{"uri":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''fb30069b-1081-44b9-8e65-314b989dc7fb'')/Class"}}}}'
-    headers:
-      content-length:
-      - '2125'
-      content-type:
-      - application/json
-      dataserviceversion:
-      - '2.0'
-      pragma:
-      - no-cache
-      server:
-      - Apache-Coyote/1.1
-      vary:
-      - Accept-Encoding
-    status:
-      code: 200
-      message: OK
-- request:
-    body: null
-    headers:
-      Accept:
-      - '*/*'
-      Accept-Encoding:
-      - gzip, deflate
-      Connection:
-      - keep-alive
-      User-Agent:
-      - sentinelsat/0.14
-    method: HEAD
-    uri: https://scihub.copernicus.eu/apihub/odata/v1/Products('fb30069b-1081-44b9-8e65-314b989dc7fb')/$value
-  response:
-    body:
-      string: ''
-    headers:
-      accept-ranges:
-      - bytes
-      content-disposition:
-      - inline;filename="S3B_SR_1_SRA_BS_20181123T034407_20181123T034411_20181218T182902_0003_018_047______LN3_O_NT_003.zip"
-      content-length:
-      - '294143'
-      content-range:
-      - bytes 0-294142/294143
-      content-type:
-      - application/octet-stream
-      dataserviceversion:
-      - '2.0'
-      etag:
-      - 2C48A9E7D54D056423A630D5EAA11EA2
-      last-modified:
-      - Tue, 18 Dec 2018 19:10:00 UTC
-      pragma:
-      - no-cache
-      server:
-      - Apache-Coyote/1.1
-    status:
-      code: 200
-      message: OK
-- request:
-    body: null
-    headers:
-      Accept:
-      - '*/*'
-      Accept-Encoding:
-      - gzip, deflate
-      Connection:
-      - keep-alive
-      User-Agent:
-      - sentinelsat/0.14
-    method: GET
-    uri: https://scihub.copernicus.eu/apihub/odata/v1/Products('fb30069b-1081-44b9-8e65-314b989dc7fb')/$value
-  response:
-    body: {}
-    headers:
-      accept-ranges:
-      - bytes
-      content-disposition:
-      - inline;filename="S3B_SR_1_SRA_BS_20181123T034407_20181123T034411_20181218T182902_0003_018_047______LN3_O_NT_003.zip"
-      content-length:
-      - '294143'
-      content-range:
-      - bytes 0-294142/294143
-      content-type:
-      - application/octet-stream
-      dataserviceversion:
-      - '2.0'
-      etag:
-      - 2C48A9E7D54D056423A630D5EAA11EA2
-      last-modified:
-      - Tue, 18 Dec 2018 19:10:00 UTC
-      pragma:
-      - no-cache
-      server:
-      - Apache-Coyote/1.1
+      x-content-type-options:
+      - nosniff
+      x-frame-options:
+      - DENY
+      x-xss-protection:
+      - 1; mode=block
     status:
       code: 200
       message: OK
@@ -338,12 +264,12 @@ interactions:
     uri: https://scihub.copernicus.eu/apihub/odata/v1/Products('d8340134-878f-4891-ba4f-4df54f1e3ab4')?$format=json
   response:
     body:
-      string: '{"d":{"__metadata":{"id":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''d8340134-878f-4891-ba4f-4df54f1e3ab4'')","uri":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''d8340134-878f-4891-ba4f-4df54f1e3ab4'')","type":"DHuS.Product","content_type":"application/octet-stream","media_src":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''d8340134-878f-4891-ba4f-4df54f1e3ab4'')/$value","edit_media":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''d8340134-878f-4891-ba4f-4df54f1e3ab4'')/$value"},"Id":"d8340134-878f-4891-ba4f-4df54f1e3ab4","Name":"S1A_WV_OCN__2SSV_20150526T211029_20150526T211737_006097_007E78_134A","ContentType":"application/octet-stream","ContentLength":"213393","ChildrenNumber":"0","Value":null,"CreationDate":"\/Date(1560925273569)\/","IngestionDate":"\/Date(1447802881852)\/","ModificationDate":"\/Date(1593293961850)\/","EvictionDate":null,"Online":true,"ContentDate":{"__metadata":{"type":"DHuS.TimeRange"},"Start":"\/Date(1432674628984)\/","End":"\/Date(1432675057408)\/"},"Checksum":{"__metadata":{"type":"DHuS.Checksum"},"Algorithm":"MD5","Value":"a52ff03603400fbbe14727af518b425b"},"ContentGeometry":"<gml:Polygon
+      string: '{"d":{"__metadata":{"id":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''d8340134-878f-4891-ba4f-4df54f1e3ab4'')","uri":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''d8340134-878f-4891-ba4f-4df54f1e3ab4'')","type":"DHuS.Product","content_type":"application/octet-stream","media_src":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''d8340134-878f-4891-ba4f-4df54f1e3ab4'')/$value","edit_media":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''d8340134-878f-4891-ba4f-4df54f1e3ab4'')/$value"},"Id":"d8340134-878f-4891-ba4f-4df54f1e3ab4","Name":"S1A_WV_OCN__2SSV_20150526T211029_20150526T211737_006097_007E78_134A","ContentType":"application/octet-stream","ContentLength":"213691","ChildrenNumber":"0","Value":null,"CreationDate":"\/Date(1447802881852)\/","IngestionDate":"\/Date(1447802881852)\/","ModificationDate":"\/Date(1619777734462)\/","EvictionDate":null,"Online":true,"OnDemand":false,"ContentDate":{"__metadata":{"type":"DHuS.TimeRange"},"Start":"\/Date(1432674628984)\/","End":"\/Date(1432675057408)\/"},"Checksum":{"__metadata":{"type":"DHuS.Checksum"},"Algorithm":"MD5","Value":"9ae4d76b566f94af54a2ef14c8709da9"},"ContentGeometry":"<gml:Polygon
         srsName=\"http://www.opengis.net/gml/srs/epsg.xml#4326\" xmlns:gml=\"http://www.opengis.net/gml\">   <gml:outerBoundaryIs>      <gml:LinearRing>         <gml:coordinates>-53.931976,-32.055458
         -53.867435,-31.748390 -54.039661,-31.646017 -54.104462,-31.954405 -53.931976,-32.055458</gml:coordinates>      </gml:LinearRing>   </gml:outerBoundaryIs></gml:Polygon>","Products":{"__deferred":{"uri":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''d8340134-878f-4891-ba4f-4df54f1e3ab4'')/Products"}},"Nodes":{"__deferred":{"uri":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''d8340134-878f-4891-ba4f-4df54f1e3ab4'')/Nodes"}},"Attributes":{"__deferred":{"uri":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''d8340134-878f-4891-ba4f-4df54f1e3ab4'')/Attributes"}},"Class":{"__deferred":{"uri":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''d8340134-878f-4891-ba4f-4df54f1e3ab4'')/Class"}}}}'
     headers:
       content-length:
-      - '2077'
+      - '2094'
       content-type:
       - application/json
       dataserviceversion:
@@ -354,6 +280,179 @@ interactions:
       - Apache-Coyote/1.1
       vary:
       - Accept-Encoding
+      x-content-type-options:
+      - nosniff
+      x-frame-options:
+      - DENY
+      x-xss-protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - sentinelsat/0.14
+    method: HEAD
+    uri: https://scihub.copernicus.eu/apihub/odata/v1/Products('d8340134-878f-4891-ba4f-4df54f1e3ab4')/$value
+  response:
+    body:
+      string: ''
+    headers:
+      accept-ranges:
+      - bytes
+      content-disposition:
+      - inline;filename="S1A_WV_OCN__2SSV_20150526T211029_20150526T211737_006097_007E78_134A.zip"
+      content-length:
+      - '213691'
+      content-range:
+      - bytes 0-213690/213691
+      content-type:
+      - application/octet-stream
+      dataserviceversion:
+      - '2.0'
+      etag:
+      - 9ae4d76b566f94af54a2ef14c8709da9
+      last-modified:
+      - Tue, 17 Nov 2015 23:28:01 UTC
+      pragma:
+      - no-cache
+      server:
+      - Apache-Coyote/1.1
+      x-content-type-options:
+      - nosniff
+      x-frame-options:
+      - DENY
+      x-xss-protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - sentinelsat/0.14
+    method: GET
+    uri: https://scihub.copernicus.eu/apihub/odata/v1/Products('d8340134-878f-4891-ba4f-4df54f1e3ab4')/$value
+  response:
+    body: {}
+    headers:
+      accept-ranges:
+      - bytes
+      content-disposition:
+      - inline;filename="S1A_WV_OCN__2SSV_20150526T211029_20150526T211737_006097_007E78_134A.zip"
+      content-length:
+      - '213691'
+      content-range:
+      - bytes 0-213690/213691
+      content-type:
+      - application/octet-stream
+      dataserviceversion:
+      - '2.0'
+      etag:
+      - 9ae4d76b566f94af54a2ef14c8709da9
+      last-modified:
+      - Tue, 17 Nov 2015 23:28:01 UTC
+      pragma:
+      - no-cache
+      server:
+      - Apache-Coyote/1.1
+      x-content-type-options:
+      - nosniff
+      x-frame-options:
+      - DENY
+      x-xss-protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - sentinelsat/0.14
+    method: GET
+    uri: https://scihub.copernicus.eu/apihub/odata/v1/Products('091f9a7a-73e6-4658-b559-2d5801797fd5')/Online/$value
+  response:
+    body:
+      string: 'false'
+    headers:
+      content-length:
+      - '5'
+      content-type:
+      - text/plain;charset=utf-8
+      dataserviceversion:
+      - '2.0'
+      pragma:
+      - no-cache
+      server:
+      - Apache-Coyote/1.1
+      x-content-type-options:
+      - nosniff
+      x-frame-options:
+      - DENY
+      x-xss-protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - sentinelsat/0.14
+    method: GET
+    uri: https://scihub.copernicus.eu/apihub/odata/v1/Products('1f62a176-c980-41dc-b3a1-c735d660c910')?$format=json
+  response:
+    body:
+      string: '{"d":{"__metadata":{"id":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''1f62a176-c980-41dc-b3a1-c735d660c910'')","uri":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''1f62a176-c980-41dc-b3a1-c735d660c910'')","type":"DHuS.Product","content_type":"application/octet-stream","media_src":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''1f62a176-c980-41dc-b3a1-c735d660c910'')/$value","edit_media":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''1f62a176-c980-41dc-b3a1-c735d660c910'')/$value"},"Id":"1f62a176-c980-41dc-b3a1-c735d660c910","Name":"S1A_WV_OCN__2SSH_20150603T092625_20150603T093332_006207_008194_521E","ContentType":"application/octet-stream","ContentLength":"213433","ChildrenNumber":"0","Value":null,"CreationDate":"\/Date(1447779361826)\/","IngestionDate":"\/Date(1447779361826)\/","ModificationDate":"\/Date(1619777802701)\/","EvictionDate":null,"Online":true,"OnDemand":false,"ContentDate":{"__metadata":{"type":"DHuS.TimeRange"},"Start":"\/Date(1433323584921)\/","End":"\/Date(1433324013345)\/"},"Checksum":{"__metadata":{"type":"DHuS.Checksum"},"Algorithm":"MD5","Value":"9eb46e4e31f77f108213e16bb8fbe088"},"ContentGeometry":"<gml:Polygon
+        srsName=\"http://www.opengis.net/gml/srs/epsg.xml#4326\" xmlns:gml=\"http://www.opengis.net/gml\">   <gml:outerBoundaryIs>      <gml:LinearRing>         <gml:coordinates>42.260288,-47.310867
+        42.298096,-47.558411 42.476940,-47.508129 42.439095,-47.259823 42.260288,-47.310867</gml:coordinates>      </gml:LinearRing>   </gml:outerBoundaryIs></gml:Polygon>","Products":{"__deferred":{"uri":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''1f62a176-c980-41dc-b3a1-c735d660c910'')/Products"}},"Nodes":{"__deferred":{"uri":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''1f62a176-c980-41dc-b3a1-c735d660c910'')/Nodes"}},"Attributes":{"__deferred":{"uri":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''1f62a176-c980-41dc-b3a1-c735d660c910'')/Attributes"}},"Class":{"__deferred":{"uri":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''1f62a176-c980-41dc-b3a1-c735d660c910'')/Class"}}}}'
+    headers:
+      content-length:
+      - '2089'
+      content-type:
+      - application/json
+      dataserviceversion:
+      - '2.0'
+      pragma:
+      - no-cache
+      server:
+      - Apache-Coyote/1.1
+      vary:
+      - Accept-Encoding
+      x-content-type-options:
+      - nosniff
+      x-frame-options:
+      - DENY
+      x-xss-protection:
+      - 1; mode=block
     status:
       code: 200
       message: OK
