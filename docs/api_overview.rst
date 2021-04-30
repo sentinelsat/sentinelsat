@@ -13,7 +13,7 @@ Quickstart
   from sentinelsat import SentinelAPI, read_geojson, geojson_to_wkt
   from datetime import date
 
-  api = SentinelAPI('user', 'password', 'https://scihub.copernicus.eu/dhus')
+  api = SentinelAPI('user', 'password', 'https://apihub.copernicus.eu/apihub')
 
   # download single scene by known product id
   api.download(<product_id>)
@@ -57,7 +57,7 @@ file `.netrc` in your user home directory in the following form:
 
 .. code-block:: text
 
-  machine scihub.copernicus.eu
+  machine apihub.copernicus.eu
   login <your username>
   password <your password>
 
@@ -88,7 +88,7 @@ all data types, as long as you pass the `id` to the download function.
   from sentinelsat import SentinelAPI, read_geojson, geojson_to_wkt
   from datetime import date
 
-  api = SentinelAPI('user', 'password', 'https://scihub.copernicus.eu/dhus')
+  api = SentinelAPI('user', 'password', 'https://apihub.copernicus.eu/apihub')
 
   # search by polygon, time, and SciHub query keywords
   footprint = geojson_to_wkt(read_geojson('map.geojson'))
@@ -152,9 +152,9 @@ OpenSearch example
                  'instrumentshortname': 'SAR-C SAR',
                  'lastorbitnumber': 16302,
                  'lastrelativeorbitnumber': 130,
-                 'link': "https://scihub.copernicus.eu/apihub/odata/v1/Products('04548172-c64a-418f-8e83-7a4d148adf1e')/$value",
-                 'link_alternative': "https://scihub.copernicus.eu/apihub/odata/v1/Products('04548172-c64a-418f-8e83-7a4d148adf1e')/",
-                 'link_icon': "https://scihub.copernicus.eu/apihub/odata/v1/Products('04548172-c64a-418f-8e83-7a4d148adf1e')/Products('Quicklook')/$value",
+                 'link': "https://apihub.copernicus.eu/apihub/odata/v1/Products('04548172-c64a-418f-8e83-7a4d148adf1e')/$value",
+                 'link_alternative': "https://apihub.copernicus.eu/apihub/odata/v1/Products('04548172-c64a-418f-8e83-7a4d148adf1e')/",
+                 'link_icon': "https://apihub.copernicus.eu/apihub/odata/v1/Products('04548172-c64a-418f-8e83-7a4d148adf1e')/Products('Quicklook')/$value",
                  'missiondatatakeid': 110481,
                  'orbitdirection': 'ASCENDING',
                  'orbitnumber': 16302,
@@ -190,7 +190,7 @@ so it is not requested by default.
    'md5': 'E5855D1C974171D33EE4BC08B9D221AE',
    'size': 4633501134,
    'title': 'S1A_IW_SLC__1SDV_20170425T155612_20170425T155639_016302_01AF91_46FF',
-   'url': "https://scihub.copernicus.eu/apihub/odata/v1/Products('04548172-c64a-418f-8e83-7a4d148adf1e')/$value"}
+   'url': "https://apihub.copernicus.eu/apihub/odata/v1/Products('04548172-c64a-418f-8e83-7a4d148adf1e')/$value"}
 
 
 With `full=True` we receive the full metadata available for the product.
@@ -251,7 +251,7 @@ With `full=True` we receive the full metadata available for the product.
    'md5': 'E5855D1C974171D33EE4BC08B9D221AE',
    'size': 4633501134,
    'title': 'S1A_IW_SLC__1SDV_20170425T155612_20170425T155639_016302_01AF91_46FF',
-   'url': "https://scihub.copernicus.eu/apihub/odata/v1/Products('04548172-c64a-418f-8e83-7a4d148adf1e')/$value"}
+   'url': "https://apihub.copernicus.eu/apihub/odata/v1/Products('04548172-c64a-418f-8e83-7a4d148adf1e')/$value"}
 
 
 LTA-Products

@@ -84,7 +84,7 @@ def test_get_products_invalid_json(test_wkt):
     api = SentinelAPI("mock_user", "mock_password")
     with requests_mock.mock() as rqst:
         rqst.post(
-            "https://scihub.copernicus.eu/apihub/search?format=json",
+            "https://apihub.copernicus.eu/apihub/search?format=json",
             text="{Invalid JSON response",
             status_code=200,
         )

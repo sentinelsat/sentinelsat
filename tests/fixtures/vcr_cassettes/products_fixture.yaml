@@ -15,7 +15,7 @@ interactions:
       User-Agent:
       - sentinelsat/0.13
     method: POST
-    uri: https://scihub.copernicus.eu/apihub/search?format=json&rows=100&start=0
+    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=100&start=0
   response:
     body:
       string: !!binary |

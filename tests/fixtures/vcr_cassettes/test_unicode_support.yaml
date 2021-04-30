@@ -15,13 +15,13 @@ interactions:
       User-Agent:
       - sentinelsat/0.14
     method: POST
-    uri: https://scihub.copernicus.eu/apihub/search?format=json&rows=0&start=0
+    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=0&start=0
   response:
     body:
       string: "{\"feed\":{\"xmlns:opensearch\":\"http://a9.com/-/spec/opensearch/1.1/\",\"xmlns\":\"http://www.w3.org/2005/Atom\",\"title\":\"Sentinels
         Scientific Data Hub search results for: \u0669(\u25CF\u032E\u032E\u0303\u2022\u0303)\u06F6:\",\"subtitle\":\"Displaying
         \ results. Request done in 0 seconds.\",\"updated\":\"2020-06-26T20:42:49.044Z\",\"author\":{\"name\":\"Sentinels
-        Scientific Data Hub\"},\"id\":\"https://scihub.copernicus.eu/apihub/search?q=\u0669(\u25CF\u032E\u032E\u0303\u2022\u0303)\u06F6:\",\"opensearch:totalResults\":null,\"opensearch:startIndex\":\"0\",\"opensearch:itemsPerPage\":\"0\",\"opensearch:Query\":{\"role\":\"request\",\"searchTerms\":\"\u0669(\u25CF\u032E\u032E\u0303\u2022\u0303)\u06F6:\",\"startPage\":\"1\"},\"link\":[{\"rel\":\"self\",\"type\":\"application/atom+xml\",\"href\":\"https://scihub.copernicus.eu/apihub/search?q=\u0669(\u25CF\u032E\u032E\u0303\u2022\u0303)\u06F6:&start=0&rows=0\"},{\"rel\":\"first\",\"type\":\"application/atom+xml\",\"href\":\"https://scihub.copernicus.eu/apihub/search?q=\u0669(\u25CF\u032E\u032E\u0303\u2022\u0303)\u06F6:&start=0&rows=0\"},{\"rel\":\"last\",\"type\":\"application/atom+xml\",\"href\":\"https://scihub.copernicus.eu/apihub/search?q=\u0669(\u25CF\u032E\u032E\u0303\u2022\u0303)\u06F6:&start=NaN&rows=0\"},{\"rel\":\"search\",\"type\":\"application/opensearchdescription+xml\",\"href\":\"opensearch_description.xml\"}]}}"
+        Scientific Data Hub\"},\"id\":\"https://apihub.copernicus.eu/apihub/search?q=\u0669(\u25CF\u032E\u032E\u0303\u2022\u0303)\u06F6:\",\"opensearch:totalResults\":null,\"opensearch:startIndex\":\"0\",\"opensearch:itemsPerPage\":\"0\",\"opensearch:Query\":{\"role\":\"request\",\"searchTerms\":\"\u0669(\u25CF\u032E\u032E\u0303\u2022\u0303)\u06F6:\",\"startPage\":\"1\"},\"link\":[{\"rel\":\"self\",\"type\":\"application/atom+xml\",\"href\":\"https://apihub.copernicus.eu/apihub/search?q=\u0669(\u25CF\u032E\u032E\u0303\u2022\u0303)\u06F6:&start=0&rows=0\"},{\"rel\":\"first\",\"type\":\"application/atom+xml\",\"href\":\"https://apihub.copernicus.eu/apihub/search?q=\u0669(\u25CF\u032E\u032E\u0303\u2022\u0303)\u06F6:&start=0&rows=0\"},{\"rel\":\"last\",\"type\":\"application/atom+xml\",\"href\":\"https://apihub.copernicus.eu/apihub/search?q=\u0669(\u25CF\u032E\u032E\u0303\u2022\u0303)\u06F6:&start=NaN&rows=0\"},{\"rel\":\"search\",\"type\":\"application/opensearchdescription+xml\",\"href\":\"opensearch_description.xml\"}]}}"
     headers:
       content-length:
       - '1111'
@@ -50,7 +50,7 @@ interactions:
       User-Agent:
       - sentinelsat/0.14
     method: GET
-    uri: https://scihub.copernicus.eu/apihub/odata/v1/Products('%D9%A9(%E2%97%8F%CC%AE%CC%AE%CC%83%E2%80%A2%CC%83)%DB%B6:')?$format=json
+    uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('%D9%A9(%E2%97%8F%CC%AE%CC%AE%CC%83%E2%80%A2%CC%83)%DB%B6:')?$format=json
   response:
     body:
       string: "{\"error\":{\"code\":null,\"message\":{\"lang\":\"en\",\"value\":\"Invalid

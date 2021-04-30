@@ -15,26 +15,26 @@ interactions:
       User-Agent:
       - sentinelsat/0.14
     method: POST
-    uri: https://scihub.copernicus.eu/apihub/search?format=json&rows=1&start=0
+    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=1&start=0
   response:
     body:
       string: '{"feed":{"xmlns:opensearch":"http://a9.com/-/spec/opensearch/1.1/","xmlns":"http://www.w3.org/2005/Atom","title":"Sentinels
         Scientific Data Hub search results for: beginPosition:[NOW-1DAY TO NOW] footprint:\"Intersects(POLYGON((-66.2695
         -8.0592,-66.2695 0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\"","subtitle":"Displaying
         0 to 0 of 25 total results. Request done in 0.064 seconds.","updated":"2020-07-07T15:59:41.205Z","author":{"name":"Sentinels
-        Scientific Data Hub"},"id":"https://scihub.copernicus.eu/apihub/search?q=beginPosition:[NOW-1DAY
+        Scientific Data Hub"},"id":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[NOW-1DAY
         TO NOW] footprint:\"Intersects(POLYGON((-66.2695 -8.0592,-66.2695 0.7031,-57.3047
         0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\"","opensearch:totalResults":"25","opensearch:startIndex":"0","opensearch:itemsPerPage":"1","opensearch:Query":{"role":"request","searchTerms":"beginPosition:[NOW-1DAY
         TO NOW] footprint:\"Intersects(POLYGON((-66.2695 -8.0592,-66.2695 0.7031,-57.3047
-        0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\"","startPage":"1"},"link":[{"rel":"self","type":"application/atom+xml","href":"https://scihub.copernicus.eu/apihub/search?q=beginPosition:[NOW-1DAY
+        0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\"","startPage":"1"},"link":[{"rel":"self","type":"application/atom+xml","href":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[NOW-1DAY
         TO NOW] footprint:\"Intersects(POLYGON((-66.2695 -8.0592,-66.2695 0.7031,-57.3047
-        0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\"&start=0&rows=1"},{"rel":"first","type":"application/atom+xml","href":"https://scihub.copernicus.eu/apihub/search?q=beginPosition:[NOW-1DAY
+        0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\"&start=0&rows=1"},{"rel":"first","type":"application/atom+xml","href":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[NOW-1DAY
         TO NOW] footprint:\"Intersects(POLYGON((-66.2695 -8.0592,-66.2695 0.7031,-57.3047
-        0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\"&start=0&rows=1"},{"rel":"next","type":"application/atom+xml","href":"https://scihub.copernicus.eu/apihub/search?q=beginPosition:[NOW-1DAY
+        0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\"&start=0&rows=1"},{"rel":"next","type":"application/atom+xml","href":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[NOW-1DAY
         TO NOW] footprint:\"Intersects(POLYGON((-66.2695 -8.0592,-66.2695 0.7031,-57.3047
-        0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\"&start=1&rows=1"},{"rel":"last","type":"application/atom+xml","href":"https://scihub.copernicus.eu/apihub/search?q=beginPosition:[NOW-1DAY
+        0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\"&start=1&rows=1"},{"rel":"last","type":"application/atom+xml","href":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[NOW-1DAY
         TO NOW] footprint:\"Intersects(POLYGON((-66.2695 -8.0592,-66.2695 0.7031,-57.3047
-        0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\"&start=24&rows=1"},{"rel":"search","type":"application/opensearchdescription+xml","href":"opensearch_description.xml"}],"entry":{"title":"S3B_SL_2_LST____20200707T133007_20200707T133307_20200707T152337_0179_041_024_2880_LN2_O_NR_004","link":[{"href":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''b721f2f4-b841-48fa-8199-9d2e789cf419'')/$value"},{"rel":"alternative","href":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''b721f2f4-b841-48fa-8199-9d2e789cf419'')/"},{"rel":"icon","href":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''b721f2f4-b841-48fa-8199-9d2e789cf419'')/Products(''Quicklook'')/$value"}],"id":"b721f2f4-b841-48fa-8199-9d2e789cf419","summary":"Date:
+        0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\"&start=24&rows=1"},{"rel":"search","type":"application/opensearchdescription+xml","href":"opensearch_description.xml"}],"entry":{"title":"S3B_SL_2_LST____20200707T133007_20200707T133307_20200707T152337_0179_041_024_2880_LN2_O_NR_004","link":[{"href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''b721f2f4-b841-48fa-8199-9d2e789cf419'')/$value"},{"rel":"alternative","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''b721f2f4-b841-48fa-8199-9d2e789cf419'')/"},{"rel":"icon","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''b721f2f4-b841-48fa-8199-9d2e789cf419'')/Products(''Quicklook'')/$value"}],"id":"b721f2f4-b841-48fa-8199-9d2e789cf419","summary":"Date:
         2020-07-07T13:30:07.104Z, Instrument: SLSTR, Mode: , Satellite: Sentinel-3,
         Size: 60.92 MB","date":[{"name":"creationdate","content":"2020-07-07T15:23:37Z"},{"name":"beginposition","content":"2020-07-07T13:30:07.104Z"},{"name":"endposition","content":"2020-07-07T13:33:07.104Z"},{"name":"ingestiondate","content":"2020-07-07T15:52:58.956Z"}],"int":[{"name":"orbitnumber","content":"11461"},{"name":"relativeorbitnumber","content":"24"}],"str":[{"name":"ecmwf","content":"FORECAST"},{"name":"filename","content":"S3B_SL_2_LST____20200707T133007_20200707T133307_20200707T152337_0179_041_024_2880_LN2_O_NR_004.SEN3"},{"name":"gmlfootprint","content":"<gml:Polygon
         srsName=\"http://www.opengis.net/gml/srs/epsg.xml#4326\" xmlns:gml=\"http://www.opengis.net/gml\">\n   <gml:outerBoundaryIs>\n      <gml:LinearRing>\n         <gml:coordinates>-0.088435,-62.3261
@@ -106,7 +106,7 @@ interactions:
       User-Agent:
       - sentinelsat/0.14
     method: POST
-    uri: https://scihub.copernicus.eu/apihub/search?format=json&rows=1&start=0
+    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=1&start=0
   response:
     body:
       string: '{"feed":{"xmlns:opensearch":"http://a9.com/-/spec/opensearch/1.1/","xmlns":"http://www.w3.org/2005/Atom","title":"Sentinels
@@ -114,19 +114,19 @@ interactions:
         46.377254205100286,-75.76171874999999 43.32517767999295,-71.279296875 46.55886030311717,-78.046875
         46.377254205100286)))\"","subtitle":"Displaying 0 to 0 of 16 total results.
         Request done in 0.164 seconds.","updated":"2020-07-07T15:59:42.166Z","author":{"name":"Sentinels
-        Scientific Data Hub"},"id":"https://scihub.copernicus.eu/apihub/search?q=beginPosition:[NOW-1DAY
+        Scientific Data Hub"},"id":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[NOW-1DAY
         TO NOW] footprint:\"Intersects(POLYGON((-78.046875 46.377254205100286,-75.76171874999999
         43.32517767999295,-71.279296875 46.55886030311717,-78.046875 46.377254205100286)))\"","opensearch:totalResults":"16","opensearch:startIndex":"0","opensearch:itemsPerPage":"1","opensearch:Query":{"role":"request","searchTerms":"beginPosition:[NOW-1DAY
         TO NOW] footprint:\"Intersects(POLYGON((-78.046875 46.377254205100286,-75.76171874999999
-        43.32517767999295,-71.279296875 46.55886030311717,-78.046875 46.377254205100286)))\"","startPage":"1"},"link":[{"rel":"self","type":"application/atom+xml","href":"https://scihub.copernicus.eu/apihub/search?q=beginPosition:[NOW-1DAY
+        43.32517767999295,-71.279296875 46.55886030311717,-78.046875 46.377254205100286)))\"","startPage":"1"},"link":[{"rel":"self","type":"application/atom+xml","href":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[NOW-1DAY
         TO NOW] footprint:\"Intersects(POLYGON((-78.046875 46.377254205100286,-75.76171874999999
-        43.32517767999295,-71.279296875 46.55886030311717,-78.046875 46.377254205100286)))\"&start=0&rows=1"},{"rel":"first","type":"application/atom+xml","href":"https://scihub.copernicus.eu/apihub/search?q=beginPosition:[NOW-1DAY
+        43.32517767999295,-71.279296875 46.55886030311717,-78.046875 46.377254205100286)))\"&start=0&rows=1"},{"rel":"first","type":"application/atom+xml","href":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[NOW-1DAY
         TO NOW] footprint:\"Intersects(POLYGON((-78.046875 46.377254205100286,-75.76171874999999
-        43.32517767999295,-71.279296875 46.55886030311717,-78.046875 46.377254205100286)))\"&start=0&rows=1"},{"rel":"next","type":"application/atom+xml","href":"https://scihub.copernicus.eu/apihub/search?q=beginPosition:[NOW-1DAY
+        43.32517767999295,-71.279296875 46.55886030311717,-78.046875 46.377254205100286)))\"&start=0&rows=1"},{"rel":"next","type":"application/atom+xml","href":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[NOW-1DAY
         TO NOW] footprint:\"Intersects(POLYGON((-78.046875 46.377254205100286,-75.76171874999999
-        43.32517767999295,-71.279296875 46.55886030311717,-78.046875 46.377254205100286)))\"&start=1&rows=1"},{"rel":"last","type":"application/atom+xml","href":"https://scihub.copernicus.eu/apihub/search?q=beginPosition:[NOW-1DAY
+        43.32517767999295,-71.279296875 46.55886030311717,-78.046875 46.377254205100286)))\"&start=1&rows=1"},{"rel":"last","type":"application/atom+xml","href":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[NOW-1DAY
         TO NOW] footprint:\"Intersects(POLYGON((-78.046875 46.377254205100286,-75.76171874999999
-        43.32517767999295,-71.279296875 46.55886030311717,-78.046875 46.377254205100286)))\"&start=15&rows=1"},{"rel":"search","type":"application/opensearchdescription+xml","href":"opensearch_description.xml"}],"entry":{"title":"S1B_WV_OCN__2SSV_20200707T105001_20200707T110004_022364_02A724_0EF9","link":[{"href":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''17ffcf0b-9349-42e1-a72f-d629dc3617f2'')/$value"},{"rel":"alternative","href":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''17ffcf0b-9349-42e1-a72f-d629dc3617f2'')/"},{"rel":"icon","href":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''17ffcf0b-9349-42e1-a72f-d629dc3617f2'')/Products(''Quicklook'')/$value"}],"id":"17ffcf0b-9349-42e1-a72f-d629dc3617f2","summary":"Date:
+        43.32517767999295,-71.279296875 46.55886030311717,-78.046875 46.377254205100286)))\"&start=15&rows=1"},{"rel":"search","type":"application/opensearchdescription+xml","href":"opensearch_description.xml"}],"entry":{"title":"S1B_WV_OCN__2SSV_20200707T105001_20200707T110004_022364_02A724_0EF9","link":[{"href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''17ffcf0b-9349-42e1-a72f-d629dc3617f2'')/$value"},{"rel":"alternative","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''17ffcf0b-9349-42e1-a72f-d629dc3617f2'')/"},{"rel":"icon","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''17ffcf0b-9349-42e1-a72f-d629dc3617f2'')/Products(''Quicklook'')/$value"}],"id":"17ffcf0b-9349-42e1-a72f-d629dc3617f2","summary":"Date:
         2020-07-07T10:50:01.2Z, Instrument: SAR-C SAR, Mode: VV, Satellite: Sentinel-1,
         Size: 29.29 MB","date":[{"name":"beginposition","content":"2020-07-07T10:50:01.2Z"},{"name":"endposition","content":"2020-07-07T11:00:05.387Z"},{"name":"ingestiondate","content":"2020-07-07T15:18:14.042Z"}],"int":[{"name":"missiondatatakeid","content":"173860"},{"name":"orbitnumber","content":"22364"},{"name":"lastorbitnumber","content":"22364"},{"name":"relativeorbitnumber","content":"113"},{"name":"lastrelativeorbitnumber","content":"113"}],"str":[{"name":"sensoroperationalmode","content":"WV"},{"name":"swathidentifier","content":"WV2
         WV1"},{"name":"orbitdirection","content":"DESCENDING"},{"name":"producttype","content":"OCN"},{"name":"timeliness","content":"Fast-24h"},{"name":"platformname","content":"Sentinel-1"},{"name":"platformidentifier","content":"2016-025A"},{"name":"instrumentname","content":"Synthetic

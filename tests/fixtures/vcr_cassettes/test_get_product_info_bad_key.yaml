@@ -11,7 +11,7 @@ interactions:
       User-Agent:
       - sentinelsat/0.13
     method: GET
-    uri: https://scihub.copernicus.eu/apihub/odata/v1/Products('invalid-xyz')?$format=json
+    uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('invalid-xyz')?$format=json
   response:
     body:
       string: '{"error":{"code":null,"message":{"lang":"en","value":"Invalid key (invalid-xyz)

@@ -1,5 +1,5 @@
 """
-Tests for functionality related to the OpenSearch API of SciHub (https://scihub.copernicus.eu/apihub/search?...)
+Tests for functionality related to the OpenSearch API of SciHub (https://apihub.copernicus.eu/apihub/search?...)
 """
 from contextlib import contextmanager
 from datetime import datetime, date, timedelta
@@ -296,7 +296,7 @@ def test_format_url(api):
     url = api._format_url(offset=start_row)
     assert (
         url
-        == "https://scihub.copernicus.eu/apihub/search?format=json&rows={rows}&start={start}".format(
+        == "https://apihub.copernicus.eu/apihub/search?format=json&rows={rows}&start={start}".format(
             rows=api.page_size, start=start_row
         )
     )
@@ -304,20 +304,20 @@ def test_format_url(api):
     url = api._format_url(limit=limit, offset=start_row)
     assert (
         url
-        == "https://scihub.copernicus.eu/apihub/search?format=json&rows={rows}&start={start}".format(
+        == "https://apihub.copernicus.eu/apihub/search?format=json&rows={rows}&start={start}".format(
             rows=limit, start=start_row
         )
     )
     url = api._format_url(limit=api.page_size + 50, offset=start_row)
     assert (
         url
-        == "https://scihub.copernicus.eu/apihub/search?format=json&rows={rows}&start={start}".format(
+        == "https://apihub.copernicus.eu/apihub/search?format=json&rows={rows}&start={start}".format(
             rows=api.page_size, start=start_row
         )
     )
     url = api._format_url(order_by="beginposition desc", limit=api.page_size + 50, offset=10)
     assert (
-        url == "https://scihub.copernicus.eu/apihub/search?format=json&rows={rows}&start={start}"
+        url == "https://apihub.copernicus.eu/apihub/search?format=json&rows={rows}&start={start}"
         "&orderby={orderby}".format(rows=api.page_size, start=10, orderby="beginposition desc")
     )
 

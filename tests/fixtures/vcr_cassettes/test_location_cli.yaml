@@ -56,20 +56,20 @@ interactions:
       - sentinelsat/0.14
     method: POST
 
-    uri: https://scihub.copernicus.eu/apihub/search?format=json&rows=1&start=0
+    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=1&start=0
   response:
     body:
       string: '{"feed":{"xmlns:opensearch":"http://a9.com/-/spec/opensearch/1.1/","xmlns":"http://www.w3.org/2005/Atom","title":"Sentinels
         Scientific Data Hub search results for: beginPosition:[NOW-1DAY TO NOW] footprint:\"Intersects(ENVELOPE(6.1360042,
         6.256451, 49.1487955, 49.0608244))\"","subtitle":"Displaying 0 to 0 of 20
         total results. Request done in 0.242 seconds.","updated":"2020-07-08T20:46:51.589Z","author":{"name":"Sentinels
-        Scientific Data Hub"},"id":"https://scihub.copernicus.eu/apihub/search?q=beginPosition:[NOW-1DAY
+        Scientific Data Hub"},"id":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[NOW-1DAY
         TO NOW] footprint:\"Intersects(ENVELOPE(6.1360042, 6.256451, 49.1487955, 49.0608244))\"","opensearch:totalResults":"20","opensearch:startIndex":"0","opensearch:itemsPerPage":"1","opensearch:Query":{"role":"request","searchTerms":"beginPosition:[NOW-1DAY
-        TO NOW] footprint:\"Intersects(ENVELOPE(6.1360042, 6.256451, 49.1487955, 49.0608244))\"","startPage":"1"},"link":[{"rel":"self","type":"application/atom+xml","href":"https://scihub.copernicus.eu/apihub/search?q=beginPosition:[NOW-1DAY
-        TO NOW] footprint:\"Intersects(ENVELOPE(6.1360042, 6.256451, 49.1487955, 49.0608244))\"&start=0&rows=1"},{"rel":"first","type":"application/atom+xml","href":"https://scihub.copernicus.eu/apihub/search?q=beginPosition:[NOW-1DAY
-        TO NOW] footprint:\"Intersects(ENVELOPE(6.1360042, 6.256451, 49.1487955, 49.0608244))\"&start=0&rows=1"},{"rel":"next","type":"application/atom+xml","href":"https://scihub.copernicus.eu/apihub/search?q=beginPosition:[NOW-1DAY
-        TO NOW] footprint:\"Intersects(ENVELOPE(6.1360042, 6.256451, 49.1487955, 49.0608244))\"&start=1&rows=1"},{"rel":"last","type":"application/atom+xml","href":"https://scihub.copernicus.eu/apihub/search?q=beginPosition:[NOW-1DAY
-        TO NOW] footprint:\"Intersects(ENVELOPE(6.1360042, 6.256451, 49.1487955, 49.0608244))\"&start=19&rows=1"},{"rel":"search","type":"application/opensearchdescription+xml","href":"opensearch_description.xml"}],"entry":{"title":"S2B_MSIL1C_20200708T102559_N0209_R108_T32ULV_20200708T124214","link":[{"href":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''bc5bd48d-c237-4eb2-8aa0-9d470175ff68'')/$value"},{"rel":"alternative","href":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''bc5bd48d-c237-4eb2-8aa0-9d470175ff68'')/"},{"rel":"icon","href":"https://scihub.copernicus.eu/apihub/odata/v1/Products(''bc5bd48d-c237-4eb2-8aa0-9d470175ff68'')/Products(''Quicklook'')/$value"}],"id":"bc5bd48d-c237-4eb2-8aa0-9d470175ff68","summary":"Date:
+        TO NOW] footprint:\"Intersects(ENVELOPE(6.1360042, 6.256451, 49.1487955, 49.0608244))\"","startPage":"1"},"link":[{"rel":"self","type":"application/atom+xml","href":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[NOW-1DAY
+        TO NOW] footprint:\"Intersects(ENVELOPE(6.1360042, 6.256451, 49.1487955, 49.0608244))\"&start=0&rows=1"},{"rel":"first","type":"application/atom+xml","href":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[NOW-1DAY
+        TO NOW] footprint:\"Intersects(ENVELOPE(6.1360042, 6.256451, 49.1487955, 49.0608244))\"&start=0&rows=1"},{"rel":"next","type":"application/atom+xml","href":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[NOW-1DAY
+        TO NOW] footprint:\"Intersects(ENVELOPE(6.1360042, 6.256451, 49.1487955, 49.0608244))\"&start=1&rows=1"},{"rel":"last","type":"application/atom+xml","href":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[NOW-1DAY
+        TO NOW] footprint:\"Intersects(ENVELOPE(6.1360042, 6.256451, 49.1487955, 49.0608244))\"&start=19&rows=1"},{"rel":"search","type":"application/opensearchdescription+xml","href":"opensearch_description.xml"}],"entry":{"title":"S2B_MSIL1C_20200708T102559_N0209_R108_T32ULV_20200708T124214","link":[{"href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''bc5bd48d-c237-4eb2-8aa0-9d470175ff68'')/$value"},{"rel":"alternative","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''bc5bd48d-c237-4eb2-8aa0-9d470175ff68'')/"},{"rel":"icon","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''bc5bd48d-c237-4eb2-8aa0-9d470175ff68'')/Products(''Quicklook'')/$value"}],"id":"bc5bd48d-c237-4eb2-8aa0-9d470175ff68","summary":"Date:
         2020-07-08T10:25:59.024Z, Instrument: MSI, Mode: , Satellite: Sentinel-2,
         Size: 683.94 MB","date":[{"name":"datatakesensingstart","content":"2020-07-08T10:25:59.024Z"},{"name":"beginposition","content":"2020-07-08T10:25:59.024Z"},{"name":"endposition","content":"2020-07-08T10:25:59.024Z"},{"name":"ingestiondate","content":"2020-07-08T18:13:01.463Z"}],"int":[{"name":"orbitnumber","content":"17437"},{"name":"relativeorbitnumber","content":"108"}],"double":{"name":"cloudcoverpercentage","content":"77.231"},"str":[{"name":"sensoroperationalmode","content":"INS-NOBS"},{"name":"gmlfootprint","content":"<gml:Polygon
         srsName=\"http://www.opengis.net/gml/srs/epsg.xml#4326\" xmlns:gml=\"http://www.opengis.net/gml\">\n   <gml:outerBoundaryIs>\n      <gml:LinearRing>\n         <gml:coordinates>49.53003637993339,6.235874040955493

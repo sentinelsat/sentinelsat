@@ -91,7 +91,7 @@ def credentials(request):
 @pytest.fixture(scope="session")
 def api_kwargs(credentials):
     user, password = credentials
-    return dict(user=user, password=password, api_url="https://scihub.copernicus.eu/apihub/")
+    return dict(user=user, password=password, api_url="https://apihub.copernicus.eu/apihub/")
 
 
 @pytest.fixture

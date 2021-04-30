@@ -62,7 +62,7 @@ class SentinelProductsAPI(sentinelsat.SentinelAPI):
         set to None to use ~/.netrc
     api_url : string, optional
         URL of the DataHub
-        defaults to 'https://scihub.copernicus.eu/apihub'
+        defaults to 'https://apihub.copernicus.eu/apihub'
     show_progressbars : bool
         Whether progressbars should be shown or not, e.g. during download. Defaults to True.
     timeout : float or tuple, optional
