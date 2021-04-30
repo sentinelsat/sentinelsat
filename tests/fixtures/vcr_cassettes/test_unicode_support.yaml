@@ -18,23 +18,30 @@ interactions:
     uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=0&start=0
   response:
     body:
-      string: "{\"feed\":{\"xmlns:opensearch\":\"http://a9.com/-/spec/opensearch/1.1/\",\"xmlns\":\"http://www.w3.org/2005/Atom\",\"title\":\"Sentinels
-        Scientific Data Hub search results for: \u0669(\u25CF\u032E\u032E\u0303\u2022\u0303)\u06F6:\",\"subtitle\":\"Displaying
-        \ results. Request done in 0 seconds.\",\"updated\":\"2020-06-26T20:42:49.044Z\",\"author\":{\"name\":\"Sentinels
-        Scientific Data Hub\"},\"id\":\"https://apihub.copernicus.eu/apihub/search?q=\u0669(\u25CF\u032E\u032E\u0303\u2022\u0303)\u06F6:\",\"opensearch:totalResults\":null,\"opensearch:startIndex\":\"0\",\"opensearch:itemsPerPage\":\"0\",\"opensearch:Query\":{\"role\":\"request\",\"searchTerms\":\"\u0669(\u25CF\u032E\u032E\u0303\u2022\u0303)\u06F6:\",\"startPage\":\"1\"},\"link\":[{\"rel\":\"self\",\"type\":\"application/atom+xml\",\"href\":\"https://apihub.copernicus.eu/apihub/search?q=\u0669(\u25CF\u032E\u032E\u0303\u2022\u0303)\u06F6:&start=0&rows=0\"},{\"rel\":\"first\",\"type\":\"application/atom+xml\",\"href\":\"https://apihub.copernicus.eu/apihub/search?q=\u0669(\u25CF\u032E\u032E\u0303\u2022\u0303)\u06F6:&start=0&rows=0\"},{\"rel\":\"last\",\"type\":\"application/atom+xml\",\"href\":\"https://apihub.copernicus.eu/apihub/search?q=\u0669(\u25CF\u032E\u032E\u0303\u2022\u0303)\u06F6:&start=NaN&rows=0\"},{\"rel\":\"search\",\"type\":\"application/opensearchdescription+xml\",\"href\":\"opensearch_description.xml\"}]}}"
+      string: "{\"feed\":{\"xmlns:opensearch\":\"http://a9.com/-/spec/opensearch/1.1/\",\"xmlns\":\"http://www.w3.org/2005/Atom\",\"error\":{\"code\":\"400\",\"message\":\"org.apache.solr.search.SyntaxError:
+        Cannot parse '\u0669(\u25CF\u032E\u032E\u0303\u2022\u0303)\u06F6:': Encountered
+        \\\"<EOF>\\\" at line 1, column 11.\\nWas expecting one of:\\n    <BAREOPER>
+        ...\\n    \\\"(\\\" ...\\n    \\\"*\\\" ...\\n    <QUOTED> ...\\n    <TERM>
+        ...\\n    <PREFIXTERM> ...\\n    <WILDTERM> ...\\n    <REGEXPTERM> ...\\n
+        \   \\\"[\\\" ...\\n    \\\"{\\\" ...\\n    <LPARAMS> ...\\n    \\\"filter(\\\"
+        ...\\n    <NUMBER> ...\\n    \"}}}"
     headers:
       content-length:
-      - '1111'
+      - '524'
       content-type:
       - application/json
       pragma:
       - no-cache
       server:
       - Apache-Coyote/1.1
-      transfer-encoding:
-      - chunked
       vary:
       - Accept-Encoding
+      x-content-type-options:
+      - nosniff
+      x-frame-options:
+      - DENY
+      x-xss-protection:
+      - 1; mode=block
     status:
       code: 200
       message: OK
@@ -68,6 +75,12 @@ interactions:
       - no-cache
       server:
       - Apache-Coyote/1.1
+      x-content-type-options:
+      - nosniff
+      x-frame-options:
+      - DENY
+      x-xss-protection:
+      - 1; mode=block
     status:
       code: 404
       message: Not Found

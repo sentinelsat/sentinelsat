@@ -45,6 +45,7 @@ Fixed
 ~~~~~
 * fix location information for Nominatim bounding box queries (#384)
 * Get file name extension more reliably from either header or internal logic (in particular for S5 products #270) (#378 @valgur)
+* Server-side error info has become much more detailed and the client code has been updated to correctly handle that.
 
 Development Changes
 ~~~~~~~~~~~~~~~~~~~
