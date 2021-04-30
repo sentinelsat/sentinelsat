@@ -15,7 +15,7 @@ interactions:
       User-Agent:
       - sentinelsat/0.13
     method: POST
-    uri: https://scihub.copernicus.eu/apihub/search?format=json&rows=100&start=0
+    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=100&start=0
   response:
     body:
       string: !!binary |
@@ -696,7 +696,7 @@ interactions:
       User-Agent:
       - sentinelsat/0.13
     method: POST
-    uri: https://scihub.copernicus.eu/apihub/search?format=json&rows=100&start=100
+    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=100&start=100
   response:
     body:
       string: !!binary |
@@ -1125,7 +1125,7 @@ interactions:
       User-Agent:
       - sentinelsat/0.13
     method: POST
-    uri: https://scihub.copernicus.eu/apihub/search?format=json&rows=100&start=200
+    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=100&start=200
   response:
     body:
       string: !!binary |
@@ -1488,7 +1488,7 @@ interactions:
       User-Agent:
       - sentinelsat/0.13
     method: POST
-    uri: https://scihub.copernicus.eu/apihub/search?format=json&rows=100&start=300
+    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=100&start=300
   response:
     body:
       string: !!binary |
@@ -1860,7 +1860,7 @@ interactions:
       User-Agent:
       - sentinelsat/0.13
     method: POST
-    uri: https://scihub.copernicus.eu/apihub/search?format=json&rows=100&start=400
+    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=100&start=400
   response:
     body:
       string: !!binary |
@@ -2248,7 +2248,7 @@ interactions:
       User-Agent:
       - sentinelsat/0.13
     method: POST
-    uri: https://scihub.copernicus.eu/apihub/search?format=json&rows=100&start=500
+    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=100&start=500
   response:
     body:
       string: !!binary |
@@ -2629,7 +2629,7 @@ interactions:
       User-Agent:
       - sentinelsat/0.13
     method: POST
-    uri: https://scihub.copernicus.eu/apihub/search?format=json&rows=100&start=600
+    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=100&start=600
   response:
     body:
       string: !!binary |
@@ -2784,7 +2784,7 @@ interactions:
       User-Agent:
       - sentinelsat/0.13
     method: POST
-    uri: https://scihub.copernicus.eu/apihub/search?format=json&rows=100&start=0
+    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=100&start=0
   response:
     body:
       string: !!binary |
@@ -3464,7 +3464,7 @@ interactions:
       User-Agent:
       - sentinelsat/0.13
     method: POST
-    uri: https://scihub.copernicus.eu/apihub/search?format=json&rows=50&start=100
+    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=50&start=100
   response:
     body:
       string: !!binary |
@@ -3741,7 +3741,7 @@ interactions:
       User-Agent:
       - sentinelsat/0.13
     method: POST
-    uri: https://scihub.copernicus.eu/apihub/search?format=json&rows=20&start=90
+    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=20&start=90
   response:
     body:
       string: !!binary |
@@ -3946,7 +3946,7 @@ interactions:
       User-Agent:
       - sentinelsat/0.13
     method: POST
-    uri: https://scihub.copernicus.eu/apihub/search?format=json&rows=20&start=620
+    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=20&start=620
   response:
     body:
       string: !!binary |

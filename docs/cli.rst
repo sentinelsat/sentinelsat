@@ -28,7 +28,7 @@ Alternatively, you can add them to a file `.netrc` in your user home directory.
 
 .. code-block:: text
 
-  machine scihub.copernicus.eu
+  machine apihub.copernicus.eu
   login <user>
   password <password>
 
@@ -57,7 +57,7 @@ orbit for the year 2015.
 
   sentinelsat -u <user> -p <password> -g <search_polygon.geojson> -s 20150101 -e 20151231 -d \
   --producttype SLC -q "orbitdirection=Descending" \
-  --url "https://scihub.copernicus.eu/apihub"
+  --url "https://apihub.copernicus.eu/apihub"
 
 Download a single Sentinel-1 GRDH scene covering Santa Claus Village in Finland
 on Christmas Eve 2015.
@@ -107,7 +107,7 @@ Options
 
 .. option:: --url <api_url>
 
-    Define another API URL. Default is 'https://scihub.copernicus.eu/apihub/'.
+    Define another API URL. Default is 'https://apihub.copernicus.eu/apihub/'.
 
     Can also be set with the :envvar:`DHUS_URL` environment variable.
 

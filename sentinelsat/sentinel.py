@@ -46,7 +46,7 @@ class SentinelAPI:
         set to None to use ~/.netrc
     api_url : string, optional
         URL of the DataHub
-        defaults to 'https://scihub.copernicus.eu/apihub'
+        defaults to 'https://apihub.copernicus.eu/apihub'
     show_progressbars : bool
         Whether progressbars should be shown or not, e.g. during download. Defaults to True.
     timeout : float or tuple, optional
@@ -72,7 +72,7 @@ class SentinelAPI:
         self,
         user,
         password,
-        api_url="https://scihub.copernicus.eu/apihub/",
+        api_url="https://apihub.copernicus.eu/apihub/",
         show_progressbars=True,
         timeout=None,
     ):
@@ -92,7 +92,9 @@ class SentinelAPI:
 
     @staticmethod
     def _api2dhus_url(api_url):
-        return re.sub("apihub/$", "dhus/", api_url)
+        url = re.sub("apihub/$", "dhus/", api_url)
+        url = re.sub("apihub.copernicus.eu", "scihub.copernicus.eu", url)
+        return url
 
     def _req_dhus_stub(self):
         try:
@@ -1441,10 +1443,10 @@ def _check_scihub_response(response, test_json=True, query_string=None):
             error = ServerError("Invalid API response", response)
         elif response.status_code == 401:
             msg = "Invalid user name or password"
-            if "scihub.copernicus.eu/apihub" in response.url:
+            if "apihub.copernicus.eu/apihub" in response.url:
                 msg += (
                     ". Note that account creation and password changes may take up to a week "
-                    "to propagate to the 'https://scihub.copernicus.eu/apihub/' API URL you are using. "
+                    "to propagate to the 'https://apihub.copernicus.eu/apihub/' API URL you are using. "
                     "Consider switching to 'https://scihub.copernicus.eu/dhus/' instead in the mean time."
                 )
             error = UnauthorizedError(msg, response)

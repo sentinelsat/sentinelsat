@@ -1,5 +1,5 @@
 """
-Tests for functionality related to the OData API of SciHub (https://scihub.copernicus.eu/apihub/odata/v1/...)
+Tests for functionality related to the OData API of SciHub (https://apihub.copernicus.eu/apihub/odata/v1/...)
 """
 from datetime import datetime
 
@@ -46,8 +46,8 @@ def test_get_product_odata_short_with_missing_online_key(api, vcr):
         "id": "8df46c9e-a20c-43db-a19a-4240c2ed3b8b",
         "size": 143549851,
         "md5": "D5E4DF5C38C6E97BF7E7BD540AB21C05",
-        "url": "https://scihub.copernicus.eu/apihub/odata/v1/Products('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')/$value",
-        "quicklook_url": "https://scihub.copernicus.eu/apihub/odata/v1/Products('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')/Products('Quicklook')/$value",
+        "url": "https://apihub.copernicus.eu/apihub/odata/v1/Products('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')/$value",
+        "quicklook_url": "https://apihub.copernicus.eu/apihub/odata/v1/Products('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')/Products('Quicklook')/$value",
         "date": datetime(2015, 11, 21, 10, 3, 56, 675000),
         "footprint": "POLYGON((-63.852531 -5.880887,-67.495872 -5.075419,-67.066071 -3.084356,-63.430576 -3.880541,"
         "-63.852531 -5.880887))",
@@ -89,7 +89,7 @@ def test_get_product_info_bad_key(api):
 def test_get_product_odata_scihub_down(read_fixture_file):
     api = SentinelAPI("mock_user", "mock_password")
 
-    request_url = "https://scihub.copernicus.eu/apihub/odata/v1/Products('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')?$format=json"
+    request_url = "https://apihub.copernicus.eu/apihub/odata/v1/Products('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')?$format=json"
 
     with requests_mock.mock() as rqst:
         rqst.get(request_url, text="Mock SciHub is Down", status_code=503)
@@ -129,7 +129,7 @@ def test_is_online(api):
     uuid = "98ca202b-2155-4181-be88-4358b2cbaaa0"
     invalid_uuid = "98ca202b-2155-4181-be88-xxxxxxxxxxxx"
 
-    request_url = "https://scihub.copernicus.eu/apihub/odata/v1/Products('{}')/Online/$value"
+    request_url = "https://apihub.copernicus.eu/apihub/odata/v1/Products('{}')/Online/$value"
 
     with requests_mock.mock() as rqst:
         rqst.get(request_url.format(uuid), text="true", status_code=200)

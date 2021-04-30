@@ -22,7 +22,7 @@ from sentinelsat.exceptions import SentinelAPIError, SentinelAPILTAError, Invali
 @pytest.mark.parametrize(
     "api_url, dhus_url",
     [
-        ("https://scihub.copernicus.eu/apihub/", "https://scihub.copernicus.eu/dhus/"),
+        ("https://apihub.copernicus.eu/apihub/", "https://scihub.copernicus.eu/dhus/"),
         ("https://colhub.met.no/", "https://colhub.met.no/"),
         ("https://finhub.nsdc.fmi.fi/", "https://finhub.nsdc.fmi.fi/"),
     ],
@@ -61,7 +61,7 @@ def test_dhus_version(dhus_url, version):
 )
 def test_trigger_lta_success(http_status_code):
     api = SentinelAPI("mock_user", "mock_password")
-    request_url = "https://scihub.copernicus.eu/apihub/odata/v1/Products('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')/$value"
+    request_url = "https://apihub.copernicus.eu/apihub/odata/v1/Products('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')/$value"
 
     with requests_mock.mock() as rqst:
         rqst.get(request_url, status_code=http_status_code)
@@ -79,7 +79,7 @@ def test_trigger_lta_success(http_status_code):
 )
 def test_trigger_lta_failed(http_status_code):
     api = SentinelAPI("mock_user", "mock_password")
-    request_url = "https://scihub.copernicus.eu/apihub/odata/v1/Products('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')/$value"
+    request_url = "https://apihub.copernicus.eu/apihub/odata/v1/Products('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')/$value"
 
     with requests_mock.mock() as rqst:
         rqst.get(request_url, status_code=http_status_code)
@@ -181,7 +181,7 @@ def test_download_all_one_fail(api, tmpdir, smallest_online_products):
     # Force one download to fail
     id = ids[0]
     with requests_mock.mock(real_http=True) as rqst:
-        url = "https://scihub.copernicus.eu/apihub/odata/v1/Products('%s')?$format=json" % id
+        url = "https://apihub.copernicus.eu/apihub/odata/v1/Products('%s')?$format=json" % id
         json = api.session.get(url).json()
         json["d"]["Checksum"]["Value"] = "00000000000000000000000000000000"
         rqst.get(url, json=json)
@@ -288,7 +288,7 @@ def test_download_all_quicklooks_one_fail(api, tmpdir, quicklook_products):
     # Force one download to fail
     id = ids[0]
     with requests_mock.mock(real_http=True) as rqst:
-        url = "https://scihub.copernicus.eu/apihub/odata/v1/Products('{id}')/Products('Quicklook')/$value".format(
+        url = "https://apihub.copernicus.eu/apihub/odata/v1/Products('{id}')/Products('Quicklook')/$value".format(
             id=id
         )
         headers = api.session.get(url).headers

@@ -61,10 +61,10 @@ class CommaSeparatedString(click.ParamType):
 )
 @click.option(
     "--url",
-    default="https://scihub.copernicus.eu/apihub/",
+    default="https://apihub.copernicus.eu/apihub/",
     envvar="DHUS_URL",
     help="""Define API URL. Default URL is
-        'https://scihub.copernicus.eu/apihub/' (or environment variable DHUS_URL).
+        'https://apihub.copernicus.eu/apihub/' (or environment variable DHUS_URL).
         """,
 )
 @click.option(

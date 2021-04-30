@@ -105,7 +105,7 @@ def netrc_from_environ(no_netrc, credentials):
         f.write(
             "\n".join(
                 [
-                    "machine scihub.copernicus.eu",
+                    "machine apihub.copernicus.eu",
                     "login {}".format(credentials[0]),
                     "password {}".format(credentials[1]),
                 ]
@@ -164,7 +164,7 @@ def test_no_auth_fail(run_cli, no_netrc, no_auth_environ, geojson_path):
         "--geometry",
         geojson_path,
         "--url",
-        "https://scihub.copernicus.eu/dhus/",
+        "https://apihub.copernicus.eu/apihub/",
         with_credentials=False,
         must_return_nonzero=True,
     )
@@ -178,7 +178,7 @@ def test_no_auth_netrc(run_cli, netrc_from_environ, no_auth_environ, geojson_pat
         "--geometry",
         geojson_path,
         "--url",
-        "https://scihub.copernicus.eu/dhus/",
+        "https://apihub.copernicus.eu/apihub/",
         with_credentials=False,
     )
 
@@ -206,7 +206,7 @@ def test_cloud_flag_url(run_cli, geojson_path):
         "--geometry",
         geojson_path,
         "--url",
-        "https://scihub.copernicus.eu/apihub/",
+        "https://apihub.copernicus.eu/apihub/",
         "-s",
         "20151219",
         "-e",
@@ -232,7 +232,7 @@ def test_order_by_flag(run_cli, geojson_path):
         "--geometry",
         geojson_path,
         "--url",
-        "https://scihub.copernicus.eu/apihub/",
+        "https://apihub.copernicus.eu/apihub/",
         "-s",
         "20151219",
         "-e",
@@ -254,7 +254,7 @@ def test_sentinel1_flag(run_cli, geojson_path):
         "--geometry",
         geojson_path,
         "--url",
-        "https://scihub.copernicus.eu/apihub/",
+        "https://apihub.copernicus.eu/apihub/",
         "-s",
         "20151219",
         "-e",
@@ -274,7 +274,7 @@ def test_sentinel2_flag(run_cli, geojson_path):
         "--geometry",
         geojson_path,
         "--url",
-        "https://scihub.copernicus.eu/apihub/",
+        "https://apihub.copernicus.eu/apihub/",
         "-s",
         "20151219",
         "-e",
@@ -305,7 +305,7 @@ def test_product_flag(run_cli, geojson_path):
         "--geometry",
         geojson_path,
         "--url",
-        "https://scihub.copernicus.eu/apihub/",
+        "https://apihub.copernicus.eu/apihub/",
         "-s",
         "20161201",
         "-e",
@@ -337,7 +337,7 @@ def test_limit_flag(run_cli, geojson_path):
         "--geometry",
         geojson_path,
         "--url",
-        "https://scihub.copernicus.eu/apihub/",
+        "https://apihub.copernicus.eu/apihub/",
         "-s",
         "20161201",
         "-e",
@@ -398,7 +398,7 @@ def test_option_hierarchy(run_cli, geojson_path):
         "--geometry",
         geojson_path,
         "--url",
-        "https://scihub.copernicus.eu/apihub/",
+        "https://apihub.copernicus.eu/apihub/",
         "-s",
         "20161201",
         "-e",
@@ -468,7 +468,7 @@ def test_download_single(run_cli, api, tmpdir, smallest_online_products, monkeyp
         f.remove()
 
     # Prepare a response with an invalid checksum
-    url = "https://scihub.copernicus.eu/apihub/odata/v1/Products('%s')?$format=json" % product_id
+    url = "https://apihub.copernicus.eu/apihub/odata/v1/Products('%s')?$format=json" % product_id
     json = api.session.get(url).json()
     json["d"]["Checksum"]["Value"] = "00000000000000000000000000000000"
 
@@ -506,7 +506,7 @@ def test_product_node_download_single(run_cli, api, tmpdir, smallest_online_prod
         f.remove()
 
     # Prepare a response with an invalid checksum
-    url = "https://scihub.copernicus.eu/apihub/odata/v1/Products('%s')?$format=json" % product_id
+    url = "https://apihub.copernicus.eu/apihub/odata/v1/Products('%s')?$format=json" % product_id
     json = api.session.get(url).json()
     json["d"]["Checksum"]["Value"] = "00000000000000000000000000000000"
 
@@ -590,7 +590,7 @@ def test_download_many(run_cli, api, tmpdir, smallest_online_products, monkeypat
 
     # Prepare a response with an invalid checksum
     product_id = ids[0]
-    url = "https://scihub.copernicus.eu/apihub/odata/v1/Products('%s')?$format=json" % product_id
+    url = "https://apihub.copernicus.eu/apihub/odata/v1/Products('%s')?$format=json" % product_id
     json = api.session.get(url).json()
     json["d"]["Checksum"]["Value"] = "00000000000000000000000000000000"
 
@@ -643,7 +643,7 @@ def test_download_single_quicklook(run_cli, api, tmpdir, quicklook_products, mon
         f.remove()
 
     # Prepare a response with an invalid checksum
-    url = "https://scihub.copernicus.eu/apihub/odata/v1/Products('{id}')/Products('Quicklook')/$value".format(
+    url = "https://apihub.copernicus.eu/apihub/odata/v1/Products('{id}')/Products('Quicklook')/$value".format(
         id=id
     )
     headers = api.session.get(url).headers
@@ -666,7 +666,7 @@ def test_download_single_quicklook(run_cli, api, tmpdir, quicklook_products, mon
 def test_info_cli(run_cli, tmpdir):
     result = run_cli("--info")
     assert (
-        "HTTPError: 404 Client Error: Not Found for url: https://scihub.copernicus.eu/apihub/api/stub/version\n"
+        "HTTPError: 404 Client Error: Not Found for url: https://apihub.copernicus.eu/apihub/api/stub/version\n"
         "Are you trying to get the DHuS version of APIHub?\nTrying again after conversion to DHuS URL\n"
         "DHuS version: 2.4.1\n" in result.output
     )

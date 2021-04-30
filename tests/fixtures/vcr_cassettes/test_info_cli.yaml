@@ -11,7 +11,7 @@ interactions:
       User-Agent:
       - sentinelsat/0.13
     method: GET
-    uri: https://scihub.copernicus.eu/apihub/api/stub/version
+    uri: https://apihub.copernicus.eu/apihub/api/stub/version
   response:
     body:
       string: 'PAGE NOT FOUND

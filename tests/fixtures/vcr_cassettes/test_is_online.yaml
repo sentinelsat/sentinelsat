@@ -11,7 +11,7 @@ interactions:
       User-Agent:
       - sentinelsat/0.14
     method: GET
-    uri: https://scihub.copernicus.eu/apihub/odata/v1/Products('98ca202b-2155-4181-be88-xxxxxxxxxxxx')/Online/$value
+    uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('98ca202b-2155-4181-be88-xxxxxxxxxxxx')/Online/$value
   response:
     body:
       string: <?xml version='1.0' encoding='UTF-8'?><error xmlns="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"><code/><message
