@@ -15,18 +15,17 @@ interactions:
   response:
     body:
       string: "{\"type\":\"FeatureCollection\",\"licence\":\"Data \xA9 OpenStreetMap
-        contributors, ODbL 1.0. https://osm.org/copyright\",\"features\":[{\"type\":\"Feature\",\"properties\":{\"place_id\":235535315,\"osm_type\":\"relation\",\"osm_id\":450381,\"display_name\":\"Metz,
-        Moselle, Grand Est, France m\xE9tropolitaine, France\",\"place_rank\":16,\"category\":\"boundary\",\"type\":\"administrative\",\"importance\":0.7519914762865919,\"icon\":\"https://nominatim.openstreetmap.org/images/mapicons/poi_boundary_administrative.p.20.png\"},\"bbox\":[6.1360042,49.0608244,6.256451,49.1487955],\"geometry\":{\"type\":\"Point\",\"coordinates\":[6.1763552,49.1196964]}},{\"type\":\"Feature\",\"properties\":{\"place_id\":236135487,\"osm_type\":\"relation\",\"osm_id\":5524891,\"display_name\":\"Metz,
-        Moselle, Grand Est, France m\xE9tropolitaine, France\",\"place_rank\":14,\"category\":\"boundary\",\"type\":\"administrative\",\"importance\":0.5802836358825189,\"icon\":\"https://nominatim.openstreetmap.org/images/mapicons/poi_boundary_administrative.p.20.png\"},\"bbox\":[5.9245677,48.9047808,6.5006806,49.2727216],\"geometry\":{\"type\":\"Point\",\"coordinates\":[6.212870635074653,49.088735099999994]}},{\"type\":\"Feature\",\"properties\":{\"place_id\":443004,\"osm_type\":\"node\",\"osm_id\":153859791,\"display_name\":\"Metz,
-        Metz Township, Presque Isle County, Michigan, United States of America\",\"place_rank\":19,\"category\":\"place\",\"type\":\"village\",\"importance\":0.5511484119678924,\"icon\":\"https://nominatim.openstreetmap.org/images/mapicons/poi_place_village.p.20.png\"},\"bbox\":[-83.821383,45.269735,-83.781383,45.309735],\"geometry\":{\"type\":\"Point\",\"coordinates\":[-83.801383,45.289735]}},{\"type\":\"Feature\",\"properties\":{\"place_id\":234942829,\"osm_type\":\"relation\",\"osm_id\":141496,\"display_name\":\"Metz,
-        Vernon County, Missouri, 64765, United States of America\",\"place_rank\":16,\"category\":\"boundary\",\"type\":\"administrative\",\"importance\":0.4752906718837796,\"icon\":\"https://nominatim.openstreetmap.org/images/mapicons/poi_boundary_administrative.p.20.png\"},\"bbox\":[-94.447665,37.994531,-94.4383,37.998437],\"geometry\":{\"type\":\"Point\",\"coordinates\":[-94.44295146659815,37.9969785]}},{\"type\":\"Feature\",\"properties\":{\"place_id\":461326,\"osm_type\":\"node\",\"osm_id\":154379562,\"display_name\":\"Metz,
-        Marion County, West Virginia, 26585, United States of America\",\"place_rank\":20,\"category\":\"place\",\"type\":\"hamlet\",\"importance\":0.38308187049262343,\"icon\":\"https://nominatim.openstreetmap.org/images/mapicons/poi_place_village.p.20.png\"},\"bbox\":[-80.3899634,39.5602748,-80.3499634,39.6002748],\"geometry\":{\"type\":\"Point\",\"coordinates\":[-80.3699634,39.5802748]}},{\"type\":\"Feature\",\"properties\":{\"place_id\":473283,\"osm_type\":\"node\",\"osm_id\":154381412,\"display_name\":\"Metz,
-        Steuben County, Indiana, United States of America\",\"place_rank\":20,\"category\":\"place\",\"type\":\"hamlet\",\"importance\":0.37526985874952823,\"icon\":\"https://nominatim.openstreetmap.org/images/mapicons/poi_place_village.p.20.png\"},\"bbox\":[-84.8594033,41.5961614,-84.8194033,41.6361614],\"geometry\":{\"type\":\"Point\",\"coordinates\":[-84.8394033,41.6161614]}},{\"type\":\"Feature\",\"properties\":{\"place_id\":70695328,\"osm_type\":\"node\",\"osm_id\":6187932136,\"display_name\":\"Metz,
-        Heiligenstein, S\xE9lestat-Erstein, Bas-Rhin, Grand Est, France m\xE9tropolitaine,
-        67140, France\",\"place_rank\":20,\"category\":\"place\",\"type\":\"locality\",\"importance\":0.36,\"icon\":\"https://nominatim.openstreetmap.org/images/mapicons/poi_place_village.p.20.png\"},\"bbox\":[7.4195112,48.4102973,7.4395112,48.4302973],\"geometry\":{\"type\":\"Point\",\"coordinates\":[7.4295112,48.4202973]}},{\"type\":\"Feature\",\"properties\":{\"place_id\":19081255,\"osm_type\":\"node\",\"osm_id\":1907896278,\"display_name\":\"Metz,
-        Ector County, Texas, United States of America\",\"place_rank\":20,\"category\":\"place\",\"type\":\"locality\",\"importance\":0.36,\"icon\":\"https://nominatim.openstreetmap.org/images/mapicons/poi_place_village.p.20.png\"},\"bbox\":[-102.667092,31.693462,-102.647092,31.713462],\"geometry\":{\"type\":\"Point\",\"coordinates\":[-102.657092,31.703462]}},{\"type\":\"Feature\",\"properties\":{\"place_id\":19302878,\"osm_type\":\"node\",\"osm_id\":1943369786,\"display_name\":\"Metz,
-        Sarre, Valle d'Aosta/Vall\xE9e d'Aoste, Italia\",\"place_rank\":20,\"category\":\"place\",\"type\":\"hamlet\",\"importance\":0.36,\"icon\":\"https://nominatim.openstreetmap.org/images/mapicons/poi_place_village.p.20.png\"},\"bbox\":[7.2443646,45.731577,7.2843646,45.771577],\"geometry\":{\"type\":\"Point\",\"coordinates\":[7.2643646,45.751577]}},{\"type\":\"Feature\",\"properties\":{\"place_id\":354198,\"osm_type\":\"node\",\"osm_id\":150940565,\"display_name\":\"Metz,
-        Monterey County, California, 93927, United States of America\",\"place_rank\":20,\"category\":\"place\",\"type\":\"hamlet\",\"importance\":0.36,\"icon\":\"https://nominatim.openstreetmap.org/images/mapicons/poi_place_village.p.20.png\"},\"bbox\":[-121.2315899,36.334966,-121.1915899,36.374966],\"geometry\":{\"type\":\"Point\",\"coordinates\":[-121.2115899,36.354966]}}]}"
+        contributors, ODbL 1.0. https://osm.org/copyright\",\"features\":[{\"type\":\"Feature\",\"properties\":{\"place_id\":258831515,\"osm_type\":\"relation\",\"osm_id\":450381,\"display_name\":\"Metz,
+        Moselle, Grand Est, France m\xE9tropolitaine, France\",\"place_rank\":16,\"category\":\"boundary\",\"type\":\"administrative\",\"importance\":0.7519914762865919,\"icon\":\"https://nominatim.openstreetmap.org/ui/mapicons//poi_boundary_administrative.p.20.png\"},\"bbox\":[6.1360042,49.0608244,6.256451,49.1487955],\"geometry\":{\"type\":\"Point\",\"coordinates\":[6.1763552,49.1196964]}},{\"type\":\"Feature\",\"properties\":{\"place_id\":259358988,\"osm_type\":\"relation\",\"osm_id\":5524891,\"display_name\":\"Metz,
+        Moselle, Grand Est, France m\xE9tropolitaine, France\",\"place_rank\":14,\"category\":\"boundary\",\"type\":\"administrative\",\"importance\":0.5802836358825189,\"icon\":\"https://nominatim.openstreetmap.org/ui/mapicons//poi_boundary_administrative.p.20.png\"},\"bbox\":[5.9245677,48.9047808,6.5006806,49.2727216],\"geometry\":{\"type\":\"Point\",\"coordinates\":[6.212870635074653,49.088735099999994]}},{\"type\":\"Feature\",\"properties\":{\"place_id\":257924800,\"osm_type\":\"relation\",\"osm_id\":141496,\"display_name\":\"Metz,
+        Vernon County, Missouri, 64765, United States\",\"place_rank\":16,\"category\":\"boundary\",\"type\":\"administrative\",\"importance\":0.4752906718837796,\"icon\":\"https://nominatim.openstreetmap.org/ui/mapicons//poi_boundary_administrative.p.20.png\"},\"bbox\":[-94.447665,37.994531,-94.4383,37.998437],\"geometry\":{\"type\":\"Point\",\"coordinates\":[-94.44295146659815,37.9969785]}},{\"type\":\"Feature\",\"properties\":{\"place_id\":432129,\"osm_type\":\"node\",\"osm_id\":154379562,\"display_name\":\"Metz,
+        Marion County, West Virginia, 26585, United States\",\"place_rank\":20,\"category\":\"place\",\"type\":\"hamlet\",\"importance\":0.38308187049262343,\"icon\":\"https://nominatim.openstreetmap.org/ui/mapicons//poi_place_village.p.20.png\"},\"bbox\":[-80.3899634,39.5602748,-80.3499634,39.6002748],\"geometry\":{\"type\":\"Point\",\"coordinates\":[-80.3699634,39.5802748]}},{\"type\":\"Feature\",\"properties\":{\"place_id\":441679,\"osm_type\":\"node\",\"osm_id\":154381412,\"display_name\":\"Metz,
+        Steuben County, Indiana, United States\",\"place_rank\":20,\"category\":\"place\",\"type\":\"hamlet\",\"importance\":0.37526985874952823,\"icon\":\"https://nominatim.openstreetmap.org/ui/mapicons//poi_place_village.p.20.png\"},\"bbox\":[-84.8594033,41.5961614,-84.8194033,41.6361614],\"geometry\":{\"type\":\"Point\",\"coordinates\":[-84.8394033,41.6161614]}},{\"type\":\"Feature\",\"properties\":{\"place_id\":380761,\"osm_type\":\"node\",\"osm_id\":151736159,\"display_name\":\"Metz,
+        Vernon County, Missouri, 64765, United States\",\"place_rank\":20,\"category\":\"place\",\"type\":\"hamlet\",\"importance\":0.36,\"icon\":\"https://nominatim.openstreetmap.org/ui/mapicons//poi_place_village.p.20.png\"},\"bbox\":[-94.4632852,37.9775349,-94.4232852,38.0175349],\"geometry\":{\"type\":\"Point\",\"coordinates\":[-94.4432852,37.9975349]}},{\"type\":\"Feature\",\"properties\":{\"place_id\":18835373,\"osm_type\":\"node\",\"osm_id\":1943369786,\"display_name\":\"Metz,
+        Sarre, Valle d'Aosta/Vall\xE9e d'Aoste, Italia\",\"place_rank\":20,\"category\":\"place\",\"type\":\"hamlet\",\"importance\":0.36,\"icon\":\"https://nominatim.openstreetmap.org/ui/mapicons//poi_place_village.p.20.png\"},\"bbox\":[7.2443646,45.731577,7.2843646,45.771577],\"geometry\":{\"type\":\"Point\",\"coordinates\":[7.2643646,45.751577]}},{\"type\":\"Feature\",\"properties\":{\"place_id\":323370,\"osm_type\":\"node\",\"osm_id\":150940565,\"display_name\":\"Metz,
+        Monterey County, California, 93927, United States\",\"place_rank\":20,\"category\":\"place\",\"type\":\"hamlet\",\"importance\":0.36,\"icon\":\"https://nominatim.openstreetmap.org/ui/mapicons//poi_place_village.p.20.png\"},\"bbox\":[-121.2315899,36.334966,-121.1915899,36.374966],\"geometry\":{\"type\":\"Point\",\"coordinates\":[-121.2115899,36.354966]}},{\"type\":\"Feature\",\"properties\":{\"place_id\":428360,\"osm_type\":\"node\",\"osm_id\":154186906,\"display_name\":\"Metz,
+        Stow, Summit County, Ohio, 44224, United States\",\"place_rank\":20,\"category\":\"place\",\"type\":\"hamlet\",\"importance\":0.36,\"icon\":\"https://nominatim.openstreetmap.org/ui/mapicons//poi_place_village.p.20.png\"},\"bbox\":[-81.4787237,41.1753339,-81.4387237,41.2153339],\"geometry\":{\"type\":\"Point\",\"coordinates\":[-81.4587237,41.1953339]}},{\"type\":\"Feature\",\"properties\":{\"place_id\":410165,\"osm_type\":\"node\",\"osm_id\":153803281,\"display_name\":\"Metz,
+        Town of Bloomfield, Waushara County, Wisconsin, 54940, United States\",\"place_rank\":20,\"category\":\"place\",\"type\":\"hamlet\",\"importance\":0.36,\"icon\":\"https://nominatim.openstreetmap.org/ui/mapicons//poi_place_village.p.20.png\"},\"bbox\":[-88.9065018,44.1935916,-88.8665018,44.2335916],\"geometry\":{\"type\":\"Point\",\"coordinates\":[-88.8865018,44.2135916]}}]}"
     headers:
       Connection:
       - keep-alive
@@ -55,34 +54,63 @@ interactions:
       User-Agent:
       - sentinelsat/0.14
     method: POST
-
     uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=1&start=0
   response:
     body:
       string: '{"feed":{"xmlns:opensearch":"http://a9.com/-/spec/opensearch/1.1/","xmlns":"http://www.w3.org/2005/Atom","title":"Sentinels
         Scientific Data Hub search results for: beginPosition:[NOW-1DAY TO NOW] footprint:\"Intersects(ENVELOPE(6.1360042,
-        6.256451, 49.1487955, 49.0608244))\"","subtitle":"Displaying 0 to 0 of 20
-        total results. Request done in 0.242 seconds.","updated":"2020-07-08T20:46:51.589Z","author":{"name":"Sentinels
+        6.256451, 49.1487955, 49.0608244))\"","subtitle":"Displaying 0 to 0 of 14
+        total results. Request done in 0.002 seconds.","updated":"2021-04-30T17:41:00.090Z","author":{"name":"Sentinels
         Scientific Data Hub"},"id":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[NOW-1DAY
-        TO NOW] footprint:\"Intersects(ENVELOPE(6.1360042, 6.256451, 49.1487955, 49.0608244))\"","opensearch:totalResults":"20","opensearch:startIndex":"0","opensearch:itemsPerPage":"1","opensearch:Query":{"role":"request","searchTerms":"beginPosition:[NOW-1DAY
-        TO NOW] footprint:\"Intersects(ENVELOPE(6.1360042, 6.256451, 49.1487955, 49.0608244))\"","startPage":"1"},"link":[{"rel":"self","type":"application/atom+xml","href":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[NOW-1DAY
-        TO NOW] footprint:\"Intersects(ENVELOPE(6.1360042, 6.256451, 49.1487955, 49.0608244))\"&start=0&rows=1"},{"rel":"first","type":"application/atom+xml","href":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[NOW-1DAY
-        TO NOW] footprint:\"Intersects(ENVELOPE(6.1360042, 6.256451, 49.1487955, 49.0608244))\"&start=0&rows=1"},{"rel":"next","type":"application/atom+xml","href":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[NOW-1DAY
-        TO NOW] footprint:\"Intersects(ENVELOPE(6.1360042, 6.256451, 49.1487955, 49.0608244))\"&start=1&rows=1"},{"rel":"last","type":"application/atom+xml","href":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[NOW-1DAY
-        TO NOW] footprint:\"Intersects(ENVELOPE(6.1360042, 6.256451, 49.1487955, 49.0608244))\"&start=19&rows=1"},{"rel":"search","type":"application/opensearchdescription+xml","href":"opensearch_description.xml"}],"entry":{"title":"S2B_MSIL1C_20200708T102559_N0209_R108_T32ULV_20200708T124214","link":[{"href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''bc5bd48d-c237-4eb2-8aa0-9d470175ff68'')/$value"},{"rel":"alternative","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''bc5bd48d-c237-4eb2-8aa0-9d470175ff68'')/"},{"rel":"icon","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''bc5bd48d-c237-4eb2-8aa0-9d470175ff68'')/Products(''Quicklook'')/$value"}],"id":"bc5bd48d-c237-4eb2-8aa0-9d470175ff68","summary":"Date:
-        2020-07-08T10:25:59.024Z, Instrument: MSI, Mode: , Satellite: Sentinel-2,
-        Size: 683.94 MB","date":[{"name":"datatakesensingstart","content":"2020-07-08T10:25:59.024Z"},{"name":"beginposition","content":"2020-07-08T10:25:59.024Z"},{"name":"endposition","content":"2020-07-08T10:25:59.024Z"},{"name":"ingestiondate","content":"2020-07-08T18:13:01.463Z"}],"int":[{"name":"orbitnumber","content":"17437"},{"name":"relativeorbitnumber","content":"108"}],"double":{"name":"cloudcoverpercentage","content":"77.231"},"str":[{"name":"sensoroperationalmode","content":"INS-NOBS"},{"name":"gmlfootprint","content":"<gml:Polygon
-        srsName=\"http://www.opengis.net/gml/srs/epsg.xml#4326\" xmlns:gml=\"http://www.opengis.net/gml\">\n   <gml:outerBoundaryIs>\n      <gml:LinearRing>\n         <gml:coordinates>49.53003637993339,6.235874040955493
-        49.62028986548394,6.270845206211097 49.64598096654525,7.750537404965346 48.6585189163826,7.775131037790508
-        48.63303181535822,6.285371051797206 49.53003637993339,6.235874040955493</gml:coordinates>\n      </gml:LinearRing>\n   </gml:outerBoundaryIs>\n</gml:Polygon>"},{"name":"footprint","content":"MULTIPOLYGON
-        (((6.285371051797206 48.63303181535822, 7.775131037790508 48.6585189163826,
-        7.750537404965346 49.64598096654525, 6.270845206211097 49.62028986548394,
-        6.235874040955493 49.53003637993339, 6.285371051797206 48.63303181535822)))"},{"name":"level1cpdiidentifier","content":"S2B_OPER_MSI_L1C_TL_MPS__20200708T124214_A017437_T32ULV_N02.09"},{"name":"tileid","content":"32ULV"},{"name":"hv_order_tileid","content":"UV32L"},{"name":"format","content":"SAFE"},{"name":"processingbaseline","content":"02.09"},{"name":"platformname","content":"Sentinel-2"},{"name":"filename","content":"S2B_MSIL1C_20200708T102559_N0209_R108_T32ULV_20200708T124214.SAFE"},{"name":"instrumentname","content":"Multi-Spectral
-        Instrument"},{"name":"instrumentshortname","content":"MSI"},{"name":"size","content":"683.94
-        MB"},{"name":"s2datatakeid","content":"GS2B_20200708T102559_017437_N02.09"},{"name":"producttype","content":"S2MSI1C"},{"name":"platformidentifier","content":"2017-013A"},{"name":"orbitdirection","content":"DESCENDING"},{"name":"platformserialidentifier","content":"Sentinel-2B"},{"name":"processinglevel","content":"Level-1C"},{"name":"identifier","content":"S2B_MSIL1C_20200708T102559_N0209_R108_T32ULV_20200708T124214"},{"name":"uuid","content":"bc5bd48d-c237-4eb2-8aa0-9d470175ff68"}]}}}'
+        TO NOW] footprint:\"Intersects(ENVELOPE(6.1360042, 6.256451, 49.1487955, 49.0608244))\"","opensearch:totalResults":"14","opensearch:startIndex":"0","opensearch:itemsPerPage":"1","opensearch:Query":{"role":"request","searchTerms":"beginPosition:[NOW-1DAY
+        TO NOW] footprint:\"Intersects(ENVELOPE(6.1360042, 6.256451, 49.1487955, 49.0608244))\"","startPage":"1"},"link":[{"rel":"self","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[NOW-1DAY
+        TO NOW] footprint:\"Intersects(ENVELOPE(6.1360042, 6.256451, 49.1487955, 49.0608244))\"&start=0&rows=1&format=json"},{"rel":"first","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[NOW-1DAY
+        TO NOW] footprint:\"Intersects(ENVELOPE(6.1360042, 6.256451, 49.1487955, 49.0608244))\"&start=0&rows=1&format=json"},{"rel":"next","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[NOW-1DAY
+        TO NOW] footprint:\"Intersects(ENVELOPE(6.1360042, 6.256451, 49.1487955, 49.0608244))\"&start=1&rows=1&format=json"},{"rel":"last","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[NOW-1DAY
+        TO NOW] footprint:\"Intersects(ENVELOPE(6.1360042, 6.256451, 49.1487955, 49.0608244))\"&start=13&rows=1&format=json"},{"rel":"search","type":"application/opensearchdescription+xml","href":"opensearch_description.xml"}],"entry":{"title":"S3A_SL_2_LST____20210430T103540_20210430T103840_20210430T125746_0179_071_165_2160_LN2_O_NR_004","link":[{"href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''a1eb38ca-791e-4f4b-b549-57bd1e67264d'')/$value"},{"rel":"alternative","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''a1eb38ca-791e-4f4b-b549-57bd1e67264d'')/"},{"rel":"icon","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''a1eb38ca-791e-4f4b-b549-57bd1e67264d'')/Products(''Quicklook'')/$value"}],"id":"a1eb38ca-791e-4f4b-b549-57bd1e67264d","summary":"Date:
+        2021-04-30T10:35:40.192Z, Instrument: SLSTR, Satellite: Sentinel-3, Size:
+        63.16 MB","ondemand":"false","date":[{"name":"beginposition","content":"2021-04-30T10:35:40.192Z"},{"name":"endposition","content":"2021-04-30T10:38:40.192Z"},{"name":"creationdate","content":"2021-04-30T00:57:46Z"},{"name":"ingestiondate","content":"2021-04-30T13:15:51.538Z"}],"int":[{"name":"relativeorbitnumber","content":"165"},{"name":"orbitnumber","content":"27088"}],"str":[{"name":"ecmwf","content":"FORECAST"},{"name":"filename","content":"S3A_SL_2_LST____20210430T103540_20210430T103840_20210430T125746_0179_071_165_2160_LN2_O_NR_004.SEN3"},{"name":"format","content":"SAFE"},{"name":"identifier","content":"S3A_SL_2_LST____20210430T103540_20210430T103840_20210430T125746_0179_071_165_2160_LN2_O_NR_004"},{"name":"instrumentshortname","content":"SLSTR"},{"name":"sensoroperationalmode","content":"Earth
+        Observation"},{"name":"instrumentname","content":"Sea and Land Surface Temperature
+        Radiometer"},{"name":"mode","content":"EO"},{"name":"platformidentifier","content":"2016-011A"},{"name":"onlinequalitycheck","content":"PASSED"},{"name":"orbitdirection","content":"descending"},{"name":"pdualongtrackcoord","content":"2160"},{"name":"pduduration","content":"179"},{"name":"passnumber","content":"54176"},{"name":"passdirection","content":"descending"},{"name":"procfacilityname","content":"Land
+        SLSTR and SYN Processing and Archiving Centre [LN2]"},{"name":"procfacilityorg","content":"European
+        Space Agency"},{"name":"processinglevel","content":"2"},{"name":"processingname","content":"Data
+        Processing"},{"name":"productlevel","content":"L2"},{"name":"producttype","content":"SL_2_LST___"},{"name":"relorbitdir","content":"descending"},{"name":"relpassnumber","content":"330"},{"name":"relpassdirection","content":"descending"},{"name":"platformname","content":"Sentinel-3"},{"name":"size","content":"63.16
+        MB"},{"name":"timeliness","content":"Near Real Time"},{"name":"gmlfootprint","content":"<gml:Polygon
+        srsName=\"http://www.opengis.net/gml/srs/epsg.xml#4326\" xmlns:gml=\"http://www.opengis.net/gml\">\n   <gml:outerBoundaryIs>\n      <gml:LinearRing>\n         <gml:coordinates>42.001,-13.9299
+        41.9492,-13.3194 41.888,-12.7116 41.8334,-12.1057 41.772,-11.4981 41.6917,-10.8836
+        41.6246,-10.2759 41.5524,-9.67541 41.4808,-9.07582 41.395,-8.46676 41.312,-7.86959
+        41.2335,-7.28084 41.1424,-6.67983 41.0515,-6.08722 40.9518,-5.4876 40.8536,-4.90219
+        40.7488,-4.30831 40.6445,-3.72819 40.543,-3.14018 40.4291,-2.55017 40.3156,-1.97493
+        40.1953,-1.38962 40.083,-0.809835 39.9571,-0.239979 39.8284,0.33701 39.7051,0.901238
+        39.5785,1.48089 39.4467,2.04686 39.3099,2.61353 39.1678,3.1741 39.1153,3.38165
+        41.6643,4.49248 44.2475,5.7012 46.8171,7.01699 49.3621,8.45469 49.3738,8.4469
+        49.4388,8.20772 49.5979,7.55002 49.7574,6.87547 49.9114,6.21086 50.0607,5.54654
+        50.212,4.86581 50.3503,4.19347 50.4929,3.50083 50.6311,2.81302 50.7649,2.12605
+        50.884,1.43209 51.0089,0.736471 51.1301,0.032368 51.2487,-0.683104 51.351,-1.38997
+        51.46,-2.10934 51.5609,-2.82162 51.66,-3.54191 51.7488,-4.26038 51.8444,-4.98697
+        51.9218,-5.71434 51.9982,-6.43858 52.0833,-7.1781 52.1494,-7.92064 52.2161,-8.65133
+        52.2745,-9.3895 52.3292,-10.1328 52.3746,-10.8695 52.4284,-11.6188 52.4707,-12.3696
+        52.462,-12.3708 49.8447,-12.7492 47.2171,-13.1371 44.5879,-13.533 42.001,-13.9299</gml:coordinates>\n      </gml:LinearRing>\n   </gml:outerBoundaryIs>\n</gml:Polygon>"},{"name":"footprint","content":"MULTIPOLYGON
+        (((3.38165 39.1153, 4.49248 41.6643, 5.7012 44.2475, 7.01699 46.8171, 8.45469
+        49.3621, 8.4469 49.3738, 8.20772 49.4388, 7.55002 49.5979, 6.87547 49.7574,
+        6.21086 49.9114, 5.54654 50.0607, 4.86581 50.212, 4.19347 50.3503, 3.50083
+        50.4929, 2.81302 50.6311, 2.12605 50.7649, 1.43209 50.884, 0.736471 51.0089,
+        0.032368 51.1301, 4.8288201731791394e-18 51.135465471744524, -0.683104 51.2487,
+        -1.38997 51.351, -2.10934 51.46, -2.82162 51.5609, -3.54191 51.66, -4.26038
+        51.7488, -4.98697 51.8444, -5.71434 51.9218, -6.43858 51.9982, -7.1781 52.0833,
+        -7.92064 52.1494, -8.65133 52.2161, -9.3895 52.2745, -10.1328 52.3292, -10.8695
+        52.3746, -11.6188 52.4284, -12.3696 52.4707, -12.3708 52.462, -12.7492 49.8447,
+        -13.1371 47.2171, -13.533 44.5879, -13.9299 42.001, -13.3194 41.9492, -12.7116
+        41.888, -12.1057 41.8334, -11.4981 41.772, -10.8836 41.6917, -10.2759 41.6246,
+        -9.67541 41.5524, -9.07582 41.4808, -8.46676 41.395, -7.86959 41.312, -7.28084
+        41.2335, -6.67983 41.1424, -6.08722 41.0515, -5.4876 40.9518, -4.90219 40.8536,
+        -4.30831 40.7488, -3.72819 40.6445, -3.14018 40.543, -2.55017 40.4291, -1.97493
+        40.3156, -1.38962 40.1953, -0.809835 40.083, -0.239979 39.9571, 1.6166470831295576e-17
+        39.9035716011917, 0.33701 39.8284, 0.901238 39.7051, 1.48089 39.5785, 2.04686
+        39.4467, 2.61353 39.3099, 3.1741 39.1678, 3.38165 39.1153)))"},{"name":"uuid","content":"a1eb38ca-791e-4f4b-b549-57bd1e67264d"}]}}}'
     headers:
       content-length:
-      - '4851'
+      - '7362'
       content-type:
       - application/json
       pragma:
@@ -91,6 +119,12 @@ interactions:
       - Apache-Coyote/1.1
       vary:
       - Accept-Encoding
+      x-content-type-options:
+      - nosniff
+      x-frame-options:
+      - DENY
+      x-xss-protection:
+      - 1; mode=block
     status:
       code: 200
       message: OK

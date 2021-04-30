@@ -13,7 +13,7 @@ interactions:
       Content-Type:
       - application/x-www-form-urlencoded; charset=UTF-8
       User-Agent:
-      - sentinelsat/0.13
+      - sentinelsat/0.14
     method: POST
     uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=100&start=0
   response:
@@ -22,20 +22,20 @@ interactions:
         Scientific Data Hub search results for: beginPosition:[2016-12-01T00:00:00Z
         TO 2016-12-02T00:00:00Z] instrumentshortname:SRAL footprint:\"Intersects(POLYGON((-66.2695
         -8.0592,-66.2695 0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\"","subtitle":"Displaying
-        10 results. Request done in 0.497 seconds.","updated":"2019-04-22T23:15:53.395Z","author":{"name":"Sentinels
+        8 results. Request done in 0.061 seconds.","updated":"2021-04-30T17:40:26.964Z","author":{"name":"Sentinels
         Scientific Data Hub"},"id":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[2016-12-01T00:00:00Z
         TO 2016-12-02T00:00:00Z] instrumentshortname:SRAL footprint:\"Intersects(POLYGON((-66.2695
-        -8.0592,-66.2695 0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\"","opensearch:totalResults":"10","opensearch:startIndex":"0","opensearch:itemsPerPage":"100","opensearch:Query":{"role":"request","searchTerms":"beginPosition:[2016-12-01T00:00:00Z
+        -8.0592,-66.2695 0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\"","opensearch:totalResults":"8","opensearch:startIndex":"0","opensearch:itemsPerPage":"100","opensearch:Query":{"role":"request","searchTerms":"beginPosition:[2016-12-01T00:00:00Z
         TO 2016-12-02T00:00:00Z] instrumentshortname:SRAL footprint:\"Intersects(POLYGON((-66.2695
-        -8.0592,-66.2695 0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\"","startPage":"1"},"link":[{"rel":"self","type":"application/atom+xml","href":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[2016-12-01T00:00:00Z
+        -8.0592,-66.2695 0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\"","startPage":"1"},"link":[{"rel":"self","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[2016-12-01T00:00:00Z
         TO 2016-12-02T00:00:00Z] instrumentshortname:SRAL footprint:\"Intersects(POLYGON((-66.2695
-        -8.0592,-66.2695 0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\"&start=0&rows=100"},{"rel":"first","type":"application/atom+xml","href":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[2016-12-01T00:00:00Z
+        -8.0592,-66.2695 0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\"&start=0&rows=100&format=json"},{"rel":"first","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[2016-12-01T00:00:00Z
         TO 2016-12-02T00:00:00Z] instrumentshortname:SRAL footprint:\"Intersects(POLYGON((-66.2695
-        -8.0592,-66.2695 0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\"&start=0&rows=100"},{"rel":"last","type":"application/atom+xml","href":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[2016-12-01T00:00:00Z
+        -8.0592,-66.2695 0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\"&start=0&rows=100&format=json"},{"rel":"last","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[2016-12-01T00:00:00Z
         TO 2016-12-02T00:00:00Z] instrumentshortname:SRAL footprint:\"Intersects(POLYGON((-66.2695
-        -8.0592,-66.2695 0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\"&start=9&rows=100"},{"rel":"search","type":"application/opensearchdescription+xml","href":"opensearch_description.xml"}],"entry":[{"title":"S3A_SR_1_SRA_BS_20161201T131246_20161201T140315_20180124T073528_3029_011_295______LR1_R_NT_003","link":[{"href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''ca6b032f-b7ad-4c72-9952-b7e3ffbcf873'')/$value"},{"rel":"alternative","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''ca6b032f-b7ad-4c72-9952-b7e3ffbcf873'')/"},{"rel":"icon","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''ca6b032f-b7ad-4c72-9952-b7e3ffbcf873'')/Products(''Quicklook'')/$value"}],"id":"ca6b032f-b7ad-4c72-9952-b7e3ffbcf873","summary":"Date:
-        2016-12-01T13:12:45.51Z, Instrument: SRAL, Mode: , Satellite: Sentinel-3,
-        Size: 1.74 GB","date":[{"name":"beginposition","content":"2016-12-01T13:12:45.51Z"},{"name":"endposition","content":"2016-12-01T14:03:15.491Z"},{"name":"creationdate","content":"2018-01-24T07:35:28Z"},{"name":"ingestiondate","content":"2019-04-13T01:50:20.031Z"}],"int":[{"name":"landpercentage","content":"31"},{"name":"closedseapercentage","content":"0"},{"name":"continentalicepercentage","content":"9"},{"name":"openseapercentage","content":"59"},{"name":"lrmpercentage","content":"0"},{"name":"sarpercentage","content":"100"},{"name":"orbitnumber","content":"4118"},{"name":"relativeorbitnumber","content":"295"}],"str":[{"name":"gmlfootprint","content":"<gml:Polygon
+        -8.0592,-66.2695 0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\"&start=7&rows=100&format=json"},{"rel":"search","type":"application/opensearchdescription+xml","href":"opensearch_description.xml"}],"entry":[{"title":"S3A_SR_1_SRA_BS_20161201T131246_20161201T140315_20180124T073528_3029_011_295______LR1_R_NT_003","link":[{"href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''ca6b032f-b7ad-4c72-9952-b7e3ffbcf873'')/$value"},{"rel":"alternative","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''ca6b032f-b7ad-4c72-9952-b7e3ffbcf873'')/"},{"rel":"icon","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''ca6b032f-b7ad-4c72-9952-b7e3ffbcf873'')/Products(''Quicklook'')/$value"}],"id":"ca6b032f-b7ad-4c72-9952-b7e3ffbcf873","summary":"Date:
+        2016-12-01T13:12:45.51Z, Instrument: SRAL, Satellite: Sentinel-3, Size: 1.74
+        GB","ondemand":"false","date":[{"name":"beginposition","content":"2016-12-01T13:12:45.51Z"},{"name":"endposition","content":"2016-12-01T14:03:15.491Z"},{"name":"creationdate","content":"2018-01-24T07:35:28Z"},{"name":"ingestiondate","content":"2019-04-13T01:50:20.031Z"}],"int":[{"name":"landpercentage","content":"31"},{"name":"closedseapercentage","content":"0"},{"name":"continentalicepercentage","content":"9"},{"name":"openseapercentage","content":"59"},{"name":"lrmpercentage","content":"0"},{"name":"sarpercentage","content":"100"},{"name":"orbitnumber","content":"4118"},{"name":"relativeorbitnumber","content":"295"}],"str":[{"name":"gmlfootprint","content":"<gml:Polygon
         srsName=\"http://www.opengis.net/gml/srs/epsg.xml#4326\" xmlns:gml=\"http://www.opengis.net/gml\">\n   <gml:outerBoundaryIs>\n      <gml:LinearRing>\n         <gml:coordinates>81.4238,43.1684
         81.2807,31.1071 80.7853,19.877 79.9897,10.0814 78.9585,1.88137 77.7511,-4.85321
         76.4142,-10.364 74.9824,-14.8974 73.4801,-18.6638 71.9248,-21.8301 70.3291,-24.5245
@@ -132,8 +132,8 @@ interactions:
         Time Critical"},{"name":"size","content":"1.74 GB"},{"name":"pduduration","content":"3029"},{"name":"orbitdirection","content":"ascending"},{"name":"relorbitdir","content":"ascending"},{"name":"relpassnumber","content":"589"},{"name":"relpassdirection","content":"ascending"},{"name":"passnumber","content":"8235"},{"name":"passdirection","content":"ascending"},{"name":"processingname","content":"Data
         Processing"},{"name":"processinglevel","content":"1"},{"name":"procfacilityname","content":"Land
         Reprocessing Centre 1 [LR1]"},{"name":"procfacilityorg","content":"ACRI"},{"name":"onlinequalitycheck","content":"PASSED"},{"name":"identifier","content":"S3A_SR_1_SRA_BS_20161201T131246_20161201T140315_20180124T073528_3029_011_295______LR1_R_NT_003"},{"name":"uuid","content":"ca6b032f-b7ad-4c72-9952-b7e3ffbcf873"}]},{"title":"S3A_SR_1_SRA_A__20161201T131246_20161201T140315_20180124T073528_3029_011_295______LR1_R_NT_003","link":[{"href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''5059a9c3-81b6-48d4-b1ad-039ca18c2652'')/$value"},{"rel":"alternative","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''5059a9c3-81b6-48d4-b1ad-039ca18c2652'')/"},{"rel":"icon","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''5059a9c3-81b6-48d4-b1ad-039ca18c2652'')/Products(''Quicklook'')/$value"}],"id":"5059a9c3-81b6-48d4-b1ad-039ca18c2652","summary":"Date:
-        2016-12-01T13:12:45.51Z, Instrument: SRAL, Mode: , Satellite: Sentinel-3,
-        Size: 2.34 GB","date":[{"name":"beginposition","content":"2016-12-01T13:12:45.51Z"},{"name":"endposition","content":"2016-12-01T14:03:15.491Z"},{"name":"creationdate","content":"2018-01-24T07:35:28Z"},{"name":"ingestiondate","content":"2019-03-26T10:36:17.551Z"}],"int":[{"name":"landpercentage","content":"31"},{"name":"closedseapercentage","content":"0"},{"name":"continentalicepercentage","content":"9"},{"name":"openseapercentage","content":"59"},{"name":"lrmpercentage","content":"0"},{"name":"sarpercentage","content":"100"},{"name":"orbitnumber","content":"4118"},{"name":"relativeorbitnumber","content":"295"}],"str":[{"name":"gmlfootprint","content":"<gml:Polygon
+        2016-12-01T13:12:45.51Z, Instrument: SRAL, Satellite: Sentinel-3, Size: 2.34
+        GB","ondemand":"false","date":[{"name":"beginposition","content":"2016-12-01T13:12:45.51Z"},{"name":"endposition","content":"2016-12-01T14:03:15.491Z"},{"name":"creationdate","content":"2018-01-24T07:35:28Z"},{"name":"ingestiondate","content":"2019-03-26T10:36:17.551Z"}],"int":[{"name":"landpercentage","content":"31"},{"name":"closedseapercentage","content":"0"},{"name":"continentalicepercentage","content":"9"},{"name":"openseapercentage","content":"59"},{"name":"lrmpercentage","content":"0"},{"name":"sarpercentage","content":"100"},{"name":"orbitnumber","content":"4118"},{"name":"relativeorbitnumber","content":"295"}],"str":[{"name":"gmlfootprint","content":"<gml:Polygon
         srsName=\"http://www.opengis.net/gml/srs/epsg.xml#4326\" xmlns:gml=\"http://www.opengis.net/gml\">\n   <gml:outerBoundaryIs>\n      <gml:LinearRing>\n         <gml:coordinates>81.4238,43.1684
         81.2807,31.1071 80.7853,19.877 79.9897,10.0814 78.9585,1.88137 77.7511,-4.85321
         76.4142,-10.364 74.9824,-14.8974 73.4801,-18.6638 71.9248,-21.8301 70.3291,-24.5245
@@ -230,8 +230,8 @@ interactions:
         Time Critical"},{"name":"size","content":"2.34 GB"},{"name":"pduduration","content":"3029"},{"name":"orbitdirection","content":"ascending"},{"name":"relorbitdir","content":"ascending"},{"name":"relpassnumber","content":"589"},{"name":"relpassdirection","content":"ascending"},{"name":"passnumber","content":"8235"},{"name":"passdirection","content":"ascending"},{"name":"processingname","content":"Data
         Processing"},{"name":"processinglevel","content":"1"},{"name":"procfacilityname","content":"Land
         Reprocessing Centre 1 [LR1]"},{"name":"procfacilityorg","content":"ACRI"},{"name":"onlinequalitycheck","content":"PASSED"},{"name":"identifier","content":"S3A_SR_1_SRA_A__20161201T131246_20161201T140315_20180124T073528_3029_011_295______LR1_R_NT_003"},{"name":"uuid","content":"5059a9c3-81b6-48d4-b1ad-039ca18c2652"}]},{"title":"S3A_SR_1_SRA____20161201T131246_20161201T140315_20180124T073528_3029_011_295______LR1_R_NT_003","link":[{"href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''79452f28-da9b-4fc6-b493-6bec1bfb554b'')/$value"},{"rel":"alternative","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''79452f28-da9b-4fc6-b493-6bec1bfb554b'')/"},{"rel":"icon","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''79452f28-da9b-4fc6-b493-6bec1bfb554b'')/Products(''Quicklook'')/$value"}],"id":"79452f28-da9b-4fc6-b493-6bec1bfb554b","summary":"Date:
-        2016-12-01T13:12:45.51Z, Instrument: SRAL, Mode: , Satellite: Sentinel-3,
-        Size: 52.88 MB","date":[{"name":"beginposition","content":"2016-12-01T13:12:45.51Z"},{"name":"endposition","content":"2016-12-01T14:03:15.491Z"},{"name":"creationdate","content":"2018-01-24T07:35:28Z"},{"name":"ingestiondate","content":"2018-11-10T02:18:20.754Z"}],"int":[{"name":"landpercentage","content":"31"},{"name":"closedseapercentage","content":"0"},{"name":"continentalicepercentage","content":"9"},{"name":"openseapercentage","content":"59"},{"name":"lrmpercentage","content":"0"},{"name":"sarpercentage","content":"100"},{"name":"orbitnumber","content":"4118"},{"name":"relativeorbitnumber","content":"295"}],"str":[{"name":"gmlfootprint","content":"<gml:Polygon
+        2016-12-01T13:12:45.51Z, Instrument: SRAL, Satellite: Sentinel-3, Size: 52.88
+        MB","ondemand":"false","date":[{"name":"beginposition","content":"2016-12-01T13:12:45.51Z"},{"name":"endposition","content":"2016-12-01T14:03:15.491Z"},{"name":"creationdate","content":"2018-01-24T07:35:28Z"},{"name":"ingestiondate","content":"2018-11-10T02:18:20.754Z"}],"int":[{"name":"landpercentage","content":"31"},{"name":"closedseapercentage","content":"0"},{"name":"continentalicepercentage","content":"9"},{"name":"openseapercentage","content":"59"},{"name":"lrmpercentage","content":"0"},{"name":"sarpercentage","content":"100"},{"name":"orbitnumber","content":"4118"},{"name":"relativeorbitnumber","content":"295"}],"str":[{"name":"gmlfootprint","content":"<gml:Polygon
         srsName=\"http://www.opengis.net/gml/srs/epsg.xml#4326\" xmlns:gml=\"http://www.opengis.net/gml\">\n   <gml:outerBoundaryIs>\n      <gml:LinearRing>\n         <gml:coordinates>80.40223750551593,43.01144801114549
         80.27333907931092,32.17898075788065 79.82508460934544,21.955379519947286 79.09673283914375,12.821416953530418
         78.1396475760636,4.962806145915077 77.004364828392,-1.6592786872104712 75.73311606336803,-7.1974515884370955
@@ -453,8 +453,8 @@ interactions:
         Time Critical"},{"name":"size","content":"52.88 MB"},{"name":"pduduration","content":"3029"},{"name":"orbitdirection","content":"ascending"},{"name":"relorbitdir","content":"ascending"},{"name":"relpassnumber","content":"589"},{"name":"relpassdirection","content":"ascending"},{"name":"passnumber","content":"8235"},{"name":"passdirection","content":"ascending"},{"name":"processingname","content":"Data
         Processing"},{"name":"processinglevel","content":"1"},{"name":"procfacilityname","content":"Land
         Reprocessing Centre 1 [LR1]"},{"name":"procfacilityorg","content":"ACRI"},{"name":"onlinequalitycheck","content":"PASSED"},{"name":"identifier","content":"S3A_SR_1_SRA____20161201T131246_20161201T140315_20180124T073528_3029_011_295______LR1_R_NT_003"},{"name":"uuid","content":"79452f28-da9b-4fc6-b493-6bec1bfb554b"}]},{"title":"S3A_SR_1_SRA____20161201T021622_20161201T030650_20180124T071556_3028_011_288______LR1_R_NT_003","link":[{"href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''b3dc705a-def4-4336-97d6-62afe96b6130'')/$value"},{"rel":"alternative","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''b3dc705a-def4-4336-97d6-62afe96b6130'')/"},{"rel":"icon","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''b3dc705a-def4-4336-97d6-62afe96b6130'')/Products(''Quicklook'')/$value"}],"id":"b3dc705a-def4-4336-97d6-62afe96b6130","summary":"Date:
-        2016-12-01T02:16:21.507Z, Instrument: SRAL, Mode: , Satellite: Sentinel-3,
-        Size: 52.49 MB","date":[{"name":"beginposition","content":"2016-12-01T02:16:21.507Z"},{"name":"endposition","content":"2016-12-01T03:06:50.483Z"},{"name":"creationdate","content":"2018-01-24T07:15:56Z"},{"name":"ingestiondate","content":"2018-11-10T02:14:16.893Z"}],"int":[{"name":"landpercentage","content":"43"},{"name":"closedseapercentage","content":"2"},{"name":"continentalicepercentage","content":"6"},{"name":"openseapercentage","content":"47"},{"name":"lrmpercentage","content":"0"},{"name":"sarpercentage","content":"100"},{"name":"orbitnumber","content":"4111"},{"name":"relativeorbitnumber","content":"288"},{"name":"lastorbitnumber","content":"4112"},{"name":"lastrelativeorbitnumber","content":"289"}],"str":[{"name":"gmlfootprint","content":"<gml:Polygon
+        2016-12-01T02:16:21.507Z, Instrument: SRAL, Satellite: Sentinel-3, Size: 52.49
+        MB","ondemand":"false","date":[{"name":"beginposition","content":"2016-12-01T02:16:21.507Z"},{"name":"endposition","content":"2016-12-01T03:06:50.483Z"},{"name":"creationdate","content":"2018-01-24T07:15:56Z"},{"name":"ingestiondate","content":"2018-11-10T02:14:16.893Z"}],"int":[{"name":"landpercentage","content":"43"},{"name":"closedseapercentage","content":"2"},{"name":"continentalicepercentage","content":"6"},{"name":"openseapercentage","content":"47"},{"name":"lrmpercentage","content":"0"},{"name":"sarpercentage","content":"100"},{"name":"orbitnumber","content":"4111"},{"name":"relativeorbitnumber","content":"288"},{"name":"lastorbitnumber","content":"4112"},{"name":"lastrelativeorbitnumber","content":"289"}],"str":[{"name":"gmlfootprint","content":"<gml:Polygon
         srsName=\"http://www.opengis.net/gml/srs/epsg.xml#4326\" xmlns:gml=\"http://www.opengis.net/gml\">\n   <gml:outerBoundaryIs>\n      <gml:LinearRing>\n         <gml:coordinates>-82.44404486085298,27.05499713640817
         -82.27234315763482,13.530408384359594 -81.71344502552908,1.1974239055729827
         -80.83790605805844,-9.218283593683317 -79.72616238948257,-17.647067039579937
@@ -676,8 +676,8 @@ interactions:
         Time Critical"},{"name":"size","content":"52.49 MB"},{"name":"pduduration","content":"3028"},{"name":"orbitdirection","content":"descending"},{"name":"relorbitdir","content":"descending"},{"name":"relpassnumber","content":"576"},{"name":"relpassdirection","content":"descending"},{"name":"passnumber","content":"8222"},{"name":"passdirection","content":"descending"},{"name":"processingname","content":"Data
         Processing"},{"name":"processinglevel","content":"1"},{"name":"procfacilityname","content":"Land
         Reprocessing Centre 1 [LR1]"},{"name":"procfacilityorg","content":"ACRI"},{"name":"onlinequalitycheck","content":"PASSED"},{"name":"lastorbitdirection","content":"ascending"},{"name":"lastrelorbitdirection","content":"ascending"},{"name":"lastrelpassnumber","content":"577"},{"name":"lastrelpassdirection","content":"ascending"},{"name":"lastpassnumber","content":"8223"},{"name":"lastpassdirection","content":"ascending"},{"name":"identifier","content":"S3A_SR_1_SRA____20161201T021622_20161201T030650_20180124T071556_3028_011_288______LR1_R_NT_003"},{"name":"uuid","content":"b3dc705a-def4-4336-97d6-62afe96b6130"}]},{"title":"S3A_SR_2_LAN____20161201T131318_20161201T140315_20180519T175337_2997_011_295______LR1_R_NT_003","link":[{"href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''d6136570-4bcb-4f27-bd64-d0894057e3d0'')/$value"},{"rel":"alternative","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''d6136570-4bcb-4f27-bd64-d0894057e3d0'')/"},{"rel":"icon","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''d6136570-4bcb-4f27-bd64-d0894057e3d0'')/Products(''Quicklook'')/$value"}],"id":"d6136570-4bcb-4f27-bd64-d0894057e3d0","summary":"Date:
-        2016-12-01T13:13:17.65Z, Instrument: SRAL, Mode: , Satellite: Sentinel-3,
-        Size: 34.84 MB","date":[{"name":"beginposition","content":"2016-12-01T13:13:17.65Z"},{"name":"endposition","content":"2016-12-01T14:03:15.491Z"},{"name":"creationdate","content":"2018-05-19T17:53:34Z"},{"name":"ingestiondate","content":"2018-11-08T02:42:17.798Z"}],"int":[{"name":"landpercentage","content":"57"},{"name":"closedseapercentage","content":"1"},{"name":"continentalicepercentage","content":"17"},{"name":"openseapercentage","content":"25"},{"name":"lrmpercentage","content":"0"},{"name":"sarpercentage","content":"100"},{"name":"orbitnumber","content":"4118"},{"name":"relativeorbitnumber","content":"295"}],"str":[{"name":"gmlfootprint","content":"<gml:Polygon
+        2016-12-01T13:13:17.65Z, Instrument: SRAL, Satellite: Sentinel-3, Size: 34.84
+        MB","ondemand":"false","date":[{"name":"beginposition","content":"2016-12-01T13:13:17.65Z"},{"name":"endposition","content":"2016-12-01T14:03:15.491Z"},{"name":"creationdate","content":"2018-05-19T17:53:34Z"},{"name":"ingestiondate","content":"2018-11-08T02:42:17.798Z"}],"int":[{"name":"landpercentage","content":"57"},{"name":"closedseapercentage","content":"1"},{"name":"continentalicepercentage","content":"17"},{"name":"openseapercentage","content":"25"},{"name":"lrmpercentage","content":"0"},{"name":"sarpercentage","content":"100"},{"name":"orbitnumber","content":"4118"},{"name":"relativeorbitnumber","content":"295"}],"str":[{"name":"gmlfootprint","content":"<gml:Polygon
         srsName=\"http://www.opengis.net/gml/srs/epsg.xml#4326\" xmlns:gml=\"http://www.opengis.net/gml\">\n   <gml:outerBoundaryIs>\n      <gml:LinearRing>\n         <gml:coordinates>80.2235232827386,30.5223521495645
         79.72988792357701,20.469393393648197 78.96520720593088,11.54823512059914 77.98077085944489,3.901473951852047
         76.82591897262141,-2.53309201086798 75.54134198381993,-7.915037008993865 74.15839477858376,-12.425109810858528
@@ -897,8 +897,8 @@ interactions:
         Time Critical"},{"name":"size","content":"34.84 MB"},{"name":"pduduration","content":"2997"},{"name":"orbitdirection","content":"descending"},{"name":"relorbitdir","content":"descending"},{"name":"relpassnumber","content":"590"},{"name":"relpassdirection","content":"descending"},{"name":"passnumber","content":"8236"},{"name":"passdirection","content":"descending"},{"name":"processingname","content":"Data
         Processing"},{"name":"processinglevel","content":"2"},{"name":"procfacilityname","content":"Land
         Reprocessing Centre 1 [LR1]"},{"name":"procfacilityorg","content":"ACRI"},{"name":"onlinequalitycheck","content":"PASSED"},{"name":"identifier","content":"S3A_SR_2_LAN____20161201T131318_20161201T140315_20180519T175337_2997_011_295______LR1_R_NT_003"},{"name":"uuid","content":"d6136570-4bcb-4f27-bd64-d0894057e3d0"}]},{"title":"S3A_SR_2_LAN____20161201T021622_20161201T030440_20180519T185548_2898_011_288______LR1_R_NT_003","link":[{"href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''47d46baf-3e4c-4e4c-9e68-eedcabde812f'')/$value"},{"rel":"alternative","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''47d46baf-3e4c-4e4c-9e68-eedcabde812f'')/"},{"rel":"icon","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''47d46baf-3e4c-4e4c-9e68-eedcabde812f'')/Products(''Quicklook'')/$value"}],"id":"47d46baf-3e4c-4e4c-9e68-eedcabde812f","summary":"Date:
-        2016-12-01T02:16:21.507Z, Instrument: SRAL, Mode: , Satellite: Sentinel-3,
-        Size: 46.61 MB","date":[{"name":"beginposition","content":"2016-12-01T02:16:21.507Z"},{"name":"endposition","content":"2016-12-01T03:04:40.292Z"},{"name":"creationdate","content":"2018-05-19T18:55:46Z"},{"name":"ingestiondate","content":"2018-11-08T01:57:47.328Z"}],"int":[{"name":"landpercentage","content":"59"},{"name":"closedseapercentage","content":"3"},{"name":"continentalicepercentage","content":"8"},{"name":"openseapercentage","content":"30"},{"name":"lrmpercentage","content":"0"},{"name":"sarpercentage","content":"100"},{"name":"orbitnumber","content":"4111"},{"name":"relativeorbitnumber","content":"288"},{"name":"lastorbitnumber","content":"4112"},{"name":"lastrelativeorbitnumber","content":"289"}],"str":[{"name":"gmlfootprint","content":"<gml:Polygon
+        2016-12-01T02:16:21.507Z, Instrument: SRAL, Satellite: Sentinel-3, Size: 46.61
+        MB","ondemand":"false","date":[{"name":"beginposition","content":"2016-12-01T02:16:21.507Z"},{"name":"endposition","content":"2016-12-01T03:04:40.292Z"},{"name":"creationdate","content":"2018-05-19T18:55:46Z"},{"name":"ingestiondate","content":"2018-11-08T01:57:47.328Z"}],"int":[{"name":"landpercentage","content":"59"},{"name":"closedseapercentage","content":"3"},{"name":"continentalicepercentage","content":"8"},{"name":"openseapercentage","content":"30"},{"name":"lrmpercentage","content":"0"},{"name":"sarpercentage","content":"100"},{"name":"orbitnumber","content":"4111"},{"name":"relativeorbitnumber","content":"288"},{"name":"lastorbitnumber","content":"4112"},{"name":"lastrelativeorbitnumber","content":"289"}],"str":[{"name":"gmlfootprint","content":"<gml:Polygon
         srsName=\"http://www.opengis.net/gml/srs/epsg.xml#4326\" xmlns:gml=\"http://www.opengis.net/gml\">\n   <gml:outerBoundaryIs>\n      <gml:LinearRing>\n         <gml:coordinates>-82.44556196680878,25.71190491845875
         -82.23591842877222,12.317469877537974 -81.64801189671435,0.2002960479186808
         -80.75370237674002,-9.989044099388726 -79.63188122244422,-18.226171947459687
@@ -1111,187 +1111,9 @@ interactions:
         Observation"},{"name":"mode","content":"EO"},{"name":"producttype","content":"SR_2_LAN___"},{"name":"timeliness","content":"Non
         Time Critical"},{"name":"size","content":"46.61 MB"},{"name":"pduduration","content":"2898"},{"name":"orbitdirection","content":"descending"},{"name":"relorbitdir","content":"descending"},{"name":"relpassnumber","content":"576"},{"name":"relpassdirection","content":"descending"},{"name":"passnumber","content":"8222"},{"name":"passdirection","content":"descending"},{"name":"processingname","content":"Data
         Processing"},{"name":"processinglevel","content":"2"},{"name":"procfacilityname","content":"Land
-        Reprocessing Centre 1 [LR1]"},{"name":"procfacilityorg","content":"ACRI"},{"name":"onlinequalitycheck","content":"PASSED"},{"name":"lastorbitdirection","content":"ascending"},{"name":"lastrelorbitdirection","content":"ascending"},{"name":"lastrelpassnumber","content":"577"},{"name":"lastrelpassdirection","content":"ascending"},{"name":"lastpassnumber","content":"8223"},{"name":"lastpassdirection","content":"ascending"},{"name":"identifier","content":"S3A_SR_2_LAN____20161201T021622_20161201T030440_20180519T185548_2898_011_288______LR1_R_NT_003"},{"name":"uuid","content":"47d46baf-3e4c-4e4c-9e68-eedcabde812f"}]},{"title":"S3A_SR_1_SRA_A__20161201T131246_20161201T140315_20170627T120317_3029_011_295______MR1_R_NT_002","link":[{"href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''1d16f909-de53-44b0-88ad-841b0cae5cbe'')/$value"},{"rel":"alternative","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''1d16f909-de53-44b0-88ad-841b0cae5cbe'')/"},{"rel":"icon","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''1d16f909-de53-44b0-88ad-841b0cae5cbe'')/Products(''Quicklook'')/$value"}],"id":"1d16f909-de53-44b0-88ad-841b0cae5cbe","summary":"Date:
-        2016-12-01T13:12:45.561Z, Instrument: SRAL, Mode: , Satellite: Sentinel-3,
-        Size: 2.34 GB","date":[{"name":"ingestiondate","content":"2017-09-25T23:35:12.563Z"},{"name":"beginposition","content":"2016-12-01T13:12:45.561Z"},{"name":"endposition","content":"2016-12-01T14:03:15.44Z"}],"int":[{"name":"lrmpercentage","content":"0"},{"name":"sarpercentage","content":"100"},{"name":"closedseapercentage","content":"0"},{"name":"continentalicepercentage","content":"9"},{"name":"landpercentage","content":"31"},{"name":"openseapercentage","content":"59"},{"name":"orbitnumber","content":"4118"},{"name":"relativeorbitnumber","content":"295"}],"str":[{"name":"filename","content":"S3A_SR_1_SRA_A__20161201T131246_20161201T140315_20170627T120317_3029_011_295______MR1_R_NT_002.SEN3"},{"name":"gmlfootprint","content":"<gml:Polygon
-        srsName=\"http://www.opengis.net/gml/srs/epsg.xml#4326\" xmlns:gml=\"http://www.opengis.net/gml\">\n   <gml:outerBoundaryIs>\n      <gml:LinearRing>\n         <gml:coordinates>81.4238,43.1684
-        81.2808,31.1073 80.7853,19.8774 79.9897,10.0818 78.9586,1.88186 77.7512,-4.8527
-        76.4144,-10.3634 74.9825,-14.8969 73.4803,-18.6633 71.9251,-21.8296 70.3294,-24.524
-        68.7021,-26.8443 67.05,-28.8649 65.3779,-30.643 63.6895,-32.2227 61.9877,-33.6387
-        60.2746,-34.9181 58.552,-36.0828 56.8214,-37.1503 55.0837,-38.1347 53.34,-39.0478
-        51.591,-39.8992 49.8372,-40.697 48.0793,-41.4479 46.3177,-42.1577 44.5526,-42.8313
-        42.7846,-43.4728 41.0137,-44.0858 39.2404,-44.6735 37.4648,-45.2386 35.687,-45.7834
-        33.9073,-46.3101 32.1259,-46.8205 30.3428,-47.3163 28.5583,-47.799 26.7724,-48.2699
-        24.9852,-48.7302 23.1969,-49.181 21.4076,-49.6234 19.6174,-50.0581 17.8263,-50.4861
-        16.0345,-50.9081 14.242,-51.3249 12.449,-51.7372 10.6555,-52.1456 8.86171,-52.5506
-        7.06758,-52.953 5.27325,-53.3533 3.4788,-53.752 1.68432,-54.1497 -0.110118,-54.5468
-        -1.90442,-54.944 -3.6985,-55.3417 -5.49228,-55.7404 -7.28568,-56.1408 -9.07862,-56.5433
-        -10.871,-56.9486 -12.6627,-57.3572 -14.4538,-57.7697 -16.244,-58.1867 -18.0333,-58.6091
-        -19.8216,-59.0374 -21.6089,-59.4725 -23.395,-59.9152 -25.1798,-60.3665 -26.9633,-60.8273
-        -28.7452,-61.2987 -30.5256,-61.782 -32.3043,-62.2784 -34.0811,-62.7895 -35.8559,-63.3169
-        -37.6286,-63.8625 -39.399,-64.4284 -41.1669,-65.0169 -42.9321,-65.6309 -44.6943,-66.2734
-        -46.4533,-66.948 -48.2088,-67.6589 -49.9604,-68.4111 -51.7076,-69.2101 -53.45,-70.0629
-        -55.1868,-70.9774 -56.9175,-71.9632 -58.6411,-73.0322 -60.3564,-74.1984 -62.0621,-75.4793
-        -63.7565,-76.8967 -65.4373,-78.4777 -67.1018,-80.2567 -68.7462,-82.2778 -70.3657,-84.5976
-        -71.9536,-87.2904 -73.5012,-90.4529 -74.9959,-94.2124 -76.4206,-98.7338 -77.7509,-104.225
-        -78.9528,-110.929 -79.9802,-119.084 -80.7746,-128.819 -81.2722,-139.978 -81.4214,-151.975
-        -81.4232,-151.975 -81.274,-139.976 -80.7762,-128.815 -79.9817,-119.078 -78.9542,-110.923
-        -77.7522,-104.219 -76.4218,-98.728 -74.997,-94.2068 -73.5022,-90.4476 -71.9545,-87.2854
-        -70.3665,-84.5929 -68.747,-82.2733 -67.1025,-80.2525 -65.438,-78.4737 -63.7571,-76.8929
-        -62.0627,-75.4757 -60.357,-74.1949 -58.6416,-73.0289 -56.9181,-71.9601 -55.1874,-70.9744
-        -53.4505,-70.06 -51.7081,-69.2074 -49.9609,-68.4084 -48.2093,-67.6564 -46.4538,-66.9455
-        -44.6948,-66.2709 -42.9325,-65.6285 -41.1673,-65.0146 -39.3994,-64.4261 -37.629,-63.8603
-        -35.8563,-63.3147 -34.0815,-62.7874 -32.3047,-62.2763 -30.526,-61.7799 -28.7456,-61.2967
-        -26.9637,-60.8253 -25.1802,-60.3645 -23.3954,-59.9133 -21.6093,-59.4706 -19.822,-59.0355
-        -18.0337,-58.6072 -16.2444,-58.1849 -14.4542,-57.7679 -12.6631,-57.3554 -10.8714,-56.9468
-        -9.07901,-56.5416 -7.28608,-56.139 -5.49268,-55.7387 -3.69889,-55.3399 -1.90481,-54.9422
-        -0.110511,-54.5451 1.68392,-54.1479 3.47841,-53.7503 5.27285,-53.3516 7.06718,-52.9513
-        8.86131,-52.5489 10.6552,-52.1438 12.4486,-51.7354 14.2416,-51.3231 16.0341,-50.9063
-        17.8259,-50.4842 19.617,-50.0562 21.4072,-49.6215 23.1965,-49.1791 24.9848,-48.7283
-        26.772,-48.268 28.5579,-47.797 30.3424,-47.3143 32.1255,-46.8185 33.9069,-46.308
-        35.6866,-45.7812 37.4643,-45.2364 39.24,-44.6713 41.0133,-44.0835 42.7841,-43.4704
-        44.5522,-42.8289 46.3172,-42.1552 48.0788,-41.4453 49.8368,-40.6943 51.5905,-39.8964
-        53.3395,-39.0449 55.0832,-38.1317 56.8208,-37.1472 58.5515,-36.0796 60.274,-34.9147
-        61.987,-33.6351 63.6888,-32.219 65.3772,-30.639 67.0493,-28.8607 68.7014,-26.8398
-        70.3285,-24.5193 71.9242,-21.8246 73.4793,-18.658 74.9815,-14.8913 76.4132,-10.3576
-        77.7499,-4.84676 78.9572,1.88767 79.9882,10.0871 80.7837,19.8814 81.279,31.1094
-        81.4221,43.1681 81.4238,43.1684</gml:coordinates>\n      </gml:LinearRing>\n   </gml:outerBoundaryIs>\n</gml:Polygon>"},{"name":"format","content":"SAFE"},{"name":"identifier","content":"S3A_SR_1_SRA_A__20161201T131246_20161201T140315_20170627T120317_3029_011_295______MR1_R_NT_002"},{"name":"instrumentshortname","content":"SRAL"},{"name":"sensoroperationalmode","content":"Earth
-        Observation"},{"name":"instrumentname","content":"Sar Radar ALtimeter"},{"name":"footprint","content":"POLYGON
-        ((43.1684 81.4238,31.1073 81.2808,19.8774 80.7853,10.0818 79.9897,1.88186
-        78.9586,-4.8527 77.7512,-10.3634 76.4144,-14.8969 74.9825,-18.6633 73.4803,-21.8296
-        71.9251,-24.524 70.3294,-26.8443 68.7021,-28.8649 67.05,-30.643 65.3779,-32.2227
-        63.6895,-33.6387 61.9877,-34.9181 60.2746,-36.0828 58.552,-37.1503 56.8214,-38.1347
-        55.0837,-39.0478 53.34,-39.8992 51.591,-40.697 49.8372,-41.4479 48.0793,-42.1577
-        46.3177,-42.8313 44.5526,-43.4728 42.7846,-44.0858 41.0137,-44.6735 39.2404,-45.2386
-        37.4648,-45.7834 35.687,-46.3101 33.9073,-46.8205 32.1259,-47.3163 30.3428,-47.799
-        28.5583,-48.2699 26.7724,-48.7302 24.9852,-49.181 23.1969,-49.6234 21.4076,-50.0581
-        19.6174,-50.4861 17.8263,-50.9081 16.0345,-51.3249 14.242,-51.7372 12.449,-52.1456
-        10.6555,-52.5506 8.86171,-52.953 7.06758,-53.3533 5.27325,-53.752 3.4788,-54.1497
-        1.68432,-54.5468 -0.110118,-54.944 -1.90442,-55.3417 -3.6985,-55.7404 -5.49228,-56.1408
-        -7.28568,-56.5433 -9.07862,-56.9486 -10.871,-57.3572 -12.6627,-57.7697 -14.4538,-58.1867
-        -16.244,-58.6091 -18.0333,-59.0374 -19.8216,-59.4725 -21.6089,-59.9152 -23.395,-60.3665
-        -25.1798,-60.8273 -26.9633,-61.2987 -28.7452,-61.782 -30.5256,-62.2784 -32.3043,-62.7895
-        -34.0811,-63.3169 -35.8559,-63.8625 -37.6286,-64.4284 -39.399,-65.0169 -41.1669,-65.6309
-        -42.9321,-66.2734 -44.6943,-66.948 -46.4533,-67.6589 -48.2088,-68.4111 -49.9604,-69.2101
-        -51.7076,-70.0629 -53.45,-70.9774 -55.1868,-71.9632 -56.9175,-73.0322 -58.6411,-74.1984
-        -60.3564,-75.4793 -62.0621,-76.8967 -63.7565,-78.4777 -65.4373,-80.2567 -67.1018,-82.2778
-        -68.7462,-84.5976 -70.3657,-87.2904 -71.9536,-90.4529 -73.5012,-94.2124 -74.9959,-98.7338
-        -76.4206,-104.225 -77.7509,-110.929 -78.9528,-119.084 -79.9802,-128.819 -80.7746,-139.978
-        -81.2722,-151.975 -81.4214,-151.975 -81.4232,-139.976 -81.274,-128.815 -80.7762,-119.078
-        -79.9817,-110.923 -78.9542,-104.219 -77.7522,-98.728 -76.4218,-94.2068 -74.997,-90.4476
-        -73.5022,-87.2854 -71.9545,-84.5929 -70.3665,-82.2733 -68.747,-80.2525 -67.1025,-78.4737
-        -65.438,-76.8929 -63.7571,-75.4757 -62.0627,-74.1949 -60.357,-73.0289 -58.6416,-71.9601
-        -56.9181,-70.9744 -55.1874,-70.06 -53.4505,-69.2074 -51.7081,-68.4084 -49.9609,-67.6564
-        -48.2093,-66.9455 -46.4538,-66.2709 -44.6948,-65.6285 -42.9325,-65.0146 -41.1673,-64.4261
-        -39.3994,-63.8603 -37.629,-63.3147 -35.8563,-62.7874 -34.0815,-62.2763 -32.3047,-61.7799
-        -30.526,-61.2967 -28.7456,-60.8253 -26.9637,-60.3645 -25.1802,-59.9133 -23.3954,-59.4706
-        -21.6093,-59.0355 -19.822,-58.6072 -18.0337,-58.1849 -16.2444,-57.7679 -14.4542,-57.3554
-        -12.6631,-56.9468 -10.8714,-56.5416 -9.07901,-56.139 -7.28608,-55.7387 -5.49268,-55.3399
-        -3.69889,-54.9422 -1.90481,-54.5451 -0.110511,-54.1479 1.68392,-53.7503 3.47841,-53.3516
-        5.27285,-52.9513 7.06718,-52.5489 8.86131,-52.1438 10.6552,-51.7354 12.4486,-51.3231
-        14.2416,-50.9063 16.0341,-50.4842 17.8259,-50.0562 19.617,-49.6215 21.4072,-49.1791
-        23.1965,-48.7283 24.9848,-48.268 26.772,-47.797 28.5579,-47.3143 30.3424,-46.8185
-        32.1255,-46.308 33.9069,-45.7812 35.6866,-45.2364 37.4643,-44.6713 39.24,-44.0835
-        41.0133,-43.4704 42.7841,-42.8289 44.5522,-42.1552 46.3172,-41.4453 48.0788,-40.6943
-        49.8368,-39.8964 51.5905,-39.0449 53.3395,-38.1317 55.0832,-37.1472 56.8208,-36.0796
-        58.5515,-34.9147 60.274,-33.6351 61.987,-32.219 63.6888,-30.639 65.3772,-28.8607
-        67.0493,-26.8398 68.7014,-24.5193 70.3285,-21.8246 71.9242,-18.658 73.4793,-14.8913
-        74.9815,-10.3576 76.4132,-4.84676 77.7499,1.88767 78.9572,10.0871 79.9882,19.8814
-        80.7837,31.1094 81.279,43.1681 81.4221,43.1684 81.4238))"},{"name":"mode","content":"EO"},{"name":"platformidentifier","content":"2016-011A"},{"name":"onlinequalitycheck","content":"PASSED"},{"name":"orbitdirection","content":"ascending"},{"name":"pduduration","content":"3029"},{"name":"passnumber","content":"8235"},{"name":"passdirection","content":"ascending"},{"name":"procfacilityname","content":"Marine
-        Reprocessing Centre 1 [MR1]"},{"name":"procfacilityorg","content":"ACRI"},{"name":"processinglevel","content":"1"},{"name":"processingname","content":"Data
-        Processing"},{"name":"productlevel","content":"L1"},{"name":"producttype","content":"SR_1_SRA_A_"},{"name":"relorbitdir","content":"ascending"},{"name":"relpassnumber","content":"589"},{"name":"relpassdirection","content":"ascending"},{"name":"platformname","content":"Sentinel-3"},{"name":"size","content":"2.34
-        GB"},{"name":"timeliness","content":"Non Time Critical"},{"name":"uuid","content":"1d16f909-de53-44b0-88ad-841b0cae5cbe"}]},{"title":"S3A_SR_1_SRA_BS_20161201T131246_20161201T140315_20170627T120317_3029_011_295______MR1_R_NT_002","link":[{"href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''2cce82ef-14f0-49b5-95eb-b314b1c5b0b5'')/$value"},{"rel":"alternative","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''2cce82ef-14f0-49b5-95eb-b314b1c5b0b5'')/"},{"rel":"icon","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''2cce82ef-14f0-49b5-95eb-b314b1c5b0b5'')/Products(''Quicklook'')/$value"}],"id":"2cce82ef-14f0-49b5-95eb-b314b1c5b0b5","summary":"Date:
-        2016-12-01T13:12:45.561Z, Instrument: SRAL, Mode: , Satellite: Sentinel-3,
-        Size: 1.71 GB","date":[{"name":"ingestiondate","content":"2017-09-19T05:19:15.081Z"},{"name":"beginposition","content":"2016-12-01T13:12:45.561Z"},{"name":"endposition","content":"2016-12-01T14:03:15.44Z"}],"int":[{"name":"lrmpercentage","content":"0"},{"name":"sarpercentage","content":"100"},{"name":"closedseapercentage","content":"0"},{"name":"continentalicepercentage","content":"9"},{"name":"landpercentage","content":"31"},{"name":"openseapercentage","content":"59"},{"name":"orbitnumber","content":"4118"},{"name":"relativeorbitnumber","content":"295"}],"str":[{"name":"filename","content":"S3A_SR_1_SRA_BS_20161201T131246_20161201T140315_20170627T120317_3029_011_295______MR1_R_NT_002.SEN3"},{"name":"gmlfootprint","content":"<gml:Polygon
-        srsName=\"http://www.opengis.net/gml/srs/epsg.xml#4326\" xmlns:gml=\"http://www.opengis.net/gml\">\n   <gml:outerBoundaryIs>\n      <gml:LinearRing>\n         <gml:coordinates>81.4238,43.1684
-        81.2808,31.1073 80.7853,19.8774 79.9897,10.0818 78.9586,1.88186 77.7512,-4.8527
-        76.4144,-10.3634 74.9825,-14.8969 73.4803,-18.6633 71.9251,-21.8296 70.3294,-24.524
-        68.7021,-26.8443 67.05,-28.8649 65.3779,-30.643 63.6895,-32.2227 61.9877,-33.6387
-        60.2746,-34.9181 58.552,-36.0828 56.8214,-37.1503 55.0837,-38.1347 53.34,-39.0478
-        51.591,-39.8992 49.8372,-40.697 48.0793,-41.4479 46.3177,-42.1577 44.5526,-42.8313
-        42.7846,-43.4728 41.0137,-44.0858 39.2404,-44.6735 37.4648,-45.2386 35.687,-45.7834
-        33.9073,-46.3101 32.1259,-46.8205 30.3428,-47.3163 28.5583,-47.799 26.7724,-48.2699
-        24.9852,-48.7302 23.1969,-49.181 21.4076,-49.6234 19.6174,-50.0581 17.8263,-50.4861
-        16.0345,-50.9081 14.242,-51.3249 12.449,-51.7372 10.6555,-52.1456 8.86171,-52.5506
-        7.06758,-52.953 5.27325,-53.3533 3.4788,-53.752 1.68432,-54.1497 -0.110118,-54.5468
-        -1.90442,-54.944 -3.6985,-55.3417 -5.49228,-55.7404 -7.28568,-56.1408 -9.07862,-56.5433
-        -10.871,-56.9486 -12.6627,-57.3572 -14.4538,-57.7697 -16.244,-58.1867 -18.0333,-58.6091
-        -19.8216,-59.0374 -21.6089,-59.4725 -23.395,-59.9152 -25.1798,-60.3665 -26.9633,-60.8273
-        -28.7452,-61.2987 -30.5256,-61.782 -32.3043,-62.2784 -34.0811,-62.7895 -35.8559,-63.3169
-        -37.6286,-63.8625 -39.399,-64.4284 -41.1669,-65.0169 -42.9321,-65.6309 -44.6943,-66.2734
-        -46.4533,-66.948 -48.2088,-67.6589 -49.9604,-68.4111 -51.7076,-69.2101 -53.45,-70.0629
-        -55.1868,-70.9774 -56.9175,-71.9632 -58.6411,-73.0322 -60.3564,-74.1984 -62.0621,-75.4793
-        -63.7565,-76.8967 -65.4373,-78.4777 -67.1018,-80.2567 -68.7462,-82.2778 -70.3657,-84.5976
-        -71.9536,-87.2904 -73.5012,-90.4529 -74.9959,-94.2124 -76.4206,-98.7338 -77.7509,-104.225
-        -78.9528,-110.929 -79.9802,-119.084 -80.7746,-128.819 -81.2722,-139.978 -81.4214,-151.975
-        -81.4232,-151.975 -81.274,-139.976 -80.7762,-128.815 -79.9817,-119.078 -78.9542,-110.923
-        -77.7522,-104.219 -76.4218,-98.728 -74.997,-94.2068 -73.5022,-90.4476 -71.9545,-87.2854
-        -70.3665,-84.5929 -68.747,-82.2733 -67.1025,-80.2525 -65.438,-78.4737 -63.7571,-76.8929
-        -62.0627,-75.4757 -60.357,-74.1949 -58.6416,-73.0289 -56.9181,-71.9601 -55.1874,-70.9744
-        -53.4505,-70.06 -51.7081,-69.2074 -49.9609,-68.4084 -48.2093,-67.6564 -46.4538,-66.9455
-        -44.6948,-66.2709 -42.9325,-65.6285 -41.1673,-65.0146 -39.3994,-64.4261 -37.629,-63.8603
-        -35.8563,-63.3147 -34.0815,-62.7874 -32.3047,-62.2763 -30.526,-61.7799 -28.7456,-61.2967
-        -26.9637,-60.8253 -25.1802,-60.3645 -23.3954,-59.9133 -21.6093,-59.4706 -19.822,-59.0355
-        -18.0337,-58.6072 -16.2444,-58.1849 -14.4542,-57.7679 -12.6631,-57.3554 -10.8714,-56.9468
-        -9.07901,-56.5416 -7.28608,-56.139 -5.49268,-55.7387 -3.69889,-55.3399 -1.90481,-54.9422
-        -0.110511,-54.5451 1.68392,-54.1479 3.47841,-53.7503 5.27285,-53.3516 7.06718,-52.9513
-        8.86131,-52.5489 10.6552,-52.1438 12.4486,-51.7354 14.2416,-51.3231 16.0341,-50.9063
-        17.8259,-50.4842 19.617,-50.0562 21.4072,-49.6215 23.1965,-49.1791 24.9848,-48.7283
-        26.772,-48.268 28.5579,-47.797 30.3424,-47.3143 32.1255,-46.8185 33.9069,-46.308
-        35.6866,-45.7812 37.4643,-45.2364 39.24,-44.6713 41.0133,-44.0835 42.7841,-43.4704
-        44.5522,-42.8289 46.3172,-42.1552 48.0788,-41.4453 49.8368,-40.6943 51.5905,-39.8964
-        53.3395,-39.0449 55.0832,-38.1317 56.8208,-37.1472 58.5515,-36.0796 60.274,-34.9147
-        61.987,-33.6351 63.6888,-32.219 65.3772,-30.639 67.0493,-28.8607 68.7014,-26.8398
-        70.3285,-24.5193 71.9242,-21.8246 73.4793,-18.658 74.9815,-14.8913 76.4132,-10.3576
-        77.7499,-4.84676 78.9572,1.88767 79.9882,10.0871 80.7837,19.8814 81.279,31.1094
-        81.4221,43.1681 81.4238,43.1684</gml:coordinates>\n      </gml:LinearRing>\n   </gml:outerBoundaryIs>\n</gml:Polygon>"},{"name":"format","content":"SAFE"},{"name":"identifier","content":"S3A_SR_1_SRA_BS_20161201T131246_20161201T140315_20170627T120317_3029_011_295______MR1_R_NT_002"},{"name":"instrumentshortname","content":"SRAL"},{"name":"sensoroperationalmode","content":"Earth
-        Observation"},{"name":"instrumentname","content":"Sar Radar ALtimeter"},{"name":"footprint","content":"POLYGON
-        ((43.1684 81.4238,31.1073 81.2808,19.8774 80.7853,10.0818 79.9897,1.88186
-        78.9586,-4.8527 77.7512,-10.3634 76.4144,-14.8969 74.9825,-18.6633 73.4803,-21.8296
-        71.9251,-24.524 70.3294,-26.8443 68.7021,-28.8649 67.05,-30.643 65.3779,-32.2227
-        63.6895,-33.6387 61.9877,-34.9181 60.2746,-36.0828 58.552,-37.1503 56.8214,-38.1347
-        55.0837,-39.0478 53.34,-39.8992 51.591,-40.697 49.8372,-41.4479 48.0793,-42.1577
-        46.3177,-42.8313 44.5526,-43.4728 42.7846,-44.0858 41.0137,-44.6735 39.2404,-45.2386
-        37.4648,-45.7834 35.687,-46.3101 33.9073,-46.8205 32.1259,-47.3163 30.3428,-47.799
-        28.5583,-48.2699 26.7724,-48.7302 24.9852,-49.181 23.1969,-49.6234 21.4076,-50.0581
-        19.6174,-50.4861 17.8263,-50.9081 16.0345,-51.3249 14.242,-51.7372 12.449,-52.1456
-        10.6555,-52.5506 8.86171,-52.953 7.06758,-53.3533 5.27325,-53.752 3.4788,-54.1497
-        1.68432,-54.5468 -0.110118,-54.944 -1.90442,-55.3417 -3.6985,-55.7404 -5.49228,-56.1408
-        -7.28568,-56.5433 -9.07862,-56.9486 -10.871,-57.3572 -12.6627,-57.7697 -14.4538,-58.1867
-        -16.244,-58.6091 -18.0333,-59.0374 -19.8216,-59.4725 -21.6089,-59.9152 -23.395,-60.3665
-        -25.1798,-60.8273 -26.9633,-61.2987 -28.7452,-61.782 -30.5256,-62.2784 -32.3043,-62.7895
-        -34.0811,-63.3169 -35.8559,-63.8625 -37.6286,-64.4284 -39.399,-65.0169 -41.1669,-65.6309
-        -42.9321,-66.2734 -44.6943,-66.948 -46.4533,-67.6589 -48.2088,-68.4111 -49.9604,-69.2101
-        -51.7076,-70.0629 -53.45,-70.9774 -55.1868,-71.9632 -56.9175,-73.0322 -58.6411,-74.1984
-        -60.3564,-75.4793 -62.0621,-76.8967 -63.7565,-78.4777 -65.4373,-80.2567 -67.1018,-82.2778
-        -68.7462,-84.5976 -70.3657,-87.2904 -71.9536,-90.4529 -73.5012,-94.2124 -74.9959,-98.7338
-        -76.4206,-104.225 -77.7509,-110.929 -78.9528,-119.084 -79.9802,-128.819 -80.7746,-139.978
-        -81.2722,-151.975 -81.4214,-151.975 -81.4232,-139.976 -81.274,-128.815 -80.7762,-119.078
-        -79.9817,-110.923 -78.9542,-104.219 -77.7522,-98.728 -76.4218,-94.2068 -74.997,-90.4476
-        -73.5022,-87.2854 -71.9545,-84.5929 -70.3665,-82.2733 -68.747,-80.2525 -67.1025,-78.4737
-        -65.438,-76.8929 -63.7571,-75.4757 -62.0627,-74.1949 -60.357,-73.0289 -58.6416,-71.9601
-        -56.9181,-70.9744 -55.1874,-70.06 -53.4505,-69.2074 -51.7081,-68.4084 -49.9609,-67.6564
-        -48.2093,-66.9455 -46.4538,-66.2709 -44.6948,-65.6285 -42.9325,-65.0146 -41.1673,-64.4261
-        -39.3994,-63.8603 -37.629,-63.3147 -35.8563,-62.7874 -34.0815,-62.2763 -32.3047,-61.7799
-        -30.526,-61.2967 -28.7456,-60.8253 -26.9637,-60.3645 -25.1802,-59.9133 -23.3954,-59.4706
-        -21.6093,-59.0355 -19.822,-58.6072 -18.0337,-58.1849 -16.2444,-57.7679 -14.4542,-57.3554
-        -12.6631,-56.9468 -10.8714,-56.5416 -9.07901,-56.139 -7.28608,-55.7387 -5.49268,-55.3399
-        -3.69889,-54.9422 -1.90481,-54.5451 -0.110511,-54.1479 1.68392,-53.7503 3.47841,-53.3516
-        5.27285,-52.9513 7.06718,-52.5489 8.86131,-52.1438 10.6552,-51.7354 12.4486,-51.3231
-        14.2416,-50.9063 16.0341,-50.4842 17.8259,-50.0562 19.617,-49.6215 21.4072,-49.1791
-        23.1965,-48.7283 24.9848,-48.268 26.772,-47.797 28.5579,-47.3143 30.3424,-46.8185
-        32.1255,-46.308 33.9069,-45.7812 35.6866,-45.2364 37.4643,-44.6713 39.24,-44.0835
-        41.0133,-43.4704 42.7841,-42.8289 44.5522,-42.1552 46.3172,-41.4453 48.0788,-40.6943
-        49.8368,-39.8964 51.5905,-39.0449 53.3395,-38.1317 55.0832,-37.1472 56.8208,-36.0796
-        58.5515,-34.9147 60.274,-33.6351 61.987,-32.219 63.6888,-30.639 65.3772,-28.8607
-        67.0493,-26.8398 68.7014,-24.5193 70.3285,-21.8246 71.9242,-18.658 73.4793,-14.8913
-        74.9815,-10.3576 76.4132,-4.84676 77.7499,1.88767 78.9572,10.0871 79.9882,19.8814
-        80.7837,31.1094 81.279,43.1681 81.4221,43.1684 81.4238))"},{"name":"mode","content":"EO"},{"name":"platformidentifier","content":"2016-011A"},{"name":"onlinequalitycheck","content":"PASSED"},{"name":"orbitdirection","content":"ascending"},{"name":"pduduration","content":"3029"},{"name":"passnumber","content":"8235"},{"name":"passdirection","content":"ascending"},{"name":"procfacilityname","content":"Marine
-        Reprocessing Centre 1 [MR1]"},{"name":"procfacilityorg","content":"ACRI"},{"name":"processinglevel","content":"1"},{"name":"processingname","content":"Data
-        Processing"},{"name":"productlevel","content":"L1"},{"name":"producttype","content":"SR_1_SRA_BS"},{"name":"relorbitdir","content":"ascending"},{"name":"relpassnumber","content":"589"},{"name":"relpassdirection","content":"ascending"},{"name":"platformname","content":"Sentinel-3"},{"name":"size","content":"1.71
-        GB"},{"name":"timeliness","content":"Non Time Critical"},{"name":"uuid","content":"2cce82ef-14f0-49b5-95eb-b314b1c5b0b5"}]},{"title":"S3A_SR_1_SRA____20161201T131246_20161201T140315_20170627T120317_3029_011_295______MR1_R_NT_002","link":[{"href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''8fdd9d32-e083-43ba-9d0e-ea9ecc695a05'')/$value"},{"rel":"alternative","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''8fdd9d32-e083-43ba-9d0e-ea9ecc695a05'')/"},{"rel":"icon","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''8fdd9d32-e083-43ba-9d0e-ea9ecc695a05'')/Products(''Quicklook'')/$value"}],"id":"8fdd9d32-e083-43ba-9d0e-ea9ecc695a05","summary":"Date:
-        2016-12-01T13:12:45.561Z, Instrument: SRAL, Mode: , Satellite: Sentinel-3,
-        Size: 52.85 MB","date":[{"name":"ingestiondate","content":"2017-09-08T13:02:32.142Z"},{"name":"beginposition","content":"2016-12-01T13:12:45.561Z"},{"name":"endposition","content":"2016-12-01T14:03:15.44Z"}],"int":[{"name":"lrmpercentage","content":"0"},{"name":"sarpercentage","content":"100"},{"name":"closedseapercentage","content":"0"},{"name":"continentalicepercentage","content":"9"},{"name":"landpercentage","content":"31"},{"name":"openseapercentage","content":"59"},{"name":"orbitnumber","content":"4118"},{"name":"relativeorbitnumber","content":"295"}],"str":[{"name":"filename","content":"S3A_SR_1_SRA____20161201T131246_20161201T140315_20170627T120317_3029_011_295______MR1_R_NT_002.SEN3"},{"name":"gmlfootprint","content":"<gml:Polygon
+        Reprocessing Centre 1 [LR1]"},{"name":"procfacilityorg","content":"ACRI"},{"name":"onlinequalitycheck","content":"PASSED"},{"name":"lastorbitdirection","content":"ascending"},{"name":"lastrelorbitdirection","content":"ascending"},{"name":"lastrelpassnumber","content":"577"},{"name":"lastrelpassdirection","content":"ascending"},{"name":"lastpassnumber","content":"8223"},{"name":"lastpassdirection","content":"ascending"},{"name":"identifier","content":"S3A_SR_2_LAN____20161201T021622_20161201T030440_20180519T185548_2898_011_288______LR1_R_NT_003"},{"name":"uuid","content":"47d46baf-3e4c-4e4c-9e68-eedcabde812f"}]},{"title":"S3A_SR_1_SRA____20161201T131246_20161201T140315_20170627T120317_3029_011_295______MR1_R_NT_002","link":[{"href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''8fdd9d32-e083-43ba-9d0e-ea9ecc695a05'')/$value"},{"rel":"alternative","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''8fdd9d32-e083-43ba-9d0e-ea9ecc695a05'')/"},{"rel":"icon","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''8fdd9d32-e083-43ba-9d0e-ea9ecc695a05'')/Products(''Quicklook'')/$value"}],"id":"8fdd9d32-e083-43ba-9d0e-ea9ecc695a05","summary":"Date:
+        2016-12-01T13:12:45.561Z, Instrument: SRAL, Satellite: Sentinel-3, Size: 52.85
+        MB","ondemand":"false","date":[{"name":"ingestiondate","content":"2017-09-08T13:02:32.142Z"},{"name":"beginposition","content":"2016-12-01T13:12:45.561Z"},{"name":"endposition","content":"2016-12-01T14:03:15.44Z"}],"int":[{"name":"lrmpercentage","content":"0"},{"name":"sarpercentage","content":"100"},{"name":"closedseapercentage","content":"0"},{"name":"continentalicepercentage","content":"9"},{"name":"landpercentage","content":"31"},{"name":"openseapercentage","content":"59"},{"name":"orbitnumber","content":"4118"},{"name":"relativeorbitnumber","content":"295"}],"str":[{"name":"filename","content":"S3A_SR_1_SRA____20161201T131246_20161201T140315_20170627T120317_3029_011_295______MR1_R_NT_002.SEN3"},{"name":"gmlfootprint","content":"<gml:Polygon
         srsName=\"http://www.opengis.net/gml/srs/epsg.xml#4326\" xmlns:gml=\"http://www.opengis.net/gml\">\n   <gml:outerBoundaryIs>\n      <gml:LinearRing>\n         <gml:coordinates>81.4238,43.1684
         81.2808,31.1073 80.7853,19.8774 79.9897,10.0818 78.9586,1.88186 77.7512,-4.8527
         76.4144,-10.3634 74.9825,-14.8969 73.4803,-18.6633 71.9251,-21.8296 70.3294,-24.524
@@ -1379,8 +1201,8 @@ interactions:
         Reprocessing Centre 1 [MR1]"},{"name":"procfacilityorg","content":"ACRI"},{"name":"processinglevel","content":"1"},{"name":"processingname","content":"Data
         Processing"},{"name":"productlevel","content":"L1"},{"name":"producttype","content":"SR_1_SRA___"},{"name":"relorbitdir","content":"ascending"},{"name":"relpassnumber","content":"589"},{"name":"relpassdirection","content":"ascending"},{"name":"platformname","content":"Sentinel-3"},{"name":"size","content":"52.85
         MB"},{"name":"timeliness","content":"Non Time Critical"},{"name":"uuid","content":"8fdd9d32-e083-43ba-9d0e-ea9ecc695a05"}]},{"title":"S3A_SR_2_LAN____20161201T131318_20161201T140315_20170701T190443_2997_011_295______LR1_R_NT_002","link":[{"href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''757f935b-bfd7-4614-b681-0af7801f3366'')/$value"},{"rel":"alternative","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''757f935b-bfd7-4614-b681-0af7801f3366'')/"},{"rel":"icon","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''757f935b-bfd7-4614-b681-0af7801f3366'')/Products(''Quicklook'')/$value"}],"id":"757f935b-bfd7-4614-b681-0af7801f3366","summary":"Date:
-        2016-12-01T13:13:17.65Z, Instrument: SRAL, Mode: , Satellite: Sentinel-3,
-        Size: 76.39 MB","date":[{"name":"ingestiondate","content":"2017-09-08T11:54:59.902Z"},{"name":"beginposition","content":"2016-12-01T13:13:17.65Z"},{"name":"endposition","content":"2016-12-01T14:03:15.44Z"}],"int":[{"name":"lrmpercentage","content":"0"},{"name":"sarpercentage","content":"100"},{"name":"closedseapercentage","content":"1"},{"name":"continentalicepercentage","content":"17"},{"name":"landpercentage","content":"57"},{"name":"openseapercentage","content":"25"},{"name":"orbitnumber","content":"4118"},{"name":"relativeorbitnumber","content":"295"}],"str":[{"name":"filename","content":"S3A_SR_2_LAN____20161201T131318_20161201T140315_20170701T190443_2997_011_295______LR1_R_NT_002.SEN3"},{"name":"gmlfootprint","content":"<gml:Polygon
+        2016-12-01T13:13:17.65Z, Instrument: SRAL, Satellite: Sentinel-3, Size: 76.39
+        MB","ondemand":"false","date":[{"name":"ingestiondate","content":"2017-09-08T11:54:59.902Z"},{"name":"beginposition","content":"2016-12-01T13:13:17.65Z"},{"name":"endposition","content":"2016-12-01T14:03:15.44Z"}],"int":[{"name":"lrmpercentage","content":"0"},{"name":"sarpercentage","content":"100"},{"name":"closedseapercentage","content":"1"},{"name":"continentalicepercentage","content":"17"},{"name":"landpercentage","content":"57"},{"name":"openseapercentage","content":"25"},{"name":"orbitnumber","content":"4118"},{"name":"relativeorbitnumber","content":"295"}],"str":[{"name":"filename","content":"S3A_SR_2_LAN____20161201T131318_20161201T140315_20170701T190443_2997_011_295______LR1_R_NT_002.SEN3"},{"name":"gmlfootprint","content":"<gml:Polygon
         srsName=\"http://www.opengis.net/gml/srs/epsg.xml#4326\" xmlns:gml=\"http://www.opengis.net/gml\">\n   <gml:outerBoundaryIs>\n      <gml:LinearRing>\n         <gml:coordinates>81.2254,29.2728
         80.6808,18.2662 79.8471,8.73804 78.7887,0.791483 77.5627,-5.72943 76.2137,-11.0699
         74.7742,-15.4709 73.2675,-19.1348 71.7101,-22.2215 70.1138,-24.8535 68.4872,-27.1245
@@ -1468,16 +1290,22 @@ interactions:
         Processing"},{"name":"productlevel","content":"L2"},{"name":"producttype","content":"SR_2_LAN___"},{"name":"relorbitdir","content":"ascending"},{"name":"relpassnumber","content":"589"},{"name":"relpassdirection","content":"ascending"},{"name":"platformname","content":"Sentinel-3"},{"name":"size","content":"76.39
         MB"},{"name":"timeliness","content":"Non Time Critical"},{"name":"uuid","content":"757f935b-bfd7-4614-b681-0af7801f3366"}]}]}}'
     headers:
-      Content-Type:
-      - application/json
-      Pragma:
-      - no-cache
-      Server:
-      - Apache-Coyote/1.1
-      Vary:
-      - Accept-Encoding
       content-length:
-      - '141979'
+      - '122185'
+      content-type:
+      - application/json
+      pragma:
+      - no-cache
+      server:
+      - Apache-Coyote/1.1
+      vary:
+      - Accept-Encoding
+      x-content-type-options:
+      - nosniff
+      x-frame-options:
+      - DENY
+      x-xss-protection:
+      - 1; mode=block
     status:
       code: 200
       message: OK
