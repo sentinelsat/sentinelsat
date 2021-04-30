@@ -394,17 +394,16 @@ def test_too_long_query(api):
     # that a relevant error message is provided
 
     def create_query(n):
-        return " a_-.*:,?+~!" * n
+        return '"' + " a_-.*:,?+~!" * n + '"'
 
     # Expect no error
-    q = create_query(163)
+    q = create_query(162)
     assert 0.99 < SentinelAPI.check_query_length(q) < 1.0
-    with pytest.raises(QuerySyntaxError) as excinfo:
-        api.count(raw=q)
-    assert "Invalid query string" in excinfo.value.msg
+    count = api.count(raw=q)
+    assert count == 0
 
     # Expect HTTP status 500 Internal Server Error
-    q = create_query(164)
+    q = create_query(163)
     assert 0.999 <= SentinelAPI.check_query_length(q) < 1.01
     with pytest.raises(QueryLengthError) as excinfo:
         api.count(raw=q)

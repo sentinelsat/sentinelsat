@@ -1065,7 +1065,7 @@ class SentinelAPI:
     def check_query_length(query):
         """Determine whether a query to the OpenSearch API is too long.
 
-        The length of a query string is limited to approximately 3938 characters but
+        The length of a query string is limited to approximately 3898 characters but
         any special characters (that is, not alphanumeric or -_.*) will take up more space.
 
         Parameters
@@ -1081,7 +1081,7 @@ class SentinelAPI:
         # The server uses the Java's URLEncoder implementation internally, which we are replicating here
         effective_length = len(quote_plus(query, safe="-_.*").replace("~", "%7E"))
 
-        return effective_length / 3938
+        return effective_length / 3898
 
     def _query_names(self, names):
         """Find products by their names, e.g.
