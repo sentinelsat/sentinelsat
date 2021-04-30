@@ -19,7 +19,6 @@ Added
   allows to filter and download only selected files of the requested products
   (#414 @avalentino)
 
-
 Changed
 ~~~~~~~
 * Replaced ``SentinelAPIError`` exceptions with more specific types:
@@ -35,6 +34,8 @@ Changed
 
   The new exceptions are still subclasses of ``SentinelAPIError`` for backwards compatibility.
   (#285 @valgur, @dwlsalmeida)
+* Tidied up the (internal) download code logic (#378 @valgur)
+* Added an "exception" field to the `failed_products` dict returned by in `.download_all()` for easier debugging (#378 @valgur)
 
 Deprecated
 ~~~~~~~~~~
@@ -43,6 +44,7 @@ Deprecated
 Fixed
 ~~~~~
 * fix location information for Nominatim bounding box queries (#384)
+* Get file name extension more reliably from either header or internal logic (in particular for S5 products #270) (#378 @valgur)
 
 Development Changes
 ~~~~~~~~~~~~~~~~~~~
