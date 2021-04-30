@@ -14,3 +14,12 @@ exclude = '''
   )/
 )
 '''
+
+[tool.pytest.ini_options]
+markers = [
+    "scihub: marks tests requiring Open Access Hub / SciHub access",
+    "pandas",
+    "geopandas",
+    "mock_api",
+    "fast"
+]
