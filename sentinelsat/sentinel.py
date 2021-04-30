@@ -761,7 +761,9 @@ class SentinelAPI:
         product_infos = {}
         online_prods = {}
         offline_prods = {}
-        for pid in self._tqdm(iterable=product_ids, desc="Fetching archival status", unit=" products"):
+        for pid in self._tqdm(
+            iterable=product_ids, desc="Fetching archival status", unit=" products"
+        ):
             info = self.get_product_odata(pid)
             product_infos[pid] = info
             if info["Online"]:
@@ -935,7 +937,8 @@ class SentinelAPI:
             except Exception as e:
                 if isinstance(e, InvalidChecksumError):
                     self.logger.warning(
-                        "Invalid checksum. The downloaded file for '%s' is corrupted.", title,
+                        "Invalid checksum. The downloaded file for '%s' is corrupted.",
+                        title,
                     )
                 else:
                     self.logger.exception("There was an error downloading %s", title)

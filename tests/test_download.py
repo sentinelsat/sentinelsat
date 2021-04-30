@@ -197,6 +197,7 @@ def test_download_all_one_fail(api, tmpdir, smallest_online_products):
 
     tmpdir.remove()
 
+
 @pytest.mark.xfail(reason="The threading in this test seems to break VCR.py somehow")
 @pytest.mark.vcr
 @pytest.mark.scihub
