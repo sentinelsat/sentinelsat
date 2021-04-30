@@ -401,12 +401,10 @@ class SentinelAPI:
         # parse response content
         try:
             json_feed = response.json()["feed"]
-            if json_feed["opensearch:totalResults"] is None:
-                # We are using some unintended behavior of the server that a null is
-                # returned as the total results value when the query string was incorrect.
-                raise QuerySyntaxError(
-                    "Invalid query string. Check the parameters and format.", response
-                )
+            if "error" in json_feed:
+                message = json_feed["error"]["message"]
+                message = message.replace("org.apache.solr.search.SyntaxError: ", "")
+                raise QuerySyntaxError(message, response)
             total_results = int(json_feed["opensearch:totalResults"])
         except (ValueError, KeyError):
             raise ServerError("API response not valid. JSON decoding failed.", response)
