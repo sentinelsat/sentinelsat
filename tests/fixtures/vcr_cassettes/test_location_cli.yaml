@@ -39,7 +39,7 @@ interactions:
       code: 200
       message: OK
 - request:
-    body: q=beginPosition%3A%5BNOW-1DAY+TO+NOW%5D+footprint%3A%22Intersects%28ENVELOPE%286.1360042%2C+6.256451%2C+49.1487955%2C+49.0608244%29%29%22
+    body: q=beginPosition%3A%5B%22NOW-1DAY%22+TO+%22NOW%22%5D+footprint%3A%22Intersects%28ENVELOPE%286.1360042%2C+6.256451%2C+49.1487955%2C+49.0608244%29%29%22
     headers:
       Accept:
       - '*/*'
@@ -48,7 +48,7 @@ interactions:
       Connection:
       - keep-alive
       Content-Length:
-      - '137'
+      - '149'
       Content-Type:
       - application/x-www-form-urlencoded; charset=UTF-8
       User-Agent:
@@ -58,56 +58,62 @@ interactions:
   response:
     body:
       string: '{"feed":{"xmlns:opensearch":"http://a9.com/-/spec/opensearch/1.1/","xmlns":"http://www.w3.org/2005/Atom","title":"Sentinels
-        Scientific Data Hub search results for: beginPosition:[NOW-1DAY TO NOW] footprint:\"Intersects(ENVELOPE(6.1360042,
-        6.256451, 49.1487955, 49.0608244))\"","subtitle":"Displaying 0 to 0 of 14
-        total results. Request done in 0.002 seconds.","updated":"2021-04-30T17:41:00.090Z","author":{"name":"Sentinels
-        Scientific Data Hub"},"id":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[NOW-1DAY
-        TO NOW] footprint:\"Intersects(ENVELOPE(6.1360042, 6.256451, 49.1487955, 49.0608244))\"","opensearch:totalResults":"14","opensearch:startIndex":"0","opensearch:itemsPerPage":"1","opensearch:Query":{"role":"request","searchTerms":"beginPosition:[NOW-1DAY
-        TO NOW] footprint:\"Intersects(ENVELOPE(6.1360042, 6.256451, 49.1487955, 49.0608244))\"","startPage":"1"},"link":[{"rel":"self","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[NOW-1DAY
-        TO NOW] footprint:\"Intersects(ENVELOPE(6.1360042, 6.256451, 49.1487955, 49.0608244))\"&start=0&rows=1&format=json"},{"rel":"first","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[NOW-1DAY
-        TO NOW] footprint:\"Intersects(ENVELOPE(6.1360042, 6.256451, 49.1487955, 49.0608244))\"&start=0&rows=1&format=json"},{"rel":"next","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[NOW-1DAY
-        TO NOW] footprint:\"Intersects(ENVELOPE(6.1360042, 6.256451, 49.1487955, 49.0608244))\"&start=1&rows=1&format=json"},{"rel":"last","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[NOW-1DAY
-        TO NOW] footprint:\"Intersects(ENVELOPE(6.1360042, 6.256451, 49.1487955, 49.0608244))\"&start=13&rows=1&format=json"},{"rel":"search","type":"application/opensearchdescription+xml","href":"opensearch_description.xml"}],"entry":{"title":"S3A_SL_2_LST____20210430T103540_20210430T103840_20210430T125746_0179_071_165_2160_LN2_O_NR_004","link":[{"href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''a1eb38ca-791e-4f4b-b549-57bd1e67264d'')/$value"},{"rel":"alternative","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''a1eb38ca-791e-4f4b-b549-57bd1e67264d'')/"},{"rel":"icon","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''a1eb38ca-791e-4f4b-b549-57bd1e67264d'')/Products(''Quicklook'')/$value"}],"id":"a1eb38ca-791e-4f4b-b549-57bd1e67264d","summary":"Date:
-        2021-04-30T10:35:40.192Z, Instrument: SLSTR, Satellite: Sentinel-3, Size:
-        63.16 MB","ondemand":"false","date":[{"name":"beginposition","content":"2021-04-30T10:35:40.192Z"},{"name":"endposition","content":"2021-04-30T10:38:40.192Z"},{"name":"creationdate","content":"2021-04-30T00:57:46Z"},{"name":"ingestiondate","content":"2021-04-30T13:15:51.538Z"}],"int":[{"name":"relativeorbitnumber","content":"165"},{"name":"orbitnumber","content":"27088"}],"str":[{"name":"ecmwf","content":"FORECAST"},{"name":"filename","content":"S3A_SL_2_LST____20210430T103540_20210430T103840_20210430T125746_0179_071_165_2160_LN2_O_NR_004.SEN3"},{"name":"format","content":"SAFE"},{"name":"identifier","content":"S3A_SL_2_LST____20210430T103540_20210430T103840_20210430T125746_0179_071_165_2160_LN2_O_NR_004"},{"name":"instrumentshortname","content":"SLSTR"},{"name":"sensoroperationalmode","content":"Earth
+        Scientific Data Hub search results for: beginPosition:[\"NOW-1DAY\" TO \"NOW\"]
+        footprint:\"Intersects(ENVELOPE(6.1360042, 6.256451, 49.1487955, 49.0608244))\"","subtitle":"Displaying
+        0 to 0 of 12 total results. Request done in 0.002 seconds.","updated":"2021-05-02T18:58:10.533Z","author":{"name":"Sentinels
+        Scientific Data Hub"},"id":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[\"NOW-1DAY\"
+        TO \"NOW\"] footprint:\"Intersects(ENVELOPE(6.1360042, 6.256451, 49.1487955,
+        49.0608244))\"","opensearch:totalResults":"12","opensearch:startIndex":"0","opensearch:itemsPerPage":"1","opensearch:Query":{"role":"request","searchTerms":"beginPosition:[\"NOW-1DAY\"
+        TO \"NOW\"] footprint:\"Intersects(ENVELOPE(6.1360042, 6.256451, 49.1487955,
+        49.0608244))\"","startPage":"1"},"link":[{"rel":"self","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[\"NOW-1DAY\"
+        TO \"NOW\"] footprint:\"Intersects(ENVELOPE(6.1360042, 6.256451, 49.1487955,
+        49.0608244))\"&start=0&rows=1&format=json"},{"rel":"first","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[\"NOW-1DAY\"
+        TO \"NOW\"] footprint:\"Intersects(ENVELOPE(6.1360042, 6.256451, 49.1487955,
+        49.0608244))\"&start=0&rows=1&format=json"},{"rel":"next","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[\"NOW-1DAY\"
+        TO \"NOW\"] footprint:\"Intersects(ENVELOPE(6.1360042, 6.256451, 49.1487955,
+        49.0608244))\"&start=1&rows=1&format=json"},{"rel":"last","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[\"NOW-1DAY\"
+        TO \"NOW\"] footprint:\"Intersects(ENVELOPE(6.1360042, 6.256451, 49.1487955,
+        49.0608244))\"&start=11&rows=1&format=json"},{"rel":"search","type":"application/opensearchdescription+xml","href":"opensearch_description.xml"}],"entry":{"title":"S3A_SL_1_RBT____20210502T094319_20210502T094619_20210502T120733_0179_071_193_2160_LN2_O_NR_004","link":[{"href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''de039661-38f6-4f03-8480-79362dcdf619'')/$value"},{"rel":"alternative","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''de039661-38f6-4f03-8480-79362dcdf619'')/"},{"rel":"icon","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''de039661-38f6-4f03-8480-79362dcdf619'')/Products(''Quicklook'')/$value"}],"id":"de039661-38f6-4f03-8480-79362dcdf619","summary":"Date:
+        2021-05-02T09:43:18.507Z, Instrument: SLSTR, Satellite: Sentinel-3, Size:
+        466.51 MB","ondemand":"false","date":[{"name":"beginposition","content":"2021-05-02T09:43:18.507Z"},{"name":"endposition","content":"2021-05-02T09:46:18.507Z"},{"name":"creationdate","content":"2021-05-02T00:07:33Z"},{"name":"ingestiondate","content":"2021-05-02T12:18:55.063Z"}],"int":[{"name":"relativeorbitnumber","content":"193"},{"name":"orbitnumber","content":"27116"}],"str":[{"name":"ecmwf","content":"FORECAST"},{"name":"filename","content":"S3A_SL_1_RBT____20210502T094319_20210502T094619_20210502T120733_0179_071_193_2160_LN2_O_NR_004.SEN3"},{"name":"format","content":"SAFE"},{"name":"identifier","content":"S3A_SL_1_RBT____20210502T094319_20210502T094619_20210502T120733_0179_071_193_2160_LN2_O_NR_004"},{"name":"instrumentshortname","content":"SLSTR"},{"name":"sensoroperationalmode","content":"Earth
         Observation"},{"name":"instrumentname","content":"Sea and Land Surface Temperature
-        Radiometer"},{"name":"mode","content":"EO"},{"name":"platformidentifier","content":"2016-011A"},{"name":"onlinequalitycheck","content":"PASSED"},{"name":"orbitdirection","content":"descending"},{"name":"pdualongtrackcoord","content":"2160"},{"name":"pduduration","content":"179"},{"name":"passnumber","content":"54176"},{"name":"passdirection","content":"descending"},{"name":"procfacilityname","content":"Land
+        Radiometer"},{"name":"mode","content":"EO"},{"name":"platformidentifier","content":"2016-011A"},{"name":"onlinequalitycheck","content":"PASSED"},{"name":"orbitdirection","content":"descending"},{"name":"pdualongtrackcoord","content":"2160"},{"name":"pduduration","content":"179"},{"name":"passnumber","content":"54232"},{"name":"passdirection","content":"descending"},{"name":"procfacilityname","content":"Land
         SLSTR and SYN Processing and Archiving Centre [LN2]"},{"name":"procfacilityorg","content":"European
-        Space Agency"},{"name":"processinglevel","content":"2"},{"name":"processingname","content":"Data
-        Processing"},{"name":"productlevel","content":"L2"},{"name":"producttype","content":"SL_2_LST___"},{"name":"relorbitdir","content":"descending"},{"name":"relpassnumber","content":"330"},{"name":"relpassdirection","content":"descending"},{"name":"platformname","content":"Sentinel-3"},{"name":"size","content":"63.16
+        Space Agency"},{"name":"processinglevel","content":"1"},{"name":"processingname","content":"Data
+        Processing"},{"name":"productlevel","content":"L1"},{"name":"producttype","content":"SL_1_RBT___"},{"name":"relorbitdir","content":"descending"},{"name":"relpassnumber","content":"386"},{"name":"relpassdirection","content":"descending"},{"name":"platformname","content":"Sentinel-3"},{"name":"size","content":"466.51
         MB"},{"name":"timeliness","content":"Near Real Time"},{"name":"gmlfootprint","content":"<gml:Polygon
-        srsName=\"http://www.opengis.net/gml/srs/epsg.xml#4326\" xmlns:gml=\"http://www.opengis.net/gml\">\n   <gml:outerBoundaryIs>\n      <gml:LinearRing>\n         <gml:coordinates>42.001,-13.9299
-        41.9492,-13.3194 41.888,-12.7116 41.8334,-12.1057 41.772,-11.4981 41.6917,-10.8836
-        41.6246,-10.2759 41.5524,-9.67541 41.4808,-9.07582 41.395,-8.46676 41.312,-7.86959
-        41.2335,-7.28084 41.1424,-6.67983 41.0515,-6.08722 40.9518,-5.4876 40.8536,-4.90219
-        40.7488,-4.30831 40.6445,-3.72819 40.543,-3.14018 40.4291,-2.55017 40.3156,-1.97493
-        40.1953,-1.38962 40.083,-0.809835 39.9571,-0.239979 39.8284,0.33701 39.7051,0.901238
-        39.5785,1.48089 39.4467,2.04686 39.3099,2.61353 39.1678,3.1741 39.1153,3.38165
-        41.6643,4.49248 44.2475,5.7012 46.8171,7.01699 49.3621,8.45469 49.3738,8.4469
-        49.4388,8.20772 49.5979,7.55002 49.7574,6.87547 49.9114,6.21086 50.0607,5.54654
-        50.212,4.86581 50.3503,4.19347 50.4929,3.50083 50.6311,2.81302 50.7649,2.12605
-        50.884,1.43209 51.0089,0.736471 51.1301,0.032368 51.2487,-0.683104 51.351,-1.38997
-        51.46,-2.10934 51.5609,-2.82162 51.66,-3.54191 51.7488,-4.26038 51.8444,-4.98697
-        51.9218,-5.71434 51.9982,-6.43858 52.0833,-7.1781 52.1494,-7.92064 52.2161,-8.65133
-        52.2745,-9.3895 52.3292,-10.1328 52.3746,-10.8695 52.4284,-11.6188 52.4707,-12.3696
-        52.462,-12.3708 49.8447,-12.7492 47.2171,-13.1371 44.5879,-13.533 42.001,-13.9299</gml:coordinates>\n      </gml:LinearRing>\n   </gml:outerBoundaryIs>\n</gml:Polygon>"},{"name":"footprint","content":"MULTIPOLYGON
-        (((3.38165 39.1153, 4.49248 41.6643, 5.7012 44.2475, 7.01699 46.8171, 8.45469
-        49.3621, 8.4469 49.3738, 8.20772 49.4388, 7.55002 49.5979, 6.87547 49.7574,
-        6.21086 49.9114, 5.54654 50.0607, 4.86581 50.212, 4.19347 50.3503, 3.50083
-        50.4929, 2.81302 50.6311, 2.12605 50.7649, 1.43209 50.884, 0.736471 51.0089,
-        0.032368 51.1301, 4.8288201731791394e-18 51.135465471744524, -0.683104 51.2487,
-        -1.38997 51.351, -2.10934 51.46, -2.82162 51.5609, -3.54191 51.66, -4.26038
-        51.7488, -4.98697 51.8444, -5.71434 51.9218, -6.43858 51.9982, -7.1781 52.0833,
-        -7.92064 52.1494, -8.65133 52.2161, -9.3895 52.2745, -10.1328 52.3292, -10.8695
-        52.3746, -11.6188 52.4284, -12.3696 52.4707, -12.3708 52.462, -12.7492 49.8447,
-        -13.1371 47.2171, -13.533 44.5879, -13.9299 42.001, -13.3194 41.9492, -12.7116
-        41.888, -12.1057 41.8334, -11.4981 41.772, -10.8836 41.6917, -10.2759 41.6246,
-        -9.67541 41.5524, -9.07582 41.4808, -8.46676 41.395, -7.86959 41.312, -7.28084
-        41.2335, -6.67983 41.1424, -6.08722 41.0515, -5.4876 40.9518, -4.90219 40.8536,
-        -4.30831 40.7488, -3.72819 40.6445, -3.14018 40.543, -2.55017 40.4291, -1.97493
-        40.3156, -1.38962 40.1953, -0.809835 40.083, -0.239979 39.9571, 1.6166470831295576e-17
-        39.9035716011917, 0.33701 39.8284, 0.901238 39.7051, 1.48089 39.5785, 2.04686
-        39.4467, 2.61353 39.3099, 3.1741 39.1678, 3.38165 39.1153)))"},{"name":"uuid","content":"a1eb38ca-791e-4f4b-b549-57bd1e67264d"}]}}}'
+        srsName=\"http://www.opengis.net/gml/srs/epsg.xml#4326\" xmlns:gml=\"http://www.opengis.net/gml\">\n   <gml:outerBoundaryIs>\n      <gml:LinearRing>\n         <gml:coordinates>42.0003,-0.839067
+        41.9453,-0.222774 41.8845,0.384143 41.8305,0.988472 41.7676,1.60052 41.7041,2.20446
+        41.6239,2.81361 41.5515,3.4146 41.4801,4.01422 41.3945,4.62263 41.3128,5.2143
+        41.2265,5.81705 41.1421,6.40674 41.0454,7.01097 40.9511,7.59953 40.8526,8.18499
+        40.7475,8.7797 40.6433,9.36233 40.5413,9.94932 40.4274,10.5401 40.3129,11.1159
+        40.2035,11.6943 40.0816,12.2712 39.9557,12.8513 39.8364,13.4326 39.7039,13.9924
+        39.5774,14.5718 39.4456,15.1381 39.3089,15.7047 39.1679,16.2594 39.1148,16.4724
+        41.6638,17.5832 44.247,18.7918 46.8166,20.1075 49.3615,21.5451 49.3732,21.5373
+        49.4311,21.294 49.597,20.64 49.7562,19.9663 49.9104,19.3011 50.0593,18.6376
+        50.2109,17.9558 50.3493,17.2834 50.4921,16.5907 50.6307,15.9028 50.7644,15.2164
+        50.8832,14.5229 51.0078,13.827 51.129,13.123 51.2476,12.4074 51.3498,11.7005
+        51.4588,10.9815 51.5596,10.27 51.6592,9.54626 51.7477,8.83027 51.8433,8.10314
+        51.9207,7.37597 51.9973,6.65099 52.0822,5.91205 52.1523,5.17843 52.2155,4.43682
+        52.2748,3.6961 52.3283,2.95684 52.3739,2.21958 52.4276,1.47065 52.4699,0.72101
+        52.4612,0.719763 49.8439,0.341474 47.2164,-0.046403 44.5873,-0.442238 42.0003,-0.839067</gml:coordinates>\n      </gml:LinearRing>\n   </gml:outerBoundaryIs>\n</gml:Polygon>"},{"name":"footprint","content":"MULTIPOLYGON
+        (((16.4724 39.1148, 17.5832 41.6638, 18.7918 44.247, 20.1075 46.8166, 21.5451
+        49.3615, 21.5373 49.3732, 21.294 49.4311, 20.64 49.597, 19.9663 49.7562, 19.3011
+        49.9104, 18.6376 50.0593, 17.9558 50.2109, 17.2834 50.3493, 16.5907 50.4921,
+        15.9028 50.6307, 15.2164 50.7644, 14.5229 50.8832, 13.827 51.0078, 13.123
+        51.129, 12.4074 51.2476, 11.7005 51.3498, 10.9815 51.4588, 10.27 51.5596,
+        9.54626 51.6592, 8.83027 51.7477, 8.10314 51.8433, 7.37597 51.9207, 6.65099
+        51.9973, 5.91205 52.0822, 5.17843 52.1523, 4.43682 52.2155, 3.6961 52.2748,
+        2.95684 52.3283, 2.21958 52.3739, 1.47065 52.4276, 0.72101 52.4699, 0.719763
+        52.4612, 0.341474 49.8439, -2.2604582995545823e-18 47.53073645846493, -0.046403
+        47.2164, -0.442238 44.5873, -0.839067 42.0003, -0.222774 41.9453, -5.2071784451649910e-18
+        41.92298284757224, 0.384143 41.8845, 0.988472 41.8305, 1.60052 41.7676, 2.20446
+        41.7041, 2.81361 41.6239, 3.4146 41.5515, 4.01422 41.4801, 4.62263 41.3945,
+        5.2143 41.3128, 5.81705 41.2265, 6.40674 41.1421, 7.01097 41.0454, 7.59953
+        40.9511, 8.18499 40.8526, 8.7797 40.7475, 9.36233 40.6433, 9.94932 40.5413,
+        10.5401 40.4274, 11.1159 40.3129, 11.6943 40.2035, 12.2712 40.0816, 12.8513
+        39.9557, 13.4326 39.8364, 13.9924 39.7039, 14.5718 39.5774, 15.1381 39.4456,
+        15.7047 39.3089, 16.2594 39.1679, 16.4724 39.1148)))"},{"name":"uuid","content":"de039661-38f6-4f03-8480-79362dcdf619"}]}}}'
     headers:
       content-length:
       - '7362'

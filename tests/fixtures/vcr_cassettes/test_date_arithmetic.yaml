@@ -1,6 +1,6 @@
 interactions:
 - request:
-    body: q=beginPosition%3A%5B2016-12-01T00%3A00%3A00Z-1DAY+TO+2016-12-01T00%3A00%3A00Z%2B1DAY-1HOUR%5D+footprint%3A%22Intersects%28ENVELOPE%280%2C+1%2C+1%2C+0%29%29%22
+    body: q=beginPosition%3A%5B%222016-12-01T00%3A00%3A00Z-1DAY%22+TO+%222016-12-01T00%3A00%3A00Z%2B1DAY-1HOUR%22%5D+footprint%3A%22Intersects%28ENVELOPE%280%2C+1%2C+1%2C+0%29%29%22
     headers:
       Accept:
       - '*/*'
@@ -9,7 +9,7 @@ interactions:
       Connection:
       - keep-alive
       Content-Length:
-      - '159'
+      - '171'
       Content-Type:
       - application/x-www-form-urlencoded; charset=UTF-8
       User-Agent:
@@ -19,20 +19,20 @@ interactions:
   response:
     body:
       string: '{"feed":{"xmlns:opensearch":"http://a9.com/-/spec/opensearch/1.1/","xmlns":"http://www.w3.org/2005/Atom","title":"Sentinels
-        Scientific Data Hub search results for: beginPosition:[2016-12-01T00:00:00Z-1DAY
-        TO 2016-12-01T00:00:00Z+1DAY-1HOUR] footprint:\"Intersects(ENVELOPE(0, 1,
-        1, 0))\"","subtitle":"Displaying 6 results. Request done in 0.033 seconds.","updated":"2021-04-30T17:42:15.073Z","author":{"name":"Sentinels
-        Scientific Data Hub"},"id":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[2016-12-01T00:00:00Z-1DAY
-        TO 2016-12-01T00:00:00Z+1DAY-1HOUR] footprint:\"Intersects(ENVELOPE(0, 1,
-        1, 0))\"","opensearch:totalResults":"6","opensearch:startIndex":"0","opensearch:itemsPerPage":"100","opensearch:Query":{"role":"request","searchTerms":"beginPosition:[2016-12-01T00:00:00Z-1DAY
-        TO 2016-12-01T00:00:00Z+1DAY-1HOUR] footprint:\"Intersects(ENVELOPE(0, 1,
-        1, 0))\"","startPage":"1"},"link":[{"rel":"self","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[2016-12-01T00:00:00Z-1DAY
-        TO 2016-12-01T00:00:00Z+1DAY-1HOUR] footprint:\"Intersects(ENVELOPE(0, 1,
-        1, 0))\"&start=0&rows=100&format=json"},{"rel":"first","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[2016-12-01T00:00:00Z-1DAY
-        TO 2016-12-01T00:00:00Z+1DAY-1HOUR] footprint:\"Intersects(ENVELOPE(0, 1,
-        1, 0))\"&start=0&rows=100&format=json"},{"rel":"last","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[2016-12-01T00:00:00Z-1DAY
-        TO 2016-12-01T00:00:00Z+1DAY-1HOUR] footprint:\"Intersects(ENVELOPE(0, 1,
-        1, 0))\"&start=5&rows=100&format=json"},{"rel":"search","type":"application/opensearchdescription+xml","href":"opensearch_description.xml"}],"entry":[{"title":"S3A_SL_1_RBT____20161201T101338_20161201T101638_20181003T135527_0179_011_293______LR1_R_NT_003","link":[{"href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''7acd352f-91af-45cf-b86b-f359f002d19d'')/$value"},{"rel":"alternative","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''7acd352f-91af-45cf-b86b-f359f002d19d'')/"},{"rel":"icon","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''7acd352f-91af-45cf-b86b-f359f002d19d'')/Products(''Quicklook'')/$value"}],"id":"7acd352f-91af-45cf-b86b-f359f002d19d","summary":"Date:
+        Scientific Data Hub search results for: beginPosition:[\"2016-12-01T00:00:00Z-1DAY\"
+        TO \"2016-12-01T00:00:00Z+1DAY-1HOUR\"] footprint:\"Intersects(ENVELOPE(0,
+        1, 1, 0))\"","subtitle":"Displaying 6 results. Request done in 0.004 seconds.","updated":"2021-05-02T19:05:52.586Z","author":{"name":"Sentinels
+        Scientific Data Hub"},"id":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[\"2016-12-01T00:00:00Z-1DAY\"
+        TO \"2016-12-01T00:00:00Z+1DAY-1HOUR\"] footprint:\"Intersects(ENVELOPE(0,
+        1, 1, 0))\"","opensearch:totalResults":"6","opensearch:startIndex":"0","opensearch:itemsPerPage":"100","opensearch:Query":{"role":"request","searchTerms":"beginPosition:[\"2016-12-01T00:00:00Z-1DAY\"
+        TO \"2016-12-01T00:00:00Z+1DAY-1HOUR\"] footprint:\"Intersects(ENVELOPE(0,
+        1, 1, 0))\"","startPage":"1"},"link":[{"rel":"self","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[\"2016-12-01T00:00:00Z-1DAY\"
+        TO \"2016-12-01T00:00:00Z+1DAY-1HOUR\"] footprint:\"Intersects(ENVELOPE(0,
+        1, 1, 0))\"&start=0&rows=100&format=json"},{"rel":"first","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[\"2016-12-01T00:00:00Z-1DAY\"
+        TO \"2016-12-01T00:00:00Z+1DAY-1HOUR\"] footprint:\"Intersects(ENVELOPE(0,
+        1, 1, 0))\"&start=0&rows=100&format=json"},{"rel":"last","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[\"2016-12-01T00:00:00Z-1DAY\"
+        TO \"2016-12-01T00:00:00Z+1DAY-1HOUR\"] footprint:\"Intersects(ENVELOPE(0,
+        1, 1, 0))\"&start=5&rows=100&format=json"},{"rel":"search","type":"application/opensearchdescription+xml","href":"opensearch_description.xml"}],"entry":[{"title":"S3A_SL_1_RBT____20161201T101338_20161201T101638_20181003T135527_0179_011_293______LR1_R_NT_003","link":[{"href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''7acd352f-91af-45cf-b86b-f359f002d19d'')/$value"},{"rel":"alternative","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''7acd352f-91af-45cf-b86b-f359f002d19d'')/"},{"rel":"icon","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''7acd352f-91af-45cf-b86b-f359f002d19d'')/Products(''Quicklook'')/$value"}],"id":"7acd352f-91af-45cf-b86b-f359f002d19d","summary":"Date:
         2016-12-01T10:13:37.506Z, Instrument: SLSTR, Satellite: Sentinel-3, Size:
         527.85 MB","ondemand":"false","date":[{"name":"beginposition","content":"2016-12-01T10:13:37.506Z"},{"name":"endposition","content":"2016-12-01T10:16:37.506Z"},{"name":"creationdate","content":"2018-10-03T13:55:27Z"},{"name":"ingestiondate","content":"2019-01-31T20:45:07.556Z"}],"int":[{"name":"orbitnumber","content":"4116"},{"name":"relativeorbitnumber","content":"293"}],"str":[{"name":"ecmwf","content":"ANALYSIS"},{"name":"productlevel","content":"L1"},{"name":"gmlfootprint","content":"<gml:Polygon
         srsName=\"http://www.opengis.net/gml/srs/epsg.xml#4326\" xmlns:gml=\"http://www.opengis.net/gml\">\n   <gml:outerBoundaryIs>\n      <gml:LinearRing>\n         <gml:coordinates>-0.214059,-13.2624
@@ -587,7 +587,7 @@ interactions:
         MB"},{"name":"timeliness","content":"Non Time Critical"},{"name":"lastpassnumber","content":"8233"},{"name":"lastpassdirection","content":"ascending"},{"name":"lastrelpassnumber","content":"587"},{"name":"lastrelpassdirection","content":"ascending"},{"name":"uuid","content":"a1db4b9b-503b-48fd-897d-a2525fea8123"}]}]}}'
     headers:
       content-length:
-      - '60313'
+      - '60361'
       content-type:
       - application/json
       pragma:
