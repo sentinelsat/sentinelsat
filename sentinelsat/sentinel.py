@@ -253,6 +253,7 @@ class SentinelAPI:
                     sub_value = _format_query_value(attr, sub_value)
                     if sub_value is not None:
                         sub_parts.append(f"{attr}:{sub_value}")
+                sub_parts = sorted(sub_parts)
                 query_parts.append("({})".format(" OR ".join(sub_parts)))
             else:
                 value = _format_query_value(attr, value)
