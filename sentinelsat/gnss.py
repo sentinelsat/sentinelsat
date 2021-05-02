@@ -2,7 +2,7 @@
 
 import logging
 
-from .sentinel import SentinelAPI
+from .sentinel import SentinelAPI, _check_scihub_response
 
 
 class GnssAPI(SentinelAPI):
@@ -75,3 +75,10 @@ class GnssAPI(SentinelAPI):
             file_ext=file_ext,
             **kwargs
         )
+
+    def _get_filename(self, product_info):
+        # Default guess, mostly for archived products
+        filename = product_info["title"] + ".EOF"
+        if not product_info["Online"]:
+            return filename
+        return super()._get_filename(product_info)
