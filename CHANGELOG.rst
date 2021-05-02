@@ -5,7 +5,7 @@ All notable changes to ``sentinelsat`` will be listed here.
 
 [main] – YYYY-MM-DD
 ---------------------
-* Dropped support for Python 2.7. Now setuptools requires Python >= 3.5.
+* Dropped support for Python 2.7. Now setuptools requires Python >= 3.6.
 
 Added
 ~~~~~
