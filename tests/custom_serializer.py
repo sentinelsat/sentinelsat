@@ -16,6 +16,8 @@ class BinaryContentSerializer:
     def deserialize(self, cassette_string):
         cassette_dict = self.base_serializer.deserialize(cassette_string)
         for interaction in cassette_dict["interactions"]:
+            if interaction["request"]["method"] == "HEAD":
+                continue
             response = interaction["response"]
             headers = {k.lower(): v for k, v in response["headers"].items()}
             if "content-range" in headers and "content-disposition" in headers:
@@ -28,6 +30,8 @@ class BinaryContentSerializer:
 
     def serialize(self, cassette_dict):
         for interaction in cassette_dict["interactions"]:
+            if interaction["request"]["method"] == "HEAD":
+                continue
             response = interaction["response"]
             headers = {k.lower(): v for k, v in response["headers"].items()}
             if "content-range" in headers and "content-disposition" in headers:

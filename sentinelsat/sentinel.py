@@ -572,11 +572,11 @@ class SentinelAPI:
 
 
         .. versionchanged:: 0.15
-           Added ``**kwargs`` parameter to allow easier specialization of the :class:`SentinelAPI` cass.
+           Added ``**kwargs`` parameter to allow easier specialization of the :class:`SentinelAPI` class.
         """
         product_info = self.get_product_odata(id)
-        ext = kwargs.get("file_ext", ".zip")
-        path = join(directory_path, product_info["title"] + ext)
+        filename = self._get_filename(product_info)
+        path = join(directory_path, filename)
         product_info["path"] = path
         product_info["downloaded_bytes"] = 0
 
@@ -642,6 +642,20 @@ class SentinelAPI:
         # Download successful, rename the temporary file to its proper name
         shutil.move(temp_path, path)
         return product_info
+
+    def _get_filename(self, product_info):
+        # Default guess, mostly for archived products
+        filename = product_info["title"] + (
+            ".nc" if product_info["title"].startswith("S5P") else ".zip"
+        )
+        if not product_info["Online"]:
+            return filename
+        req = self.session.head(product_info["url"], auth=self.session.auth)
+        _check_scihub_response(req, test_json=False)
+        cd = req.headers.get("Content-Disposition")
+        if cd and "=" in cd:
+            filename = cd.split("=", 1)[1].strip('"')
+        return filename
 
     def _trigger_offline_retrieval(self, url):
         """Triggers retrieval of an offline product
@@ -731,11 +745,12 @@ class SentinelAPI:
             triggered for retrieval from the long term archive but not downloaded.
         dict[string, dict]
             A dictionary containing the product information of products where either
-            downloading or triggering failed
+            downloading or triggering failed. "exception" field with the exception info
+            is included to the product info dict.
 
 
         .. versionchanged:: 0.15
-           Added ``**kwargs`` parameter to allow easier specialization of the :class:`SentinelAPI` lcass.
+           Added ``**kwargs`` parameter to allow easier specialization of the :class:`SentinelAPI` class.
         """
 
         product_ids = list(products)
@@ -743,25 +758,34 @@ class SentinelAPI:
             "Will download %d products using %d workers", len(product_ids), n_concurrent_dl
         )
 
-        product_infos = {pid: self.get_product_odata(pid) for pid in product_ids}
-        online_prods = {pid: info for pid, info in product_infos.items() if info["Online"]}
-        offline_prods = {pid: info for pid, info in product_infos.items() if not info["Online"]}
+        product_infos = {}
+        online_prods = {}
+        offline_prods = {}
+        for pid in self._tqdm(
+            iterable=product_ids, desc="Fetching archival status", unit=" products"
+        ):
+            info = self.get_product_odata(pid)
+            product_infos[pid] = info
+            if info["Online"]:
+                online_prods[pid] = info
+            else:
+                offline_prods[pid] = info
 
         # Skip already downloaded files.
         # Although the download method also checks, we do not need to retrieve such
         # products from the LTA and use up our quota.
         downloaded_prods = {}
-        for product_info in offline_prods.values():
-            path = join(directory_path, product_info["title"] + ".zip")
+        for product_info in list(offline_prods.values()):
+            filename = self._get_filename(product_info)
+            path = join(directory_path, filename)
             if exists(path):
+                product_info["path"] = path
                 downloaded_prods[product_info["id"]] = product_info
+                del offline_prods[product_info["id"]]
             else:
                 self.logger.info("Product %s is in LTA.", product_info["id"])
-        offline_prods = {
-            pid: info for pid, info in offline_prods.items() if pid not in downloaded_prods.keys()
-        }
 
-        dl_tasks = []
+        dl_tasks = {}
         retrieval_scheduled = {}
 
         # Two separate threadpools for downloading and triggering retrieval.
@@ -770,15 +794,13 @@ class SentinelAPI:
             # First all online products are downloaded. Subsequently, offline products that might
             # have become available in the meantime are requested.
             for product_info in itertools.chain(online_prods.values(), offline_prods.values()):
-                dl_tasks.append(
-                    dl_exec.submit(
-                        self._download_online_retry,
-                        product_info,
-                        directory_path,
-                        checksum,
-                        max_attempts=max_attempts,
-                        **kwargs
-                    )
+                dl_tasks[product_info["id"]] = dl_exec.submit(
+                    self._download_online_retry,
+                    product_info,
+                    directory_path,
+                    checksum,
+                    max_attempts=max_attempts,
+                    **kwargs
                 )
 
             stop_event = threading.Event()
@@ -790,7 +812,7 @@ class SentinelAPI:
             # launch in separate thread so that the as_completed loop is entered
             trigger_thread.start()
 
-            for dl_task in concurrent.futures.as_completed(dl_tasks):
+            for dl_task in concurrent.futures.as_completed(dl_tasks.values()):
                 if not dl_task.exception() and dl_task.result():
                     product_info = dl_task.result()
                     downloaded_prods[product_info["id"]] = product_info
@@ -798,7 +820,7 @@ class SentinelAPI:
                 # the product was not online and _download_online_retry returned None
                 elif not dl_task.exception() and dl_task.result() is None:
                     stop_event.set()
-                    for task in dl_tasks:
+                    for task in dl_tasks.values():
                         task.cancel()
 
             # Wait for trigger_thread to finish. This could still place a product on the
@@ -811,15 +833,17 @@ class SentinelAPI:
             if pid not in downloaded_prods.keys()
         }
 
-        failed_prods = {
-            pid: info
-            for pid, info in product_infos.items()
-            if pid not in downloaded_prods
-            if pid not in retrieval_scheduled
-        }
+        failed_prods = {}
+        for pid, info in product_infos.items():
+            if pid not in downloaded_prods and pid not in retrieval_scheduled:
+                info["exception"] = dl_tasks[pid].exception()
+                failed_prods[pid] = info
 
-        if len(failed_prods) == len(product_ids):
-            raise next(iter(x.exception() for x in dl_tasks if x.exception()))
+        if len(failed_prods) == len(product_ids) and len(product_ids) > 0:
+            exception = list(failed_prods.values())[0]["exception"]
+            if exception is None:
+                raise SentinelAPIError("Downloading all products failed for unknown reason")
+            raise exception
 
         return downloaded_prods, retrieval_scheduled, failed_prods
 
@@ -892,33 +916,36 @@ class SentinelAPI:
             Either dictionary containing the product's info or if the product is not online just None
 
         """
+        if max_attempts <= 0:
+            return
 
+        id = product_info["id"]
+        title = product_info["title"]
+        is_online = product_info.get("Online")
+        if not is_online:
+            # Re-check if the product's online status has changed
+            is_online = self.is_online(id)
+        if not is_online:
+            self.logger.info("%s is not online.", id)
+            return
+
+        self.logger.info("%s is online. Starting download", id)
         last_exception = None
-
-        if self.is_online(product_info["id"]):
-            self.logger.info("%s is online. Starting download", product_info["id"])
-            for cnt in range(max_attempts):
-                try:
-                    ret_val = self.download(product_info["id"], directory_path, checksum, **kwargs)
-                    break
-                except InvalidChecksumError as e:
+        for cnt in range(max_attempts):
+            try:
+                return self.download(id, directory_path, checksum, **kwargs)
+            except Exception as e:
+                if isinstance(e, InvalidChecksumError):
                     self.logger.warning(
                         "Invalid checksum. The downloaded file for '%s' is corrupted.",
-                        product_info["id"],
+                        title,
                     )
-                    last_exception = e
-                except Exception as e:
-                    self.logger.exception("There was an error downloading %s", product_info["id"])
-                    self.logger.info("%d retries left", max_attempts - cnt - 1)
-                    last_exception = e
-            else:
-                self.logger.info("No retries left for %s. Terminating.", product_info["id"])
-                raise last_exception
-        else:
-            self.logger.info("%s is not online.", product_info["id"])
-            ret_val = None
-
-        return ret_val
+                else:
+                    self.logger.exception("There was an error downloading %s", title)
+                self.logger.info("%d retries left", max_attempts - cnt - 1)
+                last_exception = e
+        self.logger.info("No retries left for %s. Terminating.", title)
+        raise last_exception
 
     def download_all_quicklooks(self, products, directory_path=".", n_concurrent_dl=2):
         """Download quicklook for a list of products.
@@ -1441,7 +1468,6 @@ def _check_scihub_response(response, test_json=True, query_string=None):
             error = SentinelAPIError(msg, response)
 
         # Suppress "During handling of the above exception..." message
-        # 'raise error from None' with Python 2 compatibility
         raise error from None
 
 

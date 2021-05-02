@@ -90,16 +90,17 @@ def test_trigger_lta_failed(http_status_code):
 @pytest.mark.vcr
 @pytest.mark.scihub
 def test_download(api, tmpdir, smallest_online_products):
-    uuid = smallest_online_products[0]["id"]
-    filename = smallest_online_products[0]["title"]
-    expected_path = tmpdir.join(filename + ".zip")
-    tempfile_path = tmpdir.join(filename + ".zip.incomplete")
+    product = smallest_online_products[0]
+    uuid = product["id"]
+    title = product["title"]
+    expected_path = tmpdir.join(title + ".zip")
+    tempfile_path = tmpdir.join(title + ".zip.incomplete")
 
     # Download normally
     product_info = api.download(uuid, str(tmpdir), checksum=True)
     assert expected_path.samefile(product_info["path"])
     assert not tempfile_path.check(exists=1)
-    assert product_info["title"] == filename
+    assert product_info["title"] == title
     assert product_info["size"] == expected_path.size()
     assert product_info["downloaded_bytes"] == expected_path.size()
 
@@ -187,27 +188,28 @@ def test_download_all_one_fail(api, tmpdir, smallest_online_products):
         product_infos, triggered, failed_downloads = api.download_all(
             ids, str(tmpdir), max_attempts=1, checksum=True
         )
-        assert len(failed_downloads) == 1
-        assert len(triggered) == 0
-        assert len(product_infos) + len(failed_downloads) == len(ids)
+        exceptions = {k: v["exception"] for k, v in failed_downloads.items()}
+        assert sorted(failed_downloads) == [ids[0]], exceptions
+        assert type(list(exceptions.values())[0]) == InvalidChecksumError, exceptions
+        assert triggered == {}
+        assert sorted(list(product_infos) + list(failed_downloads)) == sorted(ids)
         assert id in failed_downloads
 
     tmpdir.remove()
 
 
+@pytest.mark.xfail(reason="The threading in this test seems to break VCR.py somehow")
 @pytest.mark.vcr
 @pytest.mark.scihub
-def test_download_all_lta(api, tmpdir):
-    # Corresponding IDs, same products as in test_download_all.
-    ids = [
-        "5618ce1b-923b-4df2-81d9-50b53e5aded9",  # offline
-        "f46cbca6-6e5e-45b0-80cd-382683a8aea5",  # online
-        "e00af686-2e20-43a6-8b8f-f9e411255cee",  # online
-    ]
+def test_download_all_lta(api, tmpdir, smallest_online_products, smallest_archived_products):
+    archived_ids = [x["id"] for x in smallest_archived_products]
+    online_ids = [x["id"] for x in smallest_online_products]
+    ids = archived_ids[:1] + online_ids[:2]
     product_infos, triggered, failed_downloads = api.download_all(
         ids, str(tmpdir), n_concurrent_dl=1
     )
-    assert len(failed_downloads) == 0
+    exceptions = {k: v["exception"] for k, v in failed_downloads.items()}
+    assert len(failed_downloads) == 0, exceptions
     assert len(triggered) == 1
     assert len(product_infos) == len(ids) - len(failed_downloads) - len(triggered)
     assert all(x["Online"] is False for x in triggered.values())
