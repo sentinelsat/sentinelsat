@@ -614,9 +614,7 @@ class SentinelAPI:
                 )
                 temp_path.unlink()
             elif size == product_info["size"]:
-                if verify_checksum is True and not self._md5_compare(
-                    temp_path, product_info["md5"]
-                ):
+                if verify_checksum and not self._md5_compare(temp_path, product_info["md5"]):
                     # Log a warning since this should never happen
                     self.logger.warning(
                         "Existing incomplete file %s appears to be fully downloaded but "
