@@ -1,9 +1,10 @@
+from fnmatch import fnmatch
 from pathlib import Path
 from xml.etree import ElementTree as etree
 
 import sentinelsat
-from sentinelsat.sentinel import _check_scihub_response
 from sentinelsat.exceptions import SentinelAPIError
+from sentinelsat.sentinel import _check_scihub_response
 
 
 class SentinelProductsAPI(sentinelsat.SentinelAPI):
@@ -242,11 +243,8 @@ def make_size_filter(max_size):
     .. versionadded:: 0.15
     """
 
-    def node_filter(node_info, size=max_size):
-        if node_info["size"] <= size:
-            return True
-        else:
-            return False
+    def node_filter(node_info):
+        return node_info["size"] <= max_size
 
     return node_filter
 
@@ -263,25 +261,10 @@ def make_path_filter(pattern, exclude=False):
 
     .. versionadded:: 0.15
     """
-    if exclude:
 
-        def node_filter(node_info, exclude_pattern=pattern):
-            import fnmatch
-
-            if not fnmatch.fnmatch(node_info["node_path"].lower(), exclude_pattern):
-                return True
-            else:
-                return False
-
-    else:
-
-        def node_filter(node_info, include_pattern=pattern):
-            import fnmatch
-
-            if fnmatch.fnmatch(node_info["node_path"].lower(), include_pattern):
-                return True
-            else:
-                return False
+    def node_filter(node_info):
+        match = fnmatch(node_info["node_path"].lower(), pattern)
+        return not match if exclude else match
 
     return node_filter
 
