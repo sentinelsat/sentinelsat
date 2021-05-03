@@ -1,5 +1,70 @@
 interactions:
 - request:
+    body: q=beginPosition%3A%5B%2A+TO+%22NOW%22%5D+%28uuid%3A%226b126ea4-fe27-440c-9a5c-686f386b7291%22%29
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '96'
+      Content-Type:
+      - application/x-www-form-urlencoded; charset=UTF-8
+      User-Agent:
+      - sentinelsat/0.14
+    method: POST
+    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=100&start=0
+  response:
+    body:
+      string: '{"feed":{"xmlns:opensearch":"http://a9.com/-/spec/opensearch/1.1/","xmlns":"http://www.w3.org/2005/Atom","title":"Sentinels
+        Scientific Data Hub search results for: beginPosition:[* TO \"NOW\"] (uuid:\"6b126ea4-fe27-440c-9a5c-686f386b7291\")","subtitle":"Displaying
+        1 results. Request done in 0.149 seconds.","updated":"2021-05-02T19:42:09.042Z","author":{"name":"Sentinels
+        Scientific Data Hub"},"id":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[*
+        TO \"NOW\"] (uuid:\"6b126ea4-fe27-440c-9a5c-686f386b7291\")","opensearch:totalResults":"1","opensearch:startIndex":"0","opensearch:itemsPerPage":"100","opensearch:Query":{"role":"request","searchTerms":"beginPosition:[*
+        TO \"NOW\"] (uuid:\"6b126ea4-fe27-440c-9a5c-686f386b7291\")","startPage":"1"},"link":[{"rel":"self","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[*
+        TO \"NOW\"] (uuid:\"6b126ea4-fe27-440c-9a5c-686f386b7291\")&start=0&rows=100&format=json"},{"rel":"first","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[*
+        TO \"NOW\"] (uuid:\"6b126ea4-fe27-440c-9a5c-686f386b7291\")&start=0&rows=100&format=json"},{"rel":"last","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[*
+        TO \"NOW\"] (uuid:\"6b126ea4-fe27-440c-9a5c-686f386b7291\")&start=0&rows=100&format=json"},{"rel":"search","type":"application/opensearchdescription+xml","href":"opensearch_description.xml"}],"entry":{"title":"S2A_MSIL2A_20201007T022601_N0214_R046_T49MFN_20201007T064142","link":[{"href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''6b126ea4-fe27-440c-9a5c-686f386b7291'')/$value"},{"rel":"alternative","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''6b126ea4-fe27-440c-9a5c-686f386b7291'')/"},{"rel":"icon","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''6b126ea4-fe27-440c-9a5c-686f386b7291'')/Products(''Quicklook'')/$value"}],"id":"6b126ea4-fe27-440c-9a5c-686f386b7291","summary":"Date:
+        2020-10-07T02:26:01.024Z, Instrument: MSI, Satellite: Sentinel-2, Size: 233.95
+        MB","ondemand":"false","date":[{"name":"beginposition","content":"2020-10-07T02:26:01.024Z"},{"name":"endposition","content":"2020-10-07T02:26:01.024Z"},{"name":"ingestiondate","content":"2020-10-07T11:00:50.621Z"}],"int":[{"name":"orbitnumber","content":"27642"},{"name":"relativeorbitnumber","content":"46"}],"double":[{"name":"vegetationpercentage","content":"7.745996"},{"name":"notvegetatedpercentage","content":"18.28576"},{"name":"waterpercentage","content":"57.170606"},{"name":"unclassifiedpercentage","content":"2.064458"},{"name":"mediumprobacloudspercentage","content":"2.159598"},{"name":"highprobacloudspercentage","content":"4.153551"},{"name":"snowicepercentage","content":"0.023668"},{"name":"cloudcoverpercentage","content":"14.46506"}],"str":[{"name":"level1cpdiidentifier","content":"S2A_OPER_MSI_L1C_TL_EPAE_20201007T053956_A027642_T49MFN_N02.09"},{"name":"gmlfootprint","content":"<gml:Polygon
+        srsName=\"http://www.opengis.net/gml/srs/epsg.xml#4326\" xmlns:gml=\"http://www.opengis.net/gml\">\n   <gml:outerBoundaryIs>\n      <gml:LinearRing>\n         <gml:coordinates>-7.32275426183943,112.57541610766778
+        -7.298810352513333,112.58082148161726 -7.150173116631731,112.61436374338572
+        -7.001539869718086,112.6478120878852 -6.853018511253051,112.68131051049592
+        -6.704537945172014,112.71475084061353 -6.556103608118941,112.748164180158
+        -6.407746788210133,112.78156620416468 -6.329298215745343,112.79922658547397
+        -6.329035710607434,112.89656386495577 -7.321740856621244,112.90047655938393
+        -7.32275426183943,112.57541610766778</gml:coordinates>\n      </gml:LinearRing>\n   </gml:outerBoundaryIs>\n</gml:Polygon>"},{"name":"footprint","content":"MULTIPOLYGON
+        (((112.57541610766778 -7.32275426183943, 112.90047655938393 -7.321740856621244,
+        112.89656386495577 -6.329035710607434, 112.79922658547397 -6.329298215745343,
+        112.78156620416468 -6.407746788210133, 112.748164180158 -6.556103608118941,
+        112.71475084061353 -6.704537945172014, 112.68131051049592 -6.853018511253051,
+        112.6478120878852 -7.001539869718086, 112.61436374338572 -7.150173116631731,
+        112.58082148161726 -7.298810352513333, 112.57541610766778 -7.32275426183943)))"},{"name":"format","content":"SAFE"},{"name":"processingbaseline","content":"02.14"},{"name":"platformname","content":"Sentinel-2"},{"name":"filename","content":"S2A_MSIL2A_20201007T022601_N0214_R046_T49MFN_20201007T064142.SAFE"},{"name":"instrumentname","content":"Multi-Spectral
+        Instrument"},{"name":"instrumentshortname","content":"MSI"},{"name":"size","content":"233.95
+        MB"},{"name":"s2datatakeid","content":"GS2A_20201007T022601_027642_N02.14"},{"name":"producttype","content":"S2MSI2A"},{"name":"platformidentifier","content":"2015-028A"},{"name":"orbitdirection","content":"DESCENDING"},{"name":"platformserialidentifier","content":"Sentinel-2A"},{"name":"processinglevel","content":"Level-2A"},{"name":"identifier","content":"S2A_MSIL2A_20201007T022601_N0214_R046_T49MFN_20201007T064142"},{"name":"uuid","content":"6b126ea4-fe27-440c-9a5c-686f386b7291"}]}}}'
+    headers:
+      content-length:
+      - '5096'
+      content-type:
+      - application/json
+      pragma:
+      - no-cache
+      server:
+      - Apache-Coyote/1.1
+      vary:
+      - Accept-Encoding
+      x-content-type-options:
+      - nosniff
+      x-frame-options:
+      - DENY
+      x-xss-protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+- request:
     body: null
     headers:
       Accept:
@@ -29,6 +94,116 @@ interactions:
       - application/json
       dataserviceversion:
       - '2.0'
+      pragma:
+      - no-cache
+      server:
+      - Apache-Coyote/1.1
+      vary:
+      - Accept-Encoding
+      x-content-type-options:
+      - nosniff
+      x-frame-options:
+      - DENY
+      x-xss-protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - sentinelsat/0.14
+    method: GET
+    uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('6b126ea4-fe27-440c-9a5c-686f386b7291')/Products('Quicklook')/$value
+  response:
+    body: {}
+    headers:
+      accept-ranges:
+      - bytes
+      content-disposition:
+      - inline;filename="S2A_MSIL2A_20201007T022601_N0214_R046_T49MFN_20201007T064142-ql.jpg"
+      content-length:
+      - '15006'
+      content-range:
+      - bytes 0-15005/15006
+      content-type:
+      - image/jpeg
+      dataserviceversion:
+      - '2.0'
+      etag:
+      - 521D457C02CEBD24DBE45A5AEC4BAB27
+      last-modified:
+      - Wed, 07 Oct 2020 11:01:31 UTC
+      pragma:
+      - no-cache
+      server:
+      - Apache-Coyote/1.1
+      x-content-type-options:
+      - nosniff
+      x-frame-options:
+      - DENY
+      x-xss-protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+- request:
+    body: q=beginPosition%3A%5B%2A+TO+%22NOW%22%5D+%28uuid%3A%226b126ea4-fe27-440c-9a5c-686f386b7291%22%29
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '96'
+      Content-Type:
+      - application/x-www-form-urlencoded; charset=UTF-8
+      User-Agent:
+      - sentinelsat/0.14
+    method: POST
+    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=100&start=0
+  response:
+    body:
+      string: '{"feed":{"xmlns:opensearch":"http://a9.com/-/spec/opensearch/1.1/","xmlns":"http://www.w3.org/2005/Atom","title":"Sentinels
+        Scientific Data Hub search results for: beginPosition:[* TO \"NOW\"] (uuid:\"6b126ea4-fe27-440c-9a5c-686f386b7291\")","subtitle":"Displaying
+        1 results. Request done in 0.208 seconds.","updated":"2021-05-02T19:42:10.239Z","author":{"name":"Sentinels
+        Scientific Data Hub"},"id":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[*
+        TO \"NOW\"] (uuid:\"6b126ea4-fe27-440c-9a5c-686f386b7291\")","opensearch:totalResults":"1","opensearch:startIndex":"0","opensearch:itemsPerPage":"100","opensearch:Query":{"role":"request","searchTerms":"beginPosition:[*
+        TO \"NOW\"] (uuid:\"6b126ea4-fe27-440c-9a5c-686f386b7291\")","startPage":"1"},"link":[{"rel":"self","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[*
+        TO \"NOW\"] (uuid:\"6b126ea4-fe27-440c-9a5c-686f386b7291\")&start=0&rows=100&format=json"},{"rel":"first","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[*
+        TO \"NOW\"] (uuid:\"6b126ea4-fe27-440c-9a5c-686f386b7291\")&start=0&rows=100&format=json"},{"rel":"last","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[*
+        TO \"NOW\"] (uuid:\"6b126ea4-fe27-440c-9a5c-686f386b7291\")&start=0&rows=100&format=json"},{"rel":"search","type":"application/opensearchdescription+xml","href":"opensearch_description.xml"}],"entry":{"title":"S2A_MSIL2A_20201007T022601_N0214_R046_T49MFN_20201007T064142","link":[{"href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''6b126ea4-fe27-440c-9a5c-686f386b7291'')/$value"},{"rel":"alternative","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''6b126ea4-fe27-440c-9a5c-686f386b7291'')/"},{"rel":"icon","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''6b126ea4-fe27-440c-9a5c-686f386b7291'')/Products(''Quicklook'')/$value"}],"id":"6b126ea4-fe27-440c-9a5c-686f386b7291","summary":"Date:
+        2020-10-07T02:26:01.024Z, Instrument: MSI, Satellite: Sentinel-2, Size: 233.95
+        MB","ondemand":"false","date":[{"name":"beginposition","content":"2020-10-07T02:26:01.024Z"},{"name":"endposition","content":"2020-10-07T02:26:01.024Z"},{"name":"ingestiondate","content":"2020-10-07T11:00:50.621Z"}],"int":[{"name":"orbitnumber","content":"27642"},{"name":"relativeorbitnumber","content":"46"}],"double":[{"name":"vegetationpercentage","content":"7.745996"},{"name":"notvegetatedpercentage","content":"18.28576"},{"name":"waterpercentage","content":"57.170606"},{"name":"unclassifiedpercentage","content":"2.064458"},{"name":"mediumprobacloudspercentage","content":"2.159598"},{"name":"highprobacloudspercentage","content":"4.153551"},{"name":"snowicepercentage","content":"0.023668"},{"name":"cloudcoverpercentage","content":"14.46506"}],"str":[{"name":"level1cpdiidentifier","content":"S2A_OPER_MSI_L1C_TL_EPAE_20201007T053956_A027642_T49MFN_N02.09"},{"name":"gmlfootprint","content":"<gml:Polygon
+        srsName=\"http://www.opengis.net/gml/srs/epsg.xml#4326\" xmlns:gml=\"http://www.opengis.net/gml\">\n   <gml:outerBoundaryIs>\n      <gml:LinearRing>\n         <gml:coordinates>-7.32275426183943,112.57541610766778
+        -7.298810352513333,112.58082148161726 -7.150173116631731,112.61436374338572
+        -7.001539869718086,112.6478120878852 -6.853018511253051,112.68131051049592
+        -6.704537945172014,112.71475084061353 -6.556103608118941,112.748164180158
+        -6.407746788210133,112.78156620416468 -6.329298215745343,112.79922658547397
+        -6.329035710607434,112.89656386495577 -7.321740856621244,112.90047655938393
+        -7.32275426183943,112.57541610766778</gml:coordinates>\n      </gml:LinearRing>\n   </gml:outerBoundaryIs>\n</gml:Polygon>"},{"name":"footprint","content":"MULTIPOLYGON
+        (((112.57541610766778 -7.32275426183943, 112.90047655938393 -7.321740856621244,
+        112.89656386495577 -6.329035710607434, 112.79922658547397 -6.329298215745343,
+        112.78156620416468 -6.407746788210133, 112.748164180158 -6.556103608118941,
+        112.71475084061353 -6.704537945172014, 112.68131051049592 -6.853018511253051,
+        112.6478120878852 -7.001539869718086, 112.61436374338572 -7.150173116631731,
+        112.58082148161726 -7.298810352513333, 112.57541610766778 -7.32275426183943)))"},{"name":"format","content":"SAFE"},{"name":"processingbaseline","content":"02.14"},{"name":"platformname","content":"Sentinel-2"},{"name":"filename","content":"S2A_MSIL2A_20201007T022601_N0214_R046_T49MFN_20201007T064142.SAFE"},{"name":"instrumentname","content":"Multi-Spectral
+        Instrument"},{"name":"instrumentshortname","content":"MSI"},{"name":"size","content":"233.95
+        MB"},{"name":"s2datatakeid","content":"GS2A_20201007T022601_027642_N02.14"},{"name":"producttype","content":"S2MSI2A"},{"name":"platformidentifier","content":"2015-028A"},{"name":"orbitdirection","content":"DESCENDING"},{"name":"platformserialidentifier","content":"Sentinel-2A"},{"name":"processinglevel","content":"Level-2A"},{"name":"identifier","content":"S2A_MSIL2A_20201007T022601_N0214_R046_T49MFN_20201007T064142"},{"name":"uuid","content":"6b126ea4-fe27-440c-9a5c-686f386b7291"}]}}}'
+    headers:
+      content-length:
+      - '5096'
+      content-type:
+      - application/json
       pragma:
       - no-cache
       server:
@@ -146,96 +321,6 @@ interactions:
       User-Agent:
       - sentinelsat/0.14
     method: GET
-    uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('6b126ea4-fe27-440c-9a5c-686f386b7291')?$format=json
-  response:
-    body:
-      string: '{"d":{"__metadata":{"id":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''6b126ea4-fe27-440c-9a5c-686f386b7291'')","uri":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''6b126ea4-fe27-440c-9a5c-686f386b7291'')","type":"DHuS.Product","content_type":"application/octet-stream","media_src":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''6b126ea4-fe27-440c-9a5c-686f386b7291'')/$value","edit_media":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''6b126ea4-fe27-440c-9a5c-686f386b7291'')/$value"},"Id":"6b126ea4-fe27-440c-9a5c-686f386b7291","Name":"S2A_MSIL2A_20201007T022601_N0214_R046_T49MFN_20201007T064142","ContentType":"application/octet-stream","ContentLength":"245367924","ChildrenNumber":"2","Value":null,"CreationDate":"\/Date(1602068491337)\/","IngestionDate":"\/Date(1602068450621)\/","ModificationDate":"\/Date(1602068491337)\/","EvictionDate":null,"Online":false,"OnDemand":false,"ContentDate":{"__metadata":{"type":"DHuS.TimeRange"},"Start":"\/Date(1602037561024)\/","End":"\/Date(1602037561024)\/"},"Checksum":{"__metadata":{"type":"DHuS.Checksum"},"Algorithm":"MD5","Value":"521D457C02CEBD24DBE45A5AEC4BAB27"},"ContentGeometry":"<gml:Polygon
-        srsName=\"http://www.opengis.net/gml/srs/epsg.xml#4326\" xmlns:gml=\"http://www.opengis.net/gml\">\n   <gml:outerBoundaryIs>\n      <gml:LinearRing>\n         <gml:coordinates>-7.32275426183943,112.57541610766778
-        -7.298810352513333,112.58082148161726 -7.150173116631731,112.61436374338572
-        -7.001539869718086,112.6478120878852 -6.853018511253051,112.68131051049592
-        -6.704537945172014,112.71475084061353 -6.556103608118941,112.748164180158
-        -6.407746788210133,112.78156620416468 -6.329298215745343,112.79922658547397
-        -6.329035710607434,112.89656386495577 -7.321740856621244,112.90047655938393
-        -7.32275426183943,112.57541610766778</gml:coordinates>\n      </gml:LinearRing>\n   </gml:outerBoundaryIs>\n</gml:Polygon>","Products":{"__deferred":{"uri":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''6b126ea4-fe27-440c-9a5c-686f386b7291'')/Products"}},"Nodes":{"__deferred":{"uri":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''6b126ea4-fe27-440c-9a5c-686f386b7291'')/Nodes"}},"Attributes":{"__deferred":{"uri":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''6b126ea4-fe27-440c-9a5c-686f386b7291'')/Attributes"}},"Class":{"__deferred":{"uri":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''6b126ea4-fe27-440c-9a5c-686f386b7291'')/Class"}}}}'
-    headers:
-      content-length:
-      - '2444'
-      content-type:
-      - application/json
-      dataserviceversion:
-      - '2.0'
-      pragma:
-      - no-cache
-      server:
-      - Apache-Coyote/1.1
-      vary:
-      - Accept-Encoding
-      x-content-type-options:
-      - nosniff
-      x-frame-options:
-      - DENY
-      x-xss-protection:
-      - 1; mode=block
-    status:
-      code: 200
-      message: OK
-- request:
-    body: null
-    headers:
-      Accept:
-      - '*/*'
-      Accept-Encoding:
-      - gzip, deflate
-      Connection:
-      - keep-alive
-      User-Agent:
-      - sentinelsat/0.14
-    method: GET
-    uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('6b126ea4-fe27-440c-9a5c-686f386b7291')?$format=json
-  response:
-    body:
-      string: '{"d":{"__metadata":{"id":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''6b126ea4-fe27-440c-9a5c-686f386b7291'')","uri":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''6b126ea4-fe27-440c-9a5c-686f386b7291'')","type":"DHuS.Product","content_type":"application/octet-stream","media_src":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''6b126ea4-fe27-440c-9a5c-686f386b7291'')/$value","edit_media":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''6b126ea4-fe27-440c-9a5c-686f386b7291'')/$value"},"Id":"6b126ea4-fe27-440c-9a5c-686f386b7291","Name":"S2A_MSIL2A_20201007T022601_N0214_R046_T49MFN_20201007T064142","ContentType":"application/octet-stream","ContentLength":"245367924","ChildrenNumber":"2","Value":null,"CreationDate":"\/Date(1602068491337)\/","IngestionDate":"\/Date(1602068450621)\/","ModificationDate":"\/Date(1602068491337)\/","EvictionDate":null,"Online":false,"OnDemand":false,"ContentDate":{"__metadata":{"type":"DHuS.TimeRange"},"Start":"\/Date(1602037561024)\/","End":"\/Date(1602037561024)\/"},"Checksum":{"__metadata":{"type":"DHuS.Checksum"},"Algorithm":"MD5","Value":"521D457C02CEBD24DBE45A5AEC4BAB27"},"ContentGeometry":"<gml:Polygon
-        srsName=\"http://www.opengis.net/gml/srs/epsg.xml#4326\" xmlns:gml=\"http://www.opengis.net/gml\">\n   <gml:outerBoundaryIs>\n      <gml:LinearRing>\n         <gml:coordinates>-7.32275426183943,112.57541610766778
-        -7.298810352513333,112.58082148161726 -7.150173116631731,112.61436374338572
-        -7.001539869718086,112.6478120878852 -6.853018511253051,112.68131051049592
-        -6.704537945172014,112.71475084061353 -6.556103608118941,112.748164180158
-        -6.407746788210133,112.78156620416468 -6.329298215745343,112.79922658547397
-        -6.329035710607434,112.89656386495577 -7.321740856621244,112.90047655938393
-        -7.32275426183943,112.57541610766778</gml:coordinates>\n      </gml:LinearRing>\n   </gml:outerBoundaryIs>\n</gml:Polygon>","Products":{"__deferred":{"uri":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''6b126ea4-fe27-440c-9a5c-686f386b7291'')/Products"}},"Nodes":{"__deferred":{"uri":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''6b126ea4-fe27-440c-9a5c-686f386b7291'')/Nodes"}},"Attributes":{"__deferred":{"uri":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''6b126ea4-fe27-440c-9a5c-686f386b7291'')/Attributes"}},"Class":{"__deferred":{"uri":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''6b126ea4-fe27-440c-9a5c-686f386b7291'')/Class"}}}}'
-    headers:
-      content-length:
-      - '2444'
-      content-type:
-      - application/json
-      dataserviceversion:
-      - '2.0'
-      pragma:
-      - no-cache
-      server:
-      - Apache-Coyote/1.1
-      vary:
-      - Accept-Encoding
-      x-content-type-options:
-      - nosniff
-      x-frame-options:
-      - DENY
-      x-xss-protection:
-      - 1; mode=block
-    status:
-      code: 200
-      message: OK
-- request:
-    body: null
-    headers:
-      Accept:
-      - '*/*'
-      Accept-Encoding:
-      - gzip, deflate
-      Connection:
-      - keep-alive
-      User-Agent:
-      - sentinelsat/0.14
-    method: GET
     uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('6b126ea4-fe27-440c-9a5c-686f386b7291')/Products('Quicklook')/$value
   response:
     body: {}
@@ -270,7 +355,7 @@ interactions:
       code: 200
       message: OK
 - request:
-    body: null
+    body: q=beginPosition%3A%5B%2A+TO+%22NOW%22%5D+%28uuid%3A%226b126ea4-fe27-440c-9a5c-686f386b7291%22%29
     headers:
       Accept:
       - '*/*'
@@ -278,72 +363,47 @@ interactions:
       - gzip, deflate
       Connection:
       - keep-alive
+      Content-Length:
+      - '96'
+      Content-Type:
+      - application/x-www-form-urlencoded; charset=UTF-8
       User-Agent:
       - sentinelsat/0.14
-    method: GET
-    uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('6b126ea4-fe27-440c-9a5c-686f386b7291')/Products('Quicklook')/$value
-  response:
-    body: {}
-    headers:
-      accept-ranges:
-      - bytes
-      content-disposition:
-      - inline;filename="S2A_MSIL2A_20201007T022601_N0214_R046_T49MFN_20201007T064142-ql.jpg"
-      content-length:
-      - '15006'
-      content-range:
-      - bytes 0-15005/15006
-      content-type:
-      - image/jpeg
-      dataserviceversion:
-      - '2.0'
-      etag:
-      - 521D457C02CEBD24DBE45A5AEC4BAB27
-      last-modified:
-      - Wed, 07 Oct 2020 11:01:31 UTC
-      pragma:
-      - no-cache
-      server:
-      - Apache-Coyote/1.1
-      x-content-type-options:
-      - nosniff
-      x-frame-options:
-      - DENY
-      x-xss-protection:
-      - 1; mode=block
-    status:
-      code: 200
-      message: OK
-- request:
-    body: null
-    headers:
-      Accept:
-      - '*/*'
-      Accept-Encoding:
-      - gzip, deflate
-      Connection:
-      - keep-alive
-      User-Agent:
-      - sentinelsat/0.14
-    method: GET
-    uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('6b126ea4-fe27-440c-9a5c-686f386b7291')?$format=json
+    method: POST
+    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=100&start=0
   response:
     body:
-      string: '{"d":{"__metadata":{"id":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''6b126ea4-fe27-440c-9a5c-686f386b7291'')","uri":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''6b126ea4-fe27-440c-9a5c-686f386b7291'')","type":"DHuS.Product","content_type":"application/octet-stream","media_src":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''6b126ea4-fe27-440c-9a5c-686f386b7291'')/$value","edit_media":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''6b126ea4-fe27-440c-9a5c-686f386b7291'')/$value"},"Id":"6b126ea4-fe27-440c-9a5c-686f386b7291","Name":"S2A_MSIL2A_20201007T022601_N0214_R046_T49MFN_20201007T064142","ContentType":"application/octet-stream","ContentLength":"245367924","ChildrenNumber":"2","Value":null,"CreationDate":"\/Date(1602068491337)\/","IngestionDate":"\/Date(1602068450621)\/","ModificationDate":"\/Date(1602068491337)\/","EvictionDate":null,"Online":false,"OnDemand":false,"ContentDate":{"__metadata":{"type":"DHuS.TimeRange"},"Start":"\/Date(1602037561024)\/","End":"\/Date(1602037561024)\/"},"Checksum":{"__metadata":{"type":"DHuS.Checksum"},"Algorithm":"MD5","Value":"521D457C02CEBD24DBE45A5AEC4BAB27"},"ContentGeometry":"<gml:Polygon
+      string: '{"feed":{"xmlns:opensearch":"http://a9.com/-/spec/opensearch/1.1/","xmlns":"http://www.w3.org/2005/Atom","title":"Sentinels
+        Scientific Data Hub search results for: beginPosition:[* TO \"NOW\"] (uuid:\"6b126ea4-fe27-440c-9a5c-686f386b7291\")","subtitle":"Displaying
+        1 results. Request done in 0.157 seconds.","updated":"2021-05-02T19:42:12.878Z","author":{"name":"Sentinels
+        Scientific Data Hub"},"id":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[*
+        TO \"NOW\"] (uuid:\"6b126ea4-fe27-440c-9a5c-686f386b7291\")","opensearch:totalResults":"1","opensearch:startIndex":"0","opensearch:itemsPerPage":"100","opensearch:Query":{"role":"request","searchTerms":"beginPosition:[*
+        TO \"NOW\"] (uuid:\"6b126ea4-fe27-440c-9a5c-686f386b7291\")","startPage":"1"},"link":[{"rel":"self","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[*
+        TO \"NOW\"] (uuid:\"6b126ea4-fe27-440c-9a5c-686f386b7291\")&start=0&rows=100&format=json"},{"rel":"first","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[*
+        TO \"NOW\"] (uuid:\"6b126ea4-fe27-440c-9a5c-686f386b7291\")&start=0&rows=100&format=json"},{"rel":"last","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[*
+        TO \"NOW\"] (uuid:\"6b126ea4-fe27-440c-9a5c-686f386b7291\")&start=0&rows=100&format=json"},{"rel":"search","type":"application/opensearchdescription+xml","href":"opensearch_description.xml"}],"entry":{"title":"S2A_MSIL2A_20201007T022601_N0214_R046_T49MFN_20201007T064142","link":[{"href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''6b126ea4-fe27-440c-9a5c-686f386b7291'')/$value"},{"rel":"alternative","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''6b126ea4-fe27-440c-9a5c-686f386b7291'')/"},{"rel":"icon","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''6b126ea4-fe27-440c-9a5c-686f386b7291'')/Products(''Quicklook'')/$value"}],"id":"6b126ea4-fe27-440c-9a5c-686f386b7291","summary":"Date:
+        2020-10-07T02:26:01.024Z, Instrument: MSI, Satellite: Sentinel-2, Size: 233.95
+        MB","ondemand":"false","date":[{"name":"beginposition","content":"2020-10-07T02:26:01.024Z"},{"name":"endposition","content":"2020-10-07T02:26:01.024Z"},{"name":"ingestiondate","content":"2020-10-07T11:00:50.621Z"}],"int":[{"name":"orbitnumber","content":"27642"},{"name":"relativeorbitnumber","content":"46"}],"double":[{"name":"vegetationpercentage","content":"7.745996"},{"name":"notvegetatedpercentage","content":"18.28576"},{"name":"waterpercentage","content":"57.170606"},{"name":"unclassifiedpercentage","content":"2.064458"},{"name":"mediumprobacloudspercentage","content":"2.159598"},{"name":"highprobacloudspercentage","content":"4.153551"},{"name":"snowicepercentage","content":"0.023668"},{"name":"cloudcoverpercentage","content":"14.46506"}],"str":[{"name":"level1cpdiidentifier","content":"S2A_OPER_MSI_L1C_TL_EPAE_20201007T053956_A027642_T49MFN_N02.09"},{"name":"gmlfootprint","content":"<gml:Polygon
         srsName=\"http://www.opengis.net/gml/srs/epsg.xml#4326\" xmlns:gml=\"http://www.opengis.net/gml\">\n   <gml:outerBoundaryIs>\n      <gml:LinearRing>\n         <gml:coordinates>-7.32275426183943,112.57541610766778
         -7.298810352513333,112.58082148161726 -7.150173116631731,112.61436374338572
         -7.001539869718086,112.6478120878852 -6.853018511253051,112.68131051049592
         -6.704537945172014,112.71475084061353 -6.556103608118941,112.748164180158
         -6.407746788210133,112.78156620416468 -6.329298215745343,112.79922658547397
         -6.329035710607434,112.89656386495577 -7.321740856621244,112.90047655938393
-        -7.32275426183943,112.57541610766778</gml:coordinates>\n      </gml:LinearRing>\n   </gml:outerBoundaryIs>\n</gml:Polygon>","Products":{"__deferred":{"uri":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''6b126ea4-fe27-440c-9a5c-686f386b7291'')/Products"}},"Nodes":{"__deferred":{"uri":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''6b126ea4-fe27-440c-9a5c-686f386b7291'')/Nodes"}},"Attributes":{"__deferred":{"uri":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''6b126ea4-fe27-440c-9a5c-686f386b7291'')/Attributes"}},"Class":{"__deferred":{"uri":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''6b126ea4-fe27-440c-9a5c-686f386b7291'')/Class"}}}}'
+        -7.32275426183943,112.57541610766778</gml:coordinates>\n      </gml:LinearRing>\n   </gml:outerBoundaryIs>\n</gml:Polygon>"},{"name":"footprint","content":"MULTIPOLYGON
+        (((112.57541610766778 -7.32275426183943, 112.90047655938393 -7.321740856621244,
+        112.89656386495577 -6.329035710607434, 112.79922658547397 -6.329298215745343,
+        112.78156620416468 -6.407746788210133, 112.748164180158 -6.556103608118941,
+        112.71475084061353 -6.704537945172014, 112.68131051049592 -6.853018511253051,
+        112.6478120878852 -7.001539869718086, 112.61436374338572 -7.150173116631731,
+        112.58082148161726 -7.298810352513333, 112.57541610766778 -7.32275426183943)))"},{"name":"format","content":"SAFE"},{"name":"processingbaseline","content":"02.14"},{"name":"platformname","content":"Sentinel-2"},{"name":"filename","content":"S2A_MSIL2A_20201007T022601_N0214_R046_T49MFN_20201007T064142.SAFE"},{"name":"instrumentname","content":"Multi-Spectral
+        Instrument"},{"name":"instrumentshortname","content":"MSI"},{"name":"size","content":"233.95
+        MB"},{"name":"s2datatakeid","content":"GS2A_20201007T022601_027642_N02.14"},{"name":"producttype","content":"S2MSI2A"},{"name":"platformidentifier","content":"2015-028A"},{"name":"orbitdirection","content":"DESCENDING"},{"name":"platformserialidentifier","content":"Sentinel-2A"},{"name":"processinglevel","content":"Level-2A"},{"name":"identifier","content":"S2A_MSIL2A_20201007T022601_N0214_R046_T49MFN_20201007T064142"},{"name":"uuid","content":"6b126ea4-fe27-440c-9a5c-686f386b7291"}]}}}'
     headers:
       content-length:
-      - '2444'
+      - '5096'
       content-type:
       - application/json
-      dataserviceversion:
-      - '2.0'
       pragma:
       - no-cache
       server:

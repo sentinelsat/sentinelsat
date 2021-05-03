@@ -1,6 +1,6 @@
 interactions:
 - request:
-    body: q=beginPosition%3A%5B2016-12-01T00%3A00%3A00Z+TO+2016-12-02T00%3A00%3A00Z%5D+producttype%3ASLC+footprint%3A%22Intersects%28POLYGON%28%28-66.2695+-8.0592%2C-66.2695+0.7031%2C-57.3047+0.7031%2C-57.3047+-8.0592%2C-66.2695+-8.0592%29%29%29%22
+    body: q=beginPosition%3A%5B%222016-12-01T00%3A00%3A00Z%22+TO+%222016-12-02T00%3A00%3A00Z%22%5D+producttype%3A%22SLC%22+footprint%3A%22Intersects%28POLYGON%28%28-66.2695+-8.0592%2C-66.2695+0.7031%2C-57.3047+0.7031%2C-57.3047+-8.0592%2C-66.2695+-8.0592%29%29%29%22
     headers:
       Accept:
       - '*/*'
@@ -9,7 +9,7 @@ interactions:
       Connection:
       - keep-alive
       Content-Length:
-      - '238'
+      - '256'
       Content-Type:
       - application/x-www-form-urlencoded; charset=UTF-8
       User-Agent:
@@ -19,20 +19,20 @@ interactions:
   response:
     body:
       string: '{"feed":{"xmlns:opensearch":"http://a9.com/-/spec/opensearch/1.1/","xmlns":"http://www.w3.org/2005/Atom","title":"Sentinels
-        Scientific Data Hub search results for: beginPosition:[2016-12-01T00:00:00Z
-        TO 2016-12-02T00:00:00Z] producttype:SLC footprint:\"Intersects(POLYGON((-66.2695
+        Scientific Data Hub search results for: beginPosition:[\"2016-12-01T00:00:00Z\"
+        TO \"2016-12-02T00:00:00Z\"] producttype:\"SLC\" footprint:\"Intersects(POLYGON((-66.2695
         -8.0592,-66.2695 0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\"","subtitle":"Displaying
-        6 results. Request done in 0.059 seconds.","updated":"2021-04-30T17:40:26.679Z","author":{"name":"Sentinels
-        Scientific Data Hub"},"id":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[2016-12-01T00:00:00Z
-        TO 2016-12-02T00:00:00Z] producttype:SLC footprint:\"Intersects(POLYGON((-66.2695
-        -8.0592,-66.2695 0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\"","opensearch:totalResults":"6","opensearch:startIndex":"0","opensearch:itemsPerPage":"100","opensearch:Query":{"role":"request","searchTerms":"beginPosition:[2016-12-01T00:00:00Z
-        TO 2016-12-02T00:00:00Z] producttype:SLC footprint:\"Intersects(POLYGON((-66.2695
-        -8.0592,-66.2695 0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\"","startPage":"1"},"link":[{"rel":"self","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[2016-12-01T00:00:00Z
-        TO 2016-12-02T00:00:00Z] producttype:SLC footprint:\"Intersects(POLYGON((-66.2695
-        -8.0592,-66.2695 0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\"&start=0&rows=100&format=json"},{"rel":"first","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[2016-12-01T00:00:00Z
-        TO 2016-12-02T00:00:00Z] producttype:SLC footprint:\"Intersects(POLYGON((-66.2695
-        -8.0592,-66.2695 0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\"&start=0&rows=100&format=json"},{"rel":"last","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[2016-12-01T00:00:00Z
-        TO 2016-12-02T00:00:00Z] producttype:SLC footprint:\"Intersects(POLYGON((-66.2695
+        6 results. Request done in 1.85 seconds.","updated":"2021-05-02T18:51:18.197Z","author":{"name":"Sentinels
+        Scientific Data Hub"},"id":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[\"2016-12-01T00:00:00Z\"
+        TO \"2016-12-02T00:00:00Z\"] producttype:\"SLC\" footprint:\"Intersects(POLYGON((-66.2695
+        -8.0592,-66.2695 0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\"","opensearch:totalResults":"6","opensearch:startIndex":"0","opensearch:itemsPerPage":"100","opensearch:Query":{"role":"request","searchTerms":"beginPosition:[\"2016-12-01T00:00:00Z\"
+        TO \"2016-12-02T00:00:00Z\"] producttype:\"SLC\" footprint:\"Intersects(POLYGON((-66.2695
+        -8.0592,-66.2695 0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\"","startPage":"1"},"link":[{"rel":"self","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[\"2016-12-01T00:00:00Z\"
+        TO \"2016-12-02T00:00:00Z\"] producttype:\"SLC\" footprint:\"Intersects(POLYGON((-66.2695
+        -8.0592,-66.2695 0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\"&start=0&rows=100&format=json"},{"rel":"first","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[\"2016-12-01T00:00:00Z\"
+        TO \"2016-12-02T00:00:00Z\"] producttype:\"SLC\" footprint:\"Intersects(POLYGON((-66.2695
+        -8.0592,-66.2695 0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\"&start=0&rows=100&format=json"},{"rel":"last","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[\"2016-12-01T00:00:00Z\"
+        TO \"2016-12-02T00:00:00Z\"] producttype:\"SLC\" footprint:\"Intersects(POLYGON((-66.2695
         -8.0592,-66.2695 0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\"&start=5&rows=100&format=json"},{"rel":"search","type":"application/opensearchdescription+xml","href":"opensearch_description.xml"}],"entry":[{"title":"S1A_IW_SLC__1SDV_20161201T093229_20161201T093256_014184_016EA7_E6EF","link":[{"href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''0ad39c8c-0e53-4c67-896e-33cf7a929623'')/$value"},{"rel":"alternative","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''0ad39c8c-0e53-4c67-896e-33cf7a929623'')/"},{"rel":"icon","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''0ad39c8c-0e53-4c67-896e-33cf7a929623'')/Products(''Quicklook'')/$value"}],"id":"0ad39c8c-0e53-4c67-896e-33cf7a929623","summary":"Date:
         2016-12-01T09:32:29.967Z, Instrument: SAR-C SAR, Mode: VV VH, Satellite: Sentinel-1,
         Size: 7.18 GB","ondemand":"false","date":[{"name":"ingestiondate","content":"2016-12-01T14:05:00.646Z"},{"name":"beginposition","content":"2016-12-01T09:32:29.967Z"},{"name":"endposition","content":"2016-12-01T09:32:56.912Z"}],"int":[{"name":"missiondatatakeid","content":"93863"},{"name":"orbitnumber","content":"14184"},{"name":"lastorbitnumber","content":"14184"},{"name":"relativeorbitnumber","content":"112"},{"name":"lastrelativeorbitnumber","content":"112"},{"name":"slicenumber","content":"6"}],"str":[{"name":"uuid","content":"0ad39c8c-0e53-4c67-896e-33cf7a929623"},{"name":"acquisitiontype","content":"NOMINAL"},{"name":"filename","content":"S1A_IW_SLC__1SDV_20161201T093229_20161201T093256_014184_016EA7_E6EF.SAFE"},{"name":"gmlfootprint","content":"<gml:Polygon
@@ -96,7 +96,7 @@ interactions:
         GB"},{"name":"status","content":"ARCHIVED"},{"name":"processed","content":"F"}]}]}}'
     headers:
       content-length:
-      - '18143'
+      - '18214'
       content-type:
       - application/json
       pragma:

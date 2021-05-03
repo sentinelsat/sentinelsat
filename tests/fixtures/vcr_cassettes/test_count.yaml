@@ -1,6 +1,6 @@
 interactions:
 - request:
-    body: q=beginPosition%3A%5B2015-01-01T00%3A00%3A00Z+TO+2015-12-31T00%3A00%3A00Z%5D
+    body: q=beginPosition%3A%5B%222015-01-01T00%3A00%3A00Z%22+TO+%222015-12-31T00%3A00%3A00Z%22%5D
     headers:
       Accept:
       - '*/*'
@@ -9,7 +9,7 @@ interactions:
       Connection:
       - keep-alive
       Content-Length:
-      - '76'
+      - '88'
       Content-Type:
       - application/x-www-form-urlencoded; charset=UTF-8
       User-Agent:
@@ -19,19 +19,19 @@ interactions:
   response:
     body:
       string: '{"feed":{"xmlns:opensearch":"http://a9.com/-/spec/opensearch/1.1/","xmlns":"http://www.w3.org/2005/Atom","title":"Sentinels
-        Scientific Data Hub search results for: beginPosition:[2015-01-01T00:00:00Z
-        TO 2015-12-31T00:00:00Z]","subtitle":"Displaying 0 to -1 of 516852 total results.
-        Request done in 0.012 seconds.","updated":"2021-04-30T17:42:14.385Z","author":{"name":"Sentinels
-        Scientific Data Hub"},"id":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[2015-01-01T00:00:00Z
-        TO 2015-12-31T00:00:00Z]","opensearch:totalResults":"516852","opensearch:startIndex":"0","opensearch:itemsPerPage":"0","opensearch:Query":{"role":"request","searchTerms":"beginPosition:[2015-01-01T00:00:00Z
-        TO 2015-12-31T00:00:00Z]","startPage":"1"},"link":[{"rel":"self","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[2015-01-01T00:00:00Z
-        TO 2015-12-31T00:00:00Z]&start=0&rows=0&format=json"},{"rel":"first","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[2015-01-01T00:00:00Z
-        TO 2015-12-31T00:00:00Z]&start=0&rows=0&format=json"},{"rel":"next","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[2015-01-01T00:00:00Z
-        TO 2015-12-31T00:00:00Z]&start=NaN&rows=0&format=json"},{"rel":"last","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[2015-01-01T00:00:00Z
-        TO 2015-12-31T00:00:00Z]&start=516851&rows=0&format=json"},{"rel":"search","type":"application/opensearchdescription+xml","href":"opensearch_description.xml"}]}}'
+        Scientific Data Hub search results for: beginPosition:[\"2015-01-01T00:00:00Z\"
+        TO \"2015-12-31T00:00:00Z\"]","subtitle":"Displaying 0 to -1 of 516852 total
+        results. Request done in 0.012 seconds.","updated":"2021-05-02T19:05:51.930Z","author":{"name":"Sentinels
+        Scientific Data Hub"},"id":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[\"2015-01-01T00:00:00Z\"
+        TO \"2015-12-31T00:00:00Z\"]","opensearch:totalResults":"516852","opensearch:startIndex":"0","opensearch:itemsPerPage":"0","opensearch:Query":{"role":"request","searchTerms":"beginPosition:[\"2015-01-01T00:00:00Z\"
+        TO \"2015-12-31T00:00:00Z\"]","startPage":"1"},"link":[{"rel":"self","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[\"2015-01-01T00:00:00Z\"
+        TO \"2015-12-31T00:00:00Z\"]&start=0&rows=0&format=json"},{"rel":"first","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[\"2015-01-01T00:00:00Z\"
+        TO \"2015-12-31T00:00:00Z\"]&start=0&rows=0&format=json"},{"rel":"next","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[\"2015-01-01T00:00:00Z\"
+        TO \"2015-12-31T00:00:00Z\"]&start=NaN&rows=0&format=json"},{"rel":"last","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[\"2015-01-01T00:00:00Z\"
+        TO \"2015-12-31T00:00:00Z\"]&start=516851&rows=0&format=json"},{"rel":"search","type":"application/opensearchdescription+xml","href":"opensearch_description.xml"}]}}'
     headers:
       content-length:
-      - '1588'
+      - '1644'
       content-type:
       - application/json
       pragma:
