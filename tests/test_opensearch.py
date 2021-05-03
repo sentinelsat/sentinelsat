@@ -86,7 +86,7 @@ def test_SentinelAPI_wrong_credentials(small_query):
         with pytest.raises(UnauthorizedError) as excinfo:
             yield
         assert excinfo.value.response.status_code == 401
-        assert "Invalid user name or password" in excinfo.value.msg
+        assert str(excinfo.value).startswith("Invalid user name or password")
 
     with assert_exception():
         api.query(**small_query)
@@ -407,7 +407,7 @@ def test_too_long_query(api):
     assert 0.999 <= SentinelAPI.check_query_length(q) < 1.01
     with pytest.raises(QueryLengthError) as excinfo:
         api.count(raw=q)
-    assert "x times the maximum allowed" in excinfo.value.msg
+    assert "x times the maximum allowed" in str(excinfo.value)
 
 
 @pytest.mark.vcr

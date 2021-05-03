@@ -15,7 +15,11 @@ import pytest
 import requests_mock
 
 from sentinelsat import SentinelAPI, make_path_filter
-from sentinelsat.exceptions import SentinelAPIError, SentinelAPILTAError, InvalidChecksumError
+from sentinelsat.exceptions import (
+    InvalidKeyError,
+    SentinelAPILTAError,
+    InvalidChecksumError,
+)
 
 
 @pytest.mark.fast
@@ -228,9 +232,9 @@ def test_download_all_lta(api, tmpdir, smallest_online_products, smallest_archiv
 @pytest.mark.scihub
 def test_download_invalid_id(api):
     uuid = "1f62a176-c980-41dc-xxxx-c735d660c910"
-    with pytest.raises(SentinelAPIError) as excinfo:
+    with pytest.raises(InvalidKeyError) as excinfo:
         api.download(uuid)
-    assert "Invalid key" in excinfo.value.msg
+    assert "Invalid key" in str(excinfo.value)
 
 
 @pytest.mark.vcr
@@ -308,9 +312,9 @@ def test_download_all_quicklooks_one_fail(api, tmpdir, quicklook_products):
 @pytest.mark.scihub
 def test_download_quicklook_invalid_id(api):
     uuid = "1f62a176-c980-41dc-xxxx-c735d660c910"
-    with pytest.raises(SentinelAPIError) as excinfo:
+    with pytest.raises(InvalidKeyError) as excinfo:
         api.download_quicklook(uuid)
-    assert "Invalid key" in excinfo.value.msg
+    assert "Invalid key" in str(excinfo.value)
 
 
 @pytest.mark.vcr

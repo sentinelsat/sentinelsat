@@ -1428,18 +1428,18 @@ def _check_scihub_response(response, test_json=True, query_string=None):
     except (requests.HTTPError, ValueError):
         msg = None
         try:
-            msg = response.headers["cause-message"]
-        except Exception:
+            msg = response.json()["error"]["message"]["value"]
+        except:
             try:
-                msg = response.json()["error"]["message"]["value"]
-            except Exception:
-                if not response.text.strip().startswith("{"):
+                msg = response.headers["cause-message"]
+            except:
+                if not response.text.lstrip().startswith("{"):
                     try:
                         h = html2text.HTML2Text()
                         h.ignore_images = True
                         h.ignore_anchors = True
                         msg = h.handle(response.text).strip()
-                    except Exception:
+                    except:
                         pass
 
         if msg is None:
@@ -1463,7 +1463,7 @@ def _check_scihub_response(response, test_json=True, query_string=None):
                     "client-side validation of the query string length.".format(length)
                 )
             error = QueryLengthError(msg, response)
-        elif "InvalidKeyException" in msg:
+        elif "Invalid key" in msg:
             msg = msg.split(" : ", 1)[-1]
             error = InvalidKeyError(msg, response)
         elif 500 <= response.status_code < 600 or msg:

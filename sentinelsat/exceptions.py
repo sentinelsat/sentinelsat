@@ -9,14 +9,18 @@ class SentinelAPIError(Exception):
         The response from the server as a `requests.Response` object.
     """
 
-    def __init__(self, msg=None, response=None):
+    def __init__(self, msg="", response=None):
         self.msg = msg
         self.response = response
 
     def __str__(self):
-        return "HTTP status {} {}: {}".format(
+        if self.response.reason:
+            reason = " " + self.response.reason
+        else:
+            reason = ""
+        return "HTTP status {}{}: {}".format(
             self.response.status_code,
-            self.response.reason,
+            reason,
             ("\n" if "\n" in self.msg else "") + self.msg,
         )
 

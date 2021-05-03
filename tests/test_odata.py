@@ -82,7 +82,7 @@ def test_get_product_odata_full(api, smallest_online_products, read_yaml):
 def test_get_product_info_bad_key(api):
     with pytest.raises(InvalidKeyError) as excinfo:
         api.get_product_odata("invalid-xyz")
-    assert excinfo.value.msg == "Invalid key (invalid-xyz) to access Products"
+    assert str(excinfo.value) == "Invalid key (invalid-xyz) to access Products"
 
 
 @pytest.mark.mock_api
@@ -95,7 +95,7 @@ def test_get_product_odata_scihub_down(read_fixture_file):
         rqst.get(request_url, text="Mock SciHub is Down", status_code=503)
         with pytest.raises(ServerError) as excinfo:
             api.get_product_odata("8df46c9e-a20c-43db-a19a-4240c2ed3b8b")
-        assert excinfo.value.msg == "Mock SciHub is Down"
+        assert str(excinfo.value) == "HTTP status 503: Mock SciHub is Down"
 
         rqst.get(
             request_url,
@@ -106,14 +106,14 @@ def test_get_product_odata_scihub_down(read_fixture_file):
         with pytest.raises(ServerError) as excinfo:
             api.get_product_odata("8df46c9e-a20c-43db-a19a-4240c2ed3b8b")
         assert (
-            excinfo.value.msg
-            == "No Products found with key '8df46c9e-a20c-43db-a19a-4240c2ed3b8b' "
+            str(excinfo.value)
+            == "HTTP status 500: No Products found with key '8df46c9e-a20c-43db-a19a-4240c2ed3b8b' "
         )
 
         rqst.get(request_url, text="Mock SciHub is Down", status_code=200)
         with pytest.raises(ServerError) as excinfo:
             api.get_product_odata("8df46c9e-a20c-43db-a19a-4240c2ed3b8b")
-        assert excinfo.value.msg == "Mock SciHub is Down"
+        assert str(excinfo.value) == "HTTP status 200: Mock SciHub is Down"
 
         # Test with a real "server under maintenance" response
         rqst.get(request_url, text=read_fixture_file("server_maintenance.html"), status_code=502)
