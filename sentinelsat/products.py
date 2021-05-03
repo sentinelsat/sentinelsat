@@ -1,4 +1,4 @@
-from fnmatch import fnmatch
+import fnmatch
 from pathlib import Path
 from xml.etree import ElementTree as etree
 
@@ -263,7 +263,7 @@ def make_path_filter(pattern, exclude=False):
     """
 
     def node_filter(node_info):
-        match = fnmatch(node_info["node_path"].lower(), pattern)
+        match = fnmatch.fnmatch(node_info["node_path"].lower(), pattern)
         return not match if exclude else match
 
     return node_filter
