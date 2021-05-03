@@ -1,4 +1,6 @@
+import re
 from datetime import datetime
+from functools import reduce
 from os import environ
 from os.path import join, isfile, dirname, abspath, exists
 
@@ -27,32 +29,62 @@ def pytest_runtest_setup(item):
         pytest.fail("The test is missing a 'scihub', 'fast' or 'mock_api' marker")
 
 
+def scrub_request(request):
+    for header in ("Authorization", "Set-Cookie", "Cookie"):
+        if header in request.headers:
+            del request.headers[header]
+    return request
+
+
+def scrub_response(response):
+    ignore = {
+        x.lower()
+        for x in [
+            "Authorization",
+            "Set-Cookie",
+            "Cookie",
+            "Date",
+            "Expires",
+            "Transfer-Encoding",
+            "last-modified",
+        ]
+    }
+    for header in list(response["headers"]):
+        if (
+            header.lower() in ignore
+            or header.lower().startswith("access-control")
+            or header.lower().startswith("x-")
+        ):
+            del response["headers"][header]
+    return response
+
+
+def scrub_string(string, replacement=b""):
+    """Scrub a string from a VCR response body string"""
+
+    def before_record_response(response):
+        len_before = len(response["body"]["string"])
+        response["body"]["string"] = re.sub(string, replacement, response["body"]["string"])
+        len_diff = len(response["body"]["string"]) - len_before
+        if "content-length" in response["headers"]:
+            response["headers"]["content-length"] = [
+                str(int(response["headers"]["content-length"][0]) + len_diff)
+            ]
+        return response
+
+    return before_record_response
+
+
+def chain(*funcs):
+    def chained_call(arg):
+        return reduce(lambda x, f: f(x), funcs, arg)
+
+    return chained_call
+
+
 # Configure pytest-vcr
 @pytest.fixture(scope="module")
 def vcr(vcr):
-    def scrub_request(request):
-        for header in ("Authorization", "Set-Cookie", "Cookie"):
-            if header in request.headers:
-                del request.headers[header]
-        return request
-
-    def scrub_response(response):
-        ignore = {
-            x.lower()
-            for x in [
-                "Authorization",
-                "Set-Cookie",
-                "Cookie",
-                "Date",
-                "Expires",
-                "Transfer-Encoding",
-            ]
-        }
-        for header in list(response["headers"]):
-            if header.lower() in ignore or header.lower().startswith("access-control"):
-                del response["headers"][header]
-        return response
-
     def range_header_matcher(r1, r2):
         return r1.headers.get("Range", "") == r2.headers.get("Range", "")
 
@@ -60,7 +92,11 @@ def vcr(vcr):
     vcr.path_transformer = VCR.ensure_suffix(".yaml")
     vcr.filter_headers = ["Set-Cookie"]
     vcr.before_record_request = scrub_request
-    vcr.before_record_response = scrub_response
+    vcr.before_record_response = chain(
+        scrub_response,
+        scrub_string(rb"Request done in \S+ seconds.", b"Request done in ... seconds."),
+        scrub_string(rb'"updated":"[^"]+"', b'"updated":"..."'),
+    )
     vcr.decode_compressed_response = True
     vcr.register_serializer("custom", BinaryContentSerializer(CASSETTE_DIR))
     vcr.serializer = "custom"
