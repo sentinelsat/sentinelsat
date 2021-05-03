@@ -35,12 +35,6 @@ interactions:
       - Apache-Coyote/1.1
       vary:
       - Accept-Encoding
-      x-content-type-options:
-      - nosniff
-      x-frame-options:
-      - DENY
-      x-xss-protection:
-      - 1; mode=block
     status:
       code: 200
       message: OK
@@ -74,18 +68,10 @@ interactions:
       - '2.0'
       etag:
       - 521D457C02CEBD24DBE45A5AEC4BAB27
-      last-modified:
-      - Wed, 07 Oct 2020 11:01:31 UTC
       pragma:
       - no-cache
       server:
       - Apache-Coyote/1.1
-      x-content-type-options:
-      - nosniff
-      x-frame-options:
-      - DENY
-      x-xss-protection:
-      - 1; mode=block
     status:
       code: 200
       message: OK
@@ -125,12 +111,6 @@ interactions:
       - Apache-Coyote/1.1
       vary:
       - Accept-Encoding
-      x-content-type-options:
-      - nosniff
-      x-frame-options:
-      - DENY
-      x-xss-protection:
-      - 1; mode=block
     status:
       code: 200
       message: OK
@@ -164,18 +144,10 @@ interactions:
       - '2.0'
       etag:
       - 521D457C02CEBD24DBE45A5AEC4BAB27
-      last-modified:
-      - Wed, 07 Oct 2020 11:01:31 UTC
       pragma:
       - no-cache
       server:
       - Apache-Coyote/1.1
-      x-content-type-options:
-      - nosniff
-      x-frame-options:
-      - DENY
-      x-xss-protection:
-      - 1; mode=block
     status:
       code: 200
       message: OK

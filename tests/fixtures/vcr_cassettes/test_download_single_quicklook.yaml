@@ -20,7 +20,7 @@ interactions:
     body:
       string: '{"feed":{"xmlns:opensearch":"http://a9.com/-/spec/opensearch/1.1/","xmlns":"http://www.w3.org/2005/Atom","title":"Sentinels
         Scientific Data Hub search results for: beginPosition:[* TO \"NOW\"] (uuid:\"6b126ea4-fe27-440c-9a5c-686f386b7291\")","subtitle":"Displaying
-        1 results. Request done in 0.149 seconds.","updated":"2021-05-02T19:42:09.042Z","author":{"name":"Sentinels
+        1 results. Request done in ... seconds.","updated":"...","author":{"name":"Sentinels
         Scientific Data Hub"},"id":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[*
         TO \"NOW\"] (uuid:\"6b126ea4-fe27-440c-9a5c-686f386b7291\")","opensearch:totalResults":"1","opensearch:startIndex":"0","opensearch:itemsPerPage":"100","opensearch:Query":{"role":"request","searchTerms":"beginPosition:[*
         TO \"NOW\"] (uuid:\"6b126ea4-fe27-440c-9a5c-686f386b7291\")","startPage":"1"},"link":[{"rel":"self","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[*
@@ -46,7 +46,7 @@ interactions:
         MB"},{"name":"s2datatakeid","content":"GS2A_20201007T022601_027642_N02.14"},{"name":"producttype","content":"S2MSI2A"},{"name":"platformidentifier","content":"2015-028A"},{"name":"orbitdirection","content":"DESCENDING"},{"name":"platformserialidentifier","content":"Sentinel-2A"},{"name":"processinglevel","content":"Level-2A"},{"name":"identifier","content":"S2A_MSIL2A_20201007T022601_N0214_R046_T49MFN_20201007T064142"},{"name":"uuid","content":"6b126ea4-fe27-440c-9a5c-686f386b7291"}]}}}'
     headers:
       content-length:
-      - '5096'
+      - '5073'
       content-type:
       - application/json
       pragma:
@@ -55,12 +55,6 @@ interactions:
       - Apache-Coyote/1.1
       vary:
       - Accept-Encoding
-      x-content-type-options:
-      - nosniff
-      x-frame-options:
-      - DENY
-      x-xss-protection:
-      - 1; mode=block
     status:
       code: 200
       message: OK
@@ -100,12 +94,6 @@ interactions:
       - Apache-Coyote/1.1
       vary:
       - Accept-Encoding
-      x-content-type-options:
-      - nosniff
-      x-frame-options:
-      - DENY
-      x-xss-protection:
-      - 1; mode=block
     status:
       code: 200
       message: OK
@@ -139,18 +127,10 @@ interactions:
       - '2.0'
       etag:
       - 521D457C02CEBD24DBE45A5AEC4BAB27
-      last-modified:
-      - Wed, 07 Oct 2020 11:01:31 UTC
       pragma:
       - no-cache
       server:
       - Apache-Coyote/1.1
-      x-content-type-options:
-      - nosniff
-      x-frame-options:
-      - DENY
-      x-xss-protection:
-      - 1; mode=block
     status:
       code: 200
       message: OK
@@ -175,7 +155,7 @@ interactions:
     body:
       string: '{"feed":{"xmlns:opensearch":"http://a9.com/-/spec/opensearch/1.1/","xmlns":"http://www.w3.org/2005/Atom","title":"Sentinels
         Scientific Data Hub search results for: beginPosition:[* TO \"NOW\"] (uuid:\"6b126ea4-fe27-440c-9a5c-686f386b7291\")","subtitle":"Displaying
-        1 results. Request done in 0.208 seconds.","updated":"2021-05-02T19:42:10.239Z","author":{"name":"Sentinels
+        1 results. Request done in ... seconds.","updated":"...","author":{"name":"Sentinels
         Scientific Data Hub"},"id":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[*
         TO \"NOW\"] (uuid:\"6b126ea4-fe27-440c-9a5c-686f386b7291\")","opensearch:totalResults":"1","opensearch:startIndex":"0","opensearch:itemsPerPage":"100","opensearch:Query":{"role":"request","searchTerms":"beginPosition:[*
         TO \"NOW\"] (uuid:\"6b126ea4-fe27-440c-9a5c-686f386b7291\")","startPage":"1"},"link":[{"rel":"self","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[*
@@ -201,7 +181,7 @@ interactions:
         MB"},{"name":"s2datatakeid","content":"GS2A_20201007T022601_027642_N02.14"},{"name":"producttype","content":"S2MSI2A"},{"name":"platformidentifier","content":"2015-028A"},{"name":"orbitdirection","content":"DESCENDING"},{"name":"platformserialidentifier","content":"Sentinel-2A"},{"name":"processinglevel","content":"Level-2A"},{"name":"identifier","content":"S2A_MSIL2A_20201007T022601_N0214_R046_T49MFN_20201007T064142"},{"name":"uuid","content":"6b126ea4-fe27-440c-9a5c-686f386b7291"}]}}}'
     headers:
       content-length:
-      - '5096'
+      - '5073'
       content-type:
       - application/json
       pragma:
@@ -210,12 +190,6 @@ interactions:
       - Apache-Coyote/1.1
       vary:
       - Accept-Encoding
-      x-content-type-options:
-      - nosniff
-      x-frame-options:
-      - DENY
-      x-xss-protection:
-      - 1; mode=block
     status:
       code: 200
       message: OK
@@ -255,12 +229,6 @@ interactions:
       - Apache-Coyote/1.1
       vary:
       - Accept-Encoding
-      x-content-type-options:
-      - nosniff
-      x-frame-options:
-      - DENY
-      x-xss-protection:
-      - 1; mode=block
     status:
       code: 200
       message: OK
@@ -294,18 +262,10 @@ interactions:
       - '2.0'
       etag:
       - 521D457C02CEBD24DBE45A5AEC4BAB27
-      last-modified:
-      - Wed, 07 Oct 2020 11:01:31 UTC
       pragma:
       - no-cache
       server:
       - Apache-Coyote/1.1
-      x-content-type-options:
-      - nosniff
-      x-frame-options:
-      - DENY
-      x-xss-protection:
-      - 1; mode=block
     status:
       code: 200
       message: OK
@@ -339,18 +299,10 @@ interactions:
       - '2.0'
       etag:
       - 521D457C02CEBD24DBE45A5AEC4BAB27
-      last-modified:
-      - Wed, 07 Oct 2020 11:01:31 UTC
       pragma:
       - no-cache
       server:
       - Apache-Coyote/1.1
-      x-content-type-options:
-      - nosniff
-      x-frame-options:
-      - DENY
-      x-xss-protection:
-      - 1; mode=block
     status:
       code: 200
       message: OK
@@ -375,7 +327,7 @@ interactions:
     body:
       string: '{"feed":{"xmlns:opensearch":"http://a9.com/-/spec/opensearch/1.1/","xmlns":"http://www.w3.org/2005/Atom","title":"Sentinels
         Scientific Data Hub search results for: beginPosition:[* TO \"NOW\"] (uuid:\"6b126ea4-fe27-440c-9a5c-686f386b7291\")","subtitle":"Displaying
-        1 results. Request done in 0.157 seconds.","updated":"2021-05-02T19:42:12.878Z","author":{"name":"Sentinels
+        1 results. Request done in ... seconds.","updated":"...","author":{"name":"Sentinels
         Scientific Data Hub"},"id":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[*
         TO \"NOW\"] (uuid:\"6b126ea4-fe27-440c-9a5c-686f386b7291\")","opensearch:totalResults":"1","opensearch:startIndex":"0","opensearch:itemsPerPage":"100","opensearch:Query":{"role":"request","searchTerms":"beginPosition:[*
         TO \"NOW\"] (uuid:\"6b126ea4-fe27-440c-9a5c-686f386b7291\")","startPage":"1"},"link":[{"rel":"self","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[*
@@ -401,7 +353,7 @@ interactions:
         MB"},{"name":"s2datatakeid","content":"GS2A_20201007T022601_027642_N02.14"},{"name":"producttype","content":"S2MSI2A"},{"name":"platformidentifier","content":"2015-028A"},{"name":"orbitdirection","content":"DESCENDING"},{"name":"platformserialidentifier","content":"Sentinel-2A"},{"name":"processinglevel","content":"Level-2A"},{"name":"identifier","content":"S2A_MSIL2A_20201007T022601_N0214_R046_T49MFN_20201007T064142"},{"name":"uuid","content":"6b126ea4-fe27-440c-9a5c-686f386b7291"}]}}}'
     headers:
       content-length:
-      - '5096'
+      - '5073'
       content-type:
       - application/json
       pragma:
@@ -410,12 +362,6 @@ interactions:
       - Apache-Coyote/1.1
       vary:
       - Accept-Encoding
-      x-content-type-options:
-      - nosniff
-      x-frame-options:
-      - DENY
-      x-xss-protection:
-      - 1; mode=block
     status:
       code: 200
       message: OK
@@ -455,12 +401,6 @@ interactions:
       - Apache-Coyote/1.1
       vary:
       - Accept-Encoding
-      x-content-type-options:
-      - nosniff
-      x-frame-options:
-      - DENY
-      x-xss-protection:
-      - 1; mode=block
     status:
       code: 200
       message: OK

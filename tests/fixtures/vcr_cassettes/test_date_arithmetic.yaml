@@ -21,7 +21,7 @@ interactions:
       string: '{"feed":{"xmlns:opensearch":"http://a9.com/-/spec/opensearch/1.1/","xmlns":"http://www.w3.org/2005/Atom","title":"Sentinels
         Scientific Data Hub search results for: beginPosition:[\"2016-12-01T00:00:00Z-1DAY\"
         TO \"2016-12-01T00:00:00Z+1DAY-1HOUR\"] footprint:\"Intersects(ENVELOPE(0,
-        1, 1, 0))\"","subtitle":"Displaying 6 results. Request done in 0.004 seconds.","updated":"2021-05-02T19:05:52.586Z","author":{"name":"Sentinels
+        1, 1, 0))\"","subtitle":"Displaying 6 results. Request done in ... seconds.","updated":"...","author":{"name":"Sentinels
         Scientific Data Hub"},"id":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[\"2016-12-01T00:00:00Z-1DAY\"
         TO \"2016-12-01T00:00:00Z+1DAY-1HOUR\"] footprint:\"Intersects(ENVELOPE(0,
         1, 1, 0))\"","opensearch:totalResults":"6","opensearch:startIndex":"0","opensearch:itemsPerPage":"100","opensearch:Query":{"role":"request","searchTerms":"beginPosition:[\"2016-12-01T00:00:00Z-1DAY\"
@@ -587,7 +587,7 @@ interactions:
         MB"},{"name":"timeliness","content":"Non Time Critical"},{"name":"lastpassnumber","content":"8233"},{"name":"lastpassdirection","content":"ascending"},{"name":"lastrelpassnumber","content":"587"},{"name":"lastrelpassdirection","content":"ascending"},{"name":"uuid","content":"a1db4b9b-503b-48fd-897d-a2525fea8123"}]}]}}'
     headers:
       content-length:
-      - '60361'
+      - '60338'
       content-type:
       - application/json
       pragma:
@@ -596,12 +596,6 @@ interactions:
       - Apache-Coyote/1.1
       vary:
       - Accept-Encoding
-      x-content-type-options:
-      - nosniff
-      x-frame-options:
-      - DENY
-      x-xss-protection:
-      - 1; mode=block
     status:
       code: 200
       message: OK

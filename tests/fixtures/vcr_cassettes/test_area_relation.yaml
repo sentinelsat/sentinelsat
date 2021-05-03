@@ -22,7 +22,7 @@ interactions:
         Scientific Data Hub search results for: beginPosition:[\"2015-12-19T00:00:00Z\"
         TO \"2015-12-26T00:00:00Z\"] footprint:\"Intersects(POLYGON((10.83 53.04,11.64
         53.04,11.64 52.65,10.83 52.65,10.83 53.04)))\"","subtitle":"Displaying 13
-        results. Request done in 0.177 seconds.","updated":"2021-05-02T19:05:55.603Z","author":{"name":"Sentinels
+        results. Request done in ... seconds.","updated":"...","author":{"name":"Sentinels
         Scientific Data Hub"},"id":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[\"2015-12-19T00:00:00Z\"
         TO \"2015-12-26T00:00:00Z\"] footprint:\"Intersects(POLYGON((10.83 53.04,11.64
         53.04,11.64 52.65,10.83 52.65,10.83 53.04)))\"","opensearch:totalResults":"13","opensearch:startIndex":"0","opensearch:itemsPerPage":"100","opensearch:Query":{"role":"request","searchTerms":"beginPosition:[\"2015-12-19T00:00:00Z\"
@@ -165,7 +165,7 @@ interactions:
         MB"},{"name":"status","content":"ARCHIVED"},{"name":"uuid","content":"238b2b7f-9131-4711-9579-930c054ad387"}]}]}}'
     headers:
       content-length:
-      - '36216'
+      - '36193'
       content-type:
       - application/json
       pragma:
@@ -174,12 +174,6 @@ interactions:
       - Apache-Coyote/1.1
       vary:
       - Accept-Encoding
-      x-content-type-options:
-      - nosniff
-      x-frame-options:
-      - DENY
-      x-xss-protection:
-      - 1; mode=block
     status:
       code: 200
       message: OK
@@ -206,7 +200,7 @@ interactions:
         Scientific Data Hub search results for: beginPosition:[\"2015-12-19T00:00:00Z\"
         TO \"2015-12-26T00:00:00Z\"] footprint:\"contains(POLYGON((10.83 53.04,11.64
         53.04,11.64 52.65,10.83 52.65,10.83 53.04)))\"","subtitle":"Displaying 3 results.
-        Request done in 0.104 seconds.","updated":"2021-05-02T19:05:55.868Z","author":{"name":"Sentinels
+        Request done in ... seconds.","updated":"...","author":{"name":"Sentinels
         Scientific Data Hub"},"id":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[\"2015-12-19T00:00:00Z\"
         TO \"2015-12-26T00:00:00Z\"] footprint:\"contains(POLYGON((10.83 53.04,11.64
         53.04,11.64 52.65,10.83 52.65,10.83 53.04)))\"","opensearch:totalResults":"3","opensearch:startIndex":"0","opensearch:itemsPerPage":"100","opensearch:Query":{"role":"request","searchTerms":"beginPosition:[\"2015-12-19T00:00:00Z\"
@@ -249,7 +243,7 @@ interactions:
         GB"},{"name":"status","content":"ARCHIVED"},{"name":"uuid","content":"83754a0e-b390-4c77-9866-0a16d4515374"}]}]}}'
     headers:
       content-length:
-      - '10209'
+      - '10186'
       content-type:
       - application/json
       pragma:
@@ -258,12 +252,6 @@ interactions:
       - Apache-Coyote/1.1
       vary:
       - Accept-Encoding
-      x-content-type-options:
-      - nosniff
-      x-frame-options:
-      - DENY
-      x-xss-protection:
-      - 1; mode=block
     status:
       code: 200
       message: OK
@@ -290,7 +278,7 @@ interactions:
         Scientific Data Hub search results for: beginPosition:[\"2015-12-19T00:00:00Z\"
         TO \"2015-12-26T00:00:00Z\"] footprint:\"IsWithin(POLYGON((10.83 53.04,11.64
         53.04,11.64 52.65,10.83 52.65,10.83 53.04)))\"","subtitle":"Displaying 0 results.
-        Request done in 2.454 seconds.","updated":"2021-05-02T19:05:58.400Z","author":{"name":"Sentinels
+        Request done in ... seconds.","updated":"...","author":{"name":"Sentinels
         Scientific Data Hub"},"id":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[\"2015-12-19T00:00:00Z\"
         TO \"2015-12-26T00:00:00Z\"] footprint:\"IsWithin(POLYGON((10.83 53.04,11.64
         53.04,11.64 52.65,10.83 52.65,10.83 53.04)))\"","opensearch:totalResults":"0","opensearch:startIndex":"0","opensearch:itemsPerPage":"100","opensearch:Query":{"role":"request","searchTerms":"beginPosition:[\"2015-12-19T00:00:00Z\"
@@ -304,7 +292,7 @@ interactions:
         53.04,11.64 52.65,10.83 52.65,10.83 53.04)))\"&start=-1&rows=100&format=json"},{"rel":"search","type":"application/opensearchdescription+xml","href":"opensearch_description.xml"}]}}'
     headers:
       content-length:
-      - '1998'
+      - '1975'
       content-type:
       - application/json
       pragma:
@@ -313,12 +301,6 @@ interactions:
       - Apache-Coyote/1.1
       vary:
       - Accept-Encoding
-      x-content-type-options:
-      - nosniff
-      x-frame-options:
-      - DENY
-      x-xss-protection:
-      - 1; mode=block
     status:
       code: 200
       message: OK

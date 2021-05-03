@@ -20,7 +20,7 @@ interactions:
     body:
       string: '{"feed":{"xmlns:opensearch":"http://a9.com/-/spec/opensearch/1.1/","xmlns":"http://www.w3.org/2005/Atom","title":"Sentinels
         Scientific Data Hub search results for: beginPosition:[* TO \"NOW\"] (uuid:\"1f62a176-c980-41dc-b3a1-c735d660c910\")","subtitle":"Displaying
-        1 results. Request done in 0.157 seconds.","updated":"2021-05-02T19:41:56.389Z","author":{"name":"Sentinels
+        1 results. Request done in ... seconds.","updated":"...","author":{"name":"Sentinels
         Scientific Data Hub"},"id":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[*
         TO \"NOW\"] (uuid:\"1f62a176-c980-41dc-b3a1-c735d660c910\")","opensearch:totalResults":"1","opensearch:startIndex":"0","opensearch:itemsPerPage":"100","opensearch:Query":{"role":"request","searchTerms":"beginPosition:[*
         TO \"NOW\"] (uuid:\"1f62a176-c980-41dc-b3a1-c735d660c910\")","startPage":"1"},"link":[{"rel":"self","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[*
@@ -38,7 +38,7 @@ interactions:
         KB"},{"name":"status","content":"ARCHIVED"},{"name":"uuid","content":"1f62a176-c980-41dc-b3a1-c735d660c910"}]}}}'
     headers:
       content-length:
-      - '4055'
+      - '4032'
       content-type:
       - application/json
       pragma:
@@ -47,12 +47,6 @@ interactions:
       - Apache-Coyote/1.1
       vary:
       - Accept-Encoding
-      x-content-type-options:
-      - nosniff
-      x-frame-options:
-      - DENY
-      x-xss-protection:
-      - 1; mode=block
     status:
       code: 200
       message: OK
@@ -87,12 +81,6 @@ interactions:
       - Apache-Coyote/1.1
       vary:
       - Accept-Encoding
-      x-content-type-options:
-      - nosniff
-      x-frame-options:
-      - DENY
-      x-xss-protection:
-      - 1; mode=block
     status:
       code: 200
       message: OK
@@ -127,12 +115,6 @@ interactions:
       - Apache-Coyote/1.1
       vary:
       - Accept-Encoding
-      x-content-type-options:
-      - nosniff
-      x-frame-options:
-      - DENY
-      x-xss-protection:
-      - 1; mode=block
     status:
       code: 200
       message: OK
@@ -167,18 +149,10 @@ interactions:
       - '2.0'
       etag:
       - 9eb46e4e31f77f108213e16bb8fbe088
-      last-modified:
-      - Tue, 17 Nov 2015 16:56:01 UTC
       pragma:
       - no-cache
       server:
       - Apache-Coyote/1.1
-      x-content-type-options:
-      - nosniff
-      x-frame-options:
-      - DENY
-      x-xss-protection:
-      - 1; mode=block
     status:
       code: 200
       message: OK
@@ -212,18 +186,10 @@ interactions:
       - '2.0'
       etag:
       - 9eb46e4e31f77f108213e16bb8fbe088
-      last-modified:
-      - Tue, 17 Nov 2015 16:56:01 UTC
       pragma:
       - no-cache
       server:
       - Apache-Coyote/1.1
-      x-content-type-options:
-      - nosniff
-      x-frame-options:
-      - DENY
-      x-xss-protection:
-      - 1; mode=block
     status:
       code: 200
       message: OK
@@ -248,7 +214,7 @@ interactions:
     body:
       string: '{"feed":{"xmlns:opensearch":"http://a9.com/-/spec/opensearch/1.1/","xmlns":"http://www.w3.org/2005/Atom","title":"Sentinels
         Scientific Data Hub search results for: beginPosition:[* TO \"NOW\"] (uuid:\"1f62a176-c980-41dc-b3a1-c735d660c910\")","subtitle":"Displaying
-        1 results. Request done in 0.171 seconds.","updated":"2021-05-02T19:41:57.702Z","author":{"name":"Sentinels
+        1 results. Request done in ... seconds.","updated":"...","author":{"name":"Sentinels
         Scientific Data Hub"},"id":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[*
         TO \"NOW\"] (uuid:\"1f62a176-c980-41dc-b3a1-c735d660c910\")","opensearch:totalResults":"1","opensearch:startIndex":"0","opensearch:itemsPerPage":"100","opensearch:Query":{"role":"request","searchTerms":"beginPosition:[*
         TO \"NOW\"] (uuid:\"1f62a176-c980-41dc-b3a1-c735d660c910\")","startPage":"1"},"link":[{"rel":"self","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[*
@@ -266,7 +232,7 @@ interactions:
         KB"},{"name":"status","content":"ARCHIVED"},{"name":"uuid","content":"1f62a176-c980-41dc-b3a1-c735d660c910"}]}}}'
     headers:
       content-length:
-      - '4055'
+      - '4032'
       content-type:
       - application/json
       pragma:
@@ -275,12 +241,6 @@ interactions:
       - Apache-Coyote/1.1
       vary:
       - Accept-Encoding
-      x-content-type-options:
-      - nosniff
-      x-frame-options:
-      - DENY
-      x-xss-protection:
-      - 1; mode=block
     status:
       code: 200
       message: OK
@@ -315,12 +275,6 @@ interactions:
       - Apache-Coyote/1.1
       vary:
       - Accept-Encoding
-      x-content-type-options:
-      - nosniff
-      x-frame-options:
-      - DENY
-      x-xss-protection:
-      - 1; mode=block
     status:
       code: 200
       message: OK
@@ -355,12 +309,6 @@ interactions:
       - Apache-Coyote/1.1
       vary:
       - Accept-Encoding
-      x-content-type-options:
-      - nosniff
-      x-frame-options:
-      - DENY
-      x-xss-protection:
-      - 1; mode=block
     status:
       code: 200
       message: OK
@@ -395,18 +343,10 @@ interactions:
       - '2.0'
       etag:
       - 9eb46e4e31f77f108213e16bb8fbe088
-      last-modified:
-      - Tue, 17 Nov 2015 16:56:01 UTC
       pragma:
       - no-cache
       server:
       - Apache-Coyote/1.1
-      x-content-type-options:
-      - nosniff
-      x-frame-options:
-      - DENY
-      x-xss-protection:
-      - 1; mode=block
     status:
       code: 200
       message: OK
@@ -441,12 +381,6 @@ interactions:
       - Apache-Coyote/1.1
       vary:
       - Accept-Encoding
-      x-content-type-options:
-      - nosniff
-      x-frame-options:
-      - DENY
-      x-xss-protection:
-      - 1; mode=block
     status:
       code: 200
       message: OK
@@ -471,7 +405,7 @@ interactions:
     body:
       string: '{"feed":{"xmlns:opensearch":"http://a9.com/-/spec/opensearch/1.1/","xmlns":"http://www.w3.org/2005/Atom","title":"Sentinels
         Scientific Data Hub search results for: beginPosition:[* TO \"NOW\"] (uuid:\"1f62a176-c980-41dc-b3a1-c735d660c910\")","subtitle":"Displaying
-        1 results. Request done in 0.169 seconds.","updated":"2021-05-02T19:41:59.080Z","author":{"name":"Sentinels
+        1 results. Request done in ... seconds.","updated":"...","author":{"name":"Sentinels
         Scientific Data Hub"},"id":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[*
         TO \"NOW\"] (uuid:\"1f62a176-c980-41dc-b3a1-c735d660c910\")","opensearch:totalResults":"1","opensearch:startIndex":"0","opensearch:itemsPerPage":"100","opensearch:Query":{"role":"request","searchTerms":"beginPosition:[*
         TO \"NOW\"] (uuid:\"1f62a176-c980-41dc-b3a1-c735d660c910\")","startPage":"1"},"link":[{"rel":"self","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[*
@@ -489,7 +423,7 @@ interactions:
         KB"},{"name":"status","content":"ARCHIVED"},{"name":"uuid","content":"1f62a176-c980-41dc-b3a1-c735d660c910"}]}}}'
     headers:
       content-length:
-      - '4055'
+      - '4032'
       content-type:
       - application/json
       pragma:
@@ -498,12 +432,6 @@ interactions:
       - Apache-Coyote/1.1
       vary:
       - Accept-Encoding
-      x-content-type-options:
-      - nosniff
-      x-frame-options:
-      - DENY
-      x-xss-protection:
-      - 1; mode=block
     status:
       code: 200
       message: OK
@@ -538,18 +466,10 @@ interactions:
       - '2.0'
       etag:
       - 9eb46e4e31f77f108213e16bb8fbe088
-      last-modified:
-      - Tue, 17 Nov 2015 16:56:01 UTC
       pragma:
       - no-cache
       server:
       - Apache-Coyote/1.1
-      x-content-type-options:
-      - nosniff
-      x-frame-options:
-      - DENY
-      x-xss-protection:
-      - 1; mode=block
     status:
       code: 200
       message: OK
@@ -583,18 +503,10 @@ interactions:
       - '2.0'
       etag:
       - 9eb46e4e31f77f108213e16bb8fbe088
-      last-modified:
-      - Tue, 17 Nov 2015 16:56:01 UTC
       pragma:
       - no-cache
       server:
       - Apache-Coyote/1.1
-      x-content-type-options:
-      - nosniff
-      x-frame-options:
-      - DENY
-      x-xss-protection:
-      - 1; mode=block
     status:
       code: 200
       message: OK
@@ -629,18 +541,10 @@ interactions:
       - '2.0'
       etag:
       - 9eb46e4e31f77f108213e16bb8fbe088
-      last-modified:
-      - Tue, 17 Nov 2015 16:56:01 UTC
       pragma:
       - no-cache
       server:
       - Apache-Coyote/1.1
-      x-content-type-options:
-      - nosniff
-      x-frame-options:
-      - DENY
-      x-xss-protection:
-      - 1; mode=block
     status:
       code: 200
       message: OK
@@ -674,18 +578,10 @@ interactions:
       - '2.0'
       etag:
       - 9eb46e4e31f77f108213e16bb8fbe088
-      last-modified:
-      - Tue, 17 Nov 2015 16:56:01 UTC
       pragma:
       - no-cache
       server:
       - Apache-Coyote/1.1
-      x-content-type-options:
-      - nosniff
-      x-frame-options:
-      - DENY
-      x-xss-protection:
-      - 1; mode=block
     status:
       code: 200
       message: OK

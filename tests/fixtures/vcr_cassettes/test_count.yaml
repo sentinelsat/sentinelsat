@@ -21,7 +21,7 @@ interactions:
       string: '{"feed":{"xmlns:opensearch":"http://a9.com/-/spec/opensearch/1.1/","xmlns":"http://www.w3.org/2005/Atom","title":"Sentinels
         Scientific Data Hub search results for: beginPosition:[\"2015-01-01T00:00:00Z\"
         TO \"2015-12-31T00:00:00Z\"]","subtitle":"Displaying 0 to -1 of 516852 total
-        results. Request done in 0.012 seconds.","updated":"2021-05-02T19:05:51.930Z","author":{"name":"Sentinels
+        results. Request done in ... seconds.","updated":"...","author":{"name":"Sentinels
         Scientific Data Hub"},"id":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[\"2015-01-01T00:00:00Z\"
         TO \"2015-12-31T00:00:00Z\"]","opensearch:totalResults":"516852","opensearch:startIndex":"0","opensearch:itemsPerPage":"0","opensearch:Query":{"role":"request","searchTerms":"beginPosition:[\"2015-01-01T00:00:00Z\"
         TO \"2015-12-31T00:00:00Z\"]","startPage":"1"},"link":[{"rel":"self","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[\"2015-01-01T00:00:00Z\"
@@ -31,7 +31,7 @@ interactions:
         TO \"2015-12-31T00:00:00Z\"]&start=516851&rows=0&format=json"},{"rel":"search","type":"application/opensearchdescription+xml","href":"opensearch_description.xml"}]}}'
     headers:
       content-length:
-      - '1644'
+      - '1621'
       content-type:
       - application/json
       pragma:
@@ -40,12 +40,6 @@ interactions:
       - Apache-Coyote/1.1
       vary:
       - Accept-Encoding
-      x-content-type-options:
-      - nosniff
-      x-frame-options:
-      - DENY
-      x-xss-protection:
-      - 1; mode=block
     status:
       code: 200
       message: OK

@@ -22,7 +22,7 @@ interactions:
         Scientific Data Hub search results for: beginPosition:[\"2015-12-19T00:00:00Z\"
         TO \"2015-12-20T00:00:00Z\"] footprint:\"Intersects(POLYGON((-66.2695 -8.0592,-66.2695
         0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\"","subtitle":"Displaying
-        35 results. Request done in 5.641 seconds.","updated":"2021-05-02T18:51:14.968Z","author":{"name":"Sentinels
+        35 results. Request done in ... seconds.","updated":"...","author":{"name":"Sentinels
         Scientific Data Hub"},"id":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[\"2015-12-19T00:00:00Z\"
         TO \"2015-12-20T00:00:00Z\"] footprint:\"Intersects(POLYGON((-66.2695 -8.0592,-66.2695
         0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\"","opensearch:totalResults":"35","opensearch:startIndex":"0","opensearch:itemsPerPage":"100","opensearch:Query":{"role":"request","searchTerms":"beginPosition:[\"2015-12-19T00:00:00Z\"
@@ -350,7 +350,7 @@ interactions:
         MB"},{"name":"tileid","content":"20MLD"},{"name":"hv_order_tileid","content":"MD20L"},{"name":"filename","content":"S2A_MSIL1C_20151219T144722_N0201_R139_T20MLD_20151219T145202.SAFE"},{"name":"identifier","content":"S2A_MSIL1C_20151219T144722_N0201_R139_T20MLD_20151219T145202"},{"name":"uuid","content":"3460adf1-d56a-4ff6-bc4a-0ef1c58871d7"},{"name":"level1cpdiidentifier","content":"S2A_OPER_MSI_L1C_TL_MTI__20151219T193257_A002567_T20MLD_N02.01"},{"name":"granuleidentifier","content":"S2A_OPER_MSI_L1C_TL_MTI__20151219T193257_A002567_T20MLD_N02.01"},{"name":"datastripidentifier","content":"S2A_OPER_MSI_L1C_DS_MTI__20151219T193257_S20151219T145202_N02.01"}]}]}}'
     headers:
       content-length:
-      - '105914'
+      - '105891'
       content-type:
       - application/json
       pragma:
@@ -359,12 +359,6 @@ interactions:
       - Apache-Coyote/1.1
       vary:
       - Accept-Encoding
-      x-content-type-options:
-      - nosniff
-      x-frame-options:
-      - DENY
-      x-xss-protection:
-      - 1; mode=block
     status:
       code: 200
       message: OK
