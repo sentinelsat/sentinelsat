@@ -1,32 +1,9 @@
-import os
-import shutil
+from pathlib import Path
 from xml.etree import ElementTree as etree
 
 import sentinelsat
-from sentinelsat.sentinel import InvalidChecksumError, _check_scihub_response
+from sentinelsat.sentinel import _check_scihub_response
 from sentinelsat.exceptions import SentinelAPIError
-
-
-def _xml_to_dataobj_info(element):
-    assert etree.iselement(element)
-    assert element.tag == "dataObject"
-    data = dict(
-        id=element.attrib["ID"],
-        rep_id=element.attrib["repID"],
-    )
-    elem = element.find("byteStream")
-    # data["mime_type"] = elem.attrib['mimeType']
-    data["size"] = int(elem.attrib["size"])
-    elem = element.find("byteStream/fileLocation")
-    data["href"] = elem.attrib["href"]
-    # data['locator_type'] = elem.attrib["locatorType"]
-    # assert data['locator_type'] == "URL"
-
-    elem = element.find("byteStream/checksum")
-    assert elem.attrib["checksumName"].upper() == "MD5"
-    data["md5"] = elem.text
-
-    return data
 
 
 class SentinelProductsAPI(sentinelsat.SentinelAPI):
@@ -101,35 +78,35 @@ class SentinelProductsAPI(sentinelsat.SentinelAPI):
         return f"{self.api_url}odata/v1/Products('{id}')/Nodes('{title}.SAFE')/{path}{urltype}"
 
     def _get_manifest(self, product_info, path=None):
+        path = Path(path) if path else None
         url = self._path_to_url(product_info, "manifest.safe", "value")
         node_info = product_info.copy()
         node_info["url"] = url
         node_info["node_path"] = "./manifest.safe"
         del node_info["md5"]
 
-        if path and os.path.exists(path):
+        if path and path.exists():
             self.logger.info("manifest file already available (%r), skip download", path)
-            with open(path, "rb") as fd:
-                data = fd.read()
+            data = path.read_bytes()
             node_info["size"] = len(data)
-        else:
-            url = self._path_to_url(product_info, "manifest.safe", "json")
-            response = self.session.get(url, auth=self.session.auth)
-            _check_scihub_response(response)
-            info = response.json()["d"]
+            return node_info, data
 
-            node_info["size"] = int(info["ContentLength"])
+        url = self._path_to_url(product_info, "manifest.safe", "json")
+        response = self.session.get(url, auth=self.session.auth)
+        _check_scihub_response(response)
+        info = response.json()["d"]
 
-            response = self.session.get(node_info["url"], auth=self.session.auth)
-            _check_scihub_response(response, test_json=False)
-            data = response.content
-            if len(data) != node_info["size"]:
-                raise SentinelAPIError("File corrupt: data length do not match")
+        node_info["size"] = int(info["ContentLength"])
 
-            if path:
-                os.makedirs(os.path.dirname(path), exist_ok=True)
-                with open(path, "wb") as fd:
-                    fd.write(data)
+        response = self.session.get(node_info["url"], auth=self.session.auth)
+        _check_scihub_response(response, test_json=False)
+        data = response.content
+        if len(data) != node_info["size"]:
+            raise SentinelAPIError("File corrupt: data length do not match")
+
+        if path:
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_bytes(data)
 
         return node_info, data
 
@@ -203,10 +180,10 @@ class SentinelProductsAPI(sentinelsat.SentinelAPI):
             return sentinelsat.SentinelAPI.download(self, id, directory_path, checksum, **kwargs)
 
         product_info = self.get_product_odata(id)
-        product_path = os.path.join(directory_path, product_info["title"] + ".SAFE")
+        product_path = Path(directory_path) / (product_info["title"] + ".SAFE")
         product_info["node_path"] = "./" + product_info["title"] + ".SAFE"
-        manifest_path = os.path.join(product_path, "manifest.safe")
-        if not os.path.exists(manifest_path) and not product_info["Online"]:
+        manifest_path = product_path / "manifest.safe"
+        if not manifest_path.exists() and not product_info["Online"]:
             self.logger.warning(
                 "Product %s is not online. Triggering retrieval from long term archive.",
                 product_info["id"],
@@ -224,66 +201,42 @@ class SentinelProductsAPI(sentinelsat.SentinelAPI):
 
         for node_info in node_infos.values():
             node_path = node_info["node_path"]
-            path = os.path.join(product_path, os.path.normpath(node_path))
+            path = (product_path / node_path).resolve()
             node_info["path"] = path
             node_info["downloaded_bytes"] = 0
 
             self.logger.info("Downloading %s node to %s", id, path)
             self.logger.debug("Node URL for %s: %s", id, node_info["url"])
 
-            if os.path.exists(path):
+            if path.exists():
                 # We assume that the product node has been downloaded and is complete
                 continue
 
-            # Use a temporary file for downloading
-            temp_path = path + ".incomplete"
-
-            skip_download = False
-            if os.path.exists(temp_path):
-                if os.path.getsize(temp_path) > node_info["size"]:
-                    self.logger.warning(
-                        "Existing incomplete file %s is larger than the expected final size"
-                        " (%s vs %s bytes). Deleting it.",
-                        str(temp_path),
-                        os.path.getsize(temp_path),
-                        node_info["size"],
-                    )
-                    os.remove(temp_path)
-                elif os.path.getsize(temp_path) == node_info["size"]:
-                    if checksum is True and not self._md5_compare(temp_path, node_info["md5"]):
-                        # Log a warning since this should never happen
-                        self.logger.warning(
-                            "Existing incomplete file %s appears to be fully downloaded but "
-                            "its checksum is incorrect. Deleting it.",
-                            str(temp_path),
-                        )
-                        os.remove(temp_path)
-                    else:
-                        skip_download = True
-                else:
-                    # continue downloading
-                    self.logger.info(
-                        "Download will resume from existing incomplete file %s.", temp_path
-                    )
-                    pass
-
-            if not skip_download:
-                # Store the number of downloaded bytes for unit tests
-                os.makedirs(os.path.dirname(temp_path), exist_ok=True)
-                node_info["downloaded_bytes"] = self._download(
-                    node_info["url"], temp_path, self.session, node_info["size"]
-                )
-
-            # Check integrity with MD5 checksum
-            if checksum is True:
-                if not self._md5_compare(temp_path, node_info["md5"]):
-                    os.remove(temp_path)
-                    raise InvalidChecksumError("File corrupt: checksums do not match")
-
-            # Download successful, rename the temporary file to its proper name
-            shutil.move(temp_path, path)
+            self._download_outer(node_info, path, checksum)
 
         return product_info
+
+
+def _xml_to_dataobj_info(element):
+    assert etree.iselement(element)
+    assert element.tag == "dataObject"
+    data = dict(
+        id=element.attrib["ID"],
+        rep_id=element.attrib["repID"],
+    )
+    elem = element.find("byteStream")
+    # data["mime_type"] = elem.attrib['mimeType']
+    data["size"] = int(elem.attrib["size"])
+    elem = element.find("byteStream/fileLocation")
+    data["href"] = elem.attrib["href"]
+    # data['locator_type'] = elem.attrib["locatorType"]
+    # assert data['locator_type'] == "URL"
+
+    elem = element.find("byteStream/checksum")
+    assert elem.attrib["checksumName"].upper() == "MD5"
+    data["md5"] = elem.text
+
+    return data
 
 
 def make_size_filter(max_size):
