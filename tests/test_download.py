@@ -202,7 +202,11 @@ def test_download_all_one_fail(api, tmpdir, smallest_online_products):
     tmpdir.remove()
 
 
-@pytest.mark.xfail(reason="The threading in this test seems to break VCR.py somehow")
+@pytest.mark.skip(
+    reason="The threading in this test seems to break VCR.py somehow "
+    "and smallest_archived_products does not currently return actually small"
+    "products for archived products"
+)
 @pytest.mark.vcr
 @pytest.mark.scihub
 def test_download_all_lta(api, tmpdir, smallest_online_products, smallest_archived_products):

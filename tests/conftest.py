@@ -214,17 +214,31 @@ def raw_products(api_kwargs, vcr, test_wkt):
 
 def _get_smallest(api_kwargs, cassette, online, n=3):
     api = SentinelAPI(**api_kwargs)
-    url = "{}odata/v1/Products?$format=json&$top={}&$orderby=ContentLength&$filter=Online%20eq%20{}".format(
-        api_kwargs["api_url"], n + 20, "true" if online else "false"
+    filter = " and ".join(
+        [
+            "Online eq {}".format("true" if online else "false"),
+            # limit time range for tests stability and much faster OData querying
+            "CreationDate lt datetime'2016-01-01T00:00:00.000'",
+            # needed for SentinelProductsAPI tests, some S5 apparently do not include manifest.safe
+            "not startswith(Name, 'S3')",
+            # don't want zero-length products for testing, plus their handling has server-side bugs
+            "ContentLength ne 0",
+        ]
     )
+    url = "{}odata/v1/Products?$format=json&$top={}&$filter={}".format(
+        api_kwargs["api_url"], n + 3, filter
+    )
+    if online:
+        # archived products do not have the correct ContentLength value,
+        # so use an arbitrary subset of the data and skip orderby to speed up the query
+        url += "&$orderby=ContentLength"
     with cassette:
         r = api.session.get(url)
     odata = [_parse_odata_response(x) for x in r.json()["d"]["results"]]
     # Drop products that appear to be broken
     blacklist = ["S2A_MSIL2A_20190528T113321_N0212_R080_T29UPB_20190528T142130"]
     odata = [x for x in odata if x["title"] not in blacklist]
-    # Drop any empty products, which will cause issues
-    odata = [x for x in odata if x["size"] > 0][:n]
+    odata = odata[:n]
     assert len(odata) == n
     return odata
 
