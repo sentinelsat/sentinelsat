@@ -125,9 +125,6 @@ class SentinelProductsAPI(sentinelsat.SentinelAPI):
         return node_info
 
     def _filter_nodes(self, manifest, product_info, nodefilter=None):
-        if nodefilter is None:
-            nodefilter = self.nodefilter
-
         nodes = {}
         xmldoc = etree.parse(manifest)
         data_obj_section_elem = xmldoc.find("dataObjectSection")
