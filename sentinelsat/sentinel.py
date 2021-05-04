@@ -1427,17 +1427,17 @@ def _check_scihub_response(response, test_json=True, query_string=None):
         msg = None
         try:
             msg = response.json()["error"]["message"]["value"]
-        except:
+        except Exception:
             try:
                 msg = response.headers["cause-message"]
-            except:
+            except Exception:
                 if not response.text.lstrip().startswith("{"):
                     try:
                         h = html2text.HTML2Text()
                         h.ignore_images = True
                         h.ignore_anchors = True
                         msg = h.handle(response.text).strip()
-                    except:
+                    except Exception:
                         pass
 
         if msg is None:
