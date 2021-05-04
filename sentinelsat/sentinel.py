@@ -1183,7 +1183,7 @@ class SentinelAPI:
 
             # Collect
             if name not in names_from_paths:
-                paths.append(directory / (name + ".zip"))
+                paths.append(directory / self._get_filename(odata))
 
         # Now go over the list of products and check them
         corrupt = {}

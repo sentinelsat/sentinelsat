@@ -35,7 +35,7 @@ Changed
   The new exceptions are still subclasses of ``SentinelAPIError`` for backwards compatibility.
   (#285 @valgur, @dwlsalmeida)
 * Tidied up the (internal) download code logic (#378 @valgur)
-* Added an "exception" field to the `failed_products` dict returned by in `.download_all()` for easier debugging (#378 @valgur)
+* Added an "exception" field to the ``failed_products`` dict returned by in ``.download_all()`` for easier debugging (#378 @valgur)
 
 Deprecated
 ~~~~~~~~~~
@@ -47,6 +47,7 @@ Fixed
 * Get file name extension more reliably from either header or internal logic (in particular for S5 products #270) (#378 @valgur)
 * Updated the API Hub URL to `https://apihub.copernicus.eu/apihub/`.
 * Server-side error info has become much more detailed and the client code has been updated to correctly handle that.
+* ``check_existing()`` now determines the filename correctly for Sentinel-5 products. (@valgur #452)
 
 Development Changes
 ~~~~~~~~~~~~~~~~~~~
