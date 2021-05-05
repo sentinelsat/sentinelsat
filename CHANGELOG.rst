@@ -43,6 +43,7 @@ Changed
   They no longer also ignore the date range arguments (fixes #387). Add `--start *` to CLI arguments to maintain old behavior. (#390 @valgur)
 * Empty queries raise a `ValueError` immediately on the client side instead of letting the server generate it. (#390 @valgur)
 * Added stricter checks for empty keyword values in queries, which would cause server-side errors. (#390 @valgur)
+* Gracefully handle cancelled futures. (#448 @avalentino)
 
 Deprecated
 ~~~~~~~~~~
