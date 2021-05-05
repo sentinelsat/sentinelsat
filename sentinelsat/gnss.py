@@ -2,7 +2,7 @@
 
 import logging
 
-from .sentinel import SentinelAPI, _check_scihub_response
+from .sentinel import SentinelAPI
 
 
 class GnssAPI(SentinelAPI):
@@ -49,32 +49,6 @@ class GnssAPI(SentinelAPI):
         timeout: bool = None,
     ):
         super().__init__(user, password, api_url, show_progressbars, timeout)
-
-    def download(self, id, directory_path=".", checksum=True, **kwargs):
-        file_ext = kwargs.pop("file_ext", ".EOF")
-        return super().download(id, directory_path, checksum, file_ext=file_ext, **kwargs)
-
-    def download_all(
-        self,
-        products,
-        directory_path=".",
-        max_attempts=10,
-        checksum=True,
-        n_concurrent_dl=2,
-        lta_retry_delay=600,
-        **kwargs
-    ):
-        file_ext = kwargs.pop("file_ext", ".EOF")
-        return super().download_all(
-            products,
-            directory_path,
-            max_attempts,
-            checksum,
-            n_concurrent_dl,
-            lta_retry_delay,
-            file_ext=file_ext,
-            **kwargs
-        )
 
     def _get_filename(self, product_info):
         # Default guess, mostly for archived products
