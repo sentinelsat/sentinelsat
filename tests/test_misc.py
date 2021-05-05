@@ -35,11 +35,12 @@ def test_unicode_support(api):
 
     with pytest.raises(QuerySyntaxError) as excinfo:
         api.count(raw=test_str)
-    assert test_str in excinfo.value.msg
+    assert test_str in str(excinfo.value)
 
     with pytest.raises(InvalidKeyError) as excinfo:
         api.get_product_odata(test_str)
     assert test_str in excinfo.value.response.json()["error"]["message"]["value"]
+    assert test_str in str(excinfo.value)
 
 
 @pytest.mark.mock_api

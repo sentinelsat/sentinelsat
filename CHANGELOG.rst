@@ -35,13 +35,13 @@ Changed
   The new exceptions are still subclasses of ``SentinelAPIError`` for backwards compatibility.
   (#285 @valgur, @dwlsalmeida)
 * Tidied up the (internal) download code logic (#378 @valgur)
-* Added an "exception" field to the `failed_products` dict returned by in `.download_all()` for easier debugging (#378 @valgur)
+* Added an "exception" field to the ``failed_products`` dict returned by in ``.download_all()`` for easier debugging (#378 @valgur)
 * Fixed the server-side space handling change issue reported in #383 by quoting instead of backslash-escaping the strings. (#390 @valgur)
-* Queries now use `(key:value OR key:value)` format instead of the previous `key:(value OR value)` format,
+* Queries now use ``(key:value OR key:value)`` format instead of the previous ``key:(value OR value)`` format,
   which for some reason took tens of seconds per query. (#390 @valgur)
-* Got rid of the special handling of `--uuid` and `--name` CLI arguments. The product IDs are now simply passed to `api.query()` as a set.
-  They no longer also ignore the date range arguments (fixes #387). Add `--start *` to CLI arguments to maintain old behavior. (#390 @valgur)
-* Empty queries raise a `ValueError` immediately on the client side instead of letting the server generate it. (#390 @valgur)
+* Got rid of the special handling of ``--uuid`` and ``--name`` CLI arguments. The product IDs are now simply passed to ``api.query()`` as a set.
+  They no longer also ignore the date range arguments (fixes #387). Add ``--start *`` to CLI arguments to maintain old behavior. (#390 @valgur)
+* Empty queries raise a ``ValueError`` immediately on the client side instead of letting the server generate it. (#390 @valgur)
 * Added stricter checks for empty keyword values in queries, which would cause server-side errors. (#390 @valgur)
 
 Deprecated
@@ -54,6 +54,7 @@ Fixed
 * Get file name extension more reliably from either header or internal logic (in particular for S5 products #270) (#378 @valgur)
 * Updated the API Hub URL to `https://apihub.copernicus.eu/apihub/`.
 * Server-side error info has become much more detailed and the client code has been updated to correctly handle that.
+* ``check_existing()`` now determines the filename correctly for Sentinel-5 products. (@valgur #452)
 
 Development Changes
 ~~~~~~~~~~~~~~~~~~~

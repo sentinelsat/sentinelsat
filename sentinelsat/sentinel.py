@@ -10,14 +10,14 @@ import xml.etree.ElementTree as ET
 from collections import OrderedDict, defaultdict
 from contextlib import closing
 from datetime import date, datetime, timedelta
-from os import remove
-from os.path import basename, exists, getsize, join, splitext
+from pathlib import Path
+from typing import Any, Dict
+from urllib.parse import quote_plus, urljoin
 
 import geojson
 import geomet.wkt
 import html2text
 import requests
-from urllib.parse import urljoin, quote_plus
 from tqdm import tqdm
 
 from sentinelsat.exceptions import (
@@ -545,13 +545,13 @@ class SentinelAPI:
         """
         product_info = self.get_product_odata(id)
         filename = self._get_filename(product_info)
-        path = join(directory_path, filename)
-        product_info["path"] = path
+        path = Path(directory_path) / filename
+        product_info["path"] = str(path)
         product_info["downloaded_bytes"] = 0
 
         self.logger.info("Downloading %s to %s", id, path)
 
-        if exists(path):
+        if path.exists():
             # We assume that the product has been downloaded and is complete
             return product_info
 
@@ -564,29 +564,33 @@ class SentinelAPI:
             self._trigger_offline_retrieval(product_info["url"])
             return product_info
 
-        # Use a temporary file for downloading
-        temp_path = path + ".incomplete"
+        self._download_outer(product_info, path, checksum)
+        return product_info
 
+    def _download_outer(self, product_info: Dict[str, Any], path: Path, verify_checksum: bool):
+        # Use a temporary file for downloading
+        temp_path = path.with_name(path.name + ".incomplete")
         skip_download = False
-        if exists(temp_path):
-            if getsize(temp_path) > product_info["size"]:
+        if temp_path.exists():
+            size = temp_path.stat().st_size
+            if size > product_info["size"]:
                 self.logger.warning(
                     "Existing incomplete file %s is larger than the expected final size"
                     " (%s vs %s bytes). Deleting it.",
                     str(temp_path),
-                    getsize(temp_path),
+                    size,
                     product_info["size"],
                 )
-                remove(temp_path)
-            elif getsize(temp_path) == product_info["size"]:
-                if checksum is True and not self._md5_compare(temp_path, product_info["md5"]):
+                temp_path.unlink()
+            elif size == product_info["size"]:
+                if verify_checksum and not self._md5_compare(temp_path, product_info["md5"]):
                     # Log a warning since this should never happen
                     self.logger.warning(
                         "Existing incomplete file %s appears to be fully downloaded but "
                         "its checksum is incorrect. Deleting it.",
                         str(temp_path),
                     )
-                    remove(temp_path)
+                    temp_path.unlink()
                 else:
                     skip_download = True
             else:
@@ -595,22 +599,19 @@ class SentinelAPI:
                     "Download will resume from existing incomplete file %s.", temp_path
                 )
                 pass
-
         if not skip_download:
             # Store the number of downloaded bytes for unit tests
+            temp_path.parent.mkdir(parents=True, exist_ok=True)
             product_info["downloaded_bytes"] = self._download(
                 product_info["url"], temp_path, self.session, product_info["size"]
             )
-
         # Check integrity with MD5 checksum
-        if checksum is True:
+        if verify_checksum is True:
             if not self._md5_compare(temp_path, product_info["md5"]):
-                remove(temp_path)
+                temp_path.unlink()
                 raise InvalidChecksumError("File corrupt: checksums do not match")
-
         # Download successful, rename the temporary file to its proper name
         shutil.move(temp_path, path)
-        return product_info
 
     def _get_filename(self, product_info):
         # Default guess, mostly for archived products
@@ -746,9 +747,9 @@ class SentinelAPI:
         downloaded_prods = {}
         for product_info in list(offline_prods.values()):
             filename = self._get_filename(product_info)
-            path = join(directory_path, filename)
-            if exists(path):
-                product_info["path"] = path
+            path = Path(directory_path) / filename
+            if path.exists():
+                product_info["path"] = str(path)
                 downloaded_prods[product_info["id"]] = product_info
                 del offline_prods[product_info["id"]]
             else:
@@ -989,8 +990,8 @@ class SentinelAPI:
         product_info = self.get_product_odata(id)
         url = product_info["quicklook_url"]
 
-        path = join(directory_path, "{}.jpeg".format(product_info["title"]))
-        product_info["path"] = path
+        path = Path(directory_path) / "{}.jpeg".format(product_info["title"])
+        product_info["path"] = str(path)
         product_info["downloaded_bytes"] = 0
         product_info["error"] = ""
 
@@ -1001,7 +1002,7 @@ class SentinelAPI:
 
         product_info["quicklook_size"] = len(r.content)
 
-        if exists(path):
+        if path.exists():
             return product_info
 
         content_type = r.headers["content-type"]
@@ -1118,16 +1119,15 @@ class SentinelAPI:
             raise ValueError("Must provide either file paths or product IDs and a directory")
         if ids and not directory:
             raise ValueError("Directory value missing")
-        paths = paths or []
+        if directory is not None:
+            directory = Path(directory)
+        paths = [Path(p) for p in paths] if paths else []
         ids = ids or []
-
-        def name_from_path(path):
-            return splitext(basename(path))[0]
 
         # Get product IDs corresponding to the files on disk
         names = []
         if paths:
-            names = list(map(name_from_path, paths))
+            names = [p.stem for p in paths]
             result = self._query_names(names)
             for product_dicts in result.values():
                 ids += list(product_dicts)
@@ -1144,41 +1144,44 @@ class SentinelAPI:
 
             # Collect
             if name not in names_from_paths:
-                paths.append(join(directory, name + ".zip"))
+                paths.append(directory / self._get_filename(odata))
 
         # Now go over the list of products and check them
         corrupt = {}
         for path in paths:
-            name = name_from_path(path)
+            name = path.stem
 
             if len(product_infos[name]) > 1:
-                self.logger.warning("{} matches multiple products on server".format(path))
+                self.logger.warning("%s matches multiple products on server", path)
 
-            if not exists(path):
+            if not path.exists():
                 # We will consider missing files as corrupt also
-                self.logger.info("{} does not exist on disk".format(path))
-                corrupt[path] = product_infos[name]
+                self.logger.info("%s does not exist on disk", path)
+                corrupt[str(path)] = product_infos[name]
                 continue
 
             is_fine = False
             for product_info in product_infos[name]:
-                if getsize(path) == product_info["size"] and self._md5_compare(
+                if path.stat().st_size == product_info["size"] and self._md5_compare(
                     path, product_info["md5"]
                 ):
                     is_fine = True
                     break
             if not is_fine:
-                self.logger.info("{} is corrupt".format(path))
-                corrupt[path] = product_infos[name]
+                self.logger.info("%s is corrupt", path)
+                corrupt[str(path)] = product_infos[name]
                 if delete:
-                    remove(path)
+                    path.unlink()
 
         return corrupt
 
     def _md5_compare(self, file_path, checksum, block_size=2 ** 13):
         """Compare a given MD5 checksum with one calculated from a file."""
+        file_path = Path(file_path)
         with closing(
-            self._tqdm(desc="MD5 checksumming", total=getsize(file_path), unit="B", unit_scale=True)
+            self._tqdm(
+                desc="MD5 checksumming", total=file_path.stat().st_size, unit="B", unit_scale=True
+            )
         ) as progress:
             md5 = hashlib.md5()
             with open(file_path, "rb") as f:
@@ -1192,9 +1195,9 @@ class SentinelAPI:
 
     def _download(self, url, path, session, file_size):
         headers = {}
-        continuing = exists(path)
+        continuing = path.exists()
         if continuing:
-            already_downloaded_bytes = getsize(path)
+            already_downloaded_bytes = path.stat().st_size
             headers = {"Range": "bytes={}-".format(already_downloaded_bytes)}
         else:
             already_downloaded_bytes = 0
@@ -1448,12 +1451,12 @@ def _check_scihub_response(response, test_json=True, query_string=None):
     except (requests.HTTPError, ValueError):
         msg = None
         try:
-            msg = response.headers["cause-message"]
+            msg = response.json()["error"]["message"]["value"]
         except Exception:
             try:
-                msg = response.json()["error"]["message"]["value"]
+                msg = response.headers["cause-message"]
             except Exception:
-                if not response.text.strip().startswith("{"):
+                if not response.text.lstrip().startswith("{"):
                     try:
                         h = html2text.HTML2Text()
                         h.ignore_images = True
@@ -1483,7 +1486,7 @@ def _check_scihub_response(response, test_json=True, query_string=None):
                     "client-side validation of the query string length.".format(length)
                 )
             error = QueryLengthError(msg, response)
-        elif "InvalidKeyException" in msg:
+        elif "Invalid key" in msg:
             msg = msg.split(" : ", 1)[-1]
             error = InvalidKeyError(msg, response)
         elif 500 <= response.status_code < 600 or msg:
