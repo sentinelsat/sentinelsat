@@ -225,6 +225,23 @@ Options
      - --footprints
      -  
      - Create geojson file search_footprints.geojson with footprints of the query result.
+   * -
+     - --debug
+     -
+     - Print debug log messages.
+   * -
+     - --include-pattern
+     -
+     - Glob pattern to filter files (within each product) to be downloaded.
+   * -
+     - --exclude-pattern
+     -
+     - Glob pattern to filter files (within each product) to be excluded
+       from the downloaded.
+   * -
+     - --gnss
+     -
+     - Query download orbit product form the GNSS end-point ("https://scihub.copernicus.eu/gnss").
    * -  
      - --info
      -  
