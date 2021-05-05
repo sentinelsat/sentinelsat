@@ -25,14 +25,14 @@ interactions:
       dataserviceversion:
       - '2.0'
       date:
-      - Fri, 30 Apr 2021 17:41:48 GMT
+      - Sun, 02 May 2021 19:05:26 GMT
       pragma:
       - no-cache
       server:
       - Apache-Coyote/1.1
       set-cookie:
       - dhusAuth=8fe86aa51d48f760dc8a1e5d8c99c8fd; Path=/apihub/; HttpOnly
-      - dhusIntegrity=567c4e4ed69b1c6e67f944d97116efd3e41f18dd; Path=/apihub/; HttpOnly
+      - dhusIntegrity=db24eceb37dd69d5fc0f9ea5df53e298ab4a216e; Path=/apihub/; HttpOnly
       transfer-encoding:
       - chunked
       vary:

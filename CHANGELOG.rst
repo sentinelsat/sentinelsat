@@ -36,6 +36,13 @@ Changed
   (#285 @valgur, @dwlsalmeida)
 * Tidied up the (internal) download code logic (#378 @valgur)
 * Added an "exception" field to the ``failed_products`` dict returned by in ``.download_all()`` for easier debugging (#378 @valgur)
+* Fixed the server-side space handling change issue reported in #383 by quoting instead of backslash-escaping the strings. (#390 @valgur)
+* Queries now use ``(key:value OR key:value)`` format instead of the previous ``key:(value OR value)`` format,
+  which for some reason took tens of seconds per query. (#390 @valgur)
+* Got rid of the special handling of ``--uuid`` and ``--name`` CLI arguments. The product IDs are now simply passed to ``api.query()`` as a set.
+  They no longer also ignore the date range arguments (fixes #387). Add ``--start *`` to CLI arguments to maintain old behavior. (#390 @valgur)
+* Empty queries raise a ``ValueError`` immediately on the client side instead of letting the server generate it. (#390 @valgur)
+* Added stricter checks for empty keyword values in queries, which would cause server-side errors. (#390 @valgur)
 
 Deprecated
 ~~~~~~~~~~
@@ -51,8 +58,9 @@ Fixed
 
 Development Changes
 ~~~~~~~~~~~~~~~~~~~
-* add Windows, macOS, Python 3.8 to Travis tests #374
-* fixed failing Read The Docs builds (#370)
+* Fixed failing Read The Docs builds (#370)
+* Replaced Travis CI with Github Actions. Added testing on MacOS and Windows. (#438 @avalentino)
+* Made tests more robust by not relying on specific products being returned where possible.
 
 
 [0.14] – 2020-06-12

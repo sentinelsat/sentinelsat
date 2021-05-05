@@ -120,11 +120,13 @@ def netrc_from_environ(no_netrc, credentials):
 @pytest.mark.vcr
 @pytest.mark.scihub
 def test_cli(run_cli, geojson_path):
-    run_cli("--geometry", geojson_path)
+    run_cli("--geometry", geojson_path, "--limit", "5")
 
-    run_cli("--geometry", geojson_path, "--url", "https://scihub.copernicus.eu/dhus/")
+    run_cli(
+        "--geometry", geojson_path, "--url", "https://scihub.copernicus.eu/dhus/", "--limit", "5"
+    )
 
-    run_cli("--geometry", geojson_path, "-q", "producttype=GRD,polarisationmode=HH")
+    run_cli("--geometry", geojson_path, "-q", "producttype=GRD,polarisationmode=HH", "--limit", "5")
 
 
 @pytest.mark.vcr
@@ -367,17 +369,20 @@ def test_limit_flag(run_cli, geojson_path):
 @pytest.mark.vcr
 @pytest.mark.scihub
 def test_uuid_search(run_cli):
-    result = run_cli("--uuid", "d8340134-878f-4891-ba4f-4df54f1e3ab4")
-
-    expected = "Product d8340134-878f-4891-ba4f-4df54f1e3ab4 - S1A_WV_OCN__2SSV_20150526T211029_20150526T211737_006097_007E78_134A - 0.2 MB"
-    assert result.products[0] == expected
+    uuid = "d8340134-878f-4891-ba4f-4df54f1e3ab4"
+    result = run_cli("--uuid", uuid, "--start", "*")
+    assert len(result.products) == 1
+    assert uuid in result.products[0]
 
 
 @pytest.mark.vcr
 @pytest.mark.scihub
 def test_name_search(run_cli):
     result = run_cli(
-        "--name", "S1A_WV_OCN__2SSV_20150526T211029_20150526T211737_006097_007E78_134A"
+        "--name",
+        "S1A_WV_OCN__2SSV_20150526T211029_20150526T211737_006097_007E78_134A",
+        "--start",
+        "*",
     )
 
     expected = "Product d8340134-878f-4891-ba4f-4df54f1e3ab4 - Date: 2015-05-26T21:10:28.984Z, Instrument: SAR-C SAR, Mode: VV, Satellite: Sentinel-1, Size: 10.65 KB"
@@ -390,6 +395,8 @@ def test_name_search_multiple(run_cli):
     result = run_cli(
         "--name",
         "S1B_IW_GRDH_1SDV_20181007T164414_20181007T164439_013049_0181B7_345E,S1B_IW_GRDH_1SDV_20181007T164349_20181007T164414_013049_0181B7_A8E3",
+        "--start",
+        "*",
     )
 
     expected = [
@@ -402,7 +409,7 @@ def test_name_search_multiple(run_cli):
 @pytest.mark.vcr
 @pytest.mark.scihub
 def test_name_search_empty(run_cli):
-    run_cli("--name", "", must_raise=QuerySyntaxError)
+    run_cli("--name", "", must_raise=ValueError)
 
 
 @pytest.mark.vcr
@@ -471,7 +478,7 @@ def test_download_single(run_cli, api, tmpdir, smallest_online_products, monkeyp
     )
 
     product_id = smallest_online_products[0]["id"]
-    command = ["--uuid", product_id, "--download", "--path", str(tmpdir)]
+    command = ["--uuid", product_id, "--download", "--path", str(tmpdir), "--start", "*"]
 
     run_cli(*command)
 
@@ -509,7 +516,7 @@ def test_product_node_download_single(run_cli, api, tmpdir, smallest_online_prod
     )
 
     product_id = smallest_online_products[0]["id"]
-    command = ["--uuid", product_id, "--download", "--path", str(tmpdir)]
+    command = ["--uuid", product_id, "--download", "--path", str(tmpdir), "--start", "*"]
 
     run_cli(*command)
 
@@ -552,6 +559,8 @@ def test_product_node_download_single_with_filter(
     command = [
         "--uuid",
         product_id,
+        "--start",
+        "*",
         "--download",
         "--path",
         str(tmpdir),
@@ -589,9 +598,9 @@ def test_download_many(run_cli, api, tmpdir, smallest_online_products, monkeypat
         partialmethod(SentinelAPI.download_all, n_concurrent_dl=1, max_attempts=2),
     )
 
-    ids = [product["id"] for product in smallest_online_products]
+    ids = sorted(product["id"] for product in smallest_online_products)
 
-    command = ["--uuid", ",".join(ids), "--download", "--path", str(tmpdir)]
+    command = ["--uuid", ",".join(ids), "--download", "--path", str(tmpdir), "--start", "*"]
 
     # Download 3 tiny products
     run_cli(*command)
@@ -626,17 +635,6 @@ def test_download_many(run_cli, api, tmpdir, smallest_online_products, monkeypat
 
 @pytest.mark.vcr
 @pytest.mark.scihub
-def test_download_invalid_id_cli(run_cli, tmpdir):
-    product_id = "f30b2a6a-b0c1-49f1-INVALID-e10c3cf06101"
-    result = run_cli(
-        "--uuid", product_id, "--download", "--path", str(tmpdir), must_return_nonzero=True
-    )
-    assert "No product with" in result.output
-    tmpdir.remove()
-
-
-@pytest.mark.vcr
-@pytest.mark.scihub
 def test_download_single_quicklook(run_cli, api, tmpdir, quicklook_products, monkeypatch):
     # Change default arguments for quicker test.
     # Also, vcrpy is not threadsafe, so only one worker is used.
@@ -646,7 +644,7 @@ def test_download_single_quicklook(run_cli, api, tmpdir, quicklook_products, mon
     )
 
     id = quicklook_products[0]["id"]
-    command = ["--uuid", id, "--quicklook", "--path", str(tmpdir)]
+    command = ["--uuid", id, "--quicklook", "--path", str(tmpdir), "--start", "*"]
 
     run_cli(*command)
 
