@@ -27,7 +27,13 @@ jobs:
       run: |
         ./tests/fixtures/clean_cassettes.sh
     
+    - name: Server health check
+      id: health-check
+      run: |
+        sentinelsat --info | grep "DHuS version"
+    
     - name: Run tests and re-record cassettes
+      if: steps.health-check.conclusion == 'success'
       env:
         DHUS_USER: ${{ secrets.DHUS_USER }}
         DHUS_PASSWORD: ${{ secrets.DHUS_PASSWORD }}
@@ -40,14 +46,14 @@ jobs:
       
     - name: Upload new cassettes as an artifact
       uses: actions/upload-artifact@v2
-      if: always()
+      if: always() && steps.health-check.conclusion == 'success'
       with:
         name: fixtures
         path: tests/fixtures/
 
     - name: Create an issue if tests failed
       uses: JasonEtco/create-an-issue@v2
-      if: failure()
+      if: failure() && steps.health-check.conclusion == 'success'
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
