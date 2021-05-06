@@ -33,6 +33,10 @@ jobs:
         DHUS_PASSWORD: ${{ secrets.DHUS_PASSWORD }}
       run: |
         pytest --vcr-record new_episodes -vvv
+    
+    - name: Test with the recorded cassettes
+      run: |
+        pytest -vvv
       
     - name: Upload new cassettes as an artifact
       uses: actions/upload-artifact@v2
