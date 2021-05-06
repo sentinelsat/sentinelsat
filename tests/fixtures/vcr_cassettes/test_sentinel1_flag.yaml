@@ -22,7 +22,7 @@ interactions:
         Scientific Data Hub search results for: beginPosition:[\"2015-12-19T00:00:00Z\"
         TO \"2015-12-28T00:00:00Z\"] platformname:\"Sentinel-1\" footprint:\"Intersects(POLYGON((-66.2695
         -8.0592,-66.2695 0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\"","subtitle":"Displaying
-        11 results. Request done in 0.06 seconds.","updated":"2021-05-02T18:51:15.465Z","author":{"name":"Sentinels
+        11 results. Request done in ... seconds.","updated":"...","author":{"name":"Sentinels
         Scientific Data Hub"},"id":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[\"2015-12-19T00:00:00Z\"
         TO \"2015-12-28T00:00:00Z\"] platformname:\"Sentinel-1\" footprint:\"Intersects(POLYGON((-66.2695
         -8.0592,-66.2695 0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\"","opensearch:totalResults":"11","opensearch:startIndex":"0","opensearch:itemsPerPage":"100","opensearch:Query":{"role":"request","searchTerms":"beginPosition:[\"2015-12-19T00:00:00Z\"
@@ -146,7 +146,7 @@ interactions:
         GB"},{"name":"status","content":"ARCHIVED"},{"name":"uuid","content":"e9ae2e71-42c6-4970-a306-ab298ded5e5e"}]}]}}'
     headers:
       content-length:
-      - '31060'
+      - '31038'
       content-type:
       - application/json
       pragma:
@@ -155,12 +155,6 @@ interactions:
       - Apache-Coyote/1.1
       vary:
       - Accept-Encoding
-      x-content-type-options:
-      - nosniff
-      x-frame-options:
-      - DENY
-      x-xss-protection:
-      - 1; mode=block
     status:
       code: 200
       message: OK

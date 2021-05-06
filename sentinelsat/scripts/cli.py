@@ -216,6 +216,12 @@ def cli(
 
     _set_logger_handler("DEBUG" if debug else "INFO")
 
+    if info:
+        api = SentinelProductsAPI(None, None, url)
+        ctx = click.get_current_context()
+        click.echo("DHuS version: " + api.dhus_version)
+        ctx.exit()
+
     if include_pattern is not None and exclude_pattern is not None:
         raise click.UsageError(
             "--include-pattern and --exclude-pattern cannot be specified together."
@@ -240,11 +246,6 @@ def cli(
         )
 
     api = SentinelProductsAPI(user, password, url)
-
-    if info:
-        ctx = click.get_current_context()
-        click.echo("DHuS version: " + api.dhus_version)
-        ctx.exit()
 
     search_kwargs = {}
     if sentinel and not (producttype or instrument):

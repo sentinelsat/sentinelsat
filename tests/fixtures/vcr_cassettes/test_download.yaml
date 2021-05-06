@@ -30,12 +30,6 @@ interactions:
       - Apache-Coyote/1.1
       vary:
       - Accept-Encoding
-      x-content-type-options:
-      - nosniff
-      x-frame-options:
-      - DENY
-      x-xss-protection:
-      - 1; mode=block
     status:
       code: 200
       message: OK
@@ -70,18 +64,10 @@ interactions:
       - '2.0'
       etag:
       - 9eb46e4e31f77f108213e16bb8fbe088
-      last-modified:
-      - Tue, 17 Nov 2015 16:56:01 UTC
       pragma:
       - no-cache
       server:
       - Apache-Coyote/1.1
-      x-content-type-options:
-      - nosniff
-      x-frame-options:
-      - DENY
-      x-xss-protection:
-      - 1; mode=block
     status:
       code: 200
       message: OK
@@ -115,18 +101,10 @@ interactions:
       - '2.0'
       etag:
       - 9eb46e4e31f77f108213e16bb8fbe088
-      last-modified:
-      - Tue, 17 Nov 2015 16:56:01 UTC
       pragma:
       - no-cache
       server:
       - Apache-Coyote/1.1
-      x-content-type-options:
-      - nosniff
-      x-frame-options:
-      - DENY
-      x-xss-protection:
-      - 1; mode=block
     status:
       code: 200
       message: OK
@@ -161,12 +139,6 @@ interactions:
       - Apache-Coyote/1.1
       vary:
       - Accept-Encoding
-      x-content-type-options:
-      - nosniff
-      x-frame-options:
-      - DENY
-      x-xss-protection:
-      - 1; mode=block
     status:
       code: 200
       message: OK
@@ -201,18 +173,10 @@ interactions:
       - '2.0'
       etag:
       - 9eb46e4e31f77f108213e16bb8fbe088
-      last-modified:
-      - Tue, 17 Nov 2015 16:56:01 UTC
       pragma:
       - no-cache
       server:
       - Apache-Coyote/1.1
-      x-content-type-options:
-      - nosniff
-      x-frame-options:
-      - DENY
-      x-xss-protection:
-      - 1; mode=block
     status:
       code: 200
       message: OK
@@ -247,12 +211,6 @@ interactions:
       - Apache-Coyote/1.1
       vary:
       - Accept-Encoding
-      x-content-type-options:
-      - nosniff
-      x-frame-options:
-      - DENY
-      x-xss-protection:
-      - 1; mode=block
     status:
       code: 200
       message: OK
@@ -287,18 +245,10 @@ interactions:
       - '2.0'
       etag:
       - 9eb46e4e31f77f108213e16bb8fbe088
-      last-modified:
-      - Tue, 17 Nov 2015 16:56:01 UTC
       pragma:
       - no-cache
       server:
       - Apache-Coyote/1.1
-      x-content-type-options:
-      - nosniff
-      x-frame-options:
-      - DENY
-      x-xss-protection:
-      - 1; mode=block
     status:
       code: 200
       message: OK
@@ -332,18 +282,10 @@ interactions:
       - '2.0'
       etag:
       - 9eb46e4e31f77f108213e16bb8fbe088
-      last-modified:
-      - Tue, 17 Nov 2015 16:56:01 UTC
       pragma:
       - no-cache
       server:
       - Apache-Coyote/1.1
-      x-content-type-options:
-      - nosniff
-      x-frame-options:
-      - DENY
-      x-xss-protection:
-      - 1; mode=block
     status:
       code: 200
       message: OK
@@ -378,12 +320,6 @@ interactions:
       - Apache-Coyote/1.1
       vary:
       - Accept-Encoding
-      x-content-type-options:
-      - nosniff
-      x-frame-options:
-      - DENY
-      x-xss-protection:
-      - 1; mode=block
     status:
       code: 200
       message: OK
@@ -418,18 +354,10 @@ interactions:
       - '2.0'
       etag:
       - 9eb46e4e31f77f108213e16bb8fbe088
-      last-modified:
-      - Tue, 17 Nov 2015 16:56:01 UTC
       pragma:
       - no-cache
       server:
       - Apache-Coyote/1.1
-      x-content-type-options:
-      - nosniff
-      x-frame-options:
-      - DENY
-      x-xss-protection:
-      - 1; mode=block
     status:
       code: 200
       message: OK
@@ -465,18 +393,10 @@ interactions:
       - '2.0'
       etag:
       - 9eb46e4e31f77f108213e16bb8fbe088
-      last-modified:
-      - Tue, 17 Nov 2015 16:56:01 UTC
       pragma:
       - no-cache
       server:
       - Apache-Coyote/1.1
-      x-content-type-options:
-      - nosniff
-      x-frame-options:
-      - DENY
-      x-xss-protection:
-      - 1; mode=block
     status:
       code: 206
       message: Partial Content
@@ -511,12 +431,6 @@ interactions:
       - Apache-Coyote/1.1
       vary:
       - Accept-Encoding
-      x-content-type-options:
-      - nosniff
-      x-frame-options:
-      - DENY
-      x-xss-protection:
-      - 1; mode=block
     status:
       code: 200
       message: OK
@@ -551,18 +465,10 @@ interactions:
       - '2.0'
       etag:
       - 9eb46e4e31f77f108213e16bb8fbe088
-      last-modified:
-      - Tue, 17 Nov 2015 16:56:01 UTC
       pragma:
       - no-cache
       server:
       - Apache-Coyote/1.1
-      x-content-type-options:
-      - nosniff
-      x-frame-options:
-      - DENY
-      x-xss-protection:
-      - 1; mode=block
     status:
       code: 200
       message: OK
@@ -598,18 +504,10 @@ interactions:
       - '2.0'
       etag:
       - 9eb46e4e31f77f108213e16bb8fbe088
-      last-modified:
-      - Tue, 17 Nov 2015 16:56:01 UTC
       pragma:
       - no-cache
       server:
       - Apache-Coyote/1.1
-      x-content-type-options:
-      - nosniff
-      x-frame-options:
-      - DENY
-      x-xss-protection:
-      - 1; mode=block
     status:
       code: 206
       message: Partial Content

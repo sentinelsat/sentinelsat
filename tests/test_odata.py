@@ -9,6 +9,7 @@ import requests_mock
 from sentinelsat import SentinelAPI
 from sentinelsat.exceptions import InvalidKeyError, ServerError
 from sentinelsat.sentinel import _parse_odata_timestamp
+from .conftest import chain, scrub_string
 
 
 @pytest.mark.fast
@@ -27,16 +28,6 @@ def test_get_product_odata_short(api, smallest_online_products, read_yaml):
         responses[id] = api.get_product_odata(id)
     expected = read_yaml("odata_response_short.yml", responses)
     assert sorted(responses) == sorted(expected)
-
-
-def scrub_string(string, replacement=""):
-    """Scrub a string from a VCR response body string"""
-
-    def before_record_response(response):
-        response["body"]["string"] = response["body"]["string"].replace(string, replacement)
-        return response
-
-    return before_record_response
 
 
 @pytest.mark.scihub
@@ -61,7 +52,9 @@ def test_get_product_odata_short_with_missing_online_key(api, vcr):
         # scrub 'Online' key from response
         with vcr.use_cassette(
             "test_get_product_odata_short_with_missing_online_key",
-            before_record_response=scrub_string(b'"Online":false,', b""),
+            before_record_response=chain(
+                vcr.before_record_response, scrub_string(b'"Online":false,', b"")
+            ),
         ):
             response = api.get_product_odata(uuid)
     assert response == expected_short

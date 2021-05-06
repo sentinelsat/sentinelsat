@@ -467,14 +467,14 @@ def test_footprints_cli(run_cli, tmpdir, geojson_path):
     tmpdir.remove()
 
 
-@pytest.mark.vcr
+@pytest.mark.vcr(allow_playback_repeats=True)
 @pytest.mark.scihub
 def test_download_single(run_cli, api, tmpdir, smallest_online_products, monkeypatch):
     # Change default arguments for quicker test.
     # Also, vcrpy is not threadsafe, so only one worker is used.
     monkeypatch.setattr(
         "sentinelsat.SentinelAPI.download_all",
-        partialmethod(SentinelAPI.download_all, n_concurrent_dl=1, max_attempts=2),
+        partialmethod(SentinelAPI.download_all, max_attempts=2),
     )
 
     product_id = smallest_online_products[0]["id"]
@@ -505,16 +505,15 @@ def test_download_single(run_cli, api, tmpdir, smallest_online_products, monkeyp
     tmpdir.remove()
 
 
-@pytest.mark.vcr
+@pytest.mark.vcr(allow_playback_repeats=True)
 @pytest.mark.scihub
 def test_product_node_download_single(run_cli, api, tmpdir, smallest_online_products, monkeypatch):
     # Change default arguments for quicker test.
     # Also, vcrpy is not threadsafe, so only one worker is used.
     monkeypatch.setattr(
         "sentinelsat.SentinelProductsAPI.download_all",
-        partialmethod(SentinelProductsAPI.download_all, n_concurrent_dl=1, max_attempts=2),
+        partialmethod(SentinelProductsAPI.download_all, max_attempts=2),
     )
-
     product_id = smallest_online_products[0]["id"]
     command = ["--uuid", product_id, "--download", "--path", str(tmpdir), "--start", "*"]
 
@@ -543,7 +542,7 @@ def test_product_node_download_single(run_cli, api, tmpdir, smallest_online_prod
     tmpdir.remove()
 
 
-@pytest.mark.vcr
+@pytest.mark.vcr(allow_playback_repeats=True)
 @pytest.mark.scihub
 def test_product_node_download_single_with_filter(
     run_cli, api, tmpdir, smallest_online_products, monkeypatch
@@ -552,7 +551,7 @@ def test_product_node_download_single_with_filter(
     # Also, vcrpy is not threadsafe, so only one worker is used.
     monkeypatch.setattr(
         "sentinelsat.SentinelProductsAPI.download_all",
-        partialmethod(SentinelAPI.download_all, n_concurrent_dl=1, max_attempts=2),
+        partialmethod(SentinelAPI.download_all, max_attempts=2),
     )
 
     product_id = smallest_online_products[0]["id"]
@@ -588,14 +587,14 @@ def test_product_node_download_single_with_filter(
     tmpdir.remove()
 
 
-@pytest.mark.vcr
+@pytest.mark.vcr(allow_playback_repeats=True)
 @pytest.mark.scihub
 def test_download_many(run_cli, api, tmpdir, smallest_online_products, monkeypatch):
     # Change default arguments for quicker test.
     # Also, vcrpy is not threadsafe, so only one worker is used.
     monkeypatch.setattr(
         "sentinelsat.SentinelAPI.download_all",
-        partialmethod(SentinelAPI.download_all, n_concurrent_dl=1, max_attempts=2),
+        partialmethod(SentinelAPI.download_all, max_attempts=2),
     )
 
     ids = sorted(product["id"] for product in smallest_online_products)
@@ -633,14 +632,14 @@ def test_download_many(run_cli, api, tmpdir, smallest_online_products, monkeypat
     tmpdir.remove()
 
 
-@pytest.mark.vcr
+@pytest.mark.vcr(allow_playback_repeats=True)
 @pytest.mark.scihub
 def test_download_single_quicklook(run_cli, api, tmpdir, quicklook_products, monkeypatch):
     # Change default arguments for quicker test.
     # Also, vcrpy is not threadsafe, so only one worker is used.
     monkeypatch.setattr(
         "sentinelsat.SentinelAPI.download_all_quicklooks",
-        partialmethod(SentinelAPI.download_all_quicklooks, n_concurrent_dl=1),
+        partialmethod(SentinelAPI.download_all_quicklooks),
     )
 
     id = quicklook_products[0]["id"]

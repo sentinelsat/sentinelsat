@@ -1,4 +1,6 @@
+import re
 from datetime import datetime
+from functools import reduce
 from os import environ
 from os.path import join, isfile, dirname, abspath, exists
 
@@ -27,32 +29,62 @@ def pytest_runtest_setup(item):
         pytest.fail("The test is missing a 'scihub', 'fast' or 'mock_api' marker")
 
 
+def scrub_request(request):
+    for header in ("Authorization", "Set-Cookie", "Cookie"):
+        if header in request.headers:
+            del request.headers[header]
+    return request
+
+
+def scrub_response(response):
+    ignore = {
+        x.lower()
+        for x in [
+            "Authorization",
+            "Set-Cookie",
+            "Cookie",
+            "Date",
+            "Expires",
+            "Transfer-Encoding",
+            "last-modified",
+        ]
+    }
+    for header in list(response["headers"]):
+        if (
+            header.lower() in ignore
+            or header.lower().startswith("access-control")
+            or header.lower().startswith("x-")
+        ):
+            del response["headers"][header]
+    return response
+
+
+def scrub_string(string, replacement=b""):
+    """Scrub a string from a VCR response body string"""
+
+    def before_record_response(response):
+        len_before = len(response["body"]["string"])
+        response["body"]["string"] = re.sub(string, replacement, response["body"]["string"])
+        len_diff = len(response["body"]["string"]) - len_before
+        if "content-length" in response["headers"]:
+            response["headers"]["content-length"] = [
+                str(int(response["headers"]["content-length"][0]) + len_diff)
+            ]
+        return response
+
+    return before_record_response
+
+
+def chain(*funcs):
+    def chained_call(arg):
+        return reduce(lambda x, f: f(x), funcs, arg)
+
+    return chained_call
+
+
 # Configure pytest-vcr
 @pytest.fixture(scope="module")
 def vcr(vcr):
-    def scrub_request(request):
-        for header in ("Authorization", "Set-Cookie", "Cookie"):
-            if header in request.headers:
-                del request.headers[header]
-        return request
-
-    def scrub_response(response):
-        ignore = {
-            x.lower()
-            for x in [
-                "Authorization",
-                "Set-Cookie",
-                "Cookie",
-                "Date",
-                "Expires",
-                "Transfer-Encoding",
-            ]
-        }
-        for header in list(response["headers"]):
-            if header.lower() in ignore or header.lower().startswith("access-control"):
-                del response["headers"][header]
-        return response
-
     def range_header_matcher(r1, r2):
         return r1.headers.get("Range", "") == r2.headers.get("Range", "")
 
@@ -60,7 +92,11 @@ def vcr(vcr):
     vcr.path_transformer = VCR.ensure_suffix(".yaml")
     vcr.filter_headers = ["Set-Cookie"]
     vcr.before_record_request = scrub_request
-    vcr.before_record_response = scrub_response
+    vcr.before_record_response = chain(
+        scrub_response,
+        scrub_string(rb"Request done in \S+ seconds.", b"Request done in ... seconds."),
+        scrub_string(rb'"updated":"[^"]+"', b'"updated":"..."'),
+    )
     vcr.decode_compressed_response = True
     vcr.register_serializer("custom", BinaryContentSerializer(CASSETTE_DIR))
     vcr.serializer = "custom"
@@ -214,17 +250,31 @@ def raw_products(api_kwargs, vcr, test_wkt):
 
 def _get_smallest(api_kwargs, cassette, online, n=3):
     api = SentinelAPI(**api_kwargs)
-    url = "{}odata/v1/Products?$format=json&$top={}&$orderby=ContentLength&$filter=Online%20eq%20{}".format(
-        api_kwargs["api_url"], n + 20, "true" if online else "false"
+    filter = " and ".join(
+        [
+            "Online eq {}".format("true" if online else "false"),
+            # limit time range for tests stability and much faster OData querying
+            "CreationDate lt datetime'2016-01-01T00:00:00.000'",
+            # needed for SentinelProductsAPI tests, some S5 apparently do not include manifest.safe
+            "not startswith(Name, 'S3')",
+            # don't want zero-length products for testing, plus their handling has server-side bugs
+            "ContentLength ne 0",
+        ]
     )
+    url = "{}odata/v1/Products?$format=json&$top={}&$filter={}".format(
+        api_kwargs["api_url"], n + 3, filter
+    )
+    if online:
+        # archived products do not have the correct ContentLength value,
+        # so use an arbitrary subset of the data and skip orderby to speed up the query
+        url += "&$orderby=ContentLength"
     with cassette:
         r = api.session.get(url)
     odata = [_parse_odata_response(x) for x in r.json()["d"]["results"]]
     # Drop products that appear to be broken
     blacklist = ["S2A_MSIL2A_20190528T113321_N0212_R080_T29UPB_20190528T142130"]
     odata = [x for x in odata if x["title"] not in blacklist]
-    # Drop any empty products, which will cause issues
-    odata = [x for x in odata if x["size"] > 0][:n]
+    odata = odata[:n]
     assert len(odata) == n
     return odata
 

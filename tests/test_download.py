@@ -158,15 +158,13 @@ def test_download(api, tmpdir, smallest_online_products):
     tmpdir.remove()
 
 
-@pytest.mark.vcr
+@pytest.mark.vcr(allow_playback_repeats=True)
 @pytest.mark.scihub
 def test_download_all(api, tmpdir, smallest_online_products):
     ids = [product["id"] for product in smallest_online_products]
 
     # Download normally
-    product_infos, triggered, failed_downloads = api.download_all(
-        ids, str(tmpdir), n_concurrent_dl=1, max_attempts=1
-    )
+    product_infos, triggered, failed_downloads = api.download_all(ids, str(tmpdir), max_attempts=1)
     assert len(failed_downloads) == 0
     assert len(triggered) == 0
     assert len(product_infos) == len(ids)
@@ -177,7 +175,7 @@ def test_download_all(api, tmpdir, smallest_online_products):
         assert pypath.size() == product_info["size"]
 
 
-@pytest.mark.vcr
+@pytest.mark.vcr(allow_playback_repeats=True)
 @pytest.mark.scihub
 def test_download_all_one_fail(api, tmpdir, smallest_online_products):
     ids = [product["id"] for product in smallest_online_products]
@@ -193,6 +191,9 @@ def test_download_all_one_fail(api, tmpdir, smallest_online_products):
             ids, str(tmpdir), max_attempts=1, checksum=True
         )
         exceptions = {k: v["exception"] for k, v in failed_downloads.items()}
+        for e in exceptions.values():
+            if not isinstance(e, InvalidChecksumError):
+                raise e from None
         assert sorted(failed_downloads) == [ids[0]], exceptions
         assert type(list(exceptions.values())[0]) == InvalidChecksumError, exceptions
         assert triggered == {}
@@ -202,16 +203,18 @@ def test_download_all_one_fail(api, tmpdir, smallest_online_products):
     tmpdir.remove()
 
 
-@pytest.mark.xfail(reason="The threading in this test seems to break VCR.py somehow")
-@pytest.mark.vcr
+@pytest.mark.skip(
+    reason="The threading in this test seems to break VCR.py somehow "
+    "and smallest_archived_products does not currently return actually small"
+    "products for archived products"
+)
+@pytest.mark.vcr(allow_playback_repeats=True)
 @pytest.mark.scihub
 def test_download_all_lta(api, tmpdir, smallest_online_products, smallest_archived_products):
     archived_ids = [x["id"] for x in smallest_archived_products]
     online_ids = [x["id"] for x in smallest_online_products]
     ids = archived_ids[:1] + online_ids[:2]
-    product_infos, triggered, failed_downloads = api.download_all(
-        ids, str(tmpdir), n_concurrent_dl=1
-    )
+    product_infos, triggered, failed_downloads = api.download_all(ids, str(tmpdir))
     exceptions = {k: v["exception"] for k, v in failed_downloads.items()}
     assert len(failed_downloads) == 0, exceptions
     assert len(triggered) == 1
@@ -264,7 +267,7 @@ def test_download_quicklook(api, tmpdir, quicklook_products):
     tmpdir.remove()
 
 
-@pytest.mark.vcr
+@pytest.mark.vcr(allow_playback_repeats=True)
 @pytest.mark.scihub
 def test_download_all_quicklooks(api, tmpdir, quicklook_products):
     ids = [product["id"] for product in quicklook_products]
@@ -284,7 +287,7 @@ def test_download_all_quicklooks(api, tmpdir, quicklook_products):
     tmpdir.remove()
 
 
-@pytest.mark.vcr
+@pytest.mark.vcr(allow_playback_repeats=True)
 @pytest.mark.scihub
 def test_download_all_quicklooks_one_fail(api, tmpdir, quicklook_products):
     ids = [product["id"] for product in quicklook_products]
@@ -292,9 +295,7 @@ def test_download_all_quicklooks_one_fail(api, tmpdir, quicklook_products):
     # Force one download to fail
     id = ids[0]
     with requests_mock.mock(real_http=True) as rqst:
-        url = "https://apihub.copernicus.eu/apihub/odata/v1/Products('{id}')/Products('Quicklook')/$value".format(
-            id=id
-        )
+        url = f"https://apihub.copernicus.eu/apihub/odata/v1/Products('{id}')/Products('Quicklook')/$value"
         headers = api.session.get(url).headers
         headers["content-type"] = "image/xxxx"
         rqst.get(url, headers=headers)
