@@ -131,6 +131,22 @@ def test_cli(run_cli, geojson_path):
 
 @pytest.mark.vcr
 @pytest.mark.scihub
+def test_cli_gnss(run_cli):
+    run_cli(
+        "--gnss",
+        "-s",
+        "20210201",
+        "-e",
+        "20210202",
+        "--producttype",
+        "AUX_POEORB",
+        "--query",
+        "platformserialidentifier=1B",
+    )
+
+
+@pytest.mark.vcr
+@pytest.mark.scihub
 def test_cli_geometry_alternatives(run_cli, geojson_string, wkt_string):
     run_cli("--geometry", geojson_string, "-l", "1")
 

@@ -1,0 +1,51 @@
+interactions:
+- request:
+    body: q=beginPosition%3A%5B%222021-02-01T00%3A00%3A00Z%22+TO+%222021-02-02T00%3A00%3A00Z%22%5D+platformserialidentifier%3A%221B%22+producttype%3A%22AUX_POEORB%22
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '155'
+      Content-Type:
+      - application/x-www-form-urlencoded; charset=UTF-8
+      User-Agent:
+      - sentinelsat/0.14
+    method: POST
+    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=100&start=0
+  response:
+    body:
+      string: '{"feed":{"xmlns:opensearch":"http://a9.com/-/spec/opensearch/1.1/","xmlns":"http://www.w3.org/2005/Atom","title":"Sentinels
+        Scientific Data Hub search results for: beginPosition:[\"2021-02-01T00:00:00Z\"
+        TO \"2021-02-02T00:00:00Z\"] platformserialidentifier:\"1B\" producttype:\"AUX_POEORB\"","subtitle":"Displaying
+        0 results. Request done in 0.001 seconds.","updated":"2021-05-06T05:39:05.429Z","author":{"name":"Sentinels
+        Scientific Data Hub"},"id":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[\"2021-02-01T00:00:00Z\"
+        TO \"2021-02-02T00:00:00Z\"] platformserialidentifier:\"1B\" producttype:\"AUX_POEORB\"","opensearch:totalResults":"0","opensearch:startIndex":"0","opensearch:itemsPerPage":"100","opensearch:Query":{"role":"request","searchTerms":"beginPosition:[\"2021-02-01T00:00:00Z\"
+        TO \"2021-02-02T00:00:00Z\"] platformserialidentifier:\"1B\" producttype:\"AUX_POEORB\"","startPage":"1"},"link":[{"rel":"self","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[\"2021-02-01T00:00:00Z\"
+        TO \"2021-02-02T00:00:00Z\"] platformserialidentifier:\"1B\" producttype:\"AUX_POEORB\"&start=0&rows=100&format=json"},{"rel":"first","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[\"2021-02-01T00:00:00Z\"
+        TO \"2021-02-02T00:00:00Z\"] platformserialidentifier:\"1B\" producttype:\"AUX_POEORB\"&start=0&rows=100&format=json"},{"rel":"last","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[\"2021-02-01T00:00:00Z\"
+        TO \"2021-02-02T00:00:00Z\"] platformserialidentifier:\"1B\" producttype:\"AUX_POEORB\"&start=-1&rows=100&format=json"},{"rel":"search","type":"application/opensearchdescription+xml","href":"opensearch_description.xml"}]}}'
+    headers:
+      content-length:
+      - '1782'
+      content-type:
+      - application/json
+      pragma:
+      - no-cache
+      server:
+      - Apache-Coyote/1.1
+      vary:
+      - Accept-Encoding
+      x-content-type-options:
+      - nosniff
+      x-frame-options:
+      - DENY
+      x-xss-protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+version: 1
