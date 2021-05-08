@@ -24,11 +24,6 @@ SciHub servers are known to have outages due to high demand, try again later.
 
 Standard GeoJSON specification contains only WGS84 format, check if your data complies with it.
 
-.. rubric:: My search returns 0 results
-
-Maybe there are no images for the specified time period, by default
-``sentinelsat`` will query the last 24 hours only.
-
 .. rubric:: A query to Eumetsat CODA fails with *HTTP 401 - Full authentication is required* even with the correct password.
 
 | CODA does not allow the following special characters in passwords:

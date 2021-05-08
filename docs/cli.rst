@@ -177,10 +177,6 @@ Options
 
     Create geojson file search_footprints.geojson with footprints of the query result.
 
-.. option:: -d, --debug
-
-    Print debug log messages.
-
 .. option:: --include-pattern
 
     Glob pattern to filter files (within each product) to be downloaded.
@@ -197,6 +193,10 @@ Options
 .. option:: --version
 
     Show version number and exit.
+
+.. option:: --debug
+
+    Print debug log messages.
 
 .. option:: -h, --help
 
