@@ -40,10 +40,11 @@ Changed
 * Queries now use ``(key:value OR key:value)`` format instead of the previous ``key:(value OR value)`` format,
   which for some reason took tens of seconds per query. (#390 @valgur)
 * Got rid of the special handling of ``--uuid`` and ``--name`` CLI arguments. The product IDs are now simply passed to ``api.query()`` as a set.
-  They no longer also ignore the date range arguments (fixes #387). Add ``--start *`` to CLI arguments to maintain old behavior. (#390 @valgur)
+  As a result they no longer ignore the date range arguments (fixes #387). (#390 @valgur)
 * Empty queries raise a ``ValueError`` immediately on the client side instead of letting the server generate it. (#390 @valgur)
 * Added stricter checks for empty keyword values in queries, which would cause server-side errors. (#390 @valgur)
 * Gracefully handle cancelled futures. (#448 @avalentino)
+* ``--start`` and ``--end`` CLI arguments no longer use the default values of ``NOW-1DAY`` and ``NOW``. (#459 @valgur)
 
 Deprecated
 ~~~~~~~~~~
