@@ -641,23 +641,23 @@ class SentinelAPI:
         -----
         https://scihub.copernicus.eu/userguide/LongTermArchive
         """
-        with self.session.get(url, auth=self.session.auth, timeout=self.timeout) as r:
-            # check https://scihub.copernicus.eu/userguide/LongTermArchive#HTTP_Status_codes
-            if r.status_code == 202:
-                self.logger.debug("Accepted for retrieval")
-            elif r.status_code == 403:
-                self.logger.debug("Requests exceed user quota")
-            elif r.status_code == 503:
-                self.logger.error("Request not accepted")
-                raise SentinelAPILTAError("Request for retrieval from LTA not accepted", r)
-            elif r.status_code == 500:
-                # should not happen
-                self.logger.error("Trying to download an offline product")
-                raise SentinelAPILTAError("Trying to download an offline product", r)
-            else:
-                self.logger.error("Unexpected response %s from SciHub", r.status_code)
-                raise SentinelAPILTAError("Unexpected response from SciHub", r)
-            return r.status_code
+        r = self.session.head(url, auth=self.session.auth, timeout=self.timeout)
+        # check https://scihub.copernicus.eu/userguide/LongTermArchive#HTTP_Status_codes
+        if r.status_code == 202:
+            self.logger.debug("Accepted for retrieval")
+        elif r.status_code == 403:
+            self.logger.debug("Requests exceed user quota")
+        elif r.status_code == 503:
+            self.logger.error("Request not accepted")
+            raise SentinelAPILTAError("Request for retrieval from LTA not accepted", r)
+        elif r.status_code == 500:
+            # should not happen
+            self.logger.error("Trying to download an offline product")
+            raise SentinelAPILTAError("Trying to download an offline product", r)
+        else:
+            self.logger.error("Unexpected response %s from SciHub", r.status_code)
+            raise SentinelAPILTAError("Unexpected response from SciHub", r)
+        return r.status_code
 
     def download_all(
         self,
