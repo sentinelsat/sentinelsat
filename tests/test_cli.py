@@ -450,21 +450,18 @@ def test_footprints_cli(run_cli, tmpdir, geojson_path):
         "20151228",
         "--sentinel",
         "2",
-        "--path",
-        str(tmpdir),
         "--footprints",
+        str(tmpdir / "test.geojson"),
     )
-
-    assert "89 scenes found" in result.output
-    gj_file = tmpdir / "search_footprints.geojson"
+    assert len(result.products) == 89
+    gj_file = tmpdir / "test.geojson"
     assert gj_file.check()
     content = json.loads(gj_file.read_text(encoding="utf-8"))
-    assert len(content["features"]) == 89
+    assert len(content["features"]) == len(result.products)
     for feature in content["features"]:
         assert len(feature["properties"]) >= 28
         coords = feature["geometry"]["coordinates"]
         assert len(coords[0]) > 3 or len(coords[0][0]) > 3
-    tmpdir.remove()
 
 
 @pytest.mark.vcr(allow_playback_repeats=True)
@@ -675,14 +672,13 @@ def test_download_single_quicklook(run_cli, api, tmpdir, quicklook_products, mon
 
 @pytest.mark.vcr
 @pytest.mark.scihub
-def test_info_cli(run_cli, tmpdir):
+def test_info_cli(run_cli):
     result = run_cli("--info")
-    assert (
+    assert result.output == (
         "HTTPError: 404 Client Error: Not Found for url: https://apihub.copernicus.eu/apihub/api/stub/version\n"
         "Are you trying to get the DHuS version of APIHub?\nTrying again after conversion to DHuS URL\n"
-        "DHuS version: 2.4.1\n" in result.output
+        "DHuS version: 2.4.1\n"
     )
-    tmpdir.remove()
 
 
 @pytest.mark.vcr
