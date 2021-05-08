@@ -96,6 +96,9 @@ def vcr(vcr):
         scrub_response,
         scrub_string(rb"Request done in \S+ seconds.", b"Request done in ... seconds."),
         scrub_string(rb'"updated":"[^"]+"', b'"updated":"..."'),
+        scrub_string(rb'totalResults":"\d{4,}"', b'totalResults":"10000"'),
+        scrub_string(rb"of \d{4,} total results", b"of 10000 total results"),
+        scrub_string(rb"&start=\d{4,}&rows=0", b"&start=10000&rows=0"),
     )
     vcr.decode_compressed_response = True
     vcr.register_serializer("custom", BinaryContentSerializer(CASSETTE_DIR))
