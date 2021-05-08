@@ -298,7 +298,22 @@ def smallest_online_products(api_kwargs, vcr):
 
 @pytest.fixture(scope="module")
 def smallest_archived_products(api_kwargs, vcr):
-    return _get_smallest(api_kwargs, vcr.use_cassette("smallest_archived_products"), online=False)
+    n = 3
+    api = SentinelAPI(**api_kwargs)
+    # Find some small and old products expecting them to be archived due to age.
+    # Can't use the OData API for this as we do for the online products
+    # because the ContentLength value there is not match the true product size.
+    odatas = []
+    with vcr.use_cassette("smallest_archived_products"):
+        products = api.query(date=(None, "20170101"), size="/.+KB/", limit=10)
+        for uuid in products:
+            odata = api.get_product_odata(uuid)
+            if not odata["Online"]:
+                odatas.append(odata)
+                if len(odatas) == n:
+                    break
+        assert len(odatas) == n
+    return odatas
 
 
 @pytest.fixture(scope="module")
