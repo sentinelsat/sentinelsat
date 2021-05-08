@@ -82,8 +82,8 @@ class SentinelAPI:
         self.page_size = 100
         self.user_agent = "sentinelsat/" + sentinelsat_version
         self.session.headers["User-Agent"] = self.user_agent
+        self.session.timeout = timeout
         self.show_progressbars = show_progressbars
-        self.timeout = timeout
         self._dhus_version = None
         # For unit tests
         self._last_query = None
@@ -97,21 +97,13 @@ class SentinelAPI:
 
     def _req_dhus_stub(self):
         try:
-            resp = self.session.get(
-                self.api_url + "api/stub/version",
-                auth=self.session.auth,
-                timeout=self.timeout,
-            )
+            resp = self.session.get(self.api_url + "api/stub/version")
             resp.raise_for_status()
         except requests.exceptions.HTTPError as err:
             self.logger.error("HTTPError: %s", err)
             self.logger.error("Are you trying to get the DHuS version of APIHub?")
             self.logger.error("Trying again after conversion to DHuS URL")
-            resp = self.session.get(
-                self._api2dhus_url(self.api_url) + "api/stub/version",
-                auth=self.session.auth,
-                timeout=self.timeout,
-            )
+            resp = self.session.get(self._api2dhus_url(self.api_url) + "api/stub/version")
             resp.raise_for_status()
         return resp.json()["value"]
 
@@ -357,9 +349,7 @@ class SentinelAPI:
         response = self.session.post(
             url,
             {"q": query},
-            auth=self.session.auth,
             headers={"Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"},
-            timeout=self.timeout,
         )
         _check_scihub_response(response, query_string=query)
 
@@ -481,7 +471,7 @@ class SentinelAPI:
         url = urljoin(self.api_url, "odata/v1/Products('{}')?$format=json".format(id))
         if full:
             url += "&$expand=Attributes"
-        response = self.session.get(url, auth=self.session.auth, timeout=self.timeout)
+        response = self.session.get(url)
         _check_scihub_response(response)
         values = _parse_odata_response(response.json()["d"])
         self._add_quicklook_url(values)
@@ -504,7 +494,7 @@ class SentinelAPI:
         # Check https://scihub.copernicus.eu/userguide/ODataAPI#Products_entity for more information
 
         url = urljoin(self.api_url, "odata/v1/Products('{}')/Online/$value".format(id))
-        r = self.session.get(url, auth=self.session.auth, timeout=self.timeout)
+        r = self.session.get(url)
         _check_scihub_response(r)
         return r.json()
 
@@ -619,7 +609,7 @@ class SentinelAPI:
         )
         if not product_info["Online"]:
             return filename
-        req = self.session.head(product_info["url"], auth=self.session.auth)
+        req = self.session.head(product_info["url"])
         _check_scihub_response(req, test_json=False)
         cd = req.headers.get("Content-Disposition")
         if cd and "=" in cd:
@@ -641,7 +631,7 @@ class SentinelAPI:
         -----
         https://scihub.copernicus.eu/userguide/LongTermArchive
         """
-        r = self.session.head(url, auth=self.session.auth, timeout=self.timeout)
+        r = self.session.head(url)
         # check https://scihub.copernicus.eu/userguide/LongTermArchive#HTTP_Status_codes
         if r.status_code == 202:
             self.logger.debug("Accepted for retrieval")
@@ -1201,9 +1191,7 @@ class SentinelAPI:
         else:
             already_downloaded_bytes = 0
         downloaded_bytes = 0
-        with session.get(
-            url, stream=True, auth=session.auth, headers=headers, timeout=self.timeout
-        ) as r, self._tqdm(
+        with session.get(url, stream=True, headers=headers) as r, self._tqdm(
             desc="Downloading",
             total=file_size,
             unit="B",
@@ -1250,11 +1238,7 @@ class SentinelAPI:
         product_info = self.get_product_odata(id)
         if not product_info["Online"]:
             raise NotImplementedError("Product is offline, no retrieval implemented.")
-        r = self.session.get(
-            product_info["url"],
-            stream=True,
-            auth=self.session.auth,
-        )
+        r = self.session.get(product_info["url"], stream=True)
         return r.raw, product_info
 
 

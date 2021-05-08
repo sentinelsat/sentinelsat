@@ -58,6 +58,7 @@ Fixed
 * ``check_existing()`` now determines the filename correctly for Sentinel-5 products. (@valgur #452)
 * Fix accidental downloading of the whole product in memory when the product is actually available despite being marked
   as offline in its metadata. (#386, #421, #454 @lucadelu)
+* Fixed timeout not being used in some queries. (#454 @valgur)
 
 Development Changes
 ~~~~~~~~~~~~~~~~~~~
