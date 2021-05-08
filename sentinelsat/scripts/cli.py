@@ -69,16 +69,14 @@ class CommaSeparatedString(click.ParamType):
 @click.option(
     "--start",
     "-s",
-    default="NOW-1DAY",
-    show_default=True,
-    help="Start date of the query in the format YYYYMMDD.",
+    default=None,
+    help="Start date of the query in the format YYYYMMDD or an expression like NOW-1DAY.",
 )
 @click.option(
     "--end",
     "-e",
-    default="NOW",
-    show_default=True,
-    help="End date of the query in the format YYYYMMDD.",
+    default=None,
+    help="End date of the query.",
 )
 @click.option(
     "--geometry",
