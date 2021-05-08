@@ -203,18 +203,15 @@ def test_download_all_one_fail(api, tmpdir, smallest_online_products):
     tmpdir.remove()
 
 
-@pytest.mark.skip(
-    reason="The threading in this test seems to break VCR.py somehow "
-    "and smallest_archived_products does not currently return actually small"
-    "products for archived products"
-)
 @pytest.mark.vcr(allow_playback_repeats=True)
 @pytest.mark.scihub
 def test_download_all_lta(api, tmpdir, smallest_online_products, smallest_archived_products):
     archived_ids = [x["id"] for x in smallest_archived_products]
     online_ids = [x["id"] for x in smallest_online_products]
     ids = archived_ids[:1] + online_ids[:2]
-    product_infos, triggered, failed_downloads = api.download_all(ids, str(tmpdir))
+    product_infos, triggered, failed_downloads = api.download_all(
+        ids, str(tmpdir), n_concurrent_dl=1
+    )
     exceptions = {k: v["exception"] for k, v in failed_downloads.items()}
     assert len(failed_downloads) == 0, exceptions
     assert len(triggered) == 1
