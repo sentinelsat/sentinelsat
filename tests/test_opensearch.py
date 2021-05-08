@@ -218,6 +218,9 @@ def test_api_query_format_sets():
     query = SentinelAPI.format_query(orbitnumber={16301, 16302, 16303})
     assert query == "(orbitnumber:16301 OR orbitnumber:16302 OR orbitnumber:16303)"
 
+    query = SentinelAPI.format_query(orbitnumber=set())
+    assert query == ""
+
     query = SentinelAPI.format_query(ingestiondate={(date(2017, 1, 1), "20170203")})
     assert query == '(ingestiondate:["2017-01-01T00:00:00Z" TO "2017-02-03T00:00:00Z"])'
 

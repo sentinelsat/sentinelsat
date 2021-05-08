@@ -248,6 +248,8 @@ class SentinelAPI:
 
         for attr, value in sorted(keywords.items()):
             if isinstance(value, set):
+                if len(value) == 0:
+                    continue
                 sub_parts = []
                 for sub_value in value:
                     sub_value = _format_query_value(attr, sub_value)

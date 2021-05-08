@@ -126,7 +126,16 @@ def test_cli(run_cli, geojson_path):
         "--geometry", geojson_path, "--url", "https://scihub.copernicus.eu/dhus/", "--limit", "5"
     )
 
-    run_cli("--geometry", geojson_path, "-q", "producttype=GRD", "-q", "polarisationmode=HH", "--limit", "5")
+    run_cli(
+        "--geometry",
+        geojson_path,
+        "-q",
+        "producttype=GRD",
+        "-q",
+        "polarisationmode=HH",
+        "--limit",
+        "5",
+    )
 
 
 @pytest.mark.vcr
