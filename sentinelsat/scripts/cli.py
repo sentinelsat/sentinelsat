@@ -162,7 +162,6 @@ class CommaSeparatedString(click.ParamType):
 )
 @click.option(
     "--debug",
-    "-d",
     is_flag=True,
     help="Print debug log messages.",
 )
