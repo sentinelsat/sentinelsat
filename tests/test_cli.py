@@ -126,7 +126,7 @@ def test_cli(run_cli, geojson_path):
         "--geometry", geojson_path, "--url", "https://scihub.copernicus.eu/dhus/", "--limit", "5"
     )
 
-    run_cli("--geometry", geojson_path, "-q", "producttype=GRD,polarisationmode=HH", "--limit", "5")
+    run_cli("--geometry", geojson_path, "-q", "producttype=GRD", "-q", "polarisationmode=HH", "--limit", "5")
 
 
 @pytest.mark.vcr
@@ -394,7 +394,9 @@ def test_name_search(run_cli):
 def test_name_search_multiple(run_cli):
     result = run_cli(
         "--name",
-        "S1B_IW_GRDH_1SDV_20181007T164414_20181007T164439_013049_0181B7_345E,S1B_IW_GRDH_1SDV_20181007T164349_20181007T164414_013049_0181B7_A8E3",
+        "S1B_IW_GRDH_1SDV_20181007T164414_20181007T164439_013049_0181B7_345E",
+        "--name",
+        "S1B_IW_GRDH_1SDV_20181007T164349_20181007T164414_013049_0181B7_A8E3",
         "--start",
         "*",
     )
@@ -599,7 +601,9 @@ def test_download_many(run_cli, api, tmpdir, smallest_online_products, monkeypat
 
     ids = sorted(product["id"] for product in smallest_online_products)
 
-    command = ["--uuid", ",".join(ids), "--download", "--path", str(tmpdir), "--start", "*"]
+    command = ["--download", "--path", str(tmpdir), "--start", "*"]
+    for id in ids:
+        command += ["--uuid", id]
 
     # Download 3 tiny products
     run_cli(*command)
