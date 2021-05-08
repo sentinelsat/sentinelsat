@@ -92,7 +92,7 @@ def validate_query_param(ctx, param, kwargs):
 @click.option(
     "--name",
     multiple=True,
-    help="Select specific product(s) by filename. Supports wildcards.",
+    help="Select specific product(s) by filename. Supports wildcards. Can be set more than once.",
 )
 @click.option(
     "--sentinel",

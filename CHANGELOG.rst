@@ -7,6 +7,11 @@ All notable changes to ``sentinelsat`` will be listed here.
 ---------------------
 * Dropped support for Python 2.7. Now setuptools requires Python >= 3.6.
 
+CLI changes
+~~~~~~~~~~~
+* ``--uuid``, ``--name`` and ``--query`` can now be repeated instead of passing a single comma-separated string.
+  Repeated keywords get treated as an "or" expression. (#463 @valgur)
+
 Added
 ~~~~~
 * Display DHuS server version with CLI flag ``--info`` (#367 @thomasyoung-audet)
