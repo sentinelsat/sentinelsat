@@ -8,7 +8,6 @@ import threading
 import warnings
 import xml.etree.ElementTree as ET
 from collections import OrderedDict, defaultdict
-from contextlib import closing
 from datetime import date, datetime, timedelta
 from pathlib import Path
 from typing import Any, Dict
@@ -1179,10 +1178,9 @@ class SentinelAPI:
     def _md5_compare(self, file_path, checksum, block_size=2 ** 13):
         """Compare a given MD5 checksum with one calculated from a file."""
         file_path = Path(file_path)
-        with closing(
-            self._tqdm(
-                desc="MD5 checksumming", total=file_path.stat().st_size, unit="B", unit_scale=True
-            )
+        file_size = file_path.stat().st_size
+        with self._tqdm(
+            desc="MD5 checksumming", total=file_size, unit="B", unit_scale=True
         ) as progress:
             md5 = hashlib.md5()
             with open(file_path, "rb") as f:
@@ -1203,16 +1201,14 @@ class SentinelAPI:
         else:
             already_downloaded_bytes = 0
         downloaded_bytes = 0
-        with closing(
-            session.get(url, stream=True, auth=session.auth, headers=headers, timeout=self.timeout)
-        ) as r, closing(
-            self._tqdm(
-                desc="Downloading",
-                total=file_size,
-                unit="B",
-                unit_scale=True,
-                initial=already_downloaded_bytes,
-            )
+        with session.get(
+            url, stream=True, auth=session.auth, headers=headers, timeout=self.timeout
+        ) as r, self._tqdm(
+            desc="Downloading",
+            total=file_size,
+            unit="B",
+            unit_scale=True,
+            initial=already_downloaded_bytes,
         ) as progress:
             _check_scihub_response(r, test_json=False)
             chunk_size = 2 ** 20  # download in 1 MB chunks
