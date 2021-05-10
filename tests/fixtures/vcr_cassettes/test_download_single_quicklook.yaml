@@ -1,6 +1,6 @@
 interactions:
 - request:
-    body: q=beginPosition%3A%5B%2A+TO+%22NOW%22%5D+%28uuid%3A%226b126ea4-fe27-440c-9a5c-686f386b7291%22%29
+    body: q=%28uuid%3A%226b126ea4-fe27-440c-9a5c-686f386b7291%22%29
     headers:
       Accept:
       - '*/*'
@@ -9,7 +9,7 @@ interactions:
       Connection:
       - keep-alive
       Content-Length:
-      - '96'
+      - '57'
       Content-Type:
       - application/x-www-form-urlencoded; charset=UTF-8
       User-Agent:
@@ -19,14 +19,9 @@ interactions:
   response:
     body:
       string: '{"feed":{"xmlns:opensearch":"http://a9.com/-/spec/opensearch/1.1/","xmlns":"http://www.w3.org/2005/Atom","title":"Sentinels
-        Scientific Data Hub search results for: beginPosition:[* TO \"NOW\"] (uuid:\"6b126ea4-fe27-440c-9a5c-686f386b7291\")","subtitle":"Displaying
+        Scientific Data Hub search results for: (uuid:\"6b126ea4-fe27-440c-9a5c-686f386b7291\")","subtitle":"Displaying
         1 results. Request done in ... seconds.","updated":"...","author":{"name":"Sentinels
-        Scientific Data Hub"},"id":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[*
-        TO \"NOW\"] (uuid:\"6b126ea4-fe27-440c-9a5c-686f386b7291\")","opensearch:totalResults":"1","opensearch:startIndex":"0","opensearch:itemsPerPage":"100","opensearch:Query":{"role":"request","searchTerms":"beginPosition:[*
-        TO \"NOW\"] (uuid:\"6b126ea4-fe27-440c-9a5c-686f386b7291\")","startPage":"1"},"link":[{"rel":"self","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[*
-        TO \"NOW\"] (uuid:\"6b126ea4-fe27-440c-9a5c-686f386b7291\")&start=0&rows=100&format=json"},{"rel":"first","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[*
-        TO \"NOW\"] (uuid:\"6b126ea4-fe27-440c-9a5c-686f386b7291\")&start=0&rows=100&format=json"},{"rel":"last","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[*
-        TO \"NOW\"] (uuid:\"6b126ea4-fe27-440c-9a5c-686f386b7291\")&start=0&rows=100&format=json"},{"rel":"search","type":"application/opensearchdescription+xml","href":"opensearch_description.xml"}],"entry":{"title":"S2A_MSIL2A_20201007T022601_N0214_R046_T49MFN_20201007T064142","link":[{"href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''6b126ea4-fe27-440c-9a5c-686f386b7291'')/$value"},{"rel":"alternative","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''6b126ea4-fe27-440c-9a5c-686f386b7291'')/"},{"rel":"icon","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''6b126ea4-fe27-440c-9a5c-686f386b7291'')/Products(''Quicklook'')/$value"}],"id":"6b126ea4-fe27-440c-9a5c-686f386b7291","summary":"Date:
+        Scientific Data Hub"},"id":"https://apihub.copernicus.eu/apihub/search?q=(uuid:\"6b126ea4-fe27-440c-9a5c-686f386b7291\")","opensearch:totalResults":"1","opensearch:startIndex":"0","opensearch:itemsPerPage":"100","opensearch:Query":{"role":"request","searchTerms":"(uuid:\"6b126ea4-fe27-440c-9a5c-686f386b7291\")","startPage":"1"},"link":[{"rel":"self","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=(uuid:\"6b126ea4-fe27-440c-9a5c-686f386b7291\")&start=0&rows=100&format=json"},{"rel":"first","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=(uuid:\"6b126ea4-fe27-440c-9a5c-686f386b7291\")&start=0&rows=100&format=json"},{"rel":"last","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=(uuid:\"6b126ea4-fe27-440c-9a5c-686f386b7291\")&start=0&rows=100&format=json"},{"rel":"search","type":"application/opensearchdescription+xml","href":"opensearch_description.xml"}],"entry":{"title":"S2A_MSIL2A_20201007T022601_N0214_R046_T49MFN_20201007T064142","link":[{"href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''6b126ea4-fe27-440c-9a5c-686f386b7291'')/$value"},{"rel":"alternative","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''6b126ea4-fe27-440c-9a5c-686f386b7291'')/"},{"rel":"icon","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''6b126ea4-fe27-440c-9a5c-686f386b7291'')/Products(''Quicklook'')/$value"}],"id":"6b126ea4-fe27-440c-9a5c-686f386b7291","summary":"Date:
         2020-10-07T02:26:01.024Z, Instrument: MSI, Satellite: Sentinel-2, Size: 233.95
         MB","ondemand":"false","date":[{"name":"beginposition","content":"2020-10-07T02:26:01.024Z"},{"name":"endposition","content":"2020-10-07T02:26:01.024Z"},{"name":"ingestiondate","content":"2020-10-07T11:00:50.621Z"}],"int":[{"name":"orbitnumber","content":"27642"},{"name":"relativeorbitnumber","content":"46"}],"double":[{"name":"vegetationpercentage","content":"7.745996"},{"name":"notvegetatedpercentage","content":"18.28576"},{"name":"waterpercentage","content":"57.170606"},{"name":"unclassifiedpercentage","content":"2.064458"},{"name":"mediumprobacloudspercentage","content":"2.159598"},{"name":"highprobacloudspercentage","content":"4.153551"},{"name":"snowicepercentage","content":"0.023668"},{"name":"cloudcoverpercentage","content":"14.46506"}],"str":[{"name":"level1cpdiidentifier","content":"S2A_OPER_MSI_L1C_TL_EPAE_20201007T053956_A027642_T49MFN_N02.09"},{"name":"gmlfootprint","content":"<gml:Polygon
         srsName=\"http://www.opengis.net/gml/srs/epsg.xml#4326\" xmlns:gml=\"http://www.opengis.net/gml\">\n   <gml:outerBoundaryIs>\n      <gml:LinearRing>\n         <gml:coordinates>-7.32275426183943,112.57541610766778
@@ -46,7 +41,7 @@ interactions:
         MB"},{"name":"s2datatakeid","content":"GS2A_20201007T022601_027642_N02.14"},{"name":"producttype","content":"S2MSI2A"},{"name":"platformidentifier","content":"2015-028A"},{"name":"orbitdirection","content":"DESCENDING"},{"name":"platformserialidentifier","content":"Sentinel-2A"},{"name":"processinglevel","content":"Level-2A"},{"name":"identifier","content":"S2A_MSIL2A_20201007T022601_N0214_R046_T49MFN_20201007T064142"},{"name":"uuid","content":"6b126ea4-fe27-440c-9a5c-686f386b7291"}]}}}'
     headers:
       content-length:
-      - '5073'
+      - '4899'
       content-type:
       - application/json
       pragma:
@@ -135,7 +130,7 @@ interactions:
       code: 200
       message: OK
 - request:
-    body: q=beginPosition%3A%5B%2A+TO+%22NOW%22%5D+%28uuid%3A%226b126ea4-fe27-440c-9a5c-686f386b7291%22%29
+    body: q=%28uuid%3A%226b126ea4-fe27-440c-9a5c-686f386b7291%22%29
     headers:
       Accept:
       - '*/*'
@@ -144,7 +139,7 @@ interactions:
       Connection:
       - keep-alive
       Content-Length:
-      - '96'
+      - '57'
       Content-Type:
       - application/x-www-form-urlencoded; charset=UTF-8
       User-Agent:
@@ -154,14 +149,9 @@ interactions:
   response:
     body:
       string: '{"feed":{"xmlns:opensearch":"http://a9.com/-/spec/opensearch/1.1/","xmlns":"http://www.w3.org/2005/Atom","title":"Sentinels
-        Scientific Data Hub search results for: beginPosition:[* TO \"NOW\"] (uuid:\"6b126ea4-fe27-440c-9a5c-686f386b7291\")","subtitle":"Displaying
+        Scientific Data Hub search results for: (uuid:\"6b126ea4-fe27-440c-9a5c-686f386b7291\")","subtitle":"Displaying
         1 results. Request done in ... seconds.","updated":"...","author":{"name":"Sentinels
-        Scientific Data Hub"},"id":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[*
-        TO \"NOW\"] (uuid:\"6b126ea4-fe27-440c-9a5c-686f386b7291\")","opensearch:totalResults":"1","opensearch:startIndex":"0","opensearch:itemsPerPage":"100","opensearch:Query":{"role":"request","searchTerms":"beginPosition:[*
-        TO \"NOW\"] (uuid:\"6b126ea4-fe27-440c-9a5c-686f386b7291\")","startPage":"1"},"link":[{"rel":"self","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[*
-        TO \"NOW\"] (uuid:\"6b126ea4-fe27-440c-9a5c-686f386b7291\")&start=0&rows=100&format=json"},{"rel":"first","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[*
-        TO \"NOW\"] (uuid:\"6b126ea4-fe27-440c-9a5c-686f386b7291\")&start=0&rows=100&format=json"},{"rel":"last","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[*
-        TO \"NOW\"] (uuid:\"6b126ea4-fe27-440c-9a5c-686f386b7291\")&start=0&rows=100&format=json"},{"rel":"search","type":"application/opensearchdescription+xml","href":"opensearch_description.xml"}],"entry":{"title":"S2A_MSIL2A_20201007T022601_N0214_R046_T49MFN_20201007T064142","link":[{"href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''6b126ea4-fe27-440c-9a5c-686f386b7291'')/$value"},{"rel":"alternative","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''6b126ea4-fe27-440c-9a5c-686f386b7291'')/"},{"rel":"icon","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''6b126ea4-fe27-440c-9a5c-686f386b7291'')/Products(''Quicklook'')/$value"}],"id":"6b126ea4-fe27-440c-9a5c-686f386b7291","summary":"Date:
+        Scientific Data Hub"},"id":"https://apihub.copernicus.eu/apihub/search?q=(uuid:\"6b126ea4-fe27-440c-9a5c-686f386b7291\")","opensearch:totalResults":"1","opensearch:startIndex":"0","opensearch:itemsPerPage":"100","opensearch:Query":{"role":"request","searchTerms":"(uuid:\"6b126ea4-fe27-440c-9a5c-686f386b7291\")","startPage":"1"},"link":[{"rel":"self","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=(uuid:\"6b126ea4-fe27-440c-9a5c-686f386b7291\")&start=0&rows=100&format=json"},{"rel":"first","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=(uuid:\"6b126ea4-fe27-440c-9a5c-686f386b7291\")&start=0&rows=100&format=json"},{"rel":"last","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=(uuid:\"6b126ea4-fe27-440c-9a5c-686f386b7291\")&start=0&rows=100&format=json"},{"rel":"search","type":"application/opensearchdescription+xml","href":"opensearch_description.xml"}],"entry":{"title":"S2A_MSIL2A_20201007T022601_N0214_R046_T49MFN_20201007T064142","link":[{"href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''6b126ea4-fe27-440c-9a5c-686f386b7291'')/$value"},{"rel":"alternative","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''6b126ea4-fe27-440c-9a5c-686f386b7291'')/"},{"rel":"icon","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''6b126ea4-fe27-440c-9a5c-686f386b7291'')/Products(''Quicklook'')/$value"}],"id":"6b126ea4-fe27-440c-9a5c-686f386b7291","summary":"Date:
         2020-10-07T02:26:01.024Z, Instrument: MSI, Satellite: Sentinel-2, Size: 233.95
         MB","ondemand":"false","date":[{"name":"beginposition","content":"2020-10-07T02:26:01.024Z"},{"name":"endposition","content":"2020-10-07T02:26:01.024Z"},{"name":"ingestiondate","content":"2020-10-07T11:00:50.621Z"}],"int":[{"name":"orbitnumber","content":"27642"},{"name":"relativeorbitnumber","content":"46"}],"double":[{"name":"vegetationpercentage","content":"7.745996"},{"name":"notvegetatedpercentage","content":"18.28576"},{"name":"waterpercentage","content":"57.170606"},{"name":"unclassifiedpercentage","content":"2.064458"},{"name":"mediumprobacloudspercentage","content":"2.159598"},{"name":"highprobacloudspercentage","content":"4.153551"},{"name":"snowicepercentage","content":"0.023668"},{"name":"cloudcoverpercentage","content":"14.46506"}],"str":[{"name":"level1cpdiidentifier","content":"S2A_OPER_MSI_L1C_TL_EPAE_20201007T053956_A027642_T49MFN_N02.09"},{"name":"gmlfootprint","content":"<gml:Polygon
         srsName=\"http://www.opengis.net/gml/srs/epsg.xml#4326\" xmlns:gml=\"http://www.opengis.net/gml\">\n   <gml:outerBoundaryIs>\n      <gml:LinearRing>\n         <gml:coordinates>-7.32275426183943,112.57541610766778
@@ -181,7 +171,7 @@ interactions:
         MB"},{"name":"s2datatakeid","content":"GS2A_20201007T022601_027642_N02.14"},{"name":"producttype","content":"S2MSI2A"},{"name":"platformidentifier","content":"2015-028A"},{"name":"orbitdirection","content":"DESCENDING"},{"name":"platformserialidentifier","content":"Sentinel-2A"},{"name":"processinglevel","content":"Level-2A"},{"name":"identifier","content":"S2A_MSIL2A_20201007T022601_N0214_R046_T49MFN_20201007T064142"},{"name":"uuid","content":"6b126ea4-fe27-440c-9a5c-686f386b7291"}]}}}'
     headers:
       content-length:
-      - '5073'
+      - '4899'
       content-type:
       - application/json
       pragma:
@@ -307,7 +297,7 @@ interactions:
       code: 200
       message: OK
 - request:
-    body: q=beginPosition%3A%5B%2A+TO+%22NOW%22%5D+%28uuid%3A%226b126ea4-fe27-440c-9a5c-686f386b7291%22%29
+    body: q=%28uuid%3A%226b126ea4-fe27-440c-9a5c-686f386b7291%22%29
     headers:
       Accept:
       - '*/*'
@@ -316,7 +306,7 @@ interactions:
       Connection:
       - keep-alive
       Content-Length:
-      - '96'
+      - '57'
       Content-Type:
       - application/x-www-form-urlencoded; charset=UTF-8
       User-Agent:
@@ -326,14 +316,9 @@ interactions:
   response:
     body:
       string: '{"feed":{"xmlns:opensearch":"http://a9.com/-/spec/opensearch/1.1/","xmlns":"http://www.w3.org/2005/Atom","title":"Sentinels
-        Scientific Data Hub search results for: beginPosition:[* TO \"NOW\"] (uuid:\"6b126ea4-fe27-440c-9a5c-686f386b7291\")","subtitle":"Displaying
+        Scientific Data Hub search results for: (uuid:\"6b126ea4-fe27-440c-9a5c-686f386b7291\")","subtitle":"Displaying
         1 results. Request done in ... seconds.","updated":"...","author":{"name":"Sentinels
-        Scientific Data Hub"},"id":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[*
-        TO \"NOW\"] (uuid:\"6b126ea4-fe27-440c-9a5c-686f386b7291\")","opensearch:totalResults":"1","opensearch:startIndex":"0","opensearch:itemsPerPage":"100","opensearch:Query":{"role":"request","searchTerms":"beginPosition:[*
-        TO \"NOW\"] (uuid:\"6b126ea4-fe27-440c-9a5c-686f386b7291\")","startPage":"1"},"link":[{"rel":"self","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[*
-        TO \"NOW\"] (uuid:\"6b126ea4-fe27-440c-9a5c-686f386b7291\")&start=0&rows=100&format=json"},{"rel":"first","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[*
-        TO \"NOW\"] (uuid:\"6b126ea4-fe27-440c-9a5c-686f386b7291\")&start=0&rows=100&format=json"},{"rel":"last","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[*
-        TO \"NOW\"] (uuid:\"6b126ea4-fe27-440c-9a5c-686f386b7291\")&start=0&rows=100&format=json"},{"rel":"search","type":"application/opensearchdescription+xml","href":"opensearch_description.xml"}],"entry":{"title":"S2A_MSIL2A_20201007T022601_N0214_R046_T49MFN_20201007T064142","link":[{"href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''6b126ea4-fe27-440c-9a5c-686f386b7291'')/$value"},{"rel":"alternative","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''6b126ea4-fe27-440c-9a5c-686f386b7291'')/"},{"rel":"icon","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''6b126ea4-fe27-440c-9a5c-686f386b7291'')/Products(''Quicklook'')/$value"}],"id":"6b126ea4-fe27-440c-9a5c-686f386b7291","summary":"Date:
+        Scientific Data Hub"},"id":"https://apihub.copernicus.eu/apihub/search?q=(uuid:\"6b126ea4-fe27-440c-9a5c-686f386b7291\")","opensearch:totalResults":"1","opensearch:startIndex":"0","opensearch:itemsPerPage":"100","opensearch:Query":{"role":"request","searchTerms":"(uuid:\"6b126ea4-fe27-440c-9a5c-686f386b7291\")","startPage":"1"},"link":[{"rel":"self","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=(uuid:\"6b126ea4-fe27-440c-9a5c-686f386b7291\")&start=0&rows=100&format=json"},{"rel":"first","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=(uuid:\"6b126ea4-fe27-440c-9a5c-686f386b7291\")&start=0&rows=100&format=json"},{"rel":"last","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=(uuid:\"6b126ea4-fe27-440c-9a5c-686f386b7291\")&start=0&rows=100&format=json"},{"rel":"search","type":"application/opensearchdescription+xml","href":"opensearch_description.xml"}],"entry":{"title":"S2A_MSIL2A_20201007T022601_N0214_R046_T49MFN_20201007T064142","link":[{"href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''6b126ea4-fe27-440c-9a5c-686f386b7291'')/$value"},{"rel":"alternative","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''6b126ea4-fe27-440c-9a5c-686f386b7291'')/"},{"rel":"icon","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''6b126ea4-fe27-440c-9a5c-686f386b7291'')/Products(''Quicklook'')/$value"}],"id":"6b126ea4-fe27-440c-9a5c-686f386b7291","summary":"Date:
         2020-10-07T02:26:01.024Z, Instrument: MSI, Satellite: Sentinel-2, Size: 233.95
         MB","ondemand":"false","date":[{"name":"beginposition","content":"2020-10-07T02:26:01.024Z"},{"name":"endposition","content":"2020-10-07T02:26:01.024Z"},{"name":"ingestiondate","content":"2020-10-07T11:00:50.621Z"}],"int":[{"name":"orbitnumber","content":"27642"},{"name":"relativeorbitnumber","content":"46"}],"double":[{"name":"vegetationpercentage","content":"7.745996"},{"name":"notvegetatedpercentage","content":"18.28576"},{"name":"waterpercentage","content":"57.170606"},{"name":"unclassifiedpercentage","content":"2.064458"},{"name":"mediumprobacloudspercentage","content":"2.159598"},{"name":"highprobacloudspercentage","content":"4.153551"},{"name":"snowicepercentage","content":"0.023668"},{"name":"cloudcoverpercentage","content":"14.46506"}],"str":[{"name":"level1cpdiidentifier","content":"S2A_OPER_MSI_L1C_TL_EPAE_20201007T053956_A027642_T49MFN_N02.09"},{"name":"gmlfootprint","content":"<gml:Polygon
         srsName=\"http://www.opengis.net/gml/srs/epsg.xml#4326\" xmlns:gml=\"http://www.opengis.net/gml\">\n   <gml:outerBoundaryIs>\n      <gml:LinearRing>\n         <gml:coordinates>-7.32275426183943,112.57541610766778
@@ -353,7 +338,7 @@ interactions:
         MB"},{"name":"s2datatakeid","content":"GS2A_20201007T022601_027642_N02.14"},{"name":"producttype","content":"S2MSI2A"},{"name":"platformidentifier","content":"2015-028A"},{"name":"orbitdirection","content":"DESCENDING"},{"name":"platformserialidentifier","content":"Sentinel-2A"},{"name":"processinglevel","content":"Level-2A"},{"name":"identifier","content":"S2A_MSIL2A_20201007T022601_N0214_R046_T49MFN_20201007T064142"},{"name":"uuid","content":"6b126ea4-fe27-440c-9a5c-686f386b7291"}]}}}'
     headers:
       content-length:
-      - '5073'
+      - '4899'
       content-type:
       - application/json
       pragma:
