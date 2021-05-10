@@ -34,7 +34,7 @@ It offers an easy-to-use command line interface
 
 .. code-block:: bash
 
-  sentinelsat -u <user> -p <password> -g <search_polygon.geojson> --sentinel 2 --cloud 30
+  sentinelsat -u <user> -p <password> --location Berlin --sentinel 2 --cloud 30 --start NOW-1MONTH
 
 and a powerful Python API.
 
@@ -46,7 +46,8 @@ and a powerful Python API.
   footprint = geojson_to_wkt(read_geojson('search_polygon.geojson'))
   products = api.query(footprint,
                        producttype='SLC',
-                       orbitdirection='ASCENDING')
+                       orbitdirection='ASCENDING',
+                       limit=10)
   api.download_all(products)
 
 
@@ -167,11 +168,11 @@ Options
    * - -s
      - --start
      - TEXT
-     - Start date of the query in the format YYYYMMDD.
+     - Start date of the query in the format YYYYMMDD or an expression like NOW-1DAY.
    * - -e
      - --end
      - TEXT
-     - End date of the query in the format YYYYMMDD.
+     - End date of the query.
    * - -g
      - --geometry
      - PATH
@@ -224,8 +225,16 @@ Options
        Repeated keywords are interpreted as an "or" expression.
    * - -f
      - --footprints
-     -  
-     - Create geojson file search_footprints.geojson with footprints of the query result.
+     - FILENAME
+     - Create a GeoJSON file at the provided path with footprints and metadata of the returned products. Set to '-' for stdout.
+   * - 
+     - --include-pattern
+     - TEXT
+     - Glob pattern to filter files (within each product) to be downloaded.
+   * - 
+     - --exclude-pattern
+     - TEXT
+     - Glob pattern to filter files (within each product) to be excluded from the downloaded.
    * -  
      - --info
      -  
@@ -234,6 +243,10 @@ Options
      - --version
      -  
      - Show version number and exit.
+   * - 
+     - --debug
+     -  
+     - Print debug log messages.
    * - -h
      - --help
      -  

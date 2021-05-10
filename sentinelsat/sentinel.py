@@ -8,7 +8,6 @@ import threading
 import warnings
 import xml.etree.ElementTree as ET
 from collections import OrderedDict, defaultdict
-from contextlib import closing
 from datetime import date, datetime, timedelta
 from pathlib import Path
 from typing import Any, Dict
@@ -83,8 +82,8 @@ class SentinelAPI:
         self.page_size = 100
         self.user_agent = "sentinelsat/" + sentinelsat_version
         self.session.headers["User-Agent"] = self.user_agent
+        self.session.timeout = timeout
         self.show_progressbars = show_progressbars
-        self.timeout = timeout
         self._dhus_version = None
         # For unit tests
         self._last_query = None
@@ -98,21 +97,13 @@ class SentinelAPI:
 
     def _req_dhus_stub(self):
         try:
-            resp = self.session.get(
-                self.api_url + "api/stub/version",
-                auth=self.session.auth,
-                timeout=self.timeout,
-            )
+            resp = self.session.get(self.api_url + "api/stub/version")
             resp.raise_for_status()
         except requests.exceptions.HTTPError as err:
             self.logger.error("HTTPError: %s", err)
             self.logger.error("Are you trying to get the DHuS version of APIHub?")
             self.logger.error("Trying again after conversion to DHuS URL")
-            resp = self.session.get(
-                self._api2dhus_url(self.api_url) + "api/stub/version",
-                auth=self.session.auth,
-                timeout=self.timeout,
-            )
+            resp = self.session.get(self._api2dhus_url(self.api_url) + "api/stub/version")
             resp.raise_for_status()
         return resp.json()["value"]
 
@@ -360,9 +351,7 @@ class SentinelAPI:
         response = self.session.post(
             url,
             {"q": query},
-            auth=self.session.auth,
             headers={"Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"},
-            timeout=self.timeout,
         )
         _check_scihub_response(response, query_string=query)
 
@@ -484,7 +473,7 @@ class SentinelAPI:
         url = urljoin(self.api_url, "odata/v1/Products('{}')?$format=json".format(id))
         if full:
             url += "&$expand=Attributes"
-        response = self.session.get(url, auth=self.session.auth, timeout=self.timeout)
+        response = self.session.get(url)
         _check_scihub_response(response)
         values = _parse_odata_response(response.json()["d"])
         self._add_quicklook_url(values)
@@ -507,7 +496,7 @@ class SentinelAPI:
         # Check https://scihub.copernicus.eu/userguide/ODataAPI#Products_entity for more information
 
         url = urljoin(self.api_url, "odata/v1/Products('{}')/Online/$value".format(id))
-        r = self.session.get(url, auth=self.session.auth, timeout=self.timeout)
+        r = self.session.get(url)
         _check_scihub_response(r)
         return r.json()
 
@@ -622,7 +611,7 @@ class SentinelAPI:
         )
         if not product_info["Online"]:
             return filename
-        req = self.session.head(product_info["url"], auth=self.session.auth)
+        req = self.session.head(product_info["url"])
         _check_scihub_response(req, test_json=False)
         cd = req.headers.get("Content-Disposition")
         if cd and "=" in cd:
@@ -644,23 +633,23 @@ class SentinelAPI:
         -----
         https://scihub.copernicus.eu/userguide/LongTermArchive
         """
-        with self.session.get(url, auth=self.session.auth, timeout=self.timeout) as r:
-            # check https://scihub.copernicus.eu/userguide/LongTermArchive#HTTP_Status_codes
-            if r.status_code == 202:
-                self.logger.debug("Accepted for retrieval")
-            elif r.status_code == 403:
-                self.logger.debug("Requests exceed user quota")
-            elif r.status_code == 503:
-                self.logger.error("Request not accepted")
-                raise SentinelAPILTAError("Request for retrieval from LTA not accepted", r)
-            elif r.status_code == 500:
-                # should not happen
-                self.logger.error("Trying to download an offline product")
-                raise SentinelAPILTAError("Trying to download an offline product", r)
-            else:
-                self.logger.error("Unexpected response %s from SciHub", r.status_code)
-                raise SentinelAPILTAError("Unexpected response from SciHub", r)
-            return r.status_code
+        r = self.session.head(url)
+        # check https://scihub.copernicus.eu/userguide/LongTermArchive#HTTP_Status_codes
+        if r.status_code == 202:
+            self.logger.debug("Accepted for retrieval")
+        elif r.status_code == 403:
+            self.logger.debug("Requests exceed user quota")
+        elif r.status_code == 503:
+            self.logger.error("Request not accepted")
+            raise SentinelAPILTAError("Request for retrieval from LTA not accepted", r)
+        elif r.status_code == 500:
+            # should not happen
+            self.logger.error("Trying to download an offline product")
+            raise SentinelAPILTAError("Trying to download an offline product", r)
+        else:
+            self.logger.error("Unexpected response %s from SciHub", r.status_code)
+            raise SentinelAPILTAError("Unexpected response from SciHub", r)
+        return r.status_code
 
     def download_all(
         self,
@@ -1181,10 +1170,9 @@ class SentinelAPI:
     def _md5_compare(self, file_path, checksum, block_size=2 ** 13):
         """Compare a given MD5 checksum with one calculated from a file."""
         file_path = Path(file_path)
-        with closing(
-            self._tqdm(
-                desc="MD5 checksumming", total=file_path.stat().st_size, unit="B", unit_scale=True
-            )
+        file_size = file_path.stat().st_size
+        with self._tqdm(
+            desc="MD5 checksumming", total=file_size, unit="B", unit_scale=True
         ) as progress:
             md5 = hashlib.md5()
             with open(file_path, "rb") as f:
@@ -1205,16 +1193,12 @@ class SentinelAPI:
         else:
             already_downloaded_bytes = 0
         downloaded_bytes = 0
-        with closing(
-            session.get(url, stream=True, auth=session.auth, headers=headers, timeout=self.timeout)
-        ) as r, closing(
-            self._tqdm(
-                desc="Downloading",
-                total=file_size,
-                unit="B",
-                unit_scale=True,
-                initial=already_downloaded_bytes,
-            )
+        with session.get(url, stream=True, headers=headers) as r, self._tqdm(
+            desc="Downloading",
+            total=file_size,
+            unit="B",
+            unit_scale=True,
+            initial=already_downloaded_bytes,
         ) as progress:
             _check_scihub_response(r, test_json=False)
             chunk_size = 2 ** 20  # download in 1 MB chunks
@@ -1256,11 +1240,7 @@ class SentinelAPI:
         product_info = self.get_product_odata(id)
         if not product_info["Online"]:
             raise NotImplementedError("Product is offline, no retrieval implemented.")
-        r = self.session.get(
-            product_info["url"],
-            stream=True,
-            auth=self.session.auth,
-        )
+        r = self.session.get(product_info["url"], stream=True)
         return r.raw, product_info
 
 

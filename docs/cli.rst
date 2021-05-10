@@ -173,13 +173,10 @@ Options
 
     Example: `-q producttype=GRD -q polarisationmode=HH`.
 
-.. option:: -f, --footprints
+.. option:: -f, --footprints <path>
 
-    Create geojson file search_footprints.geojson with footprints of the query result.
-
-.. option:: -d, --debug
-
-    Print debug log messages.
+    Create a GeoJSON file at the provided path with footprints
+    and metadata of the returned products. Set to '-' for stdout.
 
 .. option:: --include-pattern
 
@@ -197,6 +194,10 @@ Options
 .. option:: --version
 
     Show version number and exit.
+
+.. option:: --debug
+
+    Print debug log messages.
 
 .. option:: -h, --help
 

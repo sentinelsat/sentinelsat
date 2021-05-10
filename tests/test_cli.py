@@ -11,7 +11,7 @@ import pytest
 import requests_mock
 from click.testing import CliRunner
 
-from sentinelsat import SentinelAPI, InvalidChecksumError, QuerySyntaxError
+from sentinelsat import SentinelAPI, InvalidChecksumError
 from sentinelsat import SentinelProductsAPI
 from sentinelsat.scripts.cli import cli
 
@@ -119,31 +119,9 @@ def netrc_from_environ(no_netrc, credentials):
 
 @pytest.mark.vcr
 @pytest.mark.scihub
-def test_cli(run_cli, geojson_path):
-    run_cli("--geometry", geojson_path, "--limit", "5")
-
-    run_cli(
-        "--geometry", geojson_path, "--url", "https://scihub.copernicus.eu/dhus/", "--limit", "5"
-    )
-
-    run_cli(
-        "--geometry",
-        geojson_path,
-        "-q",
-        "producttype=GRD",
-        "-q",
-        "polarisationmode=HH",
-        "--limit",
-        "5",
-    )
-
-
-@pytest.mark.vcr
-@pytest.mark.scihub
 def test_cli_geometry_alternatives(run_cli, geojson_string, wkt_string):
-    run_cli("--geometry", geojson_string, "-l", "1")
-
-    run_cli("--geometry", wkt_string, "-l", "1")
+    run_cli("--geometry", geojson_string, "--end", "20200101", "--limit", "1")
+    run_cli("--geometry", wkt_string, "--end", "20200101", "--limit", "1")
 
 
 @pytest.mark.fast
@@ -151,6 +129,10 @@ def test_cli_geometry_WKT_alternative_fail(run_cli):
     result = run_cli(
         "--geometry",
         "POLYGO((-87.27 41.64,-81.56 37.857,-82.617 44.52,-87.2 41.64))",
+        "--end",
+        "20200101",
+        "--limit",
+        "1",
         must_return_nonzero=True,
     )
     assert (
@@ -164,6 +146,10 @@ def test_cli_geometry_JSON_alternative_fail(run_cli):
     result = run_cli(
         "--geometry",
         '{"type": "A bad JSON", "features" :[nothing], ([{ ',
+        "--end",
+        "20200101",
+        "--limit",
+        "1",
         must_return_nonzero=True,
     )
     assert "geometry string starts with '{' but is not a valid GeoJSON." in result.output
@@ -174,8 +160,10 @@ def test_no_auth_fail(run_cli, no_netrc, no_auth_environ, geojson_path):
     result = run_cli(
         "--geometry",
         geojson_path,
-        "--url",
-        "https://apihub.copernicus.eu/apihub/",
+        "--end",
+        "20200101",
+        "--limit",
+        "1",
         with_credentials=False,
         must_return_nonzero=True,
     )
@@ -188,8 +176,10 @@ def test_no_auth_netrc(run_cli, netrc_from_environ, no_auth_environ, geojson_pat
     run_cli(
         "--geometry",
         geojson_path,
-        "--url",
-        "https://apihub.copernicus.eu/apihub/",
+        "--end",
+        "20200101",
+        "--limit",
+        "1",
         with_credentials=False,
     )
 
@@ -379,7 +369,7 @@ def test_limit_flag(run_cli, geojson_path):
 @pytest.mark.scihub
 def test_uuid_search(run_cli):
     uuid = "d8340134-878f-4891-ba4f-4df54f1e3ab4"
-    result = run_cli("--uuid", uuid, "--start", "*")
+    result = run_cli("--uuid", uuid)
     assert len(result.products) == 1
     assert uuid in result.products[0]
 
@@ -388,10 +378,7 @@ def test_uuid_search(run_cli):
 @pytest.mark.scihub
 def test_name_search(run_cli):
     result = run_cli(
-        "--name",
-        "S1A_WV_OCN__2SSV_20150526T211029_20150526T211737_006097_007E78_134A",
-        "--start",
-        "*",
+        "--name", "S1A_WV_OCN__2SSV_20150526T211029_20150526T211737_006097_007E78_134A"
     )
 
     expected = "Product d8340134-878f-4891-ba4f-4df54f1e3ab4 - Date: 2015-05-26T21:10:28.984Z, Instrument: SAR-C SAR, Mode: VV, Satellite: Sentinel-1, Size: 10.65 KB"
@@ -412,8 +399,6 @@ def test_name_search_multiple(run_cli):
         "identifier=S1A_WV_OCN__2SSV_20150526T211029_20150526T211737_006097_007E78_134A",
         "-q",
         "identifier=S1A_WV_OCN__2SSH_20150603T092625_20150603T093332_006207_008194_521E",
-        "--start",
-        "*",
     )
 
     expected = {
@@ -429,7 +414,7 @@ def test_name_search_multiple(run_cli):
 @pytest.mark.scihub
 def test_repeated_keywords(run_cli):
     uuids = ["d8340134-878f-4891-ba4f-4df54f1e3ab4", "1f62a176-c980-41dc-b3a1-c735d660c910"]
-    result = run_cli("-q", "uuid=" + uuids[0], "-q", "uuid=" + uuids[1], "--start", "*")
+    result = run_cli("-q", "uuid=" + uuids[0], "-q", "uuid=" + uuids[1])
     result_uuids = set(prod.split(" ", 2)[1] for prod in result.products)
     assert result_uuids == set(uuids)
 
@@ -478,21 +463,18 @@ def test_footprints_cli(run_cli, tmpdir, geojson_path):
         "20151228",
         "--sentinel",
         "2",
-        "--path",
-        str(tmpdir),
         "--footprints",
+        str(tmpdir / "test.geojson"),
     )
-
-    assert "89 scenes found" in result.output
-    gj_file = tmpdir / "search_footprints.geojson"
+    assert len(result.products) == 89
+    gj_file = tmpdir / "test.geojson"
     assert gj_file.check()
     content = json.loads(gj_file.read_text(encoding="utf-8"))
-    assert len(content["features"]) == 89
+    assert len(content["features"]) == len(result.products)
     for feature in content["features"]:
         assert len(feature["properties"]) >= 28
         coords = feature["geometry"]["coordinates"]
         assert len(coords[0]) > 3 or len(coords[0][0]) > 3
-    tmpdir.remove()
 
 
 @pytest.mark.vcr(allow_playback_repeats=True)
@@ -502,11 +484,11 @@ def test_download_single(run_cli, api, tmpdir, smallest_online_products, monkeyp
     # Also, vcrpy is not threadsafe, so only one worker is used.
     monkeypatch.setattr(
         "sentinelsat.SentinelAPI.download_all",
-        partialmethod(SentinelAPI.download_all, max_attempts=2),
+        partialmethod(SentinelAPI.download_all, max_attempts=2, n_concurrent_dl=1),
     )
 
     product_id = smallest_online_products[0]["id"]
-    command = ["--uuid", product_id, "--download", "--path", str(tmpdir), "--start", "*"]
+    command = ["--uuid", product_id, "--download", "--path", str(tmpdir)]
 
     run_cli(*command)
 
@@ -540,10 +522,10 @@ def test_product_node_download_single(run_cli, api, tmpdir, smallest_online_prod
     # Also, vcrpy is not threadsafe, so only one worker is used.
     monkeypatch.setattr(
         "sentinelsat.SentinelProductsAPI.download_all",
-        partialmethod(SentinelProductsAPI.download_all, max_attempts=2),
+        partialmethod(SentinelProductsAPI.download_all, max_attempts=2, n_concurrent_dl=1),
     )
     product_id = smallest_online_products[0]["id"]
-    command = ["--uuid", product_id, "--download", "--path", str(tmpdir), "--start", "*"]
+    command = ["--uuid", product_id, "--download", "--path", str(tmpdir)]
 
     run_cli(*command)
 
@@ -579,15 +561,13 @@ def test_product_node_download_single_with_filter(
     # Also, vcrpy is not threadsafe, so only one worker is used.
     monkeypatch.setattr(
         "sentinelsat.SentinelProductsAPI.download_all",
-        partialmethod(SentinelAPI.download_all, max_attempts=2),
+        partialmethod(SentinelAPI.download_all, max_attempts=2, n_concurrent_dl=1),
     )
 
     product_id = smallest_online_products[0]["id"]
     command = [
         "--uuid",
         product_id,
-        "--start",
-        "*",
         "--download",
         "--path",
         str(tmpdir),
@@ -622,12 +602,12 @@ def test_download_many(run_cli, api, tmpdir, smallest_online_products, monkeypat
     # Also, vcrpy is not threadsafe, so only one worker is used.
     monkeypatch.setattr(
         "sentinelsat.SentinelAPI.download_all",
-        partialmethod(SentinelAPI.download_all, max_attempts=2),
+        partialmethod(SentinelAPI.download_all, max_attempts=2, n_concurrent_dl=1),
     )
 
     ids = sorted(product["id"] for product in smallest_online_products)
 
-    command = ["--download", "--path", str(tmpdir), "--start", "*"]
+    command = ["--download", "--path", str(tmpdir)]
     for id in ids:
         command += ["--uuid", id]
 
@@ -669,11 +649,11 @@ def test_download_single_quicklook(run_cli, api, tmpdir, quicklook_products, mon
     # Also, vcrpy is not threadsafe, so only one worker is used.
     monkeypatch.setattr(
         "sentinelsat.SentinelAPI.download_all_quicklooks",
-        partialmethod(SentinelAPI.download_all_quicklooks),
+        partialmethod(SentinelAPI.download_all_quicklooks, n_concurrent_dl=1),
     )
 
     id = quicklook_products[0]["id"]
-    command = ["--uuid", id, "--quicklook", "--path", str(tmpdir), "--start", "*"]
+    command = ["--uuid", id, "--quicklook", "--path", str(tmpdir)]
 
     run_cli(*command)
 
@@ -705,20 +685,19 @@ def test_download_single_quicklook(run_cli, api, tmpdir, quicklook_products, mon
 
 @pytest.mark.vcr
 @pytest.mark.scihub
-def test_info_cli(run_cli, tmpdir):
+def test_info_cli(run_cli):
     result = run_cli("--info")
-    assert (
+    assert result.output == (
         "HTTPError: 404 Client Error: Not Found for url: https://apihub.copernicus.eu/apihub/api/stub/version\n"
         "Are you trying to get the DHuS version of APIHub?\nTrying again after conversion to DHuS URL\n"
-        "DHuS version: 2.4.1\n" in result.output
+        "DHuS version: 2.4.1\n"
     )
-    tmpdir.remove()
 
 
 @pytest.mark.vcr
 @pytest.mark.scihub
 def test_location_cli(run_cli):
-    result = run_cli("--location", "Metz", "-l", "1")
+    result = run_cli("--location", "Metz", "-s" "20200101", "-e" "20200102", "-l", "1")
     assert "Found" in result.output
     m = re.search(r"Found (\d+) products", result.output)
     assert m, result.output

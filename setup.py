@@ -47,6 +47,7 @@ setup(
             "rstcheck",
             "sphinx >= 1.3",
             "sphinx_rtd_theme",
+            "flaky",
         ],
     },
     entry_points="""

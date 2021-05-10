@@ -29,8 +29,7 @@ def _set_logger_handler(level="INFO"):
     logger.setLevel(level)
     h = logging.StreamHandler()
     h.setLevel(level)
-    fmt = logging.Formatter("%(message)s")
-    h.setFormatter(fmt)
+    h.setFormatter(logging.Formatter("%(message)s"))
     logger.addHandler(h)
 
 
@@ -67,16 +66,14 @@ def validate_query_param(ctx, param, kwargs):
 @click.option(
     "--start",
     "-s",
-    default="NOW-1DAY",
-    show_default=True,
-    help="Start date of the query in the format YYYYMMDD.",
+    default=None,
+    help="Start date of the query in the format YYYYMMDD or an expression like NOW-1DAY.",
 )
 @click.option(
     "--end",
     "-e",
-    default="NOW",
-    show_default=True,
-    help="End date of the query in the format YYYYMMDD.",
+    default=None,
+    help="End date of the query.",
 )
 @click.option(
     "--geometry",
@@ -152,9 +149,9 @@ def validate_query_param(ctx, param, kwargs):
 )
 @click.option(
     "--footprints",
-    is_flag=True,
-    help="""Create a geojson file search_footprints.geojson with footprints
-    and metadata of the returned products.
+    type=click.File(mode="w", encoding="utf8", lazy=True),
+    help="""Create a GeoJSON file at the provided path with footprints
+    and metadata of the returned products. Set to '-' for stdout.
     """,
 )
 @click.option(
@@ -210,7 +207,12 @@ def cli(
     don't specify the start and end dates, it will search in the last 24 hours.
     """
 
-    _set_logger_handler("DEBUG" if debug else "INFO")
+    if footprints and footprints.name == "-":
+        _set_logger_handler("WARNING")
+    elif debug:
+        _set_logger_handler("DEBUG")
+    else:
+        _set_logger_handler("INFO")
 
     if info:
         api = SentinelProductsAPI(None, None, url)
@@ -319,10 +321,10 @@ def cli(
 
     products = api.query(date=(start, end), order_by=order_by, limit=limit, **search_kwargs)
 
-    if footprints is True:
+    if footprints is not None:
         footprints_geojson = api.to_geojson(products)
-        with open(os.path.join(path, "search_footprints.geojson"), "w") as outfile:
-            outfile.write(gj.dumps(footprints_geojson))
+        gj.dump(footprints_geojson, footprints)
+        footprints.close()
 
     if quicklook:
         downloaded_quicklooks, failed_quicklooks = api.download_all_quicklooks(products, path)
