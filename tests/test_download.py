@@ -7,19 +7,16 @@ There are two minor issues to keep in mind when recording unit tests VCRs.
 2. dhus and apihub have different md5 hashes for products with the same UUID.
 
 """
-import shutil
 import os
+import shutil
 
 import py.path
 import pytest
 import requests_mock
+from flaky import flaky
 
 from sentinelsat import SentinelAPI, make_path_filter
-from sentinelsat.exceptions import (
-    InvalidKeyError,
-    SentinelAPILTAError,
-    InvalidChecksumError,
-)
+from sentinelsat.exceptions import InvalidChecksumError, InvalidKeyError, SentinelAPILTAError
 
 
 @pytest.mark.fast
@@ -205,8 +202,9 @@ def test_download_all_one_fail(api, tmpdir, smallest_online_products):
     tmpdir.remove()
 
 
+# VCR.py can't handle multi-threading correctly
 # https://github.com/kevin1024/vcrpy/issues/212
-@pytest.mark.xfail(reason="VCR.py can't handle multi-threading correctly")
+@flaky(max_runs=3, min_passes=2)
 @pytest.mark.vcr(allow_playback_repeats=True)
 @pytest.mark.scihub
 def test_download_all_lta(api, tmpdir, smallest_online_products, smallest_archived_products):
