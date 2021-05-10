@@ -178,10 +178,6 @@ Options
     Create a GeoJSON file at the provided path with footprints
     and metadata of the returned products. Set to '-' for stdout.
 
-.. option:: -d, --debug
-
-    Print debug log messages.
-
 .. option:: --include-pattern
 
     Glob pattern to filter files (within each product) to be downloaded.
@@ -198,6 +194,10 @@ Options
 .. option:: --version
 
     Show version number and exit.
+
+.. option:: --debug
+
+    Print debug log messages.
 
 .. option:: -h, --help
 
