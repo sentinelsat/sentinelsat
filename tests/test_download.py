@@ -68,7 +68,7 @@ def test_trigger_lta_success(http_status_code):
     request_url = "https://apihub.copernicus.eu/apihub/odata/v1/Products('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')/$value"
 
     with requests_mock.mock() as rqst:
-        rqst.get(request_url, status_code=http_status_code)
+        rqst.head(request_url, status_code=http_status_code)
         assert api._trigger_offline_retrieval(request_url) == http_status_code
 
 
@@ -86,7 +86,7 @@ def test_trigger_lta_failed(http_status_code):
     request_url = "https://apihub.copernicus.eu/apihub/odata/v1/Products('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')/$value"
 
     with requests_mock.mock() as rqst:
-        rqst.get(request_url, status_code=http_status_code)
+        rqst.head(request_url, status_code=http_status_code)
         with pytest.raises(SentinelAPILTAError):
             api._trigger_offline_retrieval(request_url)
 
