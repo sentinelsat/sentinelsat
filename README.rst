@@ -224,8 +224,8 @@ Options
        Example: 'producttype=GRD,polarisationmode=HH'.
    * - -f
      - --footprints
-     -  
-     - Create geojson file search_footprints.geojson with footprints of the query result.
+     - FILENAME
+     - Create a GeoJSON file at the provided path with footprints and metadata of the returned products. Set to '-' for stdout.
    * - 
      - --include-pattern
      - TEXT

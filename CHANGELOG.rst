@@ -7,12 +7,19 @@ All notable changes to ``sentinelsat`` will be listed here.
 ---------------------
 * Dropped support for Python 2.7. Now setuptools requires Python >= 3.6.
 
-Added
-~~~~~
+CLI changes
+~~~~~~~~~~~
+* ``--start`` and ``--end`` CLI arguments no longer use the default values of ``NOW-1DAY`` and ``NOW``. (#459 @valgur)
+* ``--footprints`` now expects a path for the output file to be specified instead of using the previous default ``<--path>/search_footprints.geojson``. (#462 @valgur, #407 @IpsumCapra)
 * Display DHuS server version with CLI flag ``--info`` (#367 @thomasyoung-audet)
 * Added searching by placenames with the CLI flag ``--location`` (#372 @thomasyoung-audet)
-* Added CLI support for ``--geometry`` input as a string (#381 @thomasyoung-audet)
+* Added CLI support for ``--geometry`` input as a WKT or GeoJSON string (#381 @thomasyoung-audet)
 * Download quicklooks directly with the CLI flag ``--quicklook`` (#361 @mackland)
+* Got rid of the special handling of ``--uuid`` and ``--name`` CLI arguments. The product IDs are now simply passed to ``api.query()`` as a set.
+  As a result they no longer ignore the date range arguments (fixes #387). (#390 @valgur)
+
+Added
+~~~~~
 * Added ``setinelsat/__main__.py`` (#412 @avalentino)
 * Added ``get_stream()`` (#430 @fwfichtner)
 * New ``sentinelsat/products.py`` module providing a "product nodes" API that
@@ -39,12 +46,9 @@ Changed
 * Fixed the server-side space handling change issue reported in #383 by quoting instead of backslash-escaping the strings. (#390 @valgur)
 * Queries now use ``(key:value OR key:value)`` format instead of the previous ``key:(value OR value)`` format,
   which for some reason took tens of seconds per query. (#390 @valgur)
-* Got rid of the special handling of ``--uuid`` and ``--name`` CLI arguments. The product IDs are now simply passed to ``api.query()`` as a set.
-  As a result they no longer ignore the date range arguments (fixes #387). (#390 @valgur)
 * Empty queries raise a ``ValueError`` immediately on the client side instead of letting the server generate it. (#390 @valgur)
 * Added stricter checks for empty keyword values in queries, which would cause server-side errors. (#390 @valgur)
 * Gracefully handle cancelled futures. (#448 @avalentino)
-* ``--start`` and ``--end`` CLI arguments no longer use the default values of ``NOW-1DAY`` and ``NOW``. (#459 @valgur)
 
 Deprecated
 ~~~~~~~~~~
