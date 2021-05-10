@@ -180,11 +180,11 @@ Options
    * -  
      - --uuid
      - TEXT
-     - Select a specific product UUID instead of a query. Multiple UUIDs can separated by commas.
+     - Select a specific product UUID. Can be set more than once.
    * -  
      - --name
      - TEXT
-     - Select specific product(s) by filename. Supports wildcards.
+     - Select specific product(s) by filename. Supports wildcards. Can be set more than once.
    * -  
      - --sentinel
      - INT
@@ -220,8 +220,9 @@ Options
    * - -q
      - --query
      - TEXT
-     - Extra search keywords you want to use in the query. Separate keywords with comma.
-       Example: 'producttype=GRD,polarisationmode=HH'.
+     - Extra search keywords you want to use in the query.
+       Example: '-q producttype=GRD -q polarisationmode=HH'.
+       Repeated keywords are interpreted as an "or" expression.
    * - -f
      - --footprints
      - FILENAME

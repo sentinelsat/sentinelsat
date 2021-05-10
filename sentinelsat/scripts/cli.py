@@ -2,6 +2,7 @@ import json
 import logging
 import math
 import os
+import re
 
 import click
 import geojson as gj
@@ -16,7 +17,6 @@ from sentinelsat.sentinel import (
     is_wkt,
 )
 
-from sentinelsat.exceptions import InvalidKeyError
 from sentinelsat.products import SentinelProductsAPI, make_path_filter
 
 
@@ -33,13 +33,11 @@ def _set_logger_handler(level="INFO"):
     logger.addHandler(h)
 
 
-class CommaSeparatedString(click.ParamType):
-    name = "comma-string"
-
-    def convert(self, value, param, ctx):
-        if value is None:
-            return
-        return value.split(",")
+def validate_query_param(ctx, param, kwargs):
+    for kwarg in kwargs:
+        if not re.match(r"\w+=.+", kwarg):
+            raise click.BadParameter("must have the format 'keyword=value'")
+    return kwargs
 
 
 @click.command(context_settings=dict(help_option_names=["-h", "--help"]))
@@ -85,15 +83,13 @@ class CommaSeparatedString(click.ParamType):
 )
 @click.option(
     "--uuid",
-    type=CommaSeparatedString(),
-    default=None,
-    help="Select a specific product UUID instead of a query. Multiple UUIDs can separated by comma.",
+    multiple=True,
+    help="Select a specific product UUID. Can be set more than once.",
 )
 @click.option(
     "--name",
-    type=CommaSeparatedString(),
-    default=None,
-    help="Select specific product(s) by filename. Supports wildcards.",
+    multiple=True,
+    help="Select specific product(s) by filename. Supports wildcards. Can be set more than once.",
 )
 @click.option(
     "--sentinel",
@@ -138,10 +134,11 @@ class CommaSeparatedString(click.ParamType):
 @click.option(
     "--query",
     "-q",
-    type=CommaSeparatedString(),
-    default=None,
-    help="""Extra search keywords you want to use in the query. Separate
-        keywords with comma. Example: 'producttype=GRD,polarisationmode=HH'.
+    multiple=True,
+    callback=validate_query_param,
+    help="""Extra search keywords you want to use in the query. 
+        Example: '-q producttype=GRD -q polarisationmode=HH'.
+        Repeated keywords are interpreted as an "or" expression.
         """,
 )
 @click.option(
@@ -264,14 +261,22 @@ def cli(
             exit(1)
         search_kwargs["cloudcoverpercentage"] = (0, cloud)
 
-    if name is not None:
+    if len(name) > 0:
         search_kwargs["identifier"] = set(name)
 
-    if uuid is not None:
+    if len(uuid) > 0:
         search_kwargs["uuid"] = set(uuid)
 
-    if query is not None:
-        search_kwargs.update(x.split("=") for x in query)
+    if len(query) > 0:
+        for kwarg in query:
+            key, value = kwarg.split("=", 1)
+            if key in search_kwargs:
+                if isinstance(search_kwargs[key], set):
+                    search_kwargs[key].add(value)
+                else:
+                    search_kwargs[key] = {search_kwargs[key], value}
+            else:
+                search_kwargs[key] = value
 
     if location is not None:
         wkt, info = placename_to_wkt(location)

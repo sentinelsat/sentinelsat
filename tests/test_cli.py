@@ -390,14 +390,33 @@ def test_name_search(run_cli):
 def test_name_search_multiple(run_cli):
     result = run_cli(
         "--name",
-        "S1B_IW_GRDH_1SDV_20181007T164414_20181007T164439_013049_0181B7_345E,S1B_IW_GRDH_1SDV_20181007T164349_20181007T164414_013049_0181B7_A8E3",
+        "S1B_IW_GRDH_1SDV_20181007T164414_20181007T164439_013049_0181B7_345E",
+        "--name",
+        "S1B_IW_GRDH_1SDV_20181007T164349_20181007T164414_013049_0181B7_A8E3",
+        "-q",
+        "identifier=S1A_WV_OCN__2SSV_20150526T211029_20150526T211737_006097_007E78_134A",
+        "-q",
+        "identifier=S1A_WV_OCN__2SSV_20150526T211029_20150526T211737_006097_007E78_134A",
+        "-q",
+        "identifier=S1A_WV_OCN__2SSH_20150603T092625_20150603T093332_006207_008194_521E",
     )
 
-    expected = [
+    expected = {
         "Product b2ab53c9-abc4-4481-a9bf-1129f54c9707 - Date: 2018-10-07T16:43:49.773Z, Instrument: SAR-C SAR, Mode: VV VH, Satellite: Sentinel-1, Size: 1.65 GB",
         "Product 9e99eaa6-711e-40c3-aae5-83ea2048949d - Date: 2018-10-07T16:44:14.774Z, Instrument: SAR-C SAR, Mode: VV VH, Satellite: Sentinel-1, Size: 1.65 GB",
-    ]
-    assert result.products == expected
+        "Product d8340134-878f-4891-ba4f-4df54f1e3ab4 - Date: 2015-05-26T21:10:28.984Z, Instrument: SAR-C SAR, Mode: VV, Satellite: Sentinel-1, Size: 10.65 KB",
+        "Product 1f62a176-c980-41dc-b3a1-c735d660c910 - Date: 2015-06-03T09:26:24.921Z, Instrument: SAR-C SAR, Mode: HH, Satellite: Sentinel-1, Size: 10.54 KB",
+    }
+    assert set(result.products) == expected
+
+
+@pytest.mark.vcr
+@pytest.mark.scihub
+def test_repeated_keywords(run_cli):
+    uuids = ["d8340134-878f-4891-ba4f-4df54f1e3ab4", "1f62a176-c980-41dc-b3a1-c735d660c910"]
+    result = run_cli("-q", "uuid=" + uuids[0], "-q", "uuid=" + uuids[1])
+    result_uuids = set(prod.split(" ", 2)[1] for prod in result.products)
+    assert result_uuids == set(uuids)
 
 
 @pytest.mark.vcr
@@ -588,7 +607,9 @@ def test_download_many(run_cli, api, tmpdir, smallest_online_products, monkeypat
 
     ids = sorted(product["id"] for product in smallest_online_products)
 
-    command = ["--uuid", ",".join(ids), "--download", "--path", str(tmpdir)]
+    command = ["--download", "--path", str(tmpdir)]
+    for id in ids:
+        command += ["--uuid", id]
 
     # Download 3 tiny products
     run_cli(*command)

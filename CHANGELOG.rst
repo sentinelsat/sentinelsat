@@ -11,6 +11,8 @@ CLI changes
 ~~~~~~~~~~~
 * ``--start`` and ``--end`` CLI arguments no longer use the default values of ``NOW-1DAY`` and ``NOW``. (#459 @valgur)
 * ``--footprints`` now expects a path for the output file to be specified instead of using the previous default ``<--path>/search_footprints.geojson``. (#462 @valgur, #407 @IpsumCapra)
+* ``--uuid``, ``--name`` and ``--query`` must now be repeated instead of passing a single comma-separated string.
+  Repeated keywords get treated as an "or" expression. (#463 @valgur)
 * Display DHuS server version with CLI flag ``--info`` (#367 @thomasyoung-audet)
 * Added searching by placenames with the CLI flag ``--location`` (#372 @thomasyoung-audet)
 * Added CLI support for ``--geometry`` input as a WKT or GeoJSON string (#381 @thomasyoung-audet)
