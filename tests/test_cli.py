@@ -468,7 +468,7 @@ def test_download_single(run_cli, api, tmpdir, smallest_online_products, monkeyp
     # Also, vcrpy is not threadsafe, so only one worker is used.
     monkeypatch.setattr(
         "sentinelsat.SentinelAPI.download_all",
-        partialmethod(SentinelAPI.download_all, max_attempts=2),
+        partialmethod(SentinelAPI.download_all, max_attempts=2, n_concurrent_dl=1),
     )
 
     product_id = smallest_online_products[0]["id"]
@@ -506,7 +506,7 @@ def test_product_node_download_single(run_cli, api, tmpdir, smallest_online_prod
     # Also, vcrpy is not threadsafe, so only one worker is used.
     monkeypatch.setattr(
         "sentinelsat.SentinelProductsAPI.download_all",
-        partialmethod(SentinelProductsAPI.download_all, max_attempts=2),
+        partialmethod(SentinelProductsAPI.download_all, max_attempts=2, n_concurrent_dl=1),
     )
     product_id = smallest_online_products[0]["id"]
     command = ["--uuid", product_id, "--download", "--path", str(tmpdir)]
@@ -545,7 +545,7 @@ def test_product_node_download_single_with_filter(
     # Also, vcrpy is not threadsafe, so only one worker is used.
     monkeypatch.setattr(
         "sentinelsat.SentinelProductsAPI.download_all",
-        partialmethod(SentinelAPI.download_all, max_attempts=2),
+        partialmethod(SentinelAPI.download_all, max_attempts=2, n_concurrent_dl=1),
     )
 
     product_id = smallest_online_products[0]["id"]
@@ -586,7 +586,7 @@ def test_download_many(run_cli, api, tmpdir, smallest_online_products, monkeypat
     # Also, vcrpy is not threadsafe, so only one worker is used.
     monkeypatch.setattr(
         "sentinelsat.SentinelAPI.download_all",
-        partialmethod(SentinelAPI.download_all, max_attempts=2),
+        partialmethod(SentinelAPI.download_all, max_attempts=2, n_concurrent_dl=1),
     )
 
     ids = sorted(product["id"] for product in smallest_online_products)
@@ -631,7 +631,7 @@ def test_download_single_quicklook(run_cli, api, tmpdir, quicklook_products, mon
     # Also, vcrpy is not threadsafe, so only one worker is used.
     monkeypatch.setattr(
         "sentinelsat.SentinelAPI.download_all_quicklooks",
-        partialmethod(SentinelAPI.download_all_quicklooks),
+        partialmethod(SentinelAPI.download_all_quicklooks, n_concurrent_dl=1),
     )
 
     id = quicklook_products[0]["id"]

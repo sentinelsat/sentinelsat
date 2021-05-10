@@ -164,7 +164,9 @@ def test_download_all(api, tmpdir, smallest_online_products):
     ids = [product["id"] for product in smallest_online_products]
 
     # Download normally
-    product_infos, triggered, failed_downloads = api.download_all(ids, str(tmpdir), max_attempts=1)
+    product_infos, triggered, failed_downloads = api.download_all(
+        ids, str(tmpdir), max_attempts=1, n_concurrent_dl=1
+    )
     assert len(failed_downloads) == 0
     assert len(triggered) == 0
     assert len(product_infos) == len(ids)
@@ -188,7 +190,7 @@ def test_download_all_one_fail(api, tmpdir, smallest_online_products):
         json["d"]["Checksum"]["Value"] = "00000000000000000000000000000000"
         rqst.get(url, json=json)
         product_infos, triggered, failed_downloads = api.download_all(
-            ids, str(tmpdir), max_attempts=1, checksum=True
+            ids, str(tmpdir), max_attempts=1, n_concurrent_dl=1, checksum=True
         )
         exceptions = {k: v["exception"] for k, v in failed_downloads.items()}
         for e in exceptions.values():
@@ -203,6 +205,8 @@ def test_download_all_one_fail(api, tmpdir, smallest_online_products):
     tmpdir.remove()
 
 
+# https://github.com/kevin1024/vcrpy/issues/212
+@pytest.mark.xfail(reason="VCR.py can't handle multi-threading correctly")
 @pytest.mark.vcr(allow_playback_repeats=True)
 @pytest.mark.scihub
 def test_download_all_lta(api, tmpdir, smallest_online_products, smallest_archived_products):
@@ -210,7 +214,7 @@ def test_download_all_lta(api, tmpdir, smallest_online_products, smallest_archiv
     online_ids = [x["id"] for x in smallest_online_products]
     ids = archived_ids[:1] + online_ids[:2]
     product_infos, triggered, failed_downloads = api.download_all(
-        ids, str(tmpdir), n_concurrent_dl=1
+        ids, str(tmpdir), max_attempts=1, n_concurrent_dl=1
     )
     exceptions = {k: v["exception"] for k, v in failed_downloads.items()}
     assert len(failed_downloads) == 0, exceptions
