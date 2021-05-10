@@ -7,19 +7,16 @@ There are two minor issues to keep in mind when recording unit tests VCRs.
 2. dhus and apihub have different md5 hashes for products with the same UUID.
 
 """
-import shutil
 import os
+import shutil
 
 import py.path
 import pytest
 import requests_mock
+from flaky import flaky
 
 from sentinelsat import SentinelAPI, make_path_filter
-from sentinelsat.exceptions import (
-    InvalidKeyError,
-    SentinelAPILTAError,
-    InvalidChecksumError,
-)
+from sentinelsat.exceptions import InvalidChecksumError, InvalidKeyError, SentinelAPILTAError
 
 
 @pytest.mark.fast
@@ -164,7 +161,9 @@ def test_download_all(api, tmpdir, smallest_online_products):
     ids = [product["id"] for product in smallest_online_products]
 
     # Download normally
-    product_infos, triggered, failed_downloads = api.download_all(ids, str(tmpdir), max_attempts=1)
+    product_infos, triggered, failed_downloads = api.download_all(
+        ids, str(tmpdir), max_attempts=1, n_concurrent_dl=1
+    )
     assert len(failed_downloads) == 0
     assert len(triggered) == 0
     assert len(product_infos) == len(ids)
@@ -188,7 +187,7 @@ def test_download_all_one_fail(api, tmpdir, smallest_online_products):
         json["d"]["Checksum"]["Value"] = "00000000000000000000000000000000"
         rqst.get(url, json=json)
         product_infos, triggered, failed_downloads = api.download_all(
-            ids, str(tmpdir), max_attempts=1, checksum=True
+            ids, str(tmpdir), max_attempts=1, n_concurrent_dl=1, checksum=True
         )
         exceptions = {k: v["exception"] for k, v in failed_downloads.items()}
         for e in exceptions.values():
@@ -203,18 +202,18 @@ def test_download_all_one_fail(api, tmpdir, smallest_online_products):
     tmpdir.remove()
 
 
-@pytest.mark.skip(
-    reason="The threading in this test seems to break VCR.py somehow "
-    "and smallest_archived_products does not currently return actually small"
-    "products for archived products"
-)
+# VCR.py can't handle multi-threading correctly
+# https://github.com/kevin1024/vcrpy/issues/212
+@flaky(max_runs=3, min_passes=2)
 @pytest.mark.vcr(allow_playback_repeats=True)
 @pytest.mark.scihub
 def test_download_all_lta(api, tmpdir, smallest_online_products, smallest_archived_products):
     archived_ids = [x["id"] for x in smallest_archived_products]
     online_ids = [x["id"] for x in smallest_online_products]
     ids = archived_ids[:1] + online_ids[:2]
-    product_infos, triggered, failed_downloads = api.download_all(ids, str(tmpdir))
+    product_infos, triggered, failed_downloads = api.download_all(
+        ids, str(tmpdir), max_attempts=1, n_concurrent_dl=1
+    )
     exceptions = {k: v["exception"] for k, v in failed_downloads.items()}
     assert len(failed_downloads) == 0, exceptions
     assert len(triggered) == 1

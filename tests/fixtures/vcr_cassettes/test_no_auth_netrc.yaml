@@ -22,10 +22,10 @@ interactions:
         Scientific Data Hub search results for: beginPosition:[* TO \"2020-01-01T00:00:00Z\"]
         footprint:\"Intersects(POLYGON((-66.2695 -8.0592,-66.2695 0.7031,-57.3047
         0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\"","subtitle":"Displaying 0 to
-        0 of 102061 total results. Request done in ... seconds.","updated":"...","author":{"name":"Sentinels
+        0 of 10000 total results. Request done in ... seconds.","updated":"...","author":{"name":"Sentinels
         Scientific Data Hub"},"id":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[*
         TO \"2020-01-01T00:00:00Z\"] footprint:\"Intersects(POLYGON((-66.2695 -8.0592,-66.2695
-        0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\"","opensearch:totalResults":"102061","opensearch:startIndex":"0","opensearch:itemsPerPage":"1","opensearch:Query":{"role":"request","searchTerms":"beginPosition:[*
+        0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\"","opensearch:totalResults":"10000","opensearch:startIndex":"0","opensearch:itemsPerPage":"1","opensearch:Query":{"role":"request","searchTerms":"beginPosition:[*
         TO \"2020-01-01T00:00:00Z\"] footprint:\"Intersects(POLYGON((-66.2695 -8.0592,-66.2695
         0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\"","startPage":"1"},"link":[{"rel":"self","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[*
         TO \"2020-01-01T00:00:00Z\"] footprint:\"Intersects(POLYGON((-66.2695 -8.0592,-66.2695
@@ -77,7 +77,7 @@ interactions:
         Reprocessing Centre 1 [LR1]"},{"name":"procfacilityorg","content":"ACRI"},{"name":"onlinequalitycheck","content":"PASSED"},{"name":"identifier","content":"S3B_SL_1_RBT____20191113T013455_20191113T013755_20200811T121820_0179_032_102_5760_LR1_R_NT_004"},{"name":"uuid","content":"52b35ddd-8ff7-43f4-abdc-876531a002b5"}]}}}'
     headers:
       content-length:
-      - '7715'
+      - '7713'
       content-type:
       - application/json
       pragma:
