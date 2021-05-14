@@ -51,6 +51,8 @@ Changed
 * Empty queries raise a ``ValueError`` immediately on the client side instead of letting the server generate it. (#390 @valgur)
 * Added stricter checks for empty keyword values in queries, which would cause server-side errors. (#390 @valgur)
 * Gracefully handle cancelled futures. (#448 @avalentino)
+* Use the HTTP status instead of OData metadata to determine the online status of a product when downloading. 
+  This is a workaround for the rare server-side bug of the OData info for the online status being incorrect (#467). (#469 @valgur) 
 
 Deprecated
 ~~~~~~~~~~
