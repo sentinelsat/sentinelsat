@@ -1449,7 +1449,7 @@ def _check_scihub_response(response, test_json=True, query_string=None):
                         pass
 
         if msg is None:
-            error = ServerError("Invalid API response", response)
+            raise ServerError("Invalid API response", response)
         elif response.status_code == 401:
             msg = "Invalid user name or password"
             if "apihub.copernicus.eu/apihub" in response.url:
@@ -1458,7 +1458,7 @@ def _check_scihub_response(response, test_json=True, query_string=None):
                     "to propagate to the 'https://apihub.copernicus.eu/apihub/' API URL you are using. "
                     "Consider switching to 'https://scihub.copernicus.eu/dhus/' instead in the mean time."
                 )
-            error = UnauthorizedError(msg, response)
+            raise UnauthorizedError(msg, response)
         elif "Request Entity Too Large" in msg or "Request-URI Too Long" in msg:
             msg = "Server was unable to process the query due to its excessive length"
             if query_string is not None:
@@ -1468,18 +1468,15 @@ def _check_scihub_response(response, test_json=True, query_string=None):
                     "Consider using SentinelAPI.check_query_length() for "
                     "client-side validation of the query string length.".format(length)
                 )
-            error = QueryLengthError(msg, response)
+            raise QueryLengthError(msg, response)
         elif "Invalid key" in msg:
             msg = msg.split(" : ", 1)[-1]
-            error = InvalidKeyError(msg, response)
+            raise InvalidKeyError(msg, response)
         elif 500 <= response.status_code < 600 or msg:
             # 5xx: Server Error
-            error = ServerError(msg, response)
+            raise ServerError(msg, response)
         else:
-            error = SentinelAPIError(msg, response)
-
-        # Suppress "During handling of the above exception..." message
-        raise error from None
+            raise SentinelAPIError(msg, response)
 
 
 def _format_order_by(order_by):
