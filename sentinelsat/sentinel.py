@@ -547,12 +547,12 @@ class SentinelAPI:
             return product_info
 
         # An incomplete download triggers the retrieval from the LTA if the product is not online
-        if not product_info["Online"]:
+        is_online = self._trigger_offline_retrieval(product_info["url"]) == 200
+        if not is_online:
             self.logger.warning(
                 "Product %s is not online. Triggering retrieval from long term archive.",
                 product_info["id"],
             )
-            self._trigger_offline_retrieval(product_info["url"])
             return product_info
 
         self._download_outer(product_info, path, checksum)
@@ -635,7 +635,10 @@ class SentinelAPI:
         """
         r = self.session.head(url)
         # check https://scihub.copernicus.eu/userguide/LongTermArchive#HTTP_Status_codes
-        if r.status_code == 202:
+        if r.status_code == 200:
+            self.logger.debug("Product is online")
+            pass
+        elif r.status_code == 202:
             self.logger.debug("Accepted for retrieval")
         elif r.status_code == 403:
             self.logger.debug("Requests exceed user quota")
@@ -727,7 +730,8 @@ class SentinelAPI:
         ):
             info = self.get_product_odata(pid)
             product_infos[pid] = info
-            if info["Online"]:
+            is_online = self._trigger_offline_retrieval(info["url"]) == 200
+            if is_online:
                 online_prods[pid] = info
             else:
                 offline_prods[pid] = info
@@ -883,10 +887,7 @@ class SentinelAPI:
 
         id = product_info["id"]
         title = product_info["title"]
-        is_online = product_info.get("Online")
-        if not is_online:
-            # Re-check if the product's online status has changed
-            is_online = self.is_online(id)
+        is_online = self._trigger_offline_retrieval(product_info["url"]) == 200
         if not is_online:
             self.logger.info("%s is not online.", id)
             return
