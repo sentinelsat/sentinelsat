@@ -234,27 +234,21 @@ def cli(
         nodefilter = None
 
     if gnss:
-        url = (
-            url
-            if url != "https://scihub.copernicus.eu/apihub/"
-            else "https://scihub.copernicus.eu/gnss/"
+        url = "https://scihub.copernicus.eu/gnss/"
+        user = "gnssguest"
+        password = "gnssguest"
+
+    if user is None or password is None:
+        try:
+            user, password = requests.utils.get_netrc_auth(url)
+        except TypeError:
+            pass
+
+    if user is None or password is None:
+        raise click.UsageError(
+            "Missing --user and --password. Please see docs "
+            "for environment variables and .netrc support."
         )
-        if user is None or password is None:
-            user = "gnssguest"
-            password = "gnssguest"
-
-    else:
-        if user is None or password is None:
-            try:
-                user, password = requests.utils.get_netrc_auth(url)
-            except TypeError:
-                pass
-
-        if user is None or password is None:
-            raise click.UsageError(
-                "Missing --user and --password. Please see docs "
-                "for environment variables and .netrc support."
-            )
 
     api = SentinelProductsAPI(user, password, url)
 
