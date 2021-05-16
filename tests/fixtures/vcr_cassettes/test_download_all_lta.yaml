@@ -386,4 +386,34 @@ interactions:
     status:
       code: 202
       message: Accepted
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - sentinelsat/0.14
+    method: GET
+    uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('5f1595cf-8522-4ac2-babc-68dd892d8624')/Attributes('Filename')/Value/$value
+  response:
+    body:
+      string: S3A_OL_2_LFR____20161128T001516_20161128T001516_20180320T053612_0000_011_244_4680_LR2_R_NT_002.SEN3
+    headers:
+      content-length:
+      - '99'
+      content-type:
+      - text/plain;charset=utf-8
+      dataserviceversion:
+      - '2.0'
+      pragma:
+      - no-cache
+      server:
+      - Apache-Coyote/1.1
+    status:
+      code: 200
+      message: OK
 version: 1

@@ -65,7 +65,7 @@ Deprecated
 Fixed
 ~~~~~
 * Fix location information for Nominatim bounding box queries (#384)
-* Get file name extension more reliably from either header or internal logic (in particular for S5 products #270) (#378 @valgur)
+* Get file name extension more reliably from either the HTTP header or an OData attribute. (#378, #472 @valgur)
 * Updated the API Hub URL to `https://apihub.copernicus.eu/apihub/`.
 * Server-side error info has become much more detailed and the client code has been updated to correctly handle that.
 * ``check_existing()`` now determines the filename correctly for Sentinel-5 products. (@valgur #452)
