@@ -236,6 +236,10 @@ Options
      - TEXT
      - Glob pattern to filter files (within each product) to be excluded from the downloaded.
    * -  
+     - --timeout
+     - FLOAT
+     - How long to wait for a DataHub response (in seconds, default 60 sec).
+   * -  
      - --info
      -  
      - Display DHuS server information.

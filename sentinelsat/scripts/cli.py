@@ -158,8 +158,7 @@ def validate_query_param(ctx, param, kwargs):
     "--timeout",
     type=float,
     default=60,
-    show_default=True,
-    help="How long to wait for DataHub response (in seconds)",
+    help="How long to wait for a DataHub response (in seconds, default 60 sec).",
 )
 @click.option(
     "--debug",
