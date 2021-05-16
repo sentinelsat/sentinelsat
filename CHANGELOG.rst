@@ -27,6 +27,7 @@ Added
 * New ``sentinelsat/products.py`` module providing a "product nodes" API that
   allows to filter and download only selected files of the requested products
   (#414 @avalentino)
+* Added ``download_quicklooks()`` and ``download_all_quicklooks()`` (#361 @mackland)
 
 Changed
 ~~~~~~~
@@ -53,6 +54,7 @@ Changed
 * Gracefully handle cancelled futures. (#448 @avalentino)
 * Use the HTTP status instead of OData metadata to determine the online status of a product when downloading. 
   This is a workaround for the rare server-side bug of the OData info for the online status being incorrect (#467). (#469 @valgur) 
+* ``download_all`` now returns a named tuple for clarity. (#477 @valgur)
 
 Deprecated
 ~~~~~~~~~~
