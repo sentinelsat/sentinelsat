@@ -28,6 +28,7 @@ Added
   allows to filter and download only selected files of the requested products
   (#414 @avalentino)
 * Added ``trigger_offline_retrieval()``. (#476 @valgur)
+* Added ``download_quicklooks()`` and ``download_all_quicklooks()`` (#361 @mackland)
 
 Changed
 ~~~~~~~
@@ -56,6 +57,8 @@ Changed
 * Use the HTTP status instead of OData metadata to determine the online status of a product when downloading. 
   This is a workaround for the rare server-side bug of the OData info for the online status being incorrect (#467). (#469 @valgur)
 * ``download()`` now raises ``LTATriggered`` or ``LTAError`` if the requested product is offline. (#476 @valgur)
+  This is a workaround for the rare server-side bug of the OData info for the online status being incorrect (#467). (#469 @valgur) 
+* ``download_all`` now returns a named tuple for clarity. (#477 @valgur)
 
 Deprecated
 ~~~~~~~~~~
