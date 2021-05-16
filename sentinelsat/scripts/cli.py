@@ -155,6 +155,12 @@ def validate_query_param(ctx, param, kwargs):
     """,
 )
 @click.option(
+    "--timeout",
+    type=float,
+    default=60,
+    help="How long to wait for a DataHub response (in seconds, default 60 sec).",
+)
+@click.option(
     "--debug",
     is_flag=True,
     help="Print debug log messages.",
@@ -195,6 +201,7 @@ def cli(
     order_by,
     location,
     limit,
+    timeout,
     debug,
     include_pattern,
     exclude_pattern,
@@ -215,7 +222,7 @@ def cli(
         _set_logger_handler("INFO")
 
     if info:
-        api = SentinelProductsAPI(None, None, url)
+        api = SentinelProductsAPI(None, None, url, timeout=timeout)
         ctx = click.get_current_context()
         click.echo("DHuS version: " + api.dhus_version)
         ctx.exit()
@@ -243,7 +250,7 @@ def cli(
             "for environment variables and .netrc support."
         )
 
-    api = SentinelProductsAPI(user, password, url)
+    api = SentinelProductsAPI(user, password, url, timeout=timeout)
 
     search_kwargs = {}
     if sentinel and not (producttype or instrument):
