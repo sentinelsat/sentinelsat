@@ -201,7 +201,7 @@ Options
 
 .. option:: --gnss
 
-    Query download orbit product form the GNSS end-point ("https://scihub.copernicus.eu/gnss").
+    Query orbit products form the GNSS end-point ("https://scihub.copernicus.eu/gnss").
 
 .. option:: --info
 
