@@ -7,7 +7,7 @@ import shutil
 import threading
 import warnings
 import xml.etree.ElementTree as ET
-from collections import OrderedDict, defaultdict
+from collections import OrderedDict, defaultdict, namedtuple
 from datetime import date, datetime, timedelta
 from pathlib import Path
 from typing import Any, Dict
@@ -48,9 +48,10 @@ class SentinelAPI:
         defaults to 'https://apihub.copernicus.eu/apihub'
     show_progressbars : bool
         Whether progressbars should be shown or not, e.g. during download. Defaults to True.
-    timeout : float or tuple, optional
+    timeout : float or tuple, default 60
         How long to wait for DataHub response (in seconds).
         Tuple (connect, read) allowed.
+        Set to None to wait indefinitely.
 
     Attributes
     ----------
@@ -73,7 +74,7 @@ class SentinelAPI:
         password,
         api_url="https://apihub.copernicus.eu/apihub/",
         show_progressbars=True,
-        timeout=None,
+        timeout=60,
     ):
         self.session = requests.Session()
         if user and password:
@@ -602,17 +603,20 @@ class SentinelAPI:
         shutil.move(temp_path, path)
 
     def _get_filename(self, product_info):
-        # Default guess, mostly for archived products
-        filename = product_info["title"] + (
-            ".nc" if product_info["title"].startswith("S5P") else ".zip"
-        )
         if not product_info["Online"]:
+            req = self.session.get(
+                product_info["url"].replace("$value", "Attributes('Filename')/Value/$value")
+            )
+            _check_scihub_response(req, test_json=False)
+            filename = req.text
+            # This should cover all currently existing file types: .SAFE, .SEN3, .nc and .EOF
+            filename = filename.replace(".SAFE", ".zip")
+            filename = filename.replace(".SEN3", ".zip")
             return filename
         req = self.session.head(product_info["url"])
         _check_scihub_response(req, test_json=False)
         cd = req.headers.get("Content-Disposition")
-        if cd and "=" in cd:
-            filename = cd.split("=", 1)[1].strip('"')
+        filename = cd.split("=", 1)[1].strip('"')
         return filename
 
     def _trigger_offline_retrieval(self, url):
@@ -808,7 +812,8 @@ class SentinelAPI:
                 raise SentinelAPIError("Downloading all products failed for unknown reason")
             raise exception
 
-        return downloaded_prods, retrieval_scheduled, failed_prods
+        ResultTuple = namedtuple("ResultTuple", ["downloaded", "retrieval_triggered", "failed"])
+        return ResultTuple(downloaded_prods, retrieval_scheduled, failed_prods)
 
     def _trigger_offline_retrieval_until_stop(
         self, product_infos, stop_event, retrieval_scheduled, retry_delay=600
@@ -955,7 +960,8 @@ class SentinelAPI:
                 else:
                     failed_quicklooks[dl_tasks[future]] = product_info["error"]
 
-        return downloaded_quicklooks, failed_quicklooks
+        ResultTuple = namedtuple("ResultTuple", ["downloaded", "failed"])
+        return ResultTuple(downloaded_quicklooks, failed_quicklooks)
 
     def download_quicklook(self, id, directory_path="."):
         """Download a quicklook for a product.

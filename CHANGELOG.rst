@@ -19,6 +19,7 @@ CLI changes
 * Download quicklooks directly with the CLI flag ``--quicklook`` (#361 @mackland)
 * Got rid of the special handling of ``--uuid`` and ``--name`` CLI arguments. The product IDs are now simply passed to ``api.query()`` as a set.
   As a result they no longer ignore the date range arguments (fixes #387). (#390 @valgur)
+* Added ``--timeout`` option with a default value of 60 seconds to avoid waiting indefinitely for a response. (#475 @valgur)
 
 Added
 ~~~~~
@@ -27,6 +28,7 @@ Added
 * New ``sentinelsat/products.py`` module providing a "product nodes" API that
   allows to filter and download only selected files of the requested products
   (#414 @avalentino)
+* Added ``download_quicklooks()`` and ``download_all_quicklooks()`` (#361 @mackland)
 
 Changed
 ~~~~~~~
@@ -53,6 +55,8 @@ Changed
 * Gracefully handle cancelled futures. (#448 @avalentino)
 * Use the HTTP status instead of OData metadata to determine the online status of a product when downloading. 
   This is a workaround for the rare server-side bug of the OData info for the online status being incorrect (#467). (#469 @valgur) 
+* Set the default query timeout to 60 seconds to avoid waiting indefinitely for a response. (#475 @valgur)
+* ``download_all`` now returns a named tuple for clarity. (#477 @valgur)
 * Search queries now use GET instead of POST requests because the Sentinel-5P Pre-Operations Data Hub does not support POST (#380).
   As a consequence, the search query contents are now limited to latin1 encoding instead of UTF-8. (#473 @valgur)
 
@@ -63,7 +67,7 @@ Deprecated
 Fixed
 ~~~~~
 * Fix location information for Nominatim bounding box queries (#384)
-* Get file name extension more reliably from either header or internal logic (in particular for S5 products #270) (#378 @valgur)
+* Get file name extension more reliably from either the HTTP header or an OData attribute. (#378, #472 @valgur)
 * Updated the API Hub URL to `https://apihub.copernicus.eu/apihub/`.
 * Server-side error info has become much more detailed and the client code has been updated to correctly handle that.
 * ``check_existing()`` now determines the filename correctly for Sentinel-5 products. (@valgur #452)
