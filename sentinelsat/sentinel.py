@@ -7,7 +7,7 @@ import shutil
 import threading
 import warnings
 import xml.etree.ElementTree as ET
-from collections import OrderedDict, defaultdict
+from collections import OrderedDict, defaultdict, namedtuple
 from datetime import date, datetime, timedelta
 from pathlib import Path
 from typing import Any, Dict
@@ -812,7 +812,8 @@ class SentinelAPI:
                 raise SentinelAPIError("Downloading all products failed for unknown reason")
             raise exception
 
-        return downloaded_prods, retrieval_scheduled, failed_prods
+        ResultTuple = namedtuple("ResultTuple", ["downloaded", "retrieval_triggered", "failed"])
+        return ResultTuple(downloaded_prods, retrieval_scheduled, failed_prods)
 
     def _trigger_offline_retrieval_until_stop(
         self, product_infos, stop_event, retrieval_scheduled, retry_delay=600
@@ -959,7 +960,8 @@ class SentinelAPI:
                 else:
                     failed_quicklooks[dl_tasks[future]] = product_info["error"]
 
-        return downloaded_quicklooks, failed_quicklooks
+        ResultTuple = namedtuple("ResultTuple", ["downloaded", "failed"])
+        return ResultTuple(downloaded_quicklooks, failed_quicklooks)
 
     def download_quicklook(self, id, directory_path="."):
         """Download a quicklook for a product.
