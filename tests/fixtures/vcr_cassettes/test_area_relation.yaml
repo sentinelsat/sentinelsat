@@ -1,6 +1,6 @@
 interactions:
 - request:
-    body: q=beginPosition%3A%5B%222015-12-19T00%3A00%3A00Z%22+TO+%222015-12-26T00%3A00%3A00Z%22%5D+footprint%3A%22Intersects%28POLYGON%28%2810.83+53.04%2C11.64+53.04%2C11.64+52.65%2C10.83+52.65%2C10.83+53.04%29%29%29%22
+    body: null
     headers:
       Accept:
       - '*/*'
@@ -14,8 +14,8 @@ interactions:
       - application/x-www-form-urlencoded; charset=UTF-8
       User-Agent:
       - sentinelsat/0.14
-    method: POST
-    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=100&start=0
+    method: GET
+    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=100&start=0&q=beginPosition%3A%5B%222015-12-19T00%3A00%3A00Z%22+TO+%222015-12-26T00%3A00%3A00Z%22%5D+footprint%3A%22Intersects%28POLYGON%28%2810.83+53.04%2C11.64+53.04%2C11.64+52.65%2C10.83+52.65%2C10.83+53.04%29%29%29%22
   response:
     body:
       string: '{"feed":{"xmlns:opensearch":"http://a9.com/-/spec/opensearch/1.1/","xmlns":"http://www.w3.org/2005/Atom","title":"Sentinels
@@ -178,7 +178,7 @@ interactions:
       code: 200
       message: OK
 - request:
-    body: q=beginPosition%3A%5B%222015-12-19T00%3A00%3A00Z%22+TO+%222015-12-26T00%3A00%3A00Z%22%5D+footprint%3A%22contains%28POLYGON%28%2810.83+53.04%2C11.64+53.04%2C11.64+52.65%2C10.83+52.65%2C10.83+53.04%29%29%29%22
+    body: null
     headers:
       Accept:
       - '*/*'
@@ -192,8 +192,8 @@ interactions:
       - application/x-www-form-urlencoded; charset=UTF-8
       User-Agent:
       - sentinelsat/0.14
-    method: POST
-    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=100&start=0
+    method: GET
+    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=100&start=0&q=beginPosition%3A%5B%222015-12-19T00%3A00%3A00Z%22+TO+%222015-12-26T00%3A00%3A00Z%22%5D+footprint%3A%22contains%28POLYGON%28%2810.83+53.04%2C11.64+53.04%2C11.64+52.65%2C10.83+52.65%2C10.83+53.04%29%29%29%22
   response:
     body:
       string: '{"feed":{"xmlns:opensearch":"http://a9.com/-/spec/opensearch/1.1/","xmlns":"http://www.w3.org/2005/Atom","title":"Sentinels
@@ -256,7 +256,7 @@ interactions:
       code: 200
       message: OK
 - request:
-    body: q=beginPosition%3A%5B%222015-12-19T00%3A00%3A00Z%22+TO+%222015-12-26T00%3A00%3A00Z%22%5D+footprint%3A%22IsWithin%28POLYGON%28%2810.83+53.04%2C11.64+53.04%2C11.64+52.65%2C10.83+52.65%2C10.83+53.04%29%29%29%22
+    body: null
     headers:
       Accept:
       - '*/*'
@@ -270,8 +270,8 @@ interactions:
       - application/x-www-form-urlencoded; charset=UTF-8
       User-Agent:
       - sentinelsat/0.14
-    method: POST
-    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=100&start=0
+    method: GET
+    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=100&start=0&q=beginPosition%3A%5B%222015-12-19T00%3A00%3A00Z%22+TO+%222015-12-26T00%3A00%3A00Z%22%5D+footprint%3A%22IsWithin%28POLYGON%28%2810.83+53.04%2C11.64+53.04%2C11.64+52.65%2C10.83+52.65%2C10.83+53.04%29%29%29%22
   response:
     body:
       string: '{"feed":{"xmlns:opensearch":"http://a9.com/-/spec/opensearch/1.1/","xmlns":"http://www.w3.org/2005/Atom","title":"Sentinels

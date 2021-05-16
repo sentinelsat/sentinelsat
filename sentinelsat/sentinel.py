@@ -348,11 +348,8 @@ class SentinelAPI:
 
         # load query results
         url = self._format_url(order_by, limit, offset)
-        response = self.session.post(
-            url,
-            {"q": query},
-            headers={"Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"},
-        )
+        # Unlike POST, DHuS only accepts latin1 charset in the GET params
+        response = self.session.get(url, params={"q": query.encode("latin1")})
         _check_scihub_response(response, query_string=query)
 
         # store last status code (for testing)

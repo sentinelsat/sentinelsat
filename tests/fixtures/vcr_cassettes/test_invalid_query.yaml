@@ -1,6 +1,6 @@
 interactions:
 - request:
-    body: q=xxx%3Ayyy
+    body: null
     headers:
       Accept:
       - '*/*'
@@ -14,8 +14,8 @@ interactions:
       - application/x-www-form-urlencoded; charset=UTF-8
       User-Agent:
       - sentinelsat/0.14
-    method: POST
-    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=100&start=0
+    method: GET
+    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=100&start=0&q=xxx%3Ayyy
   response:
     body:
       string: '{"feed":{"xmlns:opensearch":"http://a9.com/-/spec/opensearch/1.1/","xmlns":"http://www.w3.org/2005/Atom","error":{"code":"400","message":"undefined
