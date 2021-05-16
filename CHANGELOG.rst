@@ -19,6 +19,7 @@ CLI changes
 * Download quicklooks directly with the CLI flag ``--quicklook`` (#361 @mackland)
 * Got rid of the special handling of ``--uuid`` and ``--name`` CLI arguments. The product IDs are now simply passed to ``api.query()`` as a set.
   As a result they no longer ignore the date range arguments (fixes #387). (#390 @valgur)
+* Added ``--timeout`` option with a default value of 60 seconds to avoid waiting indefinitely for a response. (#475 @valgur)
 
 Added
 ~~~~~
@@ -53,6 +54,7 @@ Changed
 * Gracefully handle cancelled futures. (#448 @avalentino)
 * Use the HTTP status instead of OData metadata to determine the online status of a product when downloading. 
   This is a workaround for the rare server-side bug of the OData info for the online status being incorrect (#467). (#469 @valgur) 
+* Set the default query timeout to 60 seconds to avoid waiting indefinitely for a response. (#475 @valgur)
 
 Deprecated
 ~~~~~~~~~~

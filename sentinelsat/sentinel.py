@@ -48,9 +48,10 @@ class SentinelAPI:
         defaults to 'https://apihub.copernicus.eu/apihub'
     show_progressbars : bool
         Whether progressbars should be shown or not, e.g. during download. Defaults to True.
-    timeout : float or tuple, optional
+    timeout : float or tuple, default 60
         How long to wait for DataHub response (in seconds).
         Tuple (connect, read) allowed.
+        Set to None to wait indefinitely.
 
     Attributes
     ----------
@@ -73,7 +74,7 @@ class SentinelAPI:
         password,
         api_url="https://apihub.copernicus.eu/apihub/",
         show_progressbars=True,
-        timeout=None,
+        timeout=60,
     ):
         self.session = requests.Session()
         if user and password:
