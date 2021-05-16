@@ -258,10 +258,10 @@ def cli(
         ctx.exit()
 
     search_kwargs = {}
-    if sentinel and (gnss or not (producttype or instrument)):
+    if sentinel:
         search_kwargs["platformname"] = "Sentinel-" + sentinel
 
-    if instrument and not producttype:
+    if instrument:
         search_kwargs["instrumentshortname"] = instrument
 
     if producttype:

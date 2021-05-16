@@ -430,32 +430,6 @@ def test_name_search_empty(run_cli):
 
 @pytest.mark.vcr
 @pytest.mark.scihub
-def test_option_hierarchy(run_cli, geojson_path):
-    # expected hierarchy is producttype > instrument > platform from most to least specific
-    result = run_cli(
-        "--geometry",
-        geojson_path,
-        "--url",
-        "https://apihub.copernicus.eu/apihub/",
-        "-s",
-        "20161201",
-        "-e",
-        "20161202",
-        "--sentinel",
-        "1",
-        "--instrument",
-        "SAR-C SAR",
-        "--producttype",
-        "S2MSI1C",
-    )
-
-    # Check that all returned products are of type 'S2MSI1C'
-    assert len(result.products) > 0
-    assert all("Instrument: MSI, Satellite: Sentinel-2" in p for p in result.products)
-
-
-@pytest.mark.vcr
-@pytest.mark.scihub
 def test_footprints_cli(run_cli, tmpdir, geojson_path):
     result = run_cli(
         "--geometry",
