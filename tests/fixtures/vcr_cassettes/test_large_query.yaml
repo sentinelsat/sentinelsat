@@ -1,6 +1,6 @@
 interactions:
 - request:
-    body: q=beginPosition%3A%5B%222015-12-01T00%3A00%3A00Z%22+TO+%222015-12-31T00%3A00%3A00Z%22%5D+footprint%3A%22Intersects%28POLYGON%28%280+0%2C0+10%2C10+10%2C10+0%2C0+0%29%29%29%22
+    body: null
     headers:
       Accept:
       - '*/*'
@@ -14,8 +14,8 @@ interactions:
       - application/x-www-form-urlencoded; charset=UTF-8
       User-Agent:
       - sentinelsat/0.14
-    method: POST
-    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=100&start=0
+    method: GET
+    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=100&start=0&q=beginPosition%3A%5B%222015-12-01T00%3A00%3A00Z%22+TO+%222015-12-31T00%3A00%3A00Z%22%5D+footprint%3A%22Intersects%28POLYGON%28%280+0%2C0+10%2C10+10%2C10+0%2C0+0%29%29%29%22
   response:
     body:
       string: !!binary |
@@ -708,7 +708,7 @@ interactions:
       code: 200
       message: OK
 - request:
-    body: q=beginPosition%3A%5B%222015-12-01T00%3A00%3A00Z%22+TO+%222015-12-31T00%3A00%3A00Z%22%5D+footprint%3A%22Intersects%28POLYGON%28%280+0%2C0+10%2C10+10%2C10+0%2C0+0%29%29%29%22
+    body: null
     headers:
       Accept:
       - '*/*'
@@ -722,8 +722,8 @@ interactions:
       - application/x-www-form-urlencoded; charset=UTF-8
       User-Agent:
       - sentinelsat/0.14
-    method: POST
-    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=100&start=100
+    method: GET
+    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=100&start=100&q=beginPosition%3A%5B%222015-12-01T00%3A00%3A00Z%22+TO+%222015-12-31T00%3A00%3A00Z%22%5D+footprint%3A%22Intersects%28POLYGON%28%280+0%2C0+10%2C10+10%2C10+0%2C0+0%29%29%29%22
   response:
     body:
       string: !!binary |
@@ -1163,7 +1163,7 @@ interactions:
       code: 200
       message: OK
 - request:
-    body: q=beginPosition%3A%5B%222015-12-01T00%3A00%3A00Z%22+TO+%222015-12-31T00%3A00%3A00Z%22%5D+footprint%3A%22Intersects%28POLYGON%28%280+0%2C0+10%2C10+10%2C10+0%2C0+0%29%29%29%22
+    body: null
     headers:
       Accept:
       - '*/*'
@@ -1177,8 +1177,8 @@ interactions:
       - application/x-www-form-urlencoded; charset=UTF-8
       User-Agent:
       - sentinelsat/0.14
-    method: POST
-    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=100&start=200
+    method: GET
+    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=100&start=200&q=beginPosition%3A%5B%222015-12-01T00%3A00%3A00Z%22+TO+%222015-12-31T00%3A00%3A00Z%22%5D+footprint%3A%22Intersects%28POLYGON%28%280+0%2C0+10%2C10+10%2C10+0%2C0+0%29%29%29%22
   response:
     body:
       string: !!binary |
@@ -1548,7 +1548,7 @@ interactions:
       code: 200
       message: OK
 - request:
-    body: q=beginPosition%3A%5B%222015-12-01T00%3A00%3A00Z%22+TO+%222015-12-31T00%3A00%3A00Z%22%5D+footprint%3A%22Intersects%28POLYGON%28%280+0%2C0+10%2C10+10%2C10+0%2C0+0%29%29%29%22
+    body: null
     headers:
       Accept:
       - '*/*'
@@ -1562,8 +1562,8 @@ interactions:
       - application/x-www-form-urlencoded; charset=UTF-8
       User-Agent:
       - sentinelsat/0.14
-    method: POST
-    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=100&start=300
+    method: GET
+    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=100&start=300&q=beginPosition%3A%5B%222015-12-01T00%3A00%3A00Z%22+TO+%222015-12-31T00%3A00%3A00Z%22%5D+footprint%3A%22Intersects%28POLYGON%28%280+0%2C0+10%2C10+10%2C10+0%2C0+0%29%29%29%22
   response:
     body:
       string: !!binary |
@@ -1941,7 +1941,7 @@ interactions:
       code: 200
       message: OK
 - request:
-    body: q=beginPosition%3A%5B%222015-12-01T00%3A00%3A00Z%22+TO+%222015-12-31T00%3A00%3A00Z%22%5D+footprint%3A%22Intersects%28POLYGON%28%280+0%2C0+10%2C10+10%2C10+0%2C0+0%29%29%29%22
+    body: null
     headers:
       Accept:
       - '*/*'
@@ -1955,8 +1955,8 @@ interactions:
       - application/x-www-form-urlencoded; charset=UTF-8
       User-Agent:
       - sentinelsat/0.14
-    method: POST
-    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=100&start=400
+    method: GET
+    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=100&start=400&q=beginPosition%3A%5B%222015-12-01T00%3A00%3A00Z%22+TO+%222015-12-31T00%3A00%3A00Z%22%5D+footprint%3A%22Intersects%28POLYGON%28%280+0%2C0+10%2C10+10%2C10+0%2C0+0%29%29%29%22
   response:
     body:
       string: !!binary |
@@ -2329,7 +2329,7 @@ interactions:
       code: 200
       message: OK
 - request:
-    body: q=beginPosition%3A%5B%222015-12-01T00%3A00%3A00Z%22+TO+%222015-12-31T00%3A00%3A00Z%22%5D+footprint%3A%22Intersects%28POLYGON%28%280+0%2C0+10%2C10+10%2C10+0%2C0+0%29%29%29%22
+    body: null
     headers:
       Accept:
       - '*/*'
@@ -2343,8 +2343,8 @@ interactions:
       - application/x-www-form-urlencoded; charset=UTF-8
       User-Agent:
       - sentinelsat/0.14
-    method: POST
-    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=100&start=500
+    method: GET
+    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=100&start=500&q=beginPosition%3A%5B%222015-12-01T00%3A00%3A00Z%22+TO+%222015-12-31T00%3A00%3A00Z%22%5D+footprint%3A%22Intersects%28POLYGON%28%280+0%2C0+10%2C10+10%2C10+0%2C0+0%29%29%29%22
   response:
     body:
       string: !!binary |
@@ -2710,7 +2710,7 @@ interactions:
       code: 200
       message: OK
 - request:
-    body: q=beginPosition%3A%5B%222015-12-01T00%3A00%3A00Z%22+TO+%222015-12-31T00%3A00%3A00Z%22%5D+footprint%3A%22Intersects%28POLYGON%28%280+0%2C0+10%2C10+10%2C10+0%2C0+0%29%29%29%22
+    body: null
     headers:
       Accept:
       - '*/*'
@@ -2724,8 +2724,8 @@ interactions:
       - application/x-www-form-urlencoded; charset=UTF-8
       User-Agent:
       - sentinelsat/0.14
-    method: POST
-    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=100&start=600
+    method: GET
+    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=100&start=600&q=beginPosition%3A%5B%222015-12-01T00%3A00%3A00Z%22+TO+%222015-12-31T00%3A00%3A00Z%22%5D+footprint%3A%22Intersects%28POLYGON%28%280+0%2C0+10%2C10+10%2C10+0%2C0+0%29%29%29%22
   response:
     body:
       string: !!binary |
@@ -2866,7 +2866,7 @@ interactions:
       code: 200
       message: OK
 - request:
-    body: q=beginPosition%3A%5B%222015-12-01T00%3A00%3A00Z%22+TO+%222015-12-31T00%3A00%3A00Z%22%5D+footprint%3A%22Intersects%28POLYGON%28%280+0%2C0+10%2C10+10%2C10+0%2C0+0%29%29%29%22
+    body: null
     headers:
       Accept:
       - '*/*'
@@ -2880,8 +2880,8 @@ interactions:
       - application/x-www-form-urlencoded; charset=UTF-8
       User-Agent:
       - sentinelsat/0.14
-    method: POST
-    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=100&start=0
+    method: GET
+    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=100&start=0&q=beginPosition%3A%5B%222015-12-01T00%3A00%3A00Z%22+TO+%222015-12-31T00%3A00%3A00Z%22%5D+footprint%3A%22Intersects%28POLYGON%28%280+0%2C0+10%2C10+10%2C10+0%2C0+0%29%29%29%22
   response:
     body:
       string: !!binary |
@@ -3574,7 +3574,7 @@ interactions:
       code: 200
       message: OK
 - request:
-    body: q=beginPosition%3A%5B%222015-12-01T00%3A00%3A00Z%22+TO+%222015-12-31T00%3A00%3A00Z%22%5D+footprint%3A%22Intersects%28POLYGON%28%280+0%2C0+10%2C10+10%2C10+0%2C0+0%29%29%29%22
+    body: null
     headers:
       Accept:
       - '*/*'
@@ -3588,8 +3588,8 @@ interactions:
       - application/x-www-form-urlencoded; charset=UTF-8
       User-Agent:
       - sentinelsat/0.14
-    method: POST
-    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=50&start=100
+    method: GET
+    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=50&start=100&q=beginPosition%3A%5B%222015-12-01T00%3A00%3A00Z%22+TO+%222015-12-31T00%3A00%3A00Z%22%5D+footprint%3A%22Intersects%28POLYGON%28%280+0%2C0+10%2C10+10%2C10+0%2C0+0%29%29%29%22
   response:
     body:
       string: !!binary |
@@ -3865,7 +3865,7 @@ interactions:
       code: 200
       message: OK
 - request:
-    body: q=beginPosition%3A%5B%222015-12-01T00%3A00%3A00Z%22+TO+%222015-12-31T00%3A00%3A00Z%22%5D+footprint%3A%22Intersects%28POLYGON%28%280+0%2C0+10%2C10+10%2C10+0%2C0+0%29%29%29%22
+    body: null
     headers:
       Accept:
       - '*/*'
@@ -3879,8 +3879,8 @@ interactions:
       - application/x-www-form-urlencoded; charset=UTF-8
       User-Agent:
       - sentinelsat/0.14
-    method: POST
-    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=20&start=90
+    method: GET
+    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=20&start=90&q=beginPosition%3A%5B%222015-12-01T00%3A00%3A00Z%22+TO+%222015-12-31T00%3A00%3A00Z%22%5D+footprint%3A%22Intersects%28POLYGON%28%280+0%2C0+10%2C10+10%2C10+0%2C0+0%29%29%29%22
   response:
     body:
       string: !!binary |
@@ -4076,7 +4076,7 @@ interactions:
       code: 200
       message: OK
 - request:
-    body: q=beginPosition%3A%5B%222015-12-01T00%3A00%3A00Z%22+TO+%222015-12-31T00%3A00%3A00Z%22%5D+footprint%3A%22Intersects%28POLYGON%28%280+0%2C0+10%2C10+10%2C10+0%2C0+0%29%29%29%22
+    body: null
     headers:
       Accept:
       - '*/*'
@@ -4090,8 +4090,8 @@ interactions:
       - application/x-www-form-urlencoded; charset=UTF-8
       User-Agent:
       - sentinelsat/0.14
-    method: POST
-    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=20&start=620
+    method: GET
+    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=20&start=620&q=beginPosition%3A%5B%222015-12-01T00%3A00%3A00Z%22+TO+%222015-12-31T00%3A00%3A00Z%22%5D+footprint%3A%22Intersects%28POLYGON%28%280+0%2C0+10%2C10+10%2C10+0%2C0+0%29%29%29%22
   response:
     body:
       string: !!binary |

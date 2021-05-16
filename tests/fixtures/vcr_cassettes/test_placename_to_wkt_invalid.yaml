@@ -14,8 +14,8 @@ interactions:
     uri: https://nominatim.openstreetmap.org/search?q=%21%40%23%24%25%5E&format=geojson
   response:
     body:
-      string: "{\"type\":\"FeatureCollection\",\"licence\":\"Data \xA9 OpenStreetMap
-        contributors, ODbL 1.0. https://osm.org/copyright\",\"features\":[]}"
+      string: "{\"type\":\"FeatureCollection\",\"licence\":\"Data \xA9 OpenStreetMap\
+        \ contributors, ODbL 1.0. https://osm.org/copyright\",\"features\":[]}"
     headers:
       Connection:
       - keep-alive

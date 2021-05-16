@@ -14,18 +14,68 @@ interactions:
     uri: https://nominatim.openstreetmap.org/search?q=Metz&format=geojson
   response:
     body:
-      string: "{\"type\":\"FeatureCollection\",\"licence\":\"Data \xA9 OpenStreetMap
-        contributors, ODbL 1.0. https://osm.org/copyright\",\"features\":[{\"type\":\"Feature\",\"properties\":{\"place_id\":258831515,\"osm_type\":\"relation\",\"osm_id\":450381,\"display_name\":\"Metz,
-        Moselle, Grand Est, France m\xE9tropolitaine, France\",\"place_rank\":16,\"category\":\"boundary\",\"type\":\"administrative\",\"importance\":0.7519914762865919,\"icon\":\"https://nominatim.openstreetmap.org/ui/mapicons//poi_boundary_administrative.p.20.png\"},\"bbox\":[6.1360042,49.0608244,6.256451,49.1487955],\"geometry\":{\"type\":\"Point\",\"coordinates\":[6.1763552,49.1196964]}},{\"type\":\"Feature\",\"properties\":{\"place_id\":259358988,\"osm_type\":\"relation\",\"osm_id\":5524891,\"display_name\":\"Metz,
-        Moselle, Grand Est, France m\xE9tropolitaine, France\",\"place_rank\":14,\"category\":\"boundary\",\"type\":\"administrative\",\"importance\":0.5802836358825189,\"icon\":\"https://nominatim.openstreetmap.org/ui/mapicons//poi_boundary_administrative.p.20.png\"},\"bbox\":[5.9245677,48.9047808,6.5006806,49.2727216],\"geometry\":{\"type\":\"Point\",\"coordinates\":[6.212870635074653,49.088735099999994]}},{\"type\":\"Feature\",\"properties\":{\"place_id\":257924800,\"osm_type\":\"relation\",\"osm_id\":141496,\"display_name\":\"Metz,
-        Vernon County, Missouri, 64765, United States\",\"place_rank\":16,\"category\":\"boundary\",\"type\":\"administrative\",\"importance\":0.4752906718837796,\"icon\":\"https://nominatim.openstreetmap.org/ui/mapicons//poi_boundary_administrative.p.20.png\"},\"bbox\":[-94.447665,37.994531,-94.4383,37.998437],\"geometry\":{\"type\":\"Point\",\"coordinates\":[-94.44295146659815,37.9969785]}},{\"type\":\"Feature\",\"properties\":{\"place_id\":432129,\"osm_type\":\"node\",\"osm_id\":154379562,\"display_name\":\"Metz,
-        Marion County, West Virginia, 26585, United States\",\"place_rank\":20,\"category\":\"place\",\"type\":\"hamlet\",\"importance\":0.38308187049262343,\"icon\":\"https://nominatim.openstreetmap.org/ui/mapicons//poi_place_village.p.20.png\"},\"bbox\":[-80.3899634,39.5602748,-80.3499634,39.6002748],\"geometry\":{\"type\":\"Point\",\"coordinates\":[-80.3699634,39.5802748]}},{\"type\":\"Feature\",\"properties\":{\"place_id\":441679,\"osm_type\":\"node\",\"osm_id\":154381412,\"display_name\":\"Metz,
-        Steuben County, Indiana, United States\",\"place_rank\":20,\"category\":\"place\",\"type\":\"hamlet\",\"importance\":0.37526985874952823,\"icon\":\"https://nominatim.openstreetmap.org/ui/mapicons//poi_place_village.p.20.png\"},\"bbox\":[-84.8594033,41.5961614,-84.8194033,41.6361614],\"geometry\":{\"type\":\"Point\",\"coordinates\":[-84.8394033,41.6161614]}},{\"type\":\"Feature\",\"properties\":{\"place_id\":380761,\"osm_type\":\"node\",\"osm_id\":151736159,\"display_name\":\"Metz,
-        Vernon County, Missouri, 64765, United States\",\"place_rank\":20,\"category\":\"place\",\"type\":\"hamlet\",\"importance\":0.36,\"icon\":\"https://nominatim.openstreetmap.org/ui/mapicons//poi_place_village.p.20.png\"},\"bbox\":[-94.4632852,37.9775349,-94.4232852,38.0175349],\"geometry\":{\"type\":\"Point\",\"coordinates\":[-94.4432852,37.9975349]}},{\"type\":\"Feature\",\"properties\":{\"place_id\":18835373,\"osm_type\":\"node\",\"osm_id\":1943369786,\"display_name\":\"Metz,
-        Sarre, Valle d'Aosta/Vall\xE9e d'Aoste, Italia\",\"place_rank\":20,\"category\":\"place\",\"type\":\"hamlet\",\"importance\":0.36,\"icon\":\"https://nominatim.openstreetmap.org/ui/mapicons//poi_place_village.p.20.png\"},\"bbox\":[7.2443646,45.731577,7.2843646,45.771577],\"geometry\":{\"type\":\"Point\",\"coordinates\":[7.2643646,45.751577]}},{\"type\":\"Feature\",\"properties\":{\"place_id\":323370,\"osm_type\":\"node\",\"osm_id\":150940565,\"display_name\":\"Metz,
-        Monterey County, California, 93927, United States\",\"place_rank\":20,\"category\":\"place\",\"type\":\"hamlet\",\"importance\":0.36,\"icon\":\"https://nominatim.openstreetmap.org/ui/mapicons//poi_place_village.p.20.png\"},\"bbox\":[-121.2315899,36.334966,-121.1915899,36.374966],\"geometry\":{\"type\":\"Point\",\"coordinates\":[-121.2115899,36.354966]}},{\"type\":\"Feature\",\"properties\":{\"place_id\":428360,\"osm_type\":\"node\",\"osm_id\":154186906,\"display_name\":\"Metz,
-        Stow, Summit County, Ohio, 44224, United States\",\"place_rank\":20,\"category\":\"place\",\"type\":\"hamlet\",\"importance\":0.36,\"icon\":\"https://nominatim.openstreetmap.org/ui/mapicons//poi_place_village.p.20.png\"},\"bbox\":[-81.4787237,41.1753339,-81.4387237,41.2153339],\"geometry\":{\"type\":\"Point\",\"coordinates\":[-81.4587237,41.1953339]}},{\"type\":\"Feature\",\"properties\":{\"place_id\":410165,\"osm_type\":\"node\",\"osm_id\":153803281,\"display_name\":\"Metz,
-        Town of Bloomfield, Waushara County, Wisconsin, 54940, United States\",\"place_rank\":20,\"category\":\"place\",\"type\":\"hamlet\",\"importance\":0.36,\"icon\":\"https://nominatim.openstreetmap.org/ui/mapicons//poi_place_village.p.20.png\"},\"bbox\":[-88.9065018,44.1935916,-88.8665018,44.2335916],\"geometry\":{\"type\":\"Point\",\"coordinates\":[-88.8865018,44.2135916]}}]}"
+      string: "{\"type\":\"FeatureCollection\",\"licence\":\"Data \xA9 OpenStreetMap\
+        \ contributors, ODbL 1.0. https://osm.org/copyright\",\"features\":[{\"type\"\
+        :\"Feature\",\"properties\":{\"place_id\":258831515,\"osm_type\":\"relation\"\
+        ,\"osm_id\":450381,\"display_name\":\"Metz, Moselle, Grand Est, France m\xE9\
+        tropolitaine, France\",\"place_rank\":16,\"category\":\"boundary\",\"type\"\
+        :\"administrative\",\"importance\":0.7519914762865919,\"icon\":\"https://nominatim.openstreetmap.org/ui/mapicons//poi_boundary_administrative.p.20.png\"\
+        },\"bbox\":[6.1360042,49.0608244,6.256451,49.1487955],\"geometry\":{\"type\"\
+        :\"Point\",\"coordinates\":[6.1763552,49.1196964]}},{\"type\":\"Feature\"\
+        ,\"properties\":{\"place_id\":259358988,\"osm_type\":\"relation\",\"osm_id\"\
+        :5524891,\"display_name\":\"Metz, Moselle, Grand Est, France m\xE9tropolitaine,\
+        \ France\",\"place_rank\":14,\"category\":\"boundary\",\"type\":\"administrative\"\
+        ,\"importance\":0.5802836358825189,\"icon\":\"https://nominatim.openstreetmap.org/ui/mapicons//poi_boundary_administrative.p.20.png\"\
+        },\"bbox\":[5.9245677,48.9047808,6.5006806,49.2727216],\"geometry\":{\"type\"\
+        :\"Point\",\"coordinates\":[6.212870635074653,49.088735099999994]}},{\"type\"\
+        :\"Feature\",\"properties\":{\"place_id\":257924800,\"osm_type\":\"relation\"\
+        ,\"osm_id\":141496,\"display_name\":\"Metz, Vernon County, Missouri, 64765,\
+        \ United States\",\"place_rank\":16,\"category\":\"boundary\",\"type\":\"\
+        administrative\",\"importance\":0.4752906718837796,\"icon\":\"https://nominatim.openstreetmap.org/ui/mapicons//poi_boundary_administrative.p.20.png\"\
+        },\"bbox\":[-94.447665,37.994531,-94.4383,37.998437],\"geometry\":{\"type\"\
+        :\"Point\",\"coordinates\":[-94.44295146659815,37.9969785]}},{\"type\":\"\
+        Feature\",\"properties\":{\"place_id\":432129,\"osm_type\":\"node\",\"osm_id\"\
+        :154379562,\"display_name\":\"Metz, Marion County, West Virginia, 26585, United\
+        \ States\",\"place_rank\":20,\"category\":\"place\",\"type\":\"hamlet\",\"\
+        importance\":0.38308187049262343,\"icon\":\"https://nominatim.openstreetmap.org/ui/mapicons//poi_place_village.p.20.png\"\
+        },\"bbox\":[-80.3899634,39.5602748,-80.3499634,39.6002748],\"geometry\":{\"\
+        type\":\"Point\",\"coordinates\":[-80.3699634,39.5802748]}},{\"type\":\"Feature\"\
+        ,\"properties\":{\"place_id\":441679,\"osm_type\":\"node\",\"osm_id\":154381412,\"\
+        display_name\":\"Metz, Steuben County, Indiana, United States\",\"place_rank\"\
+        :20,\"category\":\"place\",\"type\":\"hamlet\",\"importance\":0.37526985874952823,\"\
+        icon\":\"https://nominatim.openstreetmap.org/ui/mapicons//poi_place_village.p.20.png\"\
+        },\"bbox\":[-84.8594033,41.5961614,-84.8194033,41.6361614],\"geometry\":{\"\
+        type\":\"Point\",\"coordinates\":[-84.8394033,41.6161614]}},{\"type\":\"Feature\"\
+        ,\"properties\":{\"place_id\":380761,\"osm_type\":\"node\",\"osm_id\":151736159,\"\
+        display_name\":\"Metz, Vernon County, Missouri, 64765, United States\",\"\
+        place_rank\":20,\"category\":\"place\",\"type\":\"hamlet\",\"importance\"\
+        :0.36,\"icon\":\"https://nominatim.openstreetmap.org/ui/mapicons//poi_place_village.p.20.png\"\
+        },\"bbox\":[-94.4632852,37.9775349,-94.4232852,38.0175349],\"geometry\":{\"\
+        type\":\"Point\",\"coordinates\":[-94.4432852,37.9975349]}},{\"type\":\"Feature\"\
+        ,\"properties\":{\"place_id\":18835373,\"osm_type\":\"node\",\"osm_id\":1943369786,\"\
+        display_name\":\"Metz, Sarre, Valle d'Aosta/Vall\xE9e d'Aoste, Italia\",\"\
+        place_rank\":20,\"category\":\"place\",\"type\":\"hamlet\",\"importance\"\
+        :0.36,\"icon\":\"https://nominatim.openstreetmap.org/ui/mapicons//poi_place_village.p.20.png\"\
+        },\"bbox\":[7.2443646,45.731577,7.2843646,45.771577],\"geometry\":{\"type\"\
+        :\"Point\",\"coordinates\":[7.2643646,45.751577]}},{\"type\":\"Feature\",\"\
+        properties\":{\"place_id\":323370,\"osm_type\":\"node\",\"osm_id\":150940565,\"\
+        display_name\":\"Metz, Monterey County, California, 93927, United States\"\
+        ,\"place_rank\":20,\"category\":\"place\",\"type\":\"hamlet\",\"importance\"\
+        :0.36,\"icon\":\"https://nominatim.openstreetmap.org/ui/mapicons//poi_place_village.p.20.png\"\
+        },\"bbox\":[-121.2315899,36.334966,-121.1915899,36.374966],\"geometry\":{\"\
+        type\":\"Point\",\"coordinates\":[-121.2115899,36.354966]}},{\"type\":\"Feature\"\
+        ,\"properties\":{\"place_id\":428360,\"osm_type\":\"node\",\"osm_id\":154186906,\"\
+        display_name\":\"Metz, Stow, Summit County, Ohio, 44224, United States\",\"\
+        place_rank\":20,\"category\":\"place\",\"type\":\"hamlet\",\"importance\"\
+        :0.36,\"icon\":\"https://nominatim.openstreetmap.org/ui/mapicons//poi_place_village.p.20.png\"\
+        },\"bbox\":[-81.4787237,41.1753339,-81.4387237,41.2153339],\"geometry\":{\"\
+        type\":\"Point\",\"coordinates\":[-81.4587237,41.1953339]}},{\"type\":\"Feature\"\
+        ,\"properties\":{\"place_id\":410165,\"osm_type\":\"node\",\"osm_id\":153803281,\"\
+        display_name\":\"Metz, Town of Bloomfield, Waushara County, Wisconsin, 54940,\
+        \ United States\",\"place_rank\":20,\"category\":\"place\",\"type\":\"hamlet\"\
+        ,\"importance\":0.36,\"icon\":\"https://nominatim.openstreetmap.org/ui/mapicons//poi_place_village.p.20.png\"\
+        },\"bbox\":[-88.9065018,44.1935916,-88.8665018,44.2335916],\"geometry\":{\"\
+        type\":\"Point\",\"coordinates\":[-88.8865018,44.2135916]}}]}"
     headers:
       Connection:
       - keep-alive
@@ -39,7 +89,7 @@ interactions:
       code: 200
       message: OK
 - request:
-    body: q=beginPosition%3A%5B%222020-01-01T00%3A00%3A00Z%22+TO+%222020-01-02T00%3A00%3A00Z%22%5D+footprint%3A%22Intersects%28ENVELOPE%286.1360042%2C+6.256451%2C+49.1487955%2C+49.0608244%29%29%22
+    body: null
     headers:
       Accept:
       - '*/*'
@@ -53,8 +103,8 @@ interactions:
       - application/x-www-form-urlencoded; charset=UTF-8
       User-Agent:
       - sentinelsat/0.14
-    method: POST
-    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=1&start=0
+    method: GET
+    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=1&start=0&q=beginPosition%3A%5B%222020-01-01T00%3A00%3A00Z%22+TO+%222020-01-02T00%3A00%3A00Z%22%5D+footprint%3A%22Intersects%28ENVELOPE%286.1360042%2C+6.256451%2C+49.1487955%2C+49.0608244%29%29%22
   response:
     body:
       string: '{"feed":{"xmlns:opensearch":"http://a9.com/-/spec/opensearch/1.1/","xmlns":"http://www.w3.org/2005/Atom","title":"Sentinels

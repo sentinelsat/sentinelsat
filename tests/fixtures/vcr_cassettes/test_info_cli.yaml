@@ -16,7 +16,8 @@ interactions:
     body:
       string: 'PAGE NOT FOUND
 
-               Oops, something went wrong. The page you were trying to access is (temporarily) unavailable.'
+        Oops, something went wrong. The page you were trying to access is (temporarily)
+        unavailable.'
     headers:
       Content-Type:
       - text/html; charset=UTF-8

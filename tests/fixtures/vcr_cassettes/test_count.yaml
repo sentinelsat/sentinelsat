@@ -1,6 +1,6 @@
 interactions:
 - request:
-    body: q=beginPosition%3A%5B%222015-01-01T00%3A00%3A00Z%22+TO+%222015-12-31T00%3A00%3A00Z%22%5D
+    body: null
     headers:
       Accept:
       - '*/*'
@@ -14,8 +14,8 @@ interactions:
       - application/x-www-form-urlencoded; charset=UTF-8
       User-Agent:
       - sentinelsat/0.14
-    method: POST
-    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=0&start=0
+    method: GET
+    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=0&start=0&q=beginPosition%3A%5B%222015-01-01T00%3A00%3A00Z%22+TO+%222015-12-31T00%3A00%3A00Z%22%5D
   response:
     body:
       string: '{"feed":{"xmlns:opensearch":"http://a9.com/-/spec/opensearch/1.1/","xmlns":"http://www.w3.org/2005/Atom","title":"Sentinels
