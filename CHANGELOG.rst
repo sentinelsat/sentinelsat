@@ -18,7 +18,7 @@ Added
 * New ``sentinelsat/products.py`` module providing a "product nodes" API that
   allows to filter and download only selected files of the requested products
   (#414 @avalentino)
-* New specialized client for the GNSS end-point for orbit products query and download.
+* New ``--gnss`` CLI flag to use the GNSS end-point for orbit products query and download (#441 @avalentino).
 
 Changed
 ~~~~~~~
