@@ -607,10 +607,10 @@ class SentinelAPI:
     def _get_filename(self, product_info):
         if not product_info["Online"]:
             req = self.session.get(
-                product_info["url"].replace("$value", "Attributes('Filename')?$format=json")
+                product_info["url"].replace("$value", "Attributes('Filename')/Value/$value")
             )
-            _check_scihub_response(req)
-            filename = req.json()["d"]["Value"]
+            _check_scihub_response(req, test_json=False)
+            filename = req.text
             return filename.replace(".SAFE", ".zip")
         req = self.session.head(product_info["url"])
         _check_scihub_response(req, test_json=False)
