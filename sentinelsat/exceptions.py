@@ -14,6 +14,8 @@ class SentinelAPIError(Exception):
         self.response = response
 
     def __str__(self):
+        if self.response is None:
+            return self.msg
         if self.response.reason:
             reason = " " + self.response.reason
         else:
@@ -25,10 +27,20 @@ class SentinelAPIError(Exception):
         )
 
 
-class SentinelAPILTAError(SentinelAPIError):
+class LTAError(SentinelAPIError):
     """Error raised when retrieving a product from the Long Term Archive"""
 
     pass
+
+
+class LTATriggered(SentinelAPIError):
+    """Download failed due to product being in the Long Term Archive and retrieval from LTA was triggered"""
+
+    def __init__(self, uuid):
+        self.uuid = uuid
+        super().__init__(
+            f"Product {uuid} is not online. Triggered retrieval from the Long Term Archive."
+        )
 
 
 class ServerError(SentinelAPIError):

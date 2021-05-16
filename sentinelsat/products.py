@@ -3,7 +3,7 @@ from pathlib import Path
 from xml.etree import ElementTree as etree
 
 import sentinelsat
-from sentinelsat.exceptions import SentinelAPIError
+from sentinelsat.exceptions import LTATriggered, SentinelAPIError
 from sentinelsat.sentinel import _check_scihub_response
 
 
@@ -76,7 +76,7 @@ class SentinelProductsAPI(sentinelsat.SentinelAPI):
         elif urltype is None:
             urltype = ""
         # else: pass urltype as is
-        return f"{self.api_url}odata/v1/Products('{id}')/Nodes('{title}.SAFE')/{path}{urltype}"
+        return self._get_odata_url(id, f"/Nodes('{title}.SAFE')/{path}{urltype}")
 
     def _get_manifest(self, product_info, path=None):
         path = Path(path) if path else None
@@ -181,13 +181,8 @@ class SentinelProductsAPI(sentinelsat.SentinelAPI):
         product_path = Path(directory_path) / (product_info["title"] + ".SAFE")
         product_info["node_path"] = "./" + product_info["title"] + ".SAFE"
         manifest_path = product_path / "manifest.safe"
-        if not manifest_path.exists() and not product_info["Online"]:
-            self.logger.warning(
-                "Product %s is not online. Triggering retrieval from long term archive.",
-                product_info["id"],
-            )
-            self._trigger_offline_retrieval(product_info["url"])
-            return product_info
+        if not manifest_path.exists() and self.trigger_offline_retrieval(id):
+            raise LTATriggered(id)
 
         manifest_info, _ = self._get_manifest(product_info, manifest_path)
         product_info["nodes"] = {

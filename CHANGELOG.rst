@@ -27,19 +27,21 @@ Added
 * New ``sentinelsat/products.py`` module providing a "product nodes" API that
   allows to filter and download only selected files of the requested products
   (#414 @avalentino)
+* Added ``trigger_offline_retrieval()``. (#476 @valgur)
 
 Changed
 ~~~~~~~
 * Replaced ``SentinelAPIError`` exceptions with more specific types:
 
   * ``SentinelAPIError`` -- the parent, catch-all exception. Only used when no other more specific exception can be applied.
-  * ``SentinelAPILTAError`` -- raised when retrieving a product from the Long Term Archive.
   * ``ServerError`` -- raised when the server responded in an unexpected manner, typically due to undergoing maintenance.
   * ``UnauthorizedError`` -- raised when attempting to retrieve a product with incorrect credentials.
   * ``QuerySyntaxError`` -- raised when the query string could not be parsed on the server side.
   * ``QueryLengthError`` -- raised when the query string length was excessively long.
   * ``InvalidKeyError`` -- raised when product with given key was not found on the server.
   * ``InvalidChecksumError`` -- MD5 checksum of a local file does not match the one from the server.
+  * ``LTAError`` -- raised when triggering a retrieval from the Long Term Archive failed.
+  * ``LTATriggered`` -- raised in some cases when the product is offline and retrieval was triggered successfully.
 
   The new exceptions are still subclasses of ``SentinelAPIError`` for backwards compatibility.
   (#285 @valgur, @dwlsalmeida)
@@ -52,7 +54,8 @@ Changed
 * Added stricter checks for empty keyword values in queries, which would cause server-side errors. (#390 @valgur)
 * Gracefully handle cancelled futures. (#448 @avalentino)
 * Use the HTTP status instead of OData metadata to determine the online status of a product when downloading. 
-  This is a workaround for the rare server-side bug of the OData info for the online status being incorrect (#467). (#469 @valgur) 
+  This is a workaround for the rare server-side bug of the OData info for the online status being incorrect (#467). (#469 @valgur)
+* ``download()`` now raises ``LTATriggered`` or ``LTAError`` if the requested product is offline. (#476 @valgur)
 
 Deprecated
 ~~~~~~~~~~

@@ -20,13 +20,14 @@ import requests
 from tqdm import tqdm
 
 from sentinelsat.exceptions import (
-    SentinelAPIError,
-    QuerySyntaxError,
-    ServerError,
-    SentinelAPILTAError,
-    InvalidKeyError,
-    QueryLengthError,
     InvalidChecksumError,
+    InvalidKeyError,
+    LTAError,
+    LTATriggered,
+    QueryLengthError,
+    QuerySyntaxError,
+    SentinelAPIError,
+    ServerError,
     UnauthorizedError,
 )
 from . import __version__ as sentinelsat_version
@@ -470,13 +471,13 @@ class SentinelAPI:
         https://github.com/SentinelDataHub/DataHubSystem/blob/master/addon/sentinel-2/src/main/resources/META-INF/sentinel-2.owl
         https://github.com/SentinelDataHub/DataHubSystem/blob/master/addon/sentinel-3/src/main/resources/META-INF/sentinel-3.owl
         """
-        url = urljoin(self.api_url, "odata/v1/Products('{}')?$format=json".format(id))
+        url = self._get_odata_url(id, "?$format=json")
         if full:
             url += "&$expand=Attributes"
         response = self.session.get(url)
         _check_scihub_response(response)
         values = _parse_odata_response(response.json()["d"])
-        self._add_quicklook_url(values)
+        values["quicklook_url"] = self._get_odata_url(id, "/Products('Quicklook')/$value")
         return values
 
     def is_online(self, id):
@@ -492,10 +493,13 @@ class SentinelAPI:
         bool
             True if online, False if in LTA
 
+        See Also
+        --------
+        ``SentinelAPI.trigger_offline_retrieval()``
         """
         # Check https://scihub.copernicus.eu/userguide/ODataAPI#Products_entity for more information
 
-        url = urljoin(self.api_url, "odata/v1/Products('{}')/Online/$value".format(id))
+        url = self._get_odata_url(id, "/Online/$value")
         r = self.session.get(url)
         _check_scihub_response(r)
         return r.json()
@@ -529,10 +533,14 @@ class SentinelAPI:
         ------
         InvalidChecksumError
             If the MD5 checksum does not match the checksum on the server.
+        LTATriggered
+            If the product has been archived and its retrieval was successfully triggered.
+        LTAError
+            If the product has been archived and its retrieval failed.
 
-
-        .. versionchanged:: 0.15
-           Added ``**kwargs`` parameter to allow easier specialization of the :class:`SentinelAPI` class.
+        .. versionchanged:: 1.0.0
+           * Added ``**kwargs`` parameter to allow easier specialization of the :class:`SentinelAPI` class.
+           * Now raises LTATriggered or LTAError if the product has been archived.
         """
         product_info = self.get_product_odata(id)
         filename = self._get_filename(product_info)
@@ -547,13 +555,9 @@ class SentinelAPI:
             return product_info
 
         # An incomplete download triggers the retrieval from the LTA if the product is not online
-        is_online = self._trigger_offline_retrieval(product_info["url"]) == 200
+        is_online = not self.trigger_offline_retrieval(id)
         if not is_online:
-            self.logger.warning(
-                "Product %s is not online. Triggering retrieval from long term archive.",
-                product_info["id"],
-            )
-            return product_info
+            raise LTATriggered(id)
 
         self._download_outer(product_info, path, checksum)
         return product_info
@@ -594,7 +598,7 @@ class SentinelAPI:
             # Store the number of downloaded bytes for unit tests
             temp_path.parent.mkdir(parents=True, exist_ok=True)
             product_info["downloaded_bytes"] = self._download(
-                product_info["url"], temp_path, self.session, product_info["size"]
+                product_info["url"], temp_path, product_info["size"]
             )
         # Check integrity with MD5 checksum
         if verify_checksum is True:
@@ -618,41 +622,57 @@ class SentinelAPI:
             filename = cd.split("=", 1)[1].strip('"')
         return filename
 
-    def _trigger_offline_retrieval(self, url):
-        """Triggers retrieval of an offline product
+    def trigger_offline_retrieval(self, uuid):
+        """Triggers retrieval of an offline product.
 
         Trying to download an offline product triggers its retrieval from the long term archive.
-        The returned HTTP status code conveys whether this was successful.
 
         Parameters
         ----------
-        url : string
-            URL for downloading the product
+        uuid : string
+            UUID of the product
+
+        Returns
+        -------
+        bool
+            True, if the product retrieval was successfully triggered.
+            False, if the product is already online.
+
+        Raises
+        ------
+        LTAError
+            If the request was not accepted due to exceeded user quota or server overload.
+        ServerError
+            If an unexpected response was received from server.
+        UnauthorizedError
+            If the provided credentials were invalid.
 
         Notes
         -----
         https://scihub.copernicus.eu/userguide/LongTermArchive
         """
-        r = self.session.head(url)
+        r = self.session.head(self._get_download_url(uuid))
+        cause = r.headers.get("cause-message")
         # check https://scihub.copernicus.eu/userguide/LongTermArchive#HTTP_Status_codes
         if r.status_code == 200:
             self.logger.debug("Product is online")
-            pass
+            return False
         elif r.status_code == 202:
             self.logger.debug("Accepted for retrieval")
+            return True
         elif r.status_code == 403:
-            self.logger.debug("Requests exceed user quota")
+            msg = f"User quota exceeded: {cause}"
+            self.logger.error(msg)
+            raise LTAError(msg, r)
         elif r.status_code == 503:
-            self.logger.error("Request not accepted")
-            raise SentinelAPILTAError("Request for retrieval from LTA not accepted", r)
-        elif r.status_code == 500:
-            # should not happen
-            self.logger.error("Trying to download an offline product")
-            raise SentinelAPILTAError("Trying to download an offline product", r)
-        else:
-            self.logger.error("Unexpected response %s from SciHub", r.status_code)
-            raise SentinelAPILTAError("Unexpected response from SciHub", r)
-        return r.status_code
+            msg = f"Request not accepted: {cause}"
+            self.logger.error(msg)
+            raise LTAError(msg, r)
+        elif r.status_code < 400:
+            msg = f"Unexpected response {r.status_code}: {cause}"
+            self.logger.error(msg)
+            raise ServerError(msg, r)
+        _check_scihub_response(r, test_json=False)
 
     def download_all(
         self,
@@ -730,7 +750,7 @@ class SentinelAPI:
         ):
             info = self.get_product_odata(pid)
             product_infos[pid] = info
-            is_online = self._trigger_offline_retrieval(info["url"]) == 200
+            is_online = not self.trigger_offline_retrieval(pid)
             if is_online:
                 online_prods[pid] = info
             else:
@@ -839,23 +859,20 @@ class SentinelAPI:
 
         for product_info in product_infos.values():
             while not stop_event.is_set():
-                status_code = self._trigger_offline_retrieval(product_info["url"])
-
-                if status_code == 202:
-                    self.logger.info("%s accepted for retrieval", product_info["id"])
-                    retrieval_scheduled[product_info["id"]] = product_info
-                    break
-                elif status_code == 403:
+                try:
+                    triggered = self.trigger_offline_retrieval(product_info["id"])
+                    if triggered:
+                        self.logger.info("%s accepted for retrieval", product_info["id"])
+                        retrieval_scheduled[product_info["id"]] = product_info
+                        break
+                except LTAError as e:
                     self.logger.info(
-                        "Request for %s exceeded user quota. Retrying in %d seconds",
+                        "Request for %s was not accepted: %s. Retrying in %d seconds",
                         product_info["id"],
+                        e.msg,
                         retry_delay,
                     )
                     stop_event.wait(timeout=retry_delay)
-                else:
-                    # Should not happen. As error are processed by _trigger_offline_retrieval
-                    self.logger.error("Unexpected response %s from SciHub", status_code)
-                    raise SentinelAPILTAError("Unexpected response from SciHub")
 
     def _download_online_retry(
         self, product_info, directory_path=".", checksum=True, max_attempts=10, **kwargs
@@ -887,7 +904,7 @@ class SentinelAPI:
 
         id = product_info["id"]
         title = product_info["title"]
-        is_online = self._trigger_offline_retrieval(product_info["url"]) == 200
+        is_online = not self.trigger_offline_retrieval(id)
         if not is_online:
             self.logger.info("%s is not online.", id)
             return
@@ -1185,7 +1202,7 @@ class SentinelAPI:
                     progress.update(len(block_data))
             return md5.hexdigest().lower() == checksum.lower()
 
-    def _download(self, url, path, session, file_size):
+    def _download(self, url, path, file_size):
         headers = {}
         continuing = path.exists()
         if continuing:
@@ -1194,7 +1211,7 @@ class SentinelAPI:
         else:
             already_downloaded_bytes = 0
         downloaded_bytes = 0
-        with session.get(url, stream=True, headers=headers) as r, self._tqdm(
+        with self.session.get(url, stream=True, headers=headers) as r, self._tqdm(
             desc="Downloading",
             total=file_size,
             unit="B",
@@ -1218,31 +1235,40 @@ class SentinelAPI:
         kwargs.update({"disable": not self.show_progressbars})
         return tqdm(**kwargs)
 
-    def _add_quicklook_url(self, product):
-        id = product["id"]
-        url = urljoin(
-            self.api_url, "odata/v1/Products('{}')/Products('Quicklook')/$value".format(id)
-        )
-        product["quicklook_url"] = url
-
-    def get_stream(self, id):
+    def get_stream(self, id, **kwargs):
         """Exposes requests response ready to stream product to e.g. S3.
 
         Parameters
         ----------
         id : string
             UUID of the product, e.g. 'a8dd0cfd-613e-45ce-868c-d79177b916ed'
+        **kwargs
+            Any additional parameters for ``requests.get()``
+
+        Raises
+        ------
+        LTATriggered
+            If the product has been archived and its retrieval was successfully triggered.
+        LTAError
+            If the product has been archived and its retrieval failed.
 
         Returns
         -------
-        tuple:
-            raw socket response from server, contains product's info as returned by get_product_info()
+        requests.Response:
+            Opened response object
         """
-        product_info = self.get_product_odata(id)
-        if not product_info["Online"]:
-            raise NotImplementedError("Product is offline, no retrieval implemented.")
-        r = self.session.get(product_info["url"], stream=True)
-        return r.raw, product_info
+        is_online = not self.trigger_offline_retrieval(id)
+        if not is_online:
+            raise LTATriggered(id)
+        r = self.session.get(self._get_download_url(id), stream=True, **kwargs)
+        _check_scihub_response(r, test_json=False)
+        return r
+
+    def _get_odata_url(self, uuid, suffix=""):
+        return self.api_url + f"odata/v1/Products('{uuid}')" + suffix
+
+    def _get_download_url(self, uuid):
+        return self._get_odata_url(uuid, "/$value")
 
 
 def read_geojson(geojson_file):
