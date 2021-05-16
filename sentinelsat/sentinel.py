@@ -611,7 +611,10 @@ class SentinelAPI:
             )
             _check_scihub_response(req, test_json=False)
             filename = req.text
-            return filename.replace(".SAFE", ".zip")
+            # This should cover all currently existing file types: .SAFE, .SEN3, .nc and .EOF
+            filename = filename.replace(".SAFE", ".zip")
+            filename = filename.replace(".SEN3", ".zip")
+            return filename
         req = self.session.head(product_info["url"])
         _check_scihub_response(req, test_json=False)
         cd = req.headers.get("Content-Disposition")
