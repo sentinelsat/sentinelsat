@@ -15,8 +15,6 @@ from sentinelsat.sentinel import (
     placename_to_wkt,
     is_wkt,
 )
-from sentinelsat.gnss import GnssAPI
-from sentinelsat.exceptions import InvalidKeyError
 from sentinelsat.products import SentinelProductsAPI, make_path_filter
 
 
@@ -245,8 +243,6 @@ def cli(
             user = "gnssguest"
             password = "gnssguest"
 
-        api = GnssAPI(user, password, url)
-
     else:
         if user is None or password is None:
             try:
@@ -260,7 +256,7 @@ def cli(
                 "for environment variables and .netrc support."
             )
 
-        api = SentinelProductsAPI(user, password, url)
+    api = SentinelProductsAPI(user, password, url)
 
     if info:
         ctx = click.get_current_context()
