@@ -134,12 +134,12 @@ Options
 
 .. option:: --uuid
 
-    Select a specific product UUID instead of a query. Multiple UUIDs can separated by commas.
+    Select a specific product UUID. Can be used more than once.
 
 .. option:: --name <name>
 
     Select specific product(s) by filename. Supports wildcards, such as ``S1A_IW*20151224*`` to find all Sentinel-1A
-    scenes from 24th of December 2015 without restricting the result to a search area.
+    scenes from 24th of December 2015 without restricting the result to a search area. Can be set more than once.
 
 .. option:: --sentinel <number>
 
@@ -176,19 +176,16 @@ Options
 
 .. option:: -q <query>, --query <query>
 
-    Extra search keywords you want to use in the query. Separate keywords with comma.
+    Extra search keywords you want to use in the query. Repeated keywords get interpreted as an "or" expression.
 
     ESA maintains a `list of valid search keywords <https://scihub.copernicus.eu/userguide/3FullTextSearch>`_ that can be used.
 
-    Example: `producttype=GRD,polarisationmode=HH`.
+    Example: `-q producttype=GRD -q polarisationmode=HH`.
 
-.. option:: -f, --footprints
+.. option:: -f, --footprints <path>
 
-    Create geojson file search_footprints.geojson with footprints of the query result.
-
-.. option:: -d, --debug
-
-    Print debug log messages.
+    Create a GeoJSON file at the provided path with footprints
+    and metadata of the returned products. Set to '-' for stdout.
 
 .. option:: --include-pattern
 
@@ -198,6 +195,10 @@ Options
 
     Glob pattern to filter files (within each product) to be excluded
     from the downloaded.
+
+.. option:: --timeout <seconds>
+
+    How long to wait for a DataHub response (in seconds, default 60 sec).
 
 .. option:: --gnss
 
@@ -210,6 +211,10 @@ Options
 .. option:: --version
 
     Show version number and exit.
+
+.. option:: --debug
+
+    Print debug log messages.
 
 .. option:: -h, --help
 

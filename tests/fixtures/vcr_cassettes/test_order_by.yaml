@@ -1,6 +1,6 @@
 interactions:
 - request:
-    body: q=beginPosition%3A%5B%222015-12-19T00%3A00%3A00Z%22+TO+%222016-05-19T00%3A00%3A00Z%22%5D+cloudcoverpercentage%3A%5B%220%22+TO+%2210%22%5D+platformname%3A%22Sentinel-2%22+footprint%3A%22Intersects%28POLYGON%28%28-66.2695+-8.0592%2C-66.2695+0.7031%2C-57.3047+0.7031%2C-57.3047+-8.0592%2C-66.2695+-8.0592%29%29%29%22
+    body: null
     headers:
       Accept:
       - '*/*'
@@ -14,8 +14,8 @@ interactions:
       - application/x-www-form-urlencoded; charset=UTF-8
       User-Agent:
       - sentinelsat/0.14
-    method: POST
-    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=0&start=0
+    method: GET
+    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=0&start=0&q=beginPosition%3A%5B%222015-12-19T00%3A00%3A00Z%22+TO+%222016-05-19T00%3A00%3A00Z%22%5D+cloudcoverpercentage%3A%5B%220%22+TO+%2210%22%5D+platformname%3A%22Sentinel-2%22+footprint%3A%22Intersects%28POLYGON%28%28-66.2695+-8.0592%2C-66.2695+0.7031%2C-57.3047+0.7031%2C-57.3047+-8.0592%2C-66.2695+-8.0592%29%29%29%22
   response:
     body:
       string: '{"feed":{"xmlns:opensearch":"http://a9.com/-/spec/opensearch/1.1/","xmlns":"http://www.w3.org/2005/Atom","title":"Sentinels
@@ -23,7 +23,7 @@ interactions:
         TO \"2016-05-19T00:00:00Z\"] cloudcoverpercentage:[\"0\" TO \"10\"] platformname:\"Sentinel-2\"
         footprint:\"Intersects(POLYGON((-66.2695 -8.0592,-66.2695 0.7031,-57.3047
         0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\"","subtitle":"Displaying 0 to
-        -1 of 116 total results. Request done in 0.426 seconds.","updated":"2021-05-02T19:05:54.302Z","author":{"name":"Sentinels
+        -1 of 116 total results. Request done in ... seconds.","updated":"...","author":{"name":"Sentinels
         Scientific Data Hub"},"id":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[\"2015-12-19T00:00:00Z\"
         TO \"2016-05-19T00:00:00Z\"] cloudcoverpercentage:[\"0\" TO \"10\"] platformname:\"Sentinel-2\"
         footprint:\"Intersects(POLYGON((-66.2695 -8.0592,-66.2695 0.7031,-57.3047
@@ -45,7 +45,7 @@ interactions:
         0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\"&start=115&rows=0&format=json"},{"rel":"search","type":"application/opensearchdescription+xml","href":"opensearch_description.xml"}]}}'
     headers:
       content-length:
-      - '2944'
+      - '2921'
       content-type:
       - application/json
       pragma:
@@ -54,17 +54,11 @@ interactions:
       - Apache-Coyote/1.1
       vary:
       - Accept-Encoding
-      x-content-type-options:
-      - nosniff
-      x-frame-options:
-      - DENY
-      x-xss-protection:
-      - 1; mode=block
     status:
       code: 200
       message: OK
 - request:
-    body: q=beginPosition%3A%5B%222015-12-19T00%3A00%3A00Z%22+TO+%222016-05-19T00%3A00%3A00Z%22%5D+cloudcoverpercentage%3A%5B%220%22+TO+%2210%22%5D+platformname%3A%22Sentinel-2%22+footprint%3A%22Intersects%28POLYGON%28%28-66.2695+-8.0592%2C-66.2695+0.7031%2C-57.3047+0.7031%2C-57.3047+-8.0592%2C-66.2695+-8.0592%29%29%29%22
+    body: null
     headers:
       Accept:
       - '*/*'
@@ -78,8 +72,8 @@ interactions:
       - application/x-www-form-urlencoded; charset=UTF-8
       User-Agent:
       - sentinelsat/0.14
-    method: POST
-    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=100&start=0&orderby=cloudcoverpercentage%20asc,beginposition%20desc
+    method: GET
+    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=100&start=0&orderby=cloudcoverpercentage%20asc,beginposition%20desc&q=beginPosition%3A%5B%222015-12-19T00%3A00%3A00Z%22+TO+%222016-05-19T00%3A00%3A00Z%22%5D+cloudcoverpercentage%3A%5B%220%22+TO+%2210%22%5D+platformname%3A%22Sentinel-2%22+footprint%3A%22Intersects%28POLYGON%28%28-66.2695+-8.0592%2C-66.2695+0.7031%2C-57.3047+0.7031%2C-57.3047+-8.0592%2C-66.2695+-8.0592%29%29%29%22
   response:
     body:
       string: '{"feed":{"xmlns:opensearch":"http://a9.com/-/spec/opensearch/1.1/","xmlns":"http://www.w3.org/2005/Atom","title":"Sentinels
@@ -87,7 +81,7 @@ interactions:
         TO \"2016-05-19T00:00:00Z\"] cloudcoverpercentage:[\"0\" TO \"10\"] platformname:\"Sentinel-2\"
         footprint:\"Intersects(POLYGON((-66.2695 -8.0592,-66.2695 0.7031,-57.3047
         0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\"","subtitle":"Displaying 0 to
-        99 of 116 total results. Request done in 0.423 seconds.","updated":"2021-05-02T19:05:54.932Z","author":{"name":"Sentinels
+        99 of 116 total results. Request done in ... seconds.","updated":"...","author":{"name":"Sentinels
         Scientific Data Hub"},"id":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[\"2015-12-19T00:00:00Z\"
         TO \"2016-05-19T00:00:00Z\"] cloudcoverpercentage:[\"0\" TO \"10\"] platformname:\"Sentinel-2\"
         footprint:\"Intersects(POLYGON((-66.2695 -8.0592,-66.2695 0.7031,-57.3047
@@ -1065,7 +1059,7 @@ interactions:
         MB"},{"name":"tileid","content":"21MTQ"},{"name":"hv_order_tileid","content":"MQ21T"},{"name":"filename","content":"S2A_MSIL1C_20160408T142002_N0201_R010_T21MTQ_20160408T142232.SAFE"},{"name":"identifier","content":"S2A_MSIL1C_20160408T142002_N0201_R010_T21MTQ_20160408T142232"},{"name":"uuid","content":"2f9c6d30-f33b-4cf2-b626-70ecfc7042e0"},{"name":"level1cpdiidentifier","content":"S2A_OPER_MSI_L1C_TL_MTI__20160408T204726_A004154_T21MTQ_N02.01"},{"name":"granuleidentifier","content":"S2A_OPER_MSI_L1C_TL_MTI__20160408T204726_A004154_T21MTQ_N02.01"},{"name":"datastripidentifier","content":"S2A_OPER_MSI_L1C_DS_MTI__20160408T204726_S20160408T142232_N02.01"}]}]}}'
     headers:
       content-length:
-      - '308864'
+      - '308841'
       content-type:
       - application/json
       pragma:
@@ -1074,17 +1068,11 @@ interactions:
       - Apache-Coyote/1.1
       vary:
       - Accept-Encoding
-      x-content-type-options:
-      - nosniff
-      x-frame-options:
-      - DENY
-      x-xss-protection:
-      - 1; mode=block
     status:
       code: 200
       message: OK
 - request:
-    body: q=beginPosition%3A%5B%222015-12-19T00%3A00%3A00Z%22+TO+%222016-05-19T00%3A00%3A00Z%22%5D+cloudcoverpercentage%3A%5B%220%22+TO+%2210%22%5D+platformname%3A%22Sentinel-2%22+footprint%3A%22Intersects%28POLYGON%28%28-66.2695+-8.0592%2C-66.2695+0.7031%2C-57.3047+0.7031%2C-57.3047+-8.0592%2C-66.2695+-8.0592%29%29%29%22
+    body: null
     headers:
       Accept:
       - '*/*'
@@ -1098,8 +1086,8 @@ interactions:
       - application/x-www-form-urlencoded; charset=UTF-8
       User-Agent:
       - sentinelsat/0.14
-    method: POST
-    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=100&start=100&orderby=cloudcoverpercentage%20asc,beginposition%20desc
+    method: GET
+    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=100&start=100&orderby=cloudcoverpercentage%20asc,beginposition%20desc&q=beginPosition%3A%5B%222015-12-19T00%3A00%3A00Z%22+TO+%222016-05-19T00%3A00%3A00Z%22%5D+cloudcoverpercentage%3A%5B%220%22+TO+%2210%22%5D+platformname%3A%22Sentinel-2%22+footprint%3A%22Intersects%28POLYGON%28%28-66.2695+-8.0592%2C-66.2695+0.7031%2C-57.3047+0.7031%2C-57.3047+-8.0592%2C-66.2695+-8.0592%29%29%29%22
   response:
     body:
       string: '{"feed":{"xmlns:opensearch":"http://a9.com/-/spec/opensearch/1.1/","xmlns":"http://www.w3.org/2005/Atom","title":"Sentinels
@@ -1107,7 +1095,7 @@ interactions:
         TO \"2016-05-19T00:00:00Z\"] cloudcoverpercentage:[\"0\" TO \"10\"] platformname:\"Sentinel-2\"
         footprint:\"Intersects(POLYGON((-66.2695 -8.0592,-66.2695 0.7031,-57.3047
         0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\"","subtitle":"Displaying 100
-        to 115 of 116 total results. Request done in 0 seconds.","updated":"2021-05-02T19:05:55.091Z","author":{"name":"Sentinels
+        to 115 of 116 total results. Request done in ... seconds.","updated":"...","author":{"name":"Sentinels
         Scientific Data Hub"},"id":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[\"2015-12-19T00:00:00Z\"
         TO \"2016-05-19T00:00:00Z\"] cloudcoverpercentage:[\"0\" TO \"10\"] platformname:\"Sentinel-2\"
         footprint:\"Intersects(POLYGON((-66.2695 -8.0592,-66.2695 0.7031,-57.3047
@@ -1274,7 +1262,7 @@ interactions:
         MB"},{"name":"tileid","content":"20MQT"},{"name":"hv_order_tileid","content":"MT20Q"},{"name":"filename","content":"S2A_MSIL1C_20151223T142942_N0201_R053_T20MQT_20151223T143132.SAFE"},{"name":"identifier","content":"S2A_MSIL1C_20151223T142942_N0201_R053_T20MQT_20151223T143132"},{"name":"uuid","content":"2524a808-0176-407b-b6c6-0d03d78412b9"},{"name":"level1cpdiidentifier","content":"S2A_OPER_MSI_L1C_TL_SGS__20151223T181253_A002624_T20MQT_N02.01"},{"name":"granuleidentifier","content":"S2A_OPER_MSI_L1C_TL_SGS__20151223T181253_A002624_T20MQT_N02.01"},{"name":"datastripidentifier","content":"S2A_OPER_MSI_L1C_DS_SGS__20151223T181253_S20151223T143132_N02.01"}]}]}}'
     headers:
       content-length:
-      - '51240'
+      - '51221'
       content-type:
       - application/json
       pragma:
@@ -1283,12 +1271,6 @@ interactions:
       - Apache-Coyote/1.1
       vary:
       - Accept-Encoding
-      x-content-type-options:
-      - nosniff
-      x-frame-options:
-      - DENY
-      x-xss-protection:
-      - 1; mode=block
     status:
       code: 200
       message: OK

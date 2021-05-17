@@ -31,8 +31,12 @@ def test_checksumming_progressbars(capsys, fixture_path):
 @pytest.mark.vcr
 @pytest.mark.scihub
 def test_unicode_support(api):
-    test_str = "٩(●̮̮̃•̃)۶:"
+    # DHuS only accepts latin1 charset in the GET params
+    with pytest.raises(UnicodeEncodeError):
+        api.count(raw="٩(●̮̮̃•̃)۶:")
 
+    # check that the allowed non-ASCII chars are at least understood correctly by DHuS
+    test_str = "õäöü\xff("
     with pytest.raises(QuerySyntaxError) as excinfo:
         api.count(raw=test_str)
     assert test_str in str(excinfo.value)
@@ -84,8 +88,8 @@ def test_scihub_unresponsive(small_query):
 def test_get_products_invalid_json(test_wkt):
     api = SentinelAPI("mock_user", "mock_password")
     with requests_mock.mock() as rqst:
-        rqst.post(
-            "https://apihub.copernicus.eu/apihub/search?format=json",
+        rqst.get(
+            "https://apihub.copernicus.eu/apihub/search",
             text="{Invalid JSON response",
             status_code=200,
         )

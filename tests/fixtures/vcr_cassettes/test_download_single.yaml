@@ -1,6 +1,6 @@
 interactions:
 - request:
-    body: q=beginPosition%3A%5B%2A+TO+%22NOW%22%5D+%28uuid%3A%221f62a176-c980-41dc-b3a1-c735d660c910%22%29
+    body: null
     headers:
       Accept:
       - '*/*'
@@ -9,24 +9,19 @@ interactions:
       Connection:
       - keep-alive
       Content-Length:
-      - '96'
+      - '57'
       Content-Type:
       - application/x-www-form-urlencoded; charset=UTF-8
       User-Agent:
       - sentinelsat/0.14
-    method: POST
-    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=100&start=0
+    method: GET
+    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=100&start=0&q=%28uuid%3A%221f62a176-c980-41dc-b3a1-c735d660c910%22%29
   response:
     body:
       string: '{"feed":{"xmlns:opensearch":"http://a9.com/-/spec/opensearch/1.1/","xmlns":"http://www.w3.org/2005/Atom","title":"Sentinels
-        Scientific Data Hub search results for: beginPosition:[* TO \"NOW\"] (uuid:\"1f62a176-c980-41dc-b3a1-c735d660c910\")","subtitle":"Displaying
-        1 results. Request done in 0.157 seconds.","updated":"2021-05-02T19:41:56.389Z","author":{"name":"Sentinels
-        Scientific Data Hub"},"id":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[*
-        TO \"NOW\"] (uuid:\"1f62a176-c980-41dc-b3a1-c735d660c910\")","opensearch:totalResults":"1","opensearch:startIndex":"0","opensearch:itemsPerPage":"100","opensearch:Query":{"role":"request","searchTerms":"beginPosition:[*
-        TO \"NOW\"] (uuid:\"1f62a176-c980-41dc-b3a1-c735d660c910\")","startPage":"1"},"link":[{"rel":"self","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[*
-        TO \"NOW\"] (uuid:\"1f62a176-c980-41dc-b3a1-c735d660c910\")&start=0&rows=100&format=json"},{"rel":"first","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[*
-        TO \"NOW\"] (uuid:\"1f62a176-c980-41dc-b3a1-c735d660c910\")&start=0&rows=100&format=json"},{"rel":"last","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[*
-        TO \"NOW\"] (uuid:\"1f62a176-c980-41dc-b3a1-c735d660c910\")&start=0&rows=100&format=json"},{"rel":"search","type":"application/opensearchdescription+xml","href":"opensearch_description.xml"}],"entry":{"title":"S1A_WV_OCN__2SSH_20150603T092625_20150603T093332_006207_008194_521E","link":[{"href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''1f62a176-c980-41dc-b3a1-c735d660c910'')/$value"},{"rel":"alternative","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''1f62a176-c980-41dc-b3a1-c735d660c910'')/"},{"rel":"icon","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''1f62a176-c980-41dc-b3a1-c735d660c910'')/Products(''Quicklook'')/$value"}],"id":"1f62a176-c980-41dc-b3a1-c735d660c910","summary":"Date:
+        Scientific Data Hub search results for: (uuid:\"1f62a176-c980-41dc-b3a1-c735d660c910\")","subtitle":"Displaying
+        1 results. Request done in ... seconds.","updated":"...","author":{"name":"Sentinels
+        Scientific Data Hub"},"id":"https://apihub.copernicus.eu/apihub/search?q=(uuid:\"1f62a176-c980-41dc-b3a1-c735d660c910\")","opensearch:totalResults":"1","opensearch:startIndex":"0","opensearch:itemsPerPage":"100","opensearch:Query":{"role":"request","searchTerms":"(uuid:\"1f62a176-c980-41dc-b3a1-c735d660c910\")","startPage":"1"},"link":[{"rel":"self","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=(uuid:\"1f62a176-c980-41dc-b3a1-c735d660c910\")&start=0&rows=100&format=json"},{"rel":"first","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=(uuid:\"1f62a176-c980-41dc-b3a1-c735d660c910\")&start=0&rows=100&format=json"},{"rel":"last","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=(uuid:\"1f62a176-c980-41dc-b3a1-c735d660c910\")&start=0&rows=100&format=json"},{"rel":"search","type":"application/opensearchdescription+xml","href":"opensearch_description.xml"}],"entry":{"title":"S1A_WV_OCN__2SSH_20150603T092625_20150603T093332_006207_008194_521E","link":[{"href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''1f62a176-c980-41dc-b3a1-c735d660c910'')/$value"},{"rel":"alternative","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''1f62a176-c980-41dc-b3a1-c735d660c910'')/"},{"rel":"icon","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''1f62a176-c980-41dc-b3a1-c735d660c910'')/Products(''Quicklook'')/$value"}],"id":"1f62a176-c980-41dc-b3a1-c735d660c910","summary":"Date:
         2015-06-03T09:26:24.921Z, Instrument: SAR-C SAR, Mode: HH, Satellite: Sentinel-1,
         Size: 10.54 KB","ondemand":"false","date":[{"name":"ingestiondate","content":"2015-11-17T16:56:01.826Z"},{"name":"beginposition","content":"2015-06-03T09:26:24.921Z"},{"name":"endposition","content":"2015-06-03T09:33:33.345Z"}],"int":[{"name":"missiondatatakeid","content":"33172"},{"name":"orbitnumber","content":"6207"},{"name":"lastorbitnumber","content":"6207"},{"name":"relativeorbitnumber","content":"10"},{"name":"lastrelativeorbitnumber","content":"10"}],"str":[{"name":"acquisitiontype","content":"NOMINAL"},{"name":"filename","content":"S1A_WV_OCN__2SSH_20150603T092625_20150603T093332_006207_008194_521E.SAFE"},{"name":"gmlfootprint","content":"<gml:Polygon
         srsName=\"http://www.opengis.net/gml/srs/epsg.xml#4326\" xmlns:gml=\"http://www.opengis.net/gml\">\n   <gml:outerBoundaryIs>\n      <gml:LinearRing>\n         <gml:coordinates>42.260288,-47.310867
@@ -38,7 +33,7 @@ interactions:
         KB"},{"name":"status","content":"ARCHIVED"},{"name":"uuid","content":"1f62a176-c980-41dc-b3a1-c735d660c910"}]}}}'
     headers:
       content-length:
-      - '4055'
+      - '3858'
       content-type:
       - application/json
       pragma:
@@ -47,12 +42,6 @@ interactions:
       - Apache-Coyote/1.1
       vary:
       - Accept-Encoding
-      x-content-type-options:
-      - nosniff
-      x-frame-options:
-      - DENY
-      x-xss-protection:
-      - 1; mode=block
     status:
       code: 200
       message: OK
@@ -87,12 +76,6 @@ interactions:
       - Apache-Coyote/1.1
       vary:
       - Accept-Encoding
-      x-content-type-options:
-      - nosniff
-      x-frame-options:
-      - DENY
-      x-xss-protection:
-      - 1; mode=block
     status:
       code: 200
       message: OK
@@ -127,12 +110,6 @@ interactions:
       - Apache-Coyote/1.1
       vary:
       - Accept-Encoding
-      x-content-type-options:
-      - nosniff
-      x-frame-options:
-      - DENY
-      x-xss-protection:
-      - 1; mode=block
     status:
       code: 200
       message: OK
@@ -167,18 +144,10 @@ interactions:
       - '2.0'
       etag:
       - 9eb46e4e31f77f108213e16bb8fbe088
-      last-modified:
-      - Tue, 17 Nov 2015 16:56:01 UTC
       pragma:
       - no-cache
       server:
       - Apache-Coyote/1.1
-      x-content-type-options:
-      - nosniff
-      x-frame-options:
-      - DENY
-      x-xss-protection:
-      - 1; mode=block
     status:
       code: 200
       message: OK
@@ -212,23 +181,15 @@ interactions:
       - '2.0'
       etag:
       - 9eb46e4e31f77f108213e16bb8fbe088
-      last-modified:
-      - Tue, 17 Nov 2015 16:56:01 UTC
       pragma:
       - no-cache
       server:
       - Apache-Coyote/1.1
-      x-content-type-options:
-      - nosniff
-      x-frame-options:
-      - DENY
-      x-xss-protection:
-      - 1; mode=block
     status:
       code: 200
       message: OK
 - request:
-    body: q=beginPosition%3A%5B%2A+TO+%22NOW%22%5D+%28uuid%3A%221f62a176-c980-41dc-b3a1-c735d660c910%22%29
+    body: null
     headers:
       Accept:
       - '*/*'
@@ -237,24 +198,19 @@ interactions:
       Connection:
       - keep-alive
       Content-Length:
-      - '96'
+      - '57'
       Content-Type:
       - application/x-www-form-urlencoded; charset=UTF-8
       User-Agent:
       - sentinelsat/0.14
-    method: POST
-    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=100&start=0
+    method: GET
+    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=100&start=0&q=%28uuid%3A%221f62a176-c980-41dc-b3a1-c735d660c910%22%29
   response:
     body:
       string: '{"feed":{"xmlns:opensearch":"http://a9.com/-/spec/opensearch/1.1/","xmlns":"http://www.w3.org/2005/Atom","title":"Sentinels
-        Scientific Data Hub search results for: beginPosition:[* TO \"NOW\"] (uuid:\"1f62a176-c980-41dc-b3a1-c735d660c910\")","subtitle":"Displaying
-        1 results. Request done in 0.171 seconds.","updated":"2021-05-02T19:41:57.702Z","author":{"name":"Sentinels
-        Scientific Data Hub"},"id":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[*
-        TO \"NOW\"] (uuid:\"1f62a176-c980-41dc-b3a1-c735d660c910\")","opensearch:totalResults":"1","opensearch:startIndex":"0","opensearch:itemsPerPage":"100","opensearch:Query":{"role":"request","searchTerms":"beginPosition:[*
-        TO \"NOW\"] (uuid:\"1f62a176-c980-41dc-b3a1-c735d660c910\")","startPage":"1"},"link":[{"rel":"self","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[*
-        TO \"NOW\"] (uuid:\"1f62a176-c980-41dc-b3a1-c735d660c910\")&start=0&rows=100&format=json"},{"rel":"first","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[*
-        TO \"NOW\"] (uuid:\"1f62a176-c980-41dc-b3a1-c735d660c910\")&start=0&rows=100&format=json"},{"rel":"last","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[*
-        TO \"NOW\"] (uuid:\"1f62a176-c980-41dc-b3a1-c735d660c910\")&start=0&rows=100&format=json"},{"rel":"search","type":"application/opensearchdescription+xml","href":"opensearch_description.xml"}],"entry":{"title":"S1A_WV_OCN__2SSH_20150603T092625_20150603T093332_006207_008194_521E","link":[{"href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''1f62a176-c980-41dc-b3a1-c735d660c910'')/$value"},{"rel":"alternative","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''1f62a176-c980-41dc-b3a1-c735d660c910'')/"},{"rel":"icon","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''1f62a176-c980-41dc-b3a1-c735d660c910'')/Products(''Quicklook'')/$value"}],"id":"1f62a176-c980-41dc-b3a1-c735d660c910","summary":"Date:
+        Scientific Data Hub search results for: (uuid:\"1f62a176-c980-41dc-b3a1-c735d660c910\")","subtitle":"Displaying
+        1 results. Request done in ... seconds.","updated":"...","author":{"name":"Sentinels
+        Scientific Data Hub"},"id":"https://apihub.copernicus.eu/apihub/search?q=(uuid:\"1f62a176-c980-41dc-b3a1-c735d660c910\")","opensearch:totalResults":"1","opensearch:startIndex":"0","opensearch:itemsPerPage":"100","opensearch:Query":{"role":"request","searchTerms":"(uuid:\"1f62a176-c980-41dc-b3a1-c735d660c910\")","startPage":"1"},"link":[{"rel":"self","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=(uuid:\"1f62a176-c980-41dc-b3a1-c735d660c910\")&start=0&rows=100&format=json"},{"rel":"first","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=(uuid:\"1f62a176-c980-41dc-b3a1-c735d660c910\")&start=0&rows=100&format=json"},{"rel":"last","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=(uuid:\"1f62a176-c980-41dc-b3a1-c735d660c910\")&start=0&rows=100&format=json"},{"rel":"search","type":"application/opensearchdescription+xml","href":"opensearch_description.xml"}],"entry":{"title":"S1A_WV_OCN__2SSH_20150603T092625_20150603T093332_006207_008194_521E","link":[{"href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''1f62a176-c980-41dc-b3a1-c735d660c910'')/$value"},{"rel":"alternative","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''1f62a176-c980-41dc-b3a1-c735d660c910'')/"},{"rel":"icon","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''1f62a176-c980-41dc-b3a1-c735d660c910'')/Products(''Quicklook'')/$value"}],"id":"1f62a176-c980-41dc-b3a1-c735d660c910","summary":"Date:
         2015-06-03T09:26:24.921Z, Instrument: SAR-C SAR, Mode: HH, Satellite: Sentinel-1,
         Size: 10.54 KB","ondemand":"false","date":[{"name":"ingestiondate","content":"2015-11-17T16:56:01.826Z"},{"name":"beginposition","content":"2015-06-03T09:26:24.921Z"},{"name":"endposition","content":"2015-06-03T09:33:33.345Z"}],"int":[{"name":"missiondatatakeid","content":"33172"},{"name":"orbitnumber","content":"6207"},{"name":"lastorbitnumber","content":"6207"},{"name":"relativeorbitnumber","content":"10"},{"name":"lastrelativeorbitnumber","content":"10"}],"str":[{"name":"acquisitiontype","content":"NOMINAL"},{"name":"filename","content":"S1A_WV_OCN__2SSH_20150603T092625_20150603T093332_006207_008194_521E.SAFE"},{"name":"gmlfootprint","content":"<gml:Polygon
         srsName=\"http://www.opengis.net/gml/srs/epsg.xml#4326\" xmlns:gml=\"http://www.opengis.net/gml\">\n   <gml:outerBoundaryIs>\n      <gml:LinearRing>\n         <gml:coordinates>42.260288,-47.310867
@@ -266,7 +222,7 @@ interactions:
         KB"},{"name":"status","content":"ARCHIVED"},{"name":"uuid","content":"1f62a176-c980-41dc-b3a1-c735d660c910"}]}}}'
     headers:
       content-length:
-      - '4055'
+      - '3858'
       content-type:
       - application/json
       pragma:
@@ -275,12 +231,6 @@ interactions:
       - Apache-Coyote/1.1
       vary:
       - Accept-Encoding
-      x-content-type-options:
-      - nosniff
-      x-frame-options:
-      - DENY
-      x-xss-protection:
-      - 1; mode=block
     status:
       code: 200
       message: OK
@@ -315,12 +265,6 @@ interactions:
       - Apache-Coyote/1.1
       vary:
       - Accept-Encoding
-      x-content-type-options:
-      - nosniff
-      x-frame-options:
-      - DENY
-      x-xss-protection:
-      - 1; mode=block
     status:
       code: 200
       message: OK
@@ -355,12 +299,6 @@ interactions:
       - Apache-Coyote/1.1
       vary:
       - Accept-Encoding
-      x-content-type-options:
-      - nosniff
-      x-frame-options:
-      - DENY
-      x-xss-protection:
-      - 1; mode=block
     status:
       code: 200
       message: OK
@@ -395,18 +333,10 @@ interactions:
       - '2.0'
       etag:
       - 9eb46e4e31f77f108213e16bb8fbe088
-      last-modified:
-      - Tue, 17 Nov 2015 16:56:01 UTC
       pragma:
       - no-cache
       server:
       - Apache-Coyote/1.1
-      x-content-type-options:
-      - nosniff
-      x-frame-options:
-      - DENY
-      x-xss-protection:
-      - 1; mode=block
     status:
       code: 200
       message: OK
@@ -441,17 +371,11 @@ interactions:
       - Apache-Coyote/1.1
       vary:
       - Accept-Encoding
-      x-content-type-options:
-      - nosniff
-      x-frame-options:
-      - DENY
-      x-xss-protection:
-      - 1; mode=block
     status:
       code: 200
       message: OK
 - request:
-    body: q=beginPosition%3A%5B%2A+TO+%22NOW%22%5D+%28uuid%3A%221f62a176-c980-41dc-b3a1-c735d660c910%22%29
+    body: null
     headers:
       Accept:
       - '*/*'
@@ -460,24 +384,19 @@ interactions:
       Connection:
       - keep-alive
       Content-Length:
-      - '96'
+      - '57'
       Content-Type:
       - application/x-www-form-urlencoded; charset=UTF-8
       User-Agent:
       - sentinelsat/0.14
-    method: POST
-    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=100&start=0
+    method: GET
+    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=100&start=0&q=%28uuid%3A%221f62a176-c980-41dc-b3a1-c735d660c910%22%29
   response:
     body:
       string: '{"feed":{"xmlns:opensearch":"http://a9.com/-/spec/opensearch/1.1/","xmlns":"http://www.w3.org/2005/Atom","title":"Sentinels
-        Scientific Data Hub search results for: beginPosition:[* TO \"NOW\"] (uuid:\"1f62a176-c980-41dc-b3a1-c735d660c910\")","subtitle":"Displaying
-        1 results. Request done in 0.169 seconds.","updated":"2021-05-02T19:41:59.080Z","author":{"name":"Sentinels
-        Scientific Data Hub"},"id":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[*
-        TO \"NOW\"] (uuid:\"1f62a176-c980-41dc-b3a1-c735d660c910\")","opensearch:totalResults":"1","opensearch:startIndex":"0","opensearch:itemsPerPage":"100","opensearch:Query":{"role":"request","searchTerms":"beginPosition:[*
-        TO \"NOW\"] (uuid:\"1f62a176-c980-41dc-b3a1-c735d660c910\")","startPage":"1"},"link":[{"rel":"self","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[*
-        TO \"NOW\"] (uuid:\"1f62a176-c980-41dc-b3a1-c735d660c910\")&start=0&rows=100&format=json"},{"rel":"first","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[*
-        TO \"NOW\"] (uuid:\"1f62a176-c980-41dc-b3a1-c735d660c910\")&start=0&rows=100&format=json"},{"rel":"last","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[*
-        TO \"NOW\"] (uuid:\"1f62a176-c980-41dc-b3a1-c735d660c910\")&start=0&rows=100&format=json"},{"rel":"search","type":"application/opensearchdescription+xml","href":"opensearch_description.xml"}],"entry":{"title":"S1A_WV_OCN__2SSH_20150603T092625_20150603T093332_006207_008194_521E","link":[{"href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''1f62a176-c980-41dc-b3a1-c735d660c910'')/$value"},{"rel":"alternative","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''1f62a176-c980-41dc-b3a1-c735d660c910'')/"},{"rel":"icon","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''1f62a176-c980-41dc-b3a1-c735d660c910'')/Products(''Quicklook'')/$value"}],"id":"1f62a176-c980-41dc-b3a1-c735d660c910","summary":"Date:
+        Scientific Data Hub search results for: (uuid:\"1f62a176-c980-41dc-b3a1-c735d660c910\")","subtitle":"Displaying
+        1 results. Request done in ... seconds.","updated":"...","author":{"name":"Sentinels
+        Scientific Data Hub"},"id":"https://apihub.copernicus.eu/apihub/search?q=(uuid:\"1f62a176-c980-41dc-b3a1-c735d660c910\")","opensearch:totalResults":"1","opensearch:startIndex":"0","opensearch:itemsPerPage":"100","opensearch:Query":{"role":"request","searchTerms":"(uuid:\"1f62a176-c980-41dc-b3a1-c735d660c910\")","startPage":"1"},"link":[{"rel":"self","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=(uuid:\"1f62a176-c980-41dc-b3a1-c735d660c910\")&start=0&rows=100&format=json"},{"rel":"first","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=(uuid:\"1f62a176-c980-41dc-b3a1-c735d660c910\")&start=0&rows=100&format=json"},{"rel":"last","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=(uuid:\"1f62a176-c980-41dc-b3a1-c735d660c910\")&start=0&rows=100&format=json"},{"rel":"search","type":"application/opensearchdescription+xml","href":"opensearch_description.xml"}],"entry":{"title":"S1A_WV_OCN__2SSH_20150603T092625_20150603T093332_006207_008194_521E","link":[{"href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''1f62a176-c980-41dc-b3a1-c735d660c910'')/$value"},{"rel":"alternative","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''1f62a176-c980-41dc-b3a1-c735d660c910'')/"},{"rel":"icon","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''1f62a176-c980-41dc-b3a1-c735d660c910'')/Products(''Quicklook'')/$value"}],"id":"1f62a176-c980-41dc-b3a1-c735d660c910","summary":"Date:
         2015-06-03T09:26:24.921Z, Instrument: SAR-C SAR, Mode: HH, Satellite: Sentinel-1,
         Size: 10.54 KB","ondemand":"false","date":[{"name":"ingestiondate","content":"2015-11-17T16:56:01.826Z"},{"name":"beginposition","content":"2015-06-03T09:26:24.921Z"},{"name":"endposition","content":"2015-06-03T09:33:33.345Z"}],"int":[{"name":"missiondatatakeid","content":"33172"},{"name":"orbitnumber","content":"6207"},{"name":"lastorbitnumber","content":"6207"},{"name":"relativeorbitnumber","content":"10"},{"name":"lastrelativeorbitnumber","content":"10"}],"str":[{"name":"acquisitiontype","content":"NOMINAL"},{"name":"filename","content":"S1A_WV_OCN__2SSH_20150603T092625_20150603T093332_006207_008194_521E.SAFE"},{"name":"gmlfootprint","content":"<gml:Polygon
         srsName=\"http://www.opengis.net/gml/srs/epsg.xml#4326\" xmlns:gml=\"http://www.opengis.net/gml\">\n   <gml:outerBoundaryIs>\n      <gml:LinearRing>\n         <gml:coordinates>42.260288,-47.310867
@@ -489,7 +408,7 @@ interactions:
         KB"},{"name":"status","content":"ARCHIVED"},{"name":"uuid","content":"1f62a176-c980-41dc-b3a1-c735d660c910"}]}}}'
     headers:
       content-length:
-      - '4055'
+      - '3858'
       content-type:
       - application/json
       pragma:
@@ -498,12 +417,6 @@ interactions:
       - Apache-Coyote/1.1
       vary:
       - Accept-Encoding
-      x-content-type-options:
-      - nosniff
-      x-frame-options:
-      - DENY
-      x-xss-protection:
-      - 1; mode=block
     status:
       code: 200
       message: OK
@@ -538,18 +451,10 @@ interactions:
       - '2.0'
       etag:
       - 9eb46e4e31f77f108213e16bb8fbe088
-      last-modified:
-      - Tue, 17 Nov 2015 16:56:01 UTC
       pragma:
       - no-cache
       server:
       - Apache-Coyote/1.1
-      x-content-type-options:
-      - nosniff
-      x-frame-options:
-      - DENY
-      x-xss-protection:
-      - 1; mode=block
     status:
       code: 200
       message: OK
@@ -583,18 +488,10 @@ interactions:
       - '2.0'
       etag:
       - 9eb46e4e31f77f108213e16bb8fbe088
-      last-modified:
-      - Tue, 17 Nov 2015 16:56:01 UTC
       pragma:
       - no-cache
       server:
       - Apache-Coyote/1.1
-      x-content-type-options:
-      - nosniff
-      x-frame-options:
-      - DENY
-      x-xss-protection:
-      - 1; mode=block
     status:
       code: 200
       message: OK
@@ -629,18 +526,10 @@ interactions:
       - '2.0'
       etag:
       - 9eb46e4e31f77f108213e16bb8fbe088
-      last-modified:
-      - Tue, 17 Nov 2015 16:56:01 UTC
       pragma:
       - no-cache
       server:
       - Apache-Coyote/1.1
-      x-content-type-options:
-      - nosniff
-      x-frame-options:
-      - DENY
-      x-xss-protection:
-      - 1; mode=block
     status:
       code: 200
       message: OK
@@ -674,18 +563,10 @@ interactions:
       - '2.0'
       etag:
       - 9eb46e4e31f77f108213e16bb8fbe088
-      last-modified:
-      - Tue, 17 Nov 2015 16:56:01 UTC
       pragma:
       - no-cache
       server:
       - Apache-Coyote/1.1
-      x-content-type-options:
-      - nosniff
-      x-frame-options:
-      - DENY
-      x-xss-protection:
-      - 1; mode=block
     status:
       code: 200
       message: OK

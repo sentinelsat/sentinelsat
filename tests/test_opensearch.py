@@ -218,6 +218,9 @@ def test_api_query_format_sets():
     query = SentinelAPI.format_query(orbitnumber={16301, 16302, 16303})
     assert query == "(orbitnumber:16301 OR orbitnumber:16302 OR orbitnumber:16303)"
 
+    query = SentinelAPI.format_query(orbitnumber=set())
+    assert query == ""
+
     query = SentinelAPI.format_query(ingestiondate={(date(2017, 1, 1), "20170203")})
     assert query == '(ingestiondate:["2017-01-01T00:00:00Z" TO "2017-02-03T00:00:00Z"])'
 
@@ -301,13 +304,13 @@ def test_api_query_format_escape_spaces(api):
     assert api.count(timeliness=".+ Critical") > 0
 
     query = SentinelAPI.format_query(identifier="/S[123 ]A.*/")
-    assert query == r"identifier:/S[123 ]A.*/"
-    regex_count = api.count(identifier="/S[12 ]A.*/", beginposition=("NOW/MONTH", "*"))
-    assert regex_count > 0
-    assert regex_count == (
-        api.count(identifier="S1A*", beginposition=("NOW/MONTH", "*"))
-        + api.count(identifier="S2A*", beginposition=("NOW/MONTH", "*"))
-    )
+    assert query == "identifier:/S[123 ]A.*/"
+    kwargs = dict(beginposition=("20180101", "20180130"), area="POINT(14.20 59.96)")
+    regex_count = api.count(identifier="/S[12 ]A.*/", **kwargs)
+    c1 = api.count(identifier="S1A*", **kwargs)
+    c2 = api.count(identifier="S2A*", **kwargs)
+    assert min(regex_count, c1, c2) > 0
+    assert regex_count == c1 + c2
 
 
 @pytest.mark.vcr
@@ -411,7 +414,7 @@ def test_large_query(api, large_query):
 @pytest.mark.scihub
 def test_count(api):
     count = api.count(None, ("20150101", "20151231"))
-    assert count > 100000
+    assert count >= 10000
 
 
 @pytest.mark.vcr

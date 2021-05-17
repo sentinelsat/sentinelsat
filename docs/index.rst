@@ -11,7 +11,7 @@ It offers an easy-to-use command line interface
 
 .. code-block:: bash
 
-  sentinelsat -u <user> -p <password> -g </path/to/search_polygon.geojson> --sentinel 2 --cloud 30
+  sentinelsat -u <user> -p <password> --location Berlin --sentinel 2 --cloud 30 --start NOW-1MONTH
 
 and a powerful Python API.
 
@@ -20,10 +20,11 @@ and a powerful Python API.
   from sentinelsat import SentinelAPI, read_geojson, geojson_to_wkt
 
   api = SentinelAPI('user', 'password')
-  footprint = geojson_to_wkt(read_geojson('/path/to/search_polygon.geojson'))
+  footprint = geojson_to_wkt(read_geojson('search_polygon.geojson'))
   products = api.query(footprint,
                        producttype='SLC',
-                       orbitdirection='ASCENDING')
+                       orbitdirection='ASCENDING',
+                       limit=10)
   api.download_all(products)
 
 

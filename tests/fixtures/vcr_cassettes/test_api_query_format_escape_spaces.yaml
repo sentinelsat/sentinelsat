@@ -1,6 +1,6 @@
 interactions:
 - request:
-    body: q=ingestiondate%3A%5B%22NOW-1DAY%22+TO+%22NOW%22%5D
+    body: null
     headers:
       Accept:
       - '*/*'
@@ -14,23 +14,23 @@ interactions:
       - application/x-www-form-urlencoded; charset=UTF-8
       User-Agent:
       - sentinelsat/0.14
-    method: POST
-    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=0&start=0
+    method: GET
+    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=0&start=0&q=ingestiondate%3A%5B%22NOW-1DAY%22+TO+%22NOW%22%5D
   response:
     body:
       string: '{"feed":{"xmlns:opensearch":"http://a9.com/-/spec/opensearch/1.1/","xmlns":"http://www.w3.org/2005/Atom","title":"Sentinels
         Scientific Data Hub search results for: ingestiondate:[\"NOW-1DAY\" TO \"NOW\"]","subtitle":"Displaying
-        0 to -1 of 33299 total results. Request done in 0.002 seconds.","updated":"2021-05-02T19:05:35.044Z","author":{"name":"Sentinels
+        0 to -1 of 10000 total results. Request done in ... seconds.","updated":"...","author":{"name":"Sentinels
         Scientific Data Hub"},"id":"https://apihub.copernicus.eu/apihub/search?q=ingestiondate:[\"NOW-1DAY\"
-        TO \"NOW\"]","opensearch:totalResults":"33299","opensearch:startIndex":"0","opensearch:itemsPerPage":"0","opensearch:Query":{"role":"request","searchTerms":"ingestiondate:[\"NOW-1DAY\"
+        TO \"NOW\"]","opensearch:totalResults":"10000","opensearch:startIndex":"0","opensearch:itemsPerPage":"0","opensearch:Query":{"role":"request","searchTerms":"ingestiondate:[\"NOW-1DAY\"
         TO \"NOW\"]","startPage":"1"},"link":[{"rel":"self","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=ingestiondate:[\"NOW-1DAY\"
         TO \"NOW\"]&start=0&rows=0&format=json"},{"rel":"first","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=ingestiondate:[\"NOW-1DAY\"
         TO \"NOW\"]&start=0&rows=0&format=json"},{"rel":"next","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=ingestiondate:[\"NOW-1DAY\"
         TO \"NOW\"]&start=NaN&rows=0&format=json"},{"rel":"last","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=ingestiondate:[\"NOW-1DAY\"
-        TO \"NOW\"]&start=33298&rows=0&format=json"},{"rel":"search","type":"application/opensearchdescription+xml","href":"opensearch_description.xml"}]}}'
+        TO \"NOW\"]&start=10000&rows=0&format=json"},{"rel":"search","type":"application/opensearchdescription+xml","href":"opensearch_description.xml"}]}}'
     headers:
       content-length:
-      - '1438'
+      - '1415'
       content-type:
       - application/json
       pragma:
@@ -39,17 +39,11 @@ interactions:
       - Apache-Coyote/1.1
       vary:
       - Accept-Encoding
-      x-content-type-options:
-      - nosniff
-      x-frame-options:
-      - DENY
-      x-xss-protection:
-      - 1; mode=block
     status:
       code: 200
       message: OK
 - request:
-    body: q=ingestiondate%3A%5B%22NOW-1DAY%22+TO+%2A%5D
+    body: null
     headers:
       Accept:
       - '*/*'
@@ -63,23 +57,23 @@ interactions:
       - application/x-www-form-urlencoded; charset=UTF-8
       User-Agent:
       - sentinelsat/0.14
-    method: POST
-    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=0&start=0
+    method: GET
+    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=0&start=0&q=ingestiondate%3A%5B%22NOW-1DAY%22+TO+%2A%5D
   response:
     body:
       string: '{"feed":{"xmlns:opensearch":"http://a9.com/-/spec/opensearch/1.1/","xmlns":"http://www.w3.org/2005/Atom","title":"Sentinels
         Scientific Data Hub search results for: ingestiondate:[\"NOW-1DAY\" TO *]","subtitle":"Displaying
-        0 to -1 of 33299 total results. Request done in 0.002 seconds.","updated":"2021-05-02T19:05:35.127Z","author":{"name":"Sentinels
+        0 to -1 of 10000 total results. Request done in ... seconds.","updated":"...","author":{"name":"Sentinels
         Scientific Data Hub"},"id":"https://apihub.copernicus.eu/apihub/search?q=ingestiondate:[\"NOW-1DAY\"
-        TO *]","opensearch:totalResults":"33299","opensearch:startIndex":"0","opensearch:itemsPerPage":"0","opensearch:Query":{"role":"request","searchTerms":"ingestiondate:[\"NOW-1DAY\"
+        TO *]","opensearch:totalResults":"10000","opensearch:startIndex":"0","opensearch:itemsPerPage":"0","opensearch:Query":{"role":"request","searchTerms":"ingestiondate:[\"NOW-1DAY\"
         TO *]","startPage":"1"},"link":[{"rel":"self","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=ingestiondate:[\"NOW-1DAY\"
         TO *]&start=0&rows=0&format=json"},{"rel":"first","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=ingestiondate:[\"NOW-1DAY\"
         TO *]&start=0&rows=0&format=json"},{"rel":"next","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=ingestiondate:[\"NOW-1DAY\"
         TO *]&start=NaN&rows=0&format=json"},{"rel":"last","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=ingestiondate:[\"NOW-1DAY\"
-        TO *]&start=33298&rows=0&format=json"},{"rel":"search","type":"application/opensearchdescription+xml","href":"opensearch_description.xml"}]}}'
+        TO *]&start=10000&rows=0&format=json"},{"rel":"search","type":"application/opensearchdescription+xml","href":"opensearch_description.xml"}]}}'
     headers:
       content-length:
-      - '1396'
+      - '1373'
       content-type:
       - application/json
       pragma:
@@ -88,17 +82,11 @@ interactions:
       - Apache-Coyote/1.1
       vary:
       - Accept-Encoding
-      x-content-type-options:
-      - nosniff
-      x-frame-options:
-      - DENY
-      x-xss-protection:
-      - 1; mode=block
     status:
       code: 200
       message: OK
 - request:
-    body: q=relativeorbitnumber%3A%7B101+TO+103%7D
+    body: null
     headers:
       Accept:
       - '*/*'
@@ -112,23 +100,23 @@ interactions:
       - application/x-www-form-urlencoded; charset=UTF-8
       User-Agent:
       - sentinelsat/0.14
-    method: POST
-    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=0&start=0
+    method: GET
+    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=0&start=0&q=relativeorbitnumber%3A%7B101+TO+103%7D
   response:
     body:
       string: '{"feed":{"xmlns:opensearch":"http://a9.com/-/spec/opensearch/1.1/","xmlns":"http://www.w3.org/2005/Atom","title":"Sentinels
         Scientific Data Hub search results for: relativeorbitnumber:{101 TO 103}","subtitle":"Displaying
-        0 to -1 of 209204 total results. Request done in 0.051 seconds.","updated":"2021-05-02T19:05:35.296Z","author":{"name":"Sentinels
+        0 to -1 of 10000 total results. Request done in ... seconds.","updated":"...","author":{"name":"Sentinels
         Scientific Data Hub"},"id":"https://apihub.copernicus.eu/apihub/search?q=relativeorbitnumber:{101
-        TO 103}","opensearch:totalResults":"209204","opensearch:startIndex":"0","opensearch:itemsPerPage":"0","opensearch:Query":{"role":"request","searchTerms":"relativeorbitnumber:{101
+        TO 103}","opensearch:totalResults":"10000","opensearch:startIndex":"0","opensearch:itemsPerPage":"0","opensearch:Query":{"role":"request","searchTerms":"relativeorbitnumber:{101
         TO 103}","startPage":"1"},"link":[{"rel":"self","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=relativeorbitnumber:{101
         TO 103}&start=0&rows=0&format=json"},{"rel":"first","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=relativeorbitnumber:{101
         TO 103}&start=0&rows=0&format=json"},{"rel":"next","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=relativeorbitnumber:{101
         TO 103}&start=NaN&rows=0&format=json"},{"rel":"last","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=relativeorbitnumber:{101
-        TO 103}&start=209203&rows=0&format=json"},{"rel":"search","type":"application/opensearchdescription+xml","href":"opensearch_description.xml"}]}}'
+        TO 103}&start=10000&rows=0&format=json"},{"rel":"search","type":"application/opensearchdescription+xml","href":"opensearch_description.xml"}]}}'
     headers:
       content-length:
-      - '1392'
+      - '1366'
       content-type:
       - application/json
       pragma:
@@ -137,17 +125,11 @@ interactions:
       - Apache-Coyote/1.1
       vary:
       - Accept-Encoding
-      x-content-type-options:
-      - nosniff
-      x-frame-options:
-      - DENY
-      x-xss-protection:
-      - 1; mode=block
     status:
       code: 200
       message: OK
 - request:
-    body: q=timeliness%3A%22Near+Real+Time%22
+    body: null
     headers:
       Accept:
       - '*/*'
@@ -161,23 +143,23 @@ interactions:
       - application/x-www-form-urlencoded; charset=UTF-8
       User-Agent:
       - sentinelsat/0.14
-    method: POST
-    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=0&start=0
+    method: GET
+    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=0&start=0&q=timeliness%3A%22Near+Real+Time%22
   response:
     body:
       string: '{"feed":{"xmlns:opensearch":"http://a9.com/-/spec/opensearch/1.1/","xmlns":"http://www.w3.org/2005/Atom","title":"Sentinels
         Scientific Data Hub search results for: timeliness:\"Near Real Time\"","subtitle":"Displaying
-        0 to -1 of 402605 total results. Request done in 0.066 seconds.","updated":"2021-05-02T19:05:35.458Z","author":{"name":"Sentinels
+        0 to -1 of 10000 total results. Request done in ... seconds.","updated":"...","author":{"name":"Sentinels
         Scientific Data Hub"},"id":"https://apihub.copernicus.eu/apihub/search?q=timeliness:\"Near
-        Real Time\"","opensearch:totalResults":"402605","opensearch:startIndex":"0","opensearch:itemsPerPage":"0","opensearch:Query":{"role":"request","searchTerms":"timeliness:\"Near
+        Real Time\"","opensearch:totalResults":"10000","opensearch:startIndex":"0","opensearch:itemsPerPage":"0","opensearch:Query":{"role":"request","searchTerms":"timeliness:\"Near
         Real Time\"","startPage":"1"},"link":[{"rel":"self","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=timeliness:\"Near
         Real Time\"&start=0&rows=0&format=json"},{"rel":"first","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=timeliness:\"Near
         Real Time\"&start=0&rows=0&format=json"},{"rel":"next","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=timeliness:\"Near
         Real Time\"&start=NaN&rows=0&format=json"},{"rel":"last","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=timeliness:\"Near
-        Real Time\"&start=402604&rows=0&format=json"},{"rel":"search","type":"application/opensearchdescription+xml","href":"opensearch_description.xml"}]}}'
+        Real Time\"&start=10000&rows=0&format=json"},{"rel":"search","type":"application/opensearchdescription+xml","href":"opensearch_description.xml"}]}}'
     headers:
       content-length:
-      - '1371'
+      - '1345'
       content-type:
       - application/json
       pragma:
@@ -186,17 +168,11 @@ interactions:
       - Apache-Coyote/1.1
       vary:
       - Accept-Encoding
-      x-content-type-options:
-      - nosniff
-      x-frame-options:
-      - DENY
-      x-xss-protection:
-      - 1; mode=block
     status:
       code: 200
       message: OK
 - request:
-    body: q=timeliness%3A%22.%2B+Critical%22
+    body: null
     headers:
       Accept:
       - '*/*'
@@ -210,23 +186,23 @@ interactions:
       - application/x-www-form-urlencoded; charset=UTF-8
       User-Agent:
       - sentinelsat/0.14
-    method: POST
-    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=0&start=0
+    method: GET
+    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=0&start=0&q=timeliness%3A%22.%2B+Critical%22
   response:
     body:
       string: '{"feed":{"xmlns:opensearch":"http://a9.com/-/spec/opensearch/1.1/","xmlns":"http://www.w3.org/2005/Atom","title":"Sentinels
         Scientific Data Hub search results for: timeliness:\".+ Critical\"","subtitle":"Displaying
-        0 to -1 of 4580473 total results. Request done in 0.111 seconds.","updated":"2021-05-02T19:05:35.701Z","author":{"name":"Sentinels
+        0 to -1 of 10000 total results. Request done in ... seconds.","updated":"...","author":{"name":"Sentinels
         Scientific Data Hub"},"id":"https://apihub.copernicus.eu/apihub/search?q=timeliness:\".+
-        Critical\"","opensearch:totalResults":"4580473","opensearch:startIndex":"0","opensearch:itemsPerPage":"0","opensearch:Query":{"role":"request","searchTerms":"timeliness:\".+
+        Critical\"","opensearch:totalResults":"10000","opensearch:startIndex":"0","opensearch:itemsPerPage":"0","opensearch:Query":{"role":"request","searchTerms":"timeliness:\".+
         Critical\"","startPage":"1"},"link":[{"rel":"self","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=timeliness:\".+
         Critical\"&start=0&rows=0&format=json"},{"rel":"first","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=timeliness:\".+
         Critical\"&start=0&rows=0&format=json"},{"rel":"next","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=timeliness:\".+
         Critical\"&start=NaN&rows=0&format=json"},{"rel":"last","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=timeliness:\".+
-        Critical\"&start=4580472&rows=0&format=json"},{"rel":"search","type":"application/opensearchdescription+xml","href":"opensearch_description.xml"}]}}'
+        Critical\"&start=10000&rows=0&format=json"},{"rel":"search","type":"application/opensearchdescription+xml","href":"opensearch_description.xml"}]}}'
     headers:
       content-length:
-      - '1353'
+      - '1324'
       content-type:
       - application/json
       pragma:
@@ -235,17 +211,11 @@ interactions:
       - Apache-Coyote/1.1
       vary:
       - Accept-Encoding
-      x-content-type-options:
-      - nosniff
-      x-frame-options:
-      - DENY
-      x-xss-protection:
-      - 1; mode=block
     status:
       code: 200
       message: OK
 - request:
-    body: q=beginposition%3A%5B%22NOW%2FMONTH%22+TO+%2A%5D+identifier%3A%2FS%5B12+%5DA.%2A%2F
+    body: null
     headers:
       Accept:
       - '*/*'
@@ -254,29 +224,36 @@ interactions:
       Connection:
       - keep-alive
       Content-Length:
-      - '83'
+      - '180'
       Content-Type:
       - application/x-www-form-urlencoded; charset=UTF-8
       User-Agent:
       - sentinelsat/0.14
-    method: POST
-    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=0&start=0
+    method: GET
+    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=0&start=0&q=beginposition%3A%5B%222018-01-01T00%3A00%3A00Z%22+TO+%222018-01-30T00%3A00%3A00Z%22%5D+identifier%3A%2FS%5B12+%5DA.%2A%2F+footprint%3A%22Intersects%28POINT%2814.20+59.96%29%29%22
   response:
     body:
       string: '{"feed":{"xmlns:opensearch":"http://a9.com/-/spec/opensearch/1.1/","xmlns":"http://www.w3.org/2005/Atom","title":"Sentinels
-        Scientific Data Hub search results for: beginposition:[\"NOW/MONTH\" TO *]
-        identifier:/S[12 ]A.*/","subtitle":"Displaying 0 to -1 of 20534 total results.
-        Request done in 0.04 seconds.","updated":"2021-05-02T19:05:35.836Z","author":{"name":"Sentinels
-        Scientific Data Hub"},"id":"https://apihub.copernicus.eu/apihub/search?q=beginposition:[\"NOW/MONTH\"
-        TO *] identifier:/S[12 ]A.*/","opensearch:totalResults":"20534","opensearch:startIndex":"0","opensearch:itemsPerPage":"0","opensearch:Query":{"role":"request","searchTerms":"beginposition:[\"NOW/MONTH\"
-        TO *] identifier:/S[12 ]A.*/","startPage":"1"},"link":[{"rel":"self","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=beginposition:[\"NOW/MONTH\"
-        TO *] identifier:/S[12 ]A.*/&start=0&rows=0&format=json"},{"rel":"first","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=beginposition:[\"NOW/MONTH\"
-        TO *] identifier:/S[12 ]A.*/&start=0&rows=0&format=json"},{"rel":"next","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=beginposition:[\"NOW/MONTH\"
-        TO *] identifier:/S[12 ]A.*/&start=NaN&rows=0&format=json"},{"rel":"last","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=beginposition:[\"NOW/MONTH\"
-        TO *] identifier:/S[12 ]A.*/&start=20533&rows=0&format=json"},{"rel":"search","type":"application/opensearchdescription+xml","href":"opensearch_description.xml"}]}}'
+        Scientific Data Hub search results for: beginposition:[\"2018-01-01T00:00:00Z\"
+        TO \"2018-01-30T00:00:00Z\"] identifier:/S[12 ]A.*/ footprint:\"Intersects(POINT(14.20
+        59.96))\"","subtitle":"Displaying 0 to -1 of 50 total results. Request done
+        in ... seconds.","updated":"...","author":{"name":"Sentinels Scientific Data
+        Hub"},"id":"https://apihub.copernicus.eu/apihub/search?q=beginposition:[\"2018-01-01T00:00:00Z\"
+        TO \"2018-01-30T00:00:00Z\"] identifier:/S[12 ]A.*/ footprint:\"Intersects(POINT(14.20
+        59.96))\"","opensearch:totalResults":"50","opensearch:startIndex":"0","opensearch:itemsPerPage":"0","opensearch:Query":{"role":"request","searchTerms":"beginposition:[\"2018-01-01T00:00:00Z\"
+        TO \"2018-01-30T00:00:00Z\"] identifier:/S[12 ]A.*/ footprint:\"Intersects(POINT(14.20
+        59.96))\"","startPage":"1"},"link":[{"rel":"self","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=beginposition:[\"2018-01-01T00:00:00Z\"
+        TO \"2018-01-30T00:00:00Z\"] identifier:/S[12 ]A.*/ footprint:\"Intersects(POINT(14.20
+        59.96))\"&start=0&rows=0&format=json"},{"rel":"first","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=beginposition:[\"2018-01-01T00:00:00Z\"
+        TO \"2018-01-30T00:00:00Z\"] identifier:/S[12 ]A.*/ footprint:\"Intersects(POINT(14.20
+        59.96))\"&start=0&rows=0&format=json"},{"rel":"next","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=beginposition:[\"2018-01-01T00:00:00Z\"
+        TO \"2018-01-30T00:00:00Z\"] identifier:/S[12 ]A.*/ footprint:\"Intersects(POINT(14.20
+        59.96))\"&start=NaN&rows=0&format=json"},{"rel":"last","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=beginposition:[\"2018-01-01T00:00:00Z\"
+        TO \"2018-01-30T00:00:00Z\"] identifier:/S[12 ]A.*/ footprint:\"Intersects(POINT(14.20
+        59.96))\"&start=49&rows=0&format=json"},{"rel":"search","type":"application/opensearchdescription+xml","href":"opensearch_description.xml"}]}}'
     headers:
       content-length:
-      - '1563'
+      - '2085'
       content-type:
       - application/json
       pragma:
@@ -285,17 +262,11 @@ interactions:
       - Apache-Coyote/1.1
       vary:
       - Accept-Encoding
-      x-content-type-options:
-      - nosniff
-      x-frame-options:
-      - DENY
-      x-xss-protection:
-      - 1; mode=block
     status:
       code: 200
       message: OK
 - request:
-    body: q=beginposition%3A%5B%22NOW%2FMONTH%22+TO+%2A%5D+identifier%3AS1A%2A
+    body: null
     headers:
       Accept:
       - '*/*'
@@ -304,29 +275,36 @@ interactions:
       Connection:
       - keep-alive
       Content-Length:
-      - '68'
+      - '165'
       Content-Type:
       - application/x-www-form-urlencoded; charset=UTF-8
       User-Agent:
       - sentinelsat/0.14
-    method: POST
-    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=0&start=0
+    method: GET
+    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=0&start=0&q=beginposition%3A%5B%222018-01-01T00%3A00%3A00Z%22+TO+%222018-01-30T00%3A00%3A00Z%22%5D+identifier%3AS1A%2A+footprint%3A%22Intersects%28POINT%2814.20+59.96%29%29%22
   response:
     body:
       string: '{"feed":{"xmlns:opensearch":"http://a9.com/-/spec/opensearch/1.1/","xmlns":"http://www.w3.org/2005/Atom","title":"Sentinels
-        Scientific Data Hub search results for: beginposition:[\"NOW/MONTH\" TO *]
-        identifier:S1A*","subtitle":"Displaying 0 to -1 of 3556 total results. Request
-        done in 0.015 seconds.","updated":"2021-05-02T19:05:35.951Z","author":{"name":"Sentinels
-        Scientific Data Hub"},"id":"https://apihub.copernicus.eu/apihub/search?q=beginposition:[\"NOW/MONTH\"
-        TO *] identifier:S1A*","opensearch:totalResults":"3556","opensearch:startIndex":"0","opensearch:itemsPerPage":"0","opensearch:Query":{"role":"request","searchTerms":"beginposition:[\"NOW/MONTH\"
-        TO *] identifier:S1A*","startPage":"1"},"link":[{"rel":"self","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=beginposition:[\"NOW/MONTH\"
-        TO *] identifier:S1A*&start=0&rows=0&format=json"},{"rel":"first","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=beginposition:[\"NOW/MONTH\"
-        TO *] identifier:S1A*&start=0&rows=0&format=json"},{"rel":"next","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=beginposition:[\"NOW/MONTH\"
-        TO *] identifier:S1A*&start=NaN&rows=0&format=json"},{"rel":"last","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=beginposition:[\"NOW/MONTH\"
-        TO *] identifier:S1A*&start=3555&rows=0&format=json"},{"rel":"search","type":"application/opensearchdescription+xml","href":"opensearch_description.xml"}]}}'
+        Scientific Data Hub search results for: beginposition:[\"2018-01-01T00:00:00Z\"
+        TO \"2018-01-30T00:00:00Z\"] identifier:S1A* footprint:\"Intersects(POINT(14.20
+        59.96))\"","subtitle":"Displaying 0 to -1 of 38 total results. Request done
+        in ... seconds.","updated":"...","author":{"name":"Sentinels Scientific Data
+        Hub"},"id":"https://apihub.copernicus.eu/apihub/search?q=beginposition:[\"2018-01-01T00:00:00Z\"
+        TO \"2018-01-30T00:00:00Z\"] identifier:S1A* footprint:\"Intersects(POINT(14.20
+        59.96))\"","opensearch:totalResults":"38","opensearch:startIndex":"0","opensearch:itemsPerPage":"0","opensearch:Query":{"role":"request","searchTerms":"beginposition:[\"2018-01-01T00:00:00Z\"
+        TO \"2018-01-30T00:00:00Z\"] identifier:S1A* footprint:\"Intersects(POINT(14.20
+        59.96))\"","startPage":"1"},"link":[{"rel":"self","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=beginposition:[\"2018-01-01T00:00:00Z\"
+        TO \"2018-01-30T00:00:00Z\"] identifier:S1A* footprint:\"Intersects(POINT(14.20
+        59.96))\"&start=0&rows=0&format=json"},{"rel":"first","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=beginposition:[\"2018-01-01T00:00:00Z\"
+        TO \"2018-01-30T00:00:00Z\"] identifier:S1A* footprint:\"Intersects(POINT(14.20
+        59.96))\"&start=0&rows=0&format=json"},{"rel":"next","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=beginposition:[\"2018-01-01T00:00:00Z\"
+        TO \"2018-01-30T00:00:00Z\"] identifier:S1A* footprint:\"Intersects(POINT(14.20
+        59.96))\"&start=NaN&rows=0&format=json"},{"rel":"last","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=beginposition:[\"2018-01-01T00:00:00Z\"
+        TO \"2018-01-30T00:00:00Z\"] identifier:S1A* footprint:\"Intersects(POINT(14.20
+        59.96))\"&start=37&rows=0&format=json"},{"rel":"search","type":"application/opensearchdescription+xml","href":"opensearch_description.xml"}]}}'
     headers:
       content-length:
-      - '1512'
+      - '2036'
       content-type:
       - application/json
       pragma:
@@ -335,17 +313,11 @@ interactions:
       - Apache-Coyote/1.1
       vary:
       - Accept-Encoding
-      x-content-type-options:
-      - nosniff
-      x-frame-options:
-      - DENY
-      x-xss-protection:
-      - 1; mode=block
     status:
       code: 200
       message: OK
 - request:
-    body: q=beginposition%3A%5B%22NOW%2FMONTH%22+TO+%2A%5D+identifier%3AS2A%2A
+    body: null
     headers:
       Accept:
       - '*/*'
@@ -354,29 +326,36 @@ interactions:
       Connection:
       - keep-alive
       Content-Length:
-      - '68'
+      - '165'
       Content-Type:
       - application/x-www-form-urlencoded; charset=UTF-8
       User-Agent:
       - sentinelsat/0.14
-    method: POST
-    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=0&start=0
+    method: GET
+    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=0&start=0&q=beginposition%3A%5B%222018-01-01T00%3A00%3A00Z%22+TO+%222018-01-30T00%3A00%3A00Z%22%5D+identifier%3AS2A%2A+footprint%3A%22Intersects%28POINT%2814.20+59.96%29%29%22
   response:
     body:
       string: '{"feed":{"xmlns:opensearch":"http://a9.com/-/spec/opensearch/1.1/","xmlns":"http://www.w3.org/2005/Atom","title":"Sentinels
-        Scientific Data Hub search results for: beginposition:[\"NOW/MONTH\" TO *]
-        identifier:S2A*","subtitle":"Displaying 0 to -1 of 16978 total results. Request
-        done in 0.023 seconds.","updated":"2021-05-02T19:05:36.059Z","author":{"name":"Sentinels
-        Scientific Data Hub"},"id":"https://apihub.copernicus.eu/apihub/search?q=beginposition:[\"NOW/MONTH\"
-        TO *] identifier:S2A*","opensearch:totalResults":"16978","opensearch:startIndex":"0","opensearch:itemsPerPage":"0","opensearch:Query":{"role":"request","searchTerms":"beginposition:[\"NOW/MONTH\"
-        TO *] identifier:S2A*","startPage":"1"},"link":[{"rel":"self","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=beginposition:[\"NOW/MONTH\"
-        TO *] identifier:S2A*&start=0&rows=0&format=json"},{"rel":"first","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=beginposition:[\"NOW/MONTH\"
-        TO *] identifier:S2A*&start=0&rows=0&format=json"},{"rel":"next","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=beginposition:[\"NOW/MONTH\"
-        TO *] identifier:S2A*&start=NaN&rows=0&format=json"},{"rel":"last","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=beginposition:[\"NOW/MONTH\"
-        TO *] identifier:S2A*&start=16977&rows=0&format=json"},{"rel":"search","type":"application/opensearchdescription+xml","href":"opensearch_description.xml"}]}}'
+        Scientific Data Hub search results for: beginposition:[\"2018-01-01T00:00:00Z\"
+        TO \"2018-01-30T00:00:00Z\"] identifier:S2A* footprint:\"Intersects(POINT(14.20
+        59.96))\"","subtitle":"Displaying 0 to -1 of 12 total results. Request done
+        in ... seconds.","updated":"...","author":{"name":"Sentinels Scientific Data
+        Hub"},"id":"https://apihub.copernicus.eu/apihub/search?q=beginposition:[\"2018-01-01T00:00:00Z\"
+        TO \"2018-01-30T00:00:00Z\"] identifier:S2A* footprint:\"Intersects(POINT(14.20
+        59.96))\"","opensearch:totalResults":"12","opensearch:startIndex":"0","opensearch:itemsPerPage":"0","opensearch:Query":{"role":"request","searchTerms":"beginposition:[\"2018-01-01T00:00:00Z\"
+        TO \"2018-01-30T00:00:00Z\"] identifier:S2A* footprint:\"Intersects(POINT(14.20
+        59.96))\"","startPage":"1"},"link":[{"rel":"self","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=beginposition:[\"2018-01-01T00:00:00Z\"
+        TO \"2018-01-30T00:00:00Z\"] identifier:S2A* footprint:\"Intersects(POINT(14.20
+        59.96))\"&start=0&rows=0&format=json"},{"rel":"first","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=beginposition:[\"2018-01-01T00:00:00Z\"
+        TO \"2018-01-30T00:00:00Z\"] identifier:S2A* footprint:\"Intersects(POINT(14.20
+        59.96))\"&start=0&rows=0&format=json"},{"rel":"next","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=beginposition:[\"2018-01-01T00:00:00Z\"
+        TO \"2018-01-30T00:00:00Z\"] identifier:S2A* footprint:\"Intersects(POINT(14.20
+        59.96))\"&start=NaN&rows=0&format=json"},{"rel":"last","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=beginposition:[\"2018-01-01T00:00:00Z\"
+        TO \"2018-01-30T00:00:00Z\"] identifier:S2A* footprint:\"Intersects(POINT(14.20
+        59.96))\"&start=11&rows=0&format=json"},{"rel":"search","type":"application/opensearchdescription+xml","href":"opensearch_description.xml"}]}}'
     headers:
       content-length:
-      - '1515'
+      - '2036'
       content-type:
       - application/json
       pragma:
@@ -385,12 +364,6 @@ interactions:
       - Apache-Coyote/1.1
       vary:
       - Accept-Encoding
-      x-content-type-options:
-      - nosniff
-      x-frame-options:
-      - DENY
-      x-xss-protection:
-      - 1; mode=block
     status:
       code: 200
       message: OK

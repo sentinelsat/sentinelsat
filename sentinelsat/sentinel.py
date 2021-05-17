@@ -7,8 +7,7 @@ import shutil
 import threading
 import warnings
 import xml.etree.ElementTree as ET
-from collections import OrderedDict, defaultdict
-from contextlib import closing
+from collections import OrderedDict, defaultdict, namedtuple
 from datetime import date, datetime, timedelta
 from pathlib import Path
 from typing import Any, Dict
@@ -49,9 +48,10 @@ class SentinelAPI:
         defaults to 'https://apihub.copernicus.eu/apihub'
     show_progressbars : bool
         Whether progressbars should be shown or not, e.g. during download. Defaults to True.
-    timeout : float or tuple, optional
+    timeout : float or tuple, default 60
         How long to wait for DataHub response (in seconds).
         Tuple (connect, read) allowed.
+        Set to None to wait indefinitely.
 
     Attributes
     ----------
@@ -74,7 +74,7 @@ class SentinelAPI:
         password,
         api_url="https://apihub.copernicus.eu/apihub/",
         show_progressbars=True,
-        timeout=None,
+        timeout=60,
     ):
         self.session = requests.Session()
         if user and password:
@@ -83,8 +83,8 @@ class SentinelAPI:
         self.page_size = 100
         self.user_agent = "sentinelsat/" + sentinelsat_version
         self.session.headers["User-Agent"] = self.user_agent
+        self.session.timeout = timeout
         self.show_progressbars = show_progressbars
-        self.timeout = timeout
         self._dhus_version = None
         # For unit tests
         self._last_query = None
@@ -98,21 +98,13 @@ class SentinelAPI:
 
     def _req_dhus_stub(self):
         try:
-            resp = self.session.get(
-                self.api_url + "api/stub/version",
-                auth=self.session.auth,
-                timeout=self.timeout,
-            )
+            resp = self.session.get(self.api_url + "api/stub/version")
             resp.raise_for_status()
         except requests.exceptions.HTTPError as err:
             self.logger.error("HTTPError: %s", err)
             self.logger.error("Are you trying to get the DHuS version of APIHub?")
             self.logger.error("Trying again after conversion to DHuS URL")
-            resp = self.session.get(
-                self._api2dhus_url(self.api_url) + "api/stub/version",
-                auth=self.session.auth,
-                timeout=self.timeout,
-            )
+            resp = self.session.get(self._api2dhus_url(self.api_url) + "api/stub/version")
             resp.raise_for_status()
         return resp.json()["value"]
 
@@ -248,6 +240,8 @@ class SentinelAPI:
 
         for attr, value in sorted(keywords.items()):
             if isinstance(value, set):
+                if len(value) == 0:
+                    continue
                 sub_parts = []
                 for sub_value in value:
                     sub_value = _format_query_value(attr, sub_value)
@@ -355,13 +349,8 @@ class SentinelAPI:
 
         # load query results
         url = self._format_url(order_by, limit, offset)
-        response = self.session.post(
-            url,
-            {"q": query},
-            auth=self.session.auth,
-            headers={"Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"},
-            timeout=self.timeout,
-        )
+        # Unlike POST, DHuS only accepts latin1 charset in the GET params
+        response = self.session.get(url, params={"q": query.encode("latin1")})
         _check_scihub_response(response, query_string=query)
 
         # store last status code (for testing)
@@ -482,7 +471,7 @@ class SentinelAPI:
         url = urljoin(self.api_url, "odata/v1/Products('{}')?$format=json".format(id))
         if full:
             url += "&$expand=Attributes"
-        response = self.session.get(url, auth=self.session.auth, timeout=self.timeout)
+        response = self.session.get(url)
         _check_scihub_response(response)
         values = _parse_odata_response(response.json()["d"])
         self._add_quicklook_url(values)
@@ -505,7 +494,7 @@ class SentinelAPI:
         # Check https://scihub.copernicus.eu/userguide/ODataAPI#Products_entity for more information
 
         url = urljoin(self.api_url, "odata/v1/Products('{}')/Online/$value".format(id))
-        r = self.session.get(url, auth=self.session.auth, timeout=self.timeout)
+        r = self.session.get(url)
         _check_scihub_response(r)
         return r.json()
 
@@ -556,12 +545,12 @@ class SentinelAPI:
             return product_info
 
         # An incomplete download triggers the retrieval from the LTA if the product is not online
-        if not product_info["Online"]:
+        is_online = self._trigger_offline_retrieval(product_info["url"]) == 200
+        if not is_online:
             self.logger.warning(
                 "Product %s is not online. Triggering retrieval from long term archive.",
                 product_info["id"],
             )
-            self._trigger_offline_retrieval(product_info["url"])
             return product_info
 
         self._download_outer(product_info, path, checksum)
@@ -614,17 +603,20 @@ class SentinelAPI:
         shutil.move(temp_path, path)
 
     def _get_filename(self, product_info):
-        # Default guess, mostly for archived products
-        filename = product_info["title"] + (
-            ".nc" if product_info["title"].startswith("S5P") else ".zip"
-        )
         if not product_info["Online"]:
+            req = self.session.get(
+                product_info["url"].replace("$value", "Attributes('Filename')/Value/$value")
+            )
+            _check_scihub_response(req, test_json=False)
+            filename = req.text
+            # This should cover all currently existing file types: .SAFE, .SEN3, .nc and .EOF
+            filename = filename.replace(".SAFE", ".zip")
+            filename = filename.replace(".SEN3", ".zip")
             return filename
-        req = self.session.head(product_info["url"], auth=self.session.auth)
+        req = self.session.head(product_info["url"])
         _check_scihub_response(req, test_json=False)
         cd = req.headers.get("Content-Disposition")
-        if cd and "=" in cd:
-            filename = cd.split("=", 1)[1].strip('"')
+        filename = cd.split("=", 1)[1].strip('"')
         return filename
 
     def _trigger_offline_retrieval(self, url):
@@ -642,23 +634,26 @@ class SentinelAPI:
         -----
         https://scihub.copernicus.eu/userguide/LongTermArchive
         """
-        with self.session.get(url, auth=self.session.auth, timeout=self.timeout) as r:
-            # check https://scihub.copernicus.eu/userguide/LongTermArchive#HTTP_Status_codes
-            if r.status_code == 202:
-                self.logger.debug("Accepted for retrieval")
-            elif r.status_code == 403:
-                self.logger.debug("Requests exceed user quota")
-            elif r.status_code == 503:
-                self.logger.error("Request not accepted")
-                raise SentinelAPILTAError("Request for retrieval from LTA not accepted", r)
-            elif r.status_code == 500:
-                # should not happen
-                self.logger.error("Trying to download an offline product")
-                raise SentinelAPILTAError("Trying to download an offline product", r)
-            else:
-                self.logger.error("Unexpected response %s from SciHub", r.status_code)
-                raise SentinelAPILTAError("Unexpected response from SciHub", r)
-            return r.status_code
+        r = self.session.head(url)
+        # check https://scihub.copernicus.eu/userguide/LongTermArchive#HTTP_Status_codes
+        if r.status_code == 200:
+            self.logger.debug("Product is online")
+            pass
+        elif r.status_code == 202:
+            self.logger.debug("Accepted for retrieval")
+        elif r.status_code == 403:
+            self.logger.debug("Requests exceed user quota")
+        elif r.status_code == 503:
+            self.logger.error("Request not accepted")
+            raise SentinelAPILTAError("Request for retrieval from LTA not accepted", r)
+        elif r.status_code == 500:
+            # should not happen
+            self.logger.error("Trying to download an offline product")
+            raise SentinelAPILTAError("Trying to download an offline product", r)
+        else:
+            self.logger.error("Unexpected response %s from SciHub", r.status_code)
+            raise SentinelAPILTAError("Unexpected response from SciHub", r)
+        return r.status_code
 
     def download_all(
         self,
@@ -736,7 +731,8 @@ class SentinelAPI:
         ):
             info = self.get_product_odata(pid)
             product_infos[pid] = info
-            if info["Online"]:
+            is_online = self._trigger_offline_retrieval(info["url"]) == 200
+            if is_online:
                 online_prods[pid] = info
             else:
                 offline_prods[pid] = info
@@ -816,7 +812,8 @@ class SentinelAPI:
                 raise SentinelAPIError("Downloading all products failed for unknown reason")
             raise exception
 
-        return downloaded_prods, retrieval_scheduled, failed_prods
+        ResultTuple = namedtuple("ResultTuple", ["downloaded", "retrieval_triggered", "failed"])
+        return ResultTuple(downloaded_prods, retrieval_scheduled, failed_prods)
 
     def _trigger_offline_retrieval_until_stop(
         self, product_infos, stop_event, retrieval_scheduled, retry_delay=600
@@ -892,10 +889,7 @@ class SentinelAPI:
 
         id = product_info["id"]
         title = product_info["title"]
-        is_online = product_info.get("Online")
-        if not is_online:
-            # Re-check if the product's online status has changed
-            is_online = self.is_online(id)
+        is_online = self._trigger_offline_retrieval(product_info["url"]) == 200
         if not is_online:
             self.logger.info("%s is not online.", id)
             return
@@ -966,7 +960,8 @@ class SentinelAPI:
                 else:
                     failed_quicklooks[dl_tasks[future]] = product_info["error"]
 
-        return downloaded_quicklooks, failed_quicklooks
+        ResultTuple = namedtuple("ResultTuple", ["downloaded", "failed"])
+        return ResultTuple(downloaded_quicklooks, failed_quicklooks)
 
     def download_quicklook(self, id, directory_path="."):
         """Download a quicklook for a product.
@@ -1179,10 +1174,9 @@ class SentinelAPI:
     def _md5_compare(self, file_path, checksum, block_size=2 ** 13):
         """Compare a given MD5 checksum with one calculated from a file."""
         file_path = Path(file_path)
-        with closing(
-            self._tqdm(
-                desc="MD5 checksumming", total=file_path.stat().st_size, unit="B", unit_scale=True
-            )
+        file_size = file_path.stat().st_size
+        with self._tqdm(
+            desc="MD5 checksumming", total=file_size, unit="B", unit_scale=True
         ) as progress:
             md5 = hashlib.md5()
             with open(file_path, "rb") as f:
@@ -1203,16 +1197,12 @@ class SentinelAPI:
         else:
             already_downloaded_bytes = 0
         downloaded_bytes = 0
-        with closing(
-            session.get(url, stream=True, auth=session.auth, headers=headers, timeout=self.timeout)
-        ) as r, closing(
-            self._tqdm(
-                desc="Downloading",
-                total=file_size,
-                unit="B",
-                unit_scale=True,
-                initial=already_downloaded_bytes,
-            )
+        with session.get(url, stream=True, headers=headers) as r, self._tqdm(
+            desc="Downloading",
+            total=file_size,
+            unit="B",
+            unit_scale=True,
+            initial=already_downloaded_bytes,
         ) as progress:
             _check_scihub_response(r, test_json=False)
             chunk_size = 2 ** 20  # download in 1 MB chunks
@@ -1254,11 +1244,7 @@ class SentinelAPI:
         product_info = self.get_product_odata(id)
         if not product_info["Online"]:
             raise NotImplementedError("Product is offline, no retrieval implemented.")
-        r = self.session.get(
-            product_info["url"],
-            stream=True,
-            auth=self.session.auth,
-        )
+        r = self.session.get(product_info["url"], stream=True)
         return r.raw, product_info
 
 
@@ -1467,7 +1453,7 @@ def _check_scihub_response(response, test_json=True, query_string=None):
                         pass
 
         if msg is None:
-            error = ServerError("Invalid API response", response)
+            raise ServerError("Invalid API response", response)
         elif response.status_code == 401:
             msg = "Invalid user name or password"
             if "apihub.copernicus.eu/apihub" in response.url:
@@ -1476,7 +1462,7 @@ def _check_scihub_response(response, test_json=True, query_string=None):
                     "to propagate to the 'https://apihub.copernicus.eu/apihub/' API URL you are using. "
                     "Consider switching to 'https://scihub.copernicus.eu/dhus/' instead in the mean time."
                 )
-            error = UnauthorizedError(msg, response)
+            raise UnauthorizedError(msg, response)
         elif "Request Entity Too Large" in msg or "Request-URI Too Long" in msg:
             msg = "Server was unable to process the query due to its excessive length"
             if query_string is not None:
@@ -1486,18 +1472,15 @@ def _check_scihub_response(response, test_json=True, query_string=None):
                     "Consider using SentinelAPI.check_query_length() for "
                     "client-side validation of the query string length.".format(length)
                 )
-            error = QueryLengthError(msg, response)
+            raise QueryLengthError(msg, response)
         elif "Invalid key" in msg:
             msg = msg.split(" : ", 1)[-1]
-            error = InvalidKeyError(msg, response)
+            raise InvalidKeyError(msg, response)
         elif 500 <= response.status_code < 600 or msg:
             # 5xx: Server Error
-            error = ServerError(msg, response)
+            raise ServerError(msg, response)
         else:
-            error = SentinelAPIError(msg, response)
-
-        # Suppress "During handling of the above exception..." message
-        raise error from None
+            raise SentinelAPIError(msg, response)
 
 
 def _format_order_by(order_by):

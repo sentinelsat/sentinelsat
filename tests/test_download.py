@@ -7,19 +7,16 @@ There are two minor issues to keep in mind when recording unit tests VCRs.
 2. dhus and apihub have different md5 hashes for products with the same UUID.
 
 """
-import shutil
 import os
+import shutil
 
 import py.path
 import pytest
 import requests_mock
+from flaky import flaky
 
 from sentinelsat import SentinelAPI, make_path_filter
-from sentinelsat.exceptions import (
-    InvalidKeyError,
-    SentinelAPILTAError,
-    InvalidChecksumError,
-)
+from sentinelsat.exceptions import InvalidChecksumError, InvalidKeyError, SentinelAPILTAError
 
 
 @pytest.mark.fast
@@ -68,7 +65,7 @@ def test_trigger_lta_success(http_status_code):
     request_url = "https://apihub.copernicus.eu/apihub/odata/v1/Products('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')/$value"
 
     with requests_mock.mock() as rqst:
-        rqst.get(request_url, status_code=http_status_code)
+        rqst.head(request_url, status_code=http_status_code)
         assert api._trigger_offline_retrieval(request_url) == http_status_code
 
 
@@ -86,7 +83,7 @@ def test_trigger_lta_failed(http_status_code):
     request_url = "https://apihub.copernicus.eu/apihub/odata/v1/Products('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')/$value"
 
     with requests_mock.mock() as rqst:
-        rqst.get(request_url, status_code=http_status_code)
+        rqst.head(request_url, status_code=http_status_code)
         with pytest.raises(SentinelAPILTAError):
             api._trigger_offline_retrieval(request_url)
 
@@ -158,14 +155,14 @@ def test_download(api, tmpdir, smallest_online_products):
     tmpdir.remove()
 
 
-@pytest.mark.vcr
+@pytest.mark.vcr(allow_playback_repeats=True)
 @pytest.mark.scihub
 def test_download_all(api, tmpdir, smallest_online_products):
     ids = [product["id"] for product in smallest_online_products]
 
     # Download normally
     product_infos, triggered, failed_downloads = api.download_all(
-        ids, str(tmpdir), n_concurrent_dl=1, max_attempts=1
+        ids, str(tmpdir), max_attempts=1, n_concurrent_dl=1
     )
     assert len(failed_downloads) == 0
     assert len(triggered) == 0
@@ -177,7 +174,7 @@ def test_download_all(api, tmpdir, smallest_online_products):
         assert pypath.size() == product_info["size"]
 
 
-@pytest.mark.vcr
+@pytest.mark.vcr(allow_playback_repeats=True)
 @pytest.mark.scihub
 def test_download_all_one_fail(api, tmpdir, smallest_online_products):
     ids = [product["id"] for product in smallest_online_products]
@@ -190,9 +187,12 @@ def test_download_all_one_fail(api, tmpdir, smallest_online_products):
         json["d"]["Checksum"]["Value"] = "00000000000000000000000000000000"
         rqst.get(url, json=json)
         product_infos, triggered, failed_downloads = api.download_all(
-            ids, str(tmpdir), max_attempts=1, checksum=True
+            ids, str(tmpdir), max_attempts=1, n_concurrent_dl=1, checksum=True
         )
         exceptions = {k: v["exception"] for k, v in failed_downloads.items()}
+        for e in exceptions.values():
+            if not isinstance(e, InvalidChecksumError):
+                raise e from None
         assert sorted(failed_downloads) == [ids[0]], exceptions
         assert type(list(exceptions.values())[0]) == InvalidChecksumError, exceptions
         assert triggered == {}
@@ -202,15 +202,17 @@ def test_download_all_one_fail(api, tmpdir, smallest_online_products):
     tmpdir.remove()
 
 
-@pytest.mark.xfail(reason="The threading in this test seems to break VCR.py somehow")
-@pytest.mark.vcr
+# VCR.py can't handle multi-threading correctly
+# https://github.com/kevin1024/vcrpy/issues/212
+@flaky(max_runs=3, min_passes=2)
+@pytest.mark.vcr(allow_playback_repeats=True)
 @pytest.mark.scihub
 def test_download_all_lta(api, tmpdir, smallest_online_products, smallest_archived_products):
     archived_ids = [x["id"] for x in smallest_archived_products]
     online_ids = [x["id"] for x in smallest_online_products]
     ids = archived_ids[:1] + online_ids[:2]
     product_infos, triggered, failed_downloads = api.download_all(
-        ids, str(tmpdir), n_concurrent_dl=1
+        ids, str(tmpdir), max_attempts=1, n_concurrent_dl=1
     )
     exceptions = {k: v["exception"] for k, v in failed_downloads.items()}
     assert len(failed_downloads) == 0, exceptions
@@ -264,7 +266,7 @@ def test_download_quicklook(api, tmpdir, quicklook_products):
     tmpdir.remove()
 
 
-@pytest.mark.vcr
+@pytest.mark.vcr(allow_playback_repeats=True)
 @pytest.mark.scihub
 def test_download_all_quicklooks(api, tmpdir, quicklook_products):
     ids = [product["id"] for product in quicklook_products]
@@ -284,7 +286,7 @@ def test_download_all_quicklooks(api, tmpdir, quicklook_products):
     tmpdir.remove()
 
 
-@pytest.mark.vcr
+@pytest.mark.vcr(allow_playback_repeats=True)
 @pytest.mark.scihub
 def test_download_all_quicklooks_one_fail(api, tmpdir, quicklook_products):
     ids = [product["id"] for product in quicklook_products]
@@ -292,9 +294,7 @@ def test_download_all_quicklooks_one_fail(api, tmpdir, quicklook_products):
     # Force one download to fail
     id = ids[0]
     with requests_mock.mock(real_http=True) as rqst:
-        url = "https://apihub.copernicus.eu/apihub/odata/v1/Products('{id}')/Products('Quicklook')/$value".format(
-            id=id
-        )
+        url = f"https://apihub.copernicus.eu/apihub/odata/v1/Products('{id}')/Products('Quicklook')/$value"
         headers = api.session.get(url).headers
         headers["content-type"] = "image/xxxx"
         rqst.get(url, headers=headers)

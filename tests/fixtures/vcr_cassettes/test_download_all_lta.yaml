@@ -11,15 +11,22 @@ interactions:
       User-Agent:
       - sentinelsat/0.14
     method: GET
-    uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('eba6dea4-7d56-4fae-8eeb-2c53931d2fa9')?$format=json
+    uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('5f1595cf-8522-4ac2-babc-68dd892d8624')?$format=json
   response:
     body:
-      string: '{"d":{"__metadata":{"id":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''eba6dea4-7d56-4fae-8eeb-2c53931d2fa9'')","uri":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''eba6dea4-7d56-4fae-8eeb-2c53931d2fa9'')","type":"DHuS.Product","content_type":"application/octet-stream","media_src":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''eba6dea4-7d56-4fae-8eeb-2c53931d2fa9'')/$value","edit_media":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''eba6dea4-7d56-4fae-8eeb-2c53931d2fa9'')/$value"},"Id":"eba6dea4-7d56-4fae-8eeb-2c53931d2fa9","Name":"S1A_EW_GRDM_1SSH_20160503T065233_20160503T065322_011091_010B59_7A24","ContentType":"application/octet-stream","ContentLength":"11458","ChildrenNumber":"2","Value":null,"CreationDate":"\/Date(1462283032902)\/","IngestionDate":"\/Date(1462283034912)\/","ModificationDate":"\/Date(1462285687717)\/","EvictionDate":null,"Online":false,"OnDemand":false,"ContentDate":{"__metadata":{"type":"DHuS.TimeRange"},"Start":"\/Date(1462258353994)\/","End":"\/Date(1462258402549)\/"},"Checksum":{"__metadata":{"type":"DHuS.Checksum"},"Algorithm":"MD5","Value":"A924C148D424D3E686FDA61FE7E371CF"},"ContentGeometry":"<gml:Polygon
-        srsName=\"http://www.opengis.net/gml/srs/epsg.xml#4326\" xmlns:gml=\"http://www.opengis.net/gml\">   <gml:outerBoundaryIs>      <gml:LinearRing>         <gml:coordinates>83.822311,82.063461
-        87.493446,89.692101 85.770477,131.975616 82.933586,106.706535 83.822311,82.063461</gml:coordinates>      </gml:LinearRing>   </gml:outerBoundaryIs></gml:Polygon>","Products":{"__deferred":{"uri":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''eba6dea4-7d56-4fae-8eeb-2c53931d2fa9'')/Products"}},"Nodes":{"__deferred":{"uri":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''eba6dea4-7d56-4fae-8eeb-2c53931d2fa9'')/Nodes"}},"Attributes":{"__deferred":{"uri":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''eba6dea4-7d56-4fae-8eeb-2c53931d2fa9'')/Attributes"}},"Class":{"__deferred":{"uri":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''eba6dea4-7d56-4fae-8eeb-2c53931d2fa9'')/Class"}}}}'
+      string: '{"d":{"__metadata":{"id":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''5f1595cf-8522-4ac2-babc-68dd892d8624'')","uri":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''5f1595cf-8522-4ac2-babc-68dd892d8624'')","type":"DHuS.Product","content_type":"application/octet-stream","media_src":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''5f1595cf-8522-4ac2-babc-68dd892d8624'')/$value","edit_media":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''5f1595cf-8522-4ac2-babc-68dd892d8624'')/$value"},"Id":"5f1595cf-8522-4ac2-babc-68dd892d8624","Name":"S3A_OL_2_LFR____20161128T001516_20161128T001516_20180320T053612_0000_011_244_4680_LR2_R_NT_002","ContentType":"application/octet-stream","ContentLength":"1025045","ChildrenNumber":"2","Value":null,"CreationDate":"\/Date(1538516571677)\/","IngestionDate":"\/Date(1524658407155)\/","ModificationDate":"\/Date(1524658407155)\/","EvictionDate":null,"Online":false,"OnDemand":false,"ContentDate":{"__metadata":{"type":"DHuS.TimeRange"},"Start":"\/Date(1480292798160)\/","End":"\/Date(1480292460506)\/"},"Checksum":{"__metadata":{"type":"DHuS.Checksum"},"Algorithm":"MD5","Value":"50805E060431A030B6B7A2BCF5DF955E"},"ContentGeometry":"<gml:Polygon
+        srsName=\"http://www.opengis.net/gml/srs/epsg.xml#4326\" xmlns:gml=\"http://www.opengis.net/gml\">\n   <gml:outerBoundaryIs>\n      <gml:LinearRing>\n         <gml:coordinates>-70.7778,30.2658
+        -71.3469,29.4215 -71.9081,28.5325 -72.461,27.5956 -73.0075,26.6031 -73.55,25.5448
+        -74.0824,24.4265 -74.6067,23.2412 -75.1265,21.9646 -75.6384,20.5992 -76.1421,19.1533
+        -76.6346,17.588 -77.1205,15.908 -77.5897,14.0965 -78.0488,12.1475 -78.4926,10.0333
+        -78.9234,7.77146 -79.334,5.33224 -79.7245,2.70304 -80.0965,-0.176821 -80.1262,-0.054931
+        -79.7532,2.82884 -79.3617,5.46069 -78.9502,7.90137 -78.5185,10.1637 -78.0738,12.2778
+        -77.6138,14.2259 -77.1437,16.0362 -76.657,17.7146 -76.1637,19.2781 -75.6593,20.7219
+        -75.1467,22.085 -74.6262,23.3594 -74.1014,24.5424 -73.5684,25.6583 -73.0251,26.7146
+        -72.4788,27.7033 -71.9252,28.6383 -71.3634,29.5252 -70.7937,30.3675 -70.7778,30.2658</gml:coordinates>\n      </gml:LinearRing>\n   </gml:outerBoundaryIs>\n</gml:Polygon>","Products":{"__deferred":{"uri":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''5f1595cf-8522-4ac2-babc-68dd892d8624'')/Products"}},"Nodes":{"__deferred":{"uri":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''5f1595cf-8522-4ac2-babc-68dd892d8624'')/Nodes"}},"Attributes":{"__deferred":{"uri":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''5f1595cf-8522-4ac2-babc-68dd892d8624'')/Attributes"}},"Class":{"__deferred":{"uri":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''5f1595cf-8522-4ac2-babc-68dd892d8624'')/Class"}}}}'
     headers:
       content-length:
-      - '2086'
+      - '2718'
       content-type:
       - application/json
       dataserviceversion:
@@ -30,12 +37,6 @@ interactions:
       - Apache-Coyote/1.1
       vary:
       - Accept-Encoding
-      x-content-type-options:
-      - nosniff
-      x-frame-options:
-      - DENY
-      x-xss-protection:
-      - 1; mode=block
     status:
       code: 200
       message: OK
@@ -70,12 +71,6 @@ interactions:
       - Apache-Coyote/1.1
       vary:
       - Accept-Encoding
-      x-content-type-options:
-      - nosniff
-      x-frame-options:
-      - DENY
-      x-xss-protection:
-      - 1; mode=block
     status:
       code: 200
       message: OK
@@ -110,12 +105,6 @@ interactions:
       - Apache-Coyote/1.1
       vary:
       - Accept-Encoding
-      x-content-type-options:
-      - nosniff
-      x-frame-options:
-      - DENY
-      x-xss-protection:
-      - 1; mode=block
     status:
       code: 200
       message: OK
@@ -150,12 +139,6 @@ interactions:
       - Apache-Coyote/1.1
       vary:
       - Accept-Encoding
-      x-content-type-options:
-      - nosniff
-      x-frame-options:
-      - DENY
-      x-xss-protection:
-      - 1; mode=block
     status:
       code: 200
       message: OK
@@ -190,18 +173,10 @@ interactions:
       - '2.0'
       etag:
       - 9eb46e4e31f77f108213e16bb8fbe088
-      last-modified:
-      - Tue, 17 Nov 2015 16:56:01 UTC
       pragma:
       - no-cache
       server:
       - Apache-Coyote/1.1
-      x-content-type-options:
-      - nosniff
-      x-frame-options:
-      - DENY
-      x-xss-protection:
-      - 1; mode=block
     status:
       code: 200
       message: OK
@@ -235,18 +210,10 @@ interactions:
       - '2.0'
       etag:
       - 9eb46e4e31f77f108213e16bb8fbe088
-      last-modified:
-      - Tue, 17 Nov 2015 16:56:01 UTC
       pragma:
       - no-cache
       server:
       - Apache-Coyote/1.1
-      x-content-type-options:
-      - nosniff
-      x-frame-options:
-      - DENY
-      x-xss-protection:
-      - 1; mode=block
     status:
       code: 200
       message: OK
@@ -281,12 +248,6 @@ interactions:
       - Apache-Coyote/1.1
       vary:
       - Accept-Encoding
-      x-content-type-options:
-      - nosniff
-      x-frame-options:
-      - DENY
-      x-xss-protection:
-      - 1; mode=block
     status:
       code: 200
       message: OK
@@ -321,18 +282,10 @@ interactions:
       - '2.0'
       etag:
       - 9ae4d76b566f94af54a2ef14c8709da9
-      last-modified:
-      - Tue, 17 Nov 2015 23:28:01 UTC
       pragma:
       - no-cache
       server:
       - Apache-Coyote/1.1
-      x-content-type-options:
-      - nosniff
-      x-frame-options:
-      - DENY
-      x-xss-protection:
-      - 1; mode=block
     status:
       code: 200
       message: OK
@@ -366,18 +319,10 @@ interactions:
       - '2.0'
       etag:
       - 9ae4d76b566f94af54a2ef14c8709da9
-      last-modified:
-      - Tue, 17 Nov 2015 23:28:01 UTC
       pragma:
       - no-cache
       server:
       - Apache-Coyote/1.1
-      x-content-type-options:
-      - nosniff
-      x-frame-options:
-      - DENY
-      x-xss-protection:
-      - 1; mode=block
     status:
       code: 200
       message: OK
@@ -393,7 +338,7 @@ interactions:
       User-Agent:
       - sentinelsat/0.14
     method: GET
-    uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('eba6dea4-7d56-4fae-8eeb-2c53931d2fa9')/Online/$value
+    uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('5f1595cf-8522-4ac2-babc-68dd892d8624')/Online/$value
   response:
     body:
       string: 'false'
@@ -408,12 +353,6 @@ interactions:
       - no-cache
       server:
       - Apache-Coyote/1.1
-      x-content-type-options:
-      - nosniff
-      x-frame-options:
-      - DENY
-      x-xss-protection:
-      - 1; mode=block
     status:
       code: 200
       message: OK
@@ -428,8 +367,8 @@ interactions:
       - keep-alive
       User-Agent:
       - sentinelsat/0.14
-    method: GET
-    uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('eba6dea4-7d56-4fae-8eeb-2c53931d2fa9')/$value
+    method: HEAD
+    uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('5f1595cf-8522-4ac2-babc-68dd892d8624')/$value
   response:
     body:
       string: ''
@@ -444,13 +383,37 @@ interactions:
       - no-cache
       server:
       - Apache-Coyote/1.1
-      x-content-type-options:
-      - nosniff
-      x-frame-options:
-      - DENY
-      x-xss-protection:
-      - 1; mode=block
     status:
       code: 202
       message: Accepted
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - sentinelsat/0.14
+    method: GET
+    uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('5f1595cf-8522-4ac2-babc-68dd892d8624')/Attributes('Filename')/Value/$value
+  response:
+    body:
+      string: S3A_OL_2_LFR____20161128T001516_20161128T001516_20180320T053612_0000_011_244_4680_LR2_R_NT_002.SEN3
+    headers:
+      content-length:
+      - '99'
+      content-type:
+      - text/plain;charset=utf-8
+      dataserviceversion:
+      - '2.0'
+      pragma:
+      - no-cache
+      server:
+      - Apache-Coyote/1.1
+    status:
+      code: 200
+      message: OK
 version: 1

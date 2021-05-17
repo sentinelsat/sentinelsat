@@ -1,6 +1,6 @@
 interactions:
 - request:
-    body: q=beginPosition%3A%5B%222016-12-01T00%3A00%3A00Z%22+TO+%222016-12-30T00%3A00%3A00Z%22%5D+footprint%3A%22Intersects%28POLYGON%28%28-66.2695+-8.0592%2C-66.2695+0.7031%2C-57.3047+0.7031%2C-57.3047+-8.0592%2C-66.2695+-8.0592%29%29%29%22
+    body: null
     headers:
       Accept:
       - '*/*'
@@ -14,18 +14,18 @@ interactions:
       - application/x-www-form-urlencoded; charset=UTF-8
       User-Agent:
       - sentinelsat/0.14
-    method: POST
-    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=15&start=0
+    method: GET
+    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=15&start=0&q=beginPosition%3A%5B%222016-12-01T00%3A00%3A00Z%22+TO+%222016-12-30T00%3A00%3A00Z%22%5D+footprint%3A%22Intersects%28POLYGON%28%28-66.2695+-8.0592%2C-66.2695+0.7031%2C-57.3047+0.7031%2C-57.3047+-8.0592%2C-66.2695+-8.0592%29%29%29%22
   response:
     body:
       string: '{"feed":{"xmlns:opensearch":"http://a9.com/-/spec/opensearch/1.1/","xmlns":"http://www.w3.org/2005/Atom","title":"Sentinels
         Scientific Data Hub search results for: beginPosition:[\"2016-12-01T00:00:00Z\"
         TO \"2016-12-30T00:00:00Z\"] footprint:\"Intersects(POLYGON((-66.2695 -8.0592,-66.2695
         0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\"","subtitle":"Displaying
-        0 to 14 of 1238 total results. Request done in 0.07 seconds.","updated":"2021-05-02T18:51:19.092Z","author":{"name":"Sentinels
+        0 to 14 of 10000 total results. Request done in ... seconds.","updated":"...","author":{"name":"Sentinels
         Scientific Data Hub"},"id":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[\"2016-12-01T00:00:00Z\"
         TO \"2016-12-30T00:00:00Z\"] footprint:\"Intersects(POLYGON((-66.2695 -8.0592,-66.2695
-        0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\"","opensearch:totalResults":"1238","opensearch:startIndex":"0","opensearch:itemsPerPage":"15","opensearch:Query":{"role":"request","searchTerms":"beginPosition:[\"2016-12-01T00:00:00Z\"
+        0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\"","opensearch:totalResults":"10000","opensearch:startIndex":"0","opensearch:itemsPerPage":"15","opensearch:Query":{"role":"request","searchTerms":"beginPosition:[\"2016-12-01T00:00:00Z\"
         TO \"2016-12-30T00:00:00Z\"] footprint:\"Intersects(POLYGON((-66.2695 -8.0592,-66.2695
         0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\"","startPage":"1"},"link":[{"rel":"self","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[\"2016-12-01T00:00:00Z\"
         TO \"2016-12-30T00:00:00Z\"] footprint:\"Intersects(POLYGON((-66.2695 -8.0592,-66.2695
@@ -1508,7 +1508,7 @@ interactions:
         Reprocessing Centre 1 [LR1]"},{"name":"procfacilityorg","content":"ACRI"},{"name":"onlinequalitycheck","content":"PASSED"},{"name":"lastorbitdirection","content":"ascending"},{"name":"lastrelorbitdirection","content":"ascending"},{"name":"lastrelpassnumber","content":"263"},{"name":"lastrelpassdirection","content":"ascending"},{"name":"lastpassnumber","content":"8679"},{"name":"lastpassdirection","content":"ascending"},{"name":"identifier","content":"S3A_SR_1_SRA_BS_20161217T020123_20161217T025152_20180124T133505_3029_012_131______LR1_R_NT_003"},{"name":"uuid","content":"aa10a6f8-5145-404b-8a21-80390311a980"}]}]}}'
     headers:
       content-length:
-      - '161150'
+      - '161130'
       content-type:
       - application/json
       pragma:
@@ -1517,12 +1517,6 @@ interactions:
       - Apache-Coyote/1.1
       vary:
       - Accept-Encoding
-      x-content-type-options:
-      - nosniff
-      x-frame-options:
-      - DENY
-      x-xss-protection:
-      - 1; mode=block
     status:
       code: 200
       message: OK

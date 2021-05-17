@@ -1,6 +1,6 @@
 interactions:
 - request:
-    body: q=beginPosition%3A%5B%222015-12-19T00%3A00%3A00Z%22+TO+%222015-12-28T00%3A00%3A00Z%22%5D+platformname%3A%22Sentinel-2%22+footprint%3A%22Intersects%28POLYGON%28%28-66.2695+-8.0592%2C-66.2695+0.7031%2C-57.3047+0.7031%2C-57.3047+-8.0592%2C-66.2695+-8.0592%29%29%29%22
+    body: null
     headers:
       Accept:
       - '*/*'
@@ -14,15 +14,15 @@ interactions:
       - application/x-www-form-urlencoded; charset=UTF-8
       User-Agent:
       - sentinelsat/0.14
-    method: POST
-    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=5&start=0
+    method: GET
+    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=5&start=0&q=beginPosition%3A%5B%222015-12-19T00%3A00%3A00Z%22+TO+%222015-12-28T00%3A00%3A00Z%22%5D+platformname%3A%22Sentinel-2%22+footprint%3A%22Intersects%28POLYGON%28%28-66.2695+-8.0592%2C-66.2695+0.7031%2C-57.3047+0.7031%2C-57.3047+-8.0592%2C-66.2695+-8.0592%29%29%29%22
   response:
     body:
       string: '{"feed":{"xmlns:opensearch":"http://a9.com/-/spec/opensearch/1.1/","xmlns":"http://www.w3.org/2005/Atom","title":"Sentinels
         Scientific Data Hub search results for: beginPosition:[\"2015-12-19T00:00:00Z\"
         TO \"2015-12-28T00:00:00Z\"] platformname:\"Sentinel-2\" footprint:\"Intersects(POLYGON((-66.2695
         -8.0592,-66.2695 0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\"","subtitle":"Displaying
-        0 to 4 of 89 total results. Request done in 0.071 seconds.","updated":"2021-05-02T18:51:15.742Z","author":{"name":"Sentinels
+        0 to 4 of 89 total results. Request done in ... seconds.","updated":"...","author":{"name":"Sentinels
         Scientific Data Hub"},"id":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[\"2015-12-19T00:00:00Z\"
         TO \"2015-12-28T00:00:00Z\"] platformname:\"Sentinel-2\" footprint:\"Intersects(POLYGON((-66.2695
         -8.0592,-66.2695 0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\"","opensearch:totalResults":"89","opensearch:startIndex":"0","opensearch:itemsPerPage":"5","opensearch:Query":{"role":"request","searchTerms":"beginPosition:[\"2015-12-19T00:00:00Z\"
@@ -82,7 +82,7 @@ interactions:
         MB"},{"name":"tileid","content":"20MPU"},{"name":"hv_order_tileid","content":"MU20P"},{"name":"filename","content":"S2A_MSIL1C_20151223T142942_N0201_R053_T20MPU_20151223T143132.SAFE"},{"name":"identifier","content":"S2A_MSIL1C_20151223T142942_N0201_R053_T20MPU_20151223T143132"},{"name":"uuid","content":"30b90550-0e0c-434f-8820-baa24df5921e"},{"name":"level1cpdiidentifier","content":"S2A_OPER_MSI_L1C_TL_SGS__20151223T181253_A002624_T20MPU_N02.01"},{"name":"granuleidentifier","content":"S2A_OPER_MSI_L1C_TL_SGS__20151223T181253_A002624_T20MPU_N02.01"},{"name":"datastripidentifier","content":"S2A_OPER_MSI_L1C_DS_SGS__20151223T181253_S20151223T143132_N02.01"}]}]}}'
     headers:
       content-length:
-      - '17608'
+      - '17585'
       content-type:
       - application/json
       pragma:
@@ -91,12 +91,6 @@ interactions:
       - Apache-Coyote/1.1
       vary:
       - Accept-Encoding
-      x-content-type-options:
-      - nosniff
-      x-frame-options:
-      - DENY
-      x-xss-protection:
-      - 1; mode=block
     status:
       code: 200
       message: OK

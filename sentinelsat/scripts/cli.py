@@ -2,6 +2,7 @@ import json
 import logging
 import math
 import os
+import re
 
 import click
 import geojson as gj
@@ -15,6 +16,7 @@ from sentinelsat.sentinel import (
     placename_to_wkt,
     is_wkt,
 )
+
 from sentinelsat.products import SentinelProductsAPI, make_path_filter
 
 
@@ -27,18 +29,15 @@ def _set_logger_handler(level="INFO"):
     logger.setLevel(level)
     h = logging.StreamHandler()
     h.setLevel(level)
-    fmt = logging.Formatter("%(message)s")
-    h.setFormatter(fmt)
+    h.setFormatter(logging.Formatter("%(message)s"))
     logger.addHandler(h)
 
 
-class CommaSeparatedString(click.ParamType):
-    name = "comma-string"
-
-    def convert(self, value, param, ctx):
-        if value is None:
-            return
-        return value.split(",")
+def validate_query_param(ctx, param, kwargs):
+    for kwarg in kwargs:
+        if not re.match(r"\w+=.+", kwarg):
+            raise click.BadParameter("must have the format 'keyword=value'")
+    return kwargs
 
 
 @click.command(context_settings=dict(help_option_names=["-h", "--help"]))
@@ -67,16 +66,14 @@ class CommaSeparatedString(click.ParamType):
 @click.option(
     "--start",
     "-s",
-    default="NOW-1DAY",
-    show_default=True,
-    help="Start date of the query in the format YYYYMMDD.",
+    default=None,
+    help="Start date of the query in the format YYYYMMDD or an expression like NOW-1DAY.",
 )
 @click.option(
     "--end",
     "-e",
-    default="NOW",
-    show_default=True,
-    help="End date of the query in the format YYYYMMDD.",
+    default=None,
+    help="End date of the query.",
 )
 @click.option(
     "--geometry",
@@ -86,15 +83,13 @@ class CommaSeparatedString(click.ParamType):
 )
 @click.option(
     "--uuid",
-    type=CommaSeparatedString(),
-    default=None,
-    help="Select a specific product UUID instead of a query. Multiple UUIDs can separated by comma.",
+    multiple=True,
+    help="Select a specific product UUID. Can be set more than once.",
 )
 @click.option(
     "--name",
-    type=CommaSeparatedString(),
-    default=None,
-    help="Select specific product(s) by filename. Supports wildcards.",
+    multiple=True,
+    help="Select specific product(s) by filename. Supports wildcards. Can be set more than once.",
 )
 @click.option(
     "--sentinel",
@@ -139,10 +134,11 @@ class CommaSeparatedString(click.ParamType):
 @click.option(
     "--query",
     "-q",
-    type=CommaSeparatedString(),
-    default=None,
-    help="""Extra search keywords you want to use in the query. Separate
-        keywords with comma. Example: 'producttype=GRD,polarisationmode=HH'.
+    multiple=True,
+    callback=validate_query_param,
+    help="""Extra search keywords you want to use in the query. 
+        Example: '-q producttype=GRD -q polarisationmode=HH'.
+        Repeated keywords are interpreted as an "or" expression.
         """,
 )
 @click.option(
@@ -153,14 +149,19 @@ class CommaSeparatedString(click.ParamType):
 )
 @click.option(
     "--footprints",
-    is_flag=True,
-    help="""Create a geojson file search_footprints.geojson with footprints
-    and metadata of the returned products.
+    type=click.File(mode="w", encoding="utf8", lazy=True),
+    help="""Create a GeoJSON file at the provided path with footprints
+    and metadata of the returned products. Set to '-' for stdout.
     """,
 )
 @click.option(
+    "--timeout",
+    type=float,
+    default=60,
+    help="How long to wait for a DataHub response (in seconds, default 60 sec).",
+)
+@click.option(
     "--debug",
-    "-d",
     is_flag=True,
     help="Print debug log messages.",
 )
@@ -207,6 +208,7 @@ def cli(
     order_by,
     location,
     limit,
+    timeout,
     debug,
     include_pattern,
     exclude_pattern,
@@ -220,7 +222,18 @@ def cli(
     don't specify the start and end dates, it will search in the last 24 hours.
     """
 
-    _set_logger_handler("DEBUG" if debug else "INFO")
+    if footprints and footprints.name == "-":
+        _set_logger_handler("WARNING")
+    elif debug:
+        _set_logger_handler("DEBUG")
+    else:
+        _set_logger_handler("INFO")
+
+    if info:
+        api = SentinelProductsAPI(None, None, url, timeout=timeout)
+        ctx = click.get_current_context()
+        click.echo("DHuS version: " + api.dhus_version)
+        ctx.exit()
 
     if include_pattern is not None and exclude_pattern is not None:
         raise click.UsageError(
@@ -250,12 +263,7 @@ def cli(
             "for environment variables and .netrc support."
         )
 
-    api = SentinelProductsAPI(user, password, url)
-
-    if info:
-        ctx = click.get_current_context()
-        click.echo("DHuS version: " + api.dhus_version)
-        ctx.exit()
+    api = SentinelProductsAPI(user, password, url, timeout=timeout)
 
     search_kwargs = {}
     if sentinel:
@@ -273,14 +281,22 @@ def cli(
             exit(1)
         search_kwargs["cloudcoverpercentage"] = (0, cloud)
 
-    if name is not None:
+    if len(name) > 0:
         search_kwargs["identifier"] = set(name)
 
-    if uuid is not None:
+    if len(uuid) > 0:
         search_kwargs["uuid"] = set(uuid)
 
-    if query is not None:
-        search_kwargs.update(x.split("=") for x in query)
+    if len(query) > 0:
+        for kwarg in query:
+            key, value = kwarg.split("=", 1)
+            if key in search_kwargs:
+                if isinstance(search_kwargs[key], set):
+                    search_kwargs[key].add(value)
+                else:
+                    search_kwargs[key] = {search_kwargs[key], value}
+            else:
+                search_kwargs[key] = value
 
     if location is not None:
         wkt, info = placename_to_wkt(location)
@@ -325,10 +341,10 @@ def cli(
 
     products = api.query(date=(start, end), order_by=order_by, limit=limit, **search_kwargs)
 
-    if footprints is True:
+    if footprints is not None:
         footprints_geojson = api.to_geojson(products)
-        with open(os.path.join(path, "search_footprints.geojson"), "w") as outfile:
-            outfile.write(gj.dumps(footprints_geojson))
+        gj.dump(footprints_geojson, footprints)
+        footprints.close()
 
     if quicklook:
         downloaded_quicklooks, failed_quicklooks = api.download_all_quicklooks(products, path)

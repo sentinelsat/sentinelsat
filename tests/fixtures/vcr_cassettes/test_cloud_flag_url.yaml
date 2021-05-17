@@ -1,6 +1,6 @@
 interactions:
 - request:
-    body: q=beginPosition%3A%5B%222015-12-19T00%3A00%3A00Z%22+TO+%222015-12-20T00%3A00%3A00Z%22%5D+cloudcoverpercentage%3A%5B%220%22+TO+%2210%22%5D+platformname%3A%22Sentinel-2%22+footprint%3A%22Intersects%28POLYGON%28%28-66.2695+-8.0592%2C-66.2695+0.7031%2C-57.3047+0.7031%2C-57.3047+-8.0592%2C-66.2695+-8.0592%29%29%29%22
+    body: null
     headers:
       Accept:
       - '*/*'
@@ -14,8 +14,8 @@ interactions:
       - application/x-www-form-urlencoded; charset=UTF-8
       User-Agent:
       - sentinelsat/0.14
-    method: POST
-    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=100&start=0
+    method: GET
+    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=100&start=0&q=beginPosition%3A%5B%222015-12-19T00%3A00%3A00Z%22+TO+%222015-12-20T00%3A00%3A00Z%22%5D+cloudcoverpercentage%3A%5B%220%22+TO+%2210%22%5D+platformname%3A%22Sentinel-2%22+footprint%3A%22Intersects%28POLYGON%28%28-66.2695+-8.0592%2C-66.2695+0.7031%2C-57.3047+0.7031%2C-57.3047+-8.0592%2C-66.2695+-8.0592%29%29%29%22
   response:
     body:
       string: '{"feed":{"xmlns:opensearch":"http://a9.com/-/spec/opensearch/1.1/","xmlns":"http://www.w3.org/2005/Atom","title":"Sentinels
@@ -23,7 +23,7 @@ interactions:
         TO \"2015-12-20T00:00:00Z\"] cloudcoverpercentage:[\"0\" TO \"10\"] platformname:\"Sentinel-2\"
         footprint:\"Intersects(POLYGON((-66.2695 -8.0592,-66.2695 0.7031,-57.3047
         0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))\"","subtitle":"Displaying 15 results.
-        Request done in 0.507 seconds.","updated":"2021-05-02T18:51:09.027Z","author":{"name":"Sentinels
+        Request done in ... seconds.","updated":"...","author":{"name":"Sentinels
         Scientific Data Hub"},"id":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[\"2015-12-19T00:00:00Z\"
         TO \"2015-12-20T00:00:00Z\"] cloudcoverpercentage:[\"0\" TO \"10\"] platformname:\"Sentinel-2\"
         footprint:\"Intersects(POLYGON((-66.2695 -8.0592,-66.2695 0.7031,-57.3047
@@ -173,7 +173,7 @@ interactions:
         MB"},{"name":"tileid","content":"20MLD"},{"name":"hv_order_tileid","content":"MD20L"},{"name":"filename","content":"S2A_MSIL1C_20151219T144722_N0201_R139_T20MLD_20151219T145202.SAFE"},{"name":"identifier","content":"S2A_MSIL1C_20151219T144722_N0201_R139_T20MLD_20151219T145202"},{"name":"uuid","content":"3460adf1-d56a-4ff6-bc4a-0ef1c58871d7"},{"name":"level1cpdiidentifier","content":"S2A_OPER_MSI_L1C_TL_MTI__20151219T193257_A002567_T20MLD_N02.01"},{"name":"granuleidentifier","content":"S2A_OPER_MSI_L1C_TL_MTI__20151219T193257_A002567_T20MLD_N02.01"},{"name":"datastripidentifier","content":"S2A_OPER_MSI_L1C_DS_MTI__20151219T193257_S20151219T145202_N02.01"}]}]}}'
     headers:
       content-length:
-      - '47362'
+      - '47339'
       content-type:
       - application/json
       pragma:
@@ -182,12 +182,6 @@ interactions:
       - Apache-Coyote/1.1
       vary:
       - Accept-Encoding
-      x-content-type-options:
-      - nosniff
-      x-frame-options:
-      - DENY
-      x-xss-protection:
-      - 1; mode=block
     status:
       code: 200
       message: OK

@@ -1,6 +1,6 @@
 interactions:
 - request:
-    body: q=%D9%A9%28%E2%97%8F%CC%AE%CC%AE%CC%83%E2%80%A2%CC%83%29%DB%B6%3A
+    body: null
     headers:
       Accept:
       - '*/*'
@@ -8,26 +8,22 @@ interactions:
       - gzip, deflate
       Connection:
       - keep-alive
-      Content-Length:
-      - '65'
-      Content-Type:
-      - application/x-www-form-urlencoded; charset=UTF-8
       User-Agent:
       - sentinelsat/0.14
-    method: POST
-    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=0&start=0
+    method: GET
+    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=0&start=0&q=%F5%E4%F6%FC%FF%28
   response:
     body:
       string: "{\"feed\":{\"xmlns:opensearch\":\"http://a9.com/-/spec/opensearch/1.1/\",\"xmlns\":\"http://www.w3.org/2005/Atom\",\"error\":{\"code\":\"400\",\"message\":\"org.apache.solr.search.SyntaxError:
-        Cannot parse '\u0669(\u25CF\u032E\u032E\u0303\u2022\u0303)\u06F6:': Encountered
-        \\\"<EOF>\\\" at line 1, column 11.\\nWas expecting one of:\\n    <BAREOPER>
-        ...\\n    \\\"(\\\" ...\\n    \\\"*\\\" ...\\n    <QUOTED> ...\\n    <TERM>
-        ...\\n    <PREFIXTERM> ...\\n    <WILDTERM> ...\\n    <REGEXPTERM> ...\\n
-        \   \\\"[\\\" ...\\n    \\\"{\\\" ...\\n    <LPARAMS> ...\\n    \\\"filter(\\\"
-        ...\\n    <NUMBER> ...\\n    \"}}}"
+        Cannot parse '\xF5\xE4\xF6\xFC\xFF(': Encountered \\\"<EOF>\\\" at line 1,
+        column 6.\\nWas expecting one of:\\n    <NOT> ...\\n    \\\"+\\\" ...\\n    \\\"-\\\"
+        ...\\n    <BAREOPER> ...\\n    \\\"(\\\" ...\\n    \\\"*\\\" ...\\n    <QUOTED>
+        ...\\n    <TERM> ...\\n    <PREFIXTERM> ...\\n    <WILDTERM> ...\\n    <REGEXPTERM>
+        ...\\n    \\\"[\\\" ...\\n    \\\"{\\\" ...\\n    <LPARAMS> ...\\n    \\\"filter(\\\"
+        ...\\n    <NUMBER> ...\\n    <TERM> ...\\n    \\\"*\\\" ...\\n    \"}}}"
     headers:
       content-length:
-      - '524'
+      - '589'
       content-type:
       - application/json
       pragma:
@@ -36,12 +32,6 @@ interactions:
       - Apache-Coyote/1.1
       vary:
       - Accept-Encoding
-      x-content-type-options:
-      - nosniff
-      x-frame-options:
-      - DENY
-      x-xss-protection:
-      - 1; mode=block
     status:
       code: 200
       message: OK
@@ -57,16 +47,16 @@ interactions:
       User-Agent:
       - sentinelsat/0.14
     method: GET
-    uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('%D9%A9(%E2%97%8F%CC%AE%CC%AE%CC%83%E2%80%A2%CC%83)%DB%B6:')?$format=json
+    uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('%C3%B5%C3%A4%C3%B6%C3%BC%C3%BF(')?$format=json
   response:
     body:
       string: "{\"error\":{\"code\":null,\"message\":{\"lang\":\"en\",\"value\":\"Invalid
-        key (\u0669(\u25CF\u032E\u032E\u0303\u2022\u0303)\u06F6:) to access Products\"}}}"
+        key (\xF5\xE4\xF6\xFC\xFF() to access Products\"}}}"
     headers:
       cause-message:
-      - 'InvalidKeyException : Invalid key (?(??????)?:) to access Products'
+      - "InvalidKeyException : Invalid key (\xF5\xE4\xF6\xFC\xFF() to access Products"
       content-length:
-      - '112'
+      - '102'
       content-type:
       - application/json
       dataserviceversion:
@@ -75,12 +65,6 @@ interactions:
       - no-cache
       server:
       - Apache-Coyote/1.1
-      x-content-type-options:
-      - nosniff
-      x-frame-options:
-      - DENY
-      x-xss-protection:
-      - 1; mode=block
     status:
       code: 404
       message: Not Found
