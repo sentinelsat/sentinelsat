@@ -4,7 +4,8 @@ __version__ = "0.14"
 from . import sentinel
 from .exceptions import (
     SentinelAPIError,
-    SentinelAPILTAError,
+    LTAError,
+    LTATriggered,
     ServerError,
     InvalidKeyError,
     QueryLengthError,
