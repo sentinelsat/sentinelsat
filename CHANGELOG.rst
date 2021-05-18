@@ -68,7 +68,7 @@ Changed
 
 Deprecated
 ~~~~~~~~~~
-* 
+* Removed ``query_raw()`` that was deprecated in v0.12.
 
 Fixed
 ~~~~~
