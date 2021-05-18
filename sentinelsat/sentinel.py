@@ -17,7 +17,7 @@ import geojson
 import geomet.wkt
 import html2text
 import requests
-from tqdm import tqdm
+from tqdm.auto import tqdm
 
 from sentinelsat.exceptions import (
     SentinelAPIError,
