@@ -20,6 +20,7 @@ CLI changes
 * Got rid of the special handling of ``--uuid`` and ``--name`` CLI arguments. The product IDs are now simply passed to ``api.query()`` as a set.
   As a result they no longer ignore the date range arguments (fixes #387). (#390 @valgur)
 * Added ``--timeout`` option with a default value of 60 seconds to avoid waiting indefinitely for a response. (#475 @valgur)
+* New ``--gnss`` CLI flag to use the GNSS end-point for orbit products query and download (#441 @avalentino).
 
 Added
 ~~~~~

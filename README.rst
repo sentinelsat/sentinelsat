@@ -239,6 +239,10 @@ Options
      - --timeout
      - FLOAT
      - How long to wait for a DataHub response (in seconds, default 60 sec).
+   * -
+     - --gnss
+     -
+     - Query orbit products form the GNSS end-point ("https://scihub.copernicus.eu/gnss").
    * -  
      - --info
      -  

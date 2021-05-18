@@ -88,6 +88,15 @@ Download all Sentinel-2 scenes published in the last 24 hours.
 
   sentinelsat -u <user> -p <password> -g <search_polygon.geojson> --sentinel 2 -d
 
+Orbit products
+~~~~~~~~~~~~~~
+
+Search precise orbit products ("AUX_POEORB") for Sentinel-1B for a specific date.
+
+.. code-block:: bash
+
+  sentinelsat --gnss -s 20210201 -e 20210202 --producttype AUX_POEORB --query="platformserialidentifier=1B"
+
 Options
 -------
 
@@ -190,6 +199,10 @@ Options
 .. option:: --timeout <seconds>
 
     How long to wait for a DataHub response (in seconds, default 60 sec).
+
+.. option:: --gnss
+
+    Query orbit products form the GNSS end-point ("https://scihub.copernicus.eu/gnss").
 
 .. option:: --info
 

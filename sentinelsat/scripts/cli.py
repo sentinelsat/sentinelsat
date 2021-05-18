@@ -178,6 +178,13 @@ def validate_query_param(ctx, param, kwargs):
     from the downloaded.
     """,
 )
+@click.option(
+    "--gnss",
+    is_flag=True,
+    help="""Use the "https://scihub.copernicus.eu/gnss" end-point
+    for orbit data query and download.
+    """,
+)
 @click.option("--info", is_flag=True, is_eager=True, help="Displays the DHuS version used")
 @click.version_option(version=sentinelsat_version, prog_name="sentinelsat")
 def cli(
@@ -205,6 +212,7 @@ def cli(
     debug,
     include_pattern,
     exclude_pattern,
+    gnss,
     info,
 ):
     """Search for Sentinel products and, optionally, download all the results
@@ -238,6 +246,11 @@ def cli(
     else:
         nodefilter = None
 
+    if gnss:
+        url = "https://scihub.copernicus.eu/gnss/"
+        user = "gnssguest"
+        password = "gnssguest"
+
     if user is None or password is None:
         try:
             user, password = requests.utils.get_netrc_auth(url)
@@ -253,10 +266,10 @@ def cli(
     api = SentinelProductsAPI(user, password, url, timeout=timeout)
 
     search_kwargs = {}
-    if sentinel and not (producttype or instrument):
+    if sentinel:
         search_kwargs["platformname"] = "Sentinel-" + sentinel
 
-    if instrument and not producttype:
+    if instrument:
         search_kwargs["instrumentshortname"] = instrument
 
     if producttype:
