@@ -119,13 +119,6 @@ def netrc_from_environ(no_netrc, credentials):
 
 @pytest.mark.vcr
 @pytest.mark.scihub
-def test_cli_geometry_alternatives(run_cli, geojson_string, wkt_string):
-    run_cli("--geometry", geojson_string, "--end", "20200101", "--limit", "1")
-    run_cli("--geometry", wkt_string, "--end", "20200101", "--limit", "1")
-
-
-@pytest.mark.vcr
-@pytest.mark.scihub
 def test_cli_gnss(run_cli):
     run_cli(
         "--gnss",
