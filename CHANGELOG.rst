@@ -60,6 +60,7 @@ Changed
 * ``download_all`` now returns a named tuple for clarity. (#477 @valgur)
 * Search queries now use GET instead of POST requests because the Sentinel-5P Pre-Operations Data Hub does not support POST (#380).
   As a consequence, the search query contents are now limited to latin1 encoding instead of UTF-8. (#473 @valgur)
+* Use ``tqdm.auto`` for nicer progress reporting in notebooks. (#480 @valgur)
 
 Deprecated
 ~~~~~~~~~~
