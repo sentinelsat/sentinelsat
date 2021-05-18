@@ -803,7 +803,10 @@ class SentinelAPI:
         failed_prods = {}
         for pid, info in product_infos.items():
             if pid not in downloaded_prods and pid not in retrieval_scheduled:
-                info["exception"] = dl_tasks[pid].exception()
+                if dl_tasks[pid].cancelled():
+                    info["exception"] = concurrent.futures.CancelledError()
+                else:
+                    info["exception"] = dl_tasks[pid].exception()
                 failed_prods[pid] = info
 
         if len(failed_prods) == len(product_ids) and len(product_ids) > 0:
