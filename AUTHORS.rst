@@ -35,3 +35,6 @@ Contributors
 * Thomas Young-Audet `@thomas-youngaudet <https://github.com/thomasyoung-audet>`_
 * Antonio Valentino `@avalentino <https://github.com/avalentino>`_
 * Florian Fichtner `@fwfichtner <https://github.com/fwfichtner>`_
+*  `@nishadhka <https://github.com/nishadhka>`_
+* Marcus Ackland `@mackland <https://github.com/mackland>`_
+*  `@IpsumCapra <https://github.com/IpsumCapra>`_
