@@ -9,7 +9,7 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - sentinelsat/0.14
+      - sentinelsat/1.0.0
     method: GET
     uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('1f62a176-c980-41dc-b3a1-c735d660c910')?$format=json
   response:
@@ -42,8 +42,47 @@ interactions:
       - gzip, deflate
       Connection:
       - keep-alive
+      Range:
+      - bytes=0-1
       User-Agent:
-      - sentinelsat/0.14
+      - sentinelsat/1.0.0
+    method: GET
+    uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('1f62a176-c980-41dc-b3a1-c735d660c910')/$value
+  response:
+    body: {}
+    headers:
+      accept-ranges:
+      - bytes
+      content-disposition:
+      - inline;filename="S1A_WV_OCN__2SSH_20150603T092625_20150603T093332_006207_008194_521E.zip"
+      content-length:
+      - '2'
+      content-range:
+      - bytes 0-1/213433
+      content-type:
+      - application/octet-stream
+      dataserviceversion:
+      - '2.0'
+      etag:
+      - 9eb46e4e31f77f108213e16bb8fbe088
+      pragma:
+      - no-cache
+      server:
+      - Apache-Coyote/1.1
+    status:
+      code: 206
+      message: Partial Content
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - sentinelsat/1.0.0
     method: GET
     uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('1f62a176-c980-41dc-b3a1-c735d660c910')/Nodes('S1A_WV_OCN__2SSH_20150603T092625_20150603T093332_006207_008194_521E.SAFE')/Nodes('manifest.safe')?$format=json
   response:
@@ -76,7 +115,7 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - sentinelsat/0.14
+      - sentinelsat/1.0.0
     method: GET
     uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('1f62a176-c980-41dc-b3a1-c735d660c910')/Nodes('S1A_WV_OCN__2SSH_20150603T092625_20150603T093332_006207_008194_521E.SAFE')/Nodes('manifest.safe')/$value
   response:
@@ -113,7 +152,7 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - sentinelsat/0.14
+      - sentinelsat/1.0.0
     method: GET
     uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('1f62a176-c980-41dc-b3a1-c735d660c910')/Nodes('S1A_WV_OCN__2SSH_20150603T092625_20150603T093332_006207_008194_521E.SAFE')/Nodes('preview')/Nodes('map-overlay.kml')/$value
   response:
@@ -133,44 +172,6 @@ interactions:
       - '2.0'
       etag:
       - map-overlay.kml-9561
-      pragma:
-      - no-cache
-      server:
-      - Apache-Coyote/1.1
-    status:
-      code: 200
-      message: OK
-- request:
-    body: null
-    headers:
-      Accept:
-      - '*/*'
-      Accept-Encoding:
-      - gzip, deflate
-      Connection:
-      - keep-alive
-      User-Agent:
-      - sentinelsat/0.14
-    method: HEAD
-    uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('1f62a176-c980-41dc-b3a1-c735d660c910')/$value
-  response:
-    body:
-      string: ''
-    headers:
-      accept-ranges:
-      - bytes
-      content-disposition:
-      - inline;filename="S1A_WV_OCN__2SSH_20150603T092625_20150603T093332_006207_008194_521E.zip"
-      content-length:
-      - '213433'
-      content-range:
-      - bytes 0-213432/213433
-      content-type:
-      - application/octet-stream
-      dataserviceversion:
-      - '2.0'
-      etag:
-      - 9eb46e4e31f77f108213e16bb8fbe088
       pragma:
       - no-cache
       server:

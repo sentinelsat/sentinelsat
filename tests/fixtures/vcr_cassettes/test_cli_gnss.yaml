@@ -1,94 +1,5 @@
 interactions:
 - request:
-    body: q=beginPosition%3A%5B%222021-02-01T00%3A00%3A00Z%22+TO+%222021-02-02T00%3A00%3A00Z%22%5D+platformserialidentifier%3A%221B%22+producttype%3A%22AUX_POEORB%22
-    headers:
-      Accept:
-      - '*/*'
-      Accept-Encoding:
-      - gzip, deflate
-      Connection:
-      - keep-alive
-      Content-Length:
-      - '155'
-      Content-Type:
-      - application/x-www-form-urlencoded; charset=UTF-8
-      User-Agent:
-      - sentinelsat/0.14
-    method: POST
-    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=100&start=0
-  response:
-    body:
-      string: '{"feed":{"xmlns:opensearch":"http://a9.com/-/spec/opensearch/1.1/","xmlns":"http://www.w3.org/2005/Atom","title":"Sentinels
-        Scientific Data Hub search results for: beginPosition:[\"2021-02-01T00:00:00Z\"
-        TO \"2021-02-02T00:00:00Z\"] platformserialidentifier:\"1B\" producttype:\"AUX_POEORB\"","subtitle":"Displaying
-        0 results. Request done in ... seconds.","updated":"...","author":{"name":"Sentinels
-        Scientific Data Hub"},"id":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[\"2021-02-01T00:00:00Z\"
-        TO \"2021-02-02T00:00:00Z\"] platformserialidentifier:\"1B\" producttype:\"AUX_POEORB\"","opensearch:totalResults":"0","opensearch:startIndex":"0","opensearch:itemsPerPage":"100","opensearch:Query":{"role":"request","searchTerms":"beginPosition:[\"2021-02-01T00:00:00Z\"
-        TO \"2021-02-02T00:00:00Z\"] platformserialidentifier:\"1B\" producttype:\"AUX_POEORB\"","startPage":"1"},"link":[{"rel":"self","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[\"2021-02-01T00:00:00Z\"
-        TO \"2021-02-02T00:00:00Z\"] platformserialidentifier:\"1B\" producttype:\"AUX_POEORB\"&start=0&rows=100&format=json"},{"rel":"first","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[\"2021-02-01T00:00:00Z\"
-        TO \"2021-02-02T00:00:00Z\"] platformserialidentifier:\"1B\" producttype:\"AUX_POEORB\"&start=0&rows=100&format=json"},{"rel":"last","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[\"2021-02-01T00:00:00Z\"
-        TO \"2021-02-02T00:00:00Z\"] platformserialidentifier:\"1B\" producttype:\"AUX_POEORB\"&start=-1&rows=100&format=json"},{"rel":"search","type":"application/opensearchdescription+xml","href":"opensearch_description.xml"}]}}'
-    headers:
-      content-length:
-      - '1759'
-      content-type:
-      - application/json
-      pragma:
-      - no-cache
-      server:
-      - Apache-Coyote/1.1
-      vary:
-      - Accept-Encoding
-    status:
-      code: 200
-      message: OK
-- request:
-    body: q=beginPosition%3A%5B%222021-02-01T00%3A00%3A00Z%22+TO+%222021-02-02T00%3A00%3A00Z%22%5D+platformserialidentifier%3A%221B%22+producttype%3A%22AUX_POEORB%22
-    headers:
-      Accept:
-      - '*/*'
-      Accept-Encoding:
-      - gzip, deflate
-      Connection:
-      - keep-alive
-      Content-Length:
-      - '155'
-      Content-Type:
-      - application/x-www-form-urlencoded; charset=UTF-8
-      User-Agent:
-      - sentinelsat/0.14
-    method: POST
-    uri: https://scihub.copernicus.eu/gnss/search?format=json&rows=100&start=0
-  response:
-    body:
-      string: '{"feed":{"xmlns":"http://www.w3.org/2005/Atom","xmlns:opensearch":"http://a9.com/-/spec/opensearch/1.1/","title":"Sentinels
-        GNSS RINEX Hub search results for: beginPosition:[\"2021-02-01T00:00:00Z\"
-        TO \"2021-02-02T00:00:00Z\"] platformserialidentifier:\"1B\" producttype:\"AUX_POEORB\"","subtitle":"Displaying
-        1 results. Request done in ... seconds.","updated":"...","author":{"name":"Sentinels
-        GNSS RINEX Hub"},"id":"https://scihub.copernicus.eu/gnss/search?q=beginPosition:[\"2021-02-01T00:00:00Z\"
-        TO \"2021-02-02T00:00:00Z\"] platformserialidentifier:\"1B\" producttype:\"AUX_POEORB\"","opensearch:totalResults":"1","opensearch:startIndex":"0","opensearch:itemsPerPage":"100","opensearch:Query":{"startPage":"1","searchTerms":"beginPosition:[\"2021-02-01T00:00:00Z\"
-        TO \"2021-02-02T00:00:00Z\"] platformserialidentifier:\"1B\" producttype:\"AUX_POEORB\"","role":"request"},"link":[{"href":"https://scihub.copernicus.eu/gnss/search?q=beginPosition:[\"2021-02-01T00:00:00Z\"
-        TO \"2021-02-02T00:00:00Z\"] platformserialidentifier:\"1B\" producttype:\"AUX_POEORB\"&start=0&rows=100&format=json","type":"application/json","rel":"self"},{"href":"https://scihub.copernicus.eu/gnss/search?q=beginPosition:[\"2021-02-01T00:00:00Z\"
-        TO \"2021-02-02T00:00:00Z\"] platformserialidentifier:\"1B\" producttype:\"AUX_POEORB\"&start=0&rows=100&format=json","type":"application/json","rel":"first"},{"href":"https://scihub.copernicus.eu/gnss/search?q=beginPosition:[\"2021-02-01T00:00:00Z\"
-        TO \"2021-02-02T00:00:00Z\"] platformserialidentifier:\"1B\" producttype:\"AUX_POEORB\"&start=0&rows=100&format=json","type":"application/json","rel":"last"},{"href":"opensearch_description.xml","type":"application/opensearchdescription+xml","rel":"search"}],"entry":{"title":"S1B_OPER_AUX_POEORB_OPOD_20210222T111759_V20210201T225942_20210203T005942","link":[{"href":"https://scihub.copernicus.eu/gnss/odata/v1/Products(''0589c6eb-af4f-4ad1-8872-9ec0d884327e'')/$value"},{"rel":"alternative","href":"https://scihub.copernicus.eu/gnss/odata/v1/Products(''0589c6eb-af4f-4ad1-8872-9ec0d884327e'')/"},{"rel":"icon","href":"https://scihub.copernicus.eu/gnss/odata/v1/Products(''0589c6eb-af4f-4ad1-8872-9ec0d884327e'')/Products(''Quicklook'')/$value"}],"id":"0589c6eb-af4f-4ad1-8872-9ec0d884327e","summary":"Date:
-        2021-02-01T22:59:42Z, Instrument: , Satellite: Sentinel-1, Size: 4.2 MB","ondemand":"false","date":[{"name":"ingestiondate","content":"2021-03-11T13:16:01.82Z"},{"name":"beginposition","content":"2021-02-01T22:59:42Z"},{"name":"endposition","content":"2021-02-03T00:59:42Z"},{"name":"generationdate","content":"2021-02-22T11:17:59Z"}],"str":[{"name":"filename","content":"S1B_OPER_AUX_POEORB_OPOD_20210222T111759_V20210201T225942_20210203T005942.EOF"},{"name":"format","content":"EOF"},{"name":"platformname","content":"Sentinel-1"},{"name":"platformserialidentifier","content":"1B"},{"name":"platformshortname","content":"S1"},{"name":"producttype","content":"AUX_POEORB"},{"name":"size","content":"4.2
-        MB"},{"name":"identifier","content":"S1B_OPER_AUX_POEORB_OPOD_20210222T111759_V20210201T225942_20210203T005942"},{"name":"platformnumber","content":"B"},{"name":"filedescription","content":"Precise
-        Orbit Ephemerides (POE) Orbit File"},{"name":"fileclass","content":"OPER"},{"name":"creator","content":"OPOD"},{"name":"creatorversion","content":"1.10.0"},{"name":"uuid","content":"0589c6eb-af4f-4ad1-8872-9ec0d884327e"}]}}}'
-    headers:
-      content-length:
-      - '3407'
-      content-type:
-      - application/json
-      pragma:
-      - no-cache
-      server:
-      - Apache-Coyote/1.1
-      vary:
-      - Accept-Encoding
-    status:
-      code: 200
-      message: OK
-- request:
     body: null
     headers:
       Accept:
@@ -98,7 +9,7 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - sentinelsat/0.14
+      - sentinelsat/1.0.0
     method: GET
     uri: https://scihub.copernicus.eu/gnss/search?format=json&rows=100&start=0&q=beginPosition%3A%5B%222021-02-01T00%3A00%3A00Z%22+TO+%222021-02-02T00%3A00%3A00Z%22%5D+platformserialidentifier%3A%221B%22+producttype%3A%22AUX_POEORB%22
   response:

@@ -8,12 +8,8 @@ interactions:
       - gzip, deflate
       Connection:
       - keep-alive
-      Content-Length:
-      - '163'
-      Content-Type:
-      - application/x-www-form-urlencoded; charset=UTF-8
       User-Agent:
-      - sentinelsat/0.14
+      - sentinelsat/1.0.0
     method: GET
     uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=100&start=0&q=%28uuid%3A%221f62a176-c980-41dc-b3a1-c735d660c910%22+OR+uuid%3A%225618ce1b-923b-4df2-81d9-50b53e5aded9%22+OR+uuid%3A%22d8340134-878f-4891-ba4f-4df54f1e3ab4%22%29
   response:
@@ -79,7 +75,7 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - sentinelsat/0.14
+      - sentinelsat/1.0.0
     method: GET
     uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('5618ce1b-923b-4df2-81d9-50b53e5aded9')?$format=json
   response:
@@ -112,8 +108,47 @@ interactions:
       - gzip, deflate
       Connection:
       - keep-alive
+      Range:
+      - bytes=0-1
       User-Agent:
-      - sentinelsat/0.14
+      - sentinelsat/1.0.0
+    method: GET
+    uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('5618ce1b-923b-4df2-81d9-50b53e5aded9')/$value
+  response:
+    body: {}
+    headers:
+      accept-ranges:
+      - bytes
+      content-disposition:
+      - inline;filename="S1A_WV_OCN__2SSV_20150526T081641_20150526T082418_006090_007E3E_104C.zip"
+      content-length:
+      - '2'
+      content-range:
+      - bytes 0-1/214605
+      content-type:
+      - application/octet-stream
+      dataserviceversion:
+      - '2.0'
+      etag:
+      - 3f4355b31c8a062d027f65c2d50975ba
+      pragma:
+      - no-cache
+      server:
+      - Apache-Coyote/1.1
+    status:
+      code: 206
+      message: Partial Content
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - sentinelsat/1.0.0
     method: GET
     uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('d8340134-878f-4891-ba4f-4df54f1e3ab4')?$format=json
   response:
@@ -146,8 +181,47 @@ interactions:
       - gzip, deflate
       Connection:
       - keep-alive
+      Range:
+      - bytes=0-1
       User-Agent:
-      - sentinelsat/0.14
+      - sentinelsat/1.0.0
+    method: GET
+    uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('d8340134-878f-4891-ba4f-4df54f1e3ab4')/$value
+  response:
+    body: {}
+    headers:
+      accept-ranges:
+      - bytes
+      content-disposition:
+      - inline;filename="S1A_WV_OCN__2SSV_20150526T211029_20150526T211737_006097_007E78_134A.zip"
+      content-length:
+      - '2'
+      content-range:
+      - bytes 0-1/213691
+      content-type:
+      - application/octet-stream
+      dataserviceversion:
+      - '2.0'
+      etag:
+      - 9ae4d76b566f94af54a2ef14c8709da9
+      pragma:
+      - no-cache
+      server:
+      - Apache-Coyote/1.1
+    status:
+      code: 206
+      message: Partial Content
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - sentinelsat/1.0.0
     method: GET
     uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('1f62a176-c980-41dc-b3a1-c735d660c910')?$format=json
   response:
@@ -180,8 +254,86 @@ interactions:
       - gzip, deflate
       Connection:
       - keep-alive
+      Range:
+      - bytes=0-1
       User-Agent:
-      - sentinelsat/0.14
+      - sentinelsat/1.0.0
+    method: GET
+    uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('1f62a176-c980-41dc-b3a1-c735d660c910')/$value
+  response:
+    body: {}
+    headers:
+      accept-ranges:
+      - bytes
+      content-disposition:
+      - inline;filename="S1A_WV_OCN__2SSH_20150603T092625_20150603T093332_006207_008194_521E.zip"
+      content-length:
+      - '2'
+      content-range:
+      - bytes 0-1/213433
+      content-type:
+      - application/octet-stream
+      dataserviceversion:
+      - '2.0'
+      etag:
+      - 9eb46e4e31f77f108213e16bb8fbe088
+      pragma:
+      - no-cache
+      server:
+      - Apache-Coyote/1.1
+    status:
+      code: 206
+      message: Partial Content
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Range:
+      - bytes=0-1
+      User-Agent:
+      - sentinelsat/1.0.0
+    method: GET
+    uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('5618ce1b-923b-4df2-81d9-50b53e5aded9')/$value
+  response:
+    body: {}
+    headers:
+      accept-ranges:
+      - bytes
+      content-disposition:
+      - inline;filename="S1A_WV_OCN__2SSV_20150526T081641_20150526T082418_006090_007E3E_104C.zip"
+      content-length:
+      - '2'
+      content-range:
+      - bytes 0-1/214605
+      content-type:
+      - application/octet-stream
+      dataserviceversion:
+      - '2.0'
+      etag:
+      - 3f4355b31c8a062d027f65c2d50975ba
+      pragma:
+      - no-cache
+      server:
+      - Apache-Coyote/1.1
+    status:
+      code: 206
+      message: Partial Content
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - sentinelsat/1.0.0
     method: GET
     uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('5618ce1b-923b-4df2-81d9-50b53e5aded9')?$format=json
   response:
@@ -215,7 +367,7 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - sentinelsat/0.14
+      - sentinelsat/1.0.0
     method: HEAD
     uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('5618ce1b-923b-4df2-81d9-50b53e5aded9')/$value
   response:
@@ -252,8 +404,47 @@ interactions:
       - gzip, deflate
       Connection:
       - keep-alive
+      Range:
+      - bytes=0-1
       User-Agent:
-      - sentinelsat/0.14
+      - sentinelsat/1.0.0
+    method: GET
+    uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('5618ce1b-923b-4df2-81d9-50b53e5aded9')/$value
+  response:
+    body: {}
+    headers:
+      accept-ranges:
+      - bytes
+      content-disposition:
+      - inline;filename="S1A_WV_OCN__2SSV_20150526T081641_20150526T082418_006090_007E3E_104C.zip"
+      content-length:
+      - '2'
+      content-range:
+      - bytes 0-1/214605
+      content-type:
+      - application/octet-stream
+      dataserviceversion:
+      - '2.0'
+      etag:
+      - 3f4355b31c8a062d027f65c2d50975ba
+      pragma:
+      - no-cache
+      server:
+      - Apache-Coyote/1.1
+    status:
+      code: 206
+      message: Partial Content
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - sentinelsat/1.0.0
     method: GET
     uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('5618ce1b-923b-4df2-81d9-50b53e5aded9')/$value
   response:
@@ -289,8 +480,47 @@ interactions:
       - gzip, deflate
       Connection:
       - keep-alive
+      Range:
+      - bytes=0-1
       User-Agent:
-      - sentinelsat/0.14
+      - sentinelsat/1.0.0
+    method: GET
+    uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('d8340134-878f-4891-ba4f-4df54f1e3ab4')/$value
+  response:
+    body: {}
+    headers:
+      accept-ranges:
+      - bytes
+      content-disposition:
+      - inline;filename="S1A_WV_OCN__2SSV_20150526T211029_20150526T211737_006097_007E78_134A.zip"
+      content-length:
+      - '2'
+      content-range:
+      - bytes 0-1/213691
+      content-type:
+      - application/octet-stream
+      dataserviceversion:
+      - '2.0'
+      etag:
+      - 9ae4d76b566f94af54a2ef14c8709da9
+      pragma:
+      - no-cache
+      server:
+      - Apache-Coyote/1.1
+    status:
+      code: 206
+      message: Partial Content
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - sentinelsat/1.0.0
     method: GET
     uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('d8340134-878f-4891-ba4f-4df54f1e3ab4')?$format=json
   response:
@@ -324,7 +554,7 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - sentinelsat/0.14
+      - sentinelsat/1.0.0
     method: HEAD
     uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('d8340134-878f-4891-ba4f-4df54f1e3ab4')/$value
   response:
@@ -361,8 +591,47 @@ interactions:
       - gzip, deflate
       Connection:
       - keep-alive
+      Range:
+      - bytes=0-1
       User-Agent:
-      - sentinelsat/0.14
+      - sentinelsat/1.0.0
+    method: GET
+    uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('d8340134-878f-4891-ba4f-4df54f1e3ab4')/$value
+  response:
+    body: {}
+    headers:
+      accept-ranges:
+      - bytes
+      content-disposition:
+      - inline;filename="S1A_WV_OCN__2SSV_20150526T211029_20150526T211737_006097_007E78_134A.zip"
+      content-length:
+      - '2'
+      content-range:
+      - bytes 0-1/213691
+      content-type:
+      - application/octet-stream
+      dataserviceversion:
+      - '2.0'
+      etag:
+      - 9ae4d76b566f94af54a2ef14c8709da9
+      pragma:
+      - no-cache
+      server:
+      - Apache-Coyote/1.1
+    status:
+      code: 206
+      message: Partial Content
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - sentinelsat/1.0.0
     method: GET
     uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('d8340134-878f-4891-ba4f-4df54f1e3ab4')/$value
   response:
@@ -398,8 +667,47 @@ interactions:
       - gzip, deflate
       Connection:
       - keep-alive
+      Range:
+      - bytes=0-1
       User-Agent:
-      - sentinelsat/0.14
+      - sentinelsat/1.0.0
+    method: GET
+    uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('1f62a176-c980-41dc-b3a1-c735d660c910')/$value
+  response:
+    body: {}
+    headers:
+      accept-ranges:
+      - bytes
+      content-disposition:
+      - inline;filename="S1A_WV_OCN__2SSH_20150603T092625_20150603T093332_006207_008194_521E.zip"
+      content-length:
+      - '2'
+      content-range:
+      - bytes 0-1/213433
+      content-type:
+      - application/octet-stream
+      dataserviceversion:
+      - '2.0'
+      etag:
+      - 9eb46e4e31f77f108213e16bb8fbe088
+      pragma:
+      - no-cache
+      server:
+      - Apache-Coyote/1.1
+    status:
+      code: 206
+      message: Partial Content
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - sentinelsat/1.0.0
     method: GET
     uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('1f62a176-c980-41dc-b3a1-c735d660c910')?$format=json
   response:
@@ -433,7 +741,7 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - sentinelsat/0.14
+      - sentinelsat/1.0.0
     method: HEAD
     uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('1f62a176-c980-41dc-b3a1-c735d660c910')/$value
   response:
@@ -470,8 +778,47 @@ interactions:
       - gzip, deflate
       Connection:
       - keep-alive
+      Range:
+      - bytes=0-1
       User-Agent:
-      - sentinelsat/0.14
+      - sentinelsat/1.0.0
+    method: GET
+    uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('1f62a176-c980-41dc-b3a1-c735d660c910')/$value
+  response:
+    body: {}
+    headers:
+      accept-ranges:
+      - bytes
+      content-disposition:
+      - inline;filename="S1A_WV_OCN__2SSH_20150603T092625_20150603T093332_006207_008194_521E.zip"
+      content-length:
+      - '2'
+      content-range:
+      - bytes 0-1/213433
+      content-type:
+      - application/octet-stream
+      dataserviceversion:
+      - '2.0'
+      etag:
+      - 9eb46e4e31f77f108213e16bb8fbe088
+      pragma:
+      - no-cache
+      server:
+      - Apache-Coyote/1.1
+    status:
+      code: 206
+      message: Partial Content
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - sentinelsat/1.0.0
     method: GET
     uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('1f62a176-c980-41dc-b3a1-c735d660c910')/$value
   response:
@@ -507,12 +854,8 @@ interactions:
       - gzip, deflate
       Connection:
       - keep-alive
-      Content-Length:
-      - '163'
-      Content-Type:
-      - application/x-www-form-urlencoded; charset=UTF-8
       User-Agent:
-      - sentinelsat/0.14
+      - sentinelsat/1.0.0
     method: GET
     uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=100&start=0&q=%28uuid%3A%221f62a176-c980-41dc-b3a1-c735d660c910%22+OR+uuid%3A%225618ce1b-923b-4df2-81d9-50b53e5aded9%22+OR+uuid%3A%22d8340134-878f-4891-ba4f-4df54f1e3ab4%22%29
   response:
@@ -578,7 +921,7 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - sentinelsat/0.14
+      - sentinelsat/1.0.0
     method: GET
     uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('5618ce1b-923b-4df2-81d9-50b53e5aded9')?$format=json
   response:
@@ -611,8 +954,47 @@ interactions:
       - gzip, deflate
       Connection:
       - keep-alive
+      Range:
+      - bytes=0-1
       User-Agent:
-      - sentinelsat/0.14
+      - sentinelsat/1.0.0
+    method: GET
+    uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('5618ce1b-923b-4df2-81d9-50b53e5aded9')/$value
+  response:
+    body: {}
+    headers:
+      accept-ranges:
+      - bytes
+      content-disposition:
+      - inline;filename="S1A_WV_OCN__2SSV_20150526T081641_20150526T082418_006090_007E3E_104C.zip"
+      content-length:
+      - '2'
+      content-range:
+      - bytes 0-1/214605
+      content-type:
+      - application/octet-stream
+      dataserviceversion:
+      - '2.0'
+      etag:
+      - 3f4355b31c8a062d027f65c2d50975ba
+      pragma:
+      - no-cache
+      server:
+      - Apache-Coyote/1.1
+    status:
+      code: 206
+      message: Partial Content
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - sentinelsat/1.0.0
     method: GET
     uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('d8340134-878f-4891-ba4f-4df54f1e3ab4')?$format=json
   response:
@@ -645,8 +1027,47 @@ interactions:
       - gzip, deflate
       Connection:
       - keep-alive
+      Range:
+      - bytes=0-1
       User-Agent:
-      - sentinelsat/0.14
+      - sentinelsat/1.0.0
+    method: GET
+    uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('d8340134-878f-4891-ba4f-4df54f1e3ab4')/$value
+  response:
+    body: {}
+    headers:
+      accept-ranges:
+      - bytes
+      content-disposition:
+      - inline;filename="S1A_WV_OCN__2SSV_20150526T211029_20150526T211737_006097_007E78_134A.zip"
+      content-length:
+      - '2'
+      content-range:
+      - bytes 0-1/213691
+      content-type:
+      - application/octet-stream
+      dataserviceversion:
+      - '2.0'
+      etag:
+      - 9ae4d76b566f94af54a2ef14c8709da9
+      pragma:
+      - no-cache
+      server:
+      - Apache-Coyote/1.1
+    status:
+      code: 206
+      message: Partial Content
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - sentinelsat/1.0.0
     method: GET
     uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('1f62a176-c980-41dc-b3a1-c735d660c910')?$format=json
   response:
@@ -679,8 +1100,86 @@ interactions:
       - gzip, deflate
       Connection:
       - keep-alive
+      Range:
+      - bytes=0-1
       User-Agent:
-      - sentinelsat/0.14
+      - sentinelsat/1.0.0
+    method: GET
+    uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('1f62a176-c980-41dc-b3a1-c735d660c910')/$value
+  response:
+    body: {}
+    headers:
+      accept-ranges:
+      - bytes
+      content-disposition:
+      - inline;filename="S1A_WV_OCN__2SSH_20150603T092625_20150603T093332_006207_008194_521E.zip"
+      content-length:
+      - '2'
+      content-range:
+      - bytes 0-1/213433
+      content-type:
+      - application/octet-stream
+      dataserviceversion:
+      - '2.0'
+      etag:
+      - 9eb46e4e31f77f108213e16bb8fbe088
+      pragma:
+      - no-cache
+      server:
+      - Apache-Coyote/1.1
+    status:
+      code: 206
+      message: Partial Content
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Range:
+      - bytes=0-1
+      User-Agent:
+      - sentinelsat/1.0.0
+    method: GET
+    uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('5618ce1b-923b-4df2-81d9-50b53e5aded9')/$value
+  response:
+    body: {}
+    headers:
+      accept-ranges:
+      - bytes
+      content-disposition:
+      - inline;filename="S1A_WV_OCN__2SSV_20150526T081641_20150526T082418_006090_007E3E_104C.zip"
+      content-length:
+      - '2'
+      content-range:
+      - bytes 0-1/214605
+      content-type:
+      - application/octet-stream
+      dataserviceversion:
+      - '2.0'
+      etag:
+      - 3f4355b31c8a062d027f65c2d50975ba
+      pragma:
+      - no-cache
+      server:
+      - Apache-Coyote/1.1
+    status:
+      code: 206
+      message: Partial Content
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - sentinelsat/1.0.0
     method: GET
     uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('5618ce1b-923b-4df2-81d9-50b53e5aded9')?$format=json
   response:
@@ -714,7 +1213,7 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - sentinelsat/0.14
+      - sentinelsat/1.0.0
     method: HEAD
     uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('5618ce1b-923b-4df2-81d9-50b53e5aded9')/$value
   response:
@@ -751,8 +1250,47 @@ interactions:
       - gzip, deflate
       Connection:
       - keep-alive
+      Range:
+      - bytes=0-1
       User-Agent:
-      - sentinelsat/0.14
+      - sentinelsat/1.0.0
+    method: GET
+    uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('d8340134-878f-4891-ba4f-4df54f1e3ab4')/$value
+  response:
+    body: {}
+    headers:
+      accept-ranges:
+      - bytes
+      content-disposition:
+      - inline;filename="S1A_WV_OCN__2SSV_20150526T211029_20150526T211737_006097_007E78_134A.zip"
+      content-length:
+      - '2'
+      content-range:
+      - bytes 0-1/213691
+      content-type:
+      - application/octet-stream
+      dataserviceversion:
+      - '2.0'
+      etag:
+      - 9ae4d76b566f94af54a2ef14c8709da9
+      pragma:
+      - no-cache
+      server:
+      - Apache-Coyote/1.1
+    status:
+      code: 206
+      message: Partial Content
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - sentinelsat/1.0.0
     method: GET
     uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('d8340134-878f-4891-ba4f-4df54f1e3ab4')?$format=json
   response:
@@ -786,7 +1324,7 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - sentinelsat/0.14
+      - sentinelsat/1.0.0
     method: HEAD
     uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('d8340134-878f-4891-ba4f-4df54f1e3ab4')/$value
   response:
@@ -823,8 +1361,47 @@ interactions:
       - gzip, deflate
       Connection:
       - keep-alive
+      Range:
+      - bytes=0-1
       User-Agent:
-      - sentinelsat/0.14
+      - sentinelsat/1.0.0
+    method: GET
+    uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('1f62a176-c980-41dc-b3a1-c735d660c910')/$value
+  response:
+    body: {}
+    headers:
+      accept-ranges:
+      - bytes
+      content-disposition:
+      - inline;filename="S1A_WV_OCN__2SSH_20150603T092625_20150603T093332_006207_008194_521E.zip"
+      content-length:
+      - '2'
+      content-range:
+      - bytes 0-1/213433
+      content-type:
+      - application/octet-stream
+      dataserviceversion:
+      - '2.0'
+      etag:
+      - 9eb46e4e31f77f108213e16bb8fbe088
+      pragma:
+      - no-cache
+      server:
+      - Apache-Coyote/1.1
+    status:
+      code: 206
+      message: Partial Content
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - sentinelsat/1.0.0
     method: GET
     uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('1f62a176-c980-41dc-b3a1-c735d660c910')?$format=json
   response:
@@ -858,7 +1435,7 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - sentinelsat/0.14
+      - sentinelsat/1.0.0
     method: HEAD
     uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('1f62a176-c980-41dc-b3a1-c735d660c910')/$value
   response:
@@ -896,7 +1473,7 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - sentinelsat/0.14
+      - sentinelsat/1.0.0
     method: GET
     uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('1f62a176-c980-41dc-b3a1-c735d660c910')?$format=json
   response:
@@ -929,12 +1506,8 @@ interactions:
       - gzip, deflate
       Connection:
       - keep-alive
-      Content-Length:
-      - '163'
-      Content-Type:
-      - application/x-www-form-urlencoded; charset=UTF-8
       User-Agent:
-      - sentinelsat/0.14
+      - sentinelsat/1.0.0
     method: GET
     uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=100&start=0&q=%28uuid%3A%221f62a176-c980-41dc-b3a1-c735d660c910%22+OR+uuid%3A%225618ce1b-923b-4df2-81d9-50b53e5aded9%22+OR+uuid%3A%22d8340134-878f-4891-ba4f-4df54f1e3ab4%22%29
   response:
@@ -1000,7 +1573,7 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - sentinelsat/0.14
+      - sentinelsat/1.0.0
     method: GET
     uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('5618ce1b-923b-4df2-81d9-50b53e5aded9')?$format=json
   response:
@@ -1033,8 +1606,47 @@ interactions:
       - gzip, deflate
       Connection:
       - keep-alive
+      Range:
+      - bytes=0-1
       User-Agent:
-      - sentinelsat/0.14
+      - sentinelsat/1.0.0
+    method: GET
+    uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('5618ce1b-923b-4df2-81d9-50b53e5aded9')/$value
+  response:
+    body: {}
+    headers:
+      accept-ranges:
+      - bytes
+      content-disposition:
+      - inline;filename="S1A_WV_OCN__2SSV_20150526T081641_20150526T082418_006090_007E3E_104C.zip"
+      content-length:
+      - '2'
+      content-range:
+      - bytes 0-1/214605
+      content-type:
+      - application/octet-stream
+      dataserviceversion:
+      - '2.0'
+      etag:
+      - 3f4355b31c8a062d027f65c2d50975ba
+      pragma:
+      - no-cache
+      server:
+      - Apache-Coyote/1.1
+    status:
+      code: 206
+      message: Partial Content
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - sentinelsat/1.0.0
     method: GET
     uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('d8340134-878f-4891-ba4f-4df54f1e3ab4')?$format=json
   response:
@@ -1067,8 +1679,125 @@ interactions:
       - gzip, deflate
       Connection:
       - keep-alive
+      Range:
+      - bytes=0-1
       User-Agent:
-      - sentinelsat/0.14
+      - sentinelsat/1.0.0
+    method: GET
+    uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('d8340134-878f-4891-ba4f-4df54f1e3ab4')/$value
+  response:
+    body: {}
+    headers:
+      accept-ranges:
+      - bytes
+      content-disposition:
+      - inline;filename="S1A_WV_OCN__2SSV_20150526T211029_20150526T211737_006097_007E78_134A.zip"
+      content-length:
+      - '2'
+      content-range:
+      - bytes 0-1/213691
+      content-type:
+      - application/octet-stream
+      dataserviceversion:
+      - '2.0'
+      etag:
+      - 9ae4d76b566f94af54a2ef14c8709da9
+      pragma:
+      - no-cache
+      server:
+      - Apache-Coyote/1.1
+    status:
+      code: 206
+      message: Partial Content
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Range:
+      - bytes=0-1
+      User-Agent:
+      - sentinelsat/1.0.0
+    method: GET
+    uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('1f62a176-c980-41dc-b3a1-c735d660c910')/$value
+  response:
+    body: {}
+    headers:
+      accept-ranges:
+      - bytes
+      content-disposition:
+      - inline;filename="S1A_WV_OCN__2SSH_20150603T092625_20150603T093332_006207_008194_521E.zip"
+      content-length:
+      - '2'
+      content-range:
+      - bytes 0-1/213433
+      content-type:
+      - application/octet-stream
+      dataserviceversion:
+      - '2.0'
+      etag:
+      - 9eb46e4e31f77f108213e16bb8fbe088
+      pragma:
+      - no-cache
+      server:
+      - Apache-Coyote/1.1
+    status:
+      code: 206
+      message: Partial Content
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Range:
+      - bytes=0-1
+      User-Agent:
+      - sentinelsat/1.0.0
+    method: GET
+    uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('5618ce1b-923b-4df2-81d9-50b53e5aded9')/$value
+  response:
+    body: {}
+    headers:
+      accept-ranges:
+      - bytes
+      content-disposition:
+      - inline;filename="S1A_WV_OCN__2SSV_20150526T081641_20150526T082418_006090_007E3E_104C.zip"
+      content-length:
+      - '2'
+      content-range:
+      - bytes 0-1/214605
+      content-type:
+      - application/octet-stream
+      dataserviceversion:
+      - '2.0'
+      etag:
+      - 3f4355b31c8a062d027f65c2d50975ba
+      pragma:
+      - no-cache
+      server:
+      - Apache-Coyote/1.1
+    status:
+      code: 206
+      message: Partial Content
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - sentinelsat/1.0.0
     method: GET
     uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('5618ce1b-923b-4df2-81d9-50b53e5aded9')?$format=json
   response:
@@ -1102,7 +1831,7 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - sentinelsat/0.14
+      - sentinelsat/1.0.0
     method: HEAD
     uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('5618ce1b-923b-4df2-81d9-50b53e5aded9')/$value
   response:
@@ -1139,8 +1868,47 @@ interactions:
       - gzip, deflate
       Connection:
       - keep-alive
+      Range:
+      - bytes=0-1
       User-Agent:
-      - sentinelsat/0.14
+      - sentinelsat/1.0.0
+    method: GET
+    uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('5618ce1b-923b-4df2-81d9-50b53e5aded9')/$value
+  response:
+    body: {}
+    headers:
+      accept-ranges:
+      - bytes
+      content-disposition:
+      - inline;filename="S1A_WV_OCN__2SSV_20150526T081641_20150526T082418_006090_007E3E_104C.zip"
+      content-length:
+      - '2'
+      content-range:
+      - bytes 0-1/214605
+      content-type:
+      - application/octet-stream
+      dataserviceversion:
+      - '2.0'
+      etag:
+      - 3f4355b31c8a062d027f65c2d50975ba
+      pragma:
+      - no-cache
+      server:
+      - Apache-Coyote/1.1
+    status:
+      code: 206
+      message: Partial Content
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - sentinelsat/1.0.0
     method: GET
     uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('5618ce1b-923b-4df2-81d9-50b53e5aded9')/$value
   response:
@@ -1176,8 +1944,47 @@ interactions:
       - gzip, deflate
       Connection:
       - keep-alive
+      Range:
+      - bytes=0-1
       User-Agent:
-      - sentinelsat/0.14
+      - sentinelsat/1.0.0
+    method: GET
+    uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('d8340134-878f-4891-ba4f-4df54f1e3ab4')/$value
+  response:
+    body: {}
+    headers:
+      accept-ranges:
+      - bytes
+      content-disposition:
+      - inline;filename="S1A_WV_OCN__2SSV_20150526T211029_20150526T211737_006097_007E78_134A.zip"
+      content-length:
+      - '2'
+      content-range:
+      - bytes 0-1/213691
+      content-type:
+      - application/octet-stream
+      dataserviceversion:
+      - '2.0'
+      etag:
+      - 9ae4d76b566f94af54a2ef14c8709da9
+      pragma:
+      - no-cache
+      server:
+      - Apache-Coyote/1.1
+    status:
+      code: 206
+      message: Partial Content
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - sentinelsat/1.0.0
     method: GET
     uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('d8340134-878f-4891-ba4f-4df54f1e3ab4')?$format=json
   response:
@@ -1211,7 +2018,7 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - sentinelsat/0.14
+      - sentinelsat/1.0.0
     method: HEAD
     uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('d8340134-878f-4891-ba4f-4df54f1e3ab4')/$value
   response:
@@ -1248,8 +2055,47 @@ interactions:
       - gzip, deflate
       Connection:
       - keep-alive
+      Range:
+      - bytes=0-1
       User-Agent:
-      - sentinelsat/0.14
+      - sentinelsat/1.0.0
+    method: GET
+    uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('d8340134-878f-4891-ba4f-4df54f1e3ab4')/$value
+  response:
+    body: {}
+    headers:
+      accept-ranges:
+      - bytes
+      content-disposition:
+      - inline;filename="S1A_WV_OCN__2SSV_20150526T211029_20150526T211737_006097_007E78_134A.zip"
+      content-length:
+      - '2'
+      content-range:
+      - bytes 0-1/213691
+      content-type:
+      - application/octet-stream
+      dataserviceversion:
+      - '2.0'
+      etag:
+      - 9ae4d76b566f94af54a2ef14c8709da9
+      pragma:
+      - no-cache
+      server:
+      - Apache-Coyote/1.1
+    status:
+      code: 206
+      message: Partial Content
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - sentinelsat/1.0.0
     method: GET
     uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('d8340134-878f-4891-ba4f-4df54f1e3ab4')/$value
   response:
@@ -1285,8 +2131,47 @@ interactions:
       - gzip, deflate
       Connection:
       - keep-alive
+      Range:
+      - bytes=0-1
       User-Agent:
-      - sentinelsat/0.14
+      - sentinelsat/1.0.0
+    method: GET
+    uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('1f62a176-c980-41dc-b3a1-c735d660c910')/$value
+  response:
+    body: {}
+    headers:
+      accept-ranges:
+      - bytes
+      content-disposition:
+      - inline;filename="S1A_WV_OCN__2SSH_20150603T092625_20150603T093332_006207_008194_521E.zip"
+      content-length:
+      - '2'
+      content-range:
+      - bytes 0-1/213433
+      content-type:
+      - application/octet-stream
+      dataserviceversion:
+      - '2.0'
+      etag:
+      - 9eb46e4e31f77f108213e16bb8fbe088
+      pragma:
+      - no-cache
+      server:
+      - Apache-Coyote/1.1
+    status:
+      code: 206
+      message: Partial Content
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - sentinelsat/1.0.0
     method: HEAD
     uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('1f62a176-c980-41dc-b3a1-c735d660c910')/$value
   response:
@@ -1323,8 +2208,47 @@ interactions:
       - gzip, deflate
       Connection:
       - keep-alive
+      Range:
+      - bytes=0-1
       User-Agent:
-      - sentinelsat/0.14
+      - sentinelsat/1.0.0
+    method: GET
+    uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('1f62a176-c980-41dc-b3a1-c735d660c910')/$value
+  response:
+    body: {}
+    headers:
+      accept-ranges:
+      - bytes
+      content-disposition:
+      - inline;filename="S1A_WV_OCN__2SSH_20150603T092625_20150603T093332_006207_008194_521E.zip"
+      content-length:
+      - '2'
+      content-range:
+      - bytes 0-1/213433
+      content-type:
+      - application/octet-stream
+      dataserviceversion:
+      - '2.0'
+      etag:
+      - 9eb46e4e31f77f108213e16bb8fbe088
+      pragma:
+      - no-cache
+      server:
+      - Apache-Coyote/1.1
+    status:
+      code: 206
+      message: Partial Content
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - sentinelsat/1.0.0
     method: GET
     uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('1f62a176-c980-41dc-b3a1-c735d660c910')/$value
   response:
@@ -1361,7 +2285,7 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - sentinelsat/0.14
+      - sentinelsat/1.0.0
     method: HEAD
     uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('1f62a176-c980-41dc-b3a1-c735d660c910')/$value
   response:
@@ -1398,8 +2322,47 @@ interactions:
       - gzip, deflate
       Connection:
       - keep-alive
+      Range:
+      - bytes=0-1
       User-Agent:
-      - sentinelsat/0.14
+      - sentinelsat/1.0.0
+    method: GET
+    uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('1f62a176-c980-41dc-b3a1-c735d660c910')/$value
+  response:
+    body: {}
+    headers:
+      accept-ranges:
+      - bytes
+      content-disposition:
+      - inline;filename="S1A_WV_OCN__2SSH_20150603T092625_20150603T093332_006207_008194_521E.zip"
+      content-length:
+      - '2'
+      content-range:
+      - bytes 0-1/213433
+      content-type:
+      - application/octet-stream
+      dataserviceversion:
+      - '2.0'
+      etag:
+      - 9eb46e4e31f77f108213e16bb8fbe088
+      pragma:
+      - no-cache
+      server:
+      - Apache-Coyote/1.1
+    status:
+      code: 206
+      message: Partial Content
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - sentinelsat/1.0.0
     method: GET
     uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('1f62a176-c980-41dc-b3a1-c735d660c910')/$value
   response:

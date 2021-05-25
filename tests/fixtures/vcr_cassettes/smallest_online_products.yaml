@@ -9,7 +9,7 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - sentinelsat/0.14
+      - sentinelsat/1.0.0
     method: GET
     uri: https://apihub.copernicus.eu/apihub/odata/v1/Products?$format=json&$top=6&$filter=Online%20eq%20true%20and%20CreationDate%20lt%20datetime'2016-01-01T00:00:00.000'%20and%20not%20startswith(Name,%20'S3')%20and%20ContentLength%20ne%200&$orderby=ContentLength
   response:

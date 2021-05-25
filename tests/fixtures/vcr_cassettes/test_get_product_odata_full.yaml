@@ -9,7 +9,7 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - sentinelsat/0.14
+      - sentinelsat/1.0.0
     method: GET
     uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('1f62a176-c980-41dc-b3a1-c735d660c910')?$format=json&$expand=Attributes
   response:
@@ -106,7 +106,7 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - sentinelsat/0.14
+      - sentinelsat/1.0.0
     method: GET
     uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('d8340134-878f-4891-ba4f-4df54f1e3ab4')?$format=json&$expand=Attributes
   response:
@@ -203,7 +203,7 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - sentinelsat/0.14
+      - sentinelsat/1.0.0
     method: GET
     uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('5618ce1b-923b-4df2-81d9-50b53e5aded9')?$format=json&$expand=Attributes
   response:

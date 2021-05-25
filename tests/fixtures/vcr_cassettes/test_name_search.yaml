@@ -8,12 +8,8 @@ interactions:
       - gzip, deflate
       Connection:
       - keep-alive
-      Content-Length:
-      - '94'
-      Content-Type:
-      - application/x-www-form-urlencoded; charset=UTF-8
       User-Agent:
-      - sentinelsat/0.14
+      - sentinelsat/1.0.0
     method: GET
     uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=100&start=0&q=%28identifier%3A%22S1A_WV_OCN__2SSV_20150526T211029_20150526T211737_006097_007E78_134A%22%29
   response:

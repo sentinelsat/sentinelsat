@@ -8,12 +8,8 @@ interactions:
       - gzip, deflate
       Connection:
       - keep-alive
-      Content-Length:
-      - '88'
-      Content-Type:
-      - application/x-www-form-urlencoded; charset=UTF-8
       User-Agent:
-      - sentinelsat/0.14
+      - sentinelsat/1.0.0
     method: GET
     uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=100&start=0&q=identifier%3A%22S1A_WV_OCN__2SSH_20150603T092625_20150603T093332_006207_008194_521E%22
   response:
@@ -54,12 +50,8 @@ interactions:
       - gzip, deflate
       Connection:
       - keep-alive
-      Content-Length:
-      - '88'
-      Content-Type:
-      - application/x-www-form-urlencoded; charset=UTF-8
       User-Agent:
-      - sentinelsat/0.14
+      - sentinelsat/1.0.0
     method: GET
     uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=100&start=0&q=identifier%3A%22S1A_WV_OCN__2SSV_20150526T211029_20150526T211737_006097_007E78_134A%22
   response:
@@ -100,12 +92,8 @@ interactions:
       - gzip, deflate
       Connection:
       - keep-alive
-      Content-Length:
-      - '88'
-      Content-Type:
-      - application/x-www-form-urlencoded; charset=UTF-8
       User-Agent:
-      - sentinelsat/0.14
+      - sentinelsat/1.0.0
     method: GET
     uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=100&start=0&q=identifier%3A%22S1A_WV_OCN__2SSV_20150526T081641_20150526T082418_006090_007E3E_104C%22
   response:
@@ -146,12 +134,8 @@ interactions:
       - gzip, deflate
       Connection:
       - keep-alive
-      Content-Length:
-      - '88'
-      Content-Type:
-      - application/x-www-form-urlencoded; charset=UTF-8
       User-Agent:
-      - sentinelsat/0.14
+      - sentinelsat/1.0.0
     method: GET
     uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=100&start=0&q=identifier%3A%22S1A_WV_OCN__2SSH_20150603T092625_20150603T093332_006207_008194_521E%22
   response:
@@ -192,12 +176,8 @@ interactions:
       - gzip, deflate
       Connection:
       - keep-alive
-      Content-Length:
-      - '88'
-      Content-Type:
-      - application/x-www-form-urlencoded; charset=UTF-8
       User-Agent:
-      - sentinelsat/0.14
+      - sentinelsat/1.0.0
     method: GET
     uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=100&start=0&q=identifier%3A%22S1A_WV_OCN__2SSV_20150526T211029_20150526T211737_006097_007E78_134A%22
   response:
@@ -238,12 +218,8 @@ interactions:
       - gzip, deflate
       Connection:
       - keep-alive
-      Content-Length:
-      - '88'
-      Content-Type:
-      - application/x-www-form-urlencoded; charset=UTF-8
       User-Agent:
-      - sentinelsat/0.14
+      - sentinelsat/1.0.0
     method: GET
     uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=100&start=0&q=identifier%3A%22S1A_WV_OCN__2SSV_20150526T081641_20150526T082418_006090_007E3E_104C%22
   response:
@@ -284,12 +260,8 @@ interactions:
       - gzip, deflate
       Connection:
       - keep-alive
-      Content-Length:
-      - '88'
-      Content-Type:
-      - application/x-www-form-urlencoded; charset=UTF-8
       User-Agent:
-      - sentinelsat/0.14
+      - sentinelsat/1.0.0
     method: GET
     uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=100&start=0&q=identifier%3A%22S1A_WV_OCN__2SSH_20150603T092625_20150603T093332_006207_008194_521E%22
   response:
@@ -330,12 +302,8 @@ interactions:
       - gzip, deflate
       Connection:
       - keep-alive
-      Content-Length:
-      - '88'
-      Content-Type:
-      - application/x-www-form-urlencoded; charset=UTF-8
       User-Agent:
-      - sentinelsat/0.14
+      - sentinelsat/1.0.0
     method: GET
     uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=100&start=0&q=identifier%3A%22S1A_WV_OCN__2SSV_20150526T211029_20150526T211737_006097_007E78_134A%22
   response:
@@ -376,12 +344,8 @@ interactions:
       - gzip, deflate
       Connection:
       - keep-alive
-      Content-Length:
-      - '88'
-      Content-Type:
-      - application/x-www-form-urlencoded; charset=UTF-8
       User-Agent:
-      - sentinelsat/0.14
+      - sentinelsat/1.0.0
     method: GET
     uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=100&start=0&q=identifier%3A%22S1A_WV_OCN__2SSV_20150526T081641_20150526T082418_006090_007E3E_104C%22
   response:
@@ -422,12 +386,8 @@ interactions:
       - gzip, deflate
       Connection:
       - keep-alive
-      Content-Length:
-      - '88'
-      Content-Type:
-      - application/x-www-form-urlencoded; charset=UTF-8
       User-Agent:
-      - sentinelsat/0.14
+      - sentinelsat/1.0.0
     method: GET
     uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=100&start=0&q=identifier%3A%22S1A_WV_OCN__2SSH_20150603T092625_20150603T093332_006207_008194_521E%22
   response:
@@ -468,12 +428,8 @@ interactions:
       - gzip, deflate
       Connection:
       - keep-alive
-      Content-Length:
-      - '88'
-      Content-Type:
-      - application/x-www-form-urlencoded; charset=UTF-8
       User-Agent:
-      - sentinelsat/0.14
+      - sentinelsat/1.0.0
     method: GET
     uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=100&start=0&q=identifier%3A%22S1A_WV_OCN__2SSV_20150526T211029_20150526T211737_006097_007E78_134A%22
   response:
@@ -514,12 +470,8 @@ interactions:
       - gzip, deflate
       Connection:
       - keep-alive
-      Content-Length:
-      - '88'
-      Content-Type:
-      - application/x-www-form-urlencoded; charset=UTF-8
       User-Agent:
-      - sentinelsat/0.14
+      - sentinelsat/1.0.0
     method: GET
     uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=100&start=0&q=identifier%3A%22S1A_WV_OCN__2SSV_20150526T081641_20150526T082418_006090_007E3E_104C%22
   response:

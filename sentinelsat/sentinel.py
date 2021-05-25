@@ -619,10 +619,12 @@ class SentinelAPI:
         -----
         https://scihub.copernicus.eu/userguide/LongTermArchive
         """
-        r = self.session.head(self._get_download_url(uuid))
+        # Request just a single byte to avoid accidental downloading of the whole product.
+        # Requesting zero bytes results in NullPointerException in the server.
+        r = self.session.get(self._get_download_url(uuid), headers={"Range": "bytes=0-1"})
         cause = r.headers.get("cause-message")
         # check https://scihub.copernicus.eu/userguide/LongTermArchive#HTTP_Status_codes
-        if r.status_code == 200:
+        if r.status_code in (200, 206):
             self.logger.debug("Product is online")
             return False
         elif r.status_code == 202:

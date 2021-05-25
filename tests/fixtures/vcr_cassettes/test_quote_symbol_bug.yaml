@@ -8,12 +8,8 @@ interactions:
       - gzip, deflate
       Connection:
       - keep-alive
-      Content-Length:
-      - '83'
-      Content-Type:
-      - application/x-www-form-urlencoded; charset=UTF-8
       User-Agent:
-      - sentinelsat/0.14
+      - sentinelsat/1.0.0
     method: GET
     uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=0&start=0&q=beginposition%3A%5B2017-05-30T00%3A00%3A00Z+TO+2017-05-31T00%3A00%3A00Z%2B1DAY%5D
   response:
