@@ -8,12 +8,8 @@ interactions:
       - gzip, deflate
       Connection:
       - keep-alive
-      Content-Length:
-      - '57'
-      Content-Type:
-      - application/x-www-form-urlencoded; charset=UTF-8
       User-Agent:
-      - sentinelsat/0.14
+      - sentinelsat/1.0.0
     method: GET
     uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=100&start=0&q=%28uuid%3A%226b126ea4-fe27-440c-9a5c-686f386b7291%22%29
   response:
@@ -63,7 +59,7 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - sentinelsat/0.14
+      - sentinelsat/1.0.0
     method: GET
     uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('6b126ea4-fe27-440c-9a5c-686f386b7291')?$format=json
   response:
@@ -102,7 +98,7 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - sentinelsat/0.14
+      - sentinelsat/1.0.0
     method: GET
     uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('6b126ea4-fe27-440c-9a5c-686f386b7291')/Products('Quicklook')/$value
   response:
@@ -138,12 +134,8 @@ interactions:
       - gzip, deflate
       Connection:
       - keep-alive
-      Content-Length:
-      - '57'
-      Content-Type:
-      - application/x-www-form-urlencoded; charset=UTF-8
       User-Agent:
-      - sentinelsat/0.14
+      - sentinelsat/1.0.0
     method: GET
     uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=100&start=0&q=%28uuid%3A%226b126ea4-fe27-440c-9a5c-686f386b7291%22%29
   response:
@@ -193,7 +185,7 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - sentinelsat/0.14
+      - sentinelsat/1.0.0
     method: GET
     uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('6b126ea4-fe27-440c-9a5c-686f386b7291')?$format=json
   response:
@@ -232,7 +224,7 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - sentinelsat/0.14
+      - sentinelsat/1.0.0
     method: GET
     uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('6b126ea4-fe27-440c-9a5c-686f386b7291')/Products('Quicklook')/$value
   response:
@@ -269,7 +261,7 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - sentinelsat/0.14
+      - sentinelsat/1.0.0
     method: GET
     uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('6b126ea4-fe27-440c-9a5c-686f386b7291')/Products('Quicklook')/$value
   response:
@@ -305,12 +297,8 @@ interactions:
       - gzip, deflate
       Connection:
       - keep-alive
-      Content-Length:
-      - '57'
-      Content-Type:
-      - application/x-www-form-urlencoded; charset=UTF-8
       User-Agent:
-      - sentinelsat/0.14
+      - sentinelsat/1.0.0
     method: GET
     uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=100&start=0&q=%28uuid%3A%226b126ea4-fe27-440c-9a5c-686f386b7291%22%29
   response:
@@ -360,7 +348,7 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - sentinelsat/0.14
+      - sentinelsat/1.0.0
     method: GET
     uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('6b126ea4-fe27-440c-9a5c-686f386b7291')?$format=json
   response:

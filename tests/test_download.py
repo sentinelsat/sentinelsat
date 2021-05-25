@@ -58,6 +58,7 @@ def test_dhus_version(dhus_url, version):
         # Note: the HTTP status codes have slightly more specific meanings in the LTA API.
         # OK - already online
         (200, False),
+        (206, False),
         # Accepted for retrieval - the product offline product will be retrieved from the LTA.
         (202, True),
     ],
@@ -67,7 +68,7 @@ def test_trigger_lta_success(http_status_code, expected_result):
     uuid = "8df46c9e-a20c-43db-a19a-4240c2ed3b8b"
 
     with requests_mock.mock() as rqst:
-        rqst.head(api._get_download_url(uuid), status_code=http_status_code)
+        rqst.get(api._get_download_url(uuid), status_code=http_status_code)
         assert api.trigger_offline_retrieval(uuid) is expected_result
 
 
@@ -91,7 +92,7 @@ def test_trigger_lta_failed(http_status_code, exception):
     uuid = "8df46c9e-a20c-43db-a19a-4240c2ed3b8b"
 
     with requests_mock.mock() as rqst:
-        rqst.head(api._get_download_url(uuid), status_code=http_status_code)
+        rqst.get(api._get_download_url(uuid), status_code=http_status_code)
         with pytest.raises(exception):
             api.trigger_offline_retrieval(uuid)
 
