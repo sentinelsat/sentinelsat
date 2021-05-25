@@ -3,24 +3,12 @@ Change Log
 
 All notable changes to ``sentinelsat`` will be listed here.
 
-[Unreleased] – YYYY-MM-DD
+[1.0.1] – 2021-05-25
 -------------------------
-
-CLI changes
-~~~~~~~~~~~
-* 
-
-Added
-~~~~~
-* 
-
-Changed
-~~~~~~~
-* 
 
 Fixed
 ~~~~~
-* Fixed broken LTA triggering - use GET instead of HEAD since HEAD does not appear to be triggering retrieval correctly. (`#486 <https://github.com/sentinelsat/sentinelsat/issues/486>`_ `@valgur <https://github.com/valgur>`_, related to `#386 <https://github.com/sentinelsat/sentinelsat/issues/386>`_)
+* Fixed broken triggering of offline LTA products - use GET instead of HEAD since HEAD does not appear to be triggering retrieval correctly. (`#486 <https://github.com/sentinelsat/sentinelsat/issues/486>`_ `@valgur <https://github.com/valgur>`_, related to `#386 <https://github.com/sentinelsat/sentinelsat/issues/386>`_)
 
 
 [1.0.0] – 2021-05-19
