@@ -630,6 +630,9 @@ class SentinelAPI:
         elif r.status_code == 202:
             self.logger.debug("Accepted for retrieval")
             return True
+        elif r.status_code == 403 and "concurrent flows" in cause:
+            self.logger.debug("Product is online")
+            return False
         elif r.status_code == 403:
             msg = f"User quota exceeded: {cause}"
             self.logger.error(msg)
