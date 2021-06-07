@@ -74,25 +74,25 @@ def test_trigger_lta_success(http_status_code, expected_result):
 
 @pytest.mark.mock_api
 @pytest.mark.parametrize(
-    "http_status_code, exception",
+    "http_status_code, exception, headers",
     [
         # Note: the HTTP status codes have slightly more specific meanings in the LTA API.
         # Forbidden - user has exceeded their offline product retrieval quota.
-        (403, LTAError),
+        (403, LTAError, {"cause-message": "User 'mock_user' offline products retrieval quota exceeded (20 fetches max) trying to fetch product S1A_EW_GRDM_1SDV_20151121T100356_20151121T100429_008701_00C622_A0EC (143549851 bytes compressed)"}),
         # Service Unavailable - request refused since the service is busy handling other requests.
-        (503, LTAError),
+        (503, LTAError, {}),
         # Internal Server Error - attempted to download a sub-element of an offline product.
-        (500, ServerError),
-        (555, ServerError),
-        (333, ServerError),
+        (500, ServerError, {}),
+        (555, ServerError, {}),
+        (333, ServerError, {}),
     ],
 )
-def test_trigger_lta_failed(http_status_code, exception):
+def test_trigger_lta_failed(http_status_code, exception, headers):
     api = SentinelAPI("mock_user", "mock_password")
     uuid = "8df46c9e-a20c-43db-a19a-4240c2ed3b8b"
 
     with requests_mock.mock() as rqst:
-        rqst.get(api._get_download_url(uuid), status_code=http_status_code)
+        rqst.get(api._get_download_url(uuid), status_code=http_status_code, headers=headers)
         with pytest.raises(exception):
             api.trigger_offline_retrieval(uuid)
 
