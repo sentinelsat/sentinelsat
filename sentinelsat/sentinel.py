@@ -591,7 +591,6 @@ class SentinelAPI:
         filename = filename.replace(".SEN3", ".zip")
         return filename
 
-
     def trigger_offline_retrieval(self, uuid):
         """Triggers retrieval of an offline product.
 
