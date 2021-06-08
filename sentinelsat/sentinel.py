@@ -574,21 +574,23 @@ class SentinelAPI:
         shutil.move(temp_path, path)
 
     def _get_filename(self, product_info):
-        if not product_info["Online"]:
-            req = self.session.get(
-                product_info["url"].replace("$value", "Attributes('Filename')/Value/$value")
-            )
+        if product_info["Online"]:
+            req = self.session.head(product_info["url"])
             _check_scihub_response(req, test_json=False)
-            filename = req.text
-            # This should cover all currently existing file types: .SAFE, .SEN3, .nc and .EOF
-            filename = filename.replace(".SAFE", ".zip")
-            filename = filename.replace(".SEN3", ".zip")
-            return filename
-        req = self.session.head(product_info["url"])
+            cd = req.headers.get("Content-Disposition")
+            if cd:
+                filename = cd.split("=", 1)[1].strip('"')
+                return filename
+        req = self.session.get(
+            product_info["url"].replace("$value", "Attributes('Filename')/Value/$value")
+        )
         _check_scihub_response(req, test_json=False)
-        cd = req.headers.get("Content-Disposition")
-        filename = cd.split("=", 1)[1].strip('"')
+        filename = req.text
+        # This should cover all currently existing file types: .SAFE, .SEN3, .nc and .EOF
+        filename = filename.replace(".SAFE", ".zip")
+        filename = filename.replace(".SEN3", ".zip")
         return filename
+
 
     def trigger_offline_retrieval(self, uuid):
         """Triggers retrieval of an offline product.
