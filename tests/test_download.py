@@ -78,7 +78,13 @@ def test_trigger_lta_success(http_status_code, expected_result):
     [
         # Note: the HTTP status codes have slightly more specific meanings in the LTA API.
         # Forbidden - user has exceeded their offline product retrieval quota.
-        (403, LTAError, {"cause-message": "User 'mock_user' offline products retrieval quota exceeded (20 fetches max) trying to fetch product S1A_EW_GRDM_1SDV_20151121T100356_20151121T100429_008701_00C622_A0EC (143549851 bytes compressed)"}),
+        (
+            403, 
+            LTAError, 
+            {
+                "cause-message": "User 'mock_user' offline products retrieval quota exceeded (20 fetches max) trying to fetch product S1A_EW_GRDM_1SDV_20151121T100356_20151121T100429_008701_00C622_A0EC (143549851 bytes compressed)"
+            }
+        ),
         # Service Unavailable - request refused since the service is busy handling other requests.
         (503, LTAError, {}),
         # Internal Server Error - attempted to download a sub-element of an offline product.
