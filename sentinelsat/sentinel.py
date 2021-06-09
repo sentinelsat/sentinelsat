@@ -491,7 +491,7 @@ class SentinelAPI:
         Returns
         -------
         product_info : dict
-            Dictionary containing the product's info from get_product_info() as well as
+            Dictionary containing the product's info from get_product_odata() as well as
             the path on disk.
 
         Raises
@@ -857,7 +857,7 @@ class SentinelAPI:
         ----------
 
         product_info : dict
-            Contains the product's info as returned by get_product_info()
+            Contains the product's info as returned by get_product_odata()
         directory_path : string, optional
             Where the file will be downloaded
         checksum : bool, optional
