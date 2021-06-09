@@ -166,7 +166,7 @@ class SentinelProductsAPI(sentinelsat.SentinelAPI):
         Returns
         -------
         product_info : dict
-            Dictionary containing the product's info from get_product_info() as well as
+            Dictionary containing the product's info from get_product_odata() as well as
             the path on disk.
 
         Raises
