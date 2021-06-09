@@ -53,14 +53,22 @@ def test_dhus_version(dhus_url, version):
 
 @pytest.mark.mock_api
 @pytest.mark.parametrize(
-    "http_status_code, expected_result",
+    "http_status_code, expected_result, headers",
     [
         # Note: the HTTP status codes have slightly more specific meanings in the LTA API.
         # OK - already online
-        (200, False),
-        (206, False),
+        (200, False, {}),
+        (206, False, {}),
         # Accepted for retrieval - the product offline product will be retrieved from the LTA.
-        (202, True),
+        (202, True, {}),
+        # already online but concurrent downloads limit was exceeded
+        (
+            403,
+            False,
+            {
+                "cause-message":'An exception occured while creating a stream: Maximum number of 4 concurrent flows achieved by the user "mock_user"'}
+            },
+        )
     ],
 )
 def test_trigger_lta_success(http_status_code, expected_result):
