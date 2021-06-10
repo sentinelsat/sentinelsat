@@ -520,8 +520,9 @@ class SentinelAPI:
             return product_info
 
         # An incomplete download triggers the retrieval from the LTA if the product is not online
-        is_online = not self.trigger_offline_retrieval(id)
+        is_online = self.is_online(id)
         if not is_online:
+            self.trigger_offline_retrieval(id)
             raise LTATriggered(id)
 
         self._download_outer(product_info, path, checksum)
@@ -725,7 +726,7 @@ class SentinelAPI:
         ):
             info = self.get_product_odata(pid)
             product_infos[pid] = info
-            is_online = not self.trigger_offline_retrieval(pid)
+            is_online = self.is_online(pid)
             if is_online:
                 online_prods[pid] = info
             else:
@@ -883,8 +884,9 @@ class SentinelAPI:
 
         id = product_info["id"]
         title = product_info["title"]
-        is_online = not self.trigger_offline_retrieval(id)
+        is_online = self.is_online(id)
         if not is_online:
+            self.trigger_offline_retrieval(id)
             self.logger.info("%s is not online.", id)
             return
 
@@ -1237,8 +1239,9 @@ class SentinelAPI:
         requests.Response:
             Opened response object
         """
-        is_online = not self.trigger_offline_retrieval(id)
+        is_online = self.is_online(id)
         if not is_online:
+            self.trigger_offline_retrieval(id)
             raise LTATriggered(id)
         r = self.session.get(self._get_download_url(id), stream=True, **kwargs)
         _check_scihub_response(r, test_json=False)
