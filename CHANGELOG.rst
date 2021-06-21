@@ -12,7 +12,7 @@ CLI changes
 
 Added
 ~~~~~
-* Better handling 403 error in ``trigger_offline_retrieval()``
+* Better handling 403 error in ``trigger_offline_retrieval()`` 
 
 Changed
 ~~~~~~~
