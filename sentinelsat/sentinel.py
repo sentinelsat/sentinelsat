@@ -578,7 +578,7 @@ class SentinelAPI:
             req = self.session.head(product_info["url"])
             _check_scihub_response(req, test_json=False)
             cd = req.headers.get("Content-Disposition")
-            if cd:
+            if cd is not None:
                 filename = cd.split("=", 1)[1].strip('"')
                 return filename
         req = self.session.get(
