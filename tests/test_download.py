@@ -66,7 +66,7 @@ def test_dhus_version(dhus_url, version):
             403,
             False,
             {
-                "cause-message":'An exception occured while creating a stream: Maximum number of 4 concurrent flows achieved by the user "mock_user"'}
+                "cause-message":'An exception occured while creating a stream: Maximum number of 4 concurrent flows achieved by the user "mock_user"'
             },
         )
     ],
