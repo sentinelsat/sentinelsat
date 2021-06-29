@@ -215,7 +215,6 @@ def _xml_to_dataobj_info(element):
     assert element.tag == "dataObject"
     data = dict(
         id=element.attrib["ID"],
-        rep_id=element.attrib["repID"],
     )
     elem = element.find("byteStream")
     # data["mime_type"] = elem.attrib['mimeType']
