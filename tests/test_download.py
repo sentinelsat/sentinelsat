@@ -71,12 +71,12 @@ def test_dhus_version(dhus_url, version):
         ),
     ],
 )
-def test_trigger_lta_success(http_status_code, expected_result):
+def test_trigger_lta_success(http_status_code, expected_result, headers):
     api = SentinelAPI("mock_user", "mock_password")
     uuid = "8df46c9e-a20c-43db-a19a-4240c2ed3b8b"
 
     with requests_mock.mock() as rqst:
-        rqst.get(api._get_download_url(uuid), status_code=http_status_code)
+        rqst.get(api._get_download_url(uuid), status_code=http_status_code, headers=headers)
         assert api.trigger_offline_retrieval(uuid) is expected_result
 
 
