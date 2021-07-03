@@ -630,7 +630,12 @@ class SentinelAPI:
         elif r.status_code == 202:
             self.logger.debug("Accepted for retrieval")
             return True
+        elif r.status_code == 403 and cause and "concurrent flows" in cause:
+            # cause: 'An exception occured while creating a stream: Maximum number of 4 concurrent flows achieved by the user "username""'
+            self.logger.debug("Product is online but concurrent downloads limit was exceeded")
+            return False
         elif r.status_code == 403:
+            # cause: 'User 'username' offline products retrieval quota exceeded (20 fetches max) trying to fetch product PRODUCT_FILENAME (BYTES_COUNT bytes compressed)'
             msg = f"User quota exceeded: {cause}"
             self.logger.error(msg)
             raise LTAError(msg, r)
