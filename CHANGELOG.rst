@@ -13,6 +13,7 @@ CLI changes
 Added
 ~~~~~
 * Better handling 403 error in `trigger_offline_retrieval()` (`#491 <https://github.com/sentinelsat/sentinelsat/issues/491>`_ `@z4zz <https://github.com/z4zz>`_)
+* Improve handling of offline products (`#508 <https://github.com/sentinelsat/sentinelsat/issues/508>`_ `@avalentino <https://github.com/avalentino>`_).
 
 Changed
 ~~~~~~~
