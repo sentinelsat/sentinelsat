@@ -9,7 +9,7 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - sentinelsat/1.0.0
+      - sentinelsat/1.0.1
     method: GET
     uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=100&start=0&q=beginPosition%3A%5B%222015-12-19T00%3A00%3A00Z%22+TO+%222015-12-28T00%3A00%3A00Z%22%5D+platformname%3A%22Sentinel-1%22+footprint%3A%22Intersects%28POLYGON%28%28-66.2695+-8.0592%2C-66.2695+0.7031%2C-57.3047+0.7031%2C-57.3047+-8.0592%2C-66.2695+-8.0592%29%29%29%22
   response:
