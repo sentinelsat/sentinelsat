@@ -20,7 +20,7 @@ Changed
 
 Fixed
 ~~~~~
-* 
+* Changed logic for _get_filename when cd header not present (`#494 <https://github.com/sentinelsat/sentinelsat/issues/494>`_ `@rbrishabh <https://github.com/rbrishabh>`_)
 
 
 [1.0.1] – 2021-05-25
