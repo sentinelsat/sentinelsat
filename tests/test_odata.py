@@ -21,9 +21,9 @@ def test_convert_timestamp():
 
 @pytest.mark.vcr
 @pytest.mark.scihub
-def test_get_product_odata_short(api, smallest_online_products, read_yaml):
+def test_get_product_odata_short(api, smallest_archived_products, read_yaml):
     responses = {}
-    for prod in smallest_online_products:
+    for prod in smallest_archived_products:
         id = prod["id"]
         responses[id] = api.get_product_odata(id)
     expected = read_yaml("odata_response_short.yml", responses)
@@ -62,9 +62,9 @@ def test_get_product_odata_short_with_missing_online_key(api, vcr):
 
 @pytest.mark.vcr
 @pytest.mark.scihub
-def test_get_product_odata_full(api, smallest_online_products, read_yaml):
+def test_get_product_odata_full(api, smallest_archived_products, read_yaml):
     responses = {}
-    for prod in smallest_online_products:
+    for prod in smallest_archived_products:
         id = prod["id"]
         responses[id] = api.get_product_odata(id, full=True)
     expected = read_yaml("odata_response_full.yml", responses)

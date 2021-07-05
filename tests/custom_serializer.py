@@ -1,5 +1,5 @@
 import re
-from os.path import join
+from pathlib import Path
 
 from vcr.serializers import yamlserializer
 
@@ -22,7 +22,8 @@ class BinaryContentSerializer:
             headers = {k.lower(): v for k, v in response["headers"].items()}
             if "content-range" in headers and "content-disposition" in headers:
                 rg, size, filename = self._parse_headers(headers)
-                with open(join(self.directory, "data", filename), "rb") as f:
+                path = Path(self.directory) / "data" / filename
+                with path.open("rb") as f:
                     f.seek(rg[0])
                     content = f.read(rg[1] - rg[0] + 1)
                 response["body"]["string"] = content
@@ -39,9 +40,11 @@ class BinaryContentSerializer:
                 content = response["body"]["string"]
                 if hasattr(content, "encode"):
                     content = content.encode("utf-8")
-                if rg[0] == 0 and rg[1] + 1 == size:
-                    with open(join(self.directory, "data", filename), "wb") as f:
-                        f.write(content)
+                path = Path(self.directory) / "data" / filename
+                mode = "r+b" if path.exists() else "w+b"
+                with path.open(mode) as f:
+                    f.seek(rg[0])
+                    f.write(content)
                 del response["body"]["string"]
         return self.base_serializer.serialize(cassette_dict)
 

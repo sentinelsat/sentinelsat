@@ -9,7 +9,7 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - sentinelsat/1.0.0
+      - sentinelsat/1.0.1
     method: GET
     uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=0&start=0&q=ingestiondate%3A%5B%22NOW-1DAY%22+TO+%22NOW%22%5D
   response:
@@ -48,7 +48,7 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - sentinelsat/1.0.0
+      - sentinelsat/1.0.1
     method: GET
     uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=0&start=0&q=ingestiondate%3A%5B%22NOW-1DAY%22+TO+%2A%5D
   response:
@@ -87,7 +87,7 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - sentinelsat/1.0.0
+      - sentinelsat/1.0.1
     method: GET
     uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=0&start=0&q=relativeorbitnumber%3A%7B101+TO+103%7D
   response:
@@ -126,7 +126,7 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - sentinelsat/1.0.0
+      - sentinelsat/1.0.1
     method: GET
     uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=0&start=0&q=timeliness%3A%22Near+Real+Time%22
   response:
@@ -165,7 +165,7 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - sentinelsat/1.0.0
+      - sentinelsat/1.0.1
     method: GET
     uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=0&start=0&q=timeliness%3A%22.%2B+Critical%22
   response:
@@ -204,7 +204,7 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - sentinelsat/1.0.0
+      - sentinelsat/1.0.1
     method: GET
     uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=0&start=0&q=beginposition%3A%5B%222018-01-01T00%3A00%3A00Z%22+TO+%222018-01-30T00%3A00%3A00Z%22%5D+identifier%3A%2FS%5B12+%5DA.%2A%2F+footprint%3A%22Intersects%28POINT%2814.20+59.96%29%29%22
   response:
@@ -251,7 +251,7 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - sentinelsat/1.0.0
+      - sentinelsat/1.0.1
     method: GET
     uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=0&start=0&q=beginposition%3A%5B%222018-01-01T00%3A00%3A00Z%22+TO+%222018-01-30T00%3A00%3A00Z%22%5D+identifier%3AS1A%2A+footprint%3A%22Intersects%28POINT%2814.20+59.96%29%29%22
   response:
@@ -298,7 +298,7 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - sentinelsat/1.0.0
+      - sentinelsat/1.0.1
     method: GET
     uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=0&start=0&q=beginposition%3A%5B%222018-01-01T00%3A00%3A00Z%22+TO+%222018-01-30T00%3A00%3A00Z%22%5D+identifier%3AS2A%2A+footprint%3A%22Intersects%28POINT%2814.20+59.96%29%29%22
   response:

@@ -9,7 +9,7 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - sentinelsat/1.0.0
+      - sentinelsat/1.0.1
     method: GET
     uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=100&start=0&q=%28identifier%3A%22S1A_WV_OCN__2SSH_20150603T092625_20150603T093332_006207_008194_521E%22+OR+identifier%3A%22S1A_WV_OCN__2SSV_20150526T211029_20150526T211737_006097_007E78_134A%22+OR+identifier%3A%22S1B_IW_GRDH_1SDV_20181007T164349_20181007T164414_013049_0181B7_A8E3%22+OR+identifier%3A%22S1B_IW_GRDH_1SDV_20181007T164414_20181007T164439_013049_0181B7_345E%22%29
   response:

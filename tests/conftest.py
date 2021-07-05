@@ -10,7 +10,6 @@ from pytest_socket import disable_socket
 from vcr import VCR
 
 from sentinelsat import SentinelAPI, geojson_to_wkt, read_geojson, SentinelProductsAPI
-from sentinelsat.sentinel import _parse_odata_response
 from .custom_serializer import BinaryContentSerializer
 
 TESTS_DIR = dirname(abspath(__file__))
@@ -252,46 +251,19 @@ def raw_products(api_kwargs, vcr, test_wkt):
 
 
 def _get_smallest(api_kwargs, cassette, online, n=3):
-    api = SentinelAPI(**api_kwargs)
-    filter = " and ".join(
-        [
-            "Online eq {}".format("true" if online else "false"),
-            # limit time range for tests stability and much faster OData querying
-            "CreationDate lt datetime'2016-01-01T00:00:00.000'",
-            # needed for SentinelProductsAPI tests, some S5 apparently do not include manifest.safe
-            "not startswith(Name, 'S3')",
-            # don't want zero-length products for testing, plus their handling has server-side bugs
-            "ContentLength ne 0",
-        ]
-    )
-    url = "{}odata/v1/Products?$format=json&$top={}&$filter={}".format(
-        api_kwargs["api_url"], n + 3, filter
-    )
-    if online:
-        # archived products do not have the correct ContentLength value,
-        # so use an arbitrary subset of the data and skip orderby to speed up the query
-        url += "&$orderby=ContentLength"
+    time_range = ("NOW-1MONTH", None) if online else (None, "20170101")
+    odatas = []
     with cassette:
-        r = api.session.get(url)
-    odata = [_parse_odata_response(x) for x in r.json()["d"]["results"]]
-    # Drop products that appear to be broken
-    blacklist = ["S2A_MSIL2A_20190528T113321_N0212_R080_T29UPB_20190528T142130"]
-    odata = [x for x in odata if x["title"] not in blacklist]
-    odata = odata[:n]
-    assert len(odata) == n
-    return odata
-
-
-def _get_quicklook(api_kwargs, cassette):
-    api = SentinelAPI(**api_kwargs)
-    ids = [
-        "6b126ea4-fe27-440c-9a5c-686f386b7291",
-        "1a9401bc-6986-4707-b38d-f6c29ca58c00",
-        "54e6c4ad-6f4e-4fbf-b163-1719f60bfaeb",
-    ]
-    with cassette:
-        odata = [api.get_product_odata(x) for x in ids]
-    return odata
+        api = SentinelAPI(**api_kwargs)
+        products = api.query(date=time_range, size="/.+KB/", limit=15)
+        for uuid in products:
+            odata = api.get_product_odata(uuid)
+            if odata["Online"] == online:
+                odatas.append(odata)
+                if len(odatas) == n:
+                    break
+    assert len(odatas) == n
+    return odatas
 
 
 @pytest.fixture(scope="module")
@@ -301,27 +273,30 @@ def smallest_online_products(api_kwargs, vcr):
 
 @pytest.fixture(scope="module")
 def smallest_archived_products(api_kwargs, vcr):
-    n = 3
-    api = SentinelAPI(**api_kwargs)
-    # Find some small and old products expecting them to be archived due to age.
-    # Can't use the OData API for this as we do for the online products
-    # because the ContentLength value there is not match the true product size.
-    odatas = []
-    with vcr.use_cassette("smallest_archived_products"):
-        products = api.query(date=(None, "20170101"), size="/.+KB/", limit=10)
-        for uuid in products:
-            odata = api.get_product_odata(uuid)
-            if not odata["Online"]:
-                odatas.append(odata)
-                if len(odatas) == n:
-                    break
-        assert len(odatas) == n
-    return odatas
+    return _get_smallest(api_kwargs, vcr.use_cassette("smallest_archived_products"), online=False)
 
 
 @pytest.fixture(scope="module")
 def quicklook_products(api_kwargs, vcr):
-    return _get_quicklook(api_kwargs, vcr.use_cassette("quicklook_products"))
+    ids = [
+        "6b126ea4-fe27-440c-9a5c-686f386b7291",
+        "1a9401bc-6986-4707-b38d-f6c29ca58c00",
+        "54e6c4ad-6f4e-4fbf-b163-1719f60bfaeb",
+    ]
+    with vcr.use_cassette("quicklook_products"):
+        api = SentinelAPI(**api_kwargs)
+        odata = [api.get_product_odata(x) for x in ids]
+    return odata
+
+
+@pytest.fixture(scope="module")
+def node_test_products(api_kwargs, vcr):
+    with vcr.use_cassette("node_test_products"):
+        api = SentinelAPI(**api_kwargs)
+        products = api.query(date=("NOW-1MONTH", None), identifier="*IW_GRDH*", limit=3)
+        odatas = [api.get_product_odata(x) for x in products]
+        assert all(info["Online"] for info in odatas)
+    return odatas
 
 
 @pytest.fixture(scope="session")

@@ -9,7 +9,7 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - sentinelsat/1.0.0
+      - sentinelsat/1.0.1
     method: GET
     uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=100&start=0&q=beginPosition%3A%5B%222015-12-19T00%3A00%3A00Z%22+TO+%222015-12-26T00%3A00%3A00Z%22%5D+footprint%3A%22Intersects%28POLYGON%28%2810.83+53.04%2C11.64+53.04%2C11.64+52.65%2C10.83+52.65%2C10.83+53.04%29%29%29%22
   response:
@@ -183,7 +183,7 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - sentinelsat/1.0.0
+      - sentinelsat/1.0.1
     method: GET
     uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=100&start=0&q=beginPosition%3A%5B%222015-12-19T00%3A00%3A00Z%22+TO+%222015-12-26T00%3A00%3A00Z%22%5D+footprint%3A%22contains%28POLYGON%28%2810.83+53.04%2C11.64+53.04%2C11.64+52.65%2C10.83+52.65%2C10.83+53.04%29%29%29%22
   response:
@@ -257,7 +257,7 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - sentinelsat/1.0.0
+      - sentinelsat/1.0.1
     method: GET
     uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=100&start=0&q=beginPosition%3A%5B%222015-12-19T00%3A00%3A00Z%22+TO+%222015-12-26T00%3A00%3A00Z%22%5D+footprint%3A%22IsWithin%28POLYGON%28%2810.83+53.04%2C11.64+53.04%2C11.64+52.65%2C10.83+52.65%2C10.83+53.04%29%29%29%22
   response:

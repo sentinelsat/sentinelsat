@@ -9,7 +9,7 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - sentinelsat/1.0.0
+      - sentinelsat/1.0.1
     method: GET
     uri: https://nominatim.openstreetmap.org/search?q=Metz&format=geojson
   response:
@@ -48,7 +48,7 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - sentinelsat/1.0.0
+      - sentinelsat/1.0.1
     method: GET
     uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=1&start=0&q=beginPosition%3A%5B%222020-01-01T00%3A00%3A00Z%22+TO+%222020-01-02T00%3A00%3A00Z%22%5D+footprint%3A%22Intersects%28ENVELOPE%286.1360042%2C+6.256451%2C+49.1487955%2C+49.0608244%29%29%22
   response:

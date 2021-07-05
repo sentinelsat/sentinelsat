@@ -361,9 +361,9 @@ def test_get_stream(api, tmpdir, smallest_online_products):
 
 @pytest.mark.vcr
 @pytest.mark.scihub
-def test_download_product_nodes(products_api, tmpdir, smallest_online_products):
-    uuid = smallest_online_products[0]["id"]
-    product_dir = smallest_online_products[0]["title"] + ".SAFE"
+def test_download_product_nodes(products_api, tmpdir, node_test_products):
+    uuid = node_test_products[0]["id"]
+    product_dir = node_test_products[0]["title"] + ".SAFE"
     expected_path = tmpdir.join(product_dir)
 
     nodefilter = make_path_filter("*preview/*.kml")

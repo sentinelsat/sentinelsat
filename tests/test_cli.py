@@ -545,7 +545,7 @@ def test_product_node_download_single(run_cli, api, tmpdir, smallest_online_prod
 @pytest.mark.vcr(allow_playback_repeats=True)
 @pytest.mark.scihub
 def test_product_node_download_single_with_filter(
-    run_cli, api, tmpdir, smallest_online_products, monkeypatch
+    run_cli, api, tmpdir, node_test_products, monkeypatch
 ):
     # Change default arguments for quicker test.
     # Also, vcrpy is not threadsafe, so only one worker is used.
@@ -554,7 +554,7 @@ def test_product_node_download_single_with_filter(
         partialmethod(SentinelAPI.download_all, max_attempts=2, n_concurrent_dl=1),
     )
 
-    product_id = smallest_online_products[0]["id"]
+    product_id = node_test_products[0]["id"]
     command = [
         "--uuid",
         product_id,

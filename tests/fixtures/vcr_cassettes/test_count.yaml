@@ -9,7 +9,7 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - sentinelsat/1.0.0
+      - sentinelsat/1.0.1
     method: GET
     uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=0&start=0&q=beginPosition%3A%5B%222015-01-01T00%3A00%3A00Z%22+TO+%222015-12-31T00%3A00%3A00Z%22%5D
   response:

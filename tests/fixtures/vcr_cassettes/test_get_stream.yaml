@@ -11,26 +11,26 @@ interactions:
       Range:
       - bytes=0-1
       User-Agent:
-      - sentinelsat/1.0.0
+      - sentinelsat/1.0.1
     method: GET
-    uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('1f62a176-c980-41dc-b3a1-c735d660c910')/$value
+    uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('1ff948db-72a6-4309-9ded-031129de6254')/$value
   response:
     body: {}
     headers:
       accept-ranges:
       - bytes
       content-disposition:
-      - inline;filename="S1A_WV_OCN__2SSH_20150603T092625_20150603T093332_006207_008194_521E.zip"
+      - inline;filename="S3B_SR_1_SRA____20210704T114011_20210704T114030_20210704T133742_0018_054_180______LN3_O_NR_004.zip"
       content-length:
       - '2'
       content-range:
-      - bytes 0-1/213433
+      - bytes 0-1/446090
       content-type:
       - application/octet-stream
       dataserviceversion:
       - '2.0'
       etag:
-      - 9eb46e4e31f77f108213e16bb8fbe088
+      - e678d5c42e832351de9a59f7c4c2f0c0
       pragma:
       - no-cache
       server:
@@ -48,26 +48,26 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - sentinelsat/1.0.0
+      - sentinelsat/1.0.1
     method: GET
-    uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('1f62a176-c980-41dc-b3a1-c735d660c910')/$value
+    uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('1ff948db-72a6-4309-9ded-031129de6254')/$value
   response:
     body: {}
     headers:
       accept-ranges:
       - bytes
       content-disposition:
-      - inline;filename="S1A_WV_OCN__2SSH_20150603T092625_20150603T093332_006207_008194_521E.zip"
+      - inline;filename="S3B_SR_1_SRA____20210704T114011_20210704T114030_20210704T133742_0018_054_180______LN3_O_NR_004.zip"
       content-length:
-      - '213433'
+      - '446090'
       content-range:
-      - bytes 0-213432/213433
+      - bytes 0-446089/446090
       content-type:
       - application/octet-stream
       dataserviceversion:
       - '2.0'
       etag:
-      - 9eb46e4e31f77f108213e16bb8fbe088
+      - e678d5c42e832351de9a59f7c4c2f0c0
       pragma:
       - no-cache
       server:
