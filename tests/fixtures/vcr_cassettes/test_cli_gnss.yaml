@@ -9,7 +9,7 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - sentinelsat/1.0.0
+      - sentinelsat/1.0.1
     method: GET
     uri: https://scihub.copernicus.eu/gnss/search?format=json&rows=100&start=0&q=beginPosition%3A%5B%222021-02-01T00%3A00%3A00Z%22+TO+%222021-02-02T00%3A00%3A00Z%22%5D+platformserialidentifier%3A%221B%22+producttype%3A%22AUX_POEORB%22
   response:
