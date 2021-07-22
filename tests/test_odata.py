@@ -12,6 +12,15 @@ from sentinelsat.sentinel import _parse_odata_timestamp
 from .conftest import chain, scrub_string
 
 
+@pytest.fixture
+def odata_product_ids():
+    return [
+        "11af8bd9-24d0-4401-9789-b7b73786e122",
+        "16c595db-cd1b-4278-a053-982239b3090b",
+        "5e6d1024-ae4f-4a37-8dba-e27c9e0ed0db",
+    ]
+
+
 @pytest.mark.fast
 def test_convert_timestamp():
     assert _parse_odata_timestamp("/Date(1445588544652)/") == datetime(
@@ -21,10 +30,9 @@ def test_convert_timestamp():
 
 @pytest.mark.vcr
 @pytest.mark.scihub
-def test_get_product_odata_short(api, smallest_archived_products, read_yaml):
+def test_get_product_odata_short(api, odata_product_ids, read_yaml):
     responses = {}
-    for prod in smallest_archived_products:
-        id = prod["id"]
+    for id in odata_product_ids:
         responses[id] = api.get_product_odata(id)
     expected = read_yaml("odata_response_short.yml", responses)
     assert sorted(responses) == sorted(expected)
@@ -62,10 +70,9 @@ def test_get_product_odata_short_with_missing_online_key(api, vcr):
 
 @pytest.mark.vcr
 @pytest.mark.scihub
-def test_get_product_odata_full(api, smallest_archived_products, read_yaml):
+def test_get_product_odata_full(api, odata_product_ids, read_yaml):
     responses = {}
-    for prod in smallest_archived_products:
-        id = prod["id"]
+    for id in odata_product_ids:
         responses[id] = api.get_product_odata(id, full=True)
     expected = read_yaml("odata_response_full.yml", responses)
     assert sorted(responses) == sorted(expected)

@@ -24,37 +24,38 @@ interactions:
         TO *] identifier:*IW_GRDH*&start=0&rows=3&format=json"},{"rel":"first","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[\"NOW-1MONTH\"
         TO *] identifier:*IW_GRDH*&start=0&rows=3&format=json"},{"rel":"next","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[\"NOW-1MONTH\"
         TO *] identifier:*IW_GRDH*&start=3&rows=3&format=json"},{"rel":"last","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[\"NOW-1MONTH\"
-        TO *] identifier:*IW_GRDH*&start=26477&rows=3&format=json"},{"rel":"search","type":"application/opensearchdescription+xml","href":"opensearch_description.xml"}],"entry":[{"title":"S1A_IW_GRDH_1SDV_20210704T171954_20210704T172021_038630_048EF1_D8EF","link":[{"href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''4493e38b-4580-4d48-b972-2c348420dd40'')/$value"},{"rel":"alternative","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''4493e38b-4580-4d48-b972-2c348420dd40'')/"},{"rel":"icon","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''4493e38b-4580-4d48-b972-2c348420dd40'')/Products(''Quicklook'')/$value"}],"id":"4493e38b-4580-4d48-b972-2c348420dd40","summary":"Date:
-        2021-07-04T17:19:54.132Z, Instrument: SAR-C SAR, Mode: VV VH, Satellite: Sentinel-1,
-        Size: 1.78 GB","ondemand":"false","date":[{"name":"beginposition","content":"2021-07-04T17:19:54.132Z"},{"name":"endposition","content":"2021-07-04T17:20:21.431Z"},{"name":"ingestiondate","content":"2021-07-04T19:54:16.597Z"}],"int":[{"name":"missiondatatakeid","content":"298737"},{"name":"orbitnumber","content":"38630"},{"name":"lastorbitnumber","content":"38630"},{"name":"relativeorbitnumber","content":"58"},{"name":"lastrelativeorbitnumber","content":"58"},{"name":"slicenumber","content":"8"}],"str":[{"name":"filename","content":"S1A_IW_GRDH_1SDV_20210704T171954_20210704T172021_038630_048EF1_D8EF.SAFE"},{"name":"format","content":"SAFE"},{"name":"identifier","content":"S1A_IW_GRDH_1SDV_20210704T171954_20210704T172021_038630_048EF1_D8EF"},{"name":"size","content":"1.78
-        GB"},{"name":"status","content":"ARCHIVED"},{"name":"timeliness","content":"Fast-24h"},{"name":"sensoroperationalmode","content":"IW"},{"name":"swathidentifier","content":"IW"},{"name":"orbitdirection","content":"ASCENDING"},{"name":"producttype","content":"GRD"},{"name":"platformname","content":"Sentinel-1"},{"name":"platformidentifier","content":"2014-016A"},{"name":"instrumentname","content":"Synthetic
+        TO *] identifier:*IW_GRDH*&start=26462&rows=3&format=json"},{"rel":"search","type":"application/opensearchdescription+xml","href":"opensearch_description.xml"}],"entry":[{"title":"S1A_IW_GRDH_1SDV_20210722T182826_20210722T182851_038894_0496E2_5BD9","link":[{"href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''463d84ea-a647-40db-a3e1-2fe0f4148d45'')/$value"},{"rel":"alternative","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''463d84ea-a647-40db-a3e1-2fe0f4148d45'')/"},{"rel":"icon","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''463d84ea-a647-40db-a3e1-2fe0f4148d45'')/Products(''Quicklook'')/$value"}],"id":"463d84ea-a647-40db-a3e1-2fe0f4148d45","summary":"Date:
+        2021-07-22T18:28:26.043Z, Instrument: SAR-C SAR, Mode: VV VH, Satellite: Sentinel-1,
+        Size: 1.63 GB","ondemand":"false","date":[{"name":"beginposition","content":"2021-07-22T18:28:26.043Z"},{"name":"endposition","content":"2021-07-22T18:28:51.041Z"},{"name":"ingestiondate","content":"2021-07-22T19:33:11.262Z"}],"int":[{"name":"missiondatatakeid","content":"300770"},{"name":"slicenumber","content":"9"},{"name":"orbitnumber","content":"38894"},{"name":"lastorbitnumber","content":"38894"},{"name":"relativeorbitnumber","content":"147"},{"name":"lastrelativeorbitnumber","content":"147"}],"str":[{"name":"filename","content":"S1A_IW_GRDH_1SDV_20210722T182826_20210722T182851_038894_0496E2_5BD9.SAFE"},{"name":"format","content":"SAFE"},{"name":"identifier","content":"S1A_IW_GRDH_1SDV_20210722T182826_20210722T182851_038894_0496E2_5BD9"},{"name":"size","content":"1.63
+        GB"},{"name":"status","content":"ARCHIVED"},{"name":"timeliness","content":"NRT-3h"},{"name":"sensoroperationalmode","content":"IW"},{"name":"swathidentifier","content":"IW"},{"name":"orbitdirection","content":"ASCENDING"},{"name":"producttype","content":"GRD"},{"name":"platformname","content":"Sentinel-1"},{"name":"platformidentifier","content":"2014-016A"},{"name":"instrumentname","content":"Synthetic
         Aperture Radar (C-band)"},{"name":"instrumentshortname","content":"SAR-C SAR"},{"name":"productclass","content":"S"},{"name":"polarisationmode","content":"VV
         VH"},{"name":"acquisitiontype","content":"NOMINAL"},{"name":"gmlfootprint","content":"<gml:Polygon
-        srsName=\"http://www.opengis.net/gml/srs/epsg.xml#4326\" xmlns:gml=\"http://www.opengis.net/gml\">\n   <gml:outerBoundaryIs>\n      <gml:LinearRing>\n         <gml:coordinates>-26.000120,17.934324
-        -25.406389,20.428576 -27.033045,20.916525 -27.635944,18.389595 -26.000120,17.934324</gml:coordinates>\n      </gml:LinearRing>\n   </gml:outerBoundaryIs>\n</gml:Polygon>"},{"name":"footprint","content":"MULTIPOLYGON
-        (((18.389595 -27.635944, 20.916525 -27.033045, 20.428576 -25.406389, 17.934324
-        -26.00012, 18.389595 -27.635944)))"},{"name":"uuid","content":"4493e38b-4580-4d48-b972-2c348420dd40"}]},{"title":"S1B_IW_GRDH_1SDV_20210704T150109_20210704T150134_027646_034CB5_9977","link":[{"href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''afa10ffb-25fd-4fda-bb99-d4ae973e2b1f'')/$value"},{"rel":"alternative","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''afa10ffb-25fd-4fda-bb99-d4ae973e2b1f'')/"},{"rel":"icon","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''afa10ffb-25fd-4fda-bb99-d4ae973e2b1f'')/Products(''Quicklook'')/$value"}],"id":"afa10ffb-25fd-4fda-bb99-d4ae973e2b1f","summary":"Date:
-        2021-07-04T15:01:09.289Z, Instrument: SAR-C SAR, Mode: VV VH, Satellite: Sentinel-1,
-        Size: 1.59 GB","ondemand":"false","date":[{"name":"beginposition","content":"2021-07-04T15:01:09.289Z"},{"name":"endposition","content":"2021-07-04T15:01:34.287Z"},{"name":"ingestiondate","content":"2021-07-04T19:54:14.218Z"}],"int":[{"name":"missiondatatakeid","content":"216245"},{"name":"orbitnumber","content":"27646"},{"name":"lastorbitnumber","content":"27646"},{"name":"relativeorbitnumber","content":"145"},{"name":"lastrelativeorbitnumber","content":"145"},{"name":"slicenumber","content":"4"}],"str":[{"name":"filename","content":"S1B_IW_GRDH_1SDV_20210704T150109_20210704T150134_027646_034CB5_9977.SAFE"},{"name":"format","content":"SAFE"},{"name":"identifier","content":"S1B_IW_GRDH_1SDV_20210704T150109_20210704T150134_027646_034CB5_9977"},{"name":"size","content":"1.59
-        GB"},{"name":"status","content":"ARCHIVED"},{"name":"timeliness","content":"Fast-24h"},{"name":"sensoroperationalmode","content":"IW"},{"name":"swathidentifier","content":"IW"},{"name":"orbitdirection","content":"ASCENDING"},{"name":"producttype","content":"GRD"},{"name":"platformname","content":"Sentinel-1"},{"name":"platformidentifier","content":"2016-025A"},{"name":"instrumentname","content":"Synthetic
+        srsName=\"http://www.opengis.net/gml/srs/epsg.xml#4326\" xmlns:gml=\"http://www.opengis.net/gml\">\n   <gml:outerBoundaryIs>\n      <gml:LinearRing>\n         <gml:coordinates>43.132477,-10.053490
+        43.536472,-6.874254 42.037018,-6.551157 41.632385,-9.654956 43.132477,-10.053490</gml:coordinates>\n      </gml:LinearRing>\n   </gml:outerBoundaryIs>\n</gml:Polygon>"},{"name":"footprint","content":"MULTIPOLYGON
+        (((-9.654956 41.632385, -6.551157 42.037018, -6.874254 43.536472, -10.05349
+        43.132477, -9.654956 41.632385)))"},{"name":"uuid","content":"463d84ea-a647-40db-a3e1-2fe0f4148d45"}]},{"title":"S1A_IW_GRDH_1SDV_20210722T182801_20210722T182826_038894_0496E2_AA8D","link":[{"href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''2621b702-3a76-4908-b240-8d5bd5b54121'')/$value"},{"rel":"alternative","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''2621b702-3a76-4908-b240-8d5bd5b54121'')/"},{"rel":"icon","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''2621b702-3a76-4908-b240-8d5bd5b54121'')/Products(''Quicklook'')/$value"}],"id":"2621b702-3a76-4908-b240-8d5bd5b54121","summary":"Date:
+        2021-07-22T18:28:01.042Z, Instrument: SAR-C SAR, Mode: VV VH, Satellite: Sentinel-1,
+        Size: 1.63 GB","ondemand":"false","date":[{"name":"beginposition","content":"2021-07-22T18:28:01.042Z"},{"name":"endposition","content":"2021-07-22T18:28:26.041Z"},{"name":"ingestiondate","content":"2021-07-22T19:33:07.75Z"}],"int":[{"name":"missiondatatakeid","content":"300770"},{"name":"slicenumber","content":"8"},{"name":"orbitnumber","content":"38894"},{"name":"lastorbitnumber","content":"38894"},{"name":"relativeorbitnumber","content":"147"},{"name":"lastrelativeorbitnumber","content":"147"}],"str":[{"name":"filename","content":"S1A_IW_GRDH_1SDV_20210722T182801_20210722T182826_038894_0496E2_AA8D.SAFE"},{"name":"format","content":"SAFE"},{"name":"identifier","content":"S1A_IW_GRDH_1SDV_20210722T182801_20210722T182826_038894_0496E2_AA8D"},{"name":"size","content":"1.63
+        GB"},{"name":"status","content":"ARCHIVED"},{"name":"timeliness","content":"NRT-3h"},{"name":"sensoroperationalmode","content":"IW"},{"name":"swathidentifier","content":"IW"},{"name":"orbitdirection","content":"ASCENDING"},{"name":"producttype","content":"GRD"},{"name":"platformname","content":"Sentinel-1"},{"name":"platformidentifier","content":"2014-016A"},{"name":"instrumentname","content":"Synthetic
         Aperture Radar (C-band)"},{"name":"instrumentshortname","content":"SAR-C SAR"},{"name":"productclass","content":"S"},{"name":"polarisationmode","content":"VV
         VH"},{"name":"acquisitiontype","content":"NOMINAL"},{"name":"gmlfootprint","content":"<gml:Polygon
-        srsName=\"http://www.opengis.net/gml/srs/epsg.xml#4326\" xmlns:gml=\"http://www.opengis.net/gml\">\n   <gml:outerBoundaryIs>\n      <gml:LinearRing>\n         <gml:coordinates>10.289464,46.672127
-        10.740782,48.952114 9.230659,49.241764 8.775222,46.972557 10.289464,46.672127</gml:coordinates>\n      </gml:LinearRing>\n   </gml:outerBoundaryIs>\n</gml:Polygon>"},{"name":"footprint","content":"MULTIPOLYGON
-        (((46.972557 8.775222, 49.241764 9.230659, 48.952114 10.740782, 46.672127
-        10.289464, 46.972557 8.775222)))"},{"name":"uuid","content":"afa10ffb-25fd-4fda-bb99-d4ae973e2b1f"}]},{"title":"S1B_IW_GRDH_1SDV_20210704T150339_20210704T150404_027646_034CB5_7B75","link":[{"href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''1d938dfd-323c-4e2b-a851-431e3543ff1e'')/$value"},{"rel":"alternative","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''1d938dfd-323c-4e2b-a851-431e3543ff1e'')/"},{"rel":"icon","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''1d938dfd-323c-4e2b-a851-431e3543ff1e'')/Products(''Quicklook'')/$value"}],"id":"1d938dfd-323c-4e2b-a851-431e3543ff1e","summary":"Date:
-        2021-07-04T15:03:39.289Z, Instrument: SAR-C SAR, Mode: VV VH, Satellite: Sentinel-1,
-        Size: 1.59 GB","ondemand":"false","date":[{"name":"beginposition","content":"2021-07-04T15:03:39.289Z"},{"name":"endposition","content":"2021-07-04T15:04:04.288Z"},{"name":"ingestiondate","content":"2021-07-04T19:54:12.548Z"}],"int":[{"name":"missiondatatakeid","content":"216245"},{"name":"orbitnumber","content":"27646"},{"name":"lastorbitnumber","content":"27646"},{"name":"relativeorbitnumber","content":"145"},{"name":"lastrelativeorbitnumber","content":"145"},{"name":"slicenumber","content":"10"}],"str":[{"name":"filename","content":"S1B_IW_GRDH_1SDV_20210704T150339_20210704T150404_027646_034CB5_7B75.SAFE"},{"name":"format","content":"SAFE"},{"name":"identifier","content":"S1B_IW_GRDH_1SDV_20210704T150339_20210704T150404_027646_034CB5_7B75"},{"name":"size","content":"1.59
-        GB"},{"name":"status","content":"ARCHIVED"},{"name":"timeliness","content":"Fast-24h"},{"name":"sensoroperationalmode","content":"IW"},{"name":"swathidentifier","content":"IW"},{"name":"orbitdirection","content":"ASCENDING"},{"name":"producttype","content":"GRD"},{"name":"platformname","content":"Sentinel-1"},{"name":"platformidentifier","content":"2016-025A"},{"name":"instrumentname","content":"Synthetic
+        srsName=\"http://www.opengis.net/gml/srs/epsg.xml#4326\" xmlns:gml=\"http://www.opengis.net/gml\">\n   <gml:outerBoundaryIs>\n      <gml:LinearRing>\n         <gml:coordinates>41.632294,-9.654935
+        42.036789,-6.552333 40.536522,-6.234935 40.131046,-9.267513 41.632294,-9.654935</gml:coordinates>\n      </gml:LinearRing>\n   </gml:outerBoundaryIs>\n</gml:Polygon>"},{"name":"footprint","content":"MULTIPOLYGON
+        (((-9.267513 40.131046, -6.234935 40.536522, -6.552333 42.036789, -9.654935
+        41.632294, -9.267513 40.131046)))"},{"name":"uuid","content":"2621b702-3a76-4908-b240-8d5bd5b54121"}]},{"title":"S1B_IW_GRDH_1SDV_20210722T174356_20210722T174421_027910_03548F_D1D1","link":[{"href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''77688707-96cf-4511-81cb-134646be9064'')/$value"},{"rel":"alternative","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''77688707-96cf-4511-81cb-134646be9064'')/"},{"rel":"icon","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''77688707-96cf-4511-81cb-134646be9064'')/Products(''Quicklook'')/$value"}],"id":"77688707-96cf-4511-81cb-134646be9064","summary":"Date:
+        2021-07-22T17:43:56.232Z, Instrument: SAR-C SAR, Mode: VV VH, Satellite: Sentinel-1,
+        Size: 1.63 GB","ondemand":"false","date":[{"name":"beginposition","content":"2021-07-22T17:43:56.232Z"},{"name":"endposition","content":"2021-07-22T17:44:21.23Z"},{"name":"ingestiondate","content":"2021-07-22T19:24:14.449Z"}],"int":[{"name":"missiondatatakeid","content":"218255"},{"name":"slicenumber","content":"18"},{"name":"orbitnumber","content":"27910"},{"name":"lastorbitnumber","content":"27910"},{"name":"relativeorbitnumber","content":"59"},{"name":"lastrelativeorbitnumber","content":"59"}],"str":[{"name":"filename","content":"S1B_IW_GRDH_1SDV_20210722T174356_20210722T174421_027910_03548F_D1D1.SAFE"},{"name":"format","content":"SAFE"},{"name":"identifier","content":"S1B_IW_GRDH_1SDV_20210722T174356_20210722T174421_027910_03548F_D1D1"},{"name":"size","content":"1.63
+        GB"},{"name":"status","content":"ARCHIVED"},{"name":"timeliness","content":"NRT-3h"},{"name":"sensoroperationalmode","content":"IW"},{"name":"swathidentifier","content":"IW"},{"name":"orbitdirection","content":"ASCENDING"},{"name":"producttype","content":"GRD"},{"name":"platformname","content":"Sentinel-1"},{"name":"platformidentifier","content":"2016-025A"},{"name":"instrumentname","content":"Synthetic
         Aperture Radar (C-band)"},{"name":"instrumentshortname","content":"SAR-C SAR"},{"name":"productclass","content":"S"},{"name":"polarisationmode","content":"VV
         VH"},{"name":"acquisitiontype","content":"NOMINAL"},{"name":"gmlfootprint","content":"<gml:Polygon
-        srsName=\"http://www.opengis.net/gml/srs/epsg.xml#4326\" xmlns:gml=\"http://www.opengis.net/gml\">\n   <gml:outerBoundaryIs>\n      <gml:LinearRing>\n         <gml:coordinates>19.357691,44.794388
-        19.787027,47.178055 18.279703,47.470490 17.846903,45.108669 19.357691,44.794388</gml:coordinates>\n      </gml:LinearRing>\n   </gml:outerBoundaryIs>\n</gml:Polygon>"},{"name":"footprint","content":"MULTIPOLYGON
-        (((45.108669 17.846903, 47.47049 18.279703, 47.178055 19.787027, 44.794388
-        19.357691, 45.108669 17.846903)))"},{"name":"uuid","content":"1d938dfd-323c-4e2b-a851-431e3543ff1e"}]}]}}'
+        srsName=\"http://www.opengis.net/gml/srs/epsg.xml#4326\" xmlns:gml=\"http://www.opengis.net/gml\">\n   <gml:outerBoundaryIs>\n      <gml:LinearRing>\n         <gml:coordinates>63.069042,-4.945058
+        63.524727,0.185989 62.036182,0.698898 61.591076,-4.187161 63.069042,-4.945058</gml:coordinates>\n      </gml:LinearRing>\n   </gml:outerBoundaryIs>\n</gml:Polygon>"},{"name":"footprint","content":"MULTIPOLYGON
+        (((-4.187161 61.591076, 3.2078477516068080e-17 61.9725143911586, 0.698898
+        62.036182, 0.185989 63.524727, 9.2676362918375560e-17 63.50820943595021, -4.945058
+        63.069042, -4.187161 61.591076)))"},{"name":"uuid","content":"77688707-96cf-4511-81cb-134646be9064"}]}]}}'
     headers:
       content-length:
-      - '9511'
+      - '9581'
       content-type:
       - application/json
       pragma:
@@ -78,49 +79,15 @@ interactions:
       User-Agent:
       - sentinelsat/1.0.1
     method: GET
-    uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('4493e38b-4580-4d48-b972-2c348420dd40')?$format=json
+    uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('463d84ea-a647-40db-a3e1-2fe0f4148d45')?$format=json
   response:
     body:
-      string: '{"d":{"__metadata":{"id":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''4493e38b-4580-4d48-b972-2c348420dd40'')","uri":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''4493e38b-4580-4d48-b972-2c348420dd40'')","type":"DHuS.Product","content_type":"application/octet-stream","media_src":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''4493e38b-4580-4d48-b972-2c348420dd40'')/$value","edit_media":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''4493e38b-4580-4d48-b972-2c348420dd40'')/$value"},"Id":"4493e38b-4580-4d48-b972-2c348420dd40","Name":"S1A_IW_GRDH_1SDV_20210704T171954_20210704T172021_038630_048EF1_D8EF","ContentType":"application/octet-stream","ContentLength":"910229337","ChildrenNumber":"2","Value":null,"CreationDate":"\/Date(1625428562127)\/","IngestionDate":"\/Date(1625428456597)\/","ModificationDate":"\/Date(1625428562127)\/","EvictionDate":null,"Online":true,"OnDemand":false,"ContentDate":{"__metadata":{"type":"DHuS.TimeRange"},"Start":"\/Date(1625419194132)\/","End":"\/Date(1625419221431)\/"},"Checksum":{"__metadata":{"type":"DHuS.Checksum"},"Algorithm":"MD5","Value":"d4ae1ce660f2075c366f6e66ca4480c0"},"ContentGeometry":"<gml:Polygon
-        srsName=\"http://www.opengis.net/gml/srs/epsg.xml#4326\" xmlns:gml=\"http://www.opengis.net/gml\">\n   <gml:outerBoundaryIs>\n      <gml:LinearRing>\n         <gml:coordinates>-26.000120,17.934324
-        -25.406389,20.428576 -27.033045,20.916525 -27.635944,18.389595 -26.000120,17.934324</gml:coordinates>\n      </gml:LinearRing>\n   </gml:outerBoundaryIs>\n</gml:Polygon>","Products":{"__deferred":{"uri":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''4493e38b-4580-4d48-b972-2c348420dd40'')/Products"}},"Nodes":{"__deferred":{"uri":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''4493e38b-4580-4d48-b972-2c348420dd40'')/Nodes"}},"Attributes":{"__deferred":{"uri":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''4493e38b-4580-4d48-b972-2c348420dd40'')/Attributes"}},"Class":{"__deferred":{"uri":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''4493e38b-4580-4d48-b972-2c348420dd40'')/Class"}}}}'
+      string: '{"d":{"__metadata":{"id":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''463d84ea-a647-40db-a3e1-2fe0f4148d45'')","uri":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''463d84ea-a647-40db-a3e1-2fe0f4148d45'')","type":"DHuS.Product","content_type":"application/octet-stream","media_src":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''463d84ea-a647-40db-a3e1-2fe0f4148d45'')/$value","edit_media":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''463d84ea-a647-40db-a3e1-2fe0f4148d45'')/$value"},"Id":"463d84ea-a647-40db-a3e1-2fe0f4148d45","Name":"S1A_IW_GRDH_1SDV_20210722T182826_20210722T182851_038894_0496E2_5BD9","ContentType":"application/octet-stream","ContentLength":"928085469","ChildrenNumber":"2","Value":null,"CreationDate":"\/Date(1626982503413)\/","IngestionDate":"\/Date(1626982391262)\/","ModificationDate":"\/Date(1626982503413)\/","EvictionDate":null,"Online":true,"OnDemand":false,"ContentDate":{"__metadata":{"type":"DHuS.TimeRange"},"Start":"\/Date(1626978506043)\/","End":"\/Date(1626978531041)\/"},"Checksum":{"__metadata":{"type":"DHuS.Checksum"},"Algorithm":"MD5","Value":"94be690a5984f4fdd690ed36d9f9dd70"},"ContentGeometry":"<gml:Polygon
+        srsName=\"http://www.opengis.net/gml/srs/epsg.xml#4326\" xmlns:gml=\"http://www.opengis.net/gml\">\n   <gml:outerBoundaryIs>\n      <gml:LinearRing>\n         <gml:coordinates>43.132477,-10.053490
+        43.536472,-6.874254 42.037018,-6.551157 41.632385,-9.654956 43.132477,-10.053490</gml:coordinates>\n      </gml:LinearRing>\n   </gml:outerBoundaryIs>\n</gml:Polygon>","Products":{"__deferred":{"uri":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''463d84ea-a647-40db-a3e1-2fe0f4148d45'')/Products"}},"Nodes":{"__deferred":{"uri":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''463d84ea-a647-40db-a3e1-2fe0f4148d45'')/Nodes"}},"Attributes":{"__deferred":{"uri":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''463d84ea-a647-40db-a3e1-2fe0f4148d45'')/Attributes"}},"Class":{"__deferred":{"uri":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''463d84ea-a647-40db-a3e1-2fe0f4148d45'')/Class"}}}}'
     headers:
       content-length:
-      - '2104'
-      content-type:
-      - application/json
-      dataserviceversion:
-      - '2.0'
-      pragma:
-      - no-cache
-      server:
-      - Apache-Coyote/1.1
-      vary:
-      - Accept-Encoding
-    status:
-      code: 200
-      message: OK
-- request:
-    body: null
-    headers:
-      Accept:
-      - '*/*'
-      Accept-Encoding:
-      - gzip, deflate
-      Connection:
-      - keep-alive
-      User-Agent:
-      - sentinelsat/1.0.1
-    method: GET
-    uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('afa10ffb-25fd-4fda-bb99-d4ae973e2b1f')?$format=json
-  response:
-    body:
-      string: '{"d":{"__metadata":{"id":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''afa10ffb-25fd-4fda-bb99-d4ae973e2b1f'')","uri":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''afa10ffb-25fd-4fda-bb99-d4ae973e2b1f'')","type":"DHuS.Product","content_type":"application/octet-stream","media_src":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''afa10ffb-25fd-4fda-bb99-d4ae973e2b1f'')/$value","edit_media":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''afa10ffb-25fd-4fda-bb99-d4ae973e2b1f'')/$value"},"Id":"afa10ffb-25fd-4fda-bb99-d4ae973e2b1f","Name":"S1B_IW_GRDH_1SDV_20210704T150109_20210704T150134_027646_034CB5_9977","ContentType":"application/octet-stream","ContentLength":"916873646","ChildrenNumber":"2","Value":null,"CreationDate":"\/Date(1625428569675)\/","IngestionDate":"\/Date(1625428454218)\/","ModificationDate":"\/Date(1625428569675)\/","EvictionDate":null,"Online":true,"OnDemand":false,"ContentDate":{"__metadata":{"type":"DHuS.TimeRange"},"Start":"\/Date(1625410869289)\/","End":"\/Date(1625410894287)\/"},"Checksum":{"__metadata":{"type":"DHuS.Checksum"},"Algorithm":"MD5","Value":"d3598ac5dc163d676a1f65bd3a8522e0"},"ContentGeometry":"<gml:Polygon
-        srsName=\"http://www.opengis.net/gml/srs/epsg.xml#4326\" xmlns:gml=\"http://www.opengis.net/gml\">\n   <gml:outerBoundaryIs>\n      <gml:LinearRing>\n         <gml:coordinates>10.289464,46.672127
-        10.740782,48.952114 9.230659,49.241764 8.775222,46.972557 10.289464,46.672127</gml:coordinates>\n      </gml:LinearRing>\n   </gml:outerBoundaryIs>\n</gml:Polygon>","Products":{"__deferred":{"uri":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''afa10ffb-25fd-4fda-bb99-d4ae973e2b1f'')/Products"}},"Nodes":{"__deferred":{"uri":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''afa10ffb-25fd-4fda-bb99-d4ae973e2b1f'')/Nodes"}},"Attributes":{"__deferred":{"uri":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''afa10ffb-25fd-4fda-bb99-d4ae973e2b1f'')/Attributes"}},"Class":{"__deferred":{"uri":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''afa10ffb-25fd-4fda-bb99-d4ae973e2b1f'')/Class"}}}}'
-    headers:
-      content-length:
-      - '2097'
+      - '2101'
       content-type:
       - application/json
       dataserviceversion:
@@ -146,15 +113,49 @@ interactions:
       User-Agent:
       - sentinelsat/1.0.1
     method: GET
-    uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('1d938dfd-323c-4e2b-a851-431e3543ff1e')?$format=json
+    uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('2621b702-3a76-4908-b240-8d5bd5b54121')?$format=json
   response:
     body:
-      string: '{"d":{"__metadata":{"id":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''1d938dfd-323c-4e2b-a851-431e3543ff1e'')","uri":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''1d938dfd-323c-4e2b-a851-431e3543ff1e'')","type":"DHuS.Product","content_type":"application/octet-stream","media_src":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''1d938dfd-323c-4e2b-a851-431e3543ff1e'')/$value","edit_media":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''1d938dfd-323c-4e2b-a851-431e3543ff1e'')/$value"},"Id":"1d938dfd-323c-4e2b-a851-431e3543ff1e","Name":"S1B_IW_GRDH_1SDV_20210704T150339_20210704T150404_027646_034CB5_7B75","ContentType":"application/octet-stream","ContentLength":"742603988","ChildrenNumber":"2","Value":null,"CreationDate":"\/Date(1625428568449)\/","IngestionDate":"\/Date(1625428452548)\/","ModificationDate":"\/Date(1625428568449)\/","EvictionDate":null,"Online":true,"OnDemand":false,"ContentDate":{"__metadata":{"type":"DHuS.TimeRange"},"Start":"\/Date(1625411019289)\/","End":"\/Date(1625411044288)\/"},"Checksum":{"__metadata":{"type":"DHuS.Checksum"},"Algorithm":"MD5","Value":"f18edd94247755e23f7f3ae57fdab91f"},"ContentGeometry":"<gml:Polygon
-        srsName=\"http://www.opengis.net/gml/srs/epsg.xml#4326\" xmlns:gml=\"http://www.opengis.net/gml\">\n   <gml:outerBoundaryIs>\n      <gml:LinearRing>\n         <gml:coordinates>19.357691,44.794388
-        19.787027,47.178055 18.279703,47.470490 17.846903,45.108669 19.357691,44.794388</gml:coordinates>\n      </gml:LinearRing>\n   </gml:outerBoundaryIs>\n</gml:Polygon>","Products":{"__deferred":{"uri":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''1d938dfd-323c-4e2b-a851-431e3543ff1e'')/Products"}},"Nodes":{"__deferred":{"uri":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''1d938dfd-323c-4e2b-a851-431e3543ff1e'')/Nodes"}},"Attributes":{"__deferred":{"uri":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''1d938dfd-323c-4e2b-a851-431e3543ff1e'')/Attributes"}},"Class":{"__deferred":{"uri":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''1d938dfd-323c-4e2b-a851-431e3543ff1e'')/Class"}}}}'
+      string: '{"d":{"__metadata":{"id":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''2621b702-3a76-4908-b240-8d5bd5b54121'')","uri":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''2621b702-3a76-4908-b240-8d5bd5b54121'')","type":"DHuS.Product","content_type":"application/octet-stream","media_src":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''2621b702-3a76-4908-b240-8d5bd5b54121'')/$value","edit_media":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''2621b702-3a76-4908-b240-8d5bd5b54121'')/$value"},"Id":"2621b702-3a76-4908-b240-8d5bd5b54121","Name":"S1A_IW_GRDH_1SDV_20210722T182801_20210722T182826_038894_0496E2_AA8D","ContentType":"application/octet-stream","ContentLength":"923634637","ChildrenNumber":"2","Value":null,"CreationDate":"\/Date(1626982563329)\/","IngestionDate":"\/Date(1626982387750)\/","ModificationDate":"\/Date(1626982563329)\/","EvictionDate":null,"Online":true,"OnDemand":false,"ContentDate":{"__metadata":{"type":"DHuS.TimeRange"},"Start":"\/Date(1626978481042)\/","End":"\/Date(1626978506041)\/"},"Checksum":{"__metadata":{"type":"DHuS.Checksum"},"Algorithm":"MD5","Value":"74319f29b5bc6c32a0b0341706fa12f1"},"ContentGeometry":"<gml:Polygon
+        srsName=\"http://www.opengis.net/gml/srs/epsg.xml#4326\" xmlns:gml=\"http://www.opengis.net/gml\">\n   <gml:outerBoundaryIs>\n      <gml:LinearRing>\n         <gml:coordinates>41.632294,-9.654935
+        42.036789,-6.552333 40.536522,-6.234935 40.131046,-9.267513 41.632294,-9.654935</gml:coordinates>\n      </gml:LinearRing>\n   </gml:outerBoundaryIs>\n</gml:Polygon>","Products":{"__deferred":{"uri":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''2621b702-3a76-4908-b240-8d5bd5b54121'')/Products"}},"Nodes":{"__deferred":{"uri":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''2621b702-3a76-4908-b240-8d5bd5b54121'')/Nodes"}},"Attributes":{"__deferred":{"uri":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''2621b702-3a76-4908-b240-8d5bd5b54121'')/Attributes"}},"Class":{"__deferred":{"uri":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''2621b702-3a76-4908-b240-8d5bd5b54121'')/Class"}}}}'
     headers:
       content-length:
       - '2099'
+      content-type:
+      - application/json
+      dataserviceversion:
+      - '2.0'
+      pragma:
+      - no-cache
+      server:
+      - Apache-Coyote/1.1
+      vary:
+      - Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - sentinelsat/1.0.1
+    method: GET
+    uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('77688707-96cf-4511-81cb-134646be9064')?$format=json
+  response:
+    body:
+      string: '{"d":{"__metadata":{"id":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''77688707-96cf-4511-81cb-134646be9064'')","uri":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''77688707-96cf-4511-81cb-134646be9064'')","type":"DHuS.Product","content_type":"application/octet-stream","media_src":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''77688707-96cf-4511-81cb-134646be9064'')/$value","edit_media":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''77688707-96cf-4511-81cb-134646be9064'')/$value"},"Id":"77688707-96cf-4511-81cb-134646be9064","Name":"S1B_IW_GRDH_1SDV_20210722T174356_20210722T174421_027910_03548F_D1D1","ContentType":"application/octet-stream","ContentLength":"659007465","ChildrenNumber":"2","Value":null,"CreationDate":"\/Date(1626982387142)\/","IngestionDate":"\/Date(1626981854449)\/","ModificationDate":"\/Date(1626982387142)\/","EvictionDate":null,"Online":true,"OnDemand":false,"ContentDate":{"__metadata":{"type":"DHuS.TimeRange"},"Start":"\/Date(1626975836232)\/","End":"\/Date(1626975861230)\/"},"Checksum":{"__metadata":{"type":"DHuS.Checksum"},"Algorithm":"MD5","Value":"2d810d61a78eb0c5a3f464cbda4d7dce"},"ContentGeometry":"<gml:Polygon
+        srsName=\"http://www.opengis.net/gml/srs/epsg.xml#4326\" xmlns:gml=\"http://www.opengis.net/gml\">\n   <gml:outerBoundaryIs>\n      <gml:LinearRing>\n         <gml:coordinates>63.069042,-4.945058
+        63.524727,0.185989 62.036182,0.698898 61.591076,-4.187161 63.069042,-4.945058</gml:coordinates>\n      </gml:LinearRing>\n   </gml:outerBoundaryIs>\n</gml:Polygon>","Products":{"__deferred":{"uri":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''77688707-96cf-4511-81cb-134646be9064'')/Products"}},"Nodes":{"__deferred":{"uri":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''77688707-96cf-4511-81cb-134646be9064'')/Nodes"}},"Attributes":{"__deferred":{"uri":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''77688707-96cf-4511-81cb-134646be9064'')/Attributes"}},"Class":{"__deferred":{"uri":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''77688707-96cf-4511-81cb-134646be9064'')/Class"}}}}'
+    headers:
+      content-length:
+      - '2097'
       content-type:
       - application/json
       dataserviceversion:

@@ -21,7 +21,7 @@ Changed
 Fixed
 ~~~~~
 * Changed logic for _get_filename when cd header not present (`#494 <https://github.com/sentinelsat/sentinelsat/issues/494>`_ `@rbrishabh <https://github.com/rbrishabh>`_)
-
+* Fixed online status checks accidentally counting towards the concurrent downloads limit on the server, causing downloads to fail. (`#508 <https://github.com/sentinelsat/sentinelsat/issues/508>`_ `@avalentino <https://github.com/avalentino>`_).
 
 [1.0.1] – 2021-05-25
 -------------------------
