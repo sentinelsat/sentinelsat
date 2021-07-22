@@ -8,6 +8,9 @@ on:
   # also allow this workflow to be run manually
   workflow_dispatch:
 
+env:
+  PYTEST_ADDOPTS: "--color=yes"
+
 jobs:
   run-live-test:
     if: ${{ github.repository == 'sentinelsat/sentinelsat' }}
@@ -54,10 +57,10 @@ jobs:
         name: fixtures
         path: tests/fixtures/
 
-    - name: Create an issue if tests failed
-      uses: JasonEtco/create-an-issue@v2
-      if: failure() && steps.health-check.conclusion == 'success'
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        filename: .github/live-test-failure-template.md
+#    - name: Create an issue if tests failed
+#      uses: JasonEtco/create-an-issue@v2
+#      if: failure() && steps.health-check.conclusion == 'success'
+#      env:
+#        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#      with:
+#        filename: .github/live-test-failure-template.md

@@ -4,6 +4,9 @@ on:
   push:
   pull_request:
 
+env:
+  PYTEST_ADDOPTS: "--color=yes"
+
 jobs:
   build:
 
