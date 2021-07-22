@@ -1475,7 +1475,7 @@ def _check_scihub_response(response, test_json=True, query_string=None):
                     "Consider using SentinelAPI.check_query_length() for "
                     "client-side validation of the query string length.".format(length)
                 )
-            raise QueryLengthError(msg, response)
+            raise QueryLengthError(msg, response) from None
         elif "Invalid key" in msg:
             msg = msg.split(" : ", 1)[-1]
             raise InvalidKeyError(msg, response)
