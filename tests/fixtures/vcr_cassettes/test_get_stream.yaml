@@ -8,36 +8,27 @@ interactions:
       - gzip, deflate
       Connection:
       - keep-alive
-      Range:
-      - bytes=0-1
       User-Agent:
       - sentinelsat/1.0.1
     method: GET
-    uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('1ff948db-72a6-4309-9ded-031129de6254')/$value
+    uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('2edae234-b02d-46d2-8915-823e4ec0eadb')/Online/$value
   response:
-    body: {}
+    body:
+      string: 'true'
     headers:
-      accept-ranges:
-      - bytes
-      content-disposition:
-      - inline;filename="S3B_SR_1_SRA____20210704T114011_20210704T114030_20210704T133742_0018_054_180______LN3_O_NR_004.zip"
       content-length:
-      - '2'
-      content-range:
-      - bytes 0-1/446090
+      - '4'
       content-type:
-      - application/octet-stream
+      - text/plain;charset=utf-8
       dataserviceversion:
       - '2.0'
-      etag:
-      - e678d5c42e832351de9a59f7c4c2f0c0
       pragma:
       - no-cache
       server:
       - Apache-Coyote/1.1
     status:
-      code: 206
-      message: Partial Content
+      code: 200
+      message: OK
 - request:
     body: null
     headers:
@@ -50,24 +41,24 @@ interactions:
       User-Agent:
       - sentinelsat/1.0.1
     method: GET
-    uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('1ff948db-72a6-4309-9ded-031129de6254')/$value
+    uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('2edae234-b02d-46d2-8915-823e4ec0eadb')/$value
   response:
     body: {}
     headers:
       accept-ranges:
       - bytes
       content-disposition:
-      - inline;filename="S3B_SR_1_SRA____20210704T114011_20210704T114030_20210704T133742_0018_054_180______LN3_O_NR_004.zip"
+      - inline;filename="S3B_SR_1_SRA____20210720T194442_20210720T194500_20210720T214156_0017_055_028______LN3_O_NR_004.zip"
       content-length:
-      - '446090'
+      - '447106'
       content-range:
-      - bytes 0-446089/446090
+      - bytes 0-447105/447106
       content-type:
       - application/octet-stream
       dataserviceversion:
       - '2.0'
       etag:
-      - e678d5c42e832351de9a59f7c4c2f0c0
+      - a0377743199276ccab05e691822ad603
       pragma:
       - no-cache
       server:
