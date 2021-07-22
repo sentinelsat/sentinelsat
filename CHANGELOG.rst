@@ -13,6 +13,7 @@ CLI changes
 Added
 ~~~~~
 * Better handling 403 error in ``trigger_offline_retrieval()`` (`#491 <https://github.com/sentinelsat/sentinelsat/issues/491>`_ `@z4zz <https://github.com/z4zz>`_)
+* Added support for SHA3-256 checksums. (`#523 <https://github.com/sentinelsat/sentinelsat/issues/523>`_ `@valgur <https://github.com/valgur>`_)
 
 Changed
 ~~~~~~~
