@@ -119,7 +119,10 @@ class SentinelProductsAPI(sentinelsat.SentinelAPI):
         node_info = product_info.copy()
         node_info["url"] = self._path_to_url(product_info, path, "value")
         node_info["size"] = dataobj_info["size"]
-        node_info["md5"] = dataobj_info["md5"]
+        if "md5" in dataobj_info:
+            node_info["md5"] = dataobj_info["md5"]
+        if "sha3-256" in dataobj_info:
+            node_info["sha3-256"] = dataobj_info["sha3-256"]
         node_info["node_path"] = dataobj_info["href"]
         # node_info["parent"] = product_info
 
@@ -225,8 +228,8 @@ def _xml_to_dataobj_info(element):
     # assert data['locator_type'] == "URL"
 
     elem = element.find("byteStream/checksum")
-    assert elem.attrib["checksumName"].upper() == "MD5"
-    data["md5"] = elem.text
+    assert elem.attrib["checksumName"].upper() in ["MD5", "SHA3-256"]
+    data[elem.attrib["checksumName"].lower()] = elem.text
 
     return data
 
