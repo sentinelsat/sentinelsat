@@ -204,6 +204,23 @@ Options
 
     Query orbit products form the GNSS end-point ("https://scihub.copernicus.eu/gnss").
 
+.. option:: --fmt <format string>
+
+    Specify a custom format to print results. The format string shall
+    be compatible with the Python "Format Specification Mini-Language".
+
+    Possible keys for substitution are: 'title', 'link', 'link_alternative',
+    'link_icon', 'summary', 'ondemand', 'beginposition', 'endposition',
+    'ingestiondate', 'missiondatatakeid', 'orbitnumber', 'lastorbitnumber',
+    'relativeorbitnumber', 'lastrelativeorbitnumber', 'slicenumber',
+    'filename', 'format', 'identifier', 'size', 'status', 'timeliness',
+    'sensoroperationalmode', 'swathidentifier', 'orbitdirection',
+    'producttype', 'platformname', 'platformidentifier', 'instrumentname',
+    'instrumentshortname', 'productclass', 'polarisationmode',
+    'acquisitiontype', 'gmlfootprint', 'footprint', 'uuid'.
+
+    Default: "Product {uuid} - {summary}"
+
 .. option:: --info
 
     Display DHuS server information.
