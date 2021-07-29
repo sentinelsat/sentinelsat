@@ -191,13 +191,6 @@ def validate_query_param(ctx, param, kwargs):
     show_default=True,
     help="""Specify a custom format to print results. The format string shall
     be compatible with the Python "Format Specification Mini-Language".
-    Possible keys for substitution are: 'beginposition', 'endposition',
-    'filename', 'format', 'id', 'identifier', 'ingestiondate',
-    'instrumentname', 'instrumentshortname', 'link', 'link_alternative',
-    'link_icon', 'ondemand', 'orbitdirection', 'orbitnumber',
-    'platformidentifier', 'platformname', 'producttype',
-    'relativeorbitnumber', 'size', 'summary', 'title', 'uuid',
-    'footprint', 'gmlfootprint'.
     A complete list keys that can be used for a specific sentinel mission
     can be e.g. obtained looking at the "properties" of the output produced by
     the ``--footprints`` flag  - (maybe with ``--limit 1``).
