@@ -400,6 +400,8 @@ class Downloader:
                         exceptions[pid] = exception
                         if self.fail_fast:
                             raise exception from None
+                        else:
+                            self.logger.error("%s failed: %s", pid, str(exception))
             except:
                 stop_event.set()
                 for t in all_tasks:
