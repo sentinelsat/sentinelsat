@@ -54,6 +54,9 @@ def run_cli(credentials):
         must_raise = kwargs.pop("must_raise", None)
         must_return_nonzero = kwargs.pop("must_return_nonzero", False) or must_raise is not None
 
+        # Otherwise tqdm.write() messes up the stdout for testing
+        os.environ["DISABLE_TQDM_LOGGING"] = "y"
+
         assert_raises = pytest.raises(must_raise) if must_raise else nullcontext()
         with assert_raises:
             result = runner.invoke(
