@@ -4,7 +4,6 @@ from xml.etree import ElementTree as etree
 
 import sentinelsat
 from sentinelsat.exceptions import LTATriggered, SentinelAPIError
-from sentinelsat.sentinel import _check_scihub_response
 
 
 class SentinelProductsAPI(sentinelsat.SentinelAPI):
@@ -94,13 +93,13 @@ class SentinelProductsAPI(sentinelsat.SentinelAPI):
 
         url = self._path_to_url(product_info, "manifest.safe", "json")
         response = self.session.get(url, auth=self.session.auth)
-        _check_scihub_response(response)
+        self._check_scihub_response(response)
         info = response.json()["d"]
 
         node_info["size"] = int(info["ContentLength"])
 
         response = self.session.get(node_info["url"], auth=self.session.auth)
-        _check_scihub_response(response, test_json=False)
+        self._check_scihub_response(response, test_json=False)
         data = response.content
         if len(data) != node_info["size"]:
             raise SentinelAPIError("File corrupt: data length do not match")

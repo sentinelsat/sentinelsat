@@ -1,0 +1,603 @@
+import concurrent.futures
+import enum
+import itertools
+import shutil
+import threading
+from collections import namedtuple
+from concurrent.futures import ThreadPoolExecutor
+from pathlib import Path
+from typing import Any, Dict
+
+from sentinelsat.exceptions import (
+    InvalidChecksumError,
+    LTAError,
+    LTATriggered,
+    SentinelAPIError,
+)
+
+
+class DownloadStatus(enum.Enum):
+    """Status info for ``SentinelAPI.download_all()``."""
+
+    UNAVAILABLE = enum.auto()
+    OFFLINE = enum.auto()
+    TRIGGERED = enum.auto()
+    ONLINE = enum.auto()
+    DOWNLOAD_STARTED = enum.auto()
+    DOWNLOADED = enum.auto()
+
+    def __bool__(self):
+        return self == DownloadStatus.DOWNLOADED
+
+
+class Downloader:
+    def __init__(self, api):
+        from sentinelsat import SentinelAPI
+
+        self.api: SentinelAPI = api
+        self.logger = self.api.logger
+        self._tqdm = self.api._tqdm
+
+    def download(self, id, directory_path=".", checksum=True, **kwargs):
+        """Download a product.
+
+        Uses the filename on the server for the downloaded file, e.g.
+        "S1A_EW_GRDH_1SDH_20141003T003840_20141003T003920_002658_002F54_4DD1.zip".
+
+        Incomplete downloads are continued and complete files are skipped.
+
+        Parameters
+        ----------
+        id : string
+            UUID of the product, e.g. 'a8dd0cfd-613e-45ce-868c-d79177b916ed'
+        directory_path : string, optional
+            Where the file will be downloaded
+        checksum : bool, optional
+            If True, verify the downloaded file's integrity by checking its MD5 checksum.
+            Throws InvalidChecksumError if the checksum does not match.
+            Defaults to True.
+
+        Returns
+        -------
+        product_info : dict
+            Dictionary containing the product's info from get_product_odata() as well as
+            the path on disk.
+
+        Raises
+        ------
+        InvalidChecksumError
+            If the MD5 checksum does not match the checksum on the server.
+        LTATriggered
+            If the product has been archived and its retrieval was successfully triggered.
+        LTAError
+            If the product has been archived and its retrieval failed.
+
+        .. versionchanged:: 1.0.0
+           * Added ``**kwargs`` parameter to allow easier specialization of the :class:`SentinelAPI` class.
+           * Now raises LTATriggered or LTAError if the product has been archived.
+        """
+        product_info = self.api.get_product_odata(id)
+        filename = self.api._get_filename(product_info)
+        path = Path(directory_path) / filename
+        product_info["path"] = str(path)
+        product_info["downloaded_bytes"] = 0
+
+        self.logger.info("Downloading %s to %s", id, path)
+
+        if path.exists():
+            # We assume that the product has been downloaded and is complete
+            return product_info
+
+        # An incomplete download triggers the retrieval from the LTA if the product is not online
+        if not self.api.is_online(id):
+            self.api.trigger_offline_retrieval(id)
+            raise LTATriggered(id)
+
+        self._download_outer(product_info, path, checksum)
+        return product_info
+
+    def _download_outer(self, product_info: Dict[str, Any], path: Path, verify_checksum: bool):
+        # Use a temporary file for downloading
+        temp_path = path.with_name(path.name + ".incomplete")
+        skip_download = False
+        if temp_path.exists():
+            size = temp_path.stat().st_size
+            if size > product_info["size"]:
+                self.logger.warning(
+                    "Existing incomplete file %s is larger than the expected final size"
+                    " (%s vs %s bytes). Deleting it.",
+                    str(temp_path),
+                    size,
+                    product_info["size"],
+                )
+                temp_path.unlink()
+            elif size == product_info["size"]:
+                if verify_checksum and not self.api._checksum_compare(temp_path, product_info):
+                    # Log a warning since this should never happen
+                    self.logger.warning(
+                        "Existing incomplete file %s appears to be fully downloaded but "
+                        "its checksum is incorrect. Deleting it.",
+                        str(temp_path),
+                    )
+                    temp_path.unlink()
+                else:
+                    skip_download = True
+            else:
+                # continue downloading
+                self.logger.info(
+                    "Download will resume from existing incomplete file %s.", temp_path
+                )
+                pass
+        if not skip_download:
+            # Store the number of downloaded bytes for unit tests
+            temp_path.parent.mkdir(parents=True, exist_ok=True)
+            product_info["downloaded_bytes"] = self._download(
+                product_info["url"], temp_path, product_info["size"]
+            )
+        # Check integrity with MD5 checksum
+        if verify_checksum is True:
+            if not self.api._checksum_compare(temp_path, product_info):
+                temp_path.unlink()
+                raise InvalidChecksumError("File corrupt: checksums do not match")
+        # Download successful, rename the temporary file to its proper name
+        shutil.move(temp_path, path)
+
+    def download_all(
+        self,
+        products,
+        directory_path=".",
+        max_attempts=10,
+        checksum=True,
+        n_concurrent_dl=2,
+        n_concurrent_trigger=1,
+        lta_retry_delay=300,
+        fail_fast=False,
+        **kwargs
+    ):
+        """Download a list of products.
+
+        Takes a list of product IDs as input. This means that the return value of query() can be
+        passed directly to this method.
+
+        File names on the server are used for the downloaded files, e.g.
+        "S1A_EW_GRDH_1SDH_20141003T003840_20141003T003920_002658_002F54_4DD1.zip".
+
+        In case of interruptions or other exceptions, downloading will restart from where it left
+        off. Downloading is attempted at most max_attempts times to avoid getting stuck with
+        unrecoverable errors.
+
+        Parameters
+        ----------
+        products : list
+            List of product IDs
+        directory_path : string
+            Directory where the downloaded files will be downloaded
+        max_attempts : int, optional
+            Number of allowed retries before giving up downloading a product. Defaults to 10.
+        checksum : bool, optional
+            If True, verify the downloaded files' integrity by checking its MD5 checksum.
+            Throws InvalidChecksumError if the checksum does not match.
+            Defaults to True.
+        n_concurrent_dl : integer
+            number of concurrent downloads
+        lta_retry_delay : integer
+            how long to wait between requests to the long term archive. Default is 600 seconds.
+        fail_fast : bool, optional
+            if True, all other downloads are cancelled when one of the downloads fails.
+            Defaults to False.
+        **kwargs :
+            additional parameters for the *download* method
+
+        Raises
+        ------
+        Raises the most recent downloading exception if all downloads failed.
+
+        Returns
+        -------
+        dict[string, dict]
+            A dictionary containing the return value from download() for each successfully
+            downloaded product.
+        dict[string, dict]
+            A dictionary containing the product information for products successfully
+            triggered for retrieval from the long term archive but not downloaded.
+        dict[string, dict]
+            A dictionary containing the product information of products where either
+            downloading or triggering failed. "exception" field with the exception info
+            is included to the product info dict.
+
+
+        .. versionchanged:: 0.15
+           Added ``**kwargs`` parameter to allow easier specialization of the :class:`SentinelAPI` class.
+        """
+
+        ResultTuple = namedtuple("ResultTuple", ["statuses", "exceptions", "product_infos"])
+        product_ids = list(set(products))
+        assert n_concurrent_dl > 0
+        if len(product_ids) == 0:
+            return ResultTuple({}, {}, {})
+        self.logger.info(
+            "Will download %d products using %d workers", len(product_ids), n_concurrent_dl
+        )
+
+        statuses = {pid: DownloadStatus.UNAVAILABLE for pid in product_ids}
+        exceptions = {}
+        product_infos = {}
+        online_prods = set()
+        offline_prods = set()
+
+        # Get online status and product info.
+        for pid in self._tqdm(
+            iterable=product_ids, desc="Fetching archival status", unit="product"
+        ):
+            assert isinstance(pid, str)
+            try:
+                info = self.api.get_product_odata(pid)
+            except SentinelAPIError as e:
+                exceptions[pid] = e
+                if fail_fast:
+                    raise
+                self.logger.error(
+                    "Getting product info for %s failed, can't download: %s", pid, str(e)
+                )
+                continue
+            product_infos[pid] = info
+            if product_infos[pid]["Online"]:
+                statuses[pid] = DownloadStatus.ONLINE
+                online_prods.add(pid)
+            else:
+                statuses[pid] = DownloadStatus.OFFLINE
+                offline_prods.add(pid)
+
+        # Skip already downloaded files.
+        # Although the download method also checks, we do not need to retrieve such
+        # products from the LTA and use up our quota.
+        for pid in list(offline_prods):
+            product_info = product_infos[pid]
+            filename = self.api._get_filename(product_info)
+            path = Path(directory_path) / filename
+            if path.exists():
+                self.logger.info("Skipping already downloaded %s.", filename)
+                product_info["path"] = str(path)
+                statuses[pid] = DownloadStatus.DOWNLOADED
+                offline_prods.remove(pid)
+            else:
+                self.logger.info(
+                    "%s (%s) is in LTA and will be triggered.", product_info["title"], pid
+                )
+
+        # The bounded semaphore is needed on top of the thread pool because
+        # downloading and triggering both count against the maximum number of
+        # concurrent GET queries on the server side.
+        dl_semaphore = threading.BoundedSemaphore(n_concurrent_dl)
+        stop_event = threading.Event()
+        dl_tasks = {}
+        trigger_tasks = {}
+
+        if offline_prods:
+            # Reserve one concurrent GET query for LTA triggering
+            dl_semaphore.acquire()
+
+        trigger_progress = None
+        if offline_prods:
+            trigger_progress = self._tqdm(
+                total=len(offline_prods), desc="Retrieving from archive", unit="product"
+            )
+        dl_progress = self._tqdm(
+            total=len(online_prods) + len(offline_prods),
+            desc="Downloading products",
+            unit="product",
+        )
+        dl_progress.clear()
+
+        # Two separate threadpools for downloading and triggering of retrieval.
+        # Otherwise triggering might take up all threads and nothing is downloaded.
+        with ThreadPoolExecutor(
+            max_workers=n_concurrent_dl, thread_name_prefix="dl"
+        ) as dl_executor, ThreadPoolExecutor(
+            max_workers=n_concurrent_trigger, thread_name_prefix="trigger"
+        ) as trigger_executor:
+            # First all online products are downloaded. Subsequently, offline products that might
+            # have become available in the meantime are requested.
+            for pid in itertools.chain(online_prods, offline_prods):
+                future = dl_executor.submit(
+                    self._download_online_retry,
+                    product_infos[pid],
+                    statuses,
+                    exceptions,
+                    dl_semaphore,
+                    stop_event,
+                    directory_path,
+                    checksum,
+                    max_attempts=max_attempts,
+                    **kwargs
+                )
+                dl_tasks[future] = pid
+
+            for pid in offline_prods:
+                future = trigger_executor.submit(
+                    self._trigger_and_wait,
+                    pid,
+                    stop_event,
+                    statuses,
+                    lta_retry_delay,
+                )
+                trigger_tasks[future] = pid
+
+            all_tasks = list(trigger_tasks) + list(dl_tasks)
+            try:
+                for task in concurrent.futures.as_completed(all_tasks):
+                    pid = trigger_tasks.get(task) or dl_tasks[task]
+                    exception = exceptions.get(pid)
+                    if task.cancelled():
+                        exception = concurrent.futures.CancelledError()
+                    if task.exception():
+                        exception = task.exception()
+
+                    if task in dl_tasks:
+                        dl_progress.update()
+                        if not exception:
+                            product_infos[pid] = task.result()
+                            statuses[pid] = DownloadStatus.DOWNLOADED
+                    elif task in trigger_tasks:
+                        trigger_progress.update()
+                        if all(t.done() for t in trigger_tasks):
+                            # Triggering done, release a semaphore to allow an additional
+                            # concurrent download.
+                            dl_semaphore.release()
+                            trigger_progress.close()
+
+                    if exception:
+                        exceptions[pid] = exception
+                        if fail_fast:
+                            raise exception from None
+            except:
+                stop_event.set()
+                for t in all_tasks:
+                    t.cancel()
+                try:
+                    dl_semaphore.release()
+                except ValueError:
+                    pass
+                raise
+            finally:
+                if trigger_progress:
+                    trigger_progress.close()
+                dl_progress.close()
+
+        if not any(statuses):
+            if not exceptions:
+                raise SentinelAPIError("Downloading all products failed for an unknown reason")
+            exception = list(exceptions)[0]
+            raise exception
+
+        return ResultTuple(statuses, exceptions, product_infos)
+
+    def download_quicklook(self, id, directory_path="."):
+        """Download a quicklook for a product.
+
+        Uses the filename on the server for the downloaded image, e.g.
+        "S1A_EW_GRDH_1SDH_20141003T003840_20141003T003920_002658_002F54_4DD1.jpeg".
+
+        Complete images are skipped.
+
+        Parameters
+        ----------
+        id : string
+            UUID of the product, e.g. 'a8dd0cfd-613e-45ce-868c-d79177b916ed'
+        directory_path : string, optional
+            Where the image will be downloaded
+
+        Returns
+        -------
+        quicklook_info : dict
+            Dictionary containing the quicklooks's response headers as well as the path on disk.
+        """
+        product_info = self.api.get_product_odata(id)
+        url = product_info["quicklook_url"]
+
+        path = Path(directory_path) / "{}.jpeg".format(product_info["title"])
+        product_info["path"] = str(path)
+        product_info["downloaded_bytes"] = 0
+        product_info["error"] = ""
+
+        self.logger.info("Downloading quicklook %s to %s", product_info["title"], path)
+
+        r = self.api.session.get(url)
+        self.api._check_scihub_response(r, test_json=False)
+
+        product_info["quicklook_size"] = len(r.content)
+
+        if path.exists():
+            return product_info
+
+        content_type = r.headers["content-type"]
+        if content_type != "image/jpeg":
+            product_info["error"] = "Quicklook is not jpeg but {}".format(content_type)
+
+        if product_info["error"] == "":
+            with open(path, "wb") as fp:
+                fp.write(r.content)
+                product_info["downloaded_bytes"] = len(r.content)
+
+        return product_info
+
+    def download_all_quicklooks(self, products, directory_path=".", n_concurrent_dl=2):
+        """Download quicklook for a list of products.
+
+        Takes a dict of product IDs: product data as input. This means that the return value of
+        query() can be passed directly to this method.
+
+        File names on the server are used for the downloaded images, e.g.
+        "S2A_MSIL1C_20200924T104031_N0209_R008_T35WMV_20200926T135405.jpeg".
+
+        Parameters
+        ----------
+        products : dict
+            Dict of product IDs, product data
+        directory_path : string
+            Directory where the downloaded images will be downloaded
+        n_concurrent_dl : integer
+            Number of concurrent downloads
+
+        Returns
+        -------
+        dict[string, dict]
+            A dictionary containing the return value from download_quicklook() for each
+            successfully downloaded quicklook
+        dict[string, dict]
+            A dictionary containing the error of products where either
+            quicklook was not available or it had an unexpected content type
+        """
+
+        self.logger.info("Will download %d quicklooks", len(products))
+
+        downloaded_quicklooks = {}
+        failed_quicklooks = {}
+
+        with ThreadPoolExecutor(max_workers=n_concurrent_dl) as dl_exec:
+            dl_tasks = {}
+            for pid in products:
+                future = dl_exec.submit(self.download_quicklook, pid, directory_path)
+                dl_tasks[future] = pid
+
+            completed_tasks = concurrent.futures.as_completed(dl_tasks)
+
+            for future in completed_tasks:
+                product_info = future.result()
+                if product_info["error"] == "":
+                    downloaded_quicklooks[dl_tasks[future]] = product_info
+                else:
+                    failed_quicklooks[dl_tasks[future]] = product_info["error"]
+
+        ResultTuple = namedtuple("ResultTuple", ["downloaded", "failed"])
+        return ResultTuple(downloaded_quicklooks, failed_quicklooks)
+
+    def _trigger_and_wait(self, uuid, stop_event, statuses, retry_delay=300):
+        """Continuously triggers retrieval of offline products
+
+        This function is supposed to be called in a separate thread. By setting stop_event it can be stopped.
+        """
+        while not self.api.is_online(uuid) and not stop_event.is_set():
+            if statuses[uuid] == DownloadStatus.OFFLINE:
+                # Trigger
+                try:
+                    triggered = self.api.trigger_offline_retrieval(uuid)
+                    if triggered:
+                        statuses[uuid] = DownloadStatus.TRIGGERED
+                        self.logger.info("%s accepted for retrieval", uuid)
+                    else:
+                        # Product is already online
+                        break
+                except LTAError as e:
+                    self.logger.info(
+                        "Request for %s was not accepted: %s. Retrying in %d seconds",
+                        uuid,
+                        e.msg,
+                        retry_delay,
+                    )
+            else:
+                # Just wait for the product to come online
+                pass
+            stop_event.wait(timeout=retry_delay)
+        if not stop_event.is_set():
+            self.logger.info("%s retrieval from LTA completed", uuid)
+            statuses[uuid] = DownloadStatus.ONLINE
+
+    def _download_online_retry(
+        self,
+        product_info,
+        statuses,
+        exceptions,
+        dl_semaphore,
+        stop_event,
+        directory_path=".",
+        checksum=True,
+        max_attempts=10,
+        **kwargs
+    ):
+        """Thin wrapper around download with retrying and checking whether a product is online
+
+        Parameters
+        ----------
+
+        product_info : dict
+            Contains the product's info as returned by get_product_odata()
+        directory_path : string, optional
+            Where the file will be downloaded
+        checksum : bool, optional
+            If True, verify the downloaded file's integrity by checking its MD5 checksum.
+            Throws InvalidChecksumError if the checksum does not match.
+            Defaults to True.
+        max_attempts : int, optional
+            Number of allowed retries before giving up downloading a product. Defaults to 10.
+
+        Returns
+        -------
+        dict or None:
+            Either dictionary containing the product's info or if the product is not online just None
+
+        """
+        if max_attempts <= 0:
+            return
+
+        uuid = product_info["id"]
+        title = product_info["title"]
+
+        # Wait for the triggering and retrieval to complete first
+        while (
+            statuses[uuid] != DownloadStatus.ONLINE
+            and uuid not in exceptions
+            and not stop_event.is_set()
+        ):
+            stop_event.wait(timeout=1)
+        if uuid in exceptions:
+            return
+
+        with dl_semaphore:
+            last_exception = None
+            for cnt in range(max_attempts):
+                if stop_event.is_set():
+                    return
+                try:
+                    statuses[uuid] = DownloadStatus.DOWNLOAD_STARTED
+                    return self.download(uuid, directory_path, checksum, **kwargs)
+                except Exception as e:
+                    if isinstance(e, InvalidChecksumError):
+                        self.logger.warning(
+                            "Invalid checksum. The downloaded file for '%s' is corrupted.",
+                            title,
+                        )
+                    else:
+                        self.logger.exception("There was an error downloading %s", title)
+                    self.logger.info("%d retries left", max_attempts - cnt - 1)
+                    last_exception = e
+            self.logger.info("No retries left for %s. Terminating.", title)
+            raise last_exception
+
+    def _download(self, url, path, file_size):
+        headers = {}
+        continuing = path.exists()
+        if continuing:
+            already_downloaded_bytes = path.stat().st_size
+            headers = {"Range": "bytes={}-".format(already_downloaded_bytes)}
+        else:
+            already_downloaded_bytes = 0
+        downloaded_bytes = 0
+        with self.api.session.get(url, stream=True, headers=headers) as r, self._tqdm(
+            desc="Downloading",
+            total=file_size,
+            unit="B",
+            unit_scale=True,
+            initial=already_downloaded_bytes,
+        ) as progress:
+            self.api._check_scihub_response(r, test_json=False)
+            chunk_size = 2 ** 20  # download in 1 MB chunks
+            mode = "ab" if continuing else "wb"
+            with open(path, mode) as f:
+                for chunk in r.iter_content(chunk_size=chunk_size):
+                    if chunk:  # filter out keep-alive new chunks
+                        f.write(chunk)
+                        progress.update(len(chunk))
+                        downloaded_bytes += len(chunk)
+            # Return the number of bytes downloaded
+            return downloaded_bytes

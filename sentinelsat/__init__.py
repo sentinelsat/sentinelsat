@@ -15,12 +15,12 @@ from .exceptions import (
 )
 from .sentinel import (
     SentinelAPI,
-    DownloadStatus,
     format_query_date,
     geojson_to_wkt,
     read_geojson,
     placename_to_wkt,
 )
+from .download import Downloader, DownloadStatus
 
 from .products import (
     SentinelProductsAPI,
