@@ -1,13 +1,14 @@
 import concurrent.futures
+import enum
 import hashlib
 import itertools
 import logging
 import re
 import shutil
 import threading
-import warnings
 import xml.etree.ElementTree as ET
 from collections import OrderedDict, defaultdict, namedtuple
+from concurrent.futures import ThreadPoolExecutor
 from datetime import date, datetime, timedelta
 from pathlib import Path
 from typing import Any, Dict
@@ -31,6 +32,20 @@ from sentinelsat.exceptions import (
     UnauthorizedError,
 )
 from . import __version__ as sentinelsat_version
+
+
+class DownloadStatus(enum.Enum):
+    """Status info for ``SentinelAPI.download_all()``."""
+
+    UNAVAILABLE = enum.auto()
+    OFFLINE = enum.auto()
+    TRIGGERED = enum.auto()
+    ONLINE = enum.auto()
+    DOWNLOAD_STARTED = enum.auto()
+    DOWNLOADED = enum.auto()
+
+    def __bool__(self):
+        return self == DownloadStatus.DOWNLOADED
 
 
 class SentinelAPI:
@@ -214,7 +229,7 @@ class SentinelAPI:
         )
         formatted_order_by = _format_order_by(order_by)
         response, count = self._load_query(query, formatted_order_by, limit, offset)
-        self.logger.info("Found %s products", count)
+        self.logger.info(f"Found {count:,} products")
         return _parse_opensearch_response(response)
 
     @staticmethod
@@ -297,7 +312,7 @@ class SentinelAPI:
                 desc="Querying products",
                 initial=self.page_size,
                 total=max_offset - offset,
-                unit=" products",
+                unit="product",
             )
             for new_offset in range(offset + self.page_size, max_offset, self.page_size):
                 new_limit = limit
@@ -657,7 +672,9 @@ class SentinelAPI:
         max_attempts=10,
         checksum=True,
         n_concurrent_dl=2,
-        lta_retry_delay=600,
+        n_concurrent_trigger=1,
+        lta_retry_delay=300,
+        fail_fast=False,
         **kwargs
     ):
         """Download a list of products.
@@ -688,6 +705,9 @@ class SentinelAPI:
             number of concurrent downloads
         lta_retry_delay : integer
             how long to wait between requests to the long term archive. Default is 600 seconds.
+        fail_fast : bool, optional
+            if True, all other downloads are cancelled when one of the downloads fails.
+            Defaults to False.
         **kwargs :
             additional parameters for the *download* method
 
@@ -713,148 +733,210 @@ class SentinelAPI:
            Added ``**kwargs`` parameter to allow easier specialization of the :class:`SentinelAPI` class.
         """
 
-        product_ids = list(products)
+        ResultTuple = namedtuple("ResultTuple", ["statuses", "exceptions", "product_infos"])
+        product_ids = list(set(products))
+        assert n_concurrent_dl > 0
+        if len(product_ids) == 0:
+            return ResultTuple({}, {}, {})
         self.logger.info(
             "Will download %d products using %d workers", len(product_ids), n_concurrent_dl
         )
 
+        statuses = {pid: DownloadStatus.UNAVAILABLE for pid in product_ids}
+        exceptions = {}
         product_infos = {}
-        online_prods = {}
-        offline_prods = {}
+        online_prods = set()
+        offline_prods = set()
+
+        # Get online status and product info.
         for pid in self._tqdm(
-            iterable=product_ids, desc="Fetching archival status", unit=" products"
+            iterable=product_ids, desc="Fetching archival status", unit="product"
         ):
-            info = self.get_product_odata(pid)
+            assert isinstance(pid, str)
+            try:
+                info = self.get_product_odata(pid)
+            except SentinelAPIError as e:
+                exceptions[pid] = e
+                if fail_fast:
+                    raise
+                self.logger.error(
+                    "Getting product info for %s failed, can't download: %s", pid, str(e)
+                )
+                continue
             product_infos[pid] = info
-            if self.is_online(pid):
-                online_prods[pid] = info
+            if product_infos[pid]["Online"]:
+                statuses[pid] = DownloadStatus.ONLINE
+                online_prods.add(pid)
             else:
-                offline_prods[pid] = info
+                statuses[pid] = DownloadStatus.OFFLINE
+                offline_prods.add(pid)
 
         # Skip already downloaded files.
         # Although the download method also checks, we do not need to retrieve such
         # products from the LTA and use up our quota.
-        downloaded_prods = {}
-        for product_info in list(offline_prods.values()):
+        for pid in list(offline_prods):
+            product_info = product_infos[pid]
             filename = self._get_filename(product_info)
             path = Path(directory_path) / filename
             if path.exists():
+                self.logger.info("Skipping already downloaded %s.", filename)
                 product_info["path"] = str(path)
-                downloaded_prods[product_info["id"]] = product_info
-                del offline_prods[product_info["id"]]
+                statuses[pid] = DownloadStatus.DOWNLOADED
+                offline_prods.remove(pid)
             else:
-                self.logger.info("Product %s is in LTA.", product_info["id"])
+                self.logger.info(
+                    "%s (%s) is in LTA and will be triggered.", product_info["title"], pid
+                )
 
+        # The bounded semaphore is needed on top of the thread pool because
+        # downloading and triggering both count against the maximum number of
+        # concurrent GET queries on the server side.
+        dl_semaphore = threading.BoundedSemaphore(n_concurrent_dl)
+        stop_event = threading.Event()
         dl_tasks = {}
-        retrieval_scheduled = {}
+        trigger_tasks = {}
 
-        # Two separate threadpools for downloading and triggering retrieval.
+        if offline_prods:
+            # Reserve one concurrent GET query for LTA triggering
+            dl_semaphore.acquire()
+
+        trigger_progress = None
+        if offline_prods:
+            trigger_progress = self._tqdm(
+                total=len(offline_prods), desc="Retrieving from archive", unit="product"
+            )
+        dl_progress = self._tqdm(
+            total=len(online_prods) + len(offline_prods),
+            desc="Downloading products",
+            unit="product",
+        )
+        dl_progress.clear()
+
+        # Two separate threadpools for downloading and triggering of retrieval.
         # Otherwise triggering might take up all threads and nothing is downloaded.
-        with concurrent.futures.ThreadPoolExecutor(max_workers=n_concurrent_dl) as dl_exec:
+        with ThreadPoolExecutor(
+            max_workers=n_concurrent_dl, thread_name_prefix="dl"
+        ) as dl_executor, ThreadPoolExecutor(
+            max_workers=n_concurrent_trigger, thread_name_prefix="trigger"
+        ) as trigger_executor:
             # First all online products are downloaded. Subsequently, offline products that might
             # have become available in the meantime are requested.
-            for product_info in itertools.chain(online_prods.values(), offline_prods.values()):
-                dl_tasks[product_info["id"]] = dl_exec.submit(
+            for pid in itertools.chain(online_prods, offline_prods):
+                future = dl_executor.submit(
                     self._download_online_retry,
-                    product_info,
+                    product_infos[pid],
+                    statuses,
+                    exceptions,
+                    dl_semaphore,
+                    stop_event,
                     directory_path,
                     checksum,
                     max_attempts=max_attempts,
                     **kwargs
                 )
+                dl_tasks[future] = pid
 
-            stop_event = threading.Event()
-            trigger_thread = threading.Thread(
-                target=self._trigger_offline_retrieval_until_stop,
-                args=(offline_prods, stop_event, retrieval_scheduled, lta_retry_delay),
-            )
+            for pid in offline_prods:
+                future = trigger_executor.submit(
+                    self._trigger_and_wait,
+                    pid,
+                    stop_event,
+                    statuses,
+                    lta_retry_delay,
+                )
+                trigger_tasks[future] = pid
 
-            # launch in separate thread so that the as_completed loop is entered
-            trigger_thread.start()
+            all_tasks = list(trigger_tasks) + list(dl_tasks)
+            try:
+                for task in concurrent.futures.as_completed(all_tasks):
+                    pid = trigger_tasks.get(task) or dl_tasks[task]
+                    exception = exceptions.get(pid)
+                    if task.cancelled():
+                        exception = concurrent.futures.CancelledError()
+                    if task.exception():
+                        exception = task.exception()
 
-            for dl_task in concurrent.futures.as_completed(dl_tasks.values()):
-                if not dl_task.cancelled() and not dl_task.exception():
-                    product_info = dl_task.result()
-                    if product_info is not None:
-                        downloaded_prods[product_info["id"]] = product_info
-                    # This else catches the first dl_task that did not complete because
-                    # the product was not online and _download_online_retry returned None
-                    else:
-                        stop_event.set()
-                        for task in dl_tasks.values():
-                            task.cancel()
+                    if task in dl_tasks:
+                        dl_progress.update()
+                        if not exception:
+                            product_infos[pid] = task.result()
+                            statuses[pid] = DownloadStatus.DOWNLOADED
+                    elif task in trigger_tasks:
+                        trigger_progress.update()
+                        if all(t.done() for t in trigger_tasks):
+                            # Triggering done, release a semaphore to allow an additional
+                            # concurrent download.
+                            dl_semaphore.release()
+                            trigger_progress.close()
 
-            # Wait for trigger_thread to finish. This could still place a product on the
-            # retrieval_scheduled queue.
-            trigger_thread.join()
+                    if exception:
+                        exceptions[pid] = exception
+                        if fail_fast:
+                            raise exception from None
+            except:
+                stop_event.set()
+                for t in all_tasks:
+                    t.cancel()
+                try:
+                    dl_semaphore.release()
+                except ValueError:
+                    pass
+                raise
+            finally:
+                if trigger_progress:
+                    trigger_progress.close()
+                dl_progress.close()
 
-        retrieval_scheduled = {
-            pid: info
-            for pid, info in retrieval_scheduled.items()
-            if pid not in downloaded_prods.keys()
-        }
-
-        failed_prods = {}
-        for pid, info in product_infos.items():
-            if pid not in downloaded_prods and pid not in retrieval_scheduled:
-                if dl_tasks[pid].cancelled():
-                    info["exception"] = concurrent.futures.CancelledError()
-                else:
-                    info["exception"] = dl_tasks[pid].exception()
-                failed_prods[pid] = info
-
-        if len(failed_prods) == len(product_ids) and len(product_ids) > 0:
-            exception = list(failed_prods.values())[0]["exception"]
-            if exception is None:
-                raise SentinelAPIError("Downloading all products failed for unknown reason")
+        if not any(statuses):
+            if not exceptions:
+                raise SentinelAPIError("Downloading all products failed for an unknown reason")
+            exception = list(exceptions)[0]
             raise exception
 
-        ResultTuple = namedtuple("ResultTuple", ["downloaded", "retrieval_triggered", "failed"])
-        return ResultTuple(downloaded_prods, retrieval_scheduled, failed_prods)
+        return ResultTuple(statuses, exceptions, product_infos)
 
-    def _trigger_offline_retrieval_until_stop(
-        self, product_infos, stop_event, retrieval_scheduled, retry_delay=600
-    ):
-        """Countinuously triggers retrieval of offline products
+    def _trigger_and_wait(self, uuid, stop_event, statuses, retry_delay=300):
+        """Continuously triggers retrieval of offline products
 
         This function is supposed to be called in a separate thread. By setting stop_event it can be stopped.
-
-        Parameters
-        ----------
-        product_infos : dictionary
-            Contains uuid of offline products as keys and their product information as values.
-        stop_event: threading.Event
-            If this event is set from another thread triggering from the LTA will stop
-        retrieval_scheduled: dictionary
-            Stores product information of triggered products. This can be accessed by other threads.
-        retry_delay: integer
-            After an unsuccessful triggering operation. Try again after this delay
-
-        Notes
-        -----
-        https://scihub.copernicus.eu/userguide/LongTermArchive
-
         """
-
-        for product_info in product_infos.values():
-            while not stop_event.is_set():
+        while not self.is_online(uuid) and not stop_event.is_set():
+            if statuses[uuid] == DownloadStatus.OFFLINE:
+                # Trigger
                 try:
-                    triggered = self.trigger_offline_retrieval(product_info["id"])
+                    triggered = self.trigger_offline_retrieval(uuid)
                     if triggered:
-                        self.logger.info("%s accepted for retrieval", product_info["id"])
-                        retrieval_scheduled[product_info["id"]] = product_info
+                        statuses[uuid] = DownloadStatus.TRIGGERED
+                        self.logger.info("%s accepted for retrieval", uuid)
+                    else:
+                        # Product is already online
                         break
                 except LTAError as e:
                     self.logger.info(
                         "Request for %s was not accepted: %s. Retrying in %d seconds",
-                        product_info["id"],
+                        uuid,
                         e.msg,
                         retry_delay,
                     )
-                    stop_event.wait(timeout=retry_delay)
+            else:
+                # Just wait for the product to come online
+                pass
+            stop_event.wait(timeout=retry_delay)
+        if not stop_event.is_set():
+            self.logger.info("%s retrieval from LTA completed", uuid)
+            statuses[uuid] = DownloadStatus.ONLINE
 
     def _download_online_retry(
-        self, product_info, directory_path=".", checksum=True, max_attempts=10, **kwargs
+        self,
+        product_info,
+        statuses,
+        exceptions,
+        dl_semaphore,
+        stop_event,
+        directory_path=".",
+        checksum=True,
+        max_attempts=10,
+        **kwargs
     ):
         """Thin wrapper around download with retrying and checking whether a product is online
 
@@ -881,30 +963,39 @@ class SentinelAPI:
         if max_attempts <= 0:
             return
 
-        id = product_info["id"]
+        uuid = product_info["id"]
         title = product_info["title"]
-        if not self.is_online(id):
-            self.trigger_offline_retrieval(id)
-            self.logger.info("%s is not online.", id)
+
+        # Wait for the triggering and retrieval to complete first
+        while (
+            statuses[uuid] != DownloadStatus.ONLINE
+            and uuid not in exceptions
+            and not stop_event.is_set()
+        ):
+            stop_event.wait(timeout=1)
+        if uuid in exceptions:
             return
 
-        self.logger.info("%s is online. Starting download", id)
-        last_exception = None
-        for cnt in range(max_attempts):
-            try:
-                return self.download(id, directory_path, checksum, **kwargs)
-            except Exception as e:
-                if isinstance(e, InvalidChecksumError):
-                    self.logger.warning(
-                        "Invalid checksum. The downloaded file for '%s' is corrupted.",
-                        title,
-                    )
-                else:
-                    self.logger.exception("There was an error downloading %s", title)
-                self.logger.info("%d retries left", max_attempts - cnt - 1)
-                last_exception = e
-        self.logger.info("No retries left for %s. Terminating.", title)
-        raise last_exception
+        with dl_semaphore:
+            last_exception = None
+            for cnt in range(max_attempts):
+                if stop_event.is_set():
+                    return
+                try:
+                    statuses[uuid] = DownloadStatus.DOWNLOAD_STARTED
+                    return self.download(uuid, directory_path, checksum, **kwargs)
+                except Exception as e:
+                    if isinstance(e, InvalidChecksumError):
+                        self.logger.warning(
+                            "Invalid checksum. The downloaded file for '%s' is corrupted.",
+                            title,
+                        )
+                    else:
+                        self.logger.exception("There was an error downloading %s", title)
+                    self.logger.info("%d retries left", max_attempts - cnt - 1)
+                    last_exception = e
+            self.logger.info("No retries left for %s. Terminating.", title)
+            raise last_exception
 
     def download_all_quicklooks(self, products, directory_path=".", n_concurrent_dl=2):
         """Download quicklook for a list of products.

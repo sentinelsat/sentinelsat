@@ -130,6 +130,7 @@ def validate_query_param(ctx, param, kwargs):
     "-l", "--limit", type=int, help="Maximum number of results to return. Defaults to no limit."
 )
 @click.option("--download", "-d", is_flag=True, help="Download all results of the query.")
+@click.option("--fail-fast", is_flag=True, help="Skip all other other downloads if one fails")
 @click.option(
     "--quicklook",
     is_flag=True,
@@ -206,6 +207,7 @@ def cli(
     uuid,
     name,
     download,
+    fail_fast,
     quicklook,
     sentinel,
     producttype,
@@ -364,13 +366,17 @@ def cli(
             )
 
     if download is True:
-        product_infos, triggered, failed_downloads = api.download_all(
-            products, path, nodefilter=nodefilter
+        statuses, exceptions, product_infos = api.download_all(
+            products,
+            path,
+            nodefilter=nodefilter,
+            fail_fast=fail_fast,
         )
-        if len(failed_downloads) > 0:
+        if not all(statuses.values()):
             with open(os.path.join(path, "corrupt_scenes.txt"), "w") as outfile:
-                for failed_id in failed_downloads:
-                    outfile.write("{} : {}\n".format(failed_id, products[failed_id]["title"]))
+                for pid, status in statuses.items():
+                    outfile.write("{} : {}\n".format(pid, products[pid]["title"]))
+            exit(1)
     else:
         for product_id, props in products.items():
             logger.info("Product %s - %s", product_id, props["summary"])

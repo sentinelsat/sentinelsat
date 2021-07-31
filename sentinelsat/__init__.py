@@ -15,6 +15,7 @@ from .exceptions import (
 )
 from .sentinel import (
     SentinelAPI,
+    DownloadStatus,
     format_query_date,
     geojson_to_wkt,
     read_geojson,

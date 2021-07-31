@@ -15,7 +15,7 @@ import pytest
 import requests_mock
 from flaky import flaky
 
-from sentinelsat import SentinelAPI, make_path_filter
+from sentinelsat import DownloadStatus, SentinelAPI, make_path_filter
 from sentinelsat.exceptions import InvalidChecksumError, InvalidKeyError, LTAError, ServerError
 
 
@@ -184,11 +184,11 @@ def test_download_all(api, tmpdir, smallest_online_products):
     ids = [product["id"] for product in smallest_online_products]
 
     # Download normally
-    product_infos, triggered, failed_downloads = api.download_all(
-        ids, str(tmpdir), max_attempts=1, n_concurrent_dl=1
+    statuses, exceptions, product_infos = api.download_all(
+        ids, str(tmpdir), max_attempts=1, n_concurrent_dl=1, fail_fast=True
     )
-    assert len(failed_downloads) == 0
-    assert len(triggered) == 0
+    assert not exceptions
+    assert all(statuses.values())
     assert len(product_infos) == len(ids)
     for product_id, product_info in product_infos.items():
         pypath = py.path.local(product_info["path"])
@@ -209,17 +209,21 @@ def test_download_all_one_fail(api, tmpdir, smallest_online_products):
         json = api.session.get(url).json()
         json["d"]["Checksum"]["Value"] = "00000000000000000000000000000000"
         rqst.get(url, json=json)
-        product_infos, triggered, failed_downloads = api.download_all(
+        statuses, exceptions, product_infos = api.download_all(
             ids, str(tmpdir), max_attempts=1, n_concurrent_dl=1, checksum=True
         )
-        exceptions = {k: v["exception"] for k, v in failed_downloads.items()}
+        failed_downloads = sorted([pid for pid, status in statuses.items() if not status])
+        triggered = sorted(
+            [pid for pid, status in statuses.items() if status == DownloadStatus.TRIGGERED]
+        )
         for e in exceptions.values():
             if not isinstance(e, InvalidChecksumError):
                 raise e from None
-        assert sorted(failed_downloads) == [ids[0]], exceptions
+        assert failed_downloads == sorted(exceptions), exceptions
+        assert failed_downloads == [ids[0]], exceptions
         assert type(list(exceptions.values())[0]) == InvalidChecksumError, exceptions
-        assert triggered == {}
-        assert sorted(list(product_infos) + list(failed_downloads)) == sorted(ids)
+        assert not triggered
+        assert sorted(product_infos) == sorted(ids)
         assert id in failed_downloads
 
     tmpdir.remove()
@@ -229,19 +233,24 @@ def test_download_all_one_fail(api, tmpdir, smallest_online_products):
 # https://github.com/kevin1024/vcrpy/issues/212
 @flaky(max_runs=3, min_passes=2)
 @pytest.mark.vcr(allow_playback_repeats=True)
+@pytest.mark.skip
 @pytest.mark.scihub
 def test_download_all_lta(api, tmpdir, smallest_online_products, smallest_archived_products):
     archived_ids = [x["id"] for x in smallest_archived_products]
     online_ids = [x["id"] for x in smallest_online_products]
     ids = archived_ids[:1] + online_ids[:2]
-    product_infos, triggered, failed_downloads = api.download_all(
-        ids, str(tmpdir), max_attempts=1, n_concurrent_dl=1
+    statuses, exceptions, product_infos = api.download_all(
+        ids,
+        str(tmpdir),
+        max_attempts=1,
+        n_concurrent_dl=1,
+        lta_retry_delay=1,
+        fail_fast=True,
     )
-    exceptions = {k: v["exception"] for k, v in failed_downloads.items()}
-    assert len(failed_downloads) == 0, exceptions
-    assert len(triggered) == 1
-    assert len(product_infos) == len(ids) - len(failed_downloads) - len(triggered)
-    assert all(x["Online"] is False for x in triggered.values())
+    assert not exceptions
+    assert all(statuses.values())
+    assert len(product_infos) == len(ids)
+    assert all(x["Online"] is False for x in product_infos.values())
 
     # test downloaded products
     for product_id, product_info in product_infos.items():

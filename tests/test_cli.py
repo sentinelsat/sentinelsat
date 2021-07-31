@@ -66,6 +66,7 @@ def run_cli(credentials):
                 **kwargs
             )
             if must_raise:
+                assert result.exception is not None, result.output
                 raise result.exception
         if must_return_nonzero:
             assert result.exit_code != 0
@@ -502,7 +503,11 @@ def test_download_single(run_cli, api, tmpdir, smallest_online_products, monkeyp
         rqst.get(url, json=json)
 
         # md5 flag set (implicitly), should raise an exception
-        run_cli(*command, must_raise=InvalidChecksumError)
+        run_cli(*command, "--fail-fast", must_raise=InvalidChecksumError)
+
+        # md5 flag set (implicitly), should raise an exception
+        result = run_cli(*command, must_return_nonzero=True)
+        assert "is corrupted" in result.output
 
     # clean up
     tmpdir.remove()
@@ -539,7 +544,8 @@ def test_product_node_download_single(run_cli, api, tmpdir, smallest_online_prod
         rqst.get(url, json=json)
 
         # md5 flag set (implicitly), should raise an exception
-        run_cli(*command, must_raise=InvalidChecksumError)
+        result = run_cli(*command, must_return_nonzero=True)
+        assert "is corrupted" in result.output
 
     # clean up
     tmpdir.remove()
@@ -624,7 +630,7 @@ def test_download_many(run_cli, api, tmpdir, smallest_online_products, monkeypat
     with requests_mock.mock(real_http=True) as rqst:
         rqst.get(url, json=json)
         # md5 flag set (implicitly), should raise an exception
-        result = run_cli(*command)
+        result = run_cli(*command, must_return_nonzero=True)
         assert "is corrupted" in result.output
 
     assert tmpdir.join("corrupt_scenes.txt").check()

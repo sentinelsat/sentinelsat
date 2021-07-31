@@ -95,7 +95,7 @@ def test_SentinelAPI_wrong_credentials(small_query):
     with assert_exception():
         api.download("8df46c9e-a20c-43db-a19a-4240c2ed3b8b")
     with assert_exception():
-        api.download_all(["8df46c9e-a20c-43db-a19a-4240c2ed3b8b"])
+        api.download_all(["8df46c9e-a20c-43db-a19a-4240c2ed3b8b"], fail_fast=True)
 
 
 @pytest.mark.vcr
