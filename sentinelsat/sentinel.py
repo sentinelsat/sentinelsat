@@ -1,9 +1,8 @@
-import concurrent.futures
 import hashlib
 import logging
 import re
 import xml.etree.ElementTree as ET
-from collections import OrderedDict, defaultdict, namedtuple
+from collections import OrderedDict, defaultdict
 from datetime import date, datetime, timedelta
 from pathlib import Path
 from typing import Dict
@@ -466,7 +465,7 @@ class SentinelAPI:
         self._check_scihub_response(r)
         return r.json()
 
-    def download(self, id, directory_path=".", checksum=True, **kwargs):
+    def download(self, id, directory_path=".", checksum=True, nodefilter=None, **kwargs):
         """Download a product.
 
         Uses the filename on the server for the downloaded file, e.g.
@@ -505,7 +504,11 @@ class SentinelAPI:
            * Now raises LTATriggered or LTAError if the product has been archived.
         """
         downloader = Downloader(
-            self, directory_path=directory_path, verify_checksum=checksum, **kwargs
+            self,
+            directory_path=directory_path,
+            verify_checksum=checksum,
+            nodefilter=nodefilter,
+            **kwargs
         )
         return downloader.download(id)
 
@@ -1004,6 +1007,54 @@ class SentinelAPI:
                 raise ServerError(msg, response)
             else:
                 raise SentinelAPIError(msg, response)
+
+    def _path_to_url(self, product_info, path, urltype=None):
+        id = product_info["id"]
+        title = product_info["title"]
+        path = "/".join(["Nodes('{}')".format(item) for item in path.split("/")])
+        if urltype == "value":
+            urltype = "/$value"
+        elif urltype == "json":
+            urltype = "?$format=json"
+        elif urltype == "full":
+            urltype = "?$format=json&$expand=Attributes"
+        elif urltype is None:
+            urltype = ""
+        # else: pass urltype as is
+        return self._get_odata_url(id, f"/Nodes('{title}.SAFE')/{path}{urltype}")
+
+    def _get_manifest(self, product_info, path=None):
+        path = Path(path) if path else None
+        url = self._path_to_url(product_info, "manifest.safe", "value")
+        node_info = product_info.copy()
+        node_info["url"] = url
+        node_info["node_path"] = "./manifest.safe"
+        del node_info["md5"]
+
+        if path and path.exists():
+            self.logger.info("manifest file already available (%r), skip download", path)
+            data = path.read_bytes()
+            node_info["size"] = len(data)
+            return node_info, data
+
+        url = self._path_to_url(product_info, "manifest.safe", "json")
+        response = self.session.get(url, auth=self.session.auth)
+        self._check_scihub_response(response)
+        info = response.json()["d"]
+
+        node_info["size"] = int(info["ContentLength"])
+
+        response = self.session.get(node_info["url"], auth=self.session.auth)
+        self._check_scihub_response(response, test_json=False)
+        data = response.content
+        if len(data) != node_info["size"]:
+            raise SentinelAPIError("File corrupt: data length do not match")
+
+        if path:
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_bytes(data)
+
+        return node_info, data
 
 
 def read_geojson(geojson_file):

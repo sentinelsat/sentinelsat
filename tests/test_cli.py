@@ -12,7 +12,6 @@ import requests_mock
 from click.testing import CliRunner
 
 from sentinelsat import SentinelAPI, InvalidChecksumError
-from sentinelsat import SentinelProductsAPI
 from sentinelsat.scripts.cli import cli
 
 
@@ -519,8 +518,8 @@ def test_product_node_download_single(run_cli, api, tmpdir, smallest_online_prod
     # Change default arguments for quicker test.
     # Also, vcrpy is not threadsafe, so only one worker is used.
     monkeypatch.setattr(
-        "sentinelsat.SentinelProductsAPI.download_all",
-        partialmethod(SentinelProductsAPI.download_all, max_attempts=2, n_concurrent_dl=1),
+        "sentinelsat.SentinelAPI.download_all",
+        partialmethod(SentinelAPI.download_all, max_attempts=2, n_concurrent_dl=1),
     )
     product_id = smallest_online_products[0]["id"]
     command = ["--uuid", product_id, "--download", "--path", str(tmpdir)]
@@ -559,7 +558,7 @@ def test_product_node_download_single_with_filter(
     # Change default arguments for quicker test.
     # Also, vcrpy is not threadsafe, so only one worker is used.
     monkeypatch.setattr(
-        "sentinelsat.SentinelProductsAPI.download_all",
+        "sentinelsat.SentinelAPI.download_all",
         partialmethod(SentinelAPI.download_all, max_attempts=2, n_concurrent_dl=1),
     )
 

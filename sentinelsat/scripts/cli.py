@@ -10,8 +10,8 @@ import requests.utils
 from tqdm.auto import tqdm
 
 from sentinelsat import __version__ as sentinelsat_version
-from sentinelsat.products import SentinelProductsAPI, make_path_filter
-from sentinelsat.sentinel import geojson_to_wkt, is_wkt, placename_to_wkt, read_geojson
+from sentinelsat.download import make_path_filter
+from sentinelsat.sentinel import SentinelAPI, geojson_to_wkt, is_wkt, placename_to_wkt, read_geojson
 
 json_parse_exception = json.decoder.JSONDecodeError
 
@@ -242,7 +242,7 @@ def cli(
         _set_logger_handler("INFO")
 
     if info:
-        api = SentinelProductsAPI(None, None, url, timeout=timeout)
+        api = SentinelAPI(None, None, url, timeout=timeout)
         ctx = click.get_current_context()
         click.echo("DHuS version: " + api.dhus_version)
         ctx.exit()
@@ -275,7 +275,7 @@ def cli(
             "for environment variables and .netrc support."
         )
 
-    api = SentinelProductsAPI(user, password, url, timeout=timeout)
+    api = SentinelAPI(user, password, url, timeout=timeout)
 
     search_kwargs = {}
     if sentinel:

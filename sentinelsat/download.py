@@ -1,5 +1,6 @@
 import concurrent.futures
 import enum
+import fnmatch
 import itertools
 import shutil
 import threading
@@ -7,6 +8,7 @@ from collections import namedtuple
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 from typing import Any, Dict
+from xml.etree import ElementTree as etree
 
 from sentinelsat.exceptions import (
     InvalidChecksumError,
@@ -36,6 +38,7 @@ class Downloader:
         api,
         directory_path=".",
         *,
+        nodefilter=None,
         verify_checksum=True,
         fail_fast=False,
         max_attempts=10,
@@ -61,6 +64,7 @@ class Downloader:
         self._tqdm = self.api._tqdm
 
         self.directory = directory_path
+        self.nodefilter = nodefilter
         self.verify_checksum = verify_checksum
         self.fail_fast = fail_fast
         self.max_attempts = max_attempts
@@ -106,27 +110,58 @@ class Downloader:
            * Added ``**kwargs`` parameter to allow easier specialization of the :class:`SentinelAPI` class.
            * Now raises LTATriggered or LTAError if the product has been archived.
         """
-        product_info = self.api.get_product_odata(id)
-        filename = self.api._get_filename(product_info)
-        path = Path(self.directory) / filename
-        product_info["path"] = str(path)
-        product_info["downloaded_bytes"] = 0
+        if not self.nodefilter:
+            product_info = self.api.get_product_odata(id)
+            filename = self.api._get_filename(product_info)
+            path = Path(self.directory) / filename
+            product_info["path"] = str(path)
+            product_info["downloaded_bytes"] = 0
 
-        self.logger.info("Downloading %s to %s", id, path)
+            self.logger.info("Downloading %s to %s", id, path)
 
-        if path.exists():
-            # We assume that the product has been downloaded and is complete
+            if path.exists():
+                # We assume that the product has been downloaded and is complete
+                return product_info
+
+            # An incomplete download triggers the retrieval from the LTA if the product is not online
+            if not self.api.is_online(id):
+                self.api.trigger_offline_retrieval(id)
+                raise LTATriggered(id)
+
+            self._download_outer(product_info, path)
+            return product_info
+        else:
+            product_info = self.api.get_product_odata(id)
+            product_path = Path(self.directory) / (product_info["title"] + ".SAFE")
+            product_info["node_path"] = "./" + product_info["title"] + ".SAFE"
+            manifest_path = product_path / "manifest.safe"
+            if not manifest_path.exists() and self.api.trigger_offline_retrieval(id):
+                raise LTATriggered(id)
+
+            manifest_info, _ = self.api._get_manifest(product_info, manifest_path)
+            product_info["nodes"] = {
+                manifest_info["node_path"]: manifest_info,
+            }
+
+            node_infos = self._filter_nodes(manifest_path, product_info, self.nodefilter)
+            product_info["nodes"].update(node_infos)
+
+            for node_info in node_infos.values():
+                node_path = node_info["node_path"]
+                path = (product_path / node_path).resolve()
+                node_info["path"] = path
+                node_info["downloaded_bytes"] = 0
+
+                self.logger.info("Downloading %s node to %s", id, path)
+                self.logger.debug("Node URL for %s: %s", id, node_info["url"])
+
+                if path.exists():
+                    # We assume that the product node has been downloaded and is complete
+                    continue
+                self._download_outer(node_info, path)
             return product_info
 
-        # An incomplete download triggers the retrieval from the LTA if the product is not online
-        if not self.api.is_online(id):
-            self.api.trigger_offline_retrieval(id)
-            raise LTATriggered(id)
-
-        self._download_outer(product_info, path, self.verify_checksum)
-        return product_info
-
-    def _download_outer(self, product_info: Dict[str, Any], path: Path, verify_checksum: bool):
+    def _download_outer(self, product_info: Dict[str, Any], path: Path):
         # Use a temporary file for downloading
         temp_path = path.with_name(path.name + ".incomplete")
         skip_download = False
@@ -142,7 +177,7 @@ class Downloader:
                 )
                 temp_path.unlink()
             elif size == product_info["size"]:
-                if verify_checksum and not self.api._checksum_compare(temp_path, product_info):
+                if self.verify_checksum and not self.api._checksum_compare(temp_path, product_info):
                     # Log a warning since this should never happen
                     self.logger.warning(
                         "Existing incomplete file %s appears to be fully downloaded but "
@@ -165,12 +200,13 @@ class Downloader:
                 product_info["url"], temp_path, product_info["size"]
             )
         # Check integrity with MD5 checksum
-        if verify_checksum is True:
+        if self.verify_checksum is True:
             if not self.api._checksum_compare(temp_path, product_info):
                 temp_path.unlink()
                 raise InvalidChecksumError("File corrupt: checksums do not match")
         # Download successful, rename the temporary file to its proper name
         shutil.move(temp_path, path)
+        return product_info
 
     def download_all(self, products):
         """Download a list of products.
@@ -604,3 +640,97 @@ class Downloader:
                         downloaded_bytes += len(chunk)
             # Return the number of bytes downloaded
             return downloaded_bytes
+
+    def _dataobj_to_node_info(self, dataobj_info, product_info):
+        path = dataobj_info["href"]
+        if path.startswith("./"):
+            path = path[2:]
+
+        node_info = product_info.copy()
+        node_info["url"] = self.api._path_to_url(product_info, path, "value")
+        node_info["size"] = dataobj_info["size"]
+        if "md5" in dataobj_info:
+            node_info["md5"] = dataobj_info["md5"]
+        if "sha3-256" in dataobj_info:
+            node_info["sha3-256"] = dataobj_info["sha3-256"]
+        node_info["node_path"] = dataobj_info["href"]
+        # node_info["parent"] = product_info
+
+        return node_info
+
+    def _filter_nodes(self, manifest, product_info, nodefilter=None):
+        nodes = {}
+        xmldoc = etree.parse(manifest)
+        data_obj_section_elem = xmldoc.find("dataObjectSection")
+        for elem in data_obj_section_elem.iterfind("dataObject"):
+            dataobj_info = _xml_to_dataobj_info(elem)
+            node_info = self._dataobj_to_node_info(dataobj_info, product_info)
+            if nodefilter is not None and not nodefilter(node_info):
+                continue
+            node_path = node_info["node_path"]
+            nodes[node_path] = node_info
+        return nodes
+
+
+def _xml_to_dataobj_info(element):
+    assert etree.iselement(element)
+    assert element.tag == "dataObject"
+    data = dict(
+        id=element.attrib["ID"],
+    )
+    elem = element.find("byteStream")
+    # data["mime_type"] = elem.attrib['mimeType']
+    data["size"] = int(elem.attrib["size"])
+    elem = element.find("byteStream/fileLocation")
+    data["href"] = elem.attrib["href"]
+    # data['locator_type'] = elem.attrib["locatorType"]
+    # assert data['locator_type'] == "URL"
+
+    elem = element.find("byteStream/checksum")
+    assert elem.attrib["checksumName"].upper() in ["MD5", "SHA3-256"]
+    data[elem.attrib["checksumName"].lower()] = elem.text
+
+    return data
+
+
+def make_size_filter(max_size):
+    """Generate a nodefilter function to download only files below the specified maximum size.
+
+    .. versionadded:: 0.15
+    """
+
+    def node_filter(node_info):
+        return node_info["size"] <= max_size
+
+    return node_filter
+
+
+def make_path_filter(pattern, exclude=False):
+    """Generate a nodefilter function to download only files matching the specified pattern.
+
+    Parameters
+    ----------
+    pattern : str
+        glob patter for files selection
+    exclude : bool, optional
+        if set to True then files matching the specified pattern are excluded. Default False.
+
+    .. versionadded:: 0.15
+    """
+
+    def node_filter(node_info):
+        match = fnmatch.fnmatch(node_info["node_path"].lower(), pattern)
+        return not match if exclude else match
+
+    return node_filter
+
+
+def all_nodes_filter(node_info):
+    """Node filter function to download all files.
+
+    This function can be used to download Sentinel product as a directory
+    instead of downloading a single zip archive.
+
+    .. versionadded:: 0.15
+    """
+    return True
