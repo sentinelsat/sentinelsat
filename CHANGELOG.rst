@@ -8,7 +8,7 @@ All notable changes to ``sentinelsat`` will be listed here.
 
 CLI changes
 ~~~~~~~~~~~
-* 
+* Progressbars no longer conflict with logging output. (`#531 <https://github.com/sentinelsat/sentinelsat/issues/531>`_ `@valgur <https://github.com/valgur>`_)
 
 Added
 ~~~~~
