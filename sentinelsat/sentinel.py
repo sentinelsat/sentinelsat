@@ -1174,7 +1174,7 @@ class SentinelAPI:
             checksum = product_info["sha3-256"]
             algo = hashlib.sha3_256()
         else:
-            raise InvalidChecksumError("Checksum value is missing")
+            raise InvalidChecksumError("No checksum information found in product information.")
         file_path = Path(file_path)
         file_size = file_path.stat().st_size
         with self._tqdm(
