@@ -1259,8 +1259,6 @@ def read_geojson(geojson_file):
 
 def geojson_to_wkt(geojson_obj, decimals=4):
     """Convert a GeoJSON object to Well-Known Text. Intended for use with OpenSearch queries.
-
-    In case of FeatureCollection, only one of the features is used (the first by default).
     3D points are converted to 2D.
 
     Parameters
