@@ -504,8 +504,10 @@ class SentinelAPI:
            * Added ``**kwargs`` parameter to allow easier specialization of the :class:`SentinelAPI` class.
            * Now raises LTATriggered or LTAError if the product has been archived.
         """
-        downloader = Downloader(self)
-        return downloader.download(id, directory_path=directory_path, checksum=checksum, **kwargs)
+        downloader = Downloader(
+            self, directory_path=directory_path, verify_checksum=checksum, **kwargs
+        )
+        return downloader.download(id)
 
     def _get_filename(self, product_info):
         if product_info["Online"]:
@@ -653,17 +655,19 @@ class SentinelAPI:
         .. versionchanged:: 0.15
            Added ``**kwargs`` parameter to allow easier specialization of the :class:`SentinelAPI` class.
         """
-        downloader = Downloader(self)
-        return downloader.download_all(
-            products,
+        downloader = Downloader(
+            self,
             directory_path=directory_path,
             max_attempts=max_attempts,
-            checksum=checksum,
+            verify_checksum=checksum,
+            fail_fast=fail_fast,
             n_concurrent_dl=n_concurrent_dl,
             n_concurrent_trigger=n_concurrent_trigger,
             lta_retry_delay=lta_retry_delay,
-            fail_fast=fail_fast,
-            **kwargs
+            **kwargs,
+        )
+        return downloader.download_all(
+            products,
         )
 
     def download_all_quicklooks(self, products, directory_path=".", n_concurrent_dl=2):
@@ -693,10 +697,10 @@ class SentinelAPI:
             A dictionary containing the error of products where either
             quicklook was not available or it had an unexpected content type
         """
-        downloader = Downloader(self)
-        return downloader.download_all_quicklooks(
-            products, directory_path=directory_path, n_concurrent_dl=n_concurrent_dl
+        downloader = Downloader(
+            self, directory_path=directory_path, n_concurrent_dl=n_concurrent_dl
         )
+        return downloader.download_all_quicklooks(products)
 
     def download_quicklook(self, id, directory_path="."):
         """Download a quicklook for a product.
@@ -718,8 +722,8 @@ class SentinelAPI:
         quicklook_info : dict
             Dictionary containing the quicklooks's response headers as well as the path on disk.
         """
-        downloader = Downloader(self)
-        return downloader.download_quicklook(id, directory_path=directory_path)
+        downloader = Downloader(self, directory_path=directory_path)
+        return downloader.download_quicklook(id)
 
     @staticmethod
     def get_products_size(products):

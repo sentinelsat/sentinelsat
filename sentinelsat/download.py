@@ -31,14 +31,44 @@ class DownloadStatus(enum.Enum):
 
 
 class Downloader:
-    def __init__(self, api):
+    def __init__(
+        self,
+        api,
+        directory_path=".",
+        *,
+        verify_checksum=True,
+        fail_fast=False,
+        max_attempts=10,
+        n_concurrent_dl=2,
+        n_concurrent_trigger=1,
+        lta_retry_delay=300
+    ):
+        """
+
+        Parameters
+        ----------
+        directory_path : string, optional
+            Where the file will be downloaded
+        checksum : bool, optional
+            If True, verify the downloaded file's integrity by checking its MD5 checksum.
+            Throws InvalidChecksumError if the checksum does not match.
+            Defaults to True.
+        """
         from sentinelsat import SentinelAPI
 
         self.api: SentinelAPI = api
         self.logger = self.api.logger
         self._tqdm = self.api._tqdm
 
-    def download(self, id, directory_path=".", checksum=True, **kwargs):
+        self.directory = directory_path
+        self.verify_checksum = verify_checksum
+        self.fail_fast = fail_fast
+        self.max_attempts = max_attempts
+        self.n_concurrent_dl = n_concurrent_dl
+        self.n_concurrent_trigger = n_concurrent_trigger
+        self.lta_retry_delay = lta_retry_delay
+
+    def download(self, id):
         """Download a product.
 
         Uses the filename on the server for the downloaded file, e.g.
@@ -78,7 +108,7 @@ class Downloader:
         """
         product_info = self.api.get_product_odata(id)
         filename = self.api._get_filename(product_info)
-        path = Path(directory_path) / filename
+        path = Path(self.directory) / filename
         product_info["path"] = str(path)
         product_info["downloaded_bytes"] = 0
 
@@ -93,7 +123,7 @@ class Downloader:
             self.api.trigger_offline_retrieval(id)
             raise LTATriggered(id)
 
-        self._download_outer(product_info, path, checksum)
+        self._download_outer(product_info, path, self.verify_checksum)
         return product_info
 
     def _download_outer(self, product_info: Dict[str, Any], path: Path, verify_checksum: bool):
@@ -142,18 +172,7 @@ class Downloader:
         # Download successful, rename the temporary file to its proper name
         shutil.move(temp_path, path)
 
-    def download_all(
-        self,
-        products,
-        directory_path=".",
-        max_attempts=10,
-        checksum=True,
-        n_concurrent_dl=2,
-        n_concurrent_trigger=1,
-        lta_retry_delay=300,
-        fail_fast=False,
-        **kwargs
-    ):
+    def download_all(self, products):
         """Download a list of products.
 
         Takes a list of product IDs as input. This means that the return value of query() can be
@@ -212,11 +231,11 @@ class Downloader:
 
         ResultTuple = namedtuple("ResultTuple", ["statuses", "exceptions", "product_infos"])
         product_ids = list(set(products))
-        assert n_concurrent_dl > 0
+        assert self.n_concurrent_dl > 0
         if len(product_ids) == 0:
             return ResultTuple({}, {}, {})
         self.logger.info(
-            "Will download %d products using %d workers", len(product_ids), n_concurrent_dl
+            "Will download %d products using %d workers", len(product_ids), self.n_concurrent_dl
         )
 
         statuses = {pid: DownloadStatus.UNAVAILABLE for pid in product_ids}
@@ -234,7 +253,7 @@ class Downloader:
                 info = self.api.get_product_odata(pid)
             except SentinelAPIError as e:
                 exceptions[pid] = e
-                if fail_fast:
+                if self.fail_fast:
                     raise
                 self.logger.error(
                     "Getting product info for %s failed, can't download: %s", pid, str(e)
@@ -254,7 +273,7 @@ class Downloader:
         for pid in list(offline_prods):
             product_info = product_infos[pid]
             filename = self.api._get_filename(product_info)
-            path = Path(directory_path) / filename
+            path = Path(self.directory) / filename
             if path.exists():
                 self.logger.info("Skipping already downloaded %s.", filename)
                 product_info["path"] = str(path)
@@ -268,7 +287,7 @@ class Downloader:
         # The bounded semaphore is needed on top of the thread pool because
         # downloading and triggering both count against the maximum number of
         # concurrent GET queries on the server side.
-        dl_semaphore = threading.BoundedSemaphore(n_concurrent_dl)
+        dl_semaphore = threading.BoundedSemaphore(self.n_concurrent_dl)
         stop_event = threading.Event()
         dl_tasks = {}
         trigger_tasks = {}
@@ -292,9 +311,9 @@ class Downloader:
         # Two separate threadpools for downloading and triggering of retrieval.
         # Otherwise triggering might take up all threads and nothing is downloaded.
         with ThreadPoolExecutor(
-            max_workers=n_concurrent_dl, thread_name_prefix="dl"
+            max_workers=self.n_concurrent_dl, thread_name_prefix="dl"
         ) as dl_executor, ThreadPoolExecutor(
-            max_workers=n_concurrent_trigger, thread_name_prefix="trigger"
+            max_workers=self.n_concurrent_trigger, thread_name_prefix="trigger"
         ) as trigger_executor:
             # First all online products are downloaded. Subsequently, offline products that might
             # have become available in the meantime are requested.
@@ -306,10 +325,6 @@ class Downloader:
                     exceptions,
                     dl_semaphore,
                     stop_event,
-                    directory_path,
-                    checksum,
-                    max_attempts=max_attempts,
-                    **kwargs
                 )
                 dl_tasks[future] = pid
 
@@ -319,7 +334,6 @@ class Downloader:
                     pid,
                     stop_event,
                     statuses,
-                    lta_retry_delay,
                 )
                 trigger_tasks[future] = pid
 
@@ -348,7 +362,7 @@ class Downloader:
 
                     if exception:
                         exceptions[pid] = exception
-                        if fail_fast:
+                        if self.fail_fast:
                             raise exception from None
             except:
                 stop_event.set()
@@ -372,7 +386,7 @@ class Downloader:
 
         return ResultTuple(statuses, exceptions, product_infos)
 
-    def download_quicklook(self, id, directory_path="."):
+    def download_quicklook(self, id):
         """Download a quicklook for a product.
 
         Uses the filename on the server for the downloaded image, e.g.
@@ -395,7 +409,7 @@ class Downloader:
         product_info = self.api.get_product_odata(id)
         url = product_info["quicklook_url"]
 
-        path = Path(directory_path) / "{}.jpeg".format(product_info["title"])
+        path = Path(self.directory) / "{}.jpeg".format(product_info["title"])
         product_info["path"] = str(path)
         product_info["downloaded_bytes"] = 0
         product_info["error"] = ""
@@ -421,7 +435,7 @@ class Downloader:
 
         return product_info
 
-    def download_all_quicklooks(self, products, directory_path=".", n_concurrent_dl=2):
+    def download_all_quicklooks(self, products):
         """Download quicklook for a list of products.
 
         Takes a dict of product IDs: product data as input. This means that the return value of
@@ -454,10 +468,10 @@ class Downloader:
         downloaded_quicklooks = {}
         failed_quicklooks = {}
 
-        with ThreadPoolExecutor(max_workers=n_concurrent_dl) as dl_exec:
+        with ThreadPoolExecutor(max_workers=self.n_concurrent_dl) as dl_exec:
             dl_tasks = {}
             for pid in products:
-                future = dl_exec.submit(self.download_quicklook, pid, directory_path)
+                future = dl_exec.submit(self.download_quicklook, pid)
                 dl_tasks[future] = pid
 
             completed_tasks = concurrent.futures.as_completed(dl_tasks)
@@ -472,7 +486,7 @@ class Downloader:
         ResultTuple = namedtuple("ResultTuple", ["downloaded", "failed"])
         return ResultTuple(downloaded_quicklooks, failed_quicklooks)
 
-    def _trigger_and_wait(self, uuid, stop_event, statuses, retry_delay=300):
+    def _trigger_and_wait(self, uuid, stop_event, statuses):
         """Continuously triggers retrieval of offline products
 
         This function is supposed to be called in a separate thread. By setting stop_event it can be stopped.
@@ -493,28 +507,17 @@ class Downloader:
                         "Request for %s was not accepted: %s. Retrying in %d seconds",
                         uuid,
                         e.msg,
-                        retry_delay,
+                        self.lta_retry_delay,
                     )
             else:
                 # Just wait for the product to come online
                 pass
-            stop_event.wait(timeout=retry_delay)
+            stop_event.wait(timeout=self.lta_retry_delay)
         if not stop_event.is_set():
             self.logger.info("%s retrieval from LTA completed", uuid)
             statuses[uuid] = DownloadStatus.ONLINE
 
-    def _download_online_retry(
-        self,
-        product_info,
-        statuses,
-        exceptions,
-        dl_semaphore,
-        stop_event,
-        directory_path=".",
-        checksum=True,
-        max_attempts=10,
-        **kwargs
-    ):
+    def _download_online_retry(self, product_info, statuses, exceptions, dl_semaphore, stop_event):
         """Thin wrapper around download with retrying and checking whether a product is online
 
         Parameters
@@ -537,7 +540,7 @@ class Downloader:
             Either dictionary containing the product's info or if the product is not online just None
 
         """
-        if max_attempts <= 0:
+        if self.max_attempts <= 0:
             return
 
         uuid = product_info["id"]
@@ -555,12 +558,12 @@ class Downloader:
 
         with dl_semaphore:
             last_exception = None
-            for cnt in range(max_attempts):
+            for cnt in range(self.max_attempts):
                 if stop_event.is_set():
                     return
                 try:
                     statuses[uuid] = DownloadStatus.DOWNLOAD_STARTED
-                    return self.download(uuid, directory_path, checksum, **kwargs)
+                    return self.download(uuid)
                 except Exception as e:
                     if isinstance(e, InvalidChecksumError):
                         self.logger.warning(
@@ -569,7 +572,7 @@ class Downloader:
                         )
                     else:
                         self.logger.exception("There was an error downloading %s", title)
-                    self.logger.info("%d retries left", max_attempts - cnt - 1)
+                    self.logger.info("%d retries left", self.max_attempts - cnt - 1)
                     last_exception = e
             self.logger.info("No retries left for %s. Terminating.", title)
             raise last_exception
