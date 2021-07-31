@@ -354,7 +354,7 @@ def test_get_stream(api, tmpdir, smallest_online_products):
         shutil.copyfileobj(response.raw, f)
 
     assert product_info["size"] == expected_path.size()
-    assert api._md5_compare(expected_path, product_info["md5"])
+    assert api._checksum_compare(expected_path, product_info)
 
     tmpdir.remove()
 
