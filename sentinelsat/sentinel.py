@@ -1167,12 +1167,12 @@ class SentinelAPI:
 
     def _checksum_compare(self, file_path, product_info, block_size=2 ** 13):
         """Compare a given MD5 checksum with one calculated from a file."""
-        if "md5" in product_info:
-            checksum = product_info["md5"]
-            algo = hashlib.md5()
-        elif "sha3-256" in product_info:
+        if "sha3-256" in product_info:
             checksum = product_info["sha3-256"]
             algo = hashlib.sha3_256()
+        elif "md5" in product_info:
+            checksum = product_info["md5"]
+            algo = hashlib.md5()
         else:
             raise InvalidChecksumError("No checksum information found in product information.")
         file_path = Path(file_path)
