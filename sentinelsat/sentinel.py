@@ -506,8 +506,8 @@ class SentinelAPI:
         downloader = Downloader(
             self,
             directory_path=directory_path,
+            node_filter=nodefilter,
             verify_checksum=checksum,
-            nodefilter=nodefilter,
             **kwargs
         )
         return downloader.download(id)
@@ -661,13 +661,13 @@ class SentinelAPI:
         downloader = Downloader(
             self,
             directory_path=directory_path,
-            max_attempts=max_attempts,
             verify_checksum=checksum,
             fail_fast=fail_fast,
+            max_attempts=max_attempts,
             n_concurrent_dl=n_concurrent_dl,
             n_concurrent_trigger=n_concurrent_trigger,
             lta_retry_delay=lta_retry_delay,
-            **kwargs,
+            **kwargs
         )
         return downloader.download_all(
             products,

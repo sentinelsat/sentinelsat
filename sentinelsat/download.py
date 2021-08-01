@@ -39,7 +39,7 @@ class Downloader:
         api,
         directory_path=".",
         *,
-        nodefilter=None,
+        node_filter=None,
         verify_checksum=True,
         fail_fast=False,
         max_attempts=10,
@@ -65,7 +65,7 @@ class Downloader:
         self._tqdm = self.api._tqdm
 
         self.directory = directory_path
-        self.nodefilter = nodefilter
+        self.node_filter = node_filter
         self.verify_checksum = verify_checksum
         self.fail_fast = fail_fast
         self.max_attempts = max_attempts
@@ -111,7 +111,7 @@ class Downloader:
            * Added ``**kwargs`` parameter to allow easier specialization of the :class:`SentinelAPI` class.
            * Now raises LTATriggered or LTAError if the product has been archived.
         """
-        if not self.nodefilter:
+        if not self.node_filter:
             product_info = self.api.get_product_odata(id)
             filename = self.api._get_filename(product_info)
             path = Path(self.directory) / filename
@@ -144,7 +144,7 @@ class Downloader:
                 manifest_info["node_path"]: manifest_info,
             }
 
-            node_infos = self._filter_nodes(manifest_path, product_info, self.nodefilter)
+            node_infos = self._filter_nodes(manifest_path, product_info, self.node_filter)
             product_info["nodes"].update(node_infos)
 
             for node_info in node_infos.values():
