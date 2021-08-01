@@ -46,7 +46,7 @@ class Downloader:
         fail_fast=False,
         max_attempts=10,
         n_concurrent_dl=4,
-        n_concurrent_trigger=1,
+        n_concurrent_trigger=10,
         lta_retry_delay=60
     ):
         """
