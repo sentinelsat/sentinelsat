@@ -568,7 +568,7 @@ class SentinelAPI:
         directory_path=".",
         max_attempts=10,
         checksum=True,
-        n_concurrent_dl=2,
+        n_concurrent_dl=4,
         n_concurrent_trigger=1,
         lta_retry_delay=60,
         fail_fast=False,
@@ -646,7 +646,7 @@ class SentinelAPI:
             products,
         )
 
-    def download_all_quicklooks(self, products, directory_path=".", n_concurrent_dl=2):
+    def download_all_quicklooks(self, products, directory_path=".", n_concurrent_dl=4):
         """Download quicklook for a list of products.
 
         Takes a dict of product IDs: product data as input. This means that the return value of
