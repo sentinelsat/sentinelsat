@@ -345,12 +345,6 @@ class Downloader:
         dl_tasks = {}
         trigger_tasks = {}
 
-        triggering_active = False
-        if offline_prods:
-            # Reserve one concurrent GET query for LTA triggering
-            self._dl_semaphore.acquire()
-            triggering_active = True
-
         trigger_progress = None
         if offline_prods:
             trigger_progress = self._tqdm(
@@ -412,11 +406,7 @@ class Downloader:
                     elif task in trigger_tasks:
                         trigger_progress.update()
                         if all(t.done() for t in trigger_tasks):
-                            # Triggering done, release a semaphore to allow an additional
-                            # concurrent download.
-                            self._dl_semaphore.release()
                             trigger_progress.close()
-                            triggering_active = False
 
                     if exception:
                         exceptions[pid] = exception
@@ -428,8 +418,6 @@ class Downloader:
                 stop_event.set()
                 for t in all_tasks:
                     t.cancel()
-                if triggering_active:
-                    self._dl_semaphore.release()
                 raise
             finally:
                 if trigger_progress:
@@ -475,7 +463,10 @@ class Downloader:
         """
         # Request just a single byte to avoid accidental downloading of the whole product.
         # Requesting zero bytes results in NullPointerException in the server.
-        r = self.api.session.get(self.api._get_download_url(uuid), headers={"Range": "bytes=0-1"})
+        with self._dl_semaphore:
+            r = self.api.session.get(
+                self.api._get_download_url(uuid), headers={"Range": "bytes=0-1"}
+            )
         cause = r.headers.get("cause-message")
         # check https://scihub.copernicus.eu/userguide/LongTermArchive#HTTP_Status_codes
         if r.status_code in (200, 206):
@@ -528,7 +519,8 @@ class Downloader:
         if not self.api.is_online(id):
             self.trigger_offline_retrieval(id)
             raise LTATriggered(id)
-        r = self.api.session.get(self.api._get_download_url(id), stream=True, **kwargs)
+        with self._dl_semaphore:
+            r = self.api.session.get(self.api._get_download_url(id), stream=True, **kwargs)
         self.api._check_scihub_response(r, test_json=False)
         return r
 
@@ -562,7 +554,8 @@ class Downloader:
 
         self.logger.info("Downloading quicklook %s to %s", product_info["title"], path)
 
-        r = self.api.session.get(url)
+        with self._dl_semaphore:
+            r = self.api.session.get(url)
         self.api._check_scihub_response(r, test_json=False)
 
         product_info["quicklook_size"] = len(r.content)
@@ -705,26 +698,25 @@ class Downloader:
         if uuid in exceptions:
             return
 
-        with self._dl_semaphore:
-            last_exception = None
-            for cnt in range(self.max_attempts):
-                if stop_event.is_set():
-                    return
-                try:
-                    statuses[uuid] = DownloadStatus.DOWNLOAD_STARTED
-                    return self.download(uuid)
-                except Exception as e:
-                    if isinstance(e, InvalidChecksumError):
-                        self.logger.warning(
-                            "Invalid checksum. The downloaded file for '%s' is corrupted.",
-                            title,
-                        )
-                    else:
-                        self.logger.exception("There was an error downloading %s", title)
-                    self.logger.info("%d retries left", self.max_attempts - cnt - 1)
-                    last_exception = e
-            self.logger.info("No retries left for %s. Terminating.", title)
-            raise last_exception
+        last_exception = None
+        for cnt in range(self.max_attempts):
+            if stop_event.is_set():
+                return
+            try:
+                statuses[uuid] = DownloadStatus.DOWNLOAD_STARTED
+                return self.download(uuid)
+            except Exception as e:
+                if isinstance(e, InvalidChecksumError):
+                    self.logger.warning(
+                        "Invalid checksum. The downloaded file for '%s' is corrupted.",
+                        title,
+                    )
+                else:
+                    self.logger.exception("There was an error downloading %s", title)
+                self.logger.info("%d retries left", self.max_attempts - cnt - 1)
+                last_exception = e
+        self.logger.info("No retries left for %s. Terminating.", title)
+        raise last_exception
 
     def _download(self, url, path, file_size):
         headers = {}
@@ -735,24 +727,25 @@ class Downloader:
         else:
             already_downloaded_bytes = 0
         downloaded_bytes = 0
-        with self.api.session.get(url, stream=True, headers=headers) as r, self._tqdm(
-            desc="Downloading",
-            total=file_size,
-            unit="B",
-            unit_scale=True,
-            initial=already_downloaded_bytes,
-        ) as progress:
-            self.api._check_scihub_response(r, test_json=False)
-            chunk_size = 2 ** 20  # download in 1 MB chunks
-            mode = "ab" if continuing else "wb"
-            with open(path, mode) as f:
-                for chunk in r.iter_content(chunk_size=chunk_size):
-                    if chunk:  # filter out keep-alive new chunks
-                        f.write(chunk)
-                        progress.update(len(chunk))
-                        downloaded_bytes += len(chunk)
-            # Return the number of bytes downloaded
-            return downloaded_bytes
+        with self._dl_semaphore:
+            with self.api.session.get(url, stream=True, headers=headers) as r, self._tqdm(
+                desc="Downloading",
+                total=file_size,
+                unit="B",
+                unit_scale=True,
+                initial=already_downloaded_bytes,
+            ) as progress:
+                self.api._check_scihub_response(r, test_json=False)
+                chunk_size = 2 ** 20  # download in 1 MB chunks
+                mode = "ab" if continuing else "wb"
+                with open(path, mode) as f:
+                    for chunk in r.iter_content(chunk_size=chunk_size):
+                        if chunk:  # filter out keep-alive new chunks
+                            f.write(chunk)
+                            progress.update(len(chunk))
+                            downloaded_bytes += len(chunk)
+                # Return the number of bytes downloaded
+                return downloaded_bytes
 
     def _dataobj_to_node_info(self, dataobj_info, product_info):
         path = dataobj_info["href"]
