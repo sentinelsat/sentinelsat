@@ -10,7 +10,7 @@ import requests.utils
 from tqdm.auto import tqdm
 
 from sentinelsat import __version__ as sentinelsat_version
-from sentinelsat.download import make_path_filter
+from sentinelsat.download import Downloader, make_path_filter
 from sentinelsat.sentinel import SentinelAPI, geojson_to_wkt, is_wkt, placename_to_wkt, read_geojson
 
 json_parse_exception = json.decoder.JSONDecodeError
@@ -366,17 +366,22 @@ def cli(
             )
 
     if download is True:
-        statuses, exceptions, product_infos = api.download_all(
-            products,
-            path,
-            nodefilter=nodefilter,
-            fail_fast=fail_fast,
+        downloader = Downloader(
+            api, directory_path=path, node_filter=nodefilter, fail_fast=fail_fast
         )
+        statuses, exceptions, product_infos = downloader.download_all(products)
+        retcode = 0
+        failed_count = 0
         if not all(statuses.values()):
+            retcode = 1
             with open(os.path.join(path, "corrupt_scenes.txt"), "w") as outfile:
                 for pid, status in statuses.items():
                     outfile.write("{} : {}\n".format(pid, products[pid]["title"]))
-            exit(1)
+                    failed_count += 1
+        logger.info(
+            "Successfully downloaded %d/%d products.", len(products) - failed_count, len(products)
+        )
+        exit(retcode)
     else:
         for product_id, props in products.items():
             logger.info("Product %s - %s", product_id, props["summary"])
