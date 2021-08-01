@@ -89,7 +89,7 @@ class Downloader:
         self._n_concurrent_dl = value
         self._dl_semaphore = threading.BoundedSemaphore(self._n_concurrent_dl)
 
-    def download(self, id):
+    def download(self, id, *, stop_event=None):
         """Download a product.
 
         Uses the filename on the server for the downloaded file, e.g.
@@ -143,7 +143,7 @@ class Downloader:
                 self.trigger_offline_retrieval(id)
                 raise LTATriggered(id)
 
-            self._download_outer(product_info, path)
+            self._download_outer(product_info, path, stop_event)
             return product_info
         else:
             product_info = self.api.get_product_odata(id)
@@ -162,6 +162,8 @@ class Downloader:
             product_info["nodes"].update(node_infos)
 
             for node_info in node_infos.values():
+                if stop_event and stop_event.is_set():
+                    raise concurrent.futures.CancelledError()
                 node_path = node_info["node_path"]
                 path = (product_path / node_path).resolve()
                 node_info["path"] = path
@@ -173,10 +175,10 @@ class Downloader:
                 if path.exists():
                     # We assume that the product node has been downloaded and is complete
                     continue
-                self._download_outer(node_info, path)
+                self._download_outer(node_info, path, stop_event)
             return product_info
 
-    def _download_outer(self, product_info: Dict[str, Any], path: Path):
+    def _download_outer(self, product_info: Dict[str, Any], path: Path, stop_event):
         # Use a temporary file for downloading
         temp_path = path.with_name(path.name + ".incomplete")
         skip_download = False
@@ -212,7 +214,11 @@ class Downloader:
             # Store the number of downloaded bytes for unit tests
             temp_path.parent.mkdir(parents=True, exist_ok=True)
             product_info["downloaded_bytes"] = self._download(
-                product_info["url"], temp_path, product_info["size"], product_info["title"]
+                product_info["url"],
+                temp_path,
+                product_info["size"],
+                product_info["title"],
+                stop_event,
             )
         # Check integrity with MD5 checksum
         if self.verify_checksum is True:
@@ -654,9 +660,10 @@ class Downloader:
                 # Just wait for the product to come online
                 pass
             stop_event.wait(timeout=self.lta_retry_delay)
-        if not stop_event.is_set():
-            self.logger.info("%s retrieval from LTA completed", uuid)
-            statuses[uuid] = DownloadStatus.ONLINE
+        if stop_event.is_set():
+            raise concurrent.futures.CancelledError()
+        self.logger.info("%s retrieval from LTA completed", uuid)
+        statuses[uuid] = DownloadStatus.ONLINE
 
     def _download_online_retry(self, product_info, statuses, exceptions, stop_event):
         """Thin wrapper around download with retrying and checking whether a product is online
@@ -700,10 +707,12 @@ class Downloader:
         last_exception = None
         for cnt in range(self.max_attempts):
             if stop_event.is_set():
-                return
+                raise concurrent.futures.CancelledError()
             try:
                 statuses[uuid] = DownloadStatus.DOWNLOAD_STARTED
-                return self.download(uuid)
+                return self.download(uuid, stop_event=stop_event)
+            except (concurrent.futures.CancelledError, KeyboardInterrupt, SystemExit):
+                raise
             except Exception as e:
                 if isinstance(e, InvalidChecksumError):
                     self.logger.warning(
@@ -717,7 +726,7 @@ class Downloader:
         self.logger.info("No retries left for %s. Terminating.", title)
         raise last_exception
 
-    def _download(self, url, path, file_size, title):
+    def _download(self, url, path, file_size, title, stop_event):
         headers = {}
         continuing = path.exists()
         if continuing:
@@ -739,6 +748,8 @@ class Downloader:
                 mode = "ab" if continuing else "wb"
                 with open(path, mode) as f:
                     for chunk in r.iter_content(chunk_size=chunk_size):
+                        if stop_event and stop_event.is_set():
+                            raise concurrent.futures.CancelledError()
                         if chunk:  # filter out keep-alive new chunks
                             f.write(chunk)
                             progress.update(len(chunk))
