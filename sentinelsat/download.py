@@ -7,6 +7,7 @@ import threading
 import traceback
 from collections import namedtuple
 from concurrent.futures import ThreadPoolExecutor
+from contextlib import closing
 from pathlib import Path
 from typing import Any, Dict
 from xml.etree import ElementTree as etree
@@ -74,10 +75,11 @@ class Downloader:
         self._n_concurrent_dl = n_concurrent_dl
         self.n_concurrent_trigger = n_concurrent_trigger
         self.lta_retry_delay = lta_retry_delay
+        self.chunk_size = 2 ** 20  # download in 1 MB chunks by default
 
-        # The bounded semaphore is needed on top of the thread pool because
-        # downloading and triggering both count against the maximum number of
-        # concurrent GET queries on the server side.
+        # The number of concurrent GET requests is limited on the server side.
+        # We use semaphores to ensure we stay within that limit.
+        # LTA trigger requests also count against that limit.
         self._dl_semaphore = threading.BoundedSemaphore(self._n_concurrent_dl)
 
     @property
@@ -404,10 +406,13 @@ class Downloader:
                         exception = task.exception()
 
                     if task in dl_tasks:
-                        dl_progress.update()
                         if not exception:
                             product_infos[pid] = task.result()
                             statuses[pid] = DownloadStatus.DOWNLOADED
+                        dl_progress.update()
+                        # Keep the LTA progress fresh
+                        if trigger_progress:
+                            trigger_progress.update(0)
                     elif task in trigger_tasks:
                         trigger_progress.update()
                         if all(t.done() for t in trigger_tasks):
@@ -647,9 +652,6 @@ class Downloader:
                         # Product is already online
                         break
                 except (LTAError, ServerError) as e:
-                    if isinstance(e, ServerError) and "NullPointerException" not in e.msg:
-                        # LTA retrieval frequently fails with HTTP 500 NullPointerException intermittently
-                        raise
                     self.logger.info(
                         "%s retrieval was not accepted: %s. Retrying in %d seconds",
                         uuid,
@@ -736,26 +738,32 @@ class Downloader:
             already_downloaded_bytes = 0
         downloaded_bytes = 0
         with self._dl_semaphore:
-            with self.api.session.get(url, stream=True, headers=headers) as r, self._tqdm(
-                desc=f"Downloading {title}",
-                total=file_size,
-                unit="B",
-                unit_scale=True,
-                initial=already_downloaded_bytes,
-            ) as progress:
-                self.api._check_scihub_response(r, test_json=False)
-                chunk_size = 2 ** 20  # download in 1 MB chunks
-                mode = "ab" if continuing else "wb"
-                with open(path, mode) as f:
-                    for chunk in r.iter_content(chunk_size=chunk_size):
+            r = self.api.session.get(url, stream=True, headers=headers)
+        with self._tqdm(
+            desc=f"Downloading {title}",
+            total=file_size,
+            unit="B",
+            unit_scale=True,
+            initial=already_downloaded_bytes,
+        ) as progress, closing(r):
+            self.api._check_scihub_response(r, test_json=False)
+            mode = "ab" if continuing else "wb"
+            with open(path, mode) as f:
+                iterator = r.iter_content(chunk_size=self.chunk_size)
+                while True:
+                    with self._dl_semaphore:
                         if stop_event and stop_event.is_set():
                             raise concurrent.futures.CancelledError()
-                        if chunk:  # filter out keep-alive new chunks
-                            f.write(chunk)
-                            progress.update(len(chunk))
-                            downloaded_bytes += len(chunk)
-                # Return the number of bytes downloaded
-                return downloaded_bytes
+                        try:
+                            chunk = next(iterator)
+                        except StopIteration:
+                            break
+                    if chunk:  # filter out keep-alive new chunks
+                        f.write(chunk)
+                        progress.update(len(chunk))
+                        downloaded_bytes += len(chunk)
+            # Return the number of bytes downloaded
+            return downloaded_bytes
 
     def _dataobj_to_node_info(self, dataobj_info, product_info):
         path = dataobj_info["href"]
