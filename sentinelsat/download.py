@@ -16,6 +16,7 @@ from sentinelsat.exceptions import (
     LTAError,
     LTATriggered,
     SentinelAPIError,
+    ServerError,
     UnauthorizedError,
 )
 
@@ -559,7 +560,10 @@ class Downloader:
                     else:
                         # Product is already online
                         break
-                except LTAError as e:
+                except (LTAError, ServerError) as e:
+                    if isinstance(e, ServerError) and "NullPointerException" not in e.msg:
+                        # LTA retrieval frequently fails with HTTP 500 NullPointerException intermittently
+                        raise
                     self.logger.info(
                         "Request for %s was not accepted: %s. Retrying in %d seconds",
                         uuid,
