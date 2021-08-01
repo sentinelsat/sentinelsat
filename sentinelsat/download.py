@@ -15,6 +15,7 @@ from sentinelsat.exceptions import (
     LTAError,
     LTATriggered,
     SentinelAPIError,
+    UnauthorizedError,
 )
 
 
@@ -287,6 +288,8 @@ class Downloader:
             assert isinstance(pid, str)
             try:
                 info = self.api.get_product_odata(pid)
+            except UnauthorizedError:
+                raise
             except SentinelAPIError as e:
                 exceptions[pid] = e
                 if self.fail_fast:
