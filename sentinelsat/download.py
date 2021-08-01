@@ -142,7 +142,7 @@ class Downloader:
 
             # An incomplete download triggers the retrieval from the LTA if the product is not online
             if not self.api.is_online(id):
-                self.api.trigger_offline_retrieval(id)
+                self.trigger_offline_retrieval(id)
                 raise LTATriggered(id)
 
             self._download_outer(product_info, path)
@@ -152,7 +152,7 @@ class Downloader:
             product_path = Path(self.directory) / (product_info["title"] + ".SAFE")
             product_info["node_path"] = "./" + product_info["title"] + ".SAFE"
             manifest_path = product_path / "manifest.safe"
-            if not manifest_path.exists() and self.api.trigger_offline_retrieval(id):
+            if not manifest_path.exists() and self.trigger_offline_retrieval(id):
                 raise LTATriggered(id)
 
             manifest_info, _ = self.api._get_manifest(product_info, manifest_path)
@@ -444,6 +444,94 @@ class Downloader:
 
         return ResultTuple(statuses, exceptions, product_infos)
 
+    def trigger_offline_retrieval(self, uuid):
+        """Triggers retrieval of an offline product.
+
+        Trying to download an offline product triggers its retrieval from the long term archive.
+
+        Parameters
+        ----------
+        uuid : string
+            UUID of the product
+
+        Returns
+        -------
+        bool
+            True, if the product retrieval was successfully triggered.
+            False, if the product is already online.
+
+        Raises
+        ------
+        LTAError
+            If the request was not accepted due to exceeded user quota or server overload.
+        ServerError
+            If an unexpected response was received from server.
+        UnauthorizedError
+            If the provided credentials were invalid.
+
+        Notes
+        -----
+        https://scihub.copernicus.eu/userguide/LongTermArchive
+        """
+        # Request just a single byte to avoid accidental downloading of the whole product.
+        # Requesting zero bytes results in NullPointerException in the server.
+        r = self.api.session.get(self.api._get_download_url(uuid), headers={"Range": "bytes=0-1"})
+        cause = r.headers.get("cause-message")
+        # check https://scihub.copernicus.eu/userguide/LongTermArchive#HTTP_Status_codes
+        if r.status_code in (200, 206):
+            self.logger.debug("Product is online")
+            return False
+        elif r.status_code == 202:
+            self.logger.debug("Accepted for retrieval")
+            return True
+        elif r.status_code == 403 and cause and "concurrent flows" in cause:
+            # cause: 'An exception occured while creating a stream: Maximum number of 4 concurrent flows achieved by the user "username""'
+            self.logger.debug("Product is online but concurrent downloads limit was exceeded")
+            return False
+        elif r.status_code == 403:
+            # cause: 'User 'username' offline products retrieval quota exceeded (20 fetches max) trying to fetch product PRODUCT_FILENAME (BYTES_COUNT bytes compressed)'
+            msg = f"User quota exceeded: {cause}"
+            self.logger.error(msg)
+            raise LTAError(msg, r)
+        elif r.status_code == 503:
+            msg = f"Request not accepted: {cause}"
+            self.logger.error(msg)
+            raise LTAError(msg, r)
+        elif r.status_code < 400:
+            msg = f"Unexpected response {r.status_code}: {cause}"
+            self.logger.error(msg)
+            raise ServerError(msg, r)
+        self.api._check_scihub_response(r, test_json=False)
+
+    def get_stream(self, id, **kwargs):
+        """Exposes requests response ready to stream product to e.g. S3.
+
+        Parameters
+        ----------
+        id : string
+            UUID of the product, e.g. 'a8dd0cfd-613e-45ce-868c-d79177b916ed'
+        **kwargs
+            Any additional parameters for ``requests.get()``
+
+        Raises
+        ------
+        LTATriggered
+            If the product has been archived and its retrieval was successfully triggered.
+        LTAError
+            If the product has been archived and its retrieval failed.
+
+        Returns
+        -------
+        requests.Response:
+            Opened response object
+        """
+        if not self.api.is_online(id):
+            self.trigger_offline_retrieval(id)
+            raise LTATriggered(id)
+        r = self.api.session.get(self.api._get_download_url(id), stream=True, **kwargs)
+        self.api._check_scihub_response(r, test_json=False)
+        return r
+
     def download_quicklook(self, id):
         """Download a quicklook for a product.
 
@@ -553,7 +641,7 @@ class Downloader:
             if statuses[uuid] == DownloadStatus.OFFLINE:
                 # Trigger
                 try:
-                    triggered = self.api.trigger_offline_retrieval(uuid)
+                    triggered = self.trigger_offline_retrieval(uuid)
                     if triggered:
                         statuses[uuid] = DownloadStatus.TRIGGERED
                         self.logger.info("%s accepted for retrieval", uuid)

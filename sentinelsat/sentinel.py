@@ -559,35 +559,8 @@ class SentinelAPI:
         -----
         https://scihub.copernicus.eu/userguide/LongTermArchive
         """
-        # Request just a single byte to avoid accidental downloading of the whole product.
-        # Requesting zero bytes results in NullPointerException in the server.
-        r = self.session.get(self._get_download_url(uuid), headers={"Range": "bytes=0-1"})
-        cause = r.headers.get("cause-message")
-        # check https://scihub.copernicus.eu/userguide/LongTermArchive#HTTP_Status_codes
-        if r.status_code in (200, 206):
-            self.logger.debug("Product is online")
-            return False
-        elif r.status_code == 202:
-            self.logger.debug("Accepted for retrieval")
-            return True
-        elif r.status_code == 403 and cause and "concurrent flows" in cause:
-            # cause: 'An exception occured while creating a stream: Maximum number of 4 concurrent flows achieved by the user "username""'
-            self.logger.debug("Product is online but concurrent downloads limit was exceeded")
-            return False
-        elif r.status_code == 403:
-            # cause: 'User 'username' offline products retrieval quota exceeded (20 fetches max) trying to fetch product PRODUCT_FILENAME (BYTES_COUNT bytes compressed)'
-            msg = f"User quota exceeded: {cause}"
-            self.logger.error(msg)
-            raise LTAError(msg, r)
-        elif r.status_code == 503:
-            msg = f"Request not accepted: {cause}"
-            self.logger.error(msg)
-            raise LTAError(msg, r)
-        elif r.status_code < 400:
-            msg = f"Unexpected response {r.status_code}: {cause}"
-            self.logger.error(msg)
-            raise ServerError(msg, r)
-        self._check_scihub_response(r, test_json=False)
+        downloader = Downloader(self)
+        return downloader.trigger_offline_retrieval(uuid)
 
     def download_all(
         self,
@@ -938,12 +911,8 @@ class SentinelAPI:
         requests.Response:
             Opened response object
         """
-        if not self.is_online(id):
-            self.trigger_offline_retrieval(id)
-            raise LTATriggered(id)
-        r = self.session.get(self._get_download_url(id), stream=True, **kwargs)
-        self._check_scihub_response(r, test_json=False)
-        return r
+        downloader = Downloader(self)
+        return downloader.get_stream(id, **kwargs)
 
     def _get_odata_url(self, uuid, suffix=""):
         return self.api_url + f"odata/v1/Products('{uuid}')" + suffix
