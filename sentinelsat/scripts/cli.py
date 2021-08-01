@@ -366,18 +366,19 @@ def cli(
             )
 
     if download is True:
-        downloader = Downloader(api, directory=path, node_filter=nodefilter, fail_fast=fail_fast)
-        statuses, exceptions, product_infos = downloader.download_all(products)
+        downloaded, triggered, failed_downloads = api.download_all(
+            products, path, nodefilter=nodefilter, fail_fast=fail_fast
+        )
         retcode = 0
-        failed_count = 0
-        if not all(statuses.values()):
+        if len(failed_downloads) > 0:
             retcode = 1
             with open(os.path.join(path, "corrupt_scenes.txt"), "w") as outfile:
-                for pid, status in statuses.items():
-                    outfile.write("{} : {}\n".format(pid, products[pid]["title"]))
-                    failed_count += 1
+                for failed_id in failed_downloads:
+                    outfile.write("{} : {}\n".format(failed_id, products[failed_id]["title"]))
         logger.info(
-            "Successfully downloaded %d/%d products.", len(products) - failed_count, len(products)
+            "Successfully downloaded %d/%d products.",
+            len(downloaded),
+            len(products),
         )
         exit(retcode)
     else:
