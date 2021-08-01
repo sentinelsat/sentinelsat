@@ -85,8 +85,6 @@ class SentinelAPI:
         self._last_query = None
         self._last_response = None
 
-        self.downloader = Downloader(self)
-
     @staticmethod
     def _api2dhus_url(api_url):
         url = re.sub("apihub/$", "dhus/", api_url)
@@ -503,10 +501,11 @@ class SentinelAPI:
            * Added ``**kwargs`` parameter to allow easier specialization of the :class:`SentinelAPI` class.
            * Now raises LTATriggered or LTAError if the product has been archived.
         """
-        self.downloader.directory = directory_path
-        self.downloader.node_filter = nodefilter
-        self.downloader.verify_checksum = checksum
-        return self.downloader.download(id)
+        downloader = Downloader(self)
+        downloader.directory = directory_path
+        downloader.node_filter = nodefilter
+        downloader.verify_checksum = checksum
+        return downloader.download(id)
 
     def _get_filename(self, product_info):
         if product_info["Online"]:
@@ -555,7 +554,8 @@ class SentinelAPI:
         -----
         https://scihub.copernicus.eu/userguide/LongTermArchive
         """
-        return self.downloader.trigger_offline_retrieval(uuid)
+        downloader = Downloader(self)
+        return downloader.trigger_offline_retrieval(uuid)
 
     def download_all(
         self,
@@ -626,15 +626,16 @@ class SentinelAPI:
         .. versionchanged:: 0.15
            Added ``**kwargs`` parameter to allow easier specialization of the :class:`SentinelAPI` class.
         """
-        self.downloader.directory = directory_path
-        self.downloader.verify_checksum = checksum
-        self.downloader.fail_fast = fail_fast
-        self.downloader.max_attempts = max_attempts
-        self.downloader.n_concurrent_dl = n_concurrent_dl
-        self.downloader.n_concurrent_trigger = n_concurrent_trigger
-        self.downloader.lta_retry_delay = lta_retry_delay
-        self.downloader.node_filter = nodefilter
-        statuses, exceptions, product_infos = self.downloader.download_all(products)
+        downloader = Downloader(self)
+        downloader.directory = directory_path
+        downloader.verify_checksum = checksum
+        downloader.fail_fast = fail_fast
+        downloader.max_attempts = max_attempts
+        downloader.n_concurrent_dl = n_concurrent_dl
+        downloader.n_concurrent_trigger = n_concurrent_trigger
+        downloader.lta_retry_delay = lta_retry_delay
+        downloader.node_filter = nodefilter
+        statuses, exceptions, product_infos = downloader.download_all(products)
 
         # Adapt results to the old download_all() API
         downloaded_prods = {}
@@ -681,9 +682,10 @@ class SentinelAPI:
             A dictionary containing the error of products where either
             quicklook was not available or it had an unexpected content type
         """
-        self.downloader.directory = directory_path
-        self.downloader.n_concurrent_dl = n_concurrent_dl
-        return self.downloader.download_all_quicklooks(products)
+        downloader = Downloader(self)
+        downloader.directory = directory_path
+        downloader.n_concurrent_dl = n_concurrent_dl
+        return downloader.download_all_quicklooks(products)
 
     def download_quicklook(self, id, directory_path="."):
         """Download a quicklook for a product.
@@ -705,8 +707,9 @@ class SentinelAPI:
         quicklook_info : dict
             Dictionary containing the quicklooks's response headers as well as the path on disk.
         """
-        self.downloader.directory = directory_path
-        return self.downloader.download_quicklook(id)
+        downloader = Downloader(self)
+        downloader.directory = directory_path
+        return downloader.download_quicklook(id)
 
     @staticmethod
     def get_products_size(products):
@@ -922,7 +925,8 @@ class SentinelAPI:
         requests.Response:
             Opened response object
         """
-        return self.downloader.get_stream(id, **kwargs)
+        downloader = Downloader(self)
+        return downloader.get_stream(id, **kwargs)
 
     def _get_odata_url(self, uuid, suffix=""):
         return self.api_url + f"odata/v1/Products('{uuid}')" + suffix
