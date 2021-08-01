@@ -209,9 +209,12 @@ Options
     Specify a custom format to print results. The format string shall
     be compatible with the Python "Format Specification Mini-Language".
 
-    A complete list keys that can be used for a specific sentinel mission
-    can be e.g. obtained looking at the "properties" of the output produced by
-    the ``--footprints`` flag  - (maybe with ``--limit 1``).
+    Some common keywords for substitution are:
+      'uuid', 'title', 'summary', 'link', 'size', 'platformname', 'producttype',
+      'beginposition', 'instrumentshortname', 'cloudcoverpercentage',
+      'orbitdirection', 'relativeorbitnumber', 'footprint'.
+
+    For a complete set of available keywords see the "properties" output from a relevant query with ``--footprints -`` (and possibly ``--limit 1``) appended.
 
     Default: "Product {uuid} - {summary}"
 
