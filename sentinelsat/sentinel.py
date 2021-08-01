@@ -465,7 +465,7 @@ class SentinelAPI:
         self._check_scihub_response(r)
         return r.json()
 
-    def download(self, id, directory_path=".", checksum=True, nodefilter=None, **kwargs):
+    def download(self, id, directory_path=".", checksum=True, nodefilter=None):
         """Download a product.
 
         Uses the filename on the server for the downloaded file, e.g.
@@ -506,8 +506,6 @@ class SentinelAPI:
         self.downloader.directory = directory_path
         self.downloader.node_filter = nodefilter
         self.downloader.verify_checksum = checksum
-        for k, v in kwargs.items():
-            setattr(self.downloader, k, v)
         return self.downloader.download(id)
 
     def _get_filename(self, product_info):
@@ -569,7 +567,7 @@ class SentinelAPI:
         n_concurrent_trigger=10,
         lta_retry_delay=60,
         fail_fast=False,
-        **kwargs
+        nodefilter=None,
     ):
         """Download a list of products.
 
@@ -635,8 +633,7 @@ class SentinelAPI:
         self.downloader.n_concurrent_dl = n_concurrent_dl
         self.downloader.n_concurrent_trigger = n_concurrent_trigger
         self.downloader.lta_retry_delay = lta_retry_delay
-        for k, v in kwargs.items():
-            setattr(self.downloader, k, v)
+        self.downloader.node_filter = nodefilter
         statuses, exceptions, product_infos = self.downloader.download_all(products)
 
         # Adapt results to the old download_all() API
