@@ -366,9 +366,7 @@ def cli(
             )
 
     if download is True:
-        downloader = Downloader(
-            api, directory_path=path, node_filter=nodefilter, fail_fast=fail_fast
-        )
+        downloader = Downloader(api, directory=path, node_filter=nodefilter, fail_fast=fail_fast)
         statuses, exceptions, product_infos = downloader.download_all(products)
         retcode = 0
         failed_count = 0

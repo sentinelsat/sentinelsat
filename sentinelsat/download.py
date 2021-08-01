@@ -40,7 +40,7 @@ class Downloader:
     def __init__(
         self,
         api,
-        directory_path=".",
+        directory=".",
         *,
         node_filter=None,
         verify_checksum=True,
@@ -54,7 +54,7 @@ class Downloader:
 
         Parameters
         ----------
-        directory_path : string, optional
+        directory : string, optional
             Where the file will be downloaded
         checksum : bool, optional
             If True, verify the downloaded file's integrity by checking its MD5 checksum.
@@ -67,7 +67,7 @@ class Downloader:
         self.logger = self.api.logger
         self._tqdm = self.api._tqdm
 
-        self.directory = directory_path
+        self.directory = directory
         self.node_filter = node_filter
         self.verify_checksum = verify_checksum
         self.fail_fast = fail_fast
