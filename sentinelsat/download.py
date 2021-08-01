@@ -69,9 +69,23 @@ class Downloader:
         self.verify_checksum = verify_checksum
         self.fail_fast = fail_fast
         self.max_attempts = max_attempts
-        self.n_concurrent_dl = n_concurrent_dl
+        self._n_concurrent_dl = n_concurrent_dl
         self.n_concurrent_trigger = n_concurrent_trigger
         self.lta_retry_delay = lta_retry_delay
+
+        # The bounded semaphore is needed on top of the thread pool because
+        # downloading and triggering both count against the maximum number of
+        # concurrent GET queries on the server side.
+        self._dl_semaphore = threading.BoundedSemaphore(self._n_concurrent_dl)
+
+    @property
+    def n_concurrent_dl(self):
+        return self._n_concurrent_dl
+
+    @n_concurrent_dl.setter
+    def n_concurrent_dl(self, value):
+        self._n_concurrent_dl = value
+        self._dl_semaphore = threading.BoundedSemaphore(self._n_concurrent_dl)
 
     def download(self, id):
         """Download a product.
@@ -323,17 +337,15 @@ class Downloader:
                     "%s (%s) is in LTA and will be triggered.", product_info["title"], pid
                 )
 
-        # The bounded semaphore is needed on top of the thread pool because
-        # downloading and triggering both count against the maximum number of
-        # concurrent GET queries on the server side.
-        dl_semaphore = threading.BoundedSemaphore(self.n_concurrent_dl)
         stop_event = threading.Event()
         dl_tasks = {}
         trigger_tasks = {}
 
+        triggering_active = False
         if offline_prods:
             # Reserve one concurrent GET query for LTA triggering
-            dl_semaphore.acquire()
+            self._dl_semaphore.acquire()
+            triggering_active = True
 
         trigger_progress = None
         if offline_prods:
@@ -362,7 +374,6 @@ class Downloader:
                     product_infos[pid],
                     statuses,
                     exceptions,
-                    dl_semaphore,
                     stop_event,
                 )
                 dl_tasks[future] = pid
@@ -396,8 +407,9 @@ class Downloader:
                         if all(t.done() for t in trigger_tasks):
                             # Triggering done, release a semaphore to allow an additional
                             # concurrent download.
-                            dl_semaphore.release()
+                            self._dl_semaphore.release()
                             trigger_progress.close()
+                            triggering_active = False
 
                     if exception:
                         exceptions[pid] = exception
@@ -409,10 +421,8 @@ class Downloader:
                 stop_event.set()
                 for t in all_tasks:
                     t.cancel()
-                try:
-                    dl_semaphore.release()
-                except ValueError:
-                    pass
+                if triggering_active:
+                    self._dl_semaphore.release()
                 raise
             finally:
                 if trigger_progress:
@@ -558,7 +568,7 @@ class Downloader:
             self.logger.info("%s retrieval from LTA completed", uuid)
             statuses[uuid] = DownloadStatus.ONLINE
 
-    def _download_online_retry(self, product_info, statuses, exceptions, dl_semaphore, stop_event):
+    def _download_online_retry(self, product_info, statuses, exceptions, stop_event):
         """Thin wrapper around download with retrying and checking whether a product is online
 
         Parameters
@@ -597,7 +607,7 @@ class Downloader:
         if uuid in exceptions:
             return
 
-        with dl_semaphore:
+        with self._dl_semaphore:
             last_exception = None
             for cnt in range(self.max_attempts):
                 if stop_event.is_set():
