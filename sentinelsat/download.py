@@ -4,6 +4,7 @@ import fnmatch
 import itertools
 import shutil
 import threading
+import traceback
 from collections import namedtuple
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
@@ -309,7 +310,9 @@ class Downloader:
                 if self.fail_fast:
                     raise
                 self.logger.error(
-                    "Getting product info for %s failed, can't download: %s", pid, str(e)
+                    "Getting product info for %s failed, can't download: %s",
+                    pid,
+                    _format_exception(e),
                 )
                 continue
             product_infos[pid] = info
@@ -350,7 +353,10 @@ class Downloader:
         trigger_progress = None
         if offline_prods:
             trigger_progress = self._tqdm(
-                total=len(offline_prods), desc="Retrieving from archive", unit="product"
+                total=len(offline_prods),
+                desc="Retrieving from archive",
+                unit="product",
+                leave=True,
             )
         dl_progress = self._tqdm(
             total=len(online_prods) + len(offline_prods),
@@ -416,7 +422,7 @@ class Downloader:
                         if self.fail_fast:
                             raise exception from None
                         else:
-                            self.logger.error("%s failed: %s", pid, str(exception))
+                            self.logger.error("%s failed: %s", pid, _format_exception(exception))
             except:
                 stop_event.set()
                 for t in all_tasks:
@@ -749,3 +755,7 @@ def all_nodes_filter(node_info):
     .. versionadded:: 0.15
     """
     return True
+
+
+def _format_exception(ex):
+    return "".join(traceback.TracebackException.from_exception(ex).format())
