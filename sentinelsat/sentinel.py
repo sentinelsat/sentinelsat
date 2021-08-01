@@ -597,7 +597,7 @@ class SentinelAPI:
         checksum=True,
         n_concurrent_dl=2,
         n_concurrent_trigger=1,
-        lta_retry_delay=300,
+        lta_retry_delay=60,
         fail_fast=False,
         **kwargs
     ):
@@ -630,7 +630,7 @@ class SentinelAPI:
         n_concurrent_dl : integer
             number of concurrent retrievals from the LTA
         lta_retry_delay : integer
-            how long to wait between requests to the long term archive. Default is 600 seconds.
+            how long to wait between requests to the long term archive. Default is 60 seconds.
         fail_fast : bool, optional
             if True, all other downloads are cancelled when one of the downloads fails.
             Defaults to False.
