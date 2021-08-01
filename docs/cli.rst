@@ -210,7 +210,7 @@ Options
     be compatible with the Python "Format Specification Mini-Language".
 
     Some common keywords for substitution are:
-      'uuid', 'title', 'summary', 'link', 'size', 'platformname', 'producttype',
+      'uuid', 'identifier', 'summary', 'link', 'size', 'platformname', 'producttype',
       'beginposition', 'instrumentshortname', 'cloudcoverpercentage',
       'orbitdirection', 'relativeorbitnumber', 'footprint'.
 

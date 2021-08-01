@@ -191,9 +191,12 @@ def validate_query_param(ctx, param, kwargs):
     show_default=True,
     help="""Specify a custom format to print results. The format string shall
     be compatible with the Python "Format Specification Mini-Language".
-    A complete list keys that can be used for a specific sentinel mission
-    can be e.g. obtained looking at the "properties" of the output produced by
-    the ``--footprints`` flag  - (maybe with ``--limit 1``).
+    Some common keywords for substitution are:
+    'uuid', 'identifier', 'summary', 'link', 'size', 'platformname', 'producttype',
+    'beginposition', 'instrumentshortname', 'cloudcoverpercentage',
+    'orbitdirection', 'relativeorbitnumber', 'footprint'.
+    For a complete set of available keywords see the "properties" output from a
+    relevant query with ``--footprints -`` (and possibly ``--limit 1``) appended.
     """,
 )
 @click.option("--info", is_flag=True, is_eager=True, help="Displays the DHuS version used")
