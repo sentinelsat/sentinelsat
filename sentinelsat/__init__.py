@@ -27,3 +27,6 @@ from .download import (
     make_size_filter,
     all_nodes_filter,
 )
+
+# For backwards compatibility
+SentinelProductsAPI = SentinelAPI

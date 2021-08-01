@@ -2,7 +2,7 @@ import hashlib
 import logging
 import re
 import xml.etree.ElementTree as ET
-from collections import OrderedDict, defaultdict
+from collections import OrderedDict, defaultdict, namedtuple
 from datetime import date, datetime, timedelta
 from pathlib import Path
 from typing import Dict
@@ -14,7 +14,7 @@ import html2text
 import requests
 from tqdm.auto import tqdm
 
-from sentinelsat.download import Downloader
+from sentinelsat.download import DownloadStatus, Downloader
 from sentinelsat.exceptions import (
     InvalidChecksumError,
     InvalidKeyError,
@@ -637,7 +637,25 @@ class SentinelAPI:
         self.downloader.lta_retry_delay = lta_retry_delay
         for k, v in kwargs.items():
             setattr(self.downloader, k, v)
-        return self.downloader.download_all(products)
+        statuses, exceptions, product_infos = self.downloader.download_all(products)
+
+        # Adapt results to the old download_all() API
+        downloaded_prods = {}
+        retrieval_triggered = {}
+        failed_prods = {}
+        for pid, status in statuses.items():
+            if pid not in product_infos:
+                product_infos[pid] = {}
+            if pid in exceptions:
+                product_infos[pid]["exception"] = exceptions[pid]
+            if status == DownloadStatus.DOWNLOADED:
+                downloaded_prods[pid] = product_infos[pid]
+            elif status == DownloadStatus.TRIGGERED:
+                retrieval_triggered[pid] = product_infos[pid]
+            else:
+                failed_prods[pid] = product_infos[pid]
+        ResultTuple = namedtuple("ResultTuple", ["downloaded", "retrieval_triggered", "failed"])
+        return ResultTuple(downloaded_prods, retrieval_triggered, failed_prods)
 
     def download_all_quicklooks(self, products, directory_path=".", n_concurrent_dl=4):
         """Download quicklook for a list of products.
