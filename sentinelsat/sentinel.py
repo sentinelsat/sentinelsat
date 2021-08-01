@@ -873,7 +873,11 @@ class SentinelAPI:
         file_path = Path(file_path)
         file_size = file_path.stat().st_size
         with self._tqdm(
-            desc=f"{algo.name.upper()} checksumming", total=file_size, unit="B", unit_scale=True
+            desc=f"{algo.name.upper()} checksumming",
+            total=file_size,
+            unit="B",
+            unit_scale=True,
+            leave=False,
         ) as progress:
             with open(file_path, "rb") as f:
                 while True:

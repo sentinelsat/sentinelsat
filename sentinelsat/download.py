@@ -134,8 +134,6 @@ class Downloader:
             product_info["path"] = str(path)
             product_info["downloaded_bytes"] = 0
 
-            self.logger.info("Downloading %s to %s", id, path)
-
             if path.exists():
                 # We assume that the product has been downloaded and is complete
                 return product_info
@@ -214,7 +212,7 @@ class Downloader:
             # Store the number of downloaded bytes for unit tests
             temp_path.parent.mkdir(parents=True, exist_ok=True)
             product_info["downloaded_bytes"] = self._download(
-                product_info["url"], temp_path, product_info["size"]
+                product_info["url"], temp_path, product_info["size"], product_info["title"]
             )
         # Check integrity with MD5 checksum
         if self.verify_checksum is True:
@@ -299,7 +297,7 @@ class Downloader:
 
         # Get online status and product info.
         for pid in self._tqdm(
-            iterable=product_ids, desc="Fetching archival status", unit="product"
+            iterable=product_ids, desc="Fetching archival status", unit="product", delay=2
         ):
             assert isinstance(pid, str)
             try:
@@ -338,7 +336,9 @@ class Downloader:
                 offline_prods.remove(pid)
             else:
                 self.logger.info(
-                    "%s (%s) is in LTA and will be triggered.", product_info["title"], pid
+                    "%s (%s) is in the LTA and retrieval will be triggered.",
+                    product_info["title"],
+                    pid,
                 )
 
         stop_event = threading.Event()
@@ -349,7 +349,7 @@ class Downloader:
         if offline_prods:
             trigger_progress = self._tqdm(
                 total=len(offline_prods),
-                desc="Retrieving from archive",
+                desc="LTA retrieval",
                 unit="product",
                 leave=True,
             )
@@ -358,7 +358,6 @@ class Downloader:
             desc="Downloading products",
             unit="product",
         )
-        dl_progress.clear()
 
         # Two separate threadpools for downloading and triggering of retrieval.
         # Otherwise triggering might take up all threads and nothing is downloaded.
@@ -646,7 +645,7 @@ class Downloader:
                         # LTA retrieval frequently fails with HTTP 500 NullPointerException intermittently
                         raise
                     self.logger.info(
-                        "Request for %s was not accepted: %s. Retrying in %d seconds",
+                        "%s retrieval was not accepted: %s. Retrying in %d seconds",
                         uuid,
                         e.msg,
                         self.lta_retry_delay,
@@ -718,7 +717,7 @@ class Downloader:
         self.logger.info("No retries left for %s. Terminating.", title)
         raise last_exception
 
-    def _download(self, url, path, file_size):
+    def _download(self, url, path, file_size, title):
         headers = {}
         continuing = path.exists()
         if continuing:
@@ -729,7 +728,7 @@ class Downloader:
         downloaded_bytes = 0
         with self._dl_semaphore:
             with self.api.session.get(url, stream=True, headers=headers) as r, self._tqdm(
-                desc="Downloading",
+                desc=f"Downloading {title}",
                 total=file_size,
                 unit="B",
                 unit_scale=True,
