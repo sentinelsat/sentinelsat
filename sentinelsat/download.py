@@ -23,7 +23,7 @@ from sentinelsat.exceptions import (
 
 
 class DownloadStatus(enum.Enum):
-    """Status info for ``SentinelAPI.download_all()``."""
+    """Status info for ``Downloader.download_all()``."""
 
     UNAVAILABLE = enum.auto()
     OFFLINE = enum.auto()
@@ -439,6 +439,13 @@ class Downloader:
                 raise SentinelAPIError("Downloading all products failed for an unknown reason")
             exception = list(exceptions)[0]
             raise exception
+
+        # Update Online status in product_infos
+        for pid, status in statuses.items():
+            if status in [DownloadStatus.OFFLINE, DownloadStatus.TRIGGERED]:
+                product_infos[pid]["Online"] = False
+            elif status != DownloadStatus.UNAVAILABLE:
+                product_infos[pid]["Online"] = True
 
         return ResultTuple(statuses, exceptions, product_infos)
 
