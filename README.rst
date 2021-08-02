@@ -243,6 +243,10 @@ Options
      - --gnss
      -
      - Query orbit products form the GNSS end-point ("https://scihub.copernicus.eu/gnss").
+   * -
+     - --fmt
+     - TEXT
+     - Specify a custom format to print results. The format string shall be compatible with the Python "Format Specification Mini-Language".
    * -  
      - --info
      -  

@@ -10,7 +10,7 @@ import requests.utils
 from tqdm.auto import tqdm
 
 from sentinelsat import __version__ as sentinelsat_version
-from sentinelsat.download import Downloader, make_path_filter
+from sentinelsat.download import make_path_filter
 from sentinelsat.sentinel import SentinelAPI, geojson_to_wkt, is_wkt, placename_to_wkt, read_geojson
 
 json_parse_exception = json.decoder.JSONDecodeError
@@ -196,6 +196,20 @@ def validate_query_param(ctx, param, kwargs):
     for orbit data query and download.
     """,
 )
+@click.option(
+    "--fmt",
+    default="Product {uuid} - {summary}",
+    show_default=True,
+    help="""Specify a custom format to print results. The format string shall
+    be compatible with the Python "Format Specification Mini-Language".
+    Some common keywords for substitution are:
+    'uuid', 'identifier', 'summary', 'link', 'size', 'platformname', 'producttype',
+    'beginposition', 'instrumentshortname', 'cloudcoverpercentage',
+    'orbitdirection', 'relativeorbitnumber', 'footprint'.
+    For a complete set of available keywords see the "properties" output from a
+    relevant query with ``--footprints -`` (and possibly ``--limit 1``) appended.
+    """,
+)
 @click.option("--info", is_flag=True, is_eager=True, help="Displays the DHuS version used")
 @click.version_option(version=sentinelsat_version, prog_name="sentinelsat")
 def cli(
@@ -225,6 +239,7 @@ def cli(
     include_pattern,
     exclude_pattern,
     gnss,
+    fmt,
     info,
 ):
     """Search for Sentinel products and, optionally, download all the results
@@ -383,7 +398,7 @@ def cli(
         exit(retcode)
     else:
         for product_id, props in products.items():
-            logger.info("Product %s - %s", product_id, props["summary"])
+            logger.info(fmt.format(**props))
         logger.info("---")
         logger.info(
             "%s scenes found with a total size of %.2f GB",

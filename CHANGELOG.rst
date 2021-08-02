@@ -8,6 +8,7 @@ All notable changes to ``sentinelsat`` will be listed here.
 
 CLI changes
 ~~~~~~~~~~~
+* New CLI option to specify the format of the output report (`#526 <https://github.com/sentinelsat/sentinelsat/pull/526>`_ `@avalentino <https://github.com/avalentino>`_
 * Progressbars no longer conflict with logging output. (`#531 <https://github.com/sentinelsat/sentinelsat/issues/531>`_ `@valgur <https://github.com/valgur>`_)
 
 Added
