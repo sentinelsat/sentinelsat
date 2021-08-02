@@ -543,7 +543,7 @@ class SentinelAPI:
                 )
                 temp_path.unlink()
             elif size == product_info["size"]:
-                if verify_checksum and not self._md5_compare(temp_path, product_info["md5"]):
+                if verify_checksum and not self._checksum_compare(temp_path, product_info):
                     # Log a warning since this should never happen
                     self.logger.warning(
                         "Existing incomplete file %s appears to be fully downloaded but "
@@ -567,7 +567,7 @@ class SentinelAPI:
             )
         # Check integrity with MD5 checksum
         if verify_checksum is True:
-            if not self._md5_compare(temp_path, product_info["md5"]):
+            if not self._checksum_compare(temp_path, product_info):
                 temp_path.unlink()
                 raise InvalidChecksumError("File corrupt: checksums do not match")
         # Download successful, rename the temporary file to its proper name
@@ -1152,8 +1152,8 @@ class SentinelAPI:
 
             is_fine = False
             for product_info in product_infos[name]:
-                if path.stat().st_size == product_info["size"] and self._md5_compare(
-                    path, product_info["md5"]
+                if path.stat().st_size == product_info["size"] and self._checksum_compare(
+                    path, product_info
                 ):
                     is_fine = True
                     break
@@ -1165,22 +1165,29 @@ class SentinelAPI:
 
         return corrupt
 
-    def _md5_compare(self, file_path, checksum, block_size=2 ** 13):
+    def _checksum_compare(self, file_path, product_info, block_size=2 ** 13):
         """Compare a given MD5 checksum with one calculated from a file."""
+        if "sha3-256" in product_info:
+            checksum = product_info["sha3-256"]
+            algo = hashlib.sha3_256()
+        elif "md5" in product_info:
+            checksum = product_info["md5"]
+            algo = hashlib.md5()
+        else:
+            raise InvalidChecksumError("No checksum information found in product information.")
         file_path = Path(file_path)
         file_size = file_path.stat().st_size
         with self._tqdm(
-            desc="MD5 checksumming", total=file_size, unit="B", unit_scale=True
+            desc=f"{algo.name} checksumming", total=file_size, unit="B", unit_scale=True
         ) as progress:
-            md5 = hashlib.md5()
             with open(file_path, "rb") as f:
                 while True:
                     block_data = f.read(block_size)
                     if not block_data:
                         break
-                    md5.update(block_data)
+                    algo.update(block_data)
                     progress.update(len(block_data))
-            return md5.hexdigest().lower() == checksum.lower()
+            return algo.hexdigest().lower() == checksum.lower()
 
     def _download(self, url, path, file_size):
         headers = {}
@@ -1475,7 +1482,7 @@ def _check_scihub_response(response, test_json=True, query_string=None):
                     "Consider using SentinelAPI.check_query_length() for "
                     "client-side validation of the query string length.".format(length)
                 )
-            raise QueryLengthError(msg, response)
+            raise QueryLengthError(msg, response) from None
         elif "Invalid key" in msg:
             msg = msg.split(" : ", 1)[-1]
             raise InvalidKeyError(msg, response)

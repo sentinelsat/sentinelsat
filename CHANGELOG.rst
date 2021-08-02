@@ -9,18 +9,20 @@ All notable changes to ``sentinelsat`` will be listed here.
 CLI changes
 ~~~~~~~~~~~
 * New CLI option to specify the format of the output report (`#526 <https://github.com/sentinelsat/sentinelsat/pull/526>`_ `@avalentino <https://github.com/avalentino>`_
+* Progressbars no longer conflict with logging output. (`#531 <https://github.com/sentinelsat/sentinelsat/issues/531>`_ `@valgur <https://github.com/valgur>`_)
 
 Added
 ~~~~~
-* Better handling 403 error in `trigger_offline_retrieval()` (`#491 <https://github.com/sentinelsat/sentinelsat/issues/491>`_ `@z4zz <https://github.com/z4zz>`_)
+* Better handling 403 error in ``trigger_offline_retrieval()`` (`#491 <https://github.com/sentinelsat/sentinelsat/issues/491>`_ `@z4zz <https://github.com/z4zz>`_)
+* Added support for SHA3-256 checksums. (`#523 <https://github.com/sentinelsat/sentinelsat/issues/523>`_ `@valgur <https://github.com/valgur>`_)
 
 Changed
 ~~~~~~~
-* 
+* Suppressed the unnecessary server stacktrace printing for ``QueryLengthError``. (`#524 <https://github.com/sentinelsat/sentinelsat/issues/524>`_ `@valgur <https://github.com/valgur>`_)
 
 Fixed
 ~~~~~
-* Changed logic for _get_filename when cd header not present (`#494 <https://github.com/sentinelsat/sentinelsat/issues/494>`_ `@rbrishabh <https://github.com/rbrishabh>`_)
+* Changed logic for ``_get_filename`` when Content-Disposition header not present (`#494 <https://github.com/sentinelsat/sentinelsat/issues/494>`_ `@rbrishabh <https://github.com/rbrishabh>`_)
 * Fixed online status checks accidentally counting towards the concurrent downloads limit on the server, causing downloads to fail. (`#508 <https://github.com/sentinelsat/sentinelsat/issues/508>`_ `@avalentino <https://github.com/avalentino>`_).
 
 [1.0.1] – 2021-05-25

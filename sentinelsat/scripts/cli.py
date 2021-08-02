@@ -7,27 +7,37 @@ import re
 import click
 import geojson as gj
 import requests.utils
+from tqdm.auto import tqdm
 
 from sentinelsat import __version__ as sentinelsat_version
-
-from sentinelsat.sentinel import (
-    geojson_to_wkt,
-    read_geojson,
-    placename_to_wkt,
-    is_wkt,
-)
-
 from sentinelsat.products import SentinelProductsAPI, make_path_filter
-
+from sentinelsat.sentinel import geojson_to_wkt, is_wkt, placename_to_wkt, read_geojson
 
 json_parse_exception = json.decoder.JSONDecodeError
 
 logger = logging.getLogger("sentinelsat")
 
 
+class TqdmLoggingHandler(logging.Handler):
+    def __init__(self, level=logging.NOTSET):
+        super().__init__(level)
+
+    def emit(self, record):
+        try:
+            msg = self.format(record)
+            tqdm.write(msg)
+            self.flush()
+        except Exception:
+            self.handleError(record)
+
+
 def _set_logger_handler(level="INFO"):
     logger.setLevel(level)
-    h = logging.StreamHandler()
+    if os.environ.get("DISABLE_TQDM_LOGGING"):
+        # Intended for testing
+        h = logging.StreamHandler()
+    else:
+        h = TqdmLoggingHandler()
     h.setLevel(level)
     h.setFormatter(logging.Formatter("%(message)s"))
     logger.addHandler(h)
