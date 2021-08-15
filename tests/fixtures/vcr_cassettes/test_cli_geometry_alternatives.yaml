@@ -149,4 +149,69 @@ interactions:
     status:
       code: 200
       message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - sentinelsat/1.0.1
+    method: GET
+    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=1&start=0&q=beginPosition%3A%5B%2A+TO+%222020-01-01T00%3A00%3A00Z%22%5D+footprint%3A%22Intersects%28GEOMETRYCOLLECTION%28POLYGON%28%28-66.2695+-8.0592%2C-66.2695+0.7031%2C-57.3047+0.7031%2C-57.3047+-8.0592%2C-66.2695+-8.0592%29%29%29%29%22
+  response:
+    body:
+      string: '{"feed":{"xmlns:opensearch":"http://a9.com/-/spec/opensearch/1.1/","xmlns":"http://www.w3.org/2005/Atom","title":"Sentinels
+        Scientific Data Hub search results for: beginPosition:[* TO \"2020-01-01T00:00:00Z\"]
+        footprint:\"Intersects(GEOMETRYCOLLECTION(POLYGON((-66.2695 -8.0592,-66.2695
+        0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592))))\"","subtitle":"Displaying
+        0 to 0 of 10000 total results. Request done in ... seconds.","updated":"...","author":{"name":"Sentinels
+        Scientific Data Hub"},"id":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[*
+        TO \"2020-01-01T00:00:00Z\"] footprint:\"Intersects(GEOMETRYCOLLECTION(POLYGON((-66.2695
+        -8.0592,-66.2695 0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592))))\"","opensearch:totalResults":"10000","opensearch:startIndex":"0","opensearch:itemsPerPage":"1","opensearch:Query":{"role":"request","searchTerms":"beginPosition:[*
+        TO \"2020-01-01T00:00:00Z\"] footprint:\"Intersects(GEOMETRYCOLLECTION(POLYGON((-66.2695
+        -8.0592,-66.2695 0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592))))\"","startPage":"1"},"link":[{"rel":"self","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[*
+        TO \"2020-01-01T00:00:00Z\"] footprint:\"Intersects(GEOMETRYCOLLECTION(POLYGON((-66.2695
+        -8.0592,-66.2695 0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592))))\"&start=0&rows=1&format=json"},{"rel":"first","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[*
+        TO \"2020-01-01T00:00:00Z\"] footprint:\"Intersects(GEOMETRYCOLLECTION(POLYGON((-66.2695
+        -8.0592,-66.2695 0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592))))\"&start=0&rows=1&format=json"},{"rel":"next","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[*
+        TO \"2020-01-01T00:00:00Z\"] footprint:\"Intersects(GEOMETRYCOLLECTION(POLYGON((-66.2695
+        -8.0592,-66.2695 0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592))))\"&start=1&rows=1&format=json"},{"rel":"last","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=beginPosition:[*
+        TO \"2020-01-01T00:00:00Z\"] footprint:\"Intersects(GEOMETRYCOLLECTION(POLYGON((-66.2695
+        -8.0592,-66.2695 0.7031,-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592))))\"&start=102092&rows=1&format=json"},{"rel":"search","type":"application/opensearchdescription+xml","href":"opensearch_description.xml"}],"entry":{"title":"S2B_MSIL1C_20170716T144729_N0205_R139_T20NLF_20170716T145002","link":[{"href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''eb77f062-f89c-421f-b032-a92a85791211'')/$value"},{"rel":"alternative","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''eb77f062-f89c-421f-b032-a92a85791211'')/"},{"rel":"icon","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''eb77f062-f89c-421f-b032-a92a85791211'')/Products(''Quicklook'')/$value"}],"id":"eb77f062-f89c-421f-b032-a92a85791211","summary":"Date:
+        2017-07-16T14:47:29.027Z, Instrument: MSI, Satellite: Sentinel-2, Size: 441.25
+        MB","ondemand":"false","date":[{"name":"datatakesensingstart","content":"2017-07-16T14:47:29.027Z"},{"name":"generationdate","content":"2017-07-16T14:50:02Z"},{"name":"beginposition","content":"2017-07-16T14:47:29.027Z"},{"name":"endposition","content":"2017-07-16T14:47:29.027Z"},{"name":"ingestiondate","content":"2021-06-04T12:00:33.891Z"}],"int":[{"name":"orbitnumber","content":"1881"},{"name":"relativeorbitnumber","content":"139"}],"double":{"name":"cloudcoverpercentage","content":"5.4401"},"str":[{"name":"sensoroperationalmode","content":"INS-NOBS"},{"name":"gmlfootprint","content":"<gml:Polygon
+        srsName=\"http://www.opengis.net/gml/srs/epsg.xml#4326\" xmlns:gml=\"http://www.opengis.net/gml\">\n   <gml:outerBoundaryIs>\n      <gml:LinearRing>\n         <gml:coordinates>0.904697902344834,-64.14925013093362
+        0.801317205960132,-64.17199781028816 0.776084829251663,-64.17754250092214
+        0.65294325048057,-64.20465618679722 0.575346951989198,-64.22167118481534 0.503998580111406,-64.23736579973567
+        0.355241551945314,-64.27002530305435 0.206570443951922,-64.30263693848926
+        0.057919851798272,-64.33523671083873 -0.088454111918005,-64.3674905374072
+        -0.088438915806152,-64.79705493951633 0.904463466083483,-64.79727531806687
+        0.904697902344834,-64.14925013093362</gml:coordinates>\n      </gml:LinearRing>\n   </gml:outerBoundaryIs>\n</gml:Polygon>"},{"name":"footprint","content":"MULTIPOLYGON
+        (((-64.3674905374072 -0.088454111918005, -64.33523671083873 0.057919851798272,
+        -64.30263693848926 0.206570443951922, -64.27002530305435 0.355241551945314,
+        -64.23736579973567 0.503998580111406, -64.22167118481534 0.575346951989198,
+        -64.20465618679722 0.65294325048057, -64.17754250092214 0.776084829251663,
+        -64.17199781028816 0.801317205960132, -64.14925013093362 0.904697902344834,
+        -64.79727531806687 0.904463466083483, -64.79705493951633 -0.088438915806152,
+        -64.3674905374072 -0.088454111918005)))"},{"name":"level1cpdiidentifier","content":"S2B_OPER_MSI_L1C_TL_MTI__20170716T212358_A001881_T20NLF_N02.05"},{"name":"tileid","content":"20NLF"},{"name":"hv_order_tileid","content":"NF20L"},{"name":"format","content":"SAFE"},{"name":"processingbaseline","content":"02.05"},{"name":"platformname","content":"Sentinel-2"},{"name":"filename","content":"S2B_MSIL1C_20170716T144729_N0205_R139_T20NLF_20170716T145002.SAFE"},{"name":"instrumentname","content":"Multi-Spectral
+        Instrument"},{"name":"instrumentshortname","content":"MSI"},{"name":"size","content":"441.25
+        MB"},{"name":"s2datatakeid","content":"GS2B_20170716T144729_001881_N02.05"},{"name":"producttype","content":"S2MSI1C"},{"name":"platformidentifier","content":"2017-013A"},{"name":"orbitdirection","content":"DESCENDING"},{"name":"platformserialidentifier","content":"Sentinel-2B"},{"name":"processinglevel","content":"Level-1C"},{"name":"datastripidentifier","content":"S2B_OPER_MSI_L1C_DS_MTI__20170716T212358_S20170716T145002_N02.05"},{"name":"granuleidentifier","content":"S2B_OPER_MSI_L1C_TL_MTI__20170716T212358_A001881_T20NLF_N02.05"},{"name":"identifier","content":"S2B_MSIL1C_20170716T144729_N0205_R139_T20NLF_20170716T145002"},{"name":"uuid","content":"eb77f062-f89c-421f-b032-a92a85791211"}]}}}'
+    headers:
+      content-length:
+      - '6208'
+      content-type:
+      - application/json
+      pragma:
+      - no-cache
+      server:
+      - Apache-Coyote/1.1
+      vary:
+      - Accept-Encoding
+    status:
+      code: 200
+      message: OK
 version: 1

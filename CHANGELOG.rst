@@ -25,6 +25,7 @@ Added
 * Added ``fail_fast`` option to ``download_all()``. (`#532 <https://github.com/sentinelsat/sentinelsat/issues/532>`_ `@valgur <https://github.com/valgur>`_)
 * Added support for SHA3-256 checksums used by some newer Sentinel-2 products. (`#523 <https://github.com/sentinelsat/sentinelsat/issues/523>`_ `@valgur <https://github.com/valgur>`_)
 * For more advanced use-cases, ``Downloader.download_all()``, which returns a detailed ``DownloadStatus`` enum for each product, can now be used. (`#523 <https://github.com/sentinelsat/sentinelsat/issues/523>`_ `@valgur <https://github.com/valgur>`_)
+* GeoJSON geometries consisting of multiple features are now supported. (`#530 <https://github.com/sentinelsat/sentinelsat/issues/530>`_ `@mackland <https://github.com/mackland>`_)
 
 Changed
 ~~~~~~~
