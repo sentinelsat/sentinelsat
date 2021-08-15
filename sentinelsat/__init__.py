@@ -23,10 +23,5 @@ from .sentinel import (
 from .download import (
     Downloader,
     DownloadStatus,
-    make_path_filter,
-    make_size_filter,
-    all_nodes_filter,
 )
-
-# For backwards compatibility
-SentinelProductsAPI = SentinelAPI
+from .products import all_nodes_filter, make_path_filter, make_size_filter, SentinelProductsAPI

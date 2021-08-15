@@ -1,6 +1,5 @@
 import concurrent.futures
 import enum
-import fnmatch
 import itertools
 import shutil
 import threading
@@ -48,18 +47,37 @@ class Downloader:
         max_attempts=10,
         n_concurrent_dl=None,
         lta_retry_delay=60,
-        lta_timeout=3 * 60 * 60
+        lta_timeout=None
     ):
         """
+        Manages downloading of products or parts of them.
+
+        Intended for internal use, but may also be used directly if more fine-grained
+        configuration or custom download logic is needed.
 
         Parameters
         ----------
-        directory : string, optional
-            Where the file will be downloaded
-        checksum : bool, optional
-            If True, verify the downloaded file's integrity by checking its MD5 checksum.
+        api : SentinelAPI
+            A SentinelAPI instance.
+        node_filter : callable, optional
+            The callable is used to select which files of each product will be downloaded.
+            If None (the default), the full products will be downloaded.
+            See ``sentinelsat.products`` for sample node filters.
+        verify_checksum : bool, default True
+            If True, verify the downloaded files' integrity by checking its checksum.
             Throws InvalidChecksumError if the checksum does not match.
-            Defaults to True.
+        fail_fast : bool, default False
+            if True, all other downloads are cancelled when one of the downloads fails in ``download_all()``.
+        max_attempts : int, default 10
+            Number of allowed retries before giving up downloading a product in ``download_all()``.
+        n_concurrent_dl : integer, optional
+            Number of concurrent downloads.
+            Defaults to the maximum allowed by ``SentinelAPI.concurrent_dl_limit``.
+        lta_retry_delay : float, default 60
+            Number of seconds to wait between requests to the long term archive.
+        lta_timeout : float, optional
+            Maximum number of seconds to wait for triggered products to come online.
+            Defaults to no timeout.
         """
         from sentinelsat import SentinelAPI
 
@@ -79,21 +97,14 @@ class Downloader:
     def download(self, id, directory=".", *, stop_event=None):
         """Download a product.
 
-        Uses the filename on the server for the downloaded file, e.g.
-        "S1A_EW_GRDH_1SDH_20141003T003840_20141003T003920_002658_002F54_4DD1.zip".
-
-        Incomplete downloads are continued and complete files are skipped.
-
         Parameters
         ----------
         id : string
             UUID of the product, e.g. 'a8dd0cfd-613e-45ce-868c-d79177b916ed'
         directory : string or Path, optional
             Where the file will be downloaded
-        checksum : bool, optional
-            If True, verify the downloaded file's integrity by checking its MD5 checksum.
-            Throws InvalidChecksumError if the checksum does not match.
-            Defaults to True.
+        stop_event : threading.Event, optional
+            An event object can be provided and set to interrupt the download.
 
         Returns
         -------
@@ -104,15 +115,11 @@ class Downloader:
         Raises
         ------
         InvalidChecksumError
-            If the MD5 checksum does not match the checksum on the server.
+            If the checksum does not match the checksum on the server.
         LTATriggered
             If the product has been archived and its retrieval was successfully triggered.
         LTAError
             If the product has been archived and its retrieval failed.
-
-        .. versionchanged:: 1.0.0
-           * Added ``**kwargs`` parameter to allow easier specialization of the :class:`SentinelAPI` class.
-           * Now raises LTATriggered or LTAError if the product has been archived.
         """
         if not self.node_filter:
             product_info = self.api.get_product_odata(id)
@@ -219,58 +226,28 @@ class Downloader:
     def download_all(self, products, directory="."):
         """Download a list of products.
 
-        Takes a list of product IDs as input. This means that the return value of query() can be
-        passed directly to this method.
-
-        File names on the server are used for the downloaded files, e.g.
-        "S1A_EW_GRDH_1SDH_20141003T003840_20141003T003920_002658_002F54_4DD1.zip".
-
-        In case of interruptions or other exceptions, downloading will restart from where it left
-        off. Downloading is attempted at most max_attempts times to avoid getting stuck with
-        unrecoverable errors.
-
         Parameters
         ----------
         products : list
             List of product IDs
         directory : string or Path, optional
             Directory where the files will be downloaded
-        max_attempts : int, optional
-            Number of allowed retries before giving up downloading a product. Defaults to 10.
-        checksum : bool, optional
-            If True, verify the downloaded files' integrity by checking its MD5 checksum.
-            Throws InvalidChecksumError if the checksum does not match.
-            Defaults to True.
-        n_concurrent_dl : integer
-            number of concurrent downloads
-        lta_retry_delay : integer
-            how long to wait between requests to the long term archive. Default is 600 seconds.
-        fail_fast : bool, optional
-            if True, all other downloads are cancelled when one of the downloads fails.
-            Defaults to False.
-        **kwargs :
-            additional parameters for the *download* method
 
         Raises
         ------
-        Raises the most recent downloading exception if all downloads failed.
+        By default, raises the most recent downloading exception if all downloads failed.
+        If ``self.fail_fast`` is set to True, raises the encountered exception on the first failed
+        download instead.
 
         Returns
         -------
+        dict[string, DownloadStatus]
+            The status of all products.
+        dict[string, Exception]
+            Exception info for any failed products.
         dict[string, dict]
-            A dictionary containing the return value from download() for each successfully
-            downloaded product.
-        dict[string, dict]
-            A dictionary containing the product information for products successfully
-            triggered for retrieval from the long term archive but not downloaded.
-        dict[string, dict]
-            A dictionary containing the product information of products where either
-            downloading or triggering failed. "exception" field with the exception info
-            is included to the product info dict.
-
-
-        .. versionchanged:: 0.15
-           Added ``**kwargs`` parameter to allow easier specialization of the :class:`SentinelAPI` class.
+            A dictionary containing the product information for each product
+            (unless the product was unavailable).
         """
 
         ResultTuple = namedtuple("ResultTuple", ["statuses", "exceptions", "product_infos"])
@@ -449,8 +426,6 @@ class Downloader:
     def trigger_offline_retrieval(self, uuid):
         """Triggers retrieval of an offline product.
 
-        Trying to download an offline product triggers its retrieval from the long term archive.
-
         Parameters
         ----------
         uuid : string
@@ -541,11 +516,6 @@ class Downloader:
     def download_quicklook(self, id, directory="."):
         """Download a quicklook for a product.
 
-        Uses the filename on the server for the downloaded image, e.g.
-        "S1A_EW_GRDH_1SDH_20141003T003840_20141003T003920_002658_002F54_4DD1.jpeg".
-
-        Complete images are skipped.
-
         Parameters
         ----------
         id : string
@@ -590,12 +560,6 @@ class Downloader:
 
     def download_all_quicklooks(self, products, directory="."):
         """Download quicklook for a list of products.
-
-        Takes a dict of product IDs: product data as input. This means that the return value of
-        query() can be passed directly to this method.
-
-        File names on the server are used for the downloaded images, e.g.
-        "S2A_MSIL1C_20200924T104031_N0209_R008_T35WMV_20200926T135405.jpeg".
 
         Parameters
         ----------
@@ -649,7 +613,7 @@ class Downloader:
             while True:
                 if stop_event.is_set():
                     raise concurrent.futures.CancelledError()
-                if time.time() - t0 >= self.lta_timeout:
+                if self.lta_timeout and time.time() - t0 >= self.lta_timeout:
                     raise LTAError(
                         f"LTA retrieval for {uuid} timed out (lta_timeout={self.lta_timeout} seconds)"
                     )
@@ -826,49 +790,6 @@ def _xml_to_dataobj_info(element):
     data[elem.attrib["checksumName"].lower()] = elem.text
 
     return data
-
-
-def make_size_filter(max_size):
-    """Generate a nodefilter function to download only files below the specified maximum size.
-
-    .. versionadded:: 0.15
-    """
-
-    def node_filter(node_info):
-        return node_info["size"] <= max_size
-
-    return node_filter
-
-
-def make_path_filter(pattern, exclude=False):
-    """Generate a nodefilter function to download only files matching the specified pattern.
-
-    Parameters
-    ----------
-    pattern : str
-        glob patter for files selection
-    exclude : bool, optional
-        if set to True then files matching the specified pattern are excluded. Default False.
-
-    .. versionadded:: 0.15
-    """
-
-    def node_filter(node_info):
-        match = fnmatch.fnmatch(node_info["node_path"].lower(), pattern)
-        return not match if exclude else match
-
-    return node_filter
-
-
-def all_nodes_filter(node_info):
-    """Node filter function to download all files.
-
-    This function can be used to download Sentinel product as a directory
-    instead of downloading a single zip archive.
-
-    .. versionadded:: 0.15
-    """
-    return True
 
 
 def _format_exception(ex):

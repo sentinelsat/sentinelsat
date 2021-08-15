@@ -48,6 +48,10 @@ class SentinelAPI:
         How long to wait for DataHub response (in seconds).
         Tuple (connect, read) allowed.
         Set to None to wait indefinitely.
+    concurrent_dl_limit : int, default 4
+        Maximum number of concurrent downloads allowed by the server.
+    concurrent_lta_trigger_limit : int, default 10
+        Maximum number of concurrent Long Term Archive retrievals allowed.
 
     Attributes
     ----------
@@ -60,6 +64,10 @@ class SentinelAPI:
         Current value: 100 (maximum allowed on ApiHub)
     timeout : float or tuple
         How long to wait for DataHub response (in seconds).
+    concurrent_dl_limit : int
+        Maximum number of concurrent downloads allowed by the server.
+    concurrent_lta_trigger_limit : int
+        Maximum number of concurrent Long Term Archive retrievals allowed.
     """
 
     logger = logging.getLogger("sentinelsat.SentinelAPI")
@@ -516,10 +524,13 @@ class SentinelAPI:
             UUID of the product, e.g. 'a8dd0cfd-613e-45ce-868c-d79177b916ed'
         directory_path : string, optional
             Where the file will be downloaded
-        checksum : bool, optional
-            If True, verify the downloaded file's integrity by checking its MD5 checksum.
+        checksum : bool, default True
+            If True, verify the downloaded file's integrity by checking its checksum.
             Throws InvalidChecksumError if the checksum does not match.
-            Defaults to True.
+        nodefilter : callable, optional
+            The callable is used to select which files of each product will be downloaded.
+            If None (the default), the full products will be downloaded.
+            See ``sentinelsat.products`` for sample node filters.
 
         Returns
         -------
@@ -535,14 +546,8 @@ class SentinelAPI:
             If the product has been archived and its retrieval was successfully triggered.
         LTAError
             If the product has been archived and its retrieval failed.
-
-        .. versionchanged:: 1.0.0
-           * Added ``**kwargs`` parameter to allow easier specialization of the :class:`SentinelAPI` class.
-           * Now raises LTATriggered or LTAError if the product has been archived.
         """
-        downloader = Downloader(self)
-        downloader.node_filter = nodefilter
-        downloader.verify_checksum = checksum
+        downloader = Downloader(self, node_filter=nodefilter, verify_checksum=checksum)
         return downloader.download(id, directory_path)
 
     def _get_filename(self, product_info):
@@ -564,9 +569,7 @@ class SentinelAPI:
         return filename
 
     def trigger_offline_retrieval(self, uuid):
-        """Triggers retrieval of an offline product.
-
-        Trying to download an offline product triggers its retrieval from the long term archive.
+        """Triggers retrieval of an offline product from the Long Term Archive.
 
         Parameters
         ----------
@@ -601,9 +604,9 @@ class SentinelAPI:
         directory_path=".",
         max_attempts=10,
         checksum=True,
-        n_concurrent_dl=4,
-        n_concurrent_trigger=10,
+        n_concurrent_dl=None,
         lta_retry_delay=60,
+        lta_timeout=None,
         fail_fast=False,
         nodefilter=None,
     ):
@@ -625,27 +628,31 @@ class SentinelAPI:
             List of product IDs
         directory_path : string
             Directory where the downloaded files will be downloaded
-        max_attempts : int, optional
-            Number of allowed retries before giving up downloading a product. Defaults to 10.
-        checksum : bool, optional
+        max_attempts : int, default 10
+            Number of allowed retries before giving up downloading a product.
+        checksum : bool, default True
             If True, verify the downloaded files' integrity by checking its MD5 checksum.
             Throws InvalidChecksumError if the checksum does not match.
             Defaults to True.
-        n_concurrent_dl : integer
-            number of concurrent downloads
-        n_concurrent_dl : integer
-            number of concurrent retrievals from the LTA
-        lta_retry_delay : integer
-            how long to wait between requests to the long term archive. Default is 60 seconds.
-        fail_fast : bool, optional
+        n_concurrent_dl : integer, optional
+            Number of concurrent downloads. Defaults to ``self.concurrent_dl_limit``.
+        lta_retry_delay : float, default 60
+            Number of seconds to wait between requests to the long term archive.
+        lta_timeout : float, optional
+            Maximum number of seconds to wait for triggered products to come online.
+            Defaults to no timeout.
+        fail_fast : bool, default False
             if True, all other downloads are cancelled when one of the downloads fails.
-            Defaults to False.
-        **kwargs :
-            additional parameters for the *download* method
+        nodefilter : callable, optional
+            The callable is used to select which files of each product will be downloaded.
+            If None (the default), the full products will be downloaded.
+            See ``sentinelsat.products`` for sample node filters.
 
         Raises
         ------
-        Raises the most recent downloading exception if all downloads failed.
+        By default, raises the most recent downloading exception if all downloads failed.
+        If ``self.fail_fast`` is set to True, raises the encountered exception on the first failed
+        download instead.
 
         Returns
         -------
@@ -659,19 +666,17 @@ class SentinelAPI:
             A dictionary containing the product information of products where either
             downloading or triggering failed. "exception" field with the exception info
             is included to the product info dict.
-
-
-        .. versionchanged:: 0.15
-           Added ``**kwargs`` parameter to allow easier specialization of the :class:`SentinelAPI` class.
         """
-        downloader = Downloader(self)
-        downloader.verify_checksum = checksum
-        downloader.fail_fast = fail_fast
-        downloader.max_attempts = max_attempts
-        downloader.n_concurrent_dl = n_concurrent_dl
-        downloader.concurrent_lta_trigger_limit = n_concurrent_trigger
-        downloader.lta_retry_delay = lta_retry_delay
-        downloader.node_filter = nodefilter
+        downloader = Downloader(
+            self,
+            verify_checksum=checksum,
+            fail_fast=fail_fast,
+            max_attempts=max_attempts,
+            n_concurrent_dl=n_concurrent_dl,
+            lta_retry_delay=lta_retry_delay,
+            node_filter=nodefilter,
+            lta_timeout=lta_timeout,
+        )
         statuses, exceptions, product_infos = downloader.download_all(products, directory_path)
 
         # Adapt results to the old download_all() API
@@ -719,17 +724,16 @@ class SentinelAPI:
             A dictionary containing the error of products where either
             quicklook was not available or it had an unexpected content type
         """
-        downloader = Downloader(self)
-        downloader.n_concurrent_dl = n_concurrent_dl
+        downloader = Downloader(self, n_concurrent_dl=n_concurrent_dl)
         return downloader.download_all_quicklooks(products, directory_path)
 
     def download_quicklook(self, id, directory_path="."):
         """Download a quicklook for a product.
 
-        Uses the filename on the server for the downloaded image, e.g.
+        Uses the filename on the server for the downloaded image name, e.g.
         "S1A_EW_GRDH_1SDH_20141003T003840_20141003T003920_002658_002F54_4DD1.jpeg".
 
-        Complete images are skipped.
+        Already downloaded images are skipped.
 
         Parameters
         ----------

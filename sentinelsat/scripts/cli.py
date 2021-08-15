@@ -9,8 +9,7 @@ import geojson as gj
 import requests.utils
 from tqdm.auto import tqdm
 
-from sentinelsat import __version__ as sentinelsat_version
-from sentinelsat.download import make_path_filter
+from sentinelsat import __version__ as sentinelsat_version, make_path_filter
 from sentinelsat.sentinel import SentinelAPI, geojson_to_wkt, is_wkt, placename_to_wkt, read_geojson
 
 json_parse_exception = json.decoder.JSONDecodeError
