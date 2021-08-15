@@ -27,9 +27,22 @@ def test_get_coordinates(fixture_path):
         "POLYGON((-66.2695 -8.0592,-66.2695 0.7031,"
         "-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592))"
     )
-    assert geojson_to_wkt(read_geojson(fixture_path("map.geojson"))) == wkt
-    assert geojson_to_wkt(read_geojson(fixture_path("map_z.geojson"))) == wkt
+    wkt_single_collection = (
+        "GEOMETRYCOLLECTION(POLYGON((-66.2695 -8.0592,-66.2695 0.7031,"
+        "-57.3047 0.7031,-57.3047 -8.0592,-66.2695 -8.0592)))"
+    )
+    wkt_collection = (
+        "GEOMETRYCOLLECTION("
+        "POLYGON((9.2065 52.6164,9.8438 51.9849,10.7446 52.5630,"
+        "9.8657 52.9751,9.2065 52.6164)),"
+        "POLYGON((12.6123 52.9354,12.2388 52.4426,13.1396 52.2009,"
+        "13.8647 52.5229,13.3374 52.8691,12.6123 52.9354))"
+        ")"
+    )
+    assert geojson_to_wkt(read_geojson(fixture_path("map.geojson"))) == wkt_single_collection
+    assert geojson_to_wkt(read_geojson(fixture_path("map_z.geojson"))) == wkt_single_collection
     assert geojson_to_wkt(read_geojson(fixture_path("map_nested.geojson"))) == wkt
+    assert geojson_to_wkt(read_geojson(fixture_path("map_collection.geojson"))) == wkt_collection
 
 
 @pytest.mark.vcr

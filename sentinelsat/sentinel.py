@@ -1264,19 +1264,14 @@ def read_geojson(geojson_file):
         return geojson.load(f)
 
 
-def geojson_to_wkt(geojson_obj, feature_number=0, decimals=4):
+def geojson_to_wkt(geojson_obj, decimals=4):
     """Convert a GeoJSON object to Well-Known Text. Intended for use with OpenSearch queries.
-
-    In case of FeatureCollection, only one of the features is used (the first by default).
     3D points are converted to 2D.
 
     Parameters
     ----------
     geojson_obj : dict
         a GeoJSON object
-    feature_number : int, optional
-        Feature to extract polygon from (in case of MultiPolygon
-        FeatureCollection), defaults to first feature
     decimals : int, optional
         Number of decimal figures after point to round coordinate to. Defaults to 4 (about 10
         meters).
@@ -1291,7 +1286,9 @@ def geojson_to_wkt(geojson_obj, feature_number=0, decimals=4):
     elif "geometry" in geojson_obj:
         geometry = geojson_obj["geometry"]
     else:
-        geometry = geojson_obj["features"][feature_number]["geometry"]
+        geometry = {"type": "GeometryCollection", "geometries": []}
+        for feature in geojson_obj["features"]:
+            geometry["geometries"].append(feature["geometry"])
 
     def ensure_2d(geometry):
         if isinstance(geometry[0], (list, tuple)):
@@ -1309,8 +1306,13 @@ def geojson_to_wkt(geojson_obj, feature_number=0, decimals=4):
                 raise ValueError("Latitude is out of bounds, check your JSON format or data")
 
     # Discard z-coordinate, if it exists
-    geometry["coordinates"] = ensure_2d(geometry["coordinates"])
-    check_bounds(geometry["coordinates"])
+    if geometry["type"] == "GeometryCollection":
+        for idx, geo in enumerate(geometry["geometries"]):
+            geometry["geometries"][idx]["coordinates"] = ensure_2d(geo["coordinates"])
+            check_bounds(geo["coordinates"])
+    else:
+        geometry["coordinates"] = ensure_2d(geometry["coordinates"])
+        check_bounds(geometry["coordinates"])
 
     wkt = geomet.wkt.dumps(geometry, decimals=decimals)
     # Strip unnecessary spaces
