@@ -502,10 +502,9 @@ class SentinelAPI:
            * Now raises LTATriggered or LTAError if the product has been archived.
         """
         downloader = Downloader(self)
-        downloader.directory = directory_path
         downloader.node_filter = nodefilter
         downloader.verify_checksum = checksum
-        return downloader.download(id)
+        return downloader.download(id, directory_path)
 
     def _get_filename(self, product_info):
         if product_info["Online"]:
@@ -627,7 +626,6 @@ class SentinelAPI:
            Added ``**kwargs`` parameter to allow easier specialization of the :class:`SentinelAPI` class.
         """
         downloader = Downloader(self)
-        downloader.directory = directory_path
         downloader.verify_checksum = checksum
         downloader.fail_fast = fail_fast
         downloader.max_attempts = max_attempts
@@ -635,7 +633,7 @@ class SentinelAPI:
         downloader.n_concurrent_trigger = n_concurrent_trigger
         downloader.lta_retry_delay = lta_retry_delay
         downloader.node_filter = nodefilter
-        statuses, exceptions, product_infos = downloader.download_all(products)
+        statuses, exceptions, product_infos = downloader.download_all(products, directory_path)
 
         # Adapt results to the old download_all() API
         downloaded_prods = {}
@@ -683,9 +681,8 @@ class SentinelAPI:
             quicklook was not available or it had an unexpected content type
         """
         downloader = Downloader(self)
-        downloader.directory = directory_path
         downloader.n_concurrent_dl = n_concurrent_dl
-        return downloader.download_all_quicklooks(products)
+        return downloader.download_all_quicklooks(products, directory_path)
 
     def download_quicklook(self, id, directory_path="."):
         """Download a quicklook for a product.
@@ -708,8 +705,7 @@ class SentinelAPI:
             Dictionary containing the quicklooks's response headers as well as the path on disk.
         """
         downloader = Downloader(self)
-        downloader.directory = directory_path
-        return downloader.download_quicklook(id)
+        return downloader.download_quicklook(id, directory_path)
 
     @staticmethod
     def get_products_size(products):

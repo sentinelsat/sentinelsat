@@ -41,7 +41,6 @@ class Downloader:
     def __init__(
         self,
         api,
-        directory=".",
         *,
         node_filter=None,
         verify_checksum=True,
@@ -69,7 +68,6 @@ class Downloader:
         self.logger = self.api.logger
         self._tqdm = self.api._tqdm
 
-        self.directory = directory
         self.node_filter = node_filter
         self.verify_checksum = verify_checksum
         self.fail_fast = fail_fast
@@ -94,7 +92,7 @@ class Downloader:
         self._n_concurrent_dl = value
         self._dl_semaphore = threading.BoundedSemaphore(self._n_concurrent_dl)
 
-    def download(self, id, *, stop_event=None):
+    def download(self, id, directory=".", *, stop_event=None):
         """Download a product.
 
         Uses the filename on the server for the downloaded file, e.g.
@@ -106,7 +104,7 @@ class Downloader:
         ----------
         id : string
             UUID of the product, e.g. 'a8dd0cfd-613e-45ce-868c-d79177b916ed'
-        directory_path : string, optional
+        directory : string or Path, optional
             Where the file will be downloaded
         checksum : bool, optional
             If True, verify the downloaded file's integrity by checking its MD5 checksum.
@@ -135,7 +133,7 @@ class Downloader:
         if not self.node_filter:
             product_info = self.api.get_product_odata(id)
             filename = self.api._get_filename(product_info)
-            path = Path(self.directory) / filename
+            path = Path(directory) / filename
             product_info["path"] = str(path)
             product_info["downloaded_bytes"] = 0
 
@@ -152,7 +150,7 @@ class Downloader:
             return product_info
         else:
             product_info = self.api.get_product_odata(id)
-            product_path = Path(self.directory) / (product_info["title"] + ".SAFE")
+            product_path = Path(directory) / (product_info["title"] + ".SAFE")
             product_info["node_path"] = "./" + product_info["title"] + ".SAFE"
             manifest_path = product_path / "manifest.safe"
             if not manifest_path.exists() and self.trigger_offline_retrieval(id):
@@ -234,7 +232,7 @@ class Downloader:
         shutil.move(temp_path, path)
         return product_info
 
-    def download_all(self, products):
+    def download_all(self, products, directory="."):
         """Download a list of products.
 
         Takes a list of product IDs as input. This means that the return value of query() can be
@@ -251,8 +249,8 @@ class Downloader:
         ----------
         products : list
             List of product IDs
-        directory_path : string
-            Directory where the downloaded files will be downloaded
+        directory : string or Path, optional
+            Directory where the files will be downloaded
         max_attempts : int, optional
             Number of allowed retries before giving up downloading a product. Defaults to 10.
         checksum : bool, optional
@@ -339,7 +337,7 @@ class Downloader:
         for pid in list(offline_prods):
             product_info = product_infos[pid]
             filename = self.api._get_filename(product_info)
-            path = Path(self.directory) / filename
+            path = Path(directory) / filename
             if path.exists():
                 self.logger.info("Skipping already downloaded %s.", filename)
                 product_info["path"] = str(path)
@@ -383,6 +381,7 @@ class Downloader:
                 future = dl_executor.submit(
                     self._download_online_retry,
                     product_infos[pid],
+                    directory,
                     statuses,
                     exceptions,
                     stop_event,
@@ -544,7 +543,7 @@ class Downloader:
         self.api._check_scihub_response(r, test_json=False)
         return r
 
-    def download_quicklook(self, id):
+    def download_quicklook(self, id, directory="."):
         """Download a quicklook for a product.
 
         Uses the filename on the server for the downloaded image, e.g.
@@ -556,8 +555,8 @@ class Downloader:
         ----------
         id : string
             UUID of the product, e.g. 'a8dd0cfd-613e-45ce-868c-d79177b916ed'
-        directory_path : string, optional
-            Where the image will be downloaded
+        directory : string or Path, optional
+            Where the image will be downloaded. Defaults to ".".
 
         Returns
         -------
@@ -567,7 +566,7 @@ class Downloader:
         product_info = self.api.get_product_odata(id)
         url = product_info["quicklook_url"]
 
-        path = Path(self.directory) / "{}.jpeg".format(product_info["title"])
+        path = Path(directory) / "{}.jpeg".format(product_info["title"])
         product_info["path"] = str(path)
         product_info["downloaded_bytes"] = 0
         product_info["error"] = ""
@@ -594,7 +593,7 @@ class Downloader:
 
         return product_info
 
-    def download_all_quicklooks(self, products):
+    def download_all_quicklooks(self, products, directory="."):
         """Download quicklook for a list of products.
 
         Takes a dict of product IDs: product data as input. This means that the return value of
@@ -607,7 +606,7 @@ class Downloader:
         ----------
         products : dict
             Dict of product IDs, product data
-        directory_path : string
+        directory : string or Path, optional
             Directory where the downloaded images will be downloaded
         n_concurrent_dl : integer
             Number of concurrent downloads
@@ -630,7 +629,7 @@ class Downloader:
         with ThreadPoolExecutor(max_workers=self.n_concurrent_dl) as dl_exec:
             dl_tasks = {}
             for pid in products:
-                future = dl_exec.submit(self.download_quicklook, pid)
+                future = dl_exec.submit(self.download_quicklook, pid, directory)
                 dl_tasks[future] = pid
 
             completed_tasks = concurrent.futures.as_completed(dl_tasks)
@@ -688,7 +687,7 @@ class Downloader:
         self.logger.info("%s retrieval from LTA completed", uuid)
         statuses[uuid] = DownloadStatus.ONLINE
 
-    def _download_online_retry(self, product_info, statuses, exceptions, stop_event):
+    def _download_online_retry(self, product_info, directory, statuses, exceptions, stop_event):
         """Thin wrapper around download with retrying and checking whether a product is online
 
         Parameters
@@ -733,7 +732,7 @@ class Downloader:
                 raise concurrent.futures.CancelledError()
             try:
                 statuses[uuid] = DownloadStatus.DOWNLOAD_STARTED
-                return self.download(uuid, stop_event=stop_event)
+                return self.download(uuid, directory, stop_event=stop_event)
             except (concurrent.futures.CancelledError, KeyboardInterrupt, SystemExit):
                 raise
             except Exception as e:
