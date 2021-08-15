@@ -355,9 +355,10 @@ class Downloader:
         # Two separate threadpools for downloading and triggering of retrieval.
         # Otherwise triggering might take up all threads and nothing is downloaded.
         with ThreadPoolExecutor(
-            max_workers=self.n_concurrent_dl, thread_name_prefix="dl"
+            max_workers=min(self.n_concurrent_dl, len(product_infos)), thread_name_prefix="dl"
         ) as dl_executor, ThreadPoolExecutor(
-            max_workers=self.api.concurrent_lta_trigger_limit, thread_name_prefix="trigger"
+            max_workers=min(self.api.concurrent_lta_trigger_limit, len(offline_prods)),
+            thread_name_prefix="trigger",
         ) as trigger_executor:
             # First all online products are downloaded. Subsequently, offline products that might
             # have become available in the meantime are requested.
