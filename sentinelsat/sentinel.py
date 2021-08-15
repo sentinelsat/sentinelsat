@@ -1,6 +1,7 @@
 import hashlib
 import logging
 import re
+import threading
 import xml.etree.ElementTree as ET
 from collections import OrderedDict, defaultdict, namedtuple
 from datetime import date, datetime, timedelta
@@ -70,6 +71,9 @@ class SentinelAPI:
         api_url="https://apihub.copernicus.eu/apihub/",
         show_progressbars=True,
         timeout=60,
+        *,
+        concurrent_dl_limit=4,
+        concurrent_lta_trigger_limit=10,
     ):
         self.session = requests.Session()
         if user and password:
@@ -84,6 +88,41 @@ class SentinelAPI:
         # For unit tests
         self._last_query = None
         self._last_response = None
+
+        self._concurrent_dl_limit = concurrent_dl_limit
+        self._concurrent_lta_trigger_limit = concurrent_lta_trigger_limit
+
+        # The number of allowed concurrent GET requests is limited on the server side.
+        # We use a bounded semaphore to ensure we stay within that limit.
+        # Notably, LTA trigger requests also count against that limit.
+        self._dl_limit_semaphore = threading.BoundedSemaphore(self._concurrent_dl_limit)
+        self._lta_limit_semaphore = threading.BoundedSemaphore(self._concurrent_lta_trigger_limit)
+
+    @property
+    def concurrent_dl_limit(self):
+        return self._concurrent_dl_limit
+
+    @concurrent_dl_limit.setter
+    def concurrent_dl_limit(self, value):
+        self._concurrent_dl_limit = value
+        self._lta_limit_semaphore = threading.BoundedSemaphore(self._concurrent_dl_limit)
+
+    @property
+    def concurrent_lta_trigger_limit(self):
+        return self._concurrent_lta_trigger_limit
+
+    @concurrent_lta_trigger_limit.setter
+    def concurrent_lta_trigger_limit(self, value):
+        self._concurrent_lta_trigger_limit = value
+        self._dl_limit_semaphore = threading.BoundedSemaphore(self._concurrent_lta_trigger_limit)
+
+    @property
+    def dl_limit_semaphore(self):
+        return self._dl_limit_semaphore
+
+    @property
+    def lta_limit_semaphore(self):
+        return self._lta_limit_semaphore
 
     @staticmethod
     def _api2dhus_url(api_url):
@@ -630,7 +669,7 @@ class SentinelAPI:
         downloader.fail_fast = fail_fast
         downloader.max_attempts = max_attempts
         downloader.n_concurrent_dl = n_concurrent_dl
-        downloader.n_concurrent_trigger = n_concurrent_trigger
+        downloader.concurrent_lta_trigger_limit = n_concurrent_trigger
         downloader.lta_retry_delay = lta_retry_delay
         downloader.node_filter = nodefilter
         statuses, exceptions, product_infos = downloader.download_all(products, directory_path)

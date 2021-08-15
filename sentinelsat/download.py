@@ -46,8 +46,7 @@ class Downloader:
         verify_checksum=True,
         fail_fast=False,
         max_attempts=10,
-        n_concurrent_dl=4,
-        n_concurrent_trigger=10,
+        n_concurrent_dl=None,
         lta_retry_delay=60,
         lta_timeout=3 * 60 * 60
     ):
@@ -72,25 +71,10 @@ class Downloader:
         self.verify_checksum = verify_checksum
         self.fail_fast = fail_fast
         self.max_attempts = max_attempts
-        self._n_concurrent_dl = n_concurrent_dl
-        self.n_concurrent_trigger = n_concurrent_trigger
+        self.n_concurrent_dl = n_concurrent_dl or self.api.concurrent_dl_limit
         self.lta_retry_delay = lta_retry_delay
         self.lta_timeout = lta_timeout
         self.chunk_size = 2 ** 20  # download in 1 MB chunks by default
-
-        # The number of concurrent GET requests is limited on the server side.
-        # We use semaphores to ensure we stay within that limit.
-        # LTA trigger requests also count against that limit.
-        self._dl_semaphore = threading.BoundedSemaphore(self._n_concurrent_dl)
-
-    @property
-    def n_concurrent_dl(self):
-        return self._n_concurrent_dl
-
-    @n_concurrent_dl.setter
-    def n_concurrent_dl(self, value):
-        self._n_concurrent_dl = value
-        self._dl_semaphore = threading.BoundedSemaphore(self._n_concurrent_dl)
 
     def download(self, id, directory=".", *, stop_event=None):
         """Download a product.
@@ -373,7 +357,7 @@ class Downloader:
         with ThreadPoolExecutor(
             max_workers=self.n_concurrent_dl, thread_name_prefix="dl"
         ) as dl_executor, ThreadPoolExecutor(
-            max_workers=self.n_concurrent_trigger, thread_name_prefix="trigger"
+            max_workers=self.api.concurrent_lta_trigger_limit, thread_name_prefix="trigger"
         ) as trigger_executor:
             # First all online products are downloaded. Subsequently, offline products that might
             # have become available in the meantime are requested.
@@ -482,7 +466,7 @@ class Downloader:
         """
         # Request just a single byte to avoid accidental downloading of the whole product.
         # Requesting zero bytes results in NullPointerException in the server.
-        with self._dl_semaphore:
+        with self.api.dl_limit_semaphore:
             r = self.api.session.get(
                 self.api._get_download_url(uuid), headers={"Range": "bytes=0-1"}
             )
@@ -538,7 +522,7 @@ class Downloader:
         if not self.api.is_online(id):
             self.trigger_offline_retrieval(id)
             raise LTATriggered(id)
-        with self._dl_semaphore:
+        with self.api.dl_limit_semaphore:
             r = self.api.session.get(self.api._get_download_url(id), stream=True, **kwargs)
         self.api._check_scihub_response(r, test_json=False)
         return r
@@ -573,7 +557,7 @@ class Downloader:
 
         self.logger.info("Downloading quicklook %s to %s", product_info["title"], path)
 
-        with self._dl_semaphore:
+        with self.api.dl_limit_semaphore:
             r = self.api.session.get(url)
         self.api._check_scihub_response(r, test_json=False)
 
@@ -649,43 +633,44 @@ class Downloader:
 
         This function is supposed to be called in a separate thread. By setting stop_event it can be stopped.
         """
-        t0 = time.time()
-        while (
-            not stop_event.is_set()
-            and (time.time() - t0 < self.lta_timeout)
-            and not self.api.is_online(uuid)
-        ):
-            if statuses[uuid] == DownloadStatus.OFFLINE:
-                # Trigger
-                try:
-                    triggered = self.trigger_offline_retrieval(uuid)
-                    if triggered:
-                        statuses[uuid] = DownloadStatus.TRIGGERED
+        with self.api.lta_limit_semaphore:
+            t0 = time.time()
+            while (
+                not stop_event.is_set()
+                and (time.time() - t0 < self.lta_timeout)
+                and not self.api.is_online(uuid)
+            ):
+                if statuses[uuid] == DownloadStatus.OFFLINE:
+                    # Trigger
+                    try:
+                        triggered = self.trigger_offline_retrieval(uuid)
+                        if triggered:
+                            statuses[uuid] = DownloadStatus.TRIGGERED
+                            self.logger.info(
+                                "%s accepted for retrieval, waiting for it to come online...", uuid
+                            )
+                        else:
+                            # Product is already online
+                            break
+                    except (LTAError, ServerError) as e:
                         self.logger.info(
-                            "%s accepted for retrieval, waiting for it to come online...", uuid
+                            "%s retrieval was not accepted: %s. Retrying in %d seconds",
+                            uuid,
+                            e.msg,
+                            self.lta_retry_delay,
                         )
-                    else:
-                        # Product is already online
-                        break
-                except (LTAError, ServerError) as e:
-                    self.logger.info(
-                        "%s retrieval was not accepted: %s. Retrying in %d seconds",
-                        uuid,
-                        e.msg,
-                        self.lta_retry_delay,
-                    )
-            else:
-                # Just wait for the product to come online
-                pass
-            stop_event.wait(timeout=self.lta_retry_delay)
-        if stop_event.is_set():
-            raise concurrent.futures.CancelledError()
-        elif time.time() - t0 >= self.lta_timeout:
-            raise LTAError(
-                f"LTA retrieval for {uuid} timed out (lta_timeout={self.lta_timeout} seconds)"
-            )
-        self.logger.info("%s retrieval from LTA completed", uuid)
-        statuses[uuid] = DownloadStatus.ONLINE
+                else:
+                    # Just wait for the product to come online
+                    pass
+                stop_event.wait(timeout=self.lta_retry_delay)
+            if stop_event.is_set():
+                raise concurrent.futures.CancelledError()
+            elif time.time() - t0 >= self.lta_timeout:
+                raise LTAError(
+                    f"LTA retrieval for {uuid} timed out (lta_timeout={self.lta_timeout} seconds)"
+                )
+            self.logger.info("%s retrieval from LTA completed", uuid)
+            statuses[uuid] = DownloadStatus.ONLINE
 
     def _download_online_retry(self, product_info, directory, statuses, exceptions, stop_event):
         """Thin wrapper around download with retrying and checking whether a product is online
@@ -757,7 +742,7 @@ class Downloader:
         else:
             already_downloaded_bytes = 0
         downloaded_bytes = 0
-        with self._dl_semaphore:
+        with self.api.dl_limit_semaphore:
             r = self.api.session.get(url, stream=True, headers=headers)
         with self._tqdm(
             desc=f"Downloading {title}",
@@ -771,7 +756,7 @@ class Downloader:
             with open(path, mode) as f:
                 iterator = r.iter_content(chunk_size=self.chunk_size)
                 while True:
-                    with self._dl_semaphore:
+                    with self.api.dl_limit_semaphore:
                         if stop_event and stop_event.is_set():
                             raise concurrent.futures.CancelledError()
                         try:
