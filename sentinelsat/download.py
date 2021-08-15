@@ -635,14 +635,18 @@ class Downloader:
         """
         with self.api.lta_limit_semaphore:
             t0 = time.time()
-            while (
-                not stop_event.is_set()
-                and (time.time() - t0 < self.lta_timeout)
-                and not self.api.is_online(uuid)
-            ):
-                if statuses[uuid] == DownloadStatus.OFFLINE:
-                    # Trigger
-                    try:
+            while True:
+                if stop_event.is_set():
+                    raise concurrent.futures.CancelledError()
+                if time.time() - t0 >= self.lta_timeout:
+                    raise LTAError(
+                        f"LTA retrieval for {uuid} timed out (lta_timeout={self.lta_timeout} seconds)"
+                    )
+                try:
+                    if self.api.is_online(uuid):
+                        break
+                    if statuses[uuid] == DownloadStatus.OFFLINE:
+                        # Trigger
                         triggered = self.trigger_offline_retrieval(uuid)
                         if triggered:
                             statuses[uuid] = DownloadStatus.TRIGGERED
@@ -650,25 +654,16 @@ class Downloader:
                                 "%s accepted for retrieval, waiting for it to come online...", uuid
                             )
                         else:
-                            # Product is already online
+                            # Product is online
                             break
-                    except (LTAError, ServerError) as e:
-                        self.logger.info(
-                            "%s retrieval was not accepted: %s. Retrying in %d seconds",
-                            uuid,
-                            e.msg,
-                            self.lta_retry_delay,
-                        )
-                else:
-                    # Just wait for the product to come online
-                    pass
+                except (LTAError, ServerError) as e:
+                    self.logger.info(
+                        "%s retrieval was not accepted: %s. Retrying in %d seconds",
+                        uuid,
+                        e.msg,
+                        self.lta_retry_delay,
+                    )
                 stop_event.wait(timeout=self.lta_retry_delay)
-            if stop_event.is_set():
-                raise concurrent.futures.CancelledError()
-            elif time.time() - t0 >= self.lta_timeout:
-                raise LTAError(
-                    f"LTA retrieval for {uuid} timed out (lta_timeout={self.lta_timeout} seconds)"
-                )
             self.logger.info("%s retrieval from LTA completed", uuid)
             statuses[uuid] = DownloadStatus.ONLINE
 
