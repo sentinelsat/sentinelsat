@@ -4,6 +4,7 @@ import fnmatch
 import itertools
 import shutil
 import threading
+import time
 import traceback
 from collections import namedtuple
 from concurrent.futures import ThreadPoolExecutor
@@ -48,7 +49,8 @@ class Downloader:
         max_attempts=10,
         n_concurrent_dl=4,
         n_concurrent_trigger=10,
-        lta_retry_delay=60
+        lta_retry_delay=60,
+        lta_timeout=3 * 60 * 60
     ):
         """
 
@@ -75,6 +77,7 @@ class Downloader:
         self._n_concurrent_dl = n_concurrent_dl
         self.n_concurrent_trigger = n_concurrent_trigger
         self.lta_retry_delay = lta_retry_delay
+        self.lta_timeout = lta_timeout
         self.chunk_size = 2 ** 20  # download in 1 MB chunks by default
 
         # The number of concurrent GET requests is limited on the server side.
@@ -647,14 +650,21 @@ class Downloader:
 
         This function is supposed to be called in a separate thread. By setting stop_event it can be stopped.
         """
-        while not self.api.is_online(uuid) and not stop_event.is_set():
+        t0 = time.time()
+        while (
+            not stop_event.is_set()
+            and (time.time() - t0 < self.lta_timeout)
+            and not self.api.is_online(uuid)
+        ):
             if statuses[uuid] == DownloadStatus.OFFLINE:
                 # Trigger
                 try:
                     triggered = self.trigger_offline_retrieval(uuid)
                     if triggered:
                         statuses[uuid] = DownloadStatus.TRIGGERED
-                        self.logger.info("%s accepted for retrieval", uuid)
+                        self.logger.info(
+                            "%s accepted for retrieval, waiting for it to come online...", uuid
+                        )
                     else:
                         # Product is already online
                         break
@@ -671,6 +681,10 @@ class Downloader:
             stop_event.wait(timeout=self.lta_retry_delay)
         if stop_event.is_set():
             raise concurrent.futures.CancelledError()
+        elif time.time() - t0 >= self.lta_timeout:
+            raise LTAError(
+                f"LTA retrieval for {uuid} timed out (lta_timeout={self.lta_timeout} seconds)"
+            )
         self.logger.info("%s retrieval from LTA completed", uuid)
         statuses[uuid] = DownloadStatus.ONLINE
 
