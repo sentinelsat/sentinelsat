@@ -140,13 +140,15 @@ class SentinelAPI:
 
     def _req_dhus_stub(self):
         try:
-            resp = self.session.get(self.api_url + "api/stub/version")
+            with self.dl_limit_semaphore:
+                resp = self.session.get(self.api_url + "api/stub/version")
             resp.raise_for_status()
         except requests.exceptions.HTTPError as err:
             self.logger.error("HTTPError: %s", err)
             self.logger.error("Are you trying to get the DHuS version of APIHub?")
             self.logger.error("Trying again after conversion to DHuS URL")
-            resp = self.session.get(self._api2dhus_url(self.api_url) + "api/stub/version")
+            with self.dl_limit_semaphore:
+                resp = self.session.get(self._api2dhus_url(self.api_url) + "api/stub/version")
             resp.raise_for_status()
         return resp.json()["value"]
 
@@ -359,7 +361,8 @@ class SentinelAPI:
         # load query results
         url = self._format_url(order_by, limit, offset)
         # Unlike POST, DHuS only accepts latin1 charset in the GET params
-        response = self.session.get(url, params={"q": query.encode("latin1")})
+        with self.dl_limit_semaphore:
+            response = self.session.get(url, params={"q": query.encode("latin1")})
         self._check_scihub_response(response, query_string=query)
 
         # store last status code (for testing)
@@ -480,7 +483,8 @@ class SentinelAPI:
         url = self._get_odata_url(id, "?$format=json")
         if full:
             url += "&$expand=Attributes"
-        response = self.session.get(url)
+        with self.dl_limit_semaphore:
+            response = self.session.get(url)
         self._check_scihub_response(response)
         values = _parse_odata_response(response.json()["d"])
         values["quicklook_url"] = self._get_odata_url(id, "/Products('Quicklook')/$value")
@@ -506,7 +510,8 @@ class SentinelAPI:
         # Check https://scihub.copernicus.eu/userguide/ODataAPI#Products_entity for more information
 
         url = self._get_odata_url(id, "/Online/$value")
-        r = self.session.get(url)
+        with self.dl_limit_semaphore:
+            r = self.session.get(url)
         self._check_scihub_response(r)
         return r.json()
 
@@ -552,15 +557,17 @@ class SentinelAPI:
 
     def _get_filename(self, product_info):
         if product_info["Online"]:
-            req = self.session.head(product_info["url"])
+            with self.dl_limit_semaphore:
+                req = self.session.head(product_info["url"])
             self._check_scihub_response(req, test_json=False)
             cd = req.headers.get("Content-Disposition")
             if cd is not None:
                 filename = cd.split("=", 1)[1].strip('"')
                 return filename
-        req = self.session.get(
-            product_info["url"].replace("$value", "Attributes('Filename')/Value/$value")
-        )
+        with self.dl_limit_semaphore:
+            req = self.session.get(
+                product_info["url"].replace("$value", "Attributes('Filename')/Value/$value")
+            )
         self._check_scihub_response(req, test_json=False)
         filename = req.text
         # This should cover all currently existing file types: .SAFE, .SEN3, .nc and .EOF
@@ -1064,13 +1071,14 @@ class SentinelAPI:
             return node_info, data
 
         url = self._path_to_url(product_info, "manifest.safe", "json")
-        response = self.session.get(url, auth=self.session.auth)
+        with self.dl_limit_semaphore:
+            response = self.session.get(url)
         self._check_scihub_response(response)
         info = response.json()["d"]
 
         node_info["size"] = int(info["ContentLength"])
-
-        response = self.session.get(node_info["url"], auth=self.session.auth)
+        with self.dl_limit_semaphore:
+            response = self.session.get(node_info["url"])
         self._check_scihub_response(response, test_json=False)
         data = response.content
         if len(data) != node_info["size"]:

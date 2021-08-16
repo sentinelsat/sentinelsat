@@ -739,13 +739,13 @@ class Downloader:
             with open(path, mode) as f:
                 iterator = r.iter_content(chunk_size=self.chunk_size)
                 while True:
-                    with self.api.dl_limit_semaphore:
-                        if stop_event and stop_event.is_set():
-                            raise concurrent.futures.CancelledError()
-                        try:
+                    if stop_event and stop_event.is_set():
+                        raise concurrent.futures.CancelledError()
+                    try:
+                        with self.api.dl_limit_semaphore:
                             chunk = next(iterator)
-                        except StopIteration:
-                            break
+                    except StopIteration:
+                        break
                     if chunk:  # filter out keep-alive new chunks
                         f.write(chunk)
                         progress.update(len(chunk))
