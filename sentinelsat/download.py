@@ -125,58 +125,58 @@ class Downloader:
         LTAError
             If the product has been archived and its retrieval failed.
         """
-        if not self.node_filter:
-            product_info = self.api.get_product_odata(id)
-            filename = self.api._get_filename(product_info)
-            path = Path(directory) / filename
-            product_info["path"] = str(path)
-            product_info["downloaded_bytes"] = 0
+        if self.node_filter:
+            return self._download_with_node_filter(id, directory, stop_event)
+
+        product_info = self.api.get_product_odata(id)
+        filename = self.api._get_filename(product_info)
+        path = Path(directory) / filename
+        product_info["path"] = str(path)
+        product_info["downloaded_bytes"] = 0
+
+        if path.exists():
+            # We assume that the product has been downloaded and is complete
+            return product_info
+
+        # An incomplete download triggers the retrieval from the LTA if the product is not online
+        if not self.api.is_online(id):
+            self.trigger_offline_retrieval(id)
+            raise LTATriggered(id)
+
+        self._download_common(product_info, path, stop_event)
+        return product_info
+
+    def _download_with_node_filter(self, id, directory, stop_event):
+        product_info = self.api.get_product_odata(id)
+        product_path = Path(directory) / (product_info["title"] + ".SAFE")
+        product_info["node_path"] = "./" + product_info["title"] + ".SAFE"
+        manifest_path = product_path / "manifest.safe"
+        if not manifest_path.exists() and self.trigger_offline_retrieval(id):
+            raise LTATriggered(id)
+        manifest_info, _ = self.api._get_manifest(product_info, manifest_path)
+        product_info["nodes"] = {
+            manifest_info["node_path"]: manifest_info,
+        }
+        node_infos = self._filter_nodes(manifest_path, product_info, self.node_filter)
+        product_info["nodes"].update(node_infos)
+        for node_info in node_infos.values():
+            if stop_event and stop_event.is_set():
+                raise concurrent.futures.CancelledError()
+            node_path = node_info["node_path"]
+            path = (product_path / node_path).resolve()
+            node_info["path"] = path
+            node_info["downloaded_bytes"] = 0
+
+            self.logger.debug("Downloading %s node to %s", id, path)
+            self.logger.debug("Node URL for %s: %s", id, node_info["url"])
 
             if path.exists():
-                # We assume that the product has been downloaded and is complete
-                return product_info
+                # We assume that the product node has been downloaded and is complete
+                continue
+            self._download_common(node_info, path, stop_event)
+        return product_info
 
-            # An incomplete download triggers the retrieval from the LTA if the product is not online
-            if not self.api.is_online(id):
-                self.trigger_offline_retrieval(id)
-                raise LTATriggered(id)
-
-            self._download_outer(product_info, path, stop_event)
-            return product_info
-        else:
-            product_info = self.api.get_product_odata(id)
-            product_path = Path(directory) / (product_info["title"] + ".SAFE")
-            product_info["node_path"] = "./" + product_info["title"] + ".SAFE"
-            manifest_path = product_path / "manifest.safe"
-            if not manifest_path.exists() and self.trigger_offline_retrieval(id):
-                raise LTATriggered(id)
-
-            manifest_info, _ = self.api._get_manifest(product_info, manifest_path)
-            product_info["nodes"] = {
-                manifest_info["node_path"]: manifest_info,
-            }
-
-            node_infos = self._filter_nodes(manifest_path, product_info, self.node_filter)
-            product_info["nodes"].update(node_infos)
-
-            for node_info in node_infos.values():
-                if stop_event and stop_event.is_set():
-                    raise concurrent.futures.CancelledError()
-                node_path = node_info["node_path"]
-                path = (product_path / node_path).resolve()
-                node_info["path"] = path
-                node_info["downloaded_bytes"] = 0
-
-                self.logger.debug("Downloading %s node to %s", id, path)
-                self.logger.debug("Node URL for %s: %s", id, node_info["url"])
-
-                if path.exists():
-                    # We assume that the product node has been downloaded and is complete
-                    continue
-                self._download_outer(node_info, path, stop_event)
-            return product_info
-
-    def _download_outer(self, product_info: Dict[str, Any], path: Path, stop_event):
+    def _download_common(self, product_info: Dict[str, Any], path: Path, stop_event):
         # Use a temporary file for downloading
         temp_path = path.with_name(path.name + ".incomplete")
         skip_download = False
