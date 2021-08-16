@@ -379,7 +379,7 @@ def cli(
                 "Some quicklooks failed: %s out of %s", len(failed_quicklooks), len(products)
             )
 
-    if download is True:
+    if download:
         downloaded, triggered, failed_downloads = api.download_all(
             products, path, nodefilter=nodefilter, fail_fast=fail_fast
         )
