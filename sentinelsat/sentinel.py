@@ -605,6 +605,7 @@ class SentinelAPI:
         max_attempts=10,
         checksum=True,
         n_concurrent_dl=None,
+        dl_retry_delay=10,
         lta_retry_delay=60,
         lta_timeout=None,
         fail_fast=False,
@@ -636,8 +637,10 @@ class SentinelAPI:
             Defaults to True.
         n_concurrent_dl : integer, optional
             Number of concurrent downloads. Defaults to ``self.concurrent_dl_limit``.
+        dl_retry_delay : float, default 10
+            Number of seconds to wait between retrying of failed downloads.
         lta_retry_delay : float, default 60
-            Number of seconds to wait between requests to the long term archive.
+            Number of seconds to wait between requests to the Long Term Archive.
         lta_timeout : float, optional
             Maximum number of seconds to wait for triggered products to come online.
             Defaults to no timeout.
@@ -673,6 +676,7 @@ class SentinelAPI:
             fail_fast=fail_fast,
             max_attempts=max_attempts,
             n_concurrent_dl=n_concurrent_dl,
+            dl_retry_delay=dl_retry_delay,
             lta_retry_delay=lta_retry_delay,
             node_filter=nodefilter,
             lta_timeout=lta_timeout,

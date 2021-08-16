@@ -22,6 +22,7 @@ Added
   (set to 10 by default) are respected everywhere. (`#532 <https://github.com/sentinelsat/sentinelsat/issues/532>`_ `@valgur <https://github.com/valgur>`_)
 * Added an optional ``lta_timeout`` parameter to ``download_all()``, which sets the maximum time to wait for products to be retrieved from the LTA.
   Defaults to unlimited. (`#532 <https://github.com/sentinelsat/sentinelsat/issues/532>`_ `@valgur <https://github.com/valgur>`_)
+* Added ``dl_retry_delay``, which defaults to 10 seconds and limits the rate of download retries to give the server some time to recover. (`#532 <https://github.com/sentinelsat/sentinelsat/issues/532>`_ `@valgur <https://github.com/valgur>`_)
 * Added ``fail_fast`` option to ``download_all()``. (`#532 <https://github.com/sentinelsat/sentinelsat/issues/532>`_ `@valgur <https://github.com/valgur>`_)
 * Added support for SHA3-256 checksums used by some newer Sentinel-2 products. (`#523 <https://github.com/sentinelsat/sentinelsat/issues/523>`_ `@valgur <https://github.com/valgur>`_)
 * For more advanced use-cases, ``Downloader.download_all()``, which returns a detailed ``DownloadStatus`` enum for each product, can now be used. (`#523 <https://github.com/sentinelsat/sentinelsat/issues/523>`_ `@valgur <https://github.com/valgur>`_)

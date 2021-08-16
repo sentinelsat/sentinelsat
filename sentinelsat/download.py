@@ -44,8 +44,9 @@ class Downloader:
         node_filter=None,
         verify_checksum=True,
         fail_fast=False,
-        max_attempts=10,
         n_concurrent_dl=None,
+        max_attempts=10,
+        dl_retry_delay=10,
         lta_retry_delay=60,
         lta_timeout=None
     ):
@@ -68,13 +69,15 @@ class Downloader:
             Throws InvalidChecksumError if the checksum does not match.
         fail_fast : bool, default False
             if True, all other downloads are cancelled when one of the downloads fails in ``download_all()``.
-        max_attempts : int, default 10
-            Number of allowed retries before giving up downloading a product in ``download_all()``.
         n_concurrent_dl : integer, optional
             Number of concurrent downloads.
             Defaults to the maximum allowed by ``SentinelAPI.concurrent_dl_limit``.
+        max_attempts : int, default 10
+            Number of allowed retries before giving up downloading a product in ``download_all()``.
+        dl_retry_delay : float, default 10
+            Number of seconds to wait between retrying of failed downloads.
         lta_retry_delay : float, default 60
-            Number of seconds to wait between requests to the long term archive.
+            Number of seconds to wait between requests to the Long Term Archive.
         lta_timeout : float, optional
             Maximum number of seconds to wait for triggered products to come online.
             Defaults to no timeout.
@@ -90,6 +93,7 @@ class Downloader:
         self.fail_fast = fail_fast
         self.max_attempts = max_attempts
         self.n_concurrent_dl = n_concurrent_dl or self.api.concurrent_dl_limit
+        self.dl_retry_delay = dl_retry_delay
         self.lta_retry_delay = lta_retry_delay
         self.lta_timeout = lta_timeout
         self.chunk_size = 2 ** 20  # download in 1 MB chunks by default
@@ -686,6 +690,8 @@ class Downloader:
             if stop_event.is_set():
                 raise concurrent.futures.CancelledError()
             try:
+                if cnt > 0:
+                    time.sleep(self.dl_retry_delay)
                 statuses[uuid] = DownloadStatus.DOWNLOAD_STARTED
                 return self.download(uuid, directory, stop_event=stop_event)
             except (concurrent.futures.CancelledError, KeyboardInterrupt, SystemExit):
@@ -698,9 +704,12 @@ class Downloader:
                     )
                 else:
                     self.logger.exception("There was an error downloading %s", title)
-                self.logger.info("%d retries left", self.max_attempts - cnt - 1)
+                retries_remaining = self.max_attempts - cnt - 1
+                if retries_remaining > 0:
+                    self.logger.info("%d retries left, retrying in %s seconds...", retries_remaining, self.dl_retry_delay)
+                else:
+                    self.logger.info("Downloading %s failed. No retries left.", title)
                 last_exception = e
-        self.logger.info("No retries left for %s. Terminating.", title)
         raise last_exception
 
     def _download(self, url, path, file_size, title, stop_event):

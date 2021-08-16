@@ -1,4 +1,5 @@
 import re
+import time
 from datetime import datetime
 from functools import reduce
 from os import environ
@@ -307,3 +308,8 @@ def large_query():
         area="POLYGON((0 0,0 10,10 10,10 0,0 0))",
         date=(datetime(2015, 12, 1), datetime(2015, 12, 31)),
     )
+
+
+@pytest.fixture(autouse=True)
+def disable_sleep(monkeypatch):
+    monkeypatch.setattr(time, 'sleep', lambda x: None)
