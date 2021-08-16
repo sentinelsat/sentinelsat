@@ -4,6 +4,7 @@ import re
 import threading
 import xml.etree.ElementTree as ET
 from collections import OrderedDict, defaultdict, namedtuple
+from copy import copy
 from datetime import date, datetime, timedelta
 from pathlib import Path
 from typing import Dict
@@ -48,10 +49,6 @@ class SentinelAPI:
         How long to wait for DataHub response (in seconds).
         Tuple (connect, read) allowed.
         Set to None to wait indefinitely.
-    concurrent_dl_limit : int, default 4
-        Maximum number of concurrent downloads allowed by the server.
-    concurrent_lta_trigger_limit : int, default 10
-        Maximum number of concurrent Long Term Archive retrievals allowed.
 
     Attributes
     ----------
@@ -68,6 +65,13 @@ class SentinelAPI:
         Maximum number of concurrent downloads allowed by the server.
     concurrent_lta_trigger_limit : int
         Maximum number of concurrent Long Term Archive retrievals allowed.
+    dl_retry_delay : float, default 10
+        Number of seconds to wait between retrying of failed downloads.
+    lta_retry_delay : float, default 60
+        Number of seconds to wait between requests to the Long Term Archive.
+    lta_timeout : float, optional
+        Maximum number of seconds to wait for triggered products to come online.
+        Defaults to no timeout.
     """
 
     logger = logging.getLogger("sentinelsat.SentinelAPI")
@@ -79,9 +83,6 @@ class SentinelAPI:
         api_url="https://apihub.copernicus.eu/apihub/",
         show_progressbars=True,
         timeout=60,
-        *,
-        concurrent_dl_limit=4,
-        concurrent_lta_trigger_limit=10,
     ):
         self.session = requests.Session()
         if user and password:
@@ -97,14 +98,16 @@ class SentinelAPI:
         self._last_query = None
         self._last_response = None
 
-        self._concurrent_dl_limit = concurrent_dl_limit
-        self._concurrent_lta_trigger_limit = concurrent_lta_trigger_limit
+        self._concurrent_dl_limit = 4
+        self._concurrent_lta_trigger_limit = 10
 
         # The number of allowed concurrent GET requests is limited on the server side.
         # We use a bounded semaphore to ensure we stay within that limit.
         # Notably, LTA trigger requests also count against that limit.
         self._dl_limit_semaphore = threading.BoundedSemaphore(self._concurrent_dl_limit)
         self._lta_limit_semaphore = threading.BoundedSemaphore(self._concurrent_lta_trigger_limit)
+
+        self.downloader = Downloader(self)
 
     @property
     def concurrent_dl_limit(self):
@@ -123,6 +126,30 @@ class SentinelAPI:
     def concurrent_lta_trigger_limit(self, value):
         self._concurrent_lta_trigger_limit = value
         self._dl_limit_semaphore = threading.BoundedSemaphore(self._concurrent_lta_trigger_limit)
+
+    @property
+    def dl_retry_delay(self):
+        return self.downloader.dl_retry_delay
+
+    @dl_retry_delay.setter
+    def dl_retry_delay(self, value):
+        self.downloader.dl_retry_delay = value
+
+    @property
+    def lta_retry_delay(self):
+        return self.downloader.lta_retry_delay
+
+    @lta_retry_delay.setter
+    def lta_retry_delay(self, value):
+        self.downloader.lta_retry_delay = value
+
+    @property
+    def lta_timeout(self):
+        return self.downloader.lta_timeout
+
+    @lta_timeout.setter
+    def lta_timeout(self, value):
+        self.downloader.lta_timeout = value
 
     @property
     def dl_limit_semaphore(self):
@@ -552,7 +579,9 @@ class SentinelAPI:
         LTAError
             If the product has been archived and its retrieval failed.
         """
-        downloader = Downloader(self, node_filter=nodefilter, verify_checksum=checksum)
+        downloader = copy(self.downloader)
+        downloader.node_filter = nodefilter
+        downloader.verify_checksum = checksum
         return downloader.download(id, directory_path)
 
     def _get_filename(self, product_info):
@@ -602,8 +631,7 @@ class SentinelAPI:
         -----
         https://scihub.copernicus.eu/userguide/LongTermArchive
         """
-        downloader = Downloader(self)
-        return downloader.trigger_offline_retrieval(uuid)
+        return self.downloader.trigger_offline_retrieval(uuid)
 
     def download_all(
         self,
@@ -612,9 +640,7 @@ class SentinelAPI:
         max_attempts=10,
         checksum=True,
         n_concurrent_dl=None,
-        dl_retry_delay=10,
-        lta_retry_delay=60,
-        lta_timeout=None,
+        lta_retry_delay=None,
         fail_fast=False,
         nodefilter=None,
     ):
@@ -644,13 +670,8 @@ class SentinelAPI:
             Defaults to True.
         n_concurrent_dl : integer, optional
             Number of concurrent downloads. Defaults to ``self.concurrent_dl_limit``.
-        dl_retry_delay : float, default 10
-            Number of seconds to wait between retrying of failed downloads.
         lta_retry_delay : float, default 60
             Number of seconds to wait between requests to the Long Term Archive.
-        lta_timeout : float, optional
-            Maximum number of seconds to wait for triggered products to come online.
-            Defaults to no timeout.
         fail_fast : bool, default False
             if True, all other downloads are cancelled when one of the downloads fails.
         nodefilter : callable, optional
@@ -677,17 +698,15 @@ class SentinelAPI:
             downloading or triggering failed. "exception" field with the exception info
             is included to the product info dict.
         """
-        downloader = Downloader(
-            self,
-            verify_checksum=checksum,
-            fail_fast=fail_fast,
-            max_attempts=max_attempts,
-            n_concurrent_dl=n_concurrent_dl,
-            dl_retry_delay=dl_retry_delay,
-            lta_retry_delay=lta_retry_delay,
-            node_filter=nodefilter,
-            lta_timeout=lta_timeout,
-        )
+        downloader = copy(self.downloader)
+        downloader.verify_checksum = checksum
+        downloader.fail_fast = fail_fast
+        downloader.max_attempts = max_attempts
+        if n_concurrent_dl:
+            downloader.n_concurrent_dl = n_concurrent_dl
+        if lta_retry_delay:
+            downloader.lta_retry_delay = lta_retry_delay
+        downloader.node_filter = nodefilter
         statuses, exceptions, product_infos = downloader.download_all(products, directory_path)
 
         # Adapt results to the old download_all() API
@@ -735,7 +754,8 @@ class SentinelAPI:
             A dictionary containing the error of products where either
             quicklook was not available or it had an unexpected content type
         """
-        downloader = Downloader(self, n_concurrent_dl=n_concurrent_dl)
+        downloader = copy(self.downloader)
+        downloader.n_concurrent_dl = n_concurrent_dl
         return downloader.download_all_quicklooks(products, directory_path)
 
     def download_quicklook(self, id, directory_path="."):
@@ -758,8 +778,7 @@ class SentinelAPI:
         quicklook_info : dict
             Dictionary containing the quicklooks's response headers as well as the path on disk.
         """
-        downloader = Downloader(self)
-        return downloader.download_quicklook(id, directory_path)
+        return self.downloader.download_quicklook(id, directory_path)
 
     @staticmethod
     def get_products_size(products):
@@ -975,8 +994,7 @@ class SentinelAPI:
         requests.Response:
             Opened response object
         """
-        downloader = Downloader(self)
-        return downloader.get_stream(id, **kwargs)
+        return self.downloader.get_stream(id, **kwargs)
 
     def _get_odata_url(self, uuid, suffix=""):
         return self.api_url + f"odata/v1/Products('{uuid}')" + suffix
