@@ -20,9 +20,9 @@ Added
 * Added ``concurrent_dl_limit`` and ``concurrent_lta_trigger_limit`` parameters to ``SentinelAPI`` which are used to ensure that
   the server-side limit for concurrent downloads (4 for scihub.copernicus.eu) and the maximum number of concurrent LTA retrievals
   (set to 10 by default) are respected everywhere. (`#532 <https://github.com/sentinelsat/sentinelsat/issues/532>`_ `@valgur <https://github.com/valgur>`_)
-* Added an optional ``lta_timeout`` parameter to ``download_all()``, which sets the maximum time to wait for products to be retrieved from the LTA.
+* Added an optional ``lta_timeout`` parameter to ``SentinelAPI``, which sets the maximum time to wait for products to be retrieved from the LTA.
   Defaults to unlimited. (`#532 <https://github.com/sentinelsat/sentinelsat/issues/532>`_ `@valgur <https://github.com/valgur>`_)
-* Added ``dl_retry_delay``, which defaults to 10 seconds and limits the rate of download retries to give the server some time to recover. (`#532 <https://github.com/sentinelsat/sentinelsat/issues/532>`_ `@valgur <https://github.com/valgur>`_)
+* Added ``dl_retry_delay`` parameter to ``SentinelAPI``, which defaults to 10 seconds and limits the rate of download retries to give the server some time to recover. (`#532 <https://github.com/sentinelsat/sentinelsat/issues/532>`_ `@valgur <https://github.com/valgur>`_)
 * Added ``fail_fast`` option to ``download_all()``. (`#532 <https://github.com/sentinelsat/sentinelsat/issues/532>`_ `@valgur <https://github.com/valgur>`_)
 * Added support for SHA3-256 checksums used by some newer Sentinel-2 products. (`#523 <https://github.com/sentinelsat/sentinelsat/issues/523>`_ `@valgur <https://github.com/valgur>`_)
 * For more advanced use-cases, ``Downloader.download_all()``, which returns a detailed ``DownloadStatus`` enum for each product, can now be used. (`#523 <https://github.com/sentinelsat/sentinelsat/issues/523>`_ `@valgur <https://github.com/valgur>`_)
@@ -30,11 +30,11 @@ Added
 
 Changed
 ~~~~~~~
-* Suppressed the unnecessary server stacktrace printing for ``QueryLengthError``. (`#524 <https://github.com/sentinelsat/sentinelsat/issues/524>`_ `@valgur <https://github.com/valgur>`_)
 * ``download_all()`` now waits for all LTA retrievals to finish before exiting. (`#523 <https://github.com/sentinelsat/sentinelsat/issues/523>`_ `@valgur <https://github.com/valgur>`_)
 * Default ``n_concurrent_dl`` in ``download_all()`` increased from 2 to 4. (`#523 <https://github.com/sentinelsat/sentinelsat/issues/523>`_ `@valgur <https://github.com/valgur>`_)
 * Default LTA retry period was reduced from 600 to 60 seconds. (`#532 <https://github.com/sentinelsat/sentinelsat/issues/532>`_ `@valgur <https://github.com/valgur>`_)
 * ``SentinelProductsAPI`` has been merged into ``SentinelAPI`` and will be removed in a future release.  (`#523 <https://github.com/sentinelsat/sentinelsat/issues/523>`_ `@valgur <https://github.com/valgur>`_)
+* Suppressed the unnecessary server stacktrace printing for ``QueryLengthError``. (`#524 <https://github.com/sentinelsat/sentinelsat/issues/524>`_ `@valgur <https://github.com/valgur>`_)
 
 Fixed
 ~~~~~
