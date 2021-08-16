@@ -1058,7 +1058,7 @@ class SentinelAPI:
         del node_info["md5"]
 
         if path and path.exists():
-            self.logger.info("manifest file already available (%r), skip download", path)
+            self.logger.debug("Manifest file already available (%s), skipping download", path)
             data = path.read_bytes()
             node_info["size"] = len(data)
             return node_info, data

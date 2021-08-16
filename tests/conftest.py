@@ -312,4 +312,4 @@ def large_query():
 
 @pytest.fixture(autouse=True)
 def disable_sleep(monkeypatch):
-    monkeypatch.setattr(time, 'sleep', lambda x: None)
+    monkeypatch.setattr(time, "sleep", lambda x: None)

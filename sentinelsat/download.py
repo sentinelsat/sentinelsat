@@ -167,7 +167,7 @@ class Downloader:
                 node_info["path"] = path
                 node_info["downloaded_bytes"] = 0
 
-                self.logger.info("Downloading %s node to %s", id, path)
+                self.logger.debug("Downloading %s node to %s", id, path)
                 self.logger.debug("Node URL for %s: %s", id, node_info["url"])
 
                 if path.exists():
@@ -215,7 +215,7 @@ class Downloader:
                 product_info["url"],
                 temp_path,
                 product_info["size"],
-                product_info["title"],
+                path.name,
                 stop_event,
             )
         # Check integrity with MD5 checksum
@@ -706,7 +706,11 @@ class Downloader:
                     self.logger.exception("There was an error downloading %s", title)
                 retries_remaining = self.max_attempts - cnt - 1
                 if retries_remaining > 0:
-                    self.logger.info("%d retries left, retrying in %s seconds...", retries_remaining, self.dl_retry_delay)
+                    self.logger.info(
+                        "%d retries left, retrying in %s seconds...",
+                        retries_remaining,
+                        self.dl_retry_delay,
+                    )
                 else:
                     self.logger.info("Downloading %s failed. No retries left.", title)
                 last_exception = e
