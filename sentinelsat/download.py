@@ -642,7 +642,7 @@ class Downloader:
                         e.msg,
                         self.lta_retry_delay,
                     )
-                stop_event.wait(timeout=self.lta_retry_delay)
+                _wait(stop_event, self.lta_retry_delay)
             self.logger.info("%s retrieval from LTA completed", uuid)
             statuses[uuid] = DownloadStatus.ONLINE
 
@@ -651,23 +651,11 @@ class Downloader:
 
         Parameters
         ----------
-
         product_info : dict
-            Contains the product's info as returned by get_product_odata()
-        directory_path : string, optional
-            Where the file will be downloaded
-        checksum : bool, optional
-            If True, verify the downloaded file's integrity by checking its MD5 checksum.
-            Throws InvalidChecksumError if the checksum does not match.
-            Defaults to True.
-        max_attempts : int, optional
-            Number of allowed retries before giving up downloading a product. Defaults to 10.
-
-        Returns
-        -------
-        dict or None:
-            Either dictionary containing the product's info or if the product is not online just None
-
+        directory : string, optional
+        statuses : dict of DownloadStatus
+        exceptions : dict of Exception
+        stop_event : threading.Event
         """
         if self.max_attempts <= 0:
             return
@@ -681,7 +669,7 @@ class Downloader:
             and uuid not in exceptions
             and not stop_event.is_set()
         ):
-            stop_event.wait(timeout=1)
+            _wait(stop_event, 1)
         if uuid in exceptions:
             return
 
@@ -691,7 +679,7 @@ class Downloader:
                 raise concurrent.futures.CancelledError()
             try:
                 if cnt > 0:
-                    time.sleep(self.dl_retry_delay)
+                    _wait(stop_event, self.dl_retry_delay)
                 statuses[uuid] = DownloadStatus.DOWNLOAD_STARTED
                 return self.download(uuid, directory, stop_event=stop_event)
             except (concurrent.futures.CancelledError, KeyboardInterrupt, SystemExit):
@@ -807,3 +795,8 @@ def _xml_to_dataobj_info(element):
 
 def _format_exception(ex):
     return "".join(traceback.TracebackException.from_exception(ex).format())
+
+
+def _wait(event, timeout):
+    """Wraps event.wait so it can be disabled for testing."""
+    return event.wait(timeout)

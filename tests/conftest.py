@@ -1,15 +1,16 @@
 import re
-import time
+import threading
 from datetime import datetime
 from functools import reduce
 from os import environ
-from os.path import join, isfile, dirname, abspath, exists
+from os.path import abspath, dirname, exists, isfile, join
 
 import pytest
 import yaml
 from pytest_socket import disable_socket
 from vcr import VCR
 
+import sentinelsat
 from sentinelsat import SentinelAPI, geojson_to_wkt, read_geojson
 from .custom_serializer import BinaryContentSerializer
 
@@ -311,5 +312,5 @@ def large_query():
 
 
 @pytest.fixture(autouse=True)
-def disable_sleep(monkeypatch):
-    monkeypatch.setattr(time, "sleep", lambda x: None)
+def disable_waiting(monkeypatch):
+    monkeypatch.setattr(sentinelsat.download, "_wait", lambda event, timeout: event.wait(0.001))
