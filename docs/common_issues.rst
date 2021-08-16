@@ -22,7 +22,7 @@ SciHub servers are known to have outages due to high demand, try again later.
 
 .. rubric:: Query fails with 'Longitude/Latitude is out of bounds, check your JSON format or data.'
 
-Standard GeoJSON specification contains only WGS84 format, check if your data complies with it.
+The server expects coordinates in the WGS84 format, check if your data complies with it.
 
 .. rubric:: A query to Eumetsat CODA fails with *HTTP 401 - Full authentication is required* even with the correct password.
 
@@ -40,6 +40,6 @@ the decimal point.
 
 .. rubric:: Anything else?
 
-Make sure to check the `issues on GitHub`__ too.
+Make sure to check the existing `issues on GitHub`__ too.
 
 __ https://github.com/sentinelsat/sentinelsat/issues?q=is%3Aissue

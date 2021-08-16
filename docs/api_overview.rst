@@ -264,6 +264,8 @@ Copernicus Open Access Hub's quota currently permits users to request an offline
 A product's availability can be checked with a regular OData query by evaluating the ``Online`` property value
 or by using the :meth:`~sentinel.SentinelAPI.is_online()` convenience method.
 
+The retrieval of offline products from the LTA can be triggered using :meth:`~sentinel.SentinelAPI.trigger_offline_retrieval()`.
+
 .. code-block:: python
 
     product_info = api.get_product_odata(<product_id>)
@@ -272,33 +274,18 @@ or by using the :meth:`~sentinel.SentinelAPI.is_online()` convenience method.
     is_online = api.is_online(<product_id>)
 
     if is_online:
-        print('Product {} is online. Starting download.'.format(<product_id>))
+        print(f'Product {<product_id>} is online. Starting download.')
         api.download(<product_id>)
     else:
-        print('Product {} is not online.'.format(<product_id>))
+        print(f'Product {<product_id>} is not online.')
+        api.trigger_offline_retrieval(<product_id>)
 
-When trying to download an offline product with :meth:`~sentinel.SentinelAPI.download` it will trigger its retrieval from the LTA.
+When trying to download an offline product with :meth:`~sentinel.SentinelAPI.download` it will trigger its retrieval from the LTA and raise an ``LTATriggered`` exception.
 
-Given a list of offline and online products, :meth:`~sentinel.SentinelAPI.download_all` will download online products, while concurrently triggering the retrieval of offline products from the LTA.
-Offline products that become online while downloading will be added to the download queue.
-:meth:`~sentinel.SentinelAPI.download_all` terminates when the download queue is empty, even if not all products were retrieved from the LTA.
-We suggest repeatedly calling :meth:`~sentinel.SentinelAPI.download_all` to download all products, either manually or using a third-party library, e.g. `tenacity <https://github.com/jd/tenacity>`_.
-
-
-.. code-block:: python
-
-    from sentinelsat import SentinelAPI
-    import tenacity
-
-    api = SentinelAPI('user', 'password')
-
-    @tenacity.retry(stop=tenacity.stop_after_attempt(3), wait=tenacity.wait_fixed(3600))
-    def download_all(*args, **kwargs):
-        return api.download_all(*args, **kwargs)
-
-    downloaded, triggered, failed = download_all(<product_ids>)
-
-
+Given a list of offline and online products, :meth:`~sentinel.SentinelAPI.download_all` will download online products, while concurrently triggering the retrieval of offline products from the LTA in the background.
+:meth:`~sentinel.SentinelAPI.download_all` terminates when all products have been retrieved from the LTA and downloaded.
+If you wish to avoid the possibly lengthy retrieval process of offline products, you can filter the list of products based on
+:meth:`~sentinel.SentinelAPI.is_online()` beforehand.
 
 Logging
 -------
@@ -331,33 +318,34 @@ or add a custom handler for :mod:`sentinelsat` (as implemented in `cli.py`)
   logger.addHandler(h)
 
 
-Product node API
-----------------
+Downloading a subset of products
+--------------------------------
 
-The product node API is implemented in the :mod:`sentinelsat.products`
-module and, in addition to all the features provided by the standard API,
-allows to download only some of the files included in a Sentinel product
-exploiting the `node selection feature`_ provided by the OData_ Web API.
+Both :meth:`~sentinel.SentinelAPI.download` and :meth:`~sentinel.SentinelAPI.download_all`
+include a ``nodefilter`` parameter that can be used to specify a subset of files within the product
+that should be downloaded, skipping the rest. 
+The downloaded files will be written to disk as individual files instead of a single archive file.
+This functionality makes use of the `node selection feature`_ of the OData_ Web API.
 
 .. code-block:: python
 
-  from sentinelsat import SentinelProductsAPI, make_path_filter
+  from sentinelsat import SentinelAPI, make_path_filter
 
   # define the filter function to select files (to be excluded in this case)
-  nodefilter = make_path_filter("*measurement/*", exclude=True)
+  path_filter = make_path_filter("*measurement/*", exclude=True)
 
   # connect to the API
   api = SentinelProductAPI("user", "password")
 
   # download a single product excluding measurement files
-  api.download(<product_id>, nodefilter=nodefilter)
+  api.download(<product_id>, nodefilter=path_filter)
 
-Of course it also works for multiple products:
+Of course it also works for multiple products, too:
 
 .. code-block:: python
 
   # download a multiple products excluding measurement files
-  api.download_all(<products>, nodefilter=nodefilter)
+  api.download_all(<products>, nodefilter=path_filter)
 
 The example above downloads all files in each of the requested products only
 *excluding* (large) measurements files.
@@ -366,9 +354,9 @@ This can be useful for analyses exclusively based on product annotations
 included in the product.
 
 The file selection is implemented by specifying a *nodefilter* function that
-is called for each file (only excluding the manifest which is always downloaded)
-in the requested products and returns `True` if the file have to be downloaded,
-`False` otherwise.
+is called for each file (except for the manifest, which is always downloaded)
+in the requested products and returns ``True`` if the file have to be downloaded,
+``False`` otherwise.
 
 The *nodefilter* function has the following signature:
 
@@ -383,11 +371,11 @@ keys:
 :url:
     the URL to download the product file node
 :node_path:
-    the file *path* within the product (e.g. "./preview/map-overlay.kml")
+    the *path* within the product (e.g. "./preview/map-overlay.kml")
 :size:
     the file size in bytes (int)
 :md5:
-    the file md5 checksum
+    the file's MD5 checksum
 
 In the example above it has been used an helper function
 (:func:`sentinelsat.products.make_path_filter`), provided by the
@@ -398,7 +386,7 @@ The following code:
 
 .. code-block:: python
 
-  nodefilter = make_path_filter("*measurement/*", exclude=True)
+  path_filter = make_path_filter("*measurement/*", exclude=True)
 
 is more or less equivalent to:
 
@@ -406,11 +394,8 @@ is more or less equivalent to:
 
   import fnmatch
 
-  def node_filter(node_info):
-    if not fnmatch.fnmatch(node_info["node_path"].lower(), pattern):
-      return True
-    else:
-      return False
+  def path_filter(node_info):
+    return fnmatch.fnmatch(node_info["node_path"].lower(), pattern)
 
 The :mod:`sentinelsat` product node API also provides:
 
@@ -421,7 +406,7 @@ The :mod:`sentinelsat` product node API also provides:
   This function can be used to download the entire Sentinel product as a
   directory instead of downloading a single zip archive.
 
-Of course the user can write its own *nodefilter* functions if necessary.
+Of course the user can write their own *nodefilter* functions if necessary.
 
 
 .. _`node selection feature`: https://scihub.copernicus.eu/twiki/do/view/SciHubUserGuide/ODataAPI#Discover_Product_Nodes
@@ -480,17 +465,13 @@ measurement files for sub-swaths "EW1" and "EW2":
 
 .. code-block:: python
 
-  nodefilter = make_path_filter("*s1?-ew[12]-slc-hh-*.tiff")
+  path_filter = make_path_filter("*s1?-ew[12]-slc-hh-*.tiff")
 
 Considering that e.g. a Dual Pol Extended Wide Swath Sentinel-1 product
 includes 2 measurement files for each of the 5 sub-swath the above filter
 allows to reduce consistently the amount of data to be downloaded
 (form 10 to 2 TIFF files approx 700MB each).
 
-Of course the *nodefilter* function have to be used to initialize the
-product node API :class:`sentinelsat.products.SentinelProductsAPI` as
-explained above.
-
 .. code-block:: python
 
-    api.download_all(<products>, nodefilter=nodefilter)
+    api.download_all(<products>, nodefilter=path_filter)
