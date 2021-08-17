@@ -284,8 +284,7 @@ When trying to download an offline product with :meth:`~sentinel.SentinelAPI.dow
 
 Given a list of offline and online products, :meth:`~sentinel.SentinelAPI.download_all` will download online products, while concurrently triggering the retrieval of offline products from the LTA in the background.
 :meth:`~sentinel.SentinelAPI.download_all` terminates when all products have been retrieved from the LTA and downloaded.
-If you wish to avoid the possibly lengthy retrieval process of offline products, you can filter the list of products based on
-:meth:`~sentinel.SentinelAPI.is_online()` beforehand.
+If you wish to avoid the possibly lengthy retrieval process of offline products, you can either set the :attr:`~sentinel.SentinelAPI.lta_timeout` parameter to a low value or filter the list of products based on the :meth:`~sentinel.SentinelAPI.is_online()` status beforehand.
 
 Logging
 -------
@@ -318,8 +317,8 @@ or add a custom handler for :mod:`sentinelsat` (as implemented in `cli.py`)
   logger.addHandler(h)
 
 
-Downloading a subset of products
---------------------------------
+Downloading parts of products
+-----------------------------
 
 Both :meth:`~sentinel.SentinelAPI.download` and :meth:`~sentinel.SentinelAPI.download_all`
 include a ``nodefilter`` parameter that can be used to specify a subset of files within the product
