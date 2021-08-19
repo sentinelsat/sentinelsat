@@ -23,7 +23,10 @@ from sentinelsat.exceptions import (
 
 
 class DownloadStatus(enum.Enum):
-    """Status info for ``Downloader.download_all()``."""
+    """Status info for :meth:`Downloader.download_all()`.
+
+    Evaluates to True if status is :obj:`DOWNLOADED`.
+    """
 
     UNAVAILABLE = enum.auto()
     OFFLINE = enum.auto()
@@ -37,6 +40,39 @@ class DownloadStatus(enum.Enum):
 
 
 class Downloader:
+    """
+    Manages downloading of products or parts of them.
+
+    Intended for internal use, but may also be used directly if more fine-grained
+    configuration or custom download logic is needed.
+
+    Parameters
+    ----------
+    api : SentinelAPI
+        A SentinelAPI instance.
+    node_filter : callable, optional
+        The callable is used to select which files of each product will be downloaded.
+        If None (the default), the full products will be downloaded.
+        See :mod:`sentinelsat.products` for sample node filters.
+    verify_checksum : bool, default True
+        If True, verify the downloaded files' integrity by checking its checksum.
+        Throws InvalidChecksumError if the checksum does not match.
+    fail_fast : bool, default False
+        if True, all other downloads are cancelled when one of the downloads fails in :meth:`download_all()`.
+    n_concurrent_dl : integer, optional
+        Number of concurrent downloads.
+        Defaults to the maximum allowed by :attr:`SentinelAPI.concurrent_dl_limit`.
+    max_attempts : int, default 10
+        Number of allowed retries before giving up downloading a product in :meth:`download_all()`.
+    dl_retry_delay : float, default 10
+        Number of seconds to wait between retrying of failed downloads.
+    lta_retry_delay : float, default 60
+        Number of seconds to wait between requests to the Long Term Archive.
+    lta_timeout : float, optional
+        Maximum number of seconds to wait for triggered products to come online.
+        Defaults to no timeout.
+    """
+
     def __init__(
         self,
         api,
@@ -50,38 +86,6 @@ class Downloader:
         lta_retry_delay=60,
         lta_timeout=None
     ):
-        """
-        Manages downloading of products or parts of them.
-
-        Intended for internal use, but may also be used directly if more fine-grained
-        configuration or custom download logic is needed.
-
-        Parameters
-        ----------
-        api : SentinelAPI
-            A SentinelAPI instance.
-        node_filter : callable, optional
-            The callable is used to select which files of each product will be downloaded.
-            If None (the default), the full products will be downloaded.
-            See ``sentinelsat.products`` for sample node filters.
-        verify_checksum : bool, default True
-            If True, verify the downloaded files' integrity by checking its checksum.
-            Throws InvalidChecksumError if the checksum does not match.
-        fail_fast : bool, default False
-            if True, all other downloads are cancelled when one of the downloads fails in ``download_all()``.
-        n_concurrent_dl : integer, optional
-            Number of concurrent downloads.
-            Defaults to the maximum allowed by ``SentinelAPI.concurrent_dl_limit``.
-        max_attempts : int, default 10
-            Number of allowed retries before giving up downloading a product in ``download_all()``.
-        dl_retry_delay : float, default 10
-            Number of seconds to wait between retrying of failed downloads.
-        lta_retry_delay : float, default 60
-            Number of seconds to wait between requests to the Long Term Archive.
-        lta_timeout : float, optional
-            Maximum number of seconds to wait for triggered products to come online.
-            Defaults to no timeout.
-        """
         from sentinelsat import SentinelAPI
 
         self.api: SentinelAPI = api
@@ -237,10 +241,10 @@ class Downloader:
         directory : string or Path, optional
             Directory where the files will be downloaded
 
-        Raises
+        Notes
         ------
         By default, raises the most recent downloading exception if all downloads failed.
-        If ``self.fail_fast`` is set to True, raises the encountered exception on the first failed
+        If :attr:`Downloader.fail_fast` is set to True, raises the encountered exception on the first failed
         download instead.
 
         Returns
@@ -495,7 +499,7 @@ class Downloader:
         id : string
             UUID of the product, e.g. 'a8dd0cfd-613e-45ce-868c-d79177b916ed'
         **kwargs
-            Any additional parameters for ``requests.get()``
+            Any additional parameters for :func:`requests.get()`
 
         Raises
         ------

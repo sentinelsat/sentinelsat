@@ -527,7 +527,7 @@ class SentinelAPI:
 
         See Also
         --------
-        ``SentinelAPI.trigger_offline_retrieval()``
+        :meth:`SentinelAPI.trigger_offline_retrieval()`
         """
         # Check https://scihub.copernicus.eu/userguide/ODataAPI#Products_entity for more information
 
@@ -557,7 +557,7 @@ class SentinelAPI:
         nodefilter : callable, optional
             The callable is used to select which files of each product will be downloaded.
             If None (the default), the full products will be downloaded.
-            See ``sentinelsat.products`` for sample node filters.
+            See :mod:`sentinelsat.products` for sample node filters.
 
         Returns
         -------
@@ -664,7 +664,7 @@ class SentinelAPI:
             Throws InvalidChecksumError if the checksum does not match.
             Defaults to True.
         n_concurrent_dl : integer, optional
-            Number of concurrent downloads. Defaults to ``self.concurrent_dl_limit``.
+            Number of concurrent downloads. Defaults to :attr:`SentinelAPI.concurrent_dl_limit`.
         lta_retry_delay : float, default 60
             Number of seconds to wait between requests to the Long Term Archive.
         fail_fast : bool, default False
@@ -672,12 +672,12 @@ class SentinelAPI:
         nodefilter : callable, optional
             The callable is used to select which files of each product will be downloaded.
             If None (the default), the full products will be downloaded.
-            See ``sentinelsat.products`` for sample node filters.
+            See :mod:`sentinelsat.products` for sample node filters.
 
-        Raises
-        ------
+        Notes
+        -----
         By default, raises the most recent downloading exception if all downloads failed.
-        If ``self.fail_fast`` is set to True, raises the encountered exception on the first failed
+        If ``fail_fast`` is set to True, raises the encountered exception on the first failed
         download instead.
 
         Returns
@@ -975,7 +975,7 @@ class SentinelAPI:
         id : string
             UUID of the product, e.g. 'a8dd0cfd-613e-45ce-868c-d79177b916ed'
         **kwargs
-            Any additional parameters for ``requests.get()``
+            Any additional parameters for :func:`requests.get()`
 
         Raises
         ------
