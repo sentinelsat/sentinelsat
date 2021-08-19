@@ -61,17 +61,6 @@ class SentinelAPI:
         Current value: 100 (maximum allowed on ApiHub)
     timeout : float or tuple
         How long to wait for DataHub response (in seconds).
-    concurrent_dl_limit : int
-        Maximum number of concurrent downloads allowed by the server.
-    concurrent_lta_trigger_limit : int
-        Maximum number of concurrent Long Term Archive retrievals allowed.
-    dl_retry_delay : float, default 10
-        Number of seconds to wait between retrying of failed downloads.
-    lta_retry_delay : float, default 60
-        Number of seconds to wait between requests to the Long Term Archive.
-    lta_timeout : float, optional
-        Maximum number of seconds to wait for triggered products to come online.
-        Defaults to no timeout.
     """
 
     logger = logging.getLogger("sentinelsat.SentinelAPI")
@@ -111,6 +100,7 @@ class SentinelAPI:
 
     @property
     def concurrent_dl_limit(self):
+        """int: Maximum number of concurrent downloads allowed by the server."""
         return self._concurrent_dl_limit
 
     @concurrent_dl_limit.setter
@@ -120,6 +110,7 @@ class SentinelAPI:
 
     @property
     def concurrent_lta_trigger_limit(self):
+        """int: Maximum number of concurrent Long Term Archive retrievals allowed."""
         return self._concurrent_lta_trigger_limit
 
     @concurrent_lta_trigger_limit.setter
@@ -129,6 +120,7 @@ class SentinelAPI:
 
     @property
     def dl_retry_delay(self):
+        """float, default 10: Number of seconds to wait between retrying of failed downloads."""
         return self.downloader.dl_retry_delay
 
     @dl_retry_delay.setter
@@ -137,6 +129,7 @@ class SentinelAPI:
 
     @property
     def lta_retry_delay(self):
+        """float, default 60: Number of seconds to wait between requests to the Long Term Archive."""
         return self.downloader.lta_retry_delay
 
     @lta_retry_delay.setter
@@ -145,6 +138,8 @@ class SentinelAPI:
 
     @property
     def lta_timeout(self):
+        """float, optional: Maximum number of seconds to wait for triggered products to come online.
+        Defaults to no timeout."""
         return self.downloader.lta_timeout
 
     @lta_timeout.setter
