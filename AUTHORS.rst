@@ -38,3 +38,5 @@ Contributors
 *  `@nishadhka <https://github.com/nishadhka>`_
 * Marcus Ackland `@mackland <https://github.com/mackland>`_
 *  `@IpsumCapra <https://github.com/IpsumCapra>`_
+* Rishabh Budhiraja `@rbrishabh <https://github.com/rbrishabh>`_
+* @z4zz <https://github.com/z4zz>`_
