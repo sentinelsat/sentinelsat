@@ -3,6 +3,26 @@ Change Log
 
 All notable changes to ``sentinelsat`` will be listed here.
 
+[Unreleased] – YYYY-MM-DD
+-------------------------
+
+CLI changes
+~~~~~~~~~~~
+* 
+
+Added
+~~~~~
+* 
+
+Changed
+~~~~~~~
+* 
+
+Fixed
+~~~~~
+* 
+
+
 [1.1.0] – 2021-08-19
 --------------------
 ``download_all()`` has been completely rewritten to correctly handle server-side concurrency limits and bugs. 
