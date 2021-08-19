@@ -20,10 +20,8 @@ from .sentinel import (
     read_geojson,
     placename_to_wkt,
 )
-
-from .products import (
-    SentinelProductsAPI,
-    make_path_filter,
-    make_size_filter,
-    all_nodes_filter,
+from .download import (
+    Downloader,
+    DownloadStatus,
 )
+from .products import all_nodes_filter, make_path_filter, make_size_filter, SentinelProductsAPI

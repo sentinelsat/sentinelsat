@@ -12,7 +12,6 @@ import requests_mock
 from click.testing import CliRunner
 
 from sentinelsat import SentinelAPI, InvalidChecksumError
-from sentinelsat import SentinelProductsAPI
 from sentinelsat.scripts.cli import cli
 
 
@@ -66,6 +65,7 @@ def run_cli(credentials):
                 **kwargs
             )
             if must_raise:
+                assert result.exception is not None, result.output
                 raise result.exception
         if must_return_nonzero:
             assert result.exit_code != 0
@@ -502,7 +502,11 @@ def test_download_single(run_cli, api, tmpdir, smallest_online_products, monkeyp
         rqst.get(url, json=json)
 
         # md5 flag set (implicitly), should raise an exception
-        run_cli(*command, must_raise=InvalidChecksumError)
+        run_cli(*command, "--fail-fast", must_raise=InvalidChecksumError)
+
+        # md5 flag set (implicitly), should raise an exception
+        result = run_cli(*command, must_return_nonzero=True)
+        assert "is corrupted" in result.output
 
     # clean up
     tmpdir.remove()
@@ -514,8 +518,8 @@ def test_product_node_download_single(run_cli, api, tmpdir, smallest_online_prod
     # Change default arguments for quicker test.
     # Also, vcrpy is not threadsafe, so only one worker is used.
     monkeypatch.setattr(
-        "sentinelsat.SentinelProductsAPI.download_all",
-        partialmethod(SentinelProductsAPI.download_all, max_attempts=2, n_concurrent_dl=1),
+        "sentinelsat.SentinelAPI.download_all",
+        partialmethod(SentinelAPI.download_all, max_attempts=2, n_concurrent_dl=1),
     )
     product_id = smallest_online_products[0]["id"]
     command = ["--uuid", product_id, "--download", "--path", str(tmpdir)]
@@ -539,7 +543,8 @@ def test_product_node_download_single(run_cli, api, tmpdir, smallest_online_prod
         rqst.get(url, json=json)
 
         # md5 flag set (implicitly), should raise an exception
-        run_cli(*command, must_raise=InvalidChecksumError)
+        result = run_cli(*command, must_return_nonzero=True)
+        assert "is corrupted" in result.output
 
     # clean up
     tmpdir.remove()
@@ -553,7 +558,7 @@ def test_product_node_download_single_with_filter(
     # Change default arguments for quicker test.
     # Also, vcrpy is not threadsafe, so only one worker is used.
     monkeypatch.setattr(
-        "sentinelsat.SentinelProductsAPI.download_all",
+        "sentinelsat.SentinelAPI.download_all",
         partialmethod(SentinelAPI.download_all, max_attempts=2, n_concurrent_dl=1),
     )
 
@@ -624,7 +629,7 @@ def test_download_many(run_cli, api, tmpdir, smallest_online_products, monkeypat
     with requests_mock.mock(real_http=True) as rqst:
         rqst.get(url, json=json)
         # md5 flag set (implicitly), should raise an exception
-        result = run_cli(*command)
+        result = run_cli(*command, must_return_nonzero=True)
         assert "is corrupted" in result.output
 
     assert tmpdir.join("corrupt_scenes.txt").check()

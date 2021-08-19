@@ -9,9 +9,8 @@ import geojson as gj
 import requests.utils
 from tqdm.auto import tqdm
 
-from sentinelsat import __version__ as sentinelsat_version
-from sentinelsat.products import SentinelProductsAPI, make_path_filter
-from sentinelsat.sentinel import geojson_to_wkt, is_wkt, placename_to_wkt, read_geojson
+from sentinelsat import __version__ as sentinelsat_version, make_path_filter
+from sentinelsat.sentinel import SentinelAPI, geojson_to_wkt, is_wkt, placename_to_wkt, read_geojson
 
 json_parse_exception = json.decoder.JSONDecodeError
 
@@ -130,6 +129,7 @@ def validate_query_param(ctx, param, kwargs):
     "-l", "--limit", type=int, help="Maximum number of results to return. Defaults to no limit."
 )
 @click.option("--download", "-d", is_flag=True, help="Download all results of the query.")
+@click.option("--fail-fast", is_flag=True, help="Skip all other other downloads if one fails")
 @click.option(
     "--quicklook",
     is_flag=True,
@@ -220,6 +220,7 @@ def cli(
     uuid,
     name,
     download,
+    fail_fast,
     quicklook,
     sentinel,
     producttype,
@@ -255,7 +256,7 @@ def cli(
         _set_logger_handler("INFO")
 
     if info:
-        api = SentinelProductsAPI(None, None, url, timeout=timeout)
+        api = SentinelAPI(None, None, url, timeout=timeout)
         ctx = click.get_current_context()
         click.echo("DHuS version: " + api.dhus_version)
         ctx.exit()
@@ -288,7 +289,7 @@ def cli(
             "for environment variables and .netrc support."
         )
 
-    api = SentinelProductsAPI(user, password, url, timeout=timeout)
+    api = SentinelAPI(user, password, url, timeout=timeout)
 
     search_kwargs = {}
     if sentinel:
@@ -378,14 +379,22 @@ def cli(
                 "Some quicklooks failed: %s out of %s", len(failed_quicklooks), len(products)
             )
 
-    if download is True:
-        product_infos, triggered, failed_downloads = api.download_all(
-            products, path, nodefilter=nodefilter
+    if download:
+        downloaded, triggered, failed_downloads = api.download_all(
+            products, path, nodefilter=nodefilter, fail_fast=fail_fast
         )
+        retcode = 0
         if len(failed_downloads) > 0:
+            retcode = 1
             with open(os.path.join(path, "corrupt_scenes.txt"), "w") as outfile:
                 for failed_id in failed_downloads:
                     outfile.write("{} : {}\n".format(failed_id, products[failed_id]["title"]))
+        logger.info(
+            "Successfully downloaded %d/%d products.",
+            len(downloaded),
+            len(products),
+        )
+        exit(retcode)
     else:
         for product_id, props in products.items():
             logger.info(fmt.format(**props))

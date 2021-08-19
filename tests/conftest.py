@@ -1,15 +1,17 @@
 import re
+import threading
 from datetime import datetime
 from functools import reduce
 from os import environ
-from os.path import join, isfile, dirname, abspath, exists
+from os.path import abspath, dirname, exists, isfile, join
 
 import pytest
 import yaml
 from pytest_socket import disable_socket
 from vcr import VCR
 
-from sentinelsat import SentinelAPI, geojson_to_wkt, read_geojson, SentinelProductsAPI
+import sentinelsat
+from sentinelsat import SentinelAPI, geojson_to_wkt, read_geojson
 from .custom_serializer import BinaryContentSerializer
 
 TESTS_DIR = dirname(abspath(__file__))
@@ -135,11 +137,6 @@ def api_kwargs(credentials):
 @pytest.fixture
 def api(api_kwargs):
     return SentinelAPI(**api_kwargs)
-
-
-@pytest.fixture
-def products_api(api_kwargs):
-    return SentinelProductsAPI(**api_kwargs)
 
 
 @pytest.fixture(scope="session")
@@ -312,3 +309,8 @@ def large_query():
         area="POLYGON((0 0,0 10,10 10,10 0,0 0))",
         date=(datetime(2015, 12, 1), datetime(2015, 12, 31)),
     )
+
+
+@pytest.fixture(autouse=True)
+def disable_waiting(monkeypatch):
+    monkeypatch.setattr(sentinelsat.download, "_wait", lambda event, timeout: event.wait(0.001))

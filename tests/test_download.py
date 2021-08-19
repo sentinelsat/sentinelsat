@@ -229,6 +229,7 @@ def test_download_all_one_fail(api, tmpdir, smallest_online_products):
 # https://github.com/kevin1024/vcrpy/issues/212
 @flaky(max_runs=3, min_passes=2)
 @pytest.mark.vcr(allow_playback_repeats=True)
+@pytest.mark.skip
 @pytest.mark.scihub
 def test_download_all_lta(api, tmpdir, smallest_online_products, smallest_archived_products):
     archived_ids = [x["id"] for x in smallest_archived_products]
@@ -361,13 +362,13 @@ def test_get_stream(api, tmpdir, smallest_online_products):
 
 @pytest.mark.vcr
 @pytest.mark.scihub
-def test_download_product_nodes(products_api, tmpdir, node_test_products):
+def test_download_product_nodes(api, tmpdir, node_test_products):
     uuid = node_test_products[0]["id"]
     product_dir = node_test_products[0]["title"] + ".SAFE"
     expected_path = tmpdir.join(product_dir)
 
     nodefilter = make_path_filter("*preview/*.kml")
-    product_info = products_api.download(uuid, str(tmpdir), checksum=True, nodefilter=nodefilter)
+    product_info = api.download(uuid, str(tmpdir), checksum=True, nodefilter=nodefilter)
 
     assert os.path.normpath(product_info["node_path"]) == product_dir
     assert expected_path.exists()

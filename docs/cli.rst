@@ -170,6 +170,10 @@ Options
 
     Download all results of the query.
 
+.. option:: --fail-fast
+
+    Skip all other other downloads if one fails.
+
 .. option:: --path <directory>
 
     Set the directory where the files will be saved.

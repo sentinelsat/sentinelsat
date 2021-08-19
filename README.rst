@@ -213,6 +213,10 @@ Options
      - --download
      -  
      - Download all results of the query.
+   * -
+     - --fail-fast
+     -
+     - Skip all other other downloads if one fails.
    * -  
      - --path
      - PATH

@@ -5,26 +5,49 @@ All notable changes to ``sentinelsat`` will be listed here.
 
 [Unreleased] – YYYY-MM-DD
 -------------------------
+``download_all()`` has been completely rewritten to correctly handle server-side concurrency limits and bugs. 
 
 CLI changes
 ~~~~~~~~~~~
-* New CLI option to specify the format of the output report (`#526 <https://github.com/sentinelsat/sentinelsat/pull/526>`_ `@avalentino <https://github.com/avalentino>`_
+* New CLI option ``--fmt`` to specify the format of the listed products. (`#526 <https://github.com/sentinelsat/sentinelsat/pull/526>`_ `@avalentino <https://github.com/avalentino>`_
+* More detailed progress info during downloads. Added progressbars for overall download and LTA retrieval progress.
+  Product names are now included in individual download progress bars. (`#532 <https://github.com/sentinelsat/sentinelsat/issues/532>`_ `@valgur <https://github.com/valgur>`_)
 * Progressbars no longer conflict with logging output. (`#531 <https://github.com/sentinelsat/sentinelsat/issues/531>`_ `@valgur <https://github.com/valgur>`_)
+* Added ``--fail-fast`` option for downloading. (`#532 <https://github.com/sentinelsat/sentinelsat/issues/532>`_ `@valgur <https://github.com/valgur>`_)
 
 Added
 ~~~~~
+* Added ``concurrent_dl_limit`` and ``concurrent_lta_trigger_limit`` parameters to ``SentinelAPI`` which are used to ensure that
+  the server-side limit for concurrent downloads (4 for scihub.copernicus.eu) and the maximum number of concurrent LTA retrievals
+  (set to 10 by default) are respected everywhere. (`#532 <https://github.com/sentinelsat/sentinelsat/issues/532>`_ `@valgur <https://github.com/valgur>`_)
+* Added an optional ``lta_timeout`` parameter to ``SentinelAPI``, which sets the maximum time to wait for products to be retrieved from the LTA.
+  Defaults to unlimited. (`#532 <https://github.com/sentinelsat/sentinelsat/issues/532>`_ `@valgur <https://github.com/valgur>`_)
+* Added ``dl_retry_delay`` parameter to ``SentinelAPI``, which defaults to 10 seconds and limits the rate of download retries to give the server some time to recover. (`#532 <https://github.com/sentinelsat/sentinelsat/issues/532>`_ `@valgur <https://github.com/valgur>`_)
+* Added ``fail_fast`` option to ``download_all()``. (`#532 <https://github.com/sentinelsat/sentinelsat/issues/532>`_ `@valgur <https://github.com/valgur>`_)
+* Added support for SHA3-256 checksums used by some newer Sentinel-2 products. (`#523 <https://github.com/sentinelsat/sentinelsat/issues/523>`_ `@valgur <https://github.com/valgur>`_)
+* For more advanced use-cases, ``Downloader.download_all()``, which returns a detailed ``DownloadStatus`` enum for each product, can now be used. (`#523 <https://github.com/sentinelsat/sentinelsat/issues/523>`_ `@valgur <https://github.com/valgur>`_)
 * GeoJSON geometries consisting of multiple features are now supported. (`#530 <https://github.com/sentinelsat/sentinelsat/issues/530>`_ `@mackland <https://github.com/mackland>`_)
-* Better handling 403 error in ``trigger_offline_retrieval()`` (`#491 <https://github.com/sentinelsat/sentinelsat/issues/491>`_ `@z4zz <https://github.com/z4zz>`_)
-* Added support for SHA3-256 checksums. (`#523 <https://github.com/sentinelsat/sentinelsat/issues/523>`_ `@valgur <https://github.com/valgur>`_)
 
 Changed
 ~~~~~~~
+* ``download_all()`` now waits for all LTA retrievals to finish before exiting. (`#523 <https://github.com/sentinelsat/sentinelsat/issues/523>`_ `@valgur <https://github.com/valgur>`_)
+* Default ``n_concurrent_dl`` in ``download_all()`` increased from 2 to 4. (`#523 <https://github.com/sentinelsat/sentinelsat/issues/523>`_ `@valgur <https://github.com/valgur>`_)
+* Default LTA retry period was reduced from 600 to 60 seconds. (`#532 <https://github.com/sentinelsat/sentinelsat/issues/532>`_ `@valgur <https://github.com/valgur>`_)
+* ``SentinelProductsAPI`` has been merged into ``SentinelAPI`` and will be removed in a future release.  (`#523 <https://github.com/sentinelsat/sentinelsat/issues/523>`_ `@valgur <https://github.com/valgur>`_)
 * Suppressed the unnecessary server stacktrace printing for ``QueryLengthError``. (`#524 <https://github.com/sentinelsat/sentinelsat/issues/524>`_ `@valgur <https://github.com/valgur>`_)
 
 Fixed
 ~~~~~
 * Changed logic for ``_get_filename`` when Content-Disposition header not present (`#494 <https://github.com/sentinelsat/sentinelsat/issues/494>`_ `@rbrishabh <https://github.com/rbrishabh>`_)
-* Fixed online status checks accidentally counting towards the concurrent downloads limit on the server, causing downloads to fail. (`#508 <https://github.com/sentinelsat/sentinelsat/issues/508>`_ `@avalentino <https://github.com/avalentino>`_).
+* ``download_all()`` strictly tracks and limits the number of concurrent GET requests made (which includes LTA triggering) to respect server-side limits. (`#532 <https://github.com/sentinelsat/sentinelsat/issues/532>`_ `@valgur <https://github.com/valgur>`_, `#508 <https://github.com/sentinelsat/sentinelsat/issues/508>`_ `@avalentino <https://github.com/avalentino>`_).
+* Triggering is now much more robust against server-side bugs (such as the frequent HTTP 500: NullPonterException, Postgres bugs, etc.). (`#532 <https://github.com/sentinelsat/sentinelsat/issues/532>`_ `@valgur <https://github.com/valgur>`_)
+* Better handling of HTTP 403 error in ``trigger_offline_retrieval()`` (`#491 <https://github.com/sentinelsat/sentinelsat/issues/491>`_ `@z4zz <https://github.com/z4zz>`_)
+* Downloading with ``download_all()`` can now be cleanly interrupted without the downloads remaining active in the background. (`#481, #532 <https://github.com/sentinelsat/sentinelsat/issues/532>`_ `@valgur <https://github.com/valgur>`_) 
+
+Development Changes
+~~~~~~~~~~~~~~~~~~~
+* All downloading-related functionality has been moved into a separate ``Downloader`` class to keep the code more organized.
+  The existing API has been kept as-is, however. (`#532 <https://github.com/sentinelsat/sentinelsat/issues/532>`_ `@valgur <https://github.com/valgur>`_)
 
 [1.0.1] – 2021-05-25
 -------------------------
