@@ -5,8 +5,11 @@ from sentinelsat.sentinel import SentinelAPI
 
 
 class SentinelProductsAPI(SentinelAPI):
-    """SentinelProductsAPI functionality has been merged into SentinelAPI and Downloader
-    and will be removed in a future release."""
+    """
+    .. deprecated:: 1.1.0
+        SentinelProductsAPI functionality has been merged into SentinelAPI and Downloader
+        and will be removed in a future release.
+    """
 
     def __init__(self, *args, **kwargs):
         warnings.warn(
