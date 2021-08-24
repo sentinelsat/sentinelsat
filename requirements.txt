@@ -2,5 +2,5 @@ requests
 click
 html2text
 geojson >= 2
-tqdm >= 4.27
+tqdm >= 4.58
 geomet
