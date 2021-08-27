@@ -134,11 +134,30 @@ def test_is_online(api):
 
     with requests_mock.mock() as rqst:
         rqst.get(request_url.format(uuid), text="true", status_code=200)
-        assert api.is_online(uuid) == True
+        assert api.is_online(uuid) is True
 
     with requests_mock.mock() as rqst:
         rqst.get(request_url.format(uuid), text="false", status_code=200)
-        assert api.is_online(uuid) == False
+        assert api.is_online(uuid) is False
 
     with pytest.raises(InvalidKeyError) as excinfo:
         api.is_online(invalid_uuid)
+
+    with requests_mock.mock() as rqst:
+        with pytest.raises(ServerError) as excinfo:
+            rqst.get(
+                request_url.format(invalid_uuid), status_code=500, headers={"cause-message": "..."}
+            )
+            assert api.is_online(invalid_uuid)
+
+    with requests_mock.mock() as rqst:
+        rqst.get(
+            request_url.format(invalid_uuid),
+            status_code=500,
+            headers={
+                "cause-message": "UriNotMatchingException : Could not find property with name: 'Online'."
+            },
+        )
+        assert api.is_online(invalid_uuid) is True
+    # assert that no more queries are made after this
+    assert api.is_online(invalid_uuid) is True

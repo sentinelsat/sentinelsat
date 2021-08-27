@@ -86,6 +86,7 @@ class SentinelAPI:
         # For unit tests
         self._last_query = None
         self._last_response = None
+        self._online_attribute_used = True
 
         self._concurrent_dl_limit = 4
         self._concurrent_lta_trigger_limit = 10
@@ -531,10 +532,19 @@ class SentinelAPI:
         """
         # Check https://scihub.copernicus.eu/userguide/ODataAPI#Products_entity for more information
 
+        if not self._online_attribute_used:
+            return True
         url = self._get_odata_url(id, "/Online/$value")
         with self.dl_limit_semaphore:
             r = self.session.get(url)
-        self._check_scihub_response(r)
+        try:
+            self._check_scihub_response(r)
+        except ServerError as e:
+            # Handle DHuS versions that do not set the Online attribute
+            if "Could not find property with name: 'Online'" in e.msg:
+                self._online_attribute_used = False
+                return True
+            raise
         return r.json()
 
     def download(self, id, directory_path=".", checksum=True, nodefilter=None):

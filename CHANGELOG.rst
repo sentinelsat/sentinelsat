@@ -20,7 +20,7 @@ Changed
 
 Fixed
 ~~~~~
-* 
+* Fixed handling of missing `Online` OData attribute in older DHuS versions, such as https://coda.eumetsat.int. (`#535 <https://github.com/sentinelsat/sentinelsat/issues/535>`_ `@valgur <https://github.com/valgur>`_)
 
 
 [1.1.0] – 2021-08-19
