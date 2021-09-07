@@ -44,7 +44,7 @@ def test_get_product_odata_short_with_missing_online_key(api, vcr):
     expected_short = {
         "id": "8df46c9e-a20c-43db-a19a-4240c2ed3b8b",
         "size": 143549851,
-        "md5": "D5E4DF5C38C6E97BF7E7BD540AB21C05",
+        "md5": "d5e4df5c38c6e97bf7e7bd540ab21c05",
         "url": "https://apihub.copernicus.eu/apihub/odata/v1/Products('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')/$value",
         "quicklook_url": "https://apihub.copernicus.eu/apihub/odata/v1/Products('8df46c9e-a20c-43db-a19a-4240c2ed3b8b')/Products('Quicklook')/$value",
         "date": datetime(2015, 11, 21, 10, 3, 56, 675000),
