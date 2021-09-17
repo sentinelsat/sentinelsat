@@ -46,7 +46,7 @@ def make_path_filter(pattern, exclude=False):
     """
 
     def node_filter(node_info):
-        match = fnmatch.fnmatch(node_info["node_path"].lower(), pattern)
+        match = fnmatch.fnmatch(node_info["node_path"], pattern)
         return not match if exclude else match
 
     return node_filter
