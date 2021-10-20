@@ -274,7 +274,7 @@ class Downloader:
         # Skip already downloaded files.
         # Although the download method also checks, we do not need to retrieve such
         # products from the LTA and use up our quota.
-        self._skip_existing_products(directory, offline_prods, product_infos, statuses)
+        self._skip_existing_products(directory, offline_prods, product_infos, statuses, exceptions)
 
         stop_event = threading.Event()
         dl_tasks = {}
@@ -414,10 +414,21 @@ class Downloader:
                 offline_prods.add(pid)
         return statuses, online_prods, offline_prods, product_infos, exceptions
 
-    def _skip_existing_products(self, directory, products, product_infos, statuses):
+    def _skip_existing_products(self, directory, products, product_infos, statuses, exceptions):
         for pid in list(products):
             product_info = product_infos[pid]
-            filename = self.api._get_filename(product_info)
+            try:
+                filename = self.api._get_filename(product_info)
+            except SentinelAPIError as e:
+                exceptions[pid] = e
+                if self.fail_fast:
+                    raise
+                self.logger.error(
+                    "Getting filename %s failed: %s,
+                    pid,
+                    _format_exception(e),
+                )
+                continue
             path = Path(directory) / filename
             if path.exists():
                 self.logger.info("Skipping already downloaded %s.", filename)
