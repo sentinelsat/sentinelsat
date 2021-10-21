@@ -424,7 +424,7 @@ class Downloader:
                 if self.fail_fast:
                     raise
                 self.logger.error(
-                    "Getting filename for %s failed: %s,
+                    "Getting filename for %s failed: %s",
                     pid,
                     _format_exception(e),
                 )
