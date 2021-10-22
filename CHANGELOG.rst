@@ -25,7 +25,8 @@ Fixed
   that node paths are no longer converted to lowercase before pattern
   matching. (`#541 <https://github.com/sentinelsat/sentinelsat/issues/541>`_
   `@avalentino <https://github.com/avalentino>`_)
-
+* In ``download_all()``, the initial check on files already existing now ignores server errors when determining the file name. Any existing files are still skipped when initiating the download. (`#543 <https://github.com/sentinelsat/sentinelsat/issues/543>`_
+  `@joooeey <https://github.com/joooeey>`_)
 
 [1.1.0] – 2021-08-19
 --------------------
