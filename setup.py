@@ -31,8 +31,8 @@ setup(
     url="https://github.com/sentinelsat/sentinelsat",
     license="GPLv3+",
     packages=find_packages(exclude=["ez_setup", "examples", "tests"]),
-    include_package_data=True,
-    zip_safe=False,
+    include_package_data=False,
+    zip_safe=True,
     install_requires=open("requirements.txt").read().splitlines(),
     extras_require={
         "dev": [

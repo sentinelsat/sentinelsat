@@ -16,7 +16,7 @@ Added
 
 Changed
 ~~~~~~~
-* 
+* Tests are no longer included in the Python source package to significantly reduce its size.
 
 Fixed
 ~~~~~
