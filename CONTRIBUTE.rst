@@ -139,6 +139,16 @@ A new Zenodo DOI is created automatically with every Github release using the Ze
 
 A new version is published to PyPI automatically via CI on every GitHub release.
 
+Release checklist
+-----------------
+
+* Update the package version at https://github.com/sentinelsat/sentinelsat/blob/main/sentinelsat/__init__.py#L1
+* Update the link to latest changes on the main branch under https://github.com/sentinelsat/sentinelsat#changelog
+* Make sure docs are up to date and are rendered correctly at https://sentinelsat.readthedocs.io/en/main/
+* Make sure all notable changes are covered in CHANGELOG.rst and update the version number there
+* Update AUTHORS.rst
+* Copy the relevant part of changelog into the release description and create a new release
+* Start a new "Unreleased" version section in changelog
 
 License
 =======
