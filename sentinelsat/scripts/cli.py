@@ -208,7 +208,7 @@ def validate_query_param(ctx, param, kwargs):
     'orbitdirection', 'relativeorbitnumber', 'footprint'.
 
     For a complete set of available keywords see the "properties" output from a
-    relevant query with ``--footprints -`` (and possibly ``--limit 1``) appended.
+    relevant query with ``--footprints -`` appended.
     """,
 )
 @click.option("--info", is_flag=True, is_eager=True, help="Displays the DHuS version used")
@@ -244,10 +244,9 @@ def cli(
     info,
 ):
     """Search for Sentinel products and, optionally, download all the results
-    and/or create a geojson file with the search result footprints.
-    Beyond your Copernicus Open Access Hub user and password, you must pass a geojson file
-    containing the geometry of the area you want to search for or the UUIDs of the products. If you
-    don't specify the start and end dates, it will search in the last 24 hours.
+    and/or create a GeoJSON file with the search result footprints.
+    Beyond your Copernicus Open Access Hub user and password, you will typically want to pass a GeoJSON file
+    containing the geometry of the area you want to search for and the relevant time range.
     """
 
     if footprints and footprints.name == "-":
