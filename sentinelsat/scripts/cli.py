@@ -49,7 +49,7 @@ def validate_query_param(ctx, param, kwargs):
     return kwargs
 
 
-@click.command(context_settings=dict(help_option_names=["-h", "--help"]))
+@click.command(context_settings=dict(help_option_names=["-h", "--help"]), no_args_is_help=True)
 @click.option(
     "--user",
     "-u",
@@ -201,10 +201,12 @@ def validate_query_param(ctx, param, kwargs):
     show_default=True,
     help="""Specify a custom format to print results. The format string shall
     be compatible with the Python "Format Specification Mini-Language".
+
     Some common keywords for substitution are:
     'uuid', 'identifier', 'summary', 'link', 'size', 'platformname', 'producttype',
     'beginposition', 'instrumentshortname', 'cloudcoverpercentage',
     'orbitdirection', 'relativeorbitnumber', 'footprint'.
+
     For a complete set of available keywords see the "properties" output from a
     relevant query with ``--footprints -`` (and possibly ``--limit 1``) appended.
     """,

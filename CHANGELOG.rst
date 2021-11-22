@@ -8,7 +8,7 @@ All notable changes to ``sentinelsat`` will be listed here.
 
 CLI changes
 ~~~~~~~~~~~
-* 
+* Show help when no CLI arguments are provided.
 
 Added
 ~~~~~
