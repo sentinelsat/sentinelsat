@@ -3,6 +3,25 @@ Change Log
 
 All notable changes to ``sentinelsat`` will be listed here.
 
+[Unreleased] – YYYY-MM-DD
+-------------------------
+
+CLI changes
+~~~~~~~~~~~
+* 
+
+Added
+~~~~~
+* 
+
+Changed
+~~~~~~~
+* 
+
+Fixed
+~~~~~
+*
+
 [1.1.1] – 2021-11-23
 --------------------
 
