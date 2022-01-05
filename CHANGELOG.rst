@@ -3,20 +3,16 @@ Change Log
 
 All notable changes to ``sentinelsat`` will be listed here.
 
-[Unreleased] – YYYY-MM-DD
--------------------------
+[1.1.1] – 2021-11-23
+--------------------
 
 CLI changes
 ~~~~~~~~~~~
-* 
-
-Added
-~~~~~
-* 
+* Show help when no CLI arguments are provided.
 
 Changed
 ~~~~~~~
-* 
+* Tests are no longer included in the Python source package to significantly reduce its size.
 
 Fixed
 ~~~~~
