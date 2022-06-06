@@ -5,7 +5,11 @@ import glob
 import shutil
 from contextlib import contextmanager
 from functools import partialmethod
-from test.support import EnvironmentVarGuard
+
+try:
+    from test.support.os_helper import EnvironmentVarGuard
+except:
+    from test.support import EnvironmentVarGuard
 
 import pytest
 import requests_mock
@@ -155,8 +159,8 @@ def test_cli_geometry_WKT_alternative_fail(run_cli):
         must_return_nonzero=True,
     )
     assert (
-        "neither a GeoJSON file with a valid path, a GeoJSON String nor a WKT string."
-        in result.output
+            "neither a GeoJSON file with a valid path, a GeoJSON String nor a WKT string."
+            in result.output
     )
 
 
@@ -553,7 +557,7 @@ def test_product_node_download_single(run_cli, api, tmpdir, smallest_online_prod
 @pytest.mark.vcr(allow_playback_repeats=True)
 @pytest.mark.scihub
 def test_product_node_download_single_with_filter(
-    run_cli, api, tmpdir, node_test_products, monkeypatch
+        run_cli, api, tmpdir, node_test_products, monkeypatch
 ):
     # Change default arguments for quicker test.
     # Also, vcrpy is not threadsafe, so only one worker is used.
