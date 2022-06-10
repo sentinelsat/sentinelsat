@@ -100,7 +100,7 @@ class Downloader:
         self.dl_retry_delay = dl_retry_delay
         self.lta_retry_delay = lta_retry_delay
         self.lta_timeout = lta_timeout
-        self.chunk_size = 2 ** 20  # download in 1 MB chunks by default
+        self.chunk_size = 2**20  # download in 1 MB chunks by default
 
     def download(self, id, directory=".", *, stop_event=None):
         """Download a product.
