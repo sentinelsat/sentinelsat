@@ -45,7 +45,7 @@ setup(
             "pytest-socket",
             "requests-mock",
             "pyyaml",
-            "rstcheck",
+            "rstcheck < 6",
             "sphinx >= 1.3",
             "sphinx_rtd_theme",
             "flaky",
