@@ -5,7 +5,11 @@ import glob
 import shutil
 from contextlib import contextmanager
 from functools import partialmethod
-from test.support import EnvironmentVarGuard
+
+try:
+    from test.support.os_helper import EnvironmentVarGuard
+except ImportError:
+    from test.support import EnvironmentVarGuard
 
 import pytest
 import requests_mock

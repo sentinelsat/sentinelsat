@@ -944,7 +944,7 @@ class SentinelAPI:
 
         return corrupt
 
-    def _checksum_compare(self, file_path, product_info, block_size=2 ** 13):
+    def _checksum_compare(self, file_path, product_info, block_size=2**13):
         """Compare a given MD5 checksum with one calculated from a file."""
         if "sha3-256" in product_info:
             checksum = product_info["sha3-256"]
