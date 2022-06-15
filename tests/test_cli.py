@@ -8,7 +8,7 @@ from functools import partialmethod
 
 try:
     from test.support.os_helper import EnvironmentVarGuard
-except:
+except ImportError:
     from test.support import EnvironmentVarGuard
 
 import pytest
