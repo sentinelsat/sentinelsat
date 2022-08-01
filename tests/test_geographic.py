@@ -2,6 +2,7 @@
 Handling of GeoJSON, geometries, WKT, etc. GIS-related functionality.
 """
 from datetime import datetime
+import re
 
 import geojson
 import pytest
@@ -76,9 +77,11 @@ def test_footprints_s2(products, fixture_path):
 @pytest.mark.vcr
 @pytest.mark.scihub
 def test_placename_to_wkt_valid():
-    place_kwargs = ["florida", "ENVELOPE(-87.634896, -79.974306, 31.000968, 24.396308)"]
     # tests wkt response
-    assert placename_to_wkt(place_kwargs[0])[0] == place_kwargs[1]
+    expected_wkt = "ENVELOPE(-87.63, -79.97, 31.00, 24.39)"
+    wkt = placename_to_wkt("florida")[0]
+    # check only up to two decimal places to ignore irrelevant footprint changes
+    assert re.sub(r"(\.\d\d)\d+", "\\1", wkt) == expected_wkt
 
 
 @pytest.mark.vcr
