@@ -151,10 +151,10 @@ class Downloader:
         return product_info
 
     def _download_with_node_filter(self, id, directory, stop_event):
-        product_info = self.api.get_product_odata(id)
-        product_path = Path(directory) / (product_info["title"] + ".SAFE")
-        product_info["node_path"] = "./" + product_info["title"] + ".SAFE"
-        manifest_path = product_path / "manifest.safe"
+        product_info = self.api.get_product_odata(id, full=True)
+        product_path = Path(directory) / (product_info["Filename"])
+        product_info["node_path"] = "./" + product_info["Filename"]
+        manifest_path = product_path / product_info["manifest_name"]
         if not manifest_path.exists() and self.trigger_offline_retrieval(id):
             raise LTATriggered(id)
         manifest_info, _ = self.api._get_manifest(product_info, manifest_path)
@@ -769,7 +769,7 @@ class Downloader:
             node_info["md5"] = dataobj_info["md5"]
         if "sha3-256" in dataobj_info:
             node_info["sha3-256"] = dataobj_info["sha3-256"]
-        node_info["node_path"] = dataobj_info["href"]
+        node_info["node_path"] = path
         # node_info["parent"] = product_info
 
         return node_info
