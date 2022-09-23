@@ -151,9 +151,9 @@ class Downloader:
         return product_info
 
     def _download_with_node_filter(self, id, directory, stop_event):
-        product_info = self.api.get_product_odata(id, full=True)
-        product_path = Path(directory) / (product_info["Filename"])
-        product_info["node_path"] = "./" + product_info["Filename"]
+        product_info = self.api.get_product_odata(id)
+        product_path = Path(directory) / (product_info["folder_path"])
+        product_info["node_path"] = "./" + product_info["folder_path"]
         manifest_path = product_path / product_info["manifest_name"]
         if not manifest_path.exists() and self.trigger_offline_retrieval(id):
             raise LTATriggered(id)
