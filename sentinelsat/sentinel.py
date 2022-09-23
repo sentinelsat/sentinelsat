@@ -510,11 +510,12 @@ class SentinelAPI:
             response = self.session.get(url)
         self._check_scihub_response(response)
         values = _parse_odata_response(response.json()["d"])
-        if full:
-            if values['Filename'].endswith('.SAFE'):
-                values['manifest_name'] = 'manifest.safe'
-            elif values['Filename'].endswith('.SEN3'):
-                values['manifest_name'] = 'xfdumanifest.xml'
+        if values['title'].startswith('S3'):
+            values['manifest_name'] = 'xfdumanifest.xml'
+            values['folder_path'] = values['title'] + '.SEN3'
+        else:
+            values['manifest_name'] = 'manifest.safe'
+            values['folder_path'] = values['title'] + '.SAFE'
         values["quicklook_url"] = self._get_odata_url(id, "/Products('Quicklook')/$value")
         return values
 
@@ -1071,7 +1072,7 @@ class SentinelAPI:
 
     def _path_to_url(self, product_info, path, urltype=None):
         id = product_info["id"]
-        filename = product_info['Filename']
+        filename = product_info["folder_path"]
         path = "/".join(["Nodes('{}')".format(item) for item in path.split("/")])
         if urltype == "value":
             urltype = "/$value"
