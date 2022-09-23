@@ -510,6 +510,11 @@ class SentinelAPI:
             response = self.session.get(url)
         self._check_scihub_response(response)
         values = _parse_odata_response(response.json()["d"])
+        if full:
+            if values['Filename'].endswith('.SAFE'):
+                values['manifest_name'] = 'manifest.safe'
+            elif values['Filename'].endswith('.SEN3'):
+                values['manifest_name'] = 'xfdumanifest.xml'
         values["quicklook_url"] = self._get_odata_url(id, "/Products('Quicklook')/$value")
         return values
 
@@ -1066,7 +1071,7 @@ class SentinelAPI:
 
     def _path_to_url(self, product_info, path, urltype=None):
         id = product_info["id"]
-        title = product_info["title"]
+        filename = product_info['Filename']
         path = "/".join(["Nodes('{}')".format(item) for item in path.split("/")])
         if urltype == "value":
             urltype = "/$value"
@@ -1077,14 +1082,14 @@ class SentinelAPI:
         elif urltype is None:
             urltype = ""
         # else: pass urltype as is
-        return self._get_odata_url(id, f"/Nodes('{title}.SAFE')/{path}{urltype}")
+        return self._get_odata_url(id, f"/Nodes('{filename}')/{path}{urltype}")
 
     def _get_manifest(self, product_info, path=None):
         path = Path(path) if path else None
-        url = self._path_to_url(product_info, "manifest.safe", "value")
+        url = self._path_to_url(product_info, product_info['manifest_name'], "value")
         node_info = product_info.copy()
         node_info["url"] = url
-        node_info["node_path"] = "./manifest.safe"
+        node_info["node_path"] = './' + product_info['manifest_name']
         del node_info["md5"]
 
         if path and path.exists():
@@ -1093,7 +1098,7 @@ class SentinelAPI:
             node_info["size"] = len(data)
             return node_info, data
 
-        url = self._path_to_url(product_info, "manifest.safe", "json")
+        url = self._path_to_url(product_info, product_info['manifest_name'], "json")
         with self.dl_limit_semaphore:
             response = self.session.get(url)
         self._check_scihub_response(response)
