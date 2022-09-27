@@ -190,7 +190,7 @@ class SentinelAPI:
         order_by=None,
         limit=None,
         offset=0,
-        **keywords
+        **keywords,
     ):
         """Query the OpenSearch API with the coordinates of an area, a date interval
         and any other search keywords accepted by the API.
@@ -329,7 +329,14 @@ class SentinelAPI:
 
         return " ".join(query_parts)
 
-    def count(self, area=None, date=None, raw=None, area_relation="Intersects", **keywords):
+    def count(
+        self,
+        area=None,
+        date=None,
+        raw=None,
+        area_relation="Intersects",
+        **keywords,
+    ):
         """Get the number of products matching a query.
 
         Accepted parameters are identical to :meth:`SentinelAPI.query()`.
@@ -510,12 +517,12 @@ class SentinelAPI:
             response = self.session.get(url)
         self._check_scihub_response(response)
         values = _parse_odata_response(response.json()["d"])
-        if values['title'].startswith('S3'):
-            values['manifest_name'] = 'xfdumanifest.xml'
-            values['folder_path'] = values['title'] + '.SEN3'
+        if values["title"].startswith("S3"):
+            values["manifest_name"] = "xfdumanifest.xml"
+            values["folder_path"] = values["title"] + ".SEN3"
         else:
-            values['manifest_name'] = 'manifest.safe'
-            values['folder_path'] = values['title'] + '.SAFE'
+            values["manifest_name"] = "manifest.safe"
+            values["folder_path"] = values["title"] + ".SAFE"
         values["quicklook_url"] = self._get_odata_url(id, "/Products('Quicklook')/$value")
         return values
 
@@ -1087,10 +1094,10 @@ class SentinelAPI:
 
     def _get_manifest(self, product_info, path=None):
         path = Path(path) if path else None
-        url = self._path_to_url(product_info, product_info['manifest_name'], "value")
+        url = self._path_to_url(product_info, product_info["manifest_name"], "value")
         node_info = product_info.copy()
         node_info["url"] = url
-        node_info["node_path"] = './' + product_info['manifest_name']
+        node_info["node_path"] = "./" + product_info["manifest_name"]
         del node_info["md5"]
 
         if path and path.exists():
@@ -1099,7 +1106,7 @@ class SentinelAPI:
             node_info["size"] = len(data)
             return node_info, data
 
-        url = self._path_to_url(product_info, product_info['manifest_name'], "json")
+        url = self._path_to_url(product_info, product_info["manifest_name"], "json")
         with self.dl_limit_semaphore:
             response = self.session.get(url)
         self._check_scihub_response(response)
@@ -1356,7 +1363,13 @@ def _parse_opensearch_response(products):
     is set to `False`.
     """
 
-    converters = {"date": _parse_iso_date, "int": int, "long": int, "float": float, "double": float}
+    converters = {
+        "date": _parse_iso_date,
+        "int": int,
+        "long": int,
+        "float": float,
+        "double": float,
+    }
 
     # Keep the string type by default
     def default_converter(x):
