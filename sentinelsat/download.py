@@ -84,7 +84,7 @@ class Downloader:
         max_attempts=10,
         dl_retry_delay=10,
         lta_retry_delay=60,
-        lta_timeout=None,
+        lta_timeout=None
     ):
         from sentinelsat import SentinelAPI
 
@@ -209,8 +209,7 @@ class Downloader:
             else:
                 # continue downloading
                 self.logger.info(
-                    "Download will resume from existing incomplete file %s.",
-                    temp_path,
+                    "Download will resume from existing incomplete file %s.", temp_path
                 )
                 pass
         if not skip_download:
@@ -265,18 +264,12 @@ class Downloader:
         if len(product_ids) == 0:
             return ResultTuple({}, {}, {})
         self.logger.info(
-            "Will download %d products using %d workers",
-            len(product_ids),
-            self.n_concurrent_dl,
+            "Will download %d products using %d workers", len(product_ids), self.n_concurrent_dl
         )
 
-        (
-            statuses,
-            online_prods,
-            offline_prods,
-            product_infos,
-            exceptions,
-        ) = self._init_statuses(product_ids)
+        statuses, online_prods, offline_prods, product_infos, exceptions = self._init_statuses(
+            product_ids
+        )
 
         # Skip already downloaded files.
         # Although the download method also checks, we do not need to retrieve such
@@ -395,10 +388,7 @@ class Downloader:
         exceptions = {}
         # Get online status and product info.
         for pid in self._tqdm(
-            iterable=product_ids,
-            desc="Fetching archival status",
-            unit="product",
-            delay=2,
+            iterable=product_ids, desc="Fetching archival status", unit="product", delay=2
         ):
             assert isinstance(pid, str)
             try:
@@ -484,8 +474,7 @@ class Downloader:
         # Requesting zero bytes results in NullPointerException in the server.
         with self.api.dl_limit_semaphore:
             r = self.api.session.get(
-                self.api._get_download_url(uuid),
-                headers={"Range": "bytes=0-1"},
+                self.api._get_download_url(uuid), headers={"Range": "bytes=0-1"}
             )
         cause = r.headers.get("cause-message")
         # check https://scihub.copernicus.eu/userguide/LongTermArchive#HTTP_Status_codes
@@ -657,8 +646,7 @@ class Downloader:
                         if triggered:
                             statuses[uuid] = DownloadStatus.TRIGGERED
                             self.logger.info(
-                                "%s accepted for retrieval, waiting for it to come online...",
-                                uuid,
+                                "%s accepted for retrieval, waiting for it to come online...", uuid
                             )
                         else:
                             # Product is online
@@ -710,11 +698,7 @@ class Downloader:
                     _wait(stop_event, self.dl_retry_delay)
                 statuses[uuid] = DownloadStatus.DOWNLOAD_STARTED
                 return self.download(uuid, directory, stop_event=stop_event)
-            except (
-                concurrent.futures.CancelledError,
-                KeyboardInterrupt,
-                SystemExit,
-            ):
+            except (concurrent.futures.CancelledError, KeyboardInterrupt, SystemExit):
                 raise
             except Exception as e:
                 if isinstance(e, InvalidChecksumError):
