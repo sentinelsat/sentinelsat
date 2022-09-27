@@ -190,7 +190,7 @@ class SentinelAPI:
         order_by=None,
         limit=None,
         offset=0,
-        **keywords,
+        **keywords
     ):
         """Query the OpenSearch API with the coordinates of an area, a date interval
         and any other search keywords accepted by the API.
@@ -329,14 +329,7 @@ class SentinelAPI:
 
         return " ".join(query_parts)
 
-    def count(
-        self,
-        area=None,
-        date=None,
-        raw=None,
-        area_relation="Intersects",
-        **keywords,
-    ):
+    def count(self, area=None, date=None, raw=None, area_relation="Intersects", **keywords):
         """Get the number of products matching a query.
 
         Accepted parameters are identical to :meth:`SentinelAPI.query()`.
@@ -1363,13 +1356,7 @@ def _parse_opensearch_response(products):
     is set to `False`.
     """
 
-    converters = {
-        "date": _parse_iso_date,
-        "int": int,
-        "long": int,
-        "float": float,
-        "double": float,
-    }
+    converters = {"date": _parse_iso_date, "int": int, "long": int, "float": float, "double": float}
 
     # Keep the string type by default
     def default_converter(x):
