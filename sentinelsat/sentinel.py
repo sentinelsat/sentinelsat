@@ -510,12 +510,12 @@ class SentinelAPI:
             response = self.session.get(url)
         self._check_scihub_response(response)
         values = _parse_odata_response(response.json()["d"])
-        if values['title'].startswith('S3'):
-            values['manifest_name'] = 'xfdumanifest.xml'
-            values['folder_path'] = values['title'] + '.SEN3'
+        if values["title"].startswith("S3"):
+            values["manifest_name"] = "xfdumanifest.xml"
+            values["folder_path"] = values["title"] + ".SEN3"
         else:
-            values['manifest_name'] = 'manifest.safe'
-            values['folder_path'] = values['title'] + '.SAFE'
+            values["manifest_name"] = "manifest.safe"
+            values["folder_path"] = values["title"] + ".SAFE"
         values["quicklook_url"] = self._get_odata_url(id, "/Products('Quicklook')/$value")
         return values
 
@@ -1087,10 +1087,10 @@ class SentinelAPI:
 
     def _get_manifest(self, product_info, path=None):
         path = Path(path) if path else None
-        url = self._path_to_url(product_info, product_info['manifest_name'], "value")
+        url = self._path_to_url(product_info, product_info["manifest_name"], "value")
         node_info = product_info.copy()
         node_info["url"] = url
-        node_info["node_path"] = './' + product_info['manifest_name']
+        node_info["node_path"] = "./" + product_info["manifest_name"]
         del node_info["md5"]
 
         if path and path.exists():
@@ -1099,7 +1099,7 @@ class SentinelAPI:
             node_info["size"] = len(data)
             return node_info, data
 
-        url = self._path_to_url(product_info, product_info['manifest_name'], "json")
+        url = self._path_to_url(product_info, product_info["manifest_name"], "json")
         with self.dl_limit_semaphore:
             response = self.session.get(url)
         self._check_scihub_response(response)
