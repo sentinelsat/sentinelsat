@@ -40,7 +40,7 @@ def make_path_filter(pattern, exclude=False):
     Parameters
     ----------
     pattern : str, sequence[str]
-        glob patter (or sequence of patterns) for files selection
+        glob pattern (or sequence of patterns) for files selection
     exclude : bool, optional
         if set to True then files matching the specified pattern are excluded. Default False.
        The `pattern` parameter can also be a list of patterns.
