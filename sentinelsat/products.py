@@ -42,10 +42,9 @@ def make_path_filter(pattern, exclude=False):
     pattern : str, sequence[str]
         glob pattern (or sequence of patterns) for files selection
     exclude : bool, optional
-        if set to True then files matching the specified pattern are excluded. Default False.
+        If set to true, then files matching any of the specified patterns are excluded.
        The `pattern` parameter can also be a list of patterns.
     """
-
     patterns = [pattern] if isinstance(pattern, str) else pattern
 
     def node_filter(node_info):
