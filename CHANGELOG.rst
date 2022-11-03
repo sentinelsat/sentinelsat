@@ -12,7 +12,7 @@ CLI changes
 
 Added
 ~~~~~
-* 
+* support for Python 3.11
 
 Changed
 ~~~~~~~
