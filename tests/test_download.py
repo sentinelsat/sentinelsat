@@ -373,7 +373,7 @@ def test_download_product_nodes(api, tmpdir, node_test_products):
     assert os.path.normpath(product_info["node_path"]) == product_dir
     assert expected_path.exists()
 
-    assert set(product_info["nodes"]) == {"./manifest.safe", "./preview/map-overlay.kml"}
+    assert set(product_info["nodes"]) == {"./manifest.safe", "preview/map-overlay.kml"}
 
     assert tmpdir.join(product_dir, "manifest.safe").check()
     assert tmpdir.join(product_dir, "preview", "map-overlay.kml").check()
