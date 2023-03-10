@@ -512,10 +512,10 @@ class SentinelAPI:
         values = _parse_odata_response(response.json()["d"])
         if values["title"].startswith("S3"):
             values["manifest_name"] = "xfdumanifest.xml"
-            values["folder_path"] = values["title"] + ".SEN3"
+            values["product_root_dir"] = values["title"] + ".SEN3"
         else:
             values["manifest_name"] = "manifest.safe"
-            values["folder_path"] = values["title"] + ".SAFE"
+            values["product_root_dir"] = values["title"] + ".SAFE"
         values["quicklook_url"] = self._get_odata_url(id, "/Products('Quicklook')/$value")
         return values
 
@@ -1072,7 +1072,7 @@ class SentinelAPI:
 
     def _path_to_url(self, product_info, path, urltype=None):
         id = product_info["id"]
-        filename = product_info["folder_path"]
+        root_dir = product_info["product_root_dir"]
         path = "/".join(["Nodes('{}')".format(item) for item in path.split("/")])
         if urltype == "value":
             urltype = "/$value"
@@ -1083,14 +1083,15 @@ class SentinelAPI:
         elif urltype is None:
             urltype = ""
         # else: pass urltype as is
-        return self._get_odata_url(id, f"/Nodes('{filename}')/{path}{urltype}")
+        return self._get_odata_url(id, f"/Nodes('{root_dir}')/{path}{urltype}")
 
     def _get_manifest(self, product_info, path=None):
         path = Path(path) if path else None
-        url = self._path_to_url(product_info, product_info["manifest_name"], "value")
+        manifest_name = product_info["manifest_name"]
+        url = self._path_to_url(product_info, manifest_name, "value")
         node_info = product_info.copy()
         node_info["url"] = url
-        node_info["node_path"] = "./" + product_info["manifest_name"]
+        node_info["node_path"] = f"./{manifest_name}"
         del node_info["md5"]
 
         if path and path.exists():
@@ -1099,7 +1100,7 @@ class SentinelAPI:
             node_info["size"] = len(data)
             return node_info, data
 
-        url = self._path_to_url(product_info, product_info["manifest_name"], "json")
+        url = self._path_to_url(product_info, manifest_name, "json")
         with self.dl_limit_semaphore:
             response = self.session.get(url)
         self._check_scihub_response(response)
