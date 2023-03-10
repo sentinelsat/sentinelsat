@@ -9,7 +9,7 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - sentinelsat/1.0.1
+      - sentinelsat/1.1.1
     method: GET
     uri: https://nominatim.openstreetmap.org/search?q=%21%40%23%24%25%5E&format=geojson
   response:

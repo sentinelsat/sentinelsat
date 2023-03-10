@@ -9,7 +9,7 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - sentinelsat/1.0.1
+      - sentinelsat/1.1.1
     method: GET
     uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=0&start=0&q=ingestiondate%3A%5BNOW+TO+%2A%5D
   response:
@@ -30,13 +30,11 @@ interactions:
       - application/json
       pragma:
       - no-cache
-      server:
-      - Apache-Coyote/1.1
       vary:
       - Accept-Encoding
     status:
       code: 200
-      message: OK
+      message: ''
 - request:
     body: null
     headers:
@@ -47,7 +45,7 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - sentinelsat/1.0.1
+      - sentinelsat/1.1.1
     method: GET
     uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=0&start=0&q=ingestiondate%3A%5BNOW-1DAY+TO+%2A%5D
   response:
@@ -69,13 +67,11 @@ interactions:
       - application/json
       pragma:
       - no-cache
-      server:
-      - Apache-Coyote/1.1
       vary:
       - Accept-Encoding
     status:
       code: 200
-      message: OK
+      message: ''
 - request:
     body: null
     headers:
@@ -86,7 +82,7 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - sentinelsat/1.0.1
+      - sentinelsat/1.1.1
     method: GET
     uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=0&start=0&q=ingestiondate%3A%5BNOW-1DAYS+TO+%2A%5D
   response:
@@ -108,13 +104,11 @@ interactions:
       - application/json
       pragma:
       - no-cache
-      server:
-      - Apache-Coyote/1.1
       vary:
       - Accept-Encoding
     status:
       code: 200
-      message: OK
+      message: ''
 - request:
     body: null
     headers:
@@ -125,7 +119,7 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - sentinelsat/1.0.1
+      - sentinelsat/1.1.1
     method: GET
     uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=0&start=0&q=ingestiondate%3A%5BNOW-500DAY+TO+%2A%5D
   response:
@@ -147,13 +141,11 @@ interactions:
       - application/json
       pragma:
       - no-cache
-      server:
-      - Apache-Coyote/1.1
       vary:
       - Accept-Encoding
     status:
       code: 200
-      message: OK
+      message: ''
 - request:
     body: null
     headers:
@@ -164,7 +156,7 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - sentinelsat/1.0.1
+      - sentinelsat/1.1.1
     method: GET
     uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=0&start=0&q=ingestiondate%3A%5BNOW-500DAYS+TO+%2A%5D
   response:
@@ -186,13 +178,11 @@ interactions:
       - application/json
       pragma:
       - no-cache
-      server:
-      - Apache-Coyote/1.1
       vary:
       - Accept-Encoding
     status:
       code: 200
-      message: OK
+      message: ''
 - request:
     body: null
     headers:
@@ -203,7 +193,7 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - sentinelsat/1.0.1
+      - sentinelsat/1.1.1
     method: GET
     uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=0&start=0&q=ingestiondate%3A%5BNOW-2MONTH+TO+%2A%5D
   response:
@@ -225,13 +215,11 @@ interactions:
       - application/json
       pragma:
       - no-cache
-      server:
-      - Apache-Coyote/1.1
       vary:
       - Accept-Encoding
     status:
       code: 200
-      message: OK
+      message: ''
 - request:
     body: null
     headers:
@@ -242,7 +230,7 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - sentinelsat/1.0.1
+      - sentinelsat/1.1.1
     method: GET
     uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=0&start=0&q=ingestiondate%3A%5BNOW-2MONTHS+TO+%2A%5D
   response:
@@ -264,13 +252,11 @@ interactions:
       - application/json
       pragma:
       - no-cache
-      server:
-      - Apache-Coyote/1.1
       vary:
       - Accept-Encoding
     status:
       code: 200
-      message: OK
+      message: ''
 - request:
     body: null
     headers:
@@ -281,21 +267,21 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - sentinelsat/1.0.1
+      - sentinelsat/1.1.1
     method: GET
     uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=0&start=0&q=ingestiondate%3A%5BNOW-20MINUTE+TO+%2A%5D
   response:
     body:
       string: '{"feed":{"xmlns:opensearch":"http://a9.com/-/spec/opensearch/1.1/","xmlns":"http://www.w3.org/2005/Atom","title":"Sentinels
         Scientific Data Hub search results for: ingestiondate:[NOW-20MINUTE TO *]","subtitle":"Displaying
-        0 to -1 of 155 total results. Request done in ... seconds.","updated":"...","author":{"name":"Sentinels
+        0 to -1 of 313 total results. Request done in ... seconds.","updated":"...","author":{"name":"Sentinels
         Scientific Data Hub"},"id":"https://apihub.copernicus.eu/apihub/search?q=ingestiondate:[NOW-20MINUTE
-        TO *]","opensearch:totalResults":"155","opensearch:startIndex":"0","opensearch:itemsPerPage":"0","opensearch:Query":{"role":"request","searchTerms":"ingestiondate:[NOW-20MINUTE
+        TO *]","opensearch:totalResults":"313","opensearch:startIndex":"0","opensearch:itemsPerPage":"0","opensearch:Query":{"role":"request","searchTerms":"ingestiondate:[NOW-20MINUTE
         TO *]","startPage":"1"},"link":[{"rel":"self","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=ingestiondate:[NOW-20MINUTE
         TO *]&start=0&rows=0&format=json"},{"rel":"first","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=ingestiondate:[NOW-20MINUTE
         TO *]&start=0&rows=0&format=json"},{"rel":"next","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=ingestiondate:[NOW-20MINUTE
         TO *]&start=NaN&rows=0&format=json"},{"rel":"last","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=ingestiondate:[NOW-20MINUTE
-        TO *]&start=154&rows=0&format=json"},{"rel":"search","type":"application/opensearchdescription+xml","href":"opensearch_description.xml"}]}}'
+        TO *]&start=312&rows=0&format=json"},{"rel":"search","type":"application/opensearchdescription+xml","href":"opensearch_description.xml"}]}}'
     headers:
       content-length:
       - '1367'
@@ -303,13 +289,11 @@ interactions:
       - application/json
       pragma:
       - no-cache
-      server:
-      - Apache-Coyote/1.1
       vary:
       - Accept-Encoding
     status:
       code: 200
-      message: OK
+      message: ''
 - request:
     body: null
     headers:
@@ -320,21 +304,21 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - sentinelsat/1.0.1
+      - sentinelsat/1.1.1
     method: GET
     uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=0&start=0&q=ingestiondate%3A%5BNOW-20MINUTES+TO+%2A%5D
   response:
     body:
       string: '{"feed":{"xmlns:opensearch":"http://a9.com/-/spec/opensearch/1.1/","xmlns":"http://www.w3.org/2005/Atom","title":"Sentinels
         Scientific Data Hub search results for: ingestiondate:[NOW-20MINUTES TO *]","subtitle":"Displaying
-        0 to -1 of 153 total results. Request done in ... seconds.","updated":"...","author":{"name":"Sentinels
+        0 to -1 of 313 total results. Request done in ... seconds.","updated":"...","author":{"name":"Sentinels
         Scientific Data Hub"},"id":"https://apihub.copernicus.eu/apihub/search?q=ingestiondate:[NOW-20MINUTES
-        TO *]","opensearch:totalResults":"153","opensearch:startIndex":"0","opensearch:itemsPerPage":"0","opensearch:Query":{"role":"request","searchTerms":"ingestiondate:[NOW-20MINUTES
+        TO *]","opensearch:totalResults":"313","opensearch:startIndex":"0","opensearch:itemsPerPage":"0","opensearch:Query":{"role":"request","searchTerms":"ingestiondate:[NOW-20MINUTES
         TO *]","startPage":"1"},"link":[{"rel":"self","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=ingestiondate:[NOW-20MINUTES
         TO *]&start=0&rows=0&format=json"},{"rel":"first","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=ingestiondate:[NOW-20MINUTES
         TO *]&start=0&rows=0&format=json"},{"rel":"next","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=ingestiondate:[NOW-20MINUTES
         TO *]&start=NaN&rows=0&format=json"},{"rel":"last","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=ingestiondate:[NOW-20MINUTES
-        TO *]&start=152&rows=0&format=json"},{"rel":"search","type":"application/opensearchdescription+xml","href":"opensearch_description.xml"}]}}'
+        TO *]&start=312&rows=0&format=json"},{"rel":"search","type":"application/opensearchdescription+xml","href":"opensearch_description.xml"}]}}'
     headers:
       content-length:
       - '1374'
@@ -342,13 +326,11 @@ interactions:
       - application/json
       pragma:
       - no-cache
-      server:
-      - Apache-Coyote/1.1
       vary:
       - Accept-Encoding
     status:
       code: 200
-      message: OK
+      message: ''
 - request:
     body: null
     headers:
@@ -359,7 +341,7 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - sentinelsat/1.0.1
+      - sentinelsat/1.1.1
     method: GET
     uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=0&start=0&q=ingestiondate%3A%5BNOW%2B10HOUR+TO+%2A%5D
   response:
@@ -380,13 +362,11 @@ interactions:
       - application/json
       pragma:
       - no-cache
-      server:
-      - Apache-Coyote/1.1
       vary:
       - Accept-Encoding
     status:
       code: 200
-      message: OK
+      message: ''
 - request:
     body: null
     headers:
@@ -397,7 +377,7 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - sentinelsat/1.0.1
+      - sentinelsat/1.1.1
     method: GET
     uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=0&start=0&q=ingestiondate%3A%5B2015-01-01T00%3A00%3A00Z%2B1DAY+TO+%2A%5D
   response:
@@ -420,13 +400,11 @@ interactions:
       - application/json
       pragma:
       - no-cache
-      server:
-      - Apache-Coyote/1.1
       vary:
       - Accept-Encoding
     status:
       code: 200
-      message: OK
+      message: ''
 - request:
     body: null
     headers:
@@ -437,7 +415,7 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - sentinelsat/1.0.1
+      - sentinelsat/1.1.1
     method: GET
     uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=0&start=0&q=ingestiondate%3A%5BNOW%2B3MONTHS-7DAYS%2FDAYS+TO+%2A%5D
   response:
@@ -458,13 +436,11 @@ interactions:
       - application/json
       pragma:
       - no-cache
-      server:
-      - Apache-Coyote/1.1
       vary:
       - Accept-Encoding
     status:
       code: 200
-      message: OK
+      message: ''
 - request:
     body: null
     headers:
@@ -475,7 +451,7 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - sentinelsat/1.0.1
+      - sentinelsat/1.1.1
     method: GET
     uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=0&start=0&q=ingestiondate%3A%5B%2A+TO+%2A%5D
   response:
@@ -497,13 +473,11 @@ interactions:
       - application/json
       pragma:
       - no-cache
-      server:
-      - Apache-Coyote/1.1
       vary:
       - Accept-Encoding
     status:
       code: 200
-      message: OK
+      message: ''
 - request:
     body: null
     headers:
@@ -514,7 +488,7 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - sentinelsat/1.0.1
+      - sentinelsat/1.1.1
     method: GET
     uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=0&start=0&q=ingestiondate%3A%5BNOW+-+1HOUR+TO+%2A%5D
   response:
@@ -530,13 +504,11 @@ interactions:
       - application/json
       pragma:
       - no-cache
-      server:
-      - Apache-Coyote/1.1
       vary:
       - Accept-Encoding
     status:
       code: 200
-      message: OK
+      message: ''
 - request:
     body: null
     headers:
@@ -547,7 +519,7 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - sentinelsat/1.0.1
+      - sentinelsat/1.1.1
     method: GET
     uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=0&start=0&q=ingestiondate%3A%5BNOW+-+++1HOURS+TO+%2A%5D
   response:
@@ -563,13 +535,11 @@ interactions:
       - application/json
       pragma:
       - no-cache
-      server:
-      - Apache-Coyote/1.1
       vary:
       - Accept-Encoding
     status:
       code: 200
-      message: OK
+      message: ''
 - request:
     body: null
     headers:
@@ -580,7 +550,7 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - sentinelsat/1.0.1
+      - sentinelsat/1.1.1
     method: GET
     uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=0&start=0&q=ingestiondate%3A%5BNOW-1+HOURS+TO+%2A%5D
   response:
@@ -596,13 +566,11 @@ interactions:
       - application/json
       pragma:
       - no-cache
-      server:
-      - Apache-Coyote/1.1
       vary:
       - Accept-Encoding
     status:
       code: 200
-      message: OK
+      message: ''
 - request:
     body: null
     headers:
@@ -613,7 +581,7 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - sentinelsat/1.0.1
+      - sentinelsat/1.1.1
     method: GET
     uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=0&start=0&q=ingestiondate%3A%5BNOW-1+TO+%2A%5D
   response:
@@ -627,13 +595,11 @@ interactions:
       - application/json
       pragma:
       - no-cache
-      server:
-      - Apache-Coyote/1.1
       vary:
       - Accept-Encoding
     status:
       code: 200
-      message: OK
+      message: ''
 - request:
     body: null
     headers:
@@ -644,7 +610,7 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - sentinelsat/1.0.1
+      - sentinelsat/1.1.1
     method: GET
     uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=0&start=0&q=ingestiondate%3A%5BNOW-+TO+%2A%5D
   response:
@@ -658,13 +624,11 @@ interactions:
       - application/json
       pragma:
       - no-cache
-      server:
-      - Apache-Coyote/1.1
       vary:
       - Accept-Encoding
     status:
       code: 200
-      message: OK
+      message: ''
 - request:
     body: null
     headers:
@@ -675,7 +639,7 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - sentinelsat/1.0.1
+      - sentinelsat/1.1.1
     method: GET
     uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=0&start=0&q=ingestiondate%3A%5B%2A%2A+TO+%2A%5D
   response:
@@ -689,13 +653,11 @@ interactions:
       - application/json
       pragma:
       - no-cache
-      server:
-      - Apache-Coyote/1.1
       vary:
       - Accept-Encoding
     status:
       code: 200
-      message: OK
+      message: ''
 - request:
     body: null
     headers:
@@ -706,7 +668,7 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - sentinelsat/1.0.1
+      - sentinelsat/1.1.1
     method: GET
     uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=0&start=0&q=ingestiondate%3A%5B%2B+TO+%2A%5D
   response:
@@ -720,13 +682,11 @@ interactions:
       - application/json
       pragma:
       - no-cache
-      server:
-      - Apache-Coyote/1.1
       vary:
       - Accept-Encoding
     status:
       code: 200
-      message: OK
+      message: ''
 - request:
     body: null
     headers:
@@ -737,7 +697,7 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - sentinelsat/1.0.1
+      - sentinelsat/1.1.1
     method: GET
     uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=0&start=0&q=ingestiondate%3A%5B-+TO+%2A%5D
   response:
@@ -751,11 +711,9 @@ interactions:
       - application/json
       pragma:
       - no-cache
-      server:
-      - Apache-Coyote/1.1
       vary:
       - Accept-Encoding
     status:
       code: 200
-      message: OK
+      message: ''
 version: 1

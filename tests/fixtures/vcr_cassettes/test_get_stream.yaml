@@ -9,9 +9,9 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - sentinelsat/1.0.1
+      - sentinelsat/1.1.1
     method: GET
-    uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('2edae234-b02d-46d2-8915-823e4ec0eadb')/Online/$value
+    uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('b1d8a9ab-6072-4ecd-bc44-8d64419d71cb')/Online/$value
   response:
     body:
       string: 'true'
@@ -24,11 +24,9 @@ interactions:
       - '2.0'
       pragma:
       - no-cache
-      server:
-      - Apache-Coyote/1.1
     status:
       code: 200
-      message: OK
+      message: ''
 - request:
     body: null
     headers:
@@ -39,31 +37,29 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - sentinelsat/1.0.1
+      - sentinelsat/1.1.1
     method: GET
-    uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('2edae234-b02d-46d2-8915-823e4ec0eadb')/$value
+    uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('b1d8a9ab-6072-4ecd-bc44-8d64419d71cb')/$value
   response:
     body: {}
     headers:
       accept-ranges:
       - bytes
       content-disposition:
-      - inline;filename="S3B_SR_1_SRA____20210720T194442_20210720T194500_20210720T214156_0017_055_028______LN3_O_NR_004.zip"
+      - inline;filename="S3A_SR_1_SRA____20230309T204558_20230309T204623_20230309T225028_0024_096_214______PS1_O_NR_004.zip"
       content-length:
-      - '447106'
+      - '599540'
       content-range:
-      - bytes 0-447105/447106
+      - bytes 0-599539/599540
       content-type:
       - application/octet-stream
       dataserviceversion:
       - '2.0'
       etag:
-      - a0377743199276ccab05e691822ad603
+      - 1495b98f859949929b14c1b7cd62dffc
       pragma:
       - no-cache
-      server:
-      - Apache-Coyote/1.1
     status:
       code: 200
-      message: OK
+      message: ''
 version: 1
