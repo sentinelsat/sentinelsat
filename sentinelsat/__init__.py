@@ -1,4 +1,4 @@
-__version__ = "1.1.1"
+__version__ = "1.2.1"
 
 # Import for backwards-compatibility
 from . import sentinel
