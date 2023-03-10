@@ -41,3 +41,4 @@ Contributors
 * Rishabh Budhiraja `@rbrishabh <https://github.com/rbrishabh>`_
 * `@z4zz <https://github.com/z4zz>`_
 * `@joooeey <https://github.com/joooeey>`_
+* Valerio Pampanoni `@valpamp <https://github.com/valpamp>`_
