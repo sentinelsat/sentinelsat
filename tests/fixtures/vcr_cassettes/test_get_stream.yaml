@@ -9,76 +9,9 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - sentinelsat/1.0.1
-    method: GET
-    uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('2edae234-b02d-46d2-8915-823e4ec0eadb')/Online/$value
-  response:
-    body:
-      string: 'true'
-    headers:
-      content-length:
-      - '4'
-      content-type:
-      - text/plain;charset=utf-8
-      dataserviceversion:
-      - '2.0'
-      pragma:
-      - no-cache
-      server:
-      - Apache-Coyote/1.1
-    status:
-      code: 200
-      message: OK
-- request:
-    body: null
-    headers:
-      Accept:
-      - '*/*'
-      Accept-Encoding:
-      - gzip, deflate
-      Connection:
-      - keep-alive
-      User-Agent:
-      - sentinelsat/1.0.1
-    method: GET
-    uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('2edae234-b02d-46d2-8915-823e4ec0eadb')/$value
-  response:
-    body: {}
-    headers:
-      accept-ranges:
-      - bytes
-      content-disposition:
-      - inline;filename="S3B_SR_1_SRA____20210720T194442_20210720T194500_20210720T214156_0017_055_028______LN3_O_NR_004.zip"
-      content-length:
-      - '447106'
-      content-range:
-      - bytes 0-447105/447106
-      content-type:
-      - application/octet-stream
-      dataserviceversion:
-      - '2.0'
-      etag:
-      - a0377743199276ccab05e691822ad603
-      pragma:
-      - no-cache
-      server:
-      - Apache-Coyote/1.1
-    status:
-      code: 200
-      message: OK
-- request:
-    body: null
-    headers:
-      Accept:
-      - '*/*'
-      Accept-Encoding:
-      - gzip, deflate, br
-      Connection:
-      - keep-alive
-      User-Agent:
       - sentinelsat/1.1.1
     method: GET
-    uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('f57f3c57-847f-4713-bcbf-06538e57a672')/Online/$value
+    uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('b1d8a9ab-6072-4ecd-bc44-8d64419d71cb')/Online/$value
   response:
     body:
       string: 'true'
@@ -100,30 +33,30 @@ interactions:
       Accept:
       - '*/*'
       Accept-Encoding:
-      - gzip, deflate, br
+      - gzip, deflate
       Connection:
       - keep-alive
       User-Agent:
       - sentinelsat/1.1.1
     method: GET
-    uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('f57f3c57-847f-4713-bcbf-06538e57a672')/$value
+    uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('b1d8a9ab-6072-4ecd-bc44-8d64419d71cb')/$value
   response:
     body: {}
     headers:
       accept-ranges:
       - bytes
       content-disposition:
-      - inline;filename="S3B_SR_1_SRA____20221120T203305_20221120T203329_20221120T223552_0023_073_057______PS2_O_NR_004.zip"
+      - inline;filename="S3A_SR_1_SRA____20230309T204558_20230309T204623_20230309T225028_0024_096_214______PS1_O_NR_004.zip"
       content-length:
-      - '563279'
+      - '599540'
       content-range:
-      - bytes 0-563278/563279
+      - bytes 0-599539/599540
       content-type:
       - application/octet-stream
       dataserviceversion:
       - '2.0'
       etag:
-      - 02045c943bc844770f16a3f81782efe2
+      - 1495b98f859949929b14c1b7cd62dffc
       pragma:
       - no-cache
     status:

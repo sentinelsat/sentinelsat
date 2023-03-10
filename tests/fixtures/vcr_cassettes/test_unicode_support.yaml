@@ -9,7 +9,7 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - sentinelsat/1.0.1
+      - sentinelsat/1.1.1
     method: GET
     uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=0&start=0&q=%F5%E4%F6%FC%FF%28
   response:
@@ -28,13 +28,11 @@ interactions:
       - application/json
       pragma:
       - no-cache
-      server:
-      - Apache-Coyote/1.1
       vary:
       - Accept-Encoding
     status:
       code: 200
-      message: OK
+      message: ''
 - request:
     body: null
     headers:
@@ -45,7 +43,7 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - sentinelsat/1.0.1
+      - sentinelsat/1.1.1
     method: GET
     uri: https://apihub.copernicus.eu/apihub/odata/v1/Products('%C3%B5%C3%A4%C3%B6%C3%BC%C3%BF(')?$format=json
   response:
@@ -63,9 +61,7 @@ interactions:
       - '1.0'
       pragma:
       - no-cache
-      server:
-      - Apache-Coyote/1.1
     status:
       code: 404
-      message: Not Found
+      message: ''
 version: 1

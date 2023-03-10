@@ -9,41 +9,39 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - sentinelsat/1.0.1
+      - sentinelsat/1.1.1
     method: GET
-    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=100&start=0&q=identifier%3A%22S3B_SR_1_SRA____20210720T194442_20210720T194500_20210720T214156_0017_055_028______LN3_O_NR_004%22
+    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=100&start=0&q=identifier%3A%22S3A_SR_1_SRA____20230309T204558_20230309T204623_20230309T225028_0024_096_214______PS1_O_NR_004%22
   response:
     body:
       string: '{"feed":{"xmlns:opensearch":"http://a9.com/-/spec/opensearch/1.1/","xmlns":"http://www.w3.org/2005/Atom","title":"Sentinels
-        Scientific Data Hub search results for: identifier:\"S3B_SR_1_SRA____20210720T194442_20210720T194500_20210720T214156_0017_055_028______LN3_O_NR_004\"","subtitle":"Displaying
+        Scientific Data Hub search results for: identifier:\"S3A_SR_1_SRA____20230309T204558_20230309T204623_20230309T225028_0024_096_214______PS1_O_NR_004\"","subtitle":"Displaying
         1 results. Request done in ... seconds.","updated":"...","author":{"name":"Sentinels
-        Scientific Data Hub"},"id":"https://apihub.copernicus.eu/apihub/search?q=identifier:\"S3B_SR_1_SRA____20210720T194442_20210720T194500_20210720T214156_0017_055_028______LN3_O_NR_004\"","opensearch:totalResults":"1","opensearch:startIndex":"0","opensearch:itemsPerPage":"100","opensearch:Query":{"role":"request","searchTerms":"identifier:\"S3B_SR_1_SRA____20210720T194442_20210720T194500_20210720T214156_0017_055_028______LN3_O_NR_004\"","startPage":"1"},"link":[{"rel":"self","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=identifier:\"S3B_SR_1_SRA____20210720T194442_20210720T194500_20210720T214156_0017_055_028______LN3_O_NR_004\"&start=0&rows=100&format=json"},{"rel":"first","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=identifier:\"S3B_SR_1_SRA____20210720T194442_20210720T194500_20210720T214156_0017_055_028______LN3_O_NR_004\"&start=0&rows=100&format=json"},{"rel":"last","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=identifier:\"S3B_SR_1_SRA____20210720T194442_20210720T194500_20210720T214156_0017_055_028______LN3_O_NR_004\"&start=0&rows=100&format=json"},{"rel":"search","type":"application/opensearchdescription+xml","href":"opensearch_description.xml"}],"entry":{"title":"S3B_SR_1_SRA____20210720T194442_20210720T194500_20210720T214156_0017_055_028______LN3_O_NR_004","link":[{"href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''2edae234-b02d-46d2-8915-823e4ec0eadb'')/$value"},{"rel":"alternative","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''2edae234-b02d-46d2-8915-823e4ec0eadb'')/"},{"rel":"icon","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''2edae234-b02d-46d2-8915-823e4ec0eadb'')/Products(''Quicklook'')/$value"}],"id":"2edae234-b02d-46d2-8915-823e4ec0eadb","summary":"Date:
-        2021-07-20T19:44:42.48Z, Instrument: SRAL, Satellite: Sentinel-3, Size: 849.68
-        KB","ondemand":"false","date":[{"name":"beginposition","content":"2021-07-20T19:44:42.48Z"},{"name":"endposition","content":"2021-07-20T19:45:00.259Z"},{"name":"creationdate","content":"2021-07-20T21:41:56Z"},{"name":"ingestiondate","content":"2021-07-22T18:24:00.842Z"}],"int":[{"name":"lrmpercentage","content":"0"},{"name":"sarpercentage","content":"100"},{"name":"closedseapercentage","content":"2"},{"name":"continentalicepercentage","content":"0"},{"name":"landpercentage","content":"97"},{"name":"openseapercentage","content":"0"},{"name":"relativeorbitnumber","content":"28"},{"name":"orbitnumber","content":"16855"}],"str":[{"name":"filename","content":"S3B_SR_1_SRA____20210720T194442_20210720T194500_20210720T214156_0017_055_028______LN3_O_NR_004.SEN3"},{"name":"format","content":"SAFE"},{"name":"identifier","content":"S3B_SR_1_SRA____20210720T194442_20210720T194500_20210720T214156_0017_055_028______LN3_O_NR_004"},{"name":"instrumentshortname","content":"SRAL"},{"name":"sensoroperationalmode","content":"Earth
-        Observation"},{"name":"instrumentname","content":"Sar Radar ALtimeter"},{"name":"mode","content":"EO"},{"name":"platformidentifier","content":"2018-039A"},{"name":"onlinequalitycheck","content":"PASSED"},{"name":"orbitdirection","content":"ascending"},{"name":"pduduration","content":"17"},{"name":"passnumber","content":"33709"},{"name":"passdirection","content":"ascending"},{"name":"procfacilityname","content":"Land
-        Surface Topography Mission Processing and Archiving Centre [LN3]"},{"name":"procfacilityorg","content":"European
-        Space Agency"},{"name":"processinglevel","content":"1"},{"name":"processingname","content":"Data
-        Processing"},{"name":"productlevel","content":"L1"},{"name":"producttype","content":"SR_1_SRA___"},{"name":"relorbitdir","content":"ascending"},{"name":"relpassnumber","content":"55"},{"name":"relpassdirection","content":"ascending"},{"name":"platformname","content":"Sentinel-3"},{"name":"size","content":"849.68
+        Scientific Data Hub"},"id":"https://apihub.copernicus.eu/apihub/search?q=identifier:\"S3A_SR_1_SRA____20230309T204558_20230309T204623_20230309T225028_0024_096_214______PS1_O_NR_004\"","opensearch:totalResults":"1","opensearch:startIndex":"0","opensearch:itemsPerPage":"100","opensearch:Query":{"role":"request","searchTerms":"identifier:\"S3A_SR_1_SRA____20230309T204558_20230309T204623_20230309T225028_0024_096_214______PS1_O_NR_004\"","startPage":"1"},"link":[{"rel":"self","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=identifier:\"S3A_SR_1_SRA____20230309T204558_20230309T204623_20230309T225028_0024_096_214______PS1_O_NR_004\"&start=0&rows=100&format=json"},{"rel":"first","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=identifier:\"S3A_SR_1_SRA____20230309T204558_20230309T204623_20230309T225028_0024_096_214______PS1_O_NR_004\"&start=0&rows=100&format=json"},{"rel":"last","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=identifier:\"S3A_SR_1_SRA____20230309T204558_20230309T204623_20230309T225028_0024_096_214______PS1_O_NR_004\"&start=0&rows=100&format=json"},{"rel":"search","type":"application/opensearchdescription+xml","href":"opensearch_description.xml"}],"entry":{"title":"S3A_SR_1_SRA____20230309T204558_20230309T204623_20230309T225028_0024_096_214______PS1_O_NR_004","link":[{"href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''b1d8a9ab-6072-4ecd-bc44-8d64419d71cb'')/$value"},{"rel":"alternative","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''b1d8a9ab-6072-4ecd-bc44-8d64419d71cb'')/"},{"rel":"icon","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''b1d8a9ab-6072-4ecd-bc44-8d64419d71cb'')/Products(''Quicklook'')/$value"}],"id":"b1d8a9ab-6072-4ecd-bc44-8d64419d71cb","summary":"Date:
+        2023-03-09T20:45:58.338Z, Instrument: SRAL, Satellite: Sentinel-3, Size: 995.77
+        KB","ondemand":"false","date":[{"name":"beginposition","content":"2023-03-09T20:45:58.338Z"},{"name":"endposition","content":"2023-03-09T20:46:23.31Z"},{"name":"creationdate","content":"2023-03-09T22:50:28Z"},{"name":"ingestiondate","content":"2023-03-09T23:04:10.307Z"}],"int":[{"name":"lrmpercentage","content":"0"},{"name":"sarpercentage","content":"100"},{"name":"closedseapercentage","content":"0"},{"name":"continentalicepercentage","content":"0"},{"name":"landpercentage","content":"0"},{"name":"openseapercentage","content":"100"},{"name":"relativeorbitnumber","content":"214"},{"name":"orbitnumber","content":"36762"}],"str":[{"name":"filename","content":"S3A_SR_1_SRA____20230309T204558_20230309T204623_20230309T225028_0024_096_214______PS1_O_NR_004.SEN3"},{"name":"format","content":"SAFE"},{"name":"identifier","content":"S3A_SR_1_SRA____20230309T204558_20230309T204623_20230309T225028_0024_096_214______PS1_O_NR_004"},{"name":"instrumentshortname","content":"SRAL"},{"name":"sensoroperationalmode","content":"Earth
+        Observation"},{"name":"instrumentname","content":"Sar Radar ALtimeter"},{"name":"mode","content":"EO"},{"name":"platformidentifier","content":"2016-011A"},{"name":"onlinequalitycheck","content":"PASSED"},{"name":"orbitdirection","content":"ascending"},{"name":"pduduration","content":"24"},{"name":"passnumber","content":"73523"},{"name":"passdirection","content":"ascending"},{"name":"procfacilityname","content":"S3A
+        Processing Service [PS1]"},{"name":"procfacilityorg","content":"ACRI-ST"},{"name":"processinglevel","content":"1"},{"name":"processingname","content":"Data
+        Processing"},{"name":"productlevel","content":"L1"},{"name":"producttype","content":"SR_1_SRA___"},{"name":"relorbitdir","content":"ascending"},{"name":"relpassnumber","content":"427"},{"name":"relpassdirection","content":"ascending"},{"name":"platformname","content":"Sentinel-3"},{"name":"size","content":"995.77
         KB"},{"name":"timeliness","content":"Near Real Time"},{"name":"gmlfootprint","content":"<gml:Polygon
-        srsName=\"http://www.opengis.net/gml/srs/epsg.xml#4326\" xmlns:gml=\"http://www.opengis.net/gml\">\n   <gml:outerBoundaryIs>\n      <gml:LinearRing>\n         <gml:coordinates>64.5397,15.4142
-        65.1997,14.7813 65.8572,14.1188 65.8565,14.1147 65.199,14.7774 64.5391,15.4103
-        64.5397,15.4142</gml:coordinates>\n      </gml:LinearRing>\n   </gml:outerBoundaryIs>\n</gml:Polygon>"},{"name":"footprint","content":"MULTIPOLYGON
-        (((15.4103 64.5391, 15.4142 64.5397, 14.7813 65.1997, 14.1188 65.8572, 14.1147
-        65.8565, 14.7774 65.199, 15.4103 64.5391)))"},{"name":"uuid","content":"2edae234-b02d-46d2-8915-823e4ec0eadb"}]}}}'
+        srsName=\"http://www.opengis.net/gml/srs/epsg.xml#4326\" xmlns:gml=\"http://www.opengis.net/gml\">\n   <gml:outerBoundaryIs>\n      <gml:LinearRing>\n         <gml:coordinates>63.138,1.21834
+        63.9204,0.535948 64.6998,-0.182113 64.6992,-0.185998 63.9197,0.532157 63.1374,1.21463
+        63.138,1.21834</gml:coordinates>\n      </gml:LinearRing>\n   </gml:outerBoundaryIs>\n</gml:Polygon>"},{"name":"footprint","content":"MULTIPOLYGON
+        (((1.21463 63.1374, 1.21834 63.138, 0.535948 63.9204, -8.0221844617381750e-18
+        64.5021303421297, -0.182113 64.6998, -0.185998 64.6992, -8.4140017815505920e-18
+        64.49731399906705, 0.532157 63.9197, 1.21463 63.1374)))"},{"name":"uuid","content":"b1d8a9ab-6072-4ecd-bc44-8d64419d71cb"}]}}}'
     headers:
       content-length:
-      - '4980'
+      - '5025'
       content-type:
       - application/json
       pragma:
       - no-cache
-      server:
-      - Apache-Coyote/1.1
       vary:
       - Accept-Encoding
     status:
       code: 200
-      message: OK
+      message: ''
 - request:
     body: null
     headers:
@@ -54,41 +52,38 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - sentinelsat/1.0.1
+      - sentinelsat/1.1.1
     method: GET
-    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=100&start=0&q=identifier%3A%22S3A_SR_1_SRA____20210721T113825_20210721T113845_20210721T133543_0019_074_180______LN3_O_NR_004%22
+    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=100&start=0&q=identifier%3A%22S3B_SR_1_SRA____20230309T200705_20230309T200726_20230309T220807_0020_077_071______PS2_O_NR_004%22
   response:
     body:
       string: '{"feed":{"xmlns:opensearch":"http://a9.com/-/spec/opensearch/1.1/","xmlns":"http://www.w3.org/2005/Atom","title":"Sentinels
-        Scientific Data Hub search results for: identifier:\"S3A_SR_1_SRA____20210721T113825_20210721T113845_20210721T133543_0019_074_180______LN3_O_NR_004\"","subtitle":"Displaying
+        Scientific Data Hub search results for: identifier:\"S3B_SR_1_SRA____20230309T200705_20230309T200726_20230309T220807_0020_077_071______PS2_O_NR_004\"","subtitle":"Displaying
         1 results. Request done in ... seconds.","updated":"...","author":{"name":"Sentinels
-        Scientific Data Hub"},"id":"https://apihub.copernicus.eu/apihub/search?q=identifier:\"S3A_SR_1_SRA____20210721T113825_20210721T113845_20210721T133543_0019_074_180______LN3_O_NR_004\"","opensearch:totalResults":"1","opensearch:startIndex":"0","opensearch:itemsPerPage":"100","opensearch:Query":{"role":"request","searchTerms":"identifier:\"S3A_SR_1_SRA____20210721T113825_20210721T113845_20210721T133543_0019_074_180______LN3_O_NR_004\"","startPage":"1"},"link":[{"rel":"self","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=identifier:\"S3A_SR_1_SRA____20210721T113825_20210721T113845_20210721T133543_0019_074_180______LN3_O_NR_004\"&start=0&rows=100&format=json"},{"rel":"first","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=identifier:\"S3A_SR_1_SRA____20210721T113825_20210721T113845_20210721T133543_0019_074_180______LN3_O_NR_004\"&start=0&rows=100&format=json"},{"rel":"last","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=identifier:\"S3A_SR_1_SRA____20210721T113825_20210721T113845_20210721T133543_0019_074_180______LN3_O_NR_004\"&start=0&rows=100&format=json"},{"rel":"search","type":"application/opensearchdescription+xml","href":"opensearch_description.xml"}],"entry":{"title":"S3A_SR_1_SRA____20210721T113825_20210721T113845_20210721T133543_0019_074_180______LN3_O_NR_004","link":[{"href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''541b23d7-5e38-42c1-9989-223af2dd5584'')/$value"},{"rel":"alternative","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''541b23d7-5e38-42c1-9989-223af2dd5584'')/"},{"rel":"icon","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''541b23d7-5e38-42c1-9989-223af2dd5584'')/Products(''Quicklook'')/$value"}],"id":"541b23d7-5e38-42c1-9989-223af2dd5584","summary":"Date:
-        2021-07-21T11:38:25.362Z, Instrument: SRAL, Satellite: Sentinel-3, Size: 878.05
-        KB","ondemand":"false","date":[{"name":"beginposition","content":"2021-07-21T11:38:25.362Z"},{"name":"endposition","content":"2021-07-21T11:38:45.293Z"},{"name":"creationdate","content":"2021-07-21T13:35:43Z"},{"name":"ingestiondate","content":"2021-07-22T17:24:02.797Z"}],"int":[{"name":"lrmpercentage","content":"0"},{"name":"sarpercentage","content":"100"},{"name":"closedseapercentage","content":"0"},{"name":"continentalicepercentage","content":"2"},{"name":"landpercentage","content":"22"},{"name":"openseapercentage","content":"74"},{"name":"relativeorbitnumber","content":"180"},{"name":"orbitnumber","content":"28258"}],"str":[{"name":"filename","content":"S3A_SR_1_SRA____20210721T113825_20210721T113845_20210721T133543_0019_074_180______LN3_O_NR_004.SEN3"},{"name":"format","content":"SAFE"},{"name":"identifier","content":"S3A_SR_1_SRA____20210721T113825_20210721T113845_20210721T133543_0019_074_180______LN3_O_NR_004"},{"name":"instrumentshortname","content":"SRAL"},{"name":"sensoroperationalmode","content":"Earth
-        Observation"},{"name":"instrumentname","content":"Sar Radar ALtimeter"},{"name":"mode","content":"EO"},{"name":"platformidentifier","content":"2016-011A"},{"name":"onlinequalitycheck","content":"PASSED"},{"name":"orbitdirection","content":"ascending"},{"name":"pduduration","content":"19"},{"name":"passnumber","content":"56515"},{"name":"passdirection","content":"ascending"},{"name":"procfacilityname","content":"Land
-        Surface Topography Mission Processing and Archiving Centre [LN3]"},{"name":"procfacilityorg","content":"European
-        Space Agency"},{"name":"processinglevel","content":"1"},{"name":"processingname","content":"Data
-        Processing"},{"name":"productlevel","content":"L1"},{"name":"producttype","content":"SR_1_SRA___"},{"name":"relorbitdir","content":"ascending"},{"name":"relpassnumber","content":"359"},{"name":"relpassdirection","content":"ascending"},{"name":"platformname","content":"Sentinel-3"},{"name":"size","content":"878.05
+        Scientific Data Hub"},"id":"https://apihub.copernicus.eu/apihub/search?q=identifier:\"S3B_SR_1_SRA____20230309T200705_20230309T200726_20230309T220807_0020_077_071______PS2_O_NR_004\"","opensearch:totalResults":"1","opensearch:startIndex":"0","opensearch:itemsPerPage":"100","opensearch:Query":{"role":"request","searchTerms":"identifier:\"S3B_SR_1_SRA____20230309T200705_20230309T200726_20230309T220807_0020_077_071______PS2_O_NR_004\"","startPage":"1"},"link":[{"rel":"self","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=identifier:\"S3B_SR_1_SRA____20230309T200705_20230309T200726_20230309T220807_0020_077_071______PS2_O_NR_004\"&start=0&rows=100&format=json"},{"rel":"first","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=identifier:\"S3B_SR_1_SRA____20230309T200705_20230309T200726_20230309T220807_0020_077_071______PS2_O_NR_004\"&start=0&rows=100&format=json"},{"rel":"last","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=identifier:\"S3B_SR_1_SRA____20230309T200705_20230309T200726_20230309T220807_0020_077_071______PS2_O_NR_004\"&start=0&rows=100&format=json"},{"rel":"search","type":"application/opensearchdescription+xml","href":"opensearch_description.xml"}],"entry":{"title":"S3B_SR_1_SRA____20230309T200705_20230309T200726_20230309T220807_0020_077_071______PS2_O_NR_004","link":[{"href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''96fc9975-1c5c-4279-9fd1-1336d9743d8a'')/$value"},{"rel":"alternative","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''96fc9975-1c5c-4279-9fd1-1336d9743d8a'')/"},{"rel":"icon","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''96fc9975-1c5c-4279-9fd1-1336d9743d8a'')/Products(''Quicklook'')/$value"}],"id":"96fc9975-1c5c-4279-9fd1-1336d9743d8a","summary":"Date:
+        2023-03-09T20:07:05.488Z, Instrument: SRAL, Satellite: Sentinel-3, Size: 908.03
+        KB","ondemand":"false","date":[{"name":"beginposition","content":"2023-03-09T20:07:05.488Z"},{"name":"endposition","content":"2023-03-09T20:07:26.402Z"},{"name":"creationdate","content":"2023-03-09T22:08:07Z"},{"name":"ingestiondate","content":"2023-03-09T22:12:14.268Z"}],"int":[{"name":"lrmpercentage","content":"0"},{"name":"sarpercentage","content":"100"},{"name":"closedseapercentage","content":"0"},{"name":"continentalicepercentage","content":"0"},{"name":"landpercentage","content":"19"},{"name":"openseapercentage","content":"80"},{"name":"relativeorbitnumber","content":"71"},{"name":"orbitnumber","content":"25368"}],"str":[{"name":"filename","content":"S3B_SR_1_SRA____20230309T200705_20230309T200726_20230309T220807_0020_077_071______PS2_O_NR_004.SEN3"},{"name":"format","content":"SAFE"},{"name":"identifier","content":"S3B_SR_1_SRA____20230309T200705_20230309T200726_20230309T220807_0020_077_071______PS2_O_NR_004"},{"name":"instrumentshortname","content":"SRAL"},{"name":"sensoroperationalmode","content":"Earth
+        Observation"},{"name":"instrumentname","content":"Sar Radar ALtimeter"},{"name":"mode","content":"EO"},{"name":"platformidentifier","content":"2018-039A"},{"name":"onlinequalitycheck","content":"PASSED"},{"name":"orbitdirection","content":"ascending"},{"name":"pduduration","content":"20"},{"name":"passnumber","content":"50735"},{"name":"passdirection","content":"ascending"},{"name":"procfacilityname","content":"S3B
+        Processing Service [PS2]"},{"name":"procfacilityorg","content":"SERCO"},{"name":"processinglevel","content":"1"},{"name":"processingname","content":"Data
+        Processing"},{"name":"productlevel","content":"L1"},{"name":"producttype","content":"SR_1_SRA___"},{"name":"relorbitdir","content":"ascending"},{"name":"relpassnumber","content":"141"},{"name":"relpassdirection","content":"ascending"},{"name":"platformname","content":"Sentinel-3"},{"name":"size","content":"908.03
         KB"},{"name":"timeliness","content":"Near Real Time"},{"name":"gmlfootprint","content":"<gml:Polygon
-        srsName=\"http://www.opengis.net/gml/srs/epsg.xml#4326\" xmlns:gml=\"http://www.opengis.net/gml\">\n   <gml:outerBoundaryIs>\n      <gml:LinearRing>\n         <gml:coordinates>80.2379,94.2248
-        80.5786,90.0452 80.868,85.5831 80.8663,85.5793 80.577,90.0407 80.2363,94.2198
-        80.2379,94.2248</gml:coordinates>\n      </gml:LinearRing>\n   </gml:outerBoundaryIs>\n</gml:Polygon>"},{"name":"footprint","content":"MULTIPOLYGON
-        (((94.2198 80.2363, 94.2248 80.2379, 90.0452 80.5786, 85.5831 80.868, 85.5793
-        80.8663, 90.0407 80.577, 94.2198 80.2363)))"},{"name":"uuid","content":"541b23d7-5e38-42c1-9989-223af2dd5584"}]}}}'
+        srsName=\"http://www.opengis.net/gml/srs/epsg.xml#4326\" xmlns:gml=\"http://www.opengis.net/gml\">\n   <gml:outerBoundaryIs>\n      <gml:LinearRing>\n         <gml:coordinates>63.8522,10.4374
+        64.6008,9.75265 65.3466,9.03244 65.3459,9.02847 64.6002,9.74877 63.8516,10.4336
+        63.8522,10.4374</gml:coordinates>\n      </gml:LinearRing>\n   </gml:outerBoundaryIs>\n</gml:Polygon>"},{"name":"footprint","content":"MULTIPOLYGON
+        (((10.4336 63.8516, 10.4374 63.8522, 9.75265 64.6008, 9.03244 65.3466, 9.02847
+        65.3459, 9.74877 64.6002, 10.4336 63.8516)))"},{"name":"uuid","content":"96fc9975-1c5c-4279-9fd1-1336d9743d8a"}]}}}'
     headers:
       content-length:
-      - '4983'
+      - '4929'
       content-type:
       - application/json
       pragma:
       - no-cache
-      server:
-      - Apache-Coyote/1.1
       vary:
       - Accept-Encoding
     status:
       code: 200
-      message: OK
+      message: ''
 - request:
     body: null
     headers:
@@ -99,41 +94,38 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - sentinelsat/1.0.1
+      - sentinelsat/1.1.1
     method: GET
-    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=100&start=0&q=identifier%3A%22S3B_SR_1_SRA____20210720T112514_20210720T112540_20210720T133004_0025_055_023______LN3_O_NR_004%22
+    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=100&start=0&q=identifier%3A%22S3B_SR_1_SRA____20230308T203304_20230308T203328_20230308T223420_0023_077_057______PS2_O_NR_004%22
   response:
     body:
       string: '{"feed":{"xmlns:opensearch":"http://a9.com/-/spec/opensearch/1.1/","xmlns":"http://www.w3.org/2005/Atom","title":"Sentinels
-        Scientific Data Hub search results for: identifier:\"S3B_SR_1_SRA____20210720T112514_20210720T112540_20210720T133004_0025_055_023______LN3_O_NR_004\"","subtitle":"Displaying
+        Scientific Data Hub search results for: identifier:\"S3B_SR_1_SRA____20230308T203304_20230308T203328_20230308T223420_0023_077_057______PS2_O_NR_004\"","subtitle":"Displaying
         1 results. Request done in ... seconds.","updated":"...","author":{"name":"Sentinels
-        Scientific Data Hub"},"id":"https://apihub.copernicus.eu/apihub/search?q=identifier:\"S3B_SR_1_SRA____20210720T112514_20210720T112540_20210720T133004_0025_055_023______LN3_O_NR_004\"","opensearch:totalResults":"1","opensearch:startIndex":"0","opensearch:itemsPerPage":"100","opensearch:Query":{"role":"request","searchTerms":"identifier:\"S3B_SR_1_SRA____20210720T112514_20210720T112540_20210720T133004_0025_055_023______LN3_O_NR_004\"","startPage":"1"},"link":[{"rel":"self","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=identifier:\"S3B_SR_1_SRA____20210720T112514_20210720T112540_20210720T133004_0025_055_023______LN3_O_NR_004\"&start=0&rows=100&format=json"},{"rel":"first","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=identifier:\"S3B_SR_1_SRA____20210720T112514_20210720T112540_20210720T133004_0025_055_023______LN3_O_NR_004\"&start=0&rows=100&format=json"},{"rel":"last","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=identifier:\"S3B_SR_1_SRA____20210720T112514_20210720T112540_20210720T133004_0025_055_023______LN3_O_NR_004\"&start=0&rows=100&format=json"},{"rel":"search","type":"application/opensearchdescription+xml","href":"opensearch_description.xml"}],"entry":{"title":"S3B_SR_1_SRA____20210720T112514_20210720T112540_20210720T133004_0025_055_023______LN3_O_NR_004","link":[{"href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''63b9e6c2-bac5-47d3-a4d4-bc57be31e6cd'')/$value"},{"rel":"alternative","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''63b9e6c2-bac5-47d3-a4d4-bc57be31e6cd'')/"},{"rel":"icon","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''63b9e6c2-bac5-47d3-a4d4-bc57be31e6cd'')/Products(''Quicklook'')/$value"}],"id":"63b9e6c2-bac5-47d3-a4d4-bc57be31e6cd","summary":"Date:
-        2021-07-20T11:25:14.344Z, Instrument: SRAL, Satellite: Sentinel-3, Size: 983.54
-        KB","ondemand":"false","date":[{"name":"beginposition","content":"2021-07-20T11:25:14.344Z"},{"name":"endposition","content":"2021-07-20T11:25:40.296Z"},{"name":"creationdate","content":"2021-07-20T13:30:04Z"},{"name":"ingestiondate","content":"2021-07-22T12:00:00.851Z"}],"int":[{"name":"lrmpercentage","content":"0"},{"name":"sarpercentage","content":"100"},{"name":"closedseapercentage","content":"0"},{"name":"continentalicepercentage","content":"29"},{"name":"landpercentage","content":"12"},{"name":"openseapercentage","content":"57"},{"name":"relativeorbitnumber","content":"23"},{"name":"orbitnumber","content":"16850"}],"str":[{"name":"filename","content":"S3B_SR_1_SRA____20210720T112514_20210720T112540_20210720T133004_0025_055_023______LN3_O_NR_004.SEN3"},{"name":"format","content":"SAFE"},{"name":"identifier","content":"S3B_SR_1_SRA____20210720T112514_20210720T112540_20210720T133004_0025_055_023______LN3_O_NR_004"},{"name":"instrumentshortname","content":"SRAL"},{"name":"sensoroperationalmode","content":"Earth
-        Observation"},{"name":"instrumentname","content":"Sar Radar ALtimeter"},{"name":"mode","content":"EO"},{"name":"platformidentifier","content":"2018-039A"},{"name":"onlinequalitycheck","content":"PASSED"},{"name":"orbitdirection","content":"ascending"},{"name":"pduduration","content":"25"},{"name":"passnumber","content":"33699"},{"name":"passdirection","content":"ascending"},{"name":"procfacilityname","content":"Land
-        Surface Topography Mission Processing and Archiving Centre [LN3]"},{"name":"procfacilityorg","content":"European
-        Space Agency"},{"name":"processinglevel","content":"1"},{"name":"processingname","content":"Data
-        Processing"},{"name":"productlevel","content":"L1"},{"name":"producttype","content":"SR_1_SRA___"},{"name":"relorbitdir","content":"ascending"},{"name":"relpassnumber","content":"45"},{"name":"relpassdirection","content":"ascending"},{"name":"platformname","content":"Sentinel-3"},{"name":"size","content":"983.54
+        Scientific Data Hub"},"id":"https://apihub.copernicus.eu/apihub/search?q=identifier:\"S3B_SR_1_SRA____20230308T203304_20230308T203328_20230308T223420_0023_077_057______PS2_O_NR_004\"","opensearch:totalResults":"1","opensearch:startIndex":"0","opensearch:itemsPerPage":"100","opensearch:Query":{"role":"request","searchTerms":"identifier:\"S3B_SR_1_SRA____20230308T203304_20230308T203328_20230308T223420_0023_077_057______PS2_O_NR_004\"","startPage":"1"},"link":[{"rel":"self","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=identifier:\"S3B_SR_1_SRA____20230308T203304_20230308T203328_20230308T223420_0023_077_057______PS2_O_NR_004\"&start=0&rows=100&format=json"},{"rel":"first","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=identifier:\"S3B_SR_1_SRA____20230308T203304_20230308T203328_20230308T223420_0023_077_057______PS2_O_NR_004\"&start=0&rows=100&format=json"},{"rel":"last","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=identifier:\"S3B_SR_1_SRA____20230308T203304_20230308T203328_20230308T223420_0023_077_057______PS2_O_NR_004\"&start=0&rows=100&format=json"},{"rel":"search","type":"application/opensearchdescription+xml","href":"opensearch_description.xml"}],"entry":{"title":"S3B_SR_1_SRA____20230308T203304_20230308T203328_20230308T223420_0023_077_057______PS2_O_NR_004","link":[{"href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''ff10826d-78b9-4062-9f69-fca7d1d832d8'')/$value"},{"rel":"alternative","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''ff10826d-78b9-4062-9f69-fca7d1d832d8'')/"},{"rel":"icon","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''ff10826d-78b9-4062-9f69-fca7d1d832d8'')/Products(''Quicklook'')/$value"}],"id":"ff10826d-78b9-4062-9f69-fca7d1d832d8","summary":"Date:
+        2023-03-08T20:33:04.327Z, Instrument: SRAL, Satellite: Sentinel-3, Size: 975.10
+        KB","ondemand":"false","date":[{"name":"beginposition","content":"2023-03-08T20:33:04.327Z"},{"name":"endposition","content":"2023-03-08T20:33:28.292Z"},{"name":"creationdate","content":"2023-03-08T22:34:20Z"},{"name":"ingestiondate","content":"2023-03-08T22:40:10.82Z"}],"int":[{"name":"lrmpercentage","content":"0"},{"name":"sarpercentage","content":"100"},{"name":"closedseapercentage","content":"0"},{"name":"continentalicepercentage","content":"0"},{"name":"landpercentage","content":"0"},{"name":"openseapercentage","content":"100"},{"name":"relativeorbitnumber","content":"57"},{"name":"orbitnumber","content":"25354"}],"str":[{"name":"filename","content":"S3B_SR_1_SRA____20230308T203304_20230308T203328_20230308T223420_0023_077_057______PS2_O_NR_004.SEN3"},{"name":"format","content":"SAFE"},{"name":"identifier","content":"S3B_SR_1_SRA____20230308T203304_20230308T203328_20230308T223420_0023_077_057______PS2_O_NR_004"},{"name":"instrumentshortname","content":"SRAL"},{"name":"sensoroperationalmode","content":"Earth
+        Observation"},{"name":"instrumentname","content":"Sar Radar ALtimeter"},{"name":"mode","content":"EO"},{"name":"platformidentifier","content":"2018-039A"},{"name":"onlinequalitycheck","content":"PASSED"},{"name":"orbitdirection","content":"ascending"},{"name":"pduduration","content":"23"},{"name":"passnumber","content":"50707"},{"name":"passdirection","content":"ascending"},{"name":"procfacilityname","content":"S3B
+        Processing Service [PS2]"},{"name":"procfacilityorg","content":"SERCO"},{"name":"processinglevel","content":"1"},{"name":"processingname","content":"Data
+        Processing"},{"name":"productlevel","content":"L1"},{"name":"producttype","content":"SR_1_SRA___"},{"name":"relorbitdir","content":"ascending"},{"name":"relpassnumber","content":"113"},{"name":"relpassdirection","content":"ascending"},{"name":"platformname","content":"Sentinel-3"},{"name":"size","content":"975.10
         KB"},{"name":"timeliness","content":"Near Real Time"},{"name":"gmlfootprint","content":"<gml:Polygon
-        srsName=\"http://www.opengis.net/gml/srs/epsg.xml#4326\" xmlns:gml=\"http://www.opengis.net/gml\">\n   <gml:outerBoundaryIs>\n      <gml:LinearRing>\n         <gml:coordinates>80.2597,97.2089
-        80.6679,91.9953 80.9958,86.3638 80.9941,86.3603 80.6662,91.991 80.2581,97.204
-        80.2597,97.2089</gml:coordinates>\n      </gml:LinearRing>\n   </gml:outerBoundaryIs>\n</gml:Polygon>"},{"name":"footprint","content":"MULTIPOLYGON
-        (((97.204 80.2581, 97.2089 80.2597, 91.9953 80.6679, 86.3638 80.9958, 86.3603
-        80.9941, 91.991 80.6662, 97.204 80.2581)))"},{"name":"uuid","content":"63b9e6c2-bac5-47d3-a4d4-bc57be31e6cd"}]}}}'
+        srsName=\"http://www.opengis.net/gml/srs/epsg.xml#4326\" xmlns:gml=\"http://www.opengis.net/gml\">\n   <gml:outerBoundaryIs>\n      <gml:LinearRing>\n         <gml:coordinates>63.1914,4.46729
+        64.0276,3.73467 64.8604,2.96083 64.8598,2.95692 64.0269,3.73087 63.1908,4.46359
+        63.1914,4.46729</gml:coordinates>\n      </gml:LinearRing>\n   </gml:outerBoundaryIs>\n</gml:Polygon>"},{"name":"footprint","content":"MULTIPOLYGON
+        (((4.46359 63.1908, 4.46729 63.1914, 3.73467 64.0276, 2.96083 64.8604, 2.95692
+        64.8598, 3.73087 64.0269, 4.46359 63.1908)))"},{"name":"uuid","content":"ff10826d-78b9-4062-9f69-fca7d1d832d8"}]}}}'
     headers:
       content-length:
-      - '4981'
+      - '4928'
       content-type:
       - application/json
       pragma:
       - no-cache
-      server:
-      - Apache-Coyote/1.1
       vary:
       - Accept-Encoding
     status:
       code: 200
-      message: OK
+      message: ''
 - request:
     body: null
     headers:
@@ -144,41 +136,39 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - sentinelsat/1.0.1
+      - sentinelsat/1.1.1
     method: GET
-    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=100&start=0&q=identifier%3A%22S3B_SR_1_SRA____20210720T194442_20210720T194500_20210720T214156_0017_055_028______LN3_O_NR_004%22
+    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=100&start=0&q=identifier%3A%22S3A_SR_1_SRA____20230309T204558_20230309T204623_20230309T225028_0024_096_214______PS1_O_NR_004%22
   response:
     body:
       string: '{"feed":{"xmlns:opensearch":"http://a9.com/-/spec/opensearch/1.1/","xmlns":"http://www.w3.org/2005/Atom","title":"Sentinels
-        Scientific Data Hub search results for: identifier:\"S3B_SR_1_SRA____20210720T194442_20210720T194500_20210720T214156_0017_055_028______LN3_O_NR_004\"","subtitle":"Displaying
+        Scientific Data Hub search results for: identifier:\"S3A_SR_1_SRA____20230309T204558_20230309T204623_20230309T225028_0024_096_214______PS1_O_NR_004\"","subtitle":"Displaying
         1 results. Request done in ... seconds.","updated":"...","author":{"name":"Sentinels
-        Scientific Data Hub"},"id":"https://apihub.copernicus.eu/apihub/search?q=identifier:\"S3B_SR_1_SRA____20210720T194442_20210720T194500_20210720T214156_0017_055_028______LN3_O_NR_004\"","opensearch:totalResults":"1","opensearch:startIndex":"0","opensearch:itemsPerPage":"100","opensearch:Query":{"role":"request","searchTerms":"identifier:\"S3B_SR_1_SRA____20210720T194442_20210720T194500_20210720T214156_0017_055_028______LN3_O_NR_004\"","startPage":"1"},"link":[{"rel":"self","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=identifier:\"S3B_SR_1_SRA____20210720T194442_20210720T194500_20210720T214156_0017_055_028______LN3_O_NR_004\"&start=0&rows=100&format=json"},{"rel":"first","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=identifier:\"S3B_SR_1_SRA____20210720T194442_20210720T194500_20210720T214156_0017_055_028______LN3_O_NR_004\"&start=0&rows=100&format=json"},{"rel":"last","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=identifier:\"S3B_SR_1_SRA____20210720T194442_20210720T194500_20210720T214156_0017_055_028______LN3_O_NR_004\"&start=0&rows=100&format=json"},{"rel":"search","type":"application/opensearchdescription+xml","href":"opensearch_description.xml"}],"entry":{"title":"S3B_SR_1_SRA____20210720T194442_20210720T194500_20210720T214156_0017_055_028______LN3_O_NR_004","link":[{"href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''2edae234-b02d-46d2-8915-823e4ec0eadb'')/$value"},{"rel":"alternative","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''2edae234-b02d-46d2-8915-823e4ec0eadb'')/"},{"rel":"icon","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''2edae234-b02d-46d2-8915-823e4ec0eadb'')/Products(''Quicklook'')/$value"}],"id":"2edae234-b02d-46d2-8915-823e4ec0eadb","summary":"Date:
-        2021-07-20T19:44:42.48Z, Instrument: SRAL, Satellite: Sentinel-3, Size: 849.68
-        KB","ondemand":"false","date":[{"name":"beginposition","content":"2021-07-20T19:44:42.48Z"},{"name":"endposition","content":"2021-07-20T19:45:00.259Z"},{"name":"creationdate","content":"2021-07-20T21:41:56Z"},{"name":"ingestiondate","content":"2021-07-22T18:24:00.842Z"}],"int":[{"name":"lrmpercentage","content":"0"},{"name":"sarpercentage","content":"100"},{"name":"closedseapercentage","content":"2"},{"name":"continentalicepercentage","content":"0"},{"name":"landpercentage","content":"97"},{"name":"openseapercentage","content":"0"},{"name":"relativeorbitnumber","content":"28"},{"name":"orbitnumber","content":"16855"}],"str":[{"name":"filename","content":"S3B_SR_1_SRA____20210720T194442_20210720T194500_20210720T214156_0017_055_028______LN3_O_NR_004.SEN3"},{"name":"format","content":"SAFE"},{"name":"identifier","content":"S3B_SR_1_SRA____20210720T194442_20210720T194500_20210720T214156_0017_055_028______LN3_O_NR_004"},{"name":"instrumentshortname","content":"SRAL"},{"name":"sensoroperationalmode","content":"Earth
-        Observation"},{"name":"instrumentname","content":"Sar Radar ALtimeter"},{"name":"mode","content":"EO"},{"name":"platformidentifier","content":"2018-039A"},{"name":"onlinequalitycheck","content":"PASSED"},{"name":"orbitdirection","content":"ascending"},{"name":"pduduration","content":"17"},{"name":"passnumber","content":"33709"},{"name":"passdirection","content":"ascending"},{"name":"procfacilityname","content":"Land
-        Surface Topography Mission Processing and Archiving Centre [LN3]"},{"name":"procfacilityorg","content":"European
-        Space Agency"},{"name":"processinglevel","content":"1"},{"name":"processingname","content":"Data
-        Processing"},{"name":"productlevel","content":"L1"},{"name":"producttype","content":"SR_1_SRA___"},{"name":"relorbitdir","content":"ascending"},{"name":"relpassnumber","content":"55"},{"name":"relpassdirection","content":"ascending"},{"name":"platformname","content":"Sentinel-3"},{"name":"size","content":"849.68
+        Scientific Data Hub"},"id":"https://apihub.copernicus.eu/apihub/search?q=identifier:\"S3A_SR_1_SRA____20230309T204558_20230309T204623_20230309T225028_0024_096_214______PS1_O_NR_004\"","opensearch:totalResults":"1","opensearch:startIndex":"0","opensearch:itemsPerPage":"100","opensearch:Query":{"role":"request","searchTerms":"identifier:\"S3A_SR_1_SRA____20230309T204558_20230309T204623_20230309T225028_0024_096_214______PS1_O_NR_004\"","startPage":"1"},"link":[{"rel":"self","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=identifier:\"S3A_SR_1_SRA____20230309T204558_20230309T204623_20230309T225028_0024_096_214______PS1_O_NR_004\"&start=0&rows=100&format=json"},{"rel":"first","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=identifier:\"S3A_SR_1_SRA____20230309T204558_20230309T204623_20230309T225028_0024_096_214______PS1_O_NR_004\"&start=0&rows=100&format=json"},{"rel":"last","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=identifier:\"S3A_SR_1_SRA____20230309T204558_20230309T204623_20230309T225028_0024_096_214______PS1_O_NR_004\"&start=0&rows=100&format=json"},{"rel":"search","type":"application/opensearchdescription+xml","href":"opensearch_description.xml"}],"entry":{"title":"S3A_SR_1_SRA____20230309T204558_20230309T204623_20230309T225028_0024_096_214______PS1_O_NR_004","link":[{"href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''b1d8a9ab-6072-4ecd-bc44-8d64419d71cb'')/$value"},{"rel":"alternative","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''b1d8a9ab-6072-4ecd-bc44-8d64419d71cb'')/"},{"rel":"icon","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''b1d8a9ab-6072-4ecd-bc44-8d64419d71cb'')/Products(''Quicklook'')/$value"}],"id":"b1d8a9ab-6072-4ecd-bc44-8d64419d71cb","summary":"Date:
+        2023-03-09T20:45:58.338Z, Instrument: SRAL, Satellite: Sentinel-3, Size: 995.77
+        KB","ondemand":"false","date":[{"name":"beginposition","content":"2023-03-09T20:45:58.338Z"},{"name":"endposition","content":"2023-03-09T20:46:23.31Z"},{"name":"creationdate","content":"2023-03-09T22:50:28Z"},{"name":"ingestiondate","content":"2023-03-09T23:04:10.307Z"}],"int":[{"name":"lrmpercentage","content":"0"},{"name":"sarpercentage","content":"100"},{"name":"closedseapercentage","content":"0"},{"name":"continentalicepercentage","content":"0"},{"name":"landpercentage","content":"0"},{"name":"openseapercentage","content":"100"},{"name":"relativeorbitnumber","content":"214"},{"name":"orbitnumber","content":"36762"}],"str":[{"name":"filename","content":"S3A_SR_1_SRA____20230309T204558_20230309T204623_20230309T225028_0024_096_214______PS1_O_NR_004.SEN3"},{"name":"format","content":"SAFE"},{"name":"identifier","content":"S3A_SR_1_SRA____20230309T204558_20230309T204623_20230309T225028_0024_096_214______PS1_O_NR_004"},{"name":"instrumentshortname","content":"SRAL"},{"name":"sensoroperationalmode","content":"Earth
+        Observation"},{"name":"instrumentname","content":"Sar Radar ALtimeter"},{"name":"mode","content":"EO"},{"name":"platformidentifier","content":"2016-011A"},{"name":"onlinequalitycheck","content":"PASSED"},{"name":"orbitdirection","content":"ascending"},{"name":"pduduration","content":"24"},{"name":"passnumber","content":"73523"},{"name":"passdirection","content":"ascending"},{"name":"procfacilityname","content":"S3A
+        Processing Service [PS1]"},{"name":"procfacilityorg","content":"ACRI-ST"},{"name":"processinglevel","content":"1"},{"name":"processingname","content":"Data
+        Processing"},{"name":"productlevel","content":"L1"},{"name":"producttype","content":"SR_1_SRA___"},{"name":"relorbitdir","content":"ascending"},{"name":"relpassnumber","content":"427"},{"name":"relpassdirection","content":"ascending"},{"name":"platformname","content":"Sentinel-3"},{"name":"size","content":"995.77
         KB"},{"name":"timeliness","content":"Near Real Time"},{"name":"gmlfootprint","content":"<gml:Polygon
-        srsName=\"http://www.opengis.net/gml/srs/epsg.xml#4326\" xmlns:gml=\"http://www.opengis.net/gml\">\n   <gml:outerBoundaryIs>\n      <gml:LinearRing>\n         <gml:coordinates>64.5397,15.4142
-        65.1997,14.7813 65.8572,14.1188 65.8565,14.1147 65.199,14.7774 64.5391,15.4103
-        64.5397,15.4142</gml:coordinates>\n      </gml:LinearRing>\n   </gml:outerBoundaryIs>\n</gml:Polygon>"},{"name":"footprint","content":"MULTIPOLYGON
-        (((15.4103 64.5391, 15.4142 64.5397, 14.7813 65.1997, 14.1188 65.8572, 14.1147
-        65.8565, 14.7774 65.199, 15.4103 64.5391)))"},{"name":"uuid","content":"2edae234-b02d-46d2-8915-823e4ec0eadb"}]}}}'
+        srsName=\"http://www.opengis.net/gml/srs/epsg.xml#4326\" xmlns:gml=\"http://www.opengis.net/gml\">\n   <gml:outerBoundaryIs>\n      <gml:LinearRing>\n         <gml:coordinates>63.138,1.21834
+        63.9204,0.535948 64.6998,-0.182113 64.6992,-0.185998 63.9197,0.532157 63.1374,1.21463
+        63.138,1.21834</gml:coordinates>\n      </gml:LinearRing>\n   </gml:outerBoundaryIs>\n</gml:Polygon>"},{"name":"footprint","content":"MULTIPOLYGON
+        (((1.21463 63.1374, 1.21834 63.138, 0.535948 63.9204, -8.0221844617381750e-18
+        64.5021303421297, -0.182113 64.6998, -0.185998 64.6992, -8.4140017815505920e-18
+        64.49731399906705, 0.532157 63.9197, 1.21463 63.1374)))"},{"name":"uuid","content":"b1d8a9ab-6072-4ecd-bc44-8d64419d71cb"}]}}}'
     headers:
       content-length:
-      - '4980'
+      - '5025'
       content-type:
       - application/json
       pragma:
       - no-cache
-      server:
-      - Apache-Coyote/1.1
       vary:
       - Accept-Encoding
     status:
       code: 200
-      message: OK
+      message: ''
 - request:
     body: null
     headers:
@@ -189,41 +179,38 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - sentinelsat/1.0.1
+      - sentinelsat/1.1.1
     method: GET
-    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=100&start=0&q=identifier%3A%22S3A_SR_1_SRA____20210721T113825_20210721T113845_20210721T133543_0019_074_180______LN3_O_NR_004%22
+    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=100&start=0&q=identifier%3A%22S3B_SR_1_SRA____20230309T200705_20230309T200726_20230309T220807_0020_077_071______PS2_O_NR_004%22
   response:
     body:
       string: '{"feed":{"xmlns:opensearch":"http://a9.com/-/spec/opensearch/1.1/","xmlns":"http://www.w3.org/2005/Atom","title":"Sentinels
-        Scientific Data Hub search results for: identifier:\"S3A_SR_1_SRA____20210721T113825_20210721T113845_20210721T133543_0019_074_180______LN3_O_NR_004\"","subtitle":"Displaying
+        Scientific Data Hub search results for: identifier:\"S3B_SR_1_SRA____20230309T200705_20230309T200726_20230309T220807_0020_077_071______PS2_O_NR_004\"","subtitle":"Displaying
         1 results. Request done in ... seconds.","updated":"...","author":{"name":"Sentinels
-        Scientific Data Hub"},"id":"https://apihub.copernicus.eu/apihub/search?q=identifier:\"S3A_SR_1_SRA____20210721T113825_20210721T113845_20210721T133543_0019_074_180______LN3_O_NR_004\"","opensearch:totalResults":"1","opensearch:startIndex":"0","opensearch:itemsPerPage":"100","opensearch:Query":{"role":"request","searchTerms":"identifier:\"S3A_SR_1_SRA____20210721T113825_20210721T113845_20210721T133543_0019_074_180______LN3_O_NR_004\"","startPage":"1"},"link":[{"rel":"self","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=identifier:\"S3A_SR_1_SRA____20210721T113825_20210721T113845_20210721T133543_0019_074_180______LN3_O_NR_004\"&start=0&rows=100&format=json"},{"rel":"first","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=identifier:\"S3A_SR_1_SRA____20210721T113825_20210721T113845_20210721T133543_0019_074_180______LN3_O_NR_004\"&start=0&rows=100&format=json"},{"rel":"last","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=identifier:\"S3A_SR_1_SRA____20210721T113825_20210721T113845_20210721T133543_0019_074_180______LN3_O_NR_004\"&start=0&rows=100&format=json"},{"rel":"search","type":"application/opensearchdescription+xml","href":"opensearch_description.xml"}],"entry":{"title":"S3A_SR_1_SRA____20210721T113825_20210721T113845_20210721T133543_0019_074_180______LN3_O_NR_004","link":[{"href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''541b23d7-5e38-42c1-9989-223af2dd5584'')/$value"},{"rel":"alternative","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''541b23d7-5e38-42c1-9989-223af2dd5584'')/"},{"rel":"icon","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''541b23d7-5e38-42c1-9989-223af2dd5584'')/Products(''Quicklook'')/$value"}],"id":"541b23d7-5e38-42c1-9989-223af2dd5584","summary":"Date:
-        2021-07-21T11:38:25.362Z, Instrument: SRAL, Satellite: Sentinel-3, Size: 878.05
-        KB","ondemand":"false","date":[{"name":"beginposition","content":"2021-07-21T11:38:25.362Z"},{"name":"endposition","content":"2021-07-21T11:38:45.293Z"},{"name":"creationdate","content":"2021-07-21T13:35:43Z"},{"name":"ingestiondate","content":"2021-07-22T17:24:02.797Z"}],"int":[{"name":"lrmpercentage","content":"0"},{"name":"sarpercentage","content":"100"},{"name":"closedseapercentage","content":"0"},{"name":"continentalicepercentage","content":"2"},{"name":"landpercentage","content":"22"},{"name":"openseapercentage","content":"74"},{"name":"relativeorbitnumber","content":"180"},{"name":"orbitnumber","content":"28258"}],"str":[{"name":"filename","content":"S3A_SR_1_SRA____20210721T113825_20210721T113845_20210721T133543_0019_074_180______LN3_O_NR_004.SEN3"},{"name":"format","content":"SAFE"},{"name":"identifier","content":"S3A_SR_1_SRA____20210721T113825_20210721T113845_20210721T133543_0019_074_180______LN3_O_NR_004"},{"name":"instrumentshortname","content":"SRAL"},{"name":"sensoroperationalmode","content":"Earth
-        Observation"},{"name":"instrumentname","content":"Sar Radar ALtimeter"},{"name":"mode","content":"EO"},{"name":"platformidentifier","content":"2016-011A"},{"name":"onlinequalitycheck","content":"PASSED"},{"name":"orbitdirection","content":"ascending"},{"name":"pduduration","content":"19"},{"name":"passnumber","content":"56515"},{"name":"passdirection","content":"ascending"},{"name":"procfacilityname","content":"Land
-        Surface Topography Mission Processing and Archiving Centre [LN3]"},{"name":"procfacilityorg","content":"European
-        Space Agency"},{"name":"processinglevel","content":"1"},{"name":"processingname","content":"Data
-        Processing"},{"name":"productlevel","content":"L1"},{"name":"producttype","content":"SR_1_SRA___"},{"name":"relorbitdir","content":"ascending"},{"name":"relpassnumber","content":"359"},{"name":"relpassdirection","content":"ascending"},{"name":"platformname","content":"Sentinel-3"},{"name":"size","content":"878.05
+        Scientific Data Hub"},"id":"https://apihub.copernicus.eu/apihub/search?q=identifier:\"S3B_SR_1_SRA____20230309T200705_20230309T200726_20230309T220807_0020_077_071______PS2_O_NR_004\"","opensearch:totalResults":"1","opensearch:startIndex":"0","opensearch:itemsPerPage":"100","opensearch:Query":{"role":"request","searchTerms":"identifier:\"S3B_SR_1_SRA____20230309T200705_20230309T200726_20230309T220807_0020_077_071______PS2_O_NR_004\"","startPage":"1"},"link":[{"rel":"self","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=identifier:\"S3B_SR_1_SRA____20230309T200705_20230309T200726_20230309T220807_0020_077_071______PS2_O_NR_004\"&start=0&rows=100&format=json"},{"rel":"first","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=identifier:\"S3B_SR_1_SRA____20230309T200705_20230309T200726_20230309T220807_0020_077_071______PS2_O_NR_004\"&start=0&rows=100&format=json"},{"rel":"last","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=identifier:\"S3B_SR_1_SRA____20230309T200705_20230309T200726_20230309T220807_0020_077_071______PS2_O_NR_004\"&start=0&rows=100&format=json"},{"rel":"search","type":"application/opensearchdescription+xml","href":"opensearch_description.xml"}],"entry":{"title":"S3B_SR_1_SRA____20230309T200705_20230309T200726_20230309T220807_0020_077_071______PS2_O_NR_004","link":[{"href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''96fc9975-1c5c-4279-9fd1-1336d9743d8a'')/$value"},{"rel":"alternative","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''96fc9975-1c5c-4279-9fd1-1336d9743d8a'')/"},{"rel":"icon","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''96fc9975-1c5c-4279-9fd1-1336d9743d8a'')/Products(''Quicklook'')/$value"}],"id":"96fc9975-1c5c-4279-9fd1-1336d9743d8a","summary":"Date:
+        2023-03-09T20:07:05.488Z, Instrument: SRAL, Satellite: Sentinel-3, Size: 908.03
+        KB","ondemand":"false","date":[{"name":"beginposition","content":"2023-03-09T20:07:05.488Z"},{"name":"endposition","content":"2023-03-09T20:07:26.402Z"},{"name":"creationdate","content":"2023-03-09T22:08:07Z"},{"name":"ingestiondate","content":"2023-03-09T22:12:14.268Z"}],"int":[{"name":"lrmpercentage","content":"0"},{"name":"sarpercentage","content":"100"},{"name":"closedseapercentage","content":"0"},{"name":"continentalicepercentage","content":"0"},{"name":"landpercentage","content":"19"},{"name":"openseapercentage","content":"80"},{"name":"relativeorbitnumber","content":"71"},{"name":"orbitnumber","content":"25368"}],"str":[{"name":"filename","content":"S3B_SR_1_SRA____20230309T200705_20230309T200726_20230309T220807_0020_077_071______PS2_O_NR_004.SEN3"},{"name":"format","content":"SAFE"},{"name":"identifier","content":"S3B_SR_1_SRA____20230309T200705_20230309T200726_20230309T220807_0020_077_071______PS2_O_NR_004"},{"name":"instrumentshortname","content":"SRAL"},{"name":"sensoroperationalmode","content":"Earth
+        Observation"},{"name":"instrumentname","content":"Sar Radar ALtimeter"},{"name":"mode","content":"EO"},{"name":"platformidentifier","content":"2018-039A"},{"name":"onlinequalitycheck","content":"PASSED"},{"name":"orbitdirection","content":"ascending"},{"name":"pduduration","content":"20"},{"name":"passnumber","content":"50735"},{"name":"passdirection","content":"ascending"},{"name":"procfacilityname","content":"S3B
+        Processing Service [PS2]"},{"name":"procfacilityorg","content":"SERCO"},{"name":"processinglevel","content":"1"},{"name":"processingname","content":"Data
+        Processing"},{"name":"productlevel","content":"L1"},{"name":"producttype","content":"SR_1_SRA___"},{"name":"relorbitdir","content":"ascending"},{"name":"relpassnumber","content":"141"},{"name":"relpassdirection","content":"ascending"},{"name":"platformname","content":"Sentinel-3"},{"name":"size","content":"908.03
         KB"},{"name":"timeliness","content":"Near Real Time"},{"name":"gmlfootprint","content":"<gml:Polygon
-        srsName=\"http://www.opengis.net/gml/srs/epsg.xml#4326\" xmlns:gml=\"http://www.opengis.net/gml\">\n   <gml:outerBoundaryIs>\n      <gml:LinearRing>\n         <gml:coordinates>80.2379,94.2248
-        80.5786,90.0452 80.868,85.5831 80.8663,85.5793 80.577,90.0407 80.2363,94.2198
-        80.2379,94.2248</gml:coordinates>\n      </gml:LinearRing>\n   </gml:outerBoundaryIs>\n</gml:Polygon>"},{"name":"footprint","content":"MULTIPOLYGON
-        (((94.2198 80.2363, 94.2248 80.2379, 90.0452 80.5786, 85.5831 80.868, 85.5793
-        80.8663, 90.0407 80.577, 94.2198 80.2363)))"},{"name":"uuid","content":"541b23d7-5e38-42c1-9989-223af2dd5584"}]}}}'
+        srsName=\"http://www.opengis.net/gml/srs/epsg.xml#4326\" xmlns:gml=\"http://www.opengis.net/gml\">\n   <gml:outerBoundaryIs>\n      <gml:LinearRing>\n         <gml:coordinates>63.8522,10.4374
+        64.6008,9.75265 65.3466,9.03244 65.3459,9.02847 64.6002,9.74877 63.8516,10.4336
+        63.8522,10.4374</gml:coordinates>\n      </gml:LinearRing>\n   </gml:outerBoundaryIs>\n</gml:Polygon>"},{"name":"footprint","content":"MULTIPOLYGON
+        (((10.4336 63.8516, 10.4374 63.8522, 9.75265 64.6008, 9.03244 65.3466, 9.02847
+        65.3459, 9.74877 64.6002, 10.4336 63.8516)))"},{"name":"uuid","content":"96fc9975-1c5c-4279-9fd1-1336d9743d8a"}]}}}'
     headers:
       content-length:
-      - '4983'
+      - '4929'
       content-type:
       - application/json
       pragma:
       - no-cache
-      server:
-      - Apache-Coyote/1.1
       vary:
       - Accept-Encoding
     status:
       code: 200
-      message: OK
+      message: ''
 - request:
     body: null
     headers:
@@ -234,41 +221,38 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - sentinelsat/1.0.1
+      - sentinelsat/1.1.1
     method: GET
-    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=100&start=0&q=identifier%3A%22S3B_SR_1_SRA____20210720T112514_20210720T112540_20210720T133004_0025_055_023______LN3_O_NR_004%22
+    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=100&start=0&q=identifier%3A%22S3B_SR_1_SRA____20230308T203304_20230308T203328_20230308T223420_0023_077_057______PS2_O_NR_004%22
   response:
     body:
       string: '{"feed":{"xmlns:opensearch":"http://a9.com/-/spec/opensearch/1.1/","xmlns":"http://www.w3.org/2005/Atom","title":"Sentinels
-        Scientific Data Hub search results for: identifier:\"S3B_SR_1_SRA____20210720T112514_20210720T112540_20210720T133004_0025_055_023______LN3_O_NR_004\"","subtitle":"Displaying
+        Scientific Data Hub search results for: identifier:\"S3B_SR_1_SRA____20230308T203304_20230308T203328_20230308T223420_0023_077_057______PS2_O_NR_004\"","subtitle":"Displaying
         1 results. Request done in ... seconds.","updated":"...","author":{"name":"Sentinels
-        Scientific Data Hub"},"id":"https://apihub.copernicus.eu/apihub/search?q=identifier:\"S3B_SR_1_SRA____20210720T112514_20210720T112540_20210720T133004_0025_055_023______LN3_O_NR_004\"","opensearch:totalResults":"1","opensearch:startIndex":"0","opensearch:itemsPerPage":"100","opensearch:Query":{"role":"request","searchTerms":"identifier:\"S3B_SR_1_SRA____20210720T112514_20210720T112540_20210720T133004_0025_055_023______LN3_O_NR_004\"","startPage":"1"},"link":[{"rel":"self","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=identifier:\"S3B_SR_1_SRA____20210720T112514_20210720T112540_20210720T133004_0025_055_023______LN3_O_NR_004\"&start=0&rows=100&format=json"},{"rel":"first","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=identifier:\"S3B_SR_1_SRA____20210720T112514_20210720T112540_20210720T133004_0025_055_023______LN3_O_NR_004\"&start=0&rows=100&format=json"},{"rel":"last","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=identifier:\"S3B_SR_1_SRA____20210720T112514_20210720T112540_20210720T133004_0025_055_023______LN3_O_NR_004\"&start=0&rows=100&format=json"},{"rel":"search","type":"application/opensearchdescription+xml","href":"opensearch_description.xml"}],"entry":{"title":"S3B_SR_1_SRA____20210720T112514_20210720T112540_20210720T133004_0025_055_023______LN3_O_NR_004","link":[{"href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''63b9e6c2-bac5-47d3-a4d4-bc57be31e6cd'')/$value"},{"rel":"alternative","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''63b9e6c2-bac5-47d3-a4d4-bc57be31e6cd'')/"},{"rel":"icon","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''63b9e6c2-bac5-47d3-a4d4-bc57be31e6cd'')/Products(''Quicklook'')/$value"}],"id":"63b9e6c2-bac5-47d3-a4d4-bc57be31e6cd","summary":"Date:
-        2021-07-20T11:25:14.344Z, Instrument: SRAL, Satellite: Sentinel-3, Size: 983.54
-        KB","ondemand":"false","date":[{"name":"beginposition","content":"2021-07-20T11:25:14.344Z"},{"name":"endposition","content":"2021-07-20T11:25:40.296Z"},{"name":"creationdate","content":"2021-07-20T13:30:04Z"},{"name":"ingestiondate","content":"2021-07-22T12:00:00.851Z"}],"int":[{"name":"lrmpercentage","content":"0"},{"name":"sarpercentage","content":"100"},{"name":"closedseapercentage","content":"0"},{"name":"continentalicepercentage","content":"29"},{"name":"landpercentage","content":"12"},{"name":"openseapercentage","content":"57"},{"name":"relativeorbitnumber","content":"23"},{"name":"orbitnumber","content":"16850"}],"str":[{"name":"filename","content":"S3B_SR_1_SRA____20210720T112514_20210720T112540_20210720T133004_0025_055_023______LN3_O_NR_004.SEN3"},{"name":"format","content":"SAFE"},{"name":"identifier","content":"S3B_SR_1_SRA____20210720T112514_20210720T112540_20210720T133004_0025_055_023______LN3_O_NR_004"},{"name":"instrumentshortname","content":"SRAL"},{"name":"sensoroperationalmode","content":"Earth
-        Observation"},{"name":"instrumentname","content":"Sar Radar ALtimeter"},{"name":"mode","content":"EO"},{"name":"platformidentifier","content":"2018-039A"},{"name":"onlinequalitycheck","content":"PASSED"},{"name":"orbitdirection","content":"ascending"},{"name":"pduduration","content":"25"},{"name":"passnumber","content":"33699"},{"name":"passdirection","content":"ascending"},{"name":"procfacilityname","content":"Land
-        Surface Topography Mission Processing and Archiving Centre [LN3]"},{"name":"procfacilityorg","content":"European
-        Space Agency"},{"name":"processinglevel","content":"1"},{"name":"processingname","content":"Data
-        Processing"},{"name":"productlevel","content":"L1"},{"name":"producttype","content":"SR_1_SRA___"},{"name":"relorbitdir","content":"ascending"},{"name":"relpassnumber","content":"45"},{"name":"relpassdirection","content":"ascending"},{"name":"platformname","content":"Sentinel-3"},{"name":"size","content":"983.54
+        Scientific Data Hub"},"id":"https://apihub.copernicus.eu/apihub/search?q=identifier:\"S3B_SR_1_SRA____20230308T203304_20230308T203328_20230308T223420_0023_077_057______PS2_O_NR_004\"","opensearch:totalResults":"1","opensearch:startIndex":"0","opensearch:itemsPerPage":"100","opensearch:Query":{"role":"request","searchTerms":"identifier:\"S3B_SR_1_SRA____20230308T203304_20230308T203328_20230308T223420_0023_077_057______PS2_O_NR_004\"","startPage":"1"},"link":[{"rel":"self","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=identifier:\"S3B_SR_1_SRA____20230308T203304_20230308T203328_20230308T223420_0023_077_057______PS2_O_NR_004\"&start=0&rows=100&format=json"},{"rel":"first","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=identifier:\"S3B_SR_1_SRA____20230308T203304_20230308T203328_20230308T223420_0023_077_057______PS2_O_NR_004\"&start=0&rows=100&format=json"},{"rel":"last","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=identifier:\"S3B_SR_1_SRA____20230308T203304_20230308T203328_20230308T223420_0023_077_057______PS2_O_NR_004\"&start=0&rows=100&format=json"},{"rel":"search","type":"application/opensearchdescription+xml","href":"opensearch_description.xml"}],"entry":{"title":"S3B_SR_1_SRA____20230308T203304_20230308T203328_20230308T223420_0023_077_057______PS2_O_NR_004","link":[{"href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''ff10826d-78b9-4062-9f69-fca7d1d832d8'')/$value"},{"rel":"alternative","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''ff10826d-78b9-4062-9f69-fca7d1d832d8'')/"},{"rel":"icon","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''ff10826d-78b9-4062-9f69-fca7d1d832d8'')/Products(''Quicklook'')/$value"}],"id":"ff10826d-78b9-4062-9f69-fca7d1d832d8","summary":"Date:
+        2023-03-08T20:33:04.327Z, Instrument: SRAL, Satellite: Sentinel-3, Size: 975.10
+        KB","ondemand":"false","date":[{"name":"beginposition","content":"2023-03-08T20:33:04.327Z"},{"name":"endposition","content":"2023-03-08T20:33:28.292Z"},{"name":"creationdate","content":"2023-03-08T22:34:20Z"},{"name":"ingestiondate","content":"2023-03-08T22:40:10.82Z"}],"int":[{"name":"lrmpercentage","content":"0"},{"name":"sarpercentage","content":"100"},{"name":"closedseapercentage","content":"0"},{"name":"continentalicepercentage","content":"0"},{"name":"landpercentage","content":"0"},{"name":"openseapercentage","content":"100"},{"name":"relativeorbitnumber","content":"57"},{"name":"orbitnumber","content":"25354"}],"str":[{"name":"filename","content":"S3B_SR_1_SRA____20230308T203304_20230308T203328_20230308T223420_0023_077_057______PS2_O_NR_004.SEN3"},{"name":"format","content":"SAFE"},{"name":"identifier","content":"S3B_SR_1_SRA____20230308T203304_20230308T203328_20230308T223420_0023_077_057______PS2_O_NR_004"},{"name":"instrumentshortname","content":"SRAL"},{"name":"sensoroperationalmode","content":"Earth
+        Observation"},{"name":"instrumentname","content":"Sar Radar ALtimeter"},{"name":"mode","content":"EO"},{"name":"platformidentifier","content":"2018-039A"},{"name":"onlinequalitycheck","content":"PASSED"},{"name":"orbitdirection","content":"ascending"},{"name":"pduduration","content":"23"},{"name":"passnumber","content":"50707"},{"name":"passdirection","content":"ascending"},{"name":"procfacilityname","content":"S3B
+        Processing Service [PS2]"},{"name":"procfacilityorg","content":"SERCO"},{"name":"processinglevel","content":"1"},{"name":"processingname","content":"Data
+        Processing"},{"name":"productlevel","content":"L1"},{"name":"producttype","content":"SR_1_SRA___"},{"name":"relorbitdir","content":"ascending"},{"name":"relpassnumber","content":"113"},{"name":"relpassdirection","content":"ascending"},{"name":"platformname","content":"Sentinel-3"},{"name":"size","content":"975.10
         KB"},{"name":"timeliness","content":"Near Real Time"},{"name":"gmlfootprint","content":"<gml:Polygon
-        srsName=\"http://www.opengis.net/gml/srs/epsg.xml#4326\" xmlns:gml=\"http://www.opengis.net/gml\">\n   <gml:outerBoundaryIs>\n      <gml:LinearRing>\n         <gml:coordinates>80.2597,97.2089
-        80.6679,91.9953 80.9958,86.3638 80.9941,86.3603 80.6662,91.991 80.2581,97.204
-        80.2597,97.2089</gml:coordinates>\n      </gml:LinearRing>\n   </gml:outerBoundaryIs>\n</gml:Polygon>"},{"name":"footprint","content":"MULTIPOLYGON
-        (((97.204 80.2581, 97.2089 80.2597, 91.9953 80.6679, 86.3638 80.9958, 86.3603
-        80.9941, 91.991 80.6662, 97.204 80.2581)))"},{"name":"uuid","content":"63b9e6c2-bac5-47d3-a4d4-bc57be31e6cd"}]}}}'
+        srsName=\"http://www.opengis.net/gml/srs/epsg.xml#4326\" xmlns:gml=\"http://www.opengis.net/gml\">\n   <gml:outerBoundaryIs>\n      <gml:LinearRing>\n         <gml:coordinates>63.1914,4.46729
+        64.0276,3.73467 64.8604,2.96083 64.8598,2.95692 64.0269,3.73087 63.1908,4.46359
+        63.1914,4.46729</gml:coordinates>\n      </gml:LinearRing>\n   </gml:outerBoundaryIs>\n</gml:Polygon>"},{"name":"footprint","content":"MULTIPOLYGON
+        (((4.46359 63.1908, 4.46729 63.1914, 3.73467 64.0276, 2.96083 64.8604, 2.95692
+        64.8598, 3.73087 64.0269, 4.46359 63.1908)))"},{"name":"uuid","content":"ff10826d-78b9-4062-9f69-fca7d1d832d8"}]}}}'
     headers:
       content-length:
-      - '4981'
+      - '4928'
       content-type:
       - application/json
       pragma:
       - no-cache
-      server:
-      - Apache-Coyote/1.1
       vary:
       - Accept-Encoding
     status:
       code: 200
-      message: OK
+      message: ''
 - request:
     body: null
     headers:
@@ -279,41 +263,39 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - sentinelsat/1.0.1
+      - sentinelsat/1.1.1
     method: GET
-    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=100&start=0&q=identifier%3A%22S3B_SR_1_SRA____20210720T194442_20210720T194500_20210720T214156_0017_055_028______LN3_O_NR_004%22
+    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=100&start=0&q=identifier%3A%22S3A_SR_1_SRA____20230309T204558_20230309T204623_20230309T225028_0024_096_214______PS1_O_NR_004%22
   response:
     body:
       string: '{"feed":{"xmlns:opensearch":"http://a9.com/-/spec/opensearch/1.1/","xmlns":"http://www.w3.org/2005/Atom","title":"Sentinels
-        Scientific Data Hub search results for: identifier:\"S3B_SR_1_SRA____20210720T194442_20210720T194500_20210720T214156_0017_055_028______LN3_O_NR_004\"","subtitle":"Displaying
+        Scientific Data Hub search results for: identifier:\"S3A_SR_1_SRA____20230309T204558_20230309T204623_20230309T225028_0024_096_214______PS1_O_NR_004\"","subtitle":"Displaying
         1 results. Request done in ... seconds.","updated":"...","author":{"name":"Sentinels
-        Scientific Data Hub"},"id":"https://apihub.copernicus.eu/apihub/search?q=identifier:\"S3B_SR_1_SRA____20210720T194442_20210720T194500_20210720T214156_0017_055_028______LN3_O_NR_004\"","opensearch:totalResults":"1","opensearch:startIndex":"0","opensearch:itemsPerPage":"100","opensearch:Query":{"role":"request","searchTerms":"identifier:\"S3B_SR_1_SRA____20210720T194442_20210720T194500_20210720T214156_0017_055_028______LN3_O_NR_004\"","startPage":"1"},"link":[{"rel":"self","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=identifier:\"S3B_SR_1_SRA____20210720T194442_20210720T194500_20210720T214156_0017_055_028______LN3_O_NR_004\"&start=0&rows=100&format=json"},{"rel":"first","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=identifier:\"S3B_SR_1_SRA____20210720T194442_20210720T194500_20210720T214156_0017_055_028______LN3_O_NR_004\"&start=0&rows=100&format=json"},{"rel":"last","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=identifier:\"S3B_SR_1_SRA____20210720T194442_20210720T194500_20210720T214156_0017_055_028______LN3_O_NR_004\"&start=0&rows=100&format=json"},{"rel":"search","type":"application/opensearchdescription+xml","href":"opensearch_description.xml"}],"entry":{"title":"S3B_SR_1_SRA____20210720T194442_20210720T194500_20210720T214156_0017_055_028______LN3_O_NR_004","link":[{"href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''2edae234-b02d-46d2-8915-823e4ec0eadb'')/$value"},{"rel":"alternative","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''2edae234-b02d-46d2-8915-823e4ec0eadb'')/"},{"rel":"icon","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''2edae234-b02d-46d2-8915-823e4ec0eadb'')/Products(''Quicklook'')/$value"}],"id":"2edae234-b02d-46d2-8915-823e4ec0eadb","summary":"Date:
-        2021-07-20T19:44:42.48Z, Instrument: SRAL, Satellite: Sentinel-3, Size: 849.68
-        KB","ondemand":"false","date":[{"name":"beginposition","content":"2021-07-20T19:44:42.48Z"},{"name":"endposition","content":"2021-07-20T19:45:00.259Z"},{"name":"creationdate","content":"2021-07-20T21:41:56Z"},{"name":"ingestiondate","content":"2021-07-22T18:24:00.842Z"}],"int":[{"name":"lrmpercentage","content":"0"},{"name":"sarpercentage","content":"100"},{"name":"closedseapercentage","content":"2"},{"name":"continentalicepercentage","content":"0"},{"name":"landpercentage","content":"97"},{"name":"openseapercentage","content":"0"},{"name":"relativeorbitnumber","content":"28"},{"name":"orbitnumber","content":"16855"}],"str":[{"name":"filename","content":"S3B_SR_1_SRA____20210720T194442_20210720T194500_20210720T214156_0017_055_028______LN3_O_NR_004.SEN3"},{"name":"format","content":"SAFE"},{"name":"identifier","content":"S3B_SR_1_SRA____20210720T194442_20210720T194500_20210720T214156_0017_055_028______LN3_O_NR_004"},{"name":"instrumentshortname","content":"SRAL"},{"name":"sensoroperationalmode","content":"Earth
-        Observation"},{"name":"instrumentname","content":"Sar Radar ALtimeter"},{"name":"mode","content":"EO"},{"name":"platformidentifier","content":"2018-039A"},{"name":"onlinequalitycheck","content":"PASSED"},{"name":"orbitdirection","content":"ascending"},{"name":"pduduration","content":"17"},{"name":"passnumber","content":"33709"},{"name":"passdirection","content":"ascending"},{"name":"procfacilityname","content":"Land
-        Surface Topography Mission Processing and Archiving Centre [LN3]"},{"name":"procfacilityorg","content":"European
-        Space Agency"},{"name":"processinglevel","content":"1"},{"name":"processingname","content":"Data
-        Processing"},{"name":"productlevel","content":"L1"},{"name":"producttype","content":"SR_1_SRA___"},{"name":"relorbitdir","content":"ascending"},{"name":"relpassnumber","content":"55"},{"name":"relpassdirection","content":"ascending"},{"name":"platformname","content":"Sentinel-3"},{"name":"size","content":"849.68
+        Scientific Data Hub"},"id":"https://apihub.copernicus.eu/apihub/search?q=identifier:\"S3A_SR_1_SRA____20230309T204558_20230309T204623_20230309T225028_0024_096_214______PS1_O_NR_004\"","opensearch:totalResults":"1","opensearch:startIndex":"0","opensearch:itemsPerPage":"100","opensearch:Query":{"role":"request","searchTerms":"identifier:\"S3A_SR_1_SRA____20230309T204558_20230309T204623_20230309T225028_0024_096_214______PS1_O_NR_004\"","startPage":"1"},"link":[{"rel":"self","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=identifier:\"S3A_SR_1_SRA____20230309T204558_20230309T204623_20230309T225028_0024_096_214______PS1_O_NR_004\"&start=0&rows=100&format=json"},{"rel":"first","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=identifier:\"S3A_SR_1_SRA____20230309T204558_20230309T204623_20230309T225028_0024_096_214______PS1_O_NR_004\"&start=0&rows=100&format=json"},{"rel":"last","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=identifier:\"S3A_SR_1_SRA____20230309T204558_20230309T204623_20230309T225028_0024_096_214______PS1_O_NR_004\"&start=0&rows=100&format=json"},{"rel":"search","type":"application/opensearchdescription+xml","href":"opensearch_description.xml"}],"entry":{"title":"S3A_SR_1_SRA____20230309T204558_20230309T204623_20230309T225028_0024_096_214______PS1_O_NR_004","link":[{"href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''b1d8a9ab-6072-4ecd-bc44-8d64419d71cb'')/$value"},{"rel":"alternative","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''b1d8a9ab-6072-4ecd-bc44-8d64419d71cb'')/"},{"rel":"icon","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''b1d8a9ab-6072-4ecd-bc44-8d64419d71cb'')/Products(''Quicklook'')/$value"}],"id":"b1d8a9ab-6072-4ecd-bc44-8d64419d71cb","summary":"Date:
+        2023-03-09T20:45:58.338Z, Instrument: SRAL, Satellite: Sentinel-3, Size: 995.77
+        KB","ondemand":"false","date":[{"name":"beginposition","content":"2023-03-09T20:45:58.338Z"},{"name":"endposition","content":"2023-03-09T20:46:23.31Z"},{"name":"creationdate","content":"2023-03-09T22:50:28Z"},{"name":"ingestiondate","content":"2023-03-09T23:04:10.307Z"}],"int":[{"name":"lrmpercentage","content":"0"},{"name":"sarpercentage","content":"100"},{"name":"closedseapercentage","content":"0"},{"name":"continentalicepercentage","content":"0"},{"name":"landpercentage","content":"0"},{"name":"openseapercentage","content":"100"},{"name":"relativeorbitnumber","content":"214"},{"name":"orbitnumber","content":"36762"}],"str":[{"name":"filename","content":"S3A_SR_1_SRA____20230309T204558_20230309T204623_20230309T225028_0024_096_214______PS1_O_NR_004.SEN3"},{"name":"format","content":"SAFE"},{"name":"identifier","content":"S3A_SR_1_SRA____20230309T204558_20230309T204623_20230309T225028_0024_096_214______PS1_O_NR_004"},{"name":"instrumentshortname","content":"SRAL"},{"name":"sensoroperationalmode","content":"Earth
+        Observation"},{"name":"instrumentname","content":"Sar Radar ALtimeter"},{"name":"mode","content":"EO"},{"name":"platformidentifier","content":"2016-011A"},{"name":"onlinequalitycheck","content":"PASSED"},{"name":"orbitdirection","content":"ascending"},{"name":"pduduration","content":"24"},{"name":"passnumber","content":"73523"},{"name":"passdirection","content":"ascending"},{"name":"procfacilityname","content":"S3A
+        Processing Service [PS1]"},{"name":"procfacilityorg","content":"ACRI-ST"},{"name":"processinglevel","content":"1"},{"name":"processingname","content":"Data
+        Processing"},{"name":"productlevel","content":"L1"},{"name":"producttype","content":"SR_1_SRA___"},{"name":"relorbitdir","content":"ascending"},{"name":"relpassnumber","content":"427"},{"name":"relpassdirection","content":"ascending"},{"name":"platformname","content":"Sentinel-3"},{"name":"size","content":"995.77
         KB"},{"name":"timeliness","content":"Near Real Time"},{"name":"gmlfootprint","content":"<gml:Polygon
-        srsName=\"http://www.opengis.net/gml/srs/epsg.xml#4326\" xmlns:gml=\"http://www.opengis.net/gml\">\n   <gml:outerBoundaryIs>\n      <gml:LinearRing>\n         <gml:coordinates>64.5397,15.4142
-        65.1997,14.7813 65.8572,14.1188 65.8565,14.1147 65.199,14.7774 64.5391,15.4103
-        64.5397,15.4142</gml:coordinates>\n      </gml:LinearRing>\n   </gml:outerBoundaryIs>\n</gml:Polygon>"},{"name":"footprint","content":"MULTIPOLYGON
-        (((15.4103 64.5391, 15.4142 64.5397, 14.7813 65.1997, 14.1188 65.8572, 14.1147
-        65.8565, 14.7774 65.199, 15.4103 64.5391)))"},{"name":"uuid","content":"2edae234-b02d-46d2-8915-823e4ec0eadb"}]}}}'
+        srsName=\"http://www.opengis.net/gml/srs/epsg.xml#4326\" xmlns:gml=\"http://www.opengis.net/gml\">\n   <gml:outerBoundaryIs>\n      <gml:LinearRing>\n         <gml:coordinates>63.138,1.21834
+        63.9204,0.535948 64.6998,-0.182113 64.6992,-0.185998 63.9197,0.532157 63.1374,1.21463
+        63.138,1.21834</gml:coordinates>\n      </gml:LinearRing>\n   </gml:outerBoundaryIs>\n</gml:Polygon>"},{"name":"footprint","content":"MULTIPOLYGON
+        (((1.21463 63.1374, 1.21834 63.138, 0.535948 63.9204, -8.0221844617381750e-18
+        64.5021303421297, -0.182113 64.6998, -0.185998 64.6992, -8.4140017815505920e-18
+        64.49731399906705, 0.532157 63.9197, 1.21463 63.1374)))"},{"name":"uuid","content":"b1d8a9ab-6072-4ecd-bc44-8d64419d71cb"}]}}}'
     headers:
       content-length:
-      - '4980'
+      - '5025'
       content-type:
       - application/json
       pragma:
       - no-cache
-      server:
-      - Apache-Coyote/1.1
       vary:
       - Accept-Encoding
     status:
       code: 200
-      message: OK
+      message: ''
 - request:
     body: null
     headers:
@@ -324,41 +306,38 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - sentinelsat/1.0.1
+      - sentinelsat/1.1.1
     method: GET
-    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=100&start=0&q=identifier%3A%22S3A_SR_1_SRA____20210721T113825_20210721T113845_20210721T133543_0019_074_180______LN3_O_NR_004%22
+    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=100&start=0&q=identifier%3A%22S3B_SR_1_SRA____20230309T200705_20230309T200726_20230309T220807_0020_077_071______PS2_O_NR_004%22
   response:
     body:
       string: '{"feed":{"xmlns:opensearch":"http://a9.com/-/spec/opensearch/1.1/","xmlns":"http://www.w3.org/2005/Atom","title":"Sentinels
-        Scientific Data Hub search results for: identifier:\"S3A_SR_1_SRA____20210721T113825_20210721T113845_20210721T133543_0019_074_180______LN3_O_NR_004\"","subtitle":"Displaying
+        Scientific Data Hub search results for: identifier:\"S3B_SR_1_SRA____20230309T200705_20230309T200726_20230309T220807_0020_077_071______PS2_O_NR_004\"","subtitle":"Displaying
         1 results. Request done in ... seconds.","updated":"...","author":{"name":"Sentinels
-        Scientific Data Hub"},"id":"https://apihub.copernicus.eu/apihub/search?q=identifier:\"S3A_SR_1_SRA____20210721T113825_20210721T113845_20210721T133543_0019_074_180______LN3_O_NR_004\"","opensearch:totalResults":"1","opensearch:startIndex":"0","opensearch:itemsPerPage":"100","opensearch:Query":{"role":"request","searchTerms":"identifier:\"S3A_SR_1_SRA____20210721T113825_20210721T113845_20210721T133543_0019_074_180______LN3_O_NR_004\"","startPage":"1"},"link":[{"rel":"self","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=identifier:\"S3A_SR_1_SRA____20210721T113825_20210721T113845_20210721T133543_0019_074_180______LN3_O_NR_004\"&start=0&rows=100&format=json"},{"rel":"first","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=identifier:\"S3A_SR_1_SRA____20210721T113825_20210721T113845_20210721T133543_0019_074_180______LN3_O_NR_004\"&start=0&rows=100&format=json"},{"rel":"last","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=identifier:\"S3A_SR_1_SRA____20210721T113825_20210721T113845_20210721T133543_0019_074_180______LN3_O_NR_004\"&start=0&rows=100&format=json"},{"rel":"search","type":"application/opensearchdescription+xml","href":"opensearch_description.xml"}],"entry":{"title":"S3A_SR_1_SRA____20210721T113825_20210721T113845_20210721T133543_0019_074_180______LN3_O_NR_004","link":[{"href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''541b23d7-5e38-42c1-9989-223af2dd5584'')/$value"},{"rel":"alternative","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''541b23d7-5e38-42c1-9989-223af2dd5584'')/"},{"rel":"icon","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''541b23d7-5e38-42c1-9989-223af2dd5584'')/Products(''Quicklook'')/$value"}],"id":"541b23d7-5e38-42c1-9989-223af2dd5584","summary":"Date:
-        2021-07-21T11:38:25.362Z, Instrument: SRAL, Satellite: Sentinel-3, Size: 878.05
-        KB","ondemand":"false","date":[{"name":"beginposition","content":"2021-07-21T11:38:25.362Z"},{"name":"endposition","content":"2021-07-21T11:38:45.293Z"},{"name":"creationdate","content":"2021-07-21T13:35:43Z"},{"name":"ingestiondate","content":"2021-07-22T17:24:02.797Z"}],"int":[{"name":"lrmpercentage","content":"0"},{"name":"sarpercentage","content":"100"},{"name":"closedseapercentage","content":"0"},{"name":"continentalicepercentage","content":"2"},{"name":"landpercentage","content":"22"},{"name":"openseapercentage","content":"74"},{"name":"relativeorbitnumber","content":"180"},{"name":"orbitnumber","content":"28258"}],"str":[{"name":"filename","content":"S3A_SR_1_SRA____20210721T113825_20210721T113845_20210721T133543_0019_074_180______LN3_O_NR_004.SEN3"},{"name":"format","content":"SAFE"},{"name":"identifier","content":"S3A_SR_1_SRA____20210721T113825_20210721T113845_20210721T133543_0019_074_180______LN3_O_NR_004"},{"name":"instrumentshortname","content":"SRAL"},{"name":"sensoroperationalmode","content":"Earth
-        Observation"},{"name":"instrumentname","content":"Sar Radar ALtimeter"},{"name":"mode","content":"EO"},{"name":"platformidentifier","content":"2016-011A"},{"name":"onlinequalitycheck","content":"PASSED"},{"name":"orbitdirection","content":"ascending"},{"name":"pduduration","content":"19"},{"name":"passnumber","content":"56515"},{"name":"passdirection","content":"ascending"},{"name":"procfacilityname","content":"Land
-        Surface Topography Mission Processing and Archiving Centre [LN3]"},{"name":"procfacilityorg","content":"European
-        Space Agency"},{"name":"processinglevel","content":"1"},{"name":"processingname","content":"Data
-        Processing"},{"name":"productlevel","content":"L1"},{"name":"producttype","content":"SR_1_SRA___"},{"name":"relorbitdir","content":"ascending"},{"name":"relpassnumber","content":"359"},{"name":"relpassdirection","content":"ascending"},{"name":"platformname","content":"Sentinel-3"},{"name":"size","content":"878.05
+        Scientific Data Hub"},"id":"https://apihub.copernicus.eu/apihub/search?q=identifier:\"S3B_SR_1_SRA____20230309T200705_20230309T200726_20230309T220807_0020_077_071______PS2_O_NR_004\"","opensearch:totalResults":"1","opensearch:startIndex":"0","opensearch:itemsPerPage":"100","opensearch:Query":{"role":"request","searchTerms":"identifier:\"S3B_SR_1_SRA____20230309T200705_20230309T200726_20230309T220807_0020_077_071______PS2_O_NR_004\"","startPage":"1"},"link":[{"rel":"self","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=identifier:\"S3B_SR_1_SRA____20230309T200705_20230309T200726_20230309T220807_0020_077_071______PS2_O_NR_004\"&start=0&rows=100&format=json"},{"rel":"first","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=identifier:\"S3B_SR_1_SRA____20230309T200705_20230309T200726_20230309T220807_0020_077_071______PS2_O_NR_004\"&start=0&rows=100&format=json"},{"rel":"last","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=identifier:\"S3B_SR_1_SRA____20230309T200705_20230309T200726_20230309T220807_0020_077_071______PS2_O_NR_004\"&start=0&rows=100&format=json"},{"rel":"search","type":"application/opensearchdescription+xml","href":"opensearch_description.xml"}],"entry":{"title":"S3B_SR_1_SRA____20230309T200705_20230309T200726_20230309T220807_0020_077_071______PS2_O_NR_004","link":[{"href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''96fc9975-1c5c-4279-9fd1-1336d9743d8a'')/$value"},{"rel":"alternative","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''96fc9975-1c5c-4279-9fd1-1336d9743d8a'')/"},{"rel":"icon","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''96fc9975-1c5c-4279-9fd1-1336d9743d8a'')/Products(''Quicklook'')/$value"}],"id":"96fc9975-1c5c-4279-9fd1-1336d9743d8a","summary":"Date:
+        2023-03-09T20:07:05.488Z, Instrument: SRAL, Satellite: Sentinel-3, Size: 908.03
+        KB","ondemand":"false","date":[{"name":"beginposition","content":"2023-03-09T20:07:05.488Z"},{"name":"endposition","content":"2023-03-09T20:07:26.402Z"},{"name":"creationdate","content":"2023-03-09T22:08:07Z"},{"name":"ingestiondate","content":"2023-03-09T22:12:14.268Z"}],"int":[{"name":"lrmpercentage","content":"0"},{"name":"sarpercentage","content":"100"},{"name":"closedseapercentage","content":"0"},{"name":"continentalicepercentage","content":"0"},{"name":"landpercentage","content":"19"},{"name":"openseapercentage","content":"80"},{"name":"relativeorbitnumber","content":"71"},{"name":"orbitnumber","content":"25368"}],"str":[{"name":"filename","content":"S3B_SR_1_SRA____20230309T200705_20230309T200726_20230309T220807_0020_077_071______PS2_O_NR_004.SEN3"},{"name":"format","content":"SAFE"},{"name":"identifier","content":"S3B_SR_1_SRA____20230309T200705_20230309T200726_20230309T220807_0020_077_071______PS2_O_NR_004"},{"name":"instrumentshortname","content":"SRAL"},{"name":"sensoroperationalmode","content":"Earth
+        Observation"},{"name":"instrumentname","content":"Sar Radar ALtimeter"},{"name":"mode","content":"EO"},{"name":"platformidentifier","content":"2018-039A"},{"name":"onlinequalitycheck","content":"PASSED"},{"name":"orbitdirection","content":"ascending"},{"name":"pduduration","content":"20"},{"name":"passnumber","content":"50735"},{"name":"passdirection","content":"ascending"},{"name":"procfacilityname","content":"S3B
+        Processing Service [PS2]"},{"name":"procfacilityorg","content":"SERCO"},{"name":"processinglevel","content":"1"},{"name":"processingname","content":"Data
+        Processing"},{"name":"productlevel","content":"L1"},{"name":"producttype","content":"SR_1_SRA___"},{"name":"relorbitdir","content":"ascending"},{"name":"relpassnumber","content":"141"},{"name":"relpassdirection","content":"ascending"},{"name":"platformname","content":"Sentinel-3"},{"name":"size","content":"908.03
         KB"},{"name":"timeliness","content":"Near Real Time"},{"name":"gmlfootprint","content":"<gml:Polygon
-        srsName=\"http://www.opengis.net/gml/srs/epsg.xml#4326\" xmlns:gml=\"http://www.opengis.net/gml\">\n   <gml:outerBoundaryIs>\n      <gml:LinearRing>\n         <gml:coordinates>80.2379,94.2248
-        80.5786,90.0452 80.868,85.5831 80.8663,85.5793 80.577,90.0407 80.2363,94.2198
-        80.2379,94.2248</gml:coordinates>\n      </gml:LinearRing>\n   </gml:outerBoundaryIs>\n</gml:Polygon>"},{"name":"footprint","content":"MULTIPOLYGON
-        (((94.2198 80.2363, 94.2248 80.2379, 90.0452 80.5786, 85.5831 80.868, 85.5793
-        80.8663, 90.0407 80.577, 94.2198 80.2363)))"},{"name":"uuid","content":"541b23d7-5e38-42c1-9989-223af2dd5584"}]}}}'
+        srsName=\"http://www.opengis.net/gml/srs/epsg.xml#4326\" xmlns:gml=\"http://www.opengis.net/gml\">\n   <gml:outerBoundaryIs>\n      <gml:LinearRing>\n         <gml:coordinates>63.8522,10.4374
+        64.6008,9.75265 65.3466,9.03244 65.3459,9.02847 64.6002,9.74877 63.8516,10.4336
+        63.8522,10.4374</gml:coordinates>\n      </gml:LinearRing>\n   </gml:outerBoundaryIs>\n</gml:Polygon>"},{"name":"footprint","content":"MULTIPOLYGON
+        (((10.4336 63.8516, 10.4374 63.8522, 9.75265 64.6008, 9.03244 65.3466, 9.02847
+        65.3459, 9.74877 64.6002, 10.4336 63.8516)))"},{"name":"uuid","content":"96fc9975-1c5c-4279-9fd1-1336d9743d8a"}]}}}'
     headers:
       content-length:
-      - '4983'
+      - '4929'
       content-type:
       - application/json
       pragma:
       - no-cache
-      server:
-      - Apache-Coyote/1.1
       vary:
       - Accept-Encoding
     status:
       code: 200
-      message: OK
+      message: ''
 - request:
     body: null
     headers:
@@ -369,41 +348,38 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - sentinelsat/1.0.1
+      - sentinelsat/1.1.1
     method: GET
-    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=100&start=0&q=identifier%3A%22S3B_SR_1_SRA____20210720T112514_20210720T112540_20210720T133004_0025_055_023______LN3_O_NR_004%22
+    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=100&start=0&q=identifier%3A%22S3B_SR_1_SRA____20230308T203304_20230308T203328_20230308T223420_0023_077_057______PS2_O_NR_004%22
   response:
     body:
       string: '{"feed":{"xmlns:opensearch":"http://a9.com/-/spec/opensearch/1.1/","xmlns":"http://www.w3.org/2005/Atom","title":"Sentinels
-        Scientific Data Hub search results for: identifier:\"S3B_SR_1_SRA____20210720T112514_20210720T112540_20210720T133004_0025_055_023______LN3_O_NR_004\"","subtitle":"Displaying
+        Scientific Data Hub search results for: identifier:\"S3B_SR_1_SRA____20230308T203304_20230308T203328_20230308T223420_0023_077_057______PS2_O_NR_004\"","subtitle":"Displaying
         1 results. Request done in ... seconds.","updated":"...","author":{"name":"Sentinels
-        Scientific Data Hub"},"id":"https://apihub.copernicus.eu/apihub/search?q=identifier:\"S3B_SR_1_SRA____20210720T112514_20210720T112540_20210720T133004_0025_055_023______LN3_O_NR_004\"","opensearch:totalResults":"1","opensearch:startIndex":"0","opensearch:itemsPerPage":"100","opensearch:Query":{"role":"request","searchTerms":"identifier:\"S3B_SR_1_SRA____20210720T112514_20210720T112540_20210720T133004_0025_055_023______LN3_O_NR_004\"","startPage":"1"},"link":[{"rel":"self","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=identifier:\"S3B_SR_1_SRA____20210720T112514_20210720T112540_20210720T133004_0025_055_023______LN3_O_NR_004\"&start=0&rows=100&format=json"},{"rel":"first","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=identifier:\"S3B_SR_1_SRA____20210720T112514_20210720T112540_20210720T133004_0025_055_023______LN3_O_NR_004\"&start=0&rows=100&format=json"},{"rel":"last","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=identifier:\"S3B_SR_1_SRA____20210720T112514_20210720T112540_20210720T133004_0025_055_023______LN3_O_NR_004\"&start=0&rows=100&format=json"},{"rel":"search","type":"application/opensearchdescription+xml","href":"opensearch_description.xml"}],"entry":{"title":"S3B_SR_1_SRA____20210720T112514_20210720T112540_20210720T133004_0025_055_023______LN3_O_NR_004","link":[{"href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''63b9e6c2-bac5-47d3-a4d4-bc57be31e6cd'')/$value"},{"rel":"alternative","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''63b9e6c2-bac5-47d3-a4d4-bc57be31e6cd'')/"},{"rel":"icon","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''63b9e6c2-bac5-47d3-a4d4-bc57be31e6cd'')/Products(''Quicklook'')/$value"}],"id":"63b9e6c2-bac5-47d3-a4d4-bc57be31e6cd","summary":"Date:
-        2021-07-20T11:25:14.344Z, Instrument: SRAL, Satellite: Sentinel-3, Size: 983.54
-        KB","ondemand":"false","date":[{"name":"beginposition","content":"2021-07-20T11:25:14.344Z"},{"name":"endposition","content":"2021-07-20T11:25:40.296Z"},{"name":"creationdate","content":"2021-07-20T13:30:04Z"},{"name":"ingestiondate","content":"2021-07-22T12:00:00.851Z"}],"int":[{"name":"lrmpercentage","content":"0"},{"name":"sarpercentage","content":"100"},{"name":"closedseapercentage","content":"0"},{"name":"continentalicepercentage","content":"29"},{"name":"landpercentage","content":"12"},{"name":"openseapercentage","content":"57"},{"name":"relativeorbitnumber","content":"23"},{"name":"orbitnumber","content":"16850"}],"str":[{"name":"filename","content":"S3B_SR_1_SRA____20210720T112514_20210720T112540_20210720T133004_0025_055_023______LN3_O_NR_004.SEN3"},{"name":"format","content":"SAFE"},{"name":"identifier","content":"S3B_SR_1_SRA____20210720T112514_20210720T112540_20210720T133004_0025_055_023______LN3_O_NR_004"},{"name":"instrumentshortname","content":"SRAL"},{"name":"sensoroperationalmode","content":"Earth
-        Observation"},{"name":"instrumentname","content":"Sar Radar ALtimeter"},{"name":"mode","content":"EO"},{"name":"platformidentifier","content":"2018-039A"},{"name":"onlinequalitycheck","content":"PASSED"},{"name":"orbitdirection","content":"ascending"},{"name":"pduduration","content":"25"},{"name":"passnumber","content":"33699"},{"name":"passdirection","content":"ascending"},{"name":"procfacilityname","content":"Land
-        Surface Topography Mission Processing and Archiving Centre [LN3]"},{"name":"procfacilityorg","content":"European
-        Space Agency"},{"name":"processinglevel","content":"1"},{"name":"processingname","content":"Data
-        Processing"},{"name":"productlevel","content":"L1"},{"name":"producttype","content":"SR_1_SRA___"},{"name":"relorbitdir","content":"ascending"},{"name":"relpassnumber","content":"45"},{"name":"relpassdirection","content":"ascending"},{"name":"platformname","content":"Sentinel-3"},{"name":"size","content":"983.54
+        Scientific Data Hub"},"id":"https://apihub.copernicus.eu/apihub/search?q=identifier:\"S3B_SR_1_SRA____20230308T203304_20230308T203328_20230308T223420_0023_077_057______PS2_O_NR_004\"","opensearch:totalResults":"1","opensearch:startIndex":"0","opensearch:itemsPerPage":"100","opensearch:Query":{"role":"request","searchTerms":"identifier:\"S3B_SR_1_SRA____20230308T203304_20230308T203328_20230308T223420_0023_077_057______PS2_O_NR_004\"","startPage":"1"},"link":[{"rel":"self","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=identifier:\"S3B_SR_1_SRA____20230308T203304_20230308T203328_20230308T223420_0023_077_057______PS2_O_NR_004\"&start=0&rows=100&format=json"},{"rel":"first","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=identifier:\"S3B_SR_1_SRA____20230308T203304_20230308T203328_20230308T223420_0023_077_057______PS2_O_NR_004\"&start=0&rows=100&format=json"},{"rel":"last","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=identifier:\"S3B_SR_1_SRA____20230308T203304_20230308T203328_20230308T223420_0023_077_057______PS2_O_NR_004\"&start=0&rows=100&format=json"},{"rel":"search","type":"application/opensearchdescription+xml","href":"opensearch_description.xml"}],"entry":{"title":"S3B_SR_1_SRA____20230308T203304_20230308T203328_20230308T223420_0023_077_057______PS2_O_NR_004","link":[{"href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''ff10826d-78b9-4062-9f69-fca7d1d832d8'')/$value"},{"rel":"alternative","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''ff10826d-78b9-4062-9f69-fca7d1d832d8'')/"},{"rel":"icon","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''ff10826d-78b9-4062-9f69-fca7d1d832d8'')/Products(''Quicklook'')/$value"}],"id":"ff10826d-78b9-4062-9f69-fca7d1d832d8","summary":"Date:
+        2023-03-08T20:33:04.327Z, Instrument: SRAL, Satellite: Sentinel-3, Size: 975.10
+        KB","ondemand":"false","date":[{"name":"beginposition","content":"2023-03-08T20:33:04.327Z"},{"name":"endposition","content":"2023-03-08T20:33:28.292Z"},{"name":"creationdate","content":"2023-03-08T22:34:20Z"},{"name":"ingestiondate","content":"2023-03-08T22:40:10.82Z"}],"int":[{"name":"lrmpercentage","content":"0"},{"name":"sarpercentage","content":"100"},{"name":"closedseapercentage","content":"0"},{"name":"continentalicepercentage","content":"0"},{"name":"landpercentage","content":"0"},{"name":"openseapercentage","content":"100"},{"name":"relativeorbitnumber","content":"57"},{"name":"orbitnumber","content":"25354"}],"str":[{"name":"filename","content":"S3B_SR_1_SRA____20230308T203304_20230308T203328_20230308T223420_0023_077_057______PS2_O_NR_004.SEN3"},{"name":"format","content":"SAFE"},{"name":"identifier","content":"S3B_SR_1_SRA____20230308T203304_20230308T203328_20230308T223420_0023_077_057______PS2_O_NR_004"},{"name":"instrumentshortname","content":"SRAL"},{"name":"sensoroperationalmode","content":"Earth
+        Observation"},{"name":"instrumentname","content":"Sar Radar ALtimeter"},{"name":"mode","content":"EO"},{"name":"platformidentifier","content":"2018-039A"},{"name":"onlinequalitycheck","content":"PASSED"},{"name":"orbitdirection","content":"ascending"},{"name":"pduduration","content":"23"},{"name":"passnumber","content":"50707"},{"name":"passdirection","content":"ascending"},{"name":"procfacilityname","content":"S3B
+        Processing Service [PS2]"},{"name":"procfacilityorg","content":"SERCO"},{"name":"processinglevel","content":"1"},{"name":"processingname","content":"Data
+        Processing"},{"name":"productlevel","content":"L1"},{"name":"producttype","content":"SR_1_SRA___"},{"name":"relorbitdir","content":"ascending"},{"name":"relpassnumber","content":"113"},{"name":"relpassdirection","content":"ascending"},{"name":"platformname","content":"Sentinel-3"},{"name":"size","content":"975.10
         KB"},{"name":"timeliness","content":"Near Real Time"},{"name":"gmlfootprint","content":"<gml:Polygon
-        srsName=\"http://www.opengis.net/gml/srs/epsg.xml#4326\" xmlns:gml=\"http://www.opengis.net/gml\">\n   <gml:outerBoundaryIs>\n      <gml:LinearRing>\n         <gml:coordinates>80.2597,97.2089
-        80.6679,91.9953 80.9958,86.3638 80.9941,86.3603 80.6662,91.991 80.2581,97.204
-        80.2597,97.2089</gml:coordinates>\n      </gml:LinearRing>\n   </gml:outerBoundaryIs>\n</gml:Polygon>"},{"name":"footprint","content":"MULTIPOLYGON
-        (((97.204 80.2581, 97.2089 80.2597, 91.9953 80.6679, 86.3638 80.9958, 86.3603
-        80.9941, 91.991 80.6662, 97.204 80.2581)))"},{"name":"uuid","content":"63b9e6c2-bac5-47d3-a4d4-bc57be31e6cd"}]}}}'
+        srsName=\"http://www.opengis.net/gml/srs/epsg.xml#4326\" xmlns:gml=\"http://www.opengis.net/gml\">\n   <gml:outerBoundaryIs>\n      <gml:LinearRing>\n         <gml:coordinates>63.1914,4.46729
+        64.0276,3.73467 64.8604,2.96083 64.8598,2.95692 64.0269,3.73087 63.1908,4.46359
+        63.1914,4.46729</gml:coordinates>\n      </gml:LinearRing>\n   </gml:outerBoundaryIs>\n</gml:Polygon>"},{"name":"footprint","content":"MULTIPOLYGON
+        (((4.46359 63.1908, 4.46729 63.1914, 3.73467 64.0276, 2.96083 64.8604, 2.95692
+        64.8598, 3.73087 64.0269, 4.46359 63.1908)))"},{"name":"uuid","content":"ff10826d-78b9-4062-9f69-fca7d1d832d8"}]}}}'
     headers:
       content-length:
-      - '4981'
+      - '4928'
       content-type:
       - application/json
       pragma:
       - no-cache
-      server:
-      - Apache-Coyote/1.1
       vary:
       - Accept-Encoding
     status:
       code: 200
-      message: OK
+      message: ''
 - request:
     body: null
     headers:
@@ -414,41 +390,39 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - sentinelsat/1.0.1
+      - sentinelsat/1.1.1
     method: GET
-    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=100&start=0&q=identifier%3A%22S3B_SR_1_SRA____20210720T194442_20210720T194500_20210720T214156_0017_055_028______LN3_O_NR_004%22
+    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=100&start=0&q=identifier%3A%22S3A_SR_1_SRA____20230309T204558_20230309T204623_20230309T225028_0024_096_214______PS1_O_NR_004%22
   response:
     body:
       string: '{"feed":{"xmlns:opensearch":"http://a9.com/-/spec/opensearch/1.1/","xmlns":"http://www.w3.org/2005/Atom","title":"Sentinels
-        Scientific Data Hub search results for: identifier:\"S3B_SR_1_SRA____20210720T194442_20210720T194500_20210720T214156_0017_055_028______LN3_O_NR_004\"","subtitle":"Displaying
+        Scientific Data Hub search results for: identifier:\"S3A_SR_1_SRA____20230309T204558_20230309T204623_20230309T225028_0024_096_214______PS1_O_NR_004\"","subtitle":"Displaying
         1 results. Request done in ... seconds.","updated":"...","author":{"name":"Sentinels
-        Scientific Data Hub"},"id":"https://apihub.copernicus.eu/apihub/search?q=identifier:\"S3B_SR_1_SRA____20210720T194442_20210720T194500_20210720T214156_0017_055_028______LN3_O_NR_004\"","opensearch:totalResults":"1","opensearch:startIndex":"0","opensearch:itemsPerPage":"100","opensearch:Query":{"role":"request","searchTerms":"identifier:\"S3B_SR_1_SRA____20210720T194442_20210720T194500_20210720T214156_0017_055_028______LN3_O_NR_004\"","startPage":"1"},"link":[{"rel":"self","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=identifier:\"S3B_SR_1_SRA____20210720T194442_20210720T194500_20210720T214156_0017_055_028______LN3_O_NR_004\"&start=0&rows=100&format=json"},{"rel":"first","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=identifier:\"S3B_SR_1_SRA____20210720T194442_20210720T194500_20210720T214156_0017_055_028______LN3_O_NR_004\"&start=0&rows=100&format=json"},{"rel":"last","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=identifier:\"S3B_SR_1_SRA____20210720T194442_20210720T194500_20210720T214156_0017_055_028______LN3_O_NR_004\"&start=0&rows=100&format=json"},{"rel":"search","type":"application/opensearchdescription+xml","href":"opensearch_description.xml"}],"entry":{"title":"S3B_SR_1_SRA____20210720T194442_20210720T194500_20210720T214156_0017_055_028______LN3_O_NR_004","link":[{"href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''2edae234-b02d-46d2-8915-823e4ec0eadb'')/$value"},{"rel":"alternative","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''2edae234-b02d-46d2-8915-823e4ec0eadb'')/"},{"rel":"icon","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''2edae234-b02d-46d2-8915-823e4ec0eadb'')/Products(''Quicklook'')/$value"}],"id":"2edae234-b02d-46d2-8915-823e4ec0eadb","summary":"Date:
-        2021-07-20T19:44:42.48Z, Instrument: SRAL, Satellite: Sentinel-3, Size: 849.68
-        KB","ondemand":"false","date":[{"name":"beginposition","content":"2021-07-20T19:44:42.48Z"},{"name":"endposition","content":"2021-07-20T19:45:00.259Z"},{"name":"creationdate","content":"2021-07-20T21:41:56Z"},{"name":"ingestiondate","content":"2021-07-22T18:24:00.842Z"}],"int":[{"name":"lrmpercentage","content":"0"},{"name":"sarpercentage","content":"100"},{"name":"closedseapercentage","content":"2"},{"name":"continentalicepercentage","content":"0"},{"name":"landpercentage","content":"97"},{"name":"openseapercentage","content":"0"},{"name":"relativeorbitnumber","content":"28"},{"name":"orbitnumber","content":"16855"}],"str":[{"name":"filename","content":"S3B_SR_1_SRA____20210720T194442_20210720T194500_20210720T214156_0017_055_028______LN3_O_NR_004.SEN3"},{"name":"format","content":"SAFE"},{"name":"identifier","content":"S3B_SR_1_SRA____20210720T194442_20210720T194500_20210720T214156_0017_055_028______LN3_O_NR_004"},{"name":"instrumentshortname","content":"SRAL"},{"name":"sensoroperationalmode","content":"Earth
-        Observation"},{"name":"instrumentname","content":"Sar Radar ALtimeter"},{"name":"mode","content":"EO"},{"name":"platformidentifier","content":"2018-039A"},{"name":"onlinequalitycheck","content":"PASSED"},{"name":"orbitdirection","content":"ascending"},{"name":"pduduration","content":"17"},{"name":"passnumber","content":"33709"},{"name":"passdirection","content":"ascending"},{"name":"procfacilityname","content":"Land
-        Surface Topography Mission Processing and Archiving Centre [LN3]"},{"name":"procfacilityorg","content":"European
-        Space Agency"},{"name":"processinglevel","content":"1"},{"name":"processingname","content":"Data
-        Processing"},{"name":"productlevel","content":"L1"},{"name":"producttype","content":"SR_1_SRA___"},{"name":"relorbitdir","content":"ascending"},{"name":"relpassnumber","content":"55"},{"name":"relpassdirection","content":"ascending"},{"name":"platformname","content":"Sentinel-3"},{"name":"size","content":"849.68
+        Scientific Data Hub"},"id":"https://apihub.copernicus.eu/apihub/search?q=identifier:\"S3A_SR_1_SRA____20230309T204558_20230309T204623_20230309T225028_0024_096_214______PS1_O_NR_004\"","opensearch:totalResults":"1","opensearch:startIndex":"0","opensearch:itemsPerPage":"100","opensearch:Query":{"role":"request","searchTerms":"identifier:\"S3A_SR_1_SRA____20230309T204558_20230309T204623_20230309T225028_0024_096_214______PS1_O_NR_004\"","startPage":"1"},"link":[{"rel":"self","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=identifier:\"S3A_SR_1_SRA____20230309T204558_20230309T204623_20230309T225028_0024_096_214______PS1_O_NR_004\"&start=0&rows=100&format=json"},{"rel":"first","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=identifier:\"S3A_SR_1_SRA____20230309T204558_20230309T204623_20230309T225028_0024_096_214______PS1_O_NR_004\"&start=0&rows=100&format=json"},{"rel":"last","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=identifier:\"S3A_SR_1_SRA____20230309T204558_20230309T204623_20230309T225028_0024_096_214______PS1_O_NR_004\"&start=0&rows=100&format=json"},{"rel":"search","type":"application/opensearchdescription+xml","href":"opensearch_description.xml"}],"entry":{"title":"S3A_SR_1_SRA____20230309T204558_20230309T204623_20230309T225028_0024_096_214______PS1_O_NR_004","link":[{"href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''b1d8a9ab-6072-4ecd-bc44-8d64419d71cb'')/$value"},{"rel":"alternative","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''b1d8a9ab-6072-4ecd-bc44-8d64419d71cb'')/"},{"rel":"icon","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''b1d8a9ab-6072-4ecd-bc44-8d64419d71cb'')/Products(''Quicklook'')/$value"}],"id":"b1d8a9ab-6072-4ecd-bc44-8d64419d71cb","summary":"Date:
+        2023-03-09T20:45:58.338Z, Instrument: SRAL, Satellite: Sentinel-3, Size: 995.77
+        KB","ondemand":"false","date":[{"name":"beginposition","content":"2023-03-09T20:45:58.338Z"},{"name":"endposition","content":"2023-03-09T20:46:23.31Z"},{"name":"creationdate","content":"2023-03-09T22:50:28Z"},{"name":"ingestiondate","content":"2023-03-09T23:04:10.307Z"}],"int":[{"name":"lrmpercentage","content":"0"},{"name":"sarpercentage","content":"100"},{"name":"closedseapercentage","content":"0"},{"name":"continentalicepercentage","content":"0"},{"name":"landpercentage","content":"0"},{"name":"openseapercentage","content":"100"},{"name":"relativeorbitnumber","content":"214"},{"name":"orbitnumber","content":"36762"}],"str":[{"name":"filename","content":"S3A_SR_1_SRA____20230309T204558_20230309T204623_20230309T225028_0024_096_214______PS1_O_NR_004.SEN3"},{"name":"format","content":"SAFE"},{"name":"identifier","content":"S3A_SR_1_SRA____20230309T204558_20230309T204623_20230309T225028_0024_096_214______PS1_O_NR_004"},{"name":"instrumentshortname","content":"SRAL"},{"name":"sensoroperationalmode","content":"Earth
+        Observation"},{"name":"instrumentname","content":"Sar Radar ALtimeter"},{"name":"mode","content":"EO"},{"name":"platformidentifier","content":"2016-011A"},{"name":"onlinequalitycheck","content":"PASSED"},{"name":"orbitdirection","content":"ascending"},{"name":"pduduration","content":"24"},{"name":"passnumber","content":"73523"},{"name":"passdirection","content":"ascending"},{"name":"procfacilityname","content":"S3A
+        Processing Service [PS1]"},{"name":"procfacilityorg","content":"ACRI-ST"},{"name":"processinglevel","content":"1"},{"name":"processingname","content":"Data
+        Processing"},{"name":"productlevel","content":"L1"},{"name":"producttype","content":"SR_1_SRA___"},{"name":"relorbitdir","content":"ascending"},{"name":"relpassnumber","content":"427"},{"name":"relpassdirection","content":"ascending"},{"name":"platformname","content":"Sentinel-3"},{"name":"size","content":"995.77
         KB"},{"name":"timeliness","content":"Near Real Time"},{"name":"gmlfootprint","content":"<gml:Polygon
-        srsName=\"http://www.opengis.net/gml/srs/epsg.xml#4326\" xmlns:gml=\"http://www.opengis.net/gml\">\n   <gml:outerBoundaryIs>\n      <gml:LinearRing>\n         <gml:coordinates>64.5397,15.4142
-        65.1997,14.7813 65.8572,14.1188 65.8565,14.1147 65.199,14.7774 64.5391,15.4103
-        64.5397,15.4142</gml:coordinates>\n      </gml:LinearRing>\n   </gml:outerBoundaryIs>\n</gml:Polygon>"},{"name":"footprint","content":"MULTIPOLYGON
-        (((15.4103 64.5391, 15.4142 64.5397, 14.7813 65.1997, 14.1188 65.8572, 14.1147
-        65.8565, 14.7774 65.199, 15.4103 64.5391)))"},{"name":"uuid","content":"2edae234-b02d-46d2-8915-823e4ec0eadb"}]}}}'
+        srsName=\"http://www.opengis.net/gml/srs/epsg.xml#4326\" xmlns:gml=\"http://www.opengis.net/gml\">\n   <gml:outerBoundaryIs>\n      <gml:LinearRing>\n         <gml:coordinates>63.138,1.21834
+        63.9204,0.535948 64.6998,-0.182113 64.6992,-0.185998 63.9197,0.532157 63.1374,1.21463
+        63.138,1.21834</gml:coordinates>\n      </gml:LinearRing>\n   </gml:outerBoundaryIs>\n</gml:Polygon>"},{"name":"footprint","content":"MULTIPOLYGON
+        (((1.21463 63.1374, 1.21834 63.138, 0.535948 63.9204, -8.0221844617381750e-18
+        64.5021303421297, -0.182113 64.6998, -0.185998 64.6992, -8.4140017815505920e-18
+        64.49731399906705, 0.532157 63.9197, 1.21463 63.1374)))"},{"name":"uuid","content":"b1d8a9ab-6072-4ecd-bc44-8d64419d71cb"}]}}}'
     headers:
       content-length:
-      - '4980'
+      - '5025'
       content-type:
       - application/json
       pragma:
       - no-cache
-      server:
-      - Apache-Coyote/1.1
       vary:
       - Accept-Encoding
     status:
       code: 200
-      message: OK
+      message: ''
 - request:
     body: null
     headers:
@@ -459,41 +433,38 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - sentinelsat/1.0.1
+      - sentinelsat/1.1.1
     method: GET
-    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=100&start=0&q=identifier%3A%22S3A_SR_1_SRA____20210721T113825_20210721T113845_20210721T133543_0019_074_180______LN3_O_NR_004%22
+    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=100&start=0&q=identifier%3A%22S3B_SR_1_SRA____20230309T200705_20230309T200726_20230309T220807_0020_077_071______PS2_O_NR_004%22
   response:
     body:
       string: '{"feed":{"xmlns:opensearch":"http://a9.com/-/spec/opensearch/1.1/","xmlns":"http://www.w3.org/2005/Atom","title":"Sentinels
-        Scientific Data Hub search results for: identifier:\"S3A_SR_1_SRA____20210721T113825_20210721T113845_20210721T133543_0019_074_180______LN3_O_NR_004\"","subtitle":"Displaying
+        Scientific Data Hub search results for: identifier:\"S3B_SR_1_SRA____20230309T200705_20230309T200726_20230309T220807_0020_077_071______PS2_O_NR_004\"","subtitle":"Displaying
         1 results. Request done in ... seconds.","updated":"...","author":{"name":"Sentinels
-        Scientific Data Hub"},"id":"https://apihub.copernicus.eu/apihub/search?q=identifier:\"S3A_SR_1_SRA____20210721T113825_20210721T113845_20210721T133543_0019_074_180______LN3_O_NR_004\"","opensearch:totalResults":"1","opensearch:startIndex":"0","opensearch:itemsPerPage":"100","opensearch:Query":{"role":"request","searchTerms":"identifier:\"S3A_SR_1_SRA____20210721T113825_20210721T113845_20210721T133543_0019_074_180______LN3_O_NR_004\"","startPage":"1"},"link":[{"rel":"self","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=identifier:\"S3A_SR_1_SRA____20210721T113825_20210721T113845_20210721T133543_0019_074_180______LN3_O_NR_004\"&start=0&rows=100&format=json"},{"rel":"first","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=identifier:\"S3A_SR_1_SRA____20210721T113825_20210721T113845_20210721T133543_0019_074_180______LN3_O_NR_004\"&start=0&rows=100&format=json"},{"rel":"last","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=identifier:\"S3A_SR_1_SRA____20210721T113825_20210721T113845_20210721T133543_0019_074_180______LN3_O_NR_004\"&start=0&rows=100&format=json"},{"rel":"search","type":"application/opensearchdescription+xml","href":"opensearch_description.xml"}],"entry":{"title":"S3A_SR_1_SRA____20210721T113825_20210721T113845_20210721T133543_0019_074_180______LN3_O_NR_004","link":[{"href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''541b23d7-5e38-42c1-9989-223af2dd5584'')/$value"},{"rel":"alternative","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''541b23d7-5e38-42c1-9989-223af2dd5584'')/"},{"rel":"icon","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''541b23d7-5e38-42c1-9989-223af2dd5584'')/Products(''Quicklook'')/$value"}],"id":"541b23d7-5e38-42c1-9989-223af2dd5584","summary":"Date:
-        2021-07-21T11:38:25.362Z, Instrument: SRAL, Satellite: Sentinel-3, Size: 878.05
-        KB","ondemand":"false","date":[{"name":"beginposition","content":"2021-07-21T11:38:25.362Z"},{"name":"endposition","content":"2021-07-21T11:38:45.293Z"},{"name":"creationdate","content":"2021-07-21T13:35:43Z"},{"name":"ingestiondate","content":"2021-07-22T17:24:02.797Z"}],"int":[{"name":"lrmpercentage","content":"0"},{"name":"sarpercentage","content":"100"},{"name":"closedseapercentage","content":"0"},{"name":"continentalicepercentage","content":"2"},{"name":"landpercentage","content":"22"},{"name":"openseapercentage","content":"74"},{"name":"relativeorbitnumber","content":"180"},{"name":"orbitnumber","content":"28258"}],"str":[{"name":"filename","content":"S3A_SR_1_SRA____20210721T113825_20210721T113845_20210721T133543_0019_074_180______LN3_O_NR_004.SEN3"},{"name":"format","content":"SAFE"},{"name":"identifier","content":"S3A_SR_1_SRA____20210721T113825_20210721T113845_20210721T133543_0019_074_180______LN3_O_NR_004"},{"name":"instrumentshortname","content":"SRAL"},{"name":"sensoroperationalmode","content":"Earth
-        Observation"},{"name":"instrumentname","content":"Sar Radar ALtimeter"},{"name":"mode","content":"EO"},{"name":"platformidentifier","content":"2016-011A"},{"name":"onlinequalitycheck","content":"PASSED"},{"name":"orbitdirection","content":"ascending"},{"name":"pduduration","content":"19"},{"name":"passnumber","content":"56515"},{"name":"passdirection","content":"ascending"},{"name":"procfacilityname","content":"Land
-        Surface Topography Mission Processing and Archiving Centre [LN3]"},{"name":"procfacilityorg","content":"European
-        Space Agency"},{"name":"processinglevel","content":"1"},{"name":"processingname","content":"Data
-        Processing"},{"name":"productlevel","content":"L1"},{"name":"producttype","content":"SR_1_SRA___"},{"name":"relorbitdir","content":"ascending"},{"name":"relpassnumber","content":"359"},{"name":"relpassdirection","content":"ascending"},{"name":"platformname","content":"Sentinel-3"},{"name":"size","content":"878.05
+        Scientific Data Hub"},"id":"https://apihub.copernicus.eu/apihub/search?q=identifier:\"S3B_SR_1_SRA____20230309T200705_20230309T200726_20230309T220807_0020_077_071______PS2_O_NR_004\"","opensearch:totalResults":"1","opensearch:startIndex":"0","opensearch:itemsPerPage":"100","opensearch:Query":{"role":"request","searchTerms":"identifier:\"S3B_SR_1_SRA____20230309T200705_20230309T200726_20230309T220807_0020_077_071______PS2_O_NR_004\"","startPage":"1"},"link":[{"rel":"self","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=identifier:\"S3B_SR_1_SRA____20230309T200705_20230309T200726_20230309T220807_0020_077_071______PS2_O_NR_004\"&start=0&rows=100&format=json"},{"rel":"first","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=identifier:\"S3B_SR_1_SRA____20230309T200705_20230309T200726_20230309T220807_0020_077_071______PS2_O_NR_004\"&start=0&rows=100&format=json"},{"rel":"last","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=identifier:\"S3B_SR_1_SRA____20230309T200705_20230309T200726_20230309T220807_0020_077_071______PS2_O_NR_004\"&start=0&rows=100&format=json"},{"rel":"search","type":"application/opensearchdescription+xml","href":"opensearch_description.xml"}],"entry":{"title":"S3B_SR_1_SRA____20230309T200705_20230309T200726_20230309T220807_0020_077_071______PS2_O_NR_004","link":[{"href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''96fc9975-1c5c-4279-9fd1-1336d9743d8a'')/$value"},{"rel":"alternative","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''96fc9975-1c5c-4279-9fd1-1336d9743d8a'')/"},{"rel":"icon","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''96fc9975-1c5c-4279-9fd1-1336d9743d8a'')/Products(''Quicklook'')/$value"}],"id":"96fc9975-1c5c-4279-9fd1-1336d9743d8a","summary":"Date:
+        2023-03-09T20:07:05.488Z, Instrument: SRAL, Satellite: Sentinel-3, Size: 908.03
+        KB","ondemand":"false","date":[{"name":"beginposition","content":"2023-03-09T20:07:05.488Z"},{"name":"endposition","content":"2023-03-09T20:07:26.402Z"},{"name":"creationdate","content":"2023-03-09T22:08:07Z"},{"name":"ingestiondate","content":"2023-03-09T22:12:14.268Z"}],"int":[{"name":"lrmpercentage","content":"0"},{"name":"sarpercentage","content":"100"},{"name":"closedseapercentage","content":"0"},{"name":"continentalicepercentage","content":"0"},{"name":"landpercentage","content":"19"},{"name":"openseapercentage","content":"80"},{"name":"relativeorbitnumber","content":"71"},{"name":"orbitnumber","content":"25368"}],"str":[{"name":"filename","content":"S3B_SR_1_SRA____20230309T200705_20230309T200726_20230309T220807_0020_077_071______PS2_O_NR_004.SEN3"},{"name":"format","content":"SAFE"},{"name":"identifier","content":"S3B_SR_1_SRA____20230309T200705_20230309T200726_20230309T220807_0020_077_071______PS2_O_NR_004"},{"name":"instrumentshortname","content":"SRAL"},{"name":"sensoroperationalmode","content":"Earth
+        Observation"},{"name":"instrumentname","content":"Sar Radar ALtimeter"},{"name":"mode","content":"EO"},{"name":"platformidentifier","content":"2018-039A"},{"name":"onlinequalitycheck","content":"PASSED"},{"name":"orbitdirection","content":"ascending"},{"name":"pduduration","content":"20"},{"name":"passnumber","content":"50735"},{"name":"passdirection","content":"ascending"},{"name":"procfacilityname","content":"S3B
+        Processing Service [PS2]"},{"name":"procfacilityorg","content":"SERCO"},{"name":"processinglevel","content":"1"},{"name":"processingname","content":"Data
+        Processing"},{"name":"productlevel","content":"L1"},{"name":"producttype","content":"SR_1_SRA___"},{"name":"relorbitdir","content":"ascending"},{"name":"relpassnumber","content":"141"},{"name":"relpassdirection","content":"ascending"},{"name":"platformname","content":"Sentinel-3"},{"name":"size","content":"908.03
         KB"},{"name":"timeliness","content":"Near Real Time"},{"name":"gmlfootprint","content":"<gml:Polygon
-        srsName=\"http://www.opengis.net/gml/srs/epsg.xml#4326\" xmlns:gml=\"http://www.opengis.net/gml\">\n   <gml:outerBoundaryIs>\n      <gml:LinearRing>\n         <gml:coordinates>80.2379,94.2248
-        80.5786,90.0452 80.868,85.5831 80.8663,85.5793 80.577,90.0407 80.2363,94.2198
-        80.2379,94.2248</gml:coordinates>\n      </gml:LinearRing>\n   </gml:outerBoundaryIs>\n</gml:Polygon>"},{"name":"footprint","content":"MULTIPOLYGON
-        (((94.2198 80.2363, 94.2248 80.2379, 90.0452 80.5786, 85.5831 80.868, 85.5793
-        80.8663, 90.0407 80.577, 94.2198 80.2363)))"},{"name":"uuid","content":"541b23d7-5e38-42c1-9989-223af2dd5584"}]}}}'
+        srsName=\"http://www.opengis.net/gml/srs/epsg.xml#4326\" xmlns:gml=\"http://www.opengis.net/gml\">\n   <gml:outerBoundaryIs>\n      <gml:LinearRing>\n         <gml:coordinates>63.8522,10.4374
+        64.6008,9.75265 65.3466,9.03244 65.3459,9.02847 64.6002,9.74877 63.8516,10.4336
+        63.8522,10.4374</gml:coordinates>\n      </gml:LinearRing>\n   </gml:outerBoundaryIs>\n</gml:Polygon>"},{"name":"footprint","content":"MULTIPOLYGON
+        (((10.4336 63.8516, 10.4374 63.8522, 9.75265 64.6008, 9.03244 65.3466, 9.02847
+        65.3459, 9.74877 64.6002, 10.4336 63.8516)))"},{"name":"uuid","content":"96fc9975-1c5c-4279-9fd1-1336d9743d8a"}]}}}'
     headers:
       content-length:
-      - '4983'
+      - '4929'
       content-type:
       - application/json
       pragma:
       - no-cache
-      server:
-      - Apache-Coyote/1.1
       vary:
       - Accept-Encoding
     status:
       code: 200
-      message: OK
+      message: ''
 - request:
     body: null
     headers:
@@ -504,39 +475,36 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - sentinelsat/1.0.1
+      - sentinelsat/1.1.1
     method: GET
-    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=100&start=0&q=identifier%3A%22S3B_SR_1_SRA____20210720T112514_20210720T112540_20210720T133004_0025_055_023______LN3_O_NR_004%22
+    uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=100&start=0&q=identifier%3A%22S3B_SR_1_SRA____20230308T203304_20230308T203328_20230308T223420_0023_077_057______PS2_O_NR_004%22
   response:
     body:
       string: '{"feed":{"xmlns:opensearch":"http://a9.com/-/spec/opensearch/1.1/","xmlns":"http://www.w3.org/2005/Atom","title":"Sentinels
-        Scientific Data Hub search results for: identifier:\"S3B_SR_1_SRA____20210720T112514_20210720T112540_20210720T133004_0025_055_023______LN3_O_NR_004\"","subtitle":"Displaying
+        Scientific Data Hub search results for: identifier:\"S3B_SR_1_SRA____20230308T203304_20230308T203328_20230308T223420_0023_077_057______PS2_O_NR_004\"","subtitle":"Displaying
         1 results. Request done in ... seconds.","updated":"...","author":{"name":"Sentinels
-        Scientific Data Hub"},"id":"https://apihub.copernicus.eu/apihub/search?q=identifier:\"S3B_SR_1_SRA____20210720T112514_20210720T112540_20210720T133004_0025_055_023______LN3_O_NR_004\"","opensearch:totalResults":"1","opensearch:startIndex":"0","opensearch:itemsPerPage":"100","opensearch:Query":{"role":"request","searchTerms":"identifier:\"S3B_SR_1_SRA____20210720T112514_20210720T112540_20210720T133004_0025_055_023______LN3_O_NR_004\"","startPage":"1"},"link":[{"rel":"self","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=identifier:\"S3B_SR_1_SRA____20210720T112514_20210720T112540_20210720T133004_0025_055_023______LN3_O_NR_004\"&start=0&rows=100&format=json"},{"rel":"first","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=identifier:\"S3B_SR_1_SRA____20210720T112514_20210720T112540_20210720T133004_0025_055_023______LN3_O_NR_004\"&start=0&rows=100&format=json"},{"rel":"last","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=identifier:\"S3B_SR_1_SRA____20210720T112514_20210720T112540_20210720T133004_0025_055_023______LN3_O_NR_004\"&start=0&rows=100&format=json"},{"rel":"search","type":"application/opensearchdescription+xml","href":"opensearch_description.xml"}],"entry":{"title":"S3B_SR_1_SRA____20210720T112514_20210720T112540_20210720T133004_0025_055_023______LN3_O_NR_004","link":[{"href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''63b9e6c2-bac5-47d3-a4d4-bc57be31e6cd'')/$value"},{"rel":"alternative","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''63b9e6c2-bac5-47d3-a4d4-bc57be31e6cd'')/"},{"rel":"icon","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''63b9e6c2-bac5-47d3-a4d4-bc57be31e6cd'')/Products(''Quicklook'')/$value"}],"id":"63b9e6c2-bac5-47d3-a4d4-bc57be31e6cd","summary":"Date:
-        2021-07-20T11:25:14.344Z, Instrument: SRAL, Satellite: Sentinel-3, Size: 983.54
-        KB","ondemand":"false","date":[{"name":"beginposition","content":"2021-07-20T11:25:14.344Z"},{"name":"endposition","content":"2021-07-20T11:25:40.296Z"},{"name":"creationdate","content":"2021-07-20T13:30:04Z"},{"name":"ingestiondate","content":"2021-07-22T12:00:00.851Z"}],"int":[{"name":"lrmpercentage","content":"0"},{"name":"sarpercentage","content":"100"},{"name":"closedseapercentage","content":"0"},{"name":"continentalicepercentage","content":"29"},{"name":"landpercentage","content":"12"},{"name":"openseapercentage","content":"57"},{"name":"relativeorbitnumber","content":"23"},{"name":"orbitnumber","content":"16850"}],"str":[{"name":"filename","content":"S3B_SR_1_SRA____20210720T112514_20210720T112540_20210720T133004_0025_055_023______LN3_O_NR_004.SEN3"},{"name":"format","content":"SAFE"},{"name":"identifier","content":"S3B_SR_1_SRA____20210720T112514_20210720T112540_20210720T133004_0025_055_023______LN3_O_NR_004"},{"name":"instrumentshortname","content":"SRAL"},{"name":"sensoroperationalmode","content":"Earth
-        Observation"},{"name":"instrumentname","content":"Sar Radar ALtimeter"},{"name":"mode","content":"EO"},{"name":"platformidentifier","content":"2018-039A"},{"name":"onlinequalitycheck","content":"PASSED"},{"name":"orbitdirection","content":"ascending"},{"name":"pduduration","content":"25"},{"name":"passnumber","content":"33699"},{"name":"passdirection","content":"ascending"},{"name":"procfacilityname","content":"Land
-        Surface Topography Mission Processing and Archiving Centre [LN3]"},{"name":"procfacilityorg","content":"European
-        Space Agency"},{"name":"processinglevel","content":"1"},{"name":"processingname","content":"Data
-        Processing"},{"name":"productlevel","content":"L1"},{"name":"producttype","content":"SR_1_SRA___"},{"name":"relorbitdir","content":"ascending"},{"name":"relpassnumber","content":"45"},{"name":"relpassdirection","content":"ascending"},{"name":"platformname","content":"Sentinel-3"},{"name":"size","content":"983.54
+        Scientific Data Hub"},"id":"https://apihub.copernicus.eu/apihub/search?q=identifier:\"S3B_SR_1_SRA____20230308T203304_20230308T203328_20230308T223420_0023_077_057______PS2_O_NR_004\"","opensearch:totalResults":"1","opensearch:startIndex":"0","opensearch:itemsPerPage":"100","opensearch:Query":{"role":"request","searchTerms":"identifier:\"S3B_SR_1_SRA____20230308T203304_20230308T203328_20230308T223420_0023_077_057______PS2_O_NR_004\"","startPage":"1"},"link":[{"rel":"self","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=identifier:\"S3B_SR_1_SRA____20230308T203304_20230308T203328_20230308T223420_0023_077_057______PS2_O_NR_004\"&start=0&rows=100&format=json"},{"rel":"first","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=identifier:\"S3B_SR_1_SRA____20230308T203304_20230308T203328_20230308T223420_0023_077_057______PS2_O_NR_004\"&start=0&rows=100&format=json"},{"rel":"last","type":"application/json","href":"https://apihub.copernicus.eu/apihub/search?q=identifier:\"S3B_SR_1_SRA____20230308T203304_20230308T203328_20230308T223420_0023_077_057______PS2_O_NR_004\"&start=0&rows=100&format=json"},{"rel":"search","type":"application/opensearchdescription+xml","href":"opensearch_description.xml"}],"entry":{"title":"S3B_SR_1_SRA____20230308T203304_20230308T203328_20230308T223420_0023_077_057______PS2_O_NR_004","link":[{"href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''ff10826d-78b9-4062-9f69-fca7d1d832d8'')/$value"},{"rel":"alternative","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''ff10826d-78b9-4062-9f69-fca7d1d832d8'')/"},{"rel":"icon","href":"https://apihub.copernicus.eu/apihub/odata/v1/Products(''ff10826d-78b9-4062-9f69-fca7d1d832d8'')/Products(''Quicklook'')/$value"}],"id":"ff10826d-78b9-4062-9f69-fca7d1d832d8","summary":"Date:
+        2023-03-08T20:33:04.327Z, Instrument: SRAL, Satellite: Sentinel-3, Size: 975.10
+        KB","ondemand":"false","date":[{"name":"beginposition","content":"2023-03-08T20:33:04.327Z"},{"name":"endposition","content":"2023-03-08T20:33:28.292Z"},{"name":"creationdate","content":"2023-03-08T22:34:20Z"},{"name":"ingestiondate","content":"2023-03-08T22:40:10.82Z"}],"int":[{"name":"lrmpercentage","content":"0"},{"name":"sarpercentage","content":"100"},{"name":"closedseapercentage","content":"0"},{"name":"continentalicepercentage","content":"0"},{"name":"landpercentage","content":"0"},{"name":"openseapercentage","content":"100"},{"name":"relativeorbitnumber","content":"57"},{"name":"orbitnumber","content":"25354"}],"str":[{"name":"filename","content":"S3B_SR_1_SRA____20230308T203304_20230308T203328_20230308T223420_0023_077_057______PS2_O_NR_004.SEN3"},{"name":"format","content":"SAFE"},{"name":"identifier","content":"S3B_SR_1_SRA____20230308T203304_20230308T203328_20230308T223420_0023_077_057______PS2_O_NR_004"},{"name":"instrumentshortname","content":"SRAL"},{"name":"sensoroperationalmode","content":"Earth
+        Observation"},{"name":"instrumentname","content":"Sar Radar ALtimeter"},{"name":"mode","content":"EO"},{"name":"platformidentifier","content":"2018-039A"},{"name":"onlinequalitycheck","content":"PASSED"},{"name":"orbitdirection","content":"ascending"},{"name":"pduduration","content":"23"},{"name":"passnumber","content":"50707"},{"name":"passdirection","content":"ascending"},{"name":"procfacilityname","content":"S3B
+        Processing Service [PS2]"},{"name":"procfacilityorg","content":"SERCO"},{"name":"processinglevel","content":"1"},{"name":"processingname","content":"Data
+        Processing"},{"name":"productlevel","content":"L1"},{"name":"producttype","content":"SR_1_SRA___"},{"name":"relorbitdir","content":"ascending"},{"name":"relpassnumber","content":"113"},{"name":"relpassdirection","content":"ascending"},{"name":"platformname","content":"Sentinel-3"},{"name":"size","content":"975.10
         KB"},{"name":"timeliness","content":"Near Real Time"},{"name":"gmlfootprint","content":"<gml:Polygon
-        srsName=\"http://www.opengis.net/gml/srs/epsg.xml#4326\" xmlns:gml=\"http://www.opengis.net/gml\">\n   <gml:outerBoundaryIs>\n      <gml:LinearRing>\n         <gml:coordinates>80.2597,97.2089
-        80.6679,91.9953 80.9958,86.3638 80.9941,86.3603 80.6662,91.991 80.2581,97.204
-        80.2597,97.2089</gml:coordinates>\n      </gml:LinearRing>\n   </gml:outerBoundaryIs>\n</gml:Polygon>"},{"name":"footprint","content":"MULTIPOLYGON
-        (((97.204 80.2581, 97.2089 80.2597, 91.9953 80.6679, 86.3638 80.9958, 86.3603
-        80.9941, 91.991 80.6662, 97.204 80.2581)))"},{"name":"uuid","content":"63b9e6c2-bac5-47d3-a4d4-bc57be31e6cd"}]}}}'
+        srsName=\"http://www.opengis.net/gml/srs/epsg.xml#4326\" xmlns:gml=\"http://www.opengis.net/gml\">\n   <gml:outerBoundaryIs>\n      <gml:LinearRing>\n         <gml:coordinates>63.1914,4.46729
+        64.0276,3.73467 64.8604,2.96083 64.8598,2.95692 64.0269,3.73087 63.1908,4.46359
+        63.1914,4.46729</gml:coordinates>\n      </gml:LinearRing>\n   </gml:outerBoundaryIs>\n</gml:Polygon>"},{"name":"footprint","content":"MULTIPOLYGON
+        (((4.46359 63.1908, 4.46729 63.1914, 3.73467 64.0276, 2.96083 64.8604, 2.95692
+        64.8598, 3.73087 64.0269, 4.46359 63.1908)))"},{"name":"uuid","content":"ff10826d-78b9-4062-9f69-fca7d1d832d8"}]}}}'
     headers:
       content-length:
-      - '4981'
+      - '4928'
       content-type:
       - application/json
       pragma:
       - no-cache
-      server:
-      - Apache-Coyote/1.1
       vary:
       - Accept-Encoding
     status:
       code: 200
-      message: OK
+      message: ''
 version: 1

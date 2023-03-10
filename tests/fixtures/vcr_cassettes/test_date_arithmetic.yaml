@@ -9,7 +9,7 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - sentinelsat/1.0.1
+      - sentinelsat/1.1.1
     method: GET
     uri: https://apihub.copernicus.eu/apihub/search?format=json&rows=100&start=0&q=beginPosition%3A%5B%222016-12-01T00%3A00%3A00Z-1DAY%22+TO+%222016-12-01T00%3A00%3A00Z%2B1DAY-1HOUR%22%5D+footprint%3A%22Intersects%28ENVELOPE%280%2C+1%2C+1%2C+0%29%29%22
   response:
@@ -588,11 +588,9 @@ interactions:
       - application/json
       pragma:
       - no-cache
-      server:
-      - Apache-Coyote/1.1
       vary:
       - Accept-Encoding
     status:
       code: 200
-      message: OK
+      message: ''
 version: 1
