@@ -3,7 +3,7 @@ Change Log
 
 All notable changes to ``sentinelsat`` will be listed here.
 
-[Unreleased] – YYYY-MM-DD
+[1.2.1] – YYYY-MM-DD
 -------------------------
 
 CLI changes
@@ -12,7 +12,7 @@ CLI changes
 
 Added
 ~~~~~
-* support for Python 3.11
+* 
 
 Changed
 ~~~~~~~
@@ -20,7 +20,11 @@ Changed
 
 Fixed
 ~~~~~
-*
+* Fixed nodefilter not working with Sentinel-3 products. (`#573 <https://github.com/sentinelsat/sentinelsat/issues/573>`_ `@valpamp <https://github.com/valpamp>`_)
+
+Development Changes
+~~~~~~~~~~~~~~~~~~~
+* Added automated testing for Python 3.11. (`#575 <https://github.com/sentinelsat/sentinelsat/issues/575>`_)
 
 [1.1.1] – 2021-11-23
 --------------------
