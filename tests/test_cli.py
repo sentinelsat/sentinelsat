@@ -72,9 +72,9 @@ def run_cli(credentials):
                 assert result.exception is not None, result.output
                 raise result.exception
         if must_return_nonzero:
-            assert result.exit_code != 0
+            assert result.exit_code != 0, result.output
         else:
-            assert result.exit_code == 0
+            assert result.exit_code == 0, result.output
         result.products = re.findall("^Product .+$", result.output, re.M)
         return result
 
