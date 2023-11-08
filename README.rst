@@ -12,7 +12,7 @@ The official successor data distribution system, the `Copernicus Data Space Ecos
 uses different API logic that Sentinelsat does not (yet?) support. Contributions are welcome to change that, please check issues and discussions
 for ongoing efforts or alternatives.
 
-Sentinelsat can still be used against [other data hubs](https://github.com/kr-stn/awesome-sentinel#data-hubs-and-national-mirrors) powered by the `DHuS software <https://github.com/SentinelDataHub/>`_.
+Sentinelsat can still be used against `other data hubs <https://github.com/kr-stn/awesome-sentinel#data-hubs-and-national-mirrors>`_ powered by the `DHuS software <https://github.com/SentinelDataHub/>`_.
 
 
 Legacy project documentation
