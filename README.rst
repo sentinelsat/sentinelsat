@@ -1,8 +1,8 @@
 sentinelsat
 ===========
 
-⚠️ Sentinelsat is currently not functional for download from official mirrors ⚠️
-==============================================================================
+⚠️ Sentinelsat is currently not functional for downloading from official mirrors ⚠️
+=================================================================================
 
 The `Copernicus Open Access Hub (aka SciHub) <https://scihub.copernicus.eu/>`_, that Sentinelsat was primarily built for, is permanently closed.
 
