@@ -1,6 +1,25 @@
 sentinelsat
 ===========
 
+⚠️ Sentinelsat is currently not functional for download from official mirrors ⚠️
+==============================================================================
+
+The `Copernicus Open Access Hub (aka SciHub) <https://scihub.copernicus.eu/>`_, that Sentinelsat was primarily built for, is permanently closed.
+
+.. image:: readme-note-scihub-closed.png
+
+The official successor data distribution system, the `Copernicus Data Space Ecosystem (CDSE) <https://dataspace.copernicus.eu/>`_,
+uses different API logic that Sentinelsat does not (yet?) support. Contributions are welcome to change that, please check issues and discussions
+for ongoing efforts or alternatives.
+
+Sentinelsat can still be used against other data hubs powered by the `DHuS software <https://github.com/SentinelDataHub/>`_.
+
+
+Legacy project documentation
+============================
+
+Please note that examples referencing the old Copernicus Open Access Hub are not working anymore. 
+
 .. image:: https://readthedocs.org/projects/sentinelsat/badge/?version=stable
     :target: http://sentinelsat.readthedocs.io/en/stable/?badge=stable
     :alt: Documentation
@@ -74,7 +93,7 @@ Python Library
   from datetime import date
 
   # connect to the API
-  api = SentinelAPI('user', 'password', 'https://apihub.copernicus.eu/apihub')
+  api = SentinelAPI('user', 'password', 'dhus-hub-url')
 
   # download single scene by known product id
   api.download(<product_id>)
