@@ -1384,10 +1384,10 @@ def _parse_opensearch_response(products):
                             name = "link_" + p["rel"]
                         product_dict[name] = p["href"]
                 else:
-                    if "content" not in p and "str" not in p:
-                        continue
                     f = converters.get(key, default_converter)
                     for p in properties:
+                        if "content" not in p and "str" not in p:
+                            continue
                         try:
                             product_dict[p["name"]] = f(p["content"])
                         except KeyError:
