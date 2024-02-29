@@ -7,6 +7,7 @@ There are two minor issues to keep in mind when recording unit tests VCRs.
 2. dhus and apihub have different md5 hashes for products with the same UUID.
 
 """
+
 import os
 import shutil
 

@@ -1,6 +1,7 @@
 """
 Tests methods dealing with converting product info into pandas and geopandas formats.
 """
+
 import sys
 
 import pytest

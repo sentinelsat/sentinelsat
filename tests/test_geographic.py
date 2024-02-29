@@ -1,6 +1,7 @@
 """
 Handling of GeoJSON, geometries, WKT, etc. GIS-related functionality.
 """
+
 from datetime import datetime
 import re
 

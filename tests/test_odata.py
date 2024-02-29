@@ -1,6 +1,7 @@
 """
 Tests for functionality related to the OData API of SciHub (https://apihub.copernicus.eu/apihub/odata/v1/...)
 """
+
 from datetime import datetime
 
 import pytest

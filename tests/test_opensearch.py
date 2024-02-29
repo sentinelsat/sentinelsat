@@ -1,6 +1,7 @@
 """
 Tests for functionality related to the OpenSearch API of SciHub (https://apihub.copernicus.eu/apihub/search?...)
 """
+
 from contextlib import contextmanager
 from datetime import datetime, date, timedelta
 
