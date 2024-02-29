@@ -131,6 +131,44 @@ def test_response_to_dict(raw_products):
     assert props["title"] == expected_title
 
 
+@pytest.mark.scihub
+def test_response_from_nbs_to_dict(nbs_s3_response):
+    dictionary = _parse_opensearch_response(nbs_s3_response)
+    # check the type
+    assert isinstance(dictionary, dict)
+    # check if dictionary has id key
+    assert "562b62eb-a282-430a-9135-5d90fe5df45f" in dictionary
+    props = dictionary["562b62eb-a282-430a-9135-5d90fe5df45f"]
+    expected_title = "S3A_SL_1_RBT____20240202T194952_20240202T195252_20240204T052728_0179_108_299_1080_PS1_O_NT_004"
+    assert props["title"] == expected_title
+    assert sorted(list(props.keys())) == [
+        "beginposition",
+        "endposition",
+        "filename",
+        "footprint",
+        "format",
+        "gmlfootprint",
+        "identifier",
+        "ingestiondate",
+        "link",
+        "link_alternative",
+        "link_icon",
+        "ondemand",
+        "orbitdirection",
+        "orbitnumber",
+        "platformname",
+        "processinglevel",
+        "producttype",
+        "relativeorbitnumber",
+        "sensoroperationalmode",
+        "size",
+        "summary",
+        "timeliness",
+        "title",
+        "uuid",
+    ]
+
+
 @pytest.mark.vcr
 @pytest.mark.scihub
 def test_check_existing(api, tmpdir, smallest_online_products, smallest_archived_products):
