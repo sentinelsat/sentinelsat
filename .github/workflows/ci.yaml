@@ -13,7 +13,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        python-version: ["3.7", "3.8", "3.9", "3.10", "3.11"]
+        python-version: ["3.8", "3.9", "3.10", "3.11", "3.12"]
         os:  [ubuntu-latest]
         # os: [ubuntu-latest, windows-latest, macos-latest]
         include:
@@ -58,11 +58,11 @@ jobs:
         coverage run --source=sentinelsat -m pytest -v
 
     - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v3
+      uses: codecov/codecov-action@v4
       env:
         OS: ${{ matrix.os }}
         PYTHON: ${{ matrix.python-version }}
       with:
-        # token: ${{ secrets.CODECOV_TOKEN }}  # not required for public repos
+        token: ${{ secrets.CODECOV_TOKEN }}
         env_vars: OS,PYTHON
         fail_ci_if_error: true
